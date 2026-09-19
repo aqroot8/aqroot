@@ -1,0 +1,1581 @@
+                                                                                                                       LTC4368
+                                                                                                    100V UV/OV and Reverse
+                                                                                                    Protection Controller with
+                                                                                                  Bidirectional Circuit Breaker
+Features                                                                                           Description
+nn Wide Operating Voltage Range: 2.5V to 60V                                                           The LTC®4368 protects applications from power supply
+nn Overvoltage Protection to 100V                                                                      voltages that may be too high, too low, or even negative
+nn Reverse Supply Protection to –40V                                                                   and from overcurrent faults in both forward and reverse
+nn Bidirectional Electronic Circuit Breaker:                                                           directions. The LTC4368 controls the gate voltage of a pair
+   nn +50mV Forward Sense Threshold                                                                    of external N-channel MOSFETs to ensure that the load
+   nn –50mV Reverse (LTC4368-1)                                                                        is connected to the input supply only when there are no
+   nn –3mV Reverse (LTC4368-2)                                                                         voltage or current faults.
+nn Adjustable ±1.5% Undervoltage and Overvoltage
+                                                                                                       Two comparator inputs allow configuration of the over-
+   Thresholds                                                                                          voltage (OV) and undervoltage (UV) set points using an
+nn Low Operating Current: 80µA
+                                                                                                       external resistive divider. A current sense resistor sets the
+nn Low Shutdown Current: 5µA
+                                                                                                       forward and reverse circuit breaker current thresholds.
+nn Controls Back-to-Back N-Channel MOSFETs
+                                                                                                       After a forward current fault, the LTC4368 will either latch
+nn Blocks 50Hz and 60Hz AC Power
+                                                                                                       off power, or retry after a user adjustable delay. After a
+nn Hot Swappable Supply Input
+                                                                                                       reverse current fault, the LTC4368 waits for the output to
+nn Pin-Selectable Overcurrent Auto-Retry Timer or Latchoff
+                                                                                                       fall 100mV below the input to reconnect power to the load.
+nn 10-Pin MSOP and 3mm × 3mm DFN Packages
+                                                                                                       The LTC4368 has a 32ms turn-on delay that debounces
+Applications                                                                                           live supply input connections and blocks 50Hz and 60Hz
+                                                                                                       AC power. UV/OV faults also trigger the 32ms recovery
+nn Reverse Battery Protection                                                                          delay before the external MOSFETs are turned back on.
+nn Portable Instrumentation                                                                            L, LT, LTC, LTM, Linear Technology and the Linear logo are registered trademarks and
+nn Automotive and Industrial Surge Protection                                                          ThinSOT is a trademark of Linear Technology Corporation. All other trademarks are the property
+                                                                                                       of their respective owners.
+nn Energy Storage Systems
+
+
+
+
+Typical Application
+                 24V Application with 10A Circuit Breaker                                                        Load Protected from Reverse and Overvoltage at VIN
+                                                         +50mV
+                                                                      VOUT
+            –40V TO 100V    SiR870           SiR870   0.005Ω        7V TO 36V                                             OV = 36V
+     VIN                                                                                IOUT                     +70V
+     24V       INRUSH                                                 +                 –0.6A TO 10A           20V/DIV    UV = 7V
+                                                                                                                                                                                      VIN
+               CONTROL                                   –3mV              100µF
+                      22k
+
+                       3.3nF                                                                                                      VALID WINDOW
+
+                                      GATE        SENSE      VOUT
+                            VIN                                                                                    GND
+                                                                                                                           VOUT                                                     VOUT
+               464k
+                               SHDN                         FAULT
+               1500k                                                                                             –40V
+                                             LTC4368-2
+                                                                       1200ms COOLDOWN                         20V/DIV      VIN
+                            UV
+ OV = 36V                                                              AFTER FORWARD
+               121k
+ UV = 7V                                                               OC FAULT
+                            OV                             RETRY                                                                                                                     4368 TA01b
+
+               29.4k                                                                                                                                 200ms/DIV
+                                               GND                         0.22µF
+                                                                           4368 TA01a
+
+                                                                                                                                                                                                  4368f
+
+
+
+
+                                                                       For more information www.linear.com/LTC4368                                                                                1
+LTC4368
+Absolute Maximum Ratings
+(Note 1, Note 2)
+Supply Voltage                                                                    Input Currents
+   VIN......................................................... –40V to 100V         RETRY, UV, OV ,SHDN, FAULT............................–1mA
+Input Voltages                                                                    Operating Ambient Temperature Range
+   UV, SHDN (Note 3).........................…….–0.3V to 80V                         LTC4368C................................................ 0°C to 70°C
+   OV........................................................... –0.3V to 20V        LTC4368I............................................. –40°C to 85°C
+   RETRY (Note 3)........................................ –0.3V to 5V                LTC4368H......................................... . –40°C to 125°C
+   VOUT, SENSE.............................................–10V to 80V            Storage Temperature Range .................. –65°C to 150°C
+   VOUT to SENSE..........................................–10V to 10V             Lead Temperature (Soldering, 10 sec)
+   VIN to VOUT............................................ –60V to 100V              MSOP Package.................................................. 300°C
+Output Voltages
+   FAULT...................................................... –0.3V to 80V
+   GATE............................................... –40V to VIN + 14V
+
+
+
+Pin Configuration
+
+                                    TOP VIEW
+
+                         VIN   1                10 GATE                                                         TOP VIEW
+                         UV    2                 9 SENSE                                               VIN 1                    10 GATE
+                                                                                                       UV 2                     9 SENSE
+                         OV    3                 8 VOUT                                                OV 3                     8 VOUT
+                      RETRY    4                 7 FAULT                                            RETRY 4                     7 FAULT
+                        GND    5                 6 SHDN                                               GND 5                     6 SHDN
+                                                                                                              MS10 PACKAGE
+                                  DD PACKAGE                                                              10-LEAD PLASTIC MSOP
+                        10-LEAD (3mm × 3mm) PLASTIC DFN                                                 TJMAX = 150°C, θJA = 160°C/W
+              EXPOSED PAD (PIN 11) PCB GROUND CONNECTION OPTIONAL
+                            TJMAX = 150°C, θJA = 43°C/W
+
+
+
+
+                                                                                                                                                    4368f
+
+
+
+
+2                                                         For more information www.linear.com/LTC4368
+                                                                                                                                   LTC4368
+Order Information http://www.linear.com/product/LTC4368#orderinfo
+LEAD FREE FINISH              TAPE AND REEL               PART MARKING*             PACKAGE DESCRIPTION                         TEMPERATURE RANGE
+LTC4368CDD-1#PBF              LTC4368CDD-1#TRPBF          LGTH                      10-Lead (3mm × 3mm) Plastic DFN             0°C to 70°C
+LTC4368CDD-2#PBF              LTC4368CDD-2#TRPBF          LGTK                      10-Lead (3mm × 3mm) Plastic DFN             0°C to 70°C
+LTC4368IDD-1#PBF              LTC4368IDD-1#TRPBF          LGTH                      10-Lead (3mm × 3mm) Plastic DFN             –40°C to 85°C
+LTC4368IDD-2#PBF              LTC4368IDD-2#TRPBF          LGTK                      10-Lead (3mm × 3mm) Plastic DFN             –40°C to 85°C
+LTC4368HDD-1#PBF              LTC4368HDD-1#TRPBF          LGTH                      10-Lead (3mm × 3mm) Plastic DFN             –40°C to 125°C
+LTC4368HDD-2#PBF              LTC4368HDD-2#TRPBF          LGTK                      10-Lead (3mm × 3mm) Plastic DFN             –40°C to 125°C
+LTC4368CMS-1#PBF              LTC4368CMS-1#TRPBF          LTGTG                     10-Lead Plastic MSOP                        0°C to 70°C
+LTC4368CMS-2#PBF              LTC4368CMS-2#TRPBF          LTGTJ                     10-Lead Plastic MSOP                        0°C to 70°C
+LTC4368IMS-1#PBF              LTC4368IMS-1#TRPBF          LTGTG                     10-Lead Plastic MSOP                        –40°C to 85°C
+LTC4368IMS-2#PBF              LTC4368IMS-2#TRPBF          LTGTJ                     10-Lead Plastic MSOP                        –40°C to 85°C
+LTC4368HMS-1#PBF              LTC4368HMS-1#TRPBF          LTGTG                     10-Lead Plastic MSOP                        –40°C to 125°C
+LTC4368HMS-2#PBF              LTC4368HMS-2#TRPBF          LTGTJ                     10-Lead Plastic MSOP                        –40°C to 125°C
+*Temperature grades are identified by a label on the shipping container.
+Consult LTC Marketing for parts specified with wider operating temperature ranges.
+For more information on lead free part marking, go to: http://www.linear.com/leadfree/
+For more information on tape and reel specifications, go to: http://www.linear.com/tapeandreel/. Some packages are available in 500 unit reels through
+designated sales channels with #TRMPBF suffix.
+
+
+
+
+                                                                                                                                                         4368f
+
+
+
+
+                                                       For more information www.linear.com/LTC4368                                                   3
+LTC4368
+Electrical Characteristics The l denotes the specifications which apply over the full operating
+temperature range, otherwise specifications are at TA = 25°C. VIN = 2.5V to 60V, unless otherwise noted (Note 2). UV = 2.5V, OV = 0V,
+SHDN = 2.5V, SENSE = VOUT = VIN unless otherwise specified.
+SYMBOL        PARAMETER                              CONDITIONS                                            MIN   TYP    MAX    UNITS
+VIN, VOUT, SENSE
+VIN           Input Voltage: Operating Range                                                           l   2.5           60         V
+                             Protection Range                                                          l   –40          100         V
+VIN(UVLO)     Input Supply Undervoltage Lockout      VIN Rising                                        l   1.8   2.2    2.4         V
+IVIN          Input Supply Current: On               SHDN = 2.5V, SENSE = VOUT = VIN                   l         30     100       µA
+                                    Off              SHDN = 0V, SENSE = VOUT = VIN                     l          5      25       µA
+IVIN(R)       Reverse Input Supply Current           VIN = –40V, SENSE = VOUT = 0V                     l         –1.5   –2.5     mA
+VOUT(UVLO) VOUT Undervoltage Lockout                 VOUT Rising, VOUT – SENSE = 100mV, VIN = 12V      l   1.8   2.2    2.4         V
+tVOUT(UVLO) VOUT Undervoltage Lockout Delay          VIN = 12V, VOUT:0V→12V, VOUT – SENSE = 100mV      l   40    120    280       µs
+IVOUT         VOUT Input Current:    On              SHDN = 2.5V, SENSE = VOUT = VIN                   l         50     125       µA
+                                     Off             SHDN = 0V, SENSE = VOUT = VIN                     l          3     20        µA
+                                     Reverse         VIN = –40V, SENSE = VOUT = 0V                     l         20     50        µA
+Current Sense
+ISENSE        SENSE Input Current: On                SHDN = 2.5V, SENSE = VOUT = VIN                   l         1.2     2        µA
+                                   Off               SHDN = 0V, SENSE = VOUT = VIN                     l         0.1     2        µA
+                                   Reverse           VIN = –40V, SENSE = VOUT = 0V                     l          1     10        µA
+ΔVSENSE,F     Overcurrent Fault Threshold, Forward   VOUT = VIN                                        l   40    50     60       mV
+              (SENSE – VOUT)                         VIN = 12V, VOUT = 0.5V                            l   40    50     60       mV
+                                                     VIN = 12V, VOUT = 0V                              l   30    50     70       mV
+ΔVSENSE,R     Overcurrent Fault Threshold, Reverse   LTC4368-1     VOUT = VIN                          l   –42   –50    –58      mV
+              (SENSE – VOUT)                         LTC4368-2     VOUT = VIN                          l    –1    –3     –5      mV
+ΔVRR          Reverse Overcurrent Re-Enable          VIN = SENSE = 6V to 60V                           l   75    100    125      mV
+              Turn-On Threshold (VIN – VOUT)         VIN = SENSE = 2.5V to <6V                         l   20     50    125      mV
+GATE
+ΔVGATE        Gate Drive (GATE – VOUT)               VIN = 2.5V, IGATE = 0µA, –1µA                     l    3     4      5.5        V
+                                                     VIN = 5V, IGATE = 0µA, –1µA                       l   7.2   8.7    10.8        V
+                                                     VIN = 12V to 60V, IGATE = 0µA, –1µA               l   10    11     13.1        V
+IGATE(UP)     Gate Pull Up Current                   GATE = 15V, VIN = 12V                             l   –20   –35    –60       µA
+IGATE(SLOW) Gate Slow Pull Down Current              GATE = 20V, VIN = 12V                             l   40    90     160       µA
+IGATE(FAST)   Gate Fast Pull Down Current            GATE = 20V, SENSE = VIN = 12V                     l   30    60     90       mA
+tD(FAST)      Gate Fast Turn Off Delay               CGATE = 2.2nF: UV, OV Fault                       l          2      6        µs
+tD(SLOW)      Gate Slow Turn Off Delay               CGATE = 2.2nF, SHDN Falling, VIN = 12V            l   150   275    575       µs
+tD(ON)        Gate Turn-On Delay Time                VIN = 12V, Power Good to ΔVGATE > 0V              l   22    32     45        ms
+tp(GATE)      Overcurrent Fault Propagation Delay    CGATE = 2.2nF, Overcurrent Fault to ∆VGATE = 0V   l    3     8     18        µs
+                                                       SENSE – VOUT: 0 to +100mV, or
+                                                       SENSE – VOUT: 0 to –100mV (LTC4368-1)
+                                                       SENSE – VOUT: 0 to –10mV (LTC4368-2)
+
+
+
+
+                                                                                                                                 4368f
+
+
+
+
+4                                                    For more information www.linear.com/LTC4368
+                                                                                                                                    LTC4368
+Electrical Characteristics The l denotes the specifications which apply over the full operating
+temperature range, otherwise specifications are at TA = 25°C. VIN = 2.5V to 60V, unless otherwise noted (Note 2). UV = 2.5V, OV = 0V,
+SHDN = 2.5V, SENSE = VOUT = VIN unless otherwise specified.
+SYMBOL      PARAMETER                                CONDITIONS                                                     MIN        TYP       MAX      UNITS
+UV, OV
+VUV         UV Input Threshold Voltage               UV Falling                                               l    492.5       500      507.5        mV
+VOV         OV Input Threshold Voltage               OV Rising                                                l    492.5       500      507.5        mV
+VUVHYST     UV Input Hysteresis                                                                               l      20         25        32         mV
+VOVHYST     OV Input Hysteresis                                                                               l      20         25        32         mV
+ILEAK       UV, OV Leakage Current                   V = 0.5V, VIN = 60V                                      l                          ±10          nA
+tFAULT      UV, OV Fault Propagation Delay           Overdrive = 50mV, VIN = 12V                              l                 1          2          µs
+SHDN
+VSHDN       SHDN Input Threshold                     SHDN Falling                                             l      0.4       0.75       1.2          V
+ISHDN       SHDN Input Current                       SHDN = 10V, VIN = 60V                                    l                          ±15          nA
+tSTART      Delay Coming Out of Shutdown Mode        SHDN Rising to FAULT, VIN = 12V                          l     400        800       1400         µs
+tSHDN(F)    SHDN To FAULT Asserted                   VIN = 12V                                                l                1.5         3          µs
+tLOWPWR     Delay From Turn Off to Low Power         VIN = 12V                                                l      20         32        48         ms
+            Operation
+FAULT
+VOL         FAULT Output Voltage Low                 IFAULT = 500µA, VIN = 12V                                l                0.15       0.4          V
+IFAULT      FAULT Leakage Current                    FAULT = 5V, VIN = 60V                                    l                          ±20          nA
+RETRY
+VRETRY      Configuration Threshold for GATE         RETRY Falling to ΔIRETRY > 2µA                           l      0.5        1         1.5          V
+            Latch-Off                                VIN = 12V
+IRETRY      Output Current for RETRY Timer           RETRY = 2V, VIN = 12V                                    l     2.5        3.5       4.5          µA
+                                                     RETRY = 0V, VIN = 12V                                    l     –10        –17       –25          µA
+tCLEAR      Minimum SHDN Pulse to Clear Forward      RETRY = 0V, VIN = 12V                                    l      15                               µs
+            Overcurrent RETRY Latch
+tRETRY      Forward Overcurrent Cool-Down Delay      FAULT Asserted to FAULT Released, CRETRY = 22nF          l      80        120       150         ms
+                                                     SENSE = VOUT = VIN = 12V
+Note 1. Stresses beyond those listed under Absolute Maximum Ratings          Note 2. All currents into pins are positive; all voltages are referenced to
+may cause permanent damage to the device. Exposure to any Absolute           GND unless otherwise noted.
+Maximum Rating condition for extended periods may affect device              Note 3. These pins can be tied to voltages below –0.3V through a resistor
+reliability and lifetime.                                                    that limits the current below 1mA.
+
+
+
+
+                                                                                                                                                    4368f
+
+
+
+
+                                                    For more information www.linear.com/LTC4368                                                     5
+ LTC4368
+ Typical Performance Characteristics
+
+                  VIN Operating Current vs                                                                                                                                                                         VIN Supply Current vs Voltage
+                  Temperature                                                                                VIN Shutdown Current vs Voltage                                                                       (–40V to 100V)
+             50                                                                                         8                                                                                                    500
+                  SHDN = 2.5V                                                                                    SHDN = 0V                                                                                             UV = SHDN = 0V
+                  VIN = VOUT                                                                                     VIN = VOUT                                                                                            VOUT = 0V
+             40                                                                                                                                                                                                0
+                                                        VIN = 60V                                       6
+
+             30                              VIN = 12V                                                                                                                                                 –500
+IVIN (µA)
+
+
+
+
+                                                                                           IVIN (µA)
+
+
+
+
+                                                                                                                                                                                    IVIN (µA)
+                                                                                                        4
+             20                                                                                                                                                                                     –1000
+                           VIN = 2.5V
+                                                                                                        2                                                  TA = 125°C
+             10                                                                                                                                            TA = 70°C                                –1500                                                   TA = 125°C
+                                                                                                                                                           TA = 25°C                                                                                        TA = 25°C
+                                                                                                                                                           TA = –45°C                                                                                       TA = –45°C
+              0                                                                                         0                                                                                           –2000
+               –50   –25      0    25   50    75                    100       125                            0          10    20      30           40               50         60                        –50               –25         0       25      50         75        100
+                               TEMPERATURE (°C)                                                                                     VIN (V)                                                                                                  VIN (V)
+                                                                      4368 G01                                                                                           4368 G02                                                                                      4368 G03
+
+
+
+
+                  VOUT Operating Current vs                                                                  VOUT Shutdown Current vs
+                  Temperature                                                                                Temperature                                                                                           VOUT Current vs Reverse VIN
+             75                                                                                         6                                                                                                     20
+                  SHDN = 2.5V                                                                                    SHDN = 0V                                                                                             VOUT = 0V
+                                                                                                                                                                                                                                                            –45°C
+                  VIN = VOUT                                                                                     VIN = VOUT
+                                                       VOUT = 60V                                       5
+             60
+                                                                                                                                                     VOUT = 60V                                               15
+                                                                                                        4
+             45
+IVOUT (µA)
+
+
+
+
+                                                                                                                                                                                                IVOUT (µA)
+                                                                                           IVOUT (µA)
+
+
+
+
+                                  VOUT = 12V
+                                                                                                        3                                                                                                     10                                            25°C
+
+             30                                                                                                                    VOUT = 12V
+                                                                                                        2
+                       VOUT = 2.5V
+                                                                                                                                                                                                               5
+             15                                                                                                                                                                                                                                             125°C
+                                                                                                        1
+
+                                                                                                            VOUT = 2.5V
+              0                                                                                         0                                                                                                      0
+               –50   –25      0    25   50    75                    100       125                        –50 –25      0    25   50    75                            100       125                                  0             –10          –20           –30             –40
+                               TEMPERATURE (°C)                                                                        TEMPERATURE (°C)                                                                                                      VIN (V)
+                                                                      4368 G04                                                                                           4368 G05                                                                                       4368 G06
+
+
+
+
+                                                   GATE Drive vs VIN Supply Voltage                                                                             GATE Drive vs GATE Current
+                                              14                                                                                                           12
+                                                        VOUT = 0V                                                                                                    VIN = VOUT = 12V                                       TA = 125°C
+                                              12                                                                                                                                                                            TA = 25°C
+                                                                                                                                                           10                                                               TA = –45°C
+                                              10                                          VOUT = VIN
+                                                                                                                                                            8
+                                ∆VGATE (V)
+
+
+
+
+                                               8
+                                                                                                                                              ∆VGATE (V)
+
+
+
+
+                                                                                                                                                            6
+                                               6
+
+                                                                                                                                                            4
+                                               4
+
+                                               2                                                TA = 25°C                                                   2
+                                                                                             IGATE = –1µA
+                                               0                                                                                                            0
+                                                   0        4             8          12                 16             20                                       0          –10       –20               –30     –40                –50        –60
+                                                                              VIN (V)                                                                                                               IGATE(UP) (µA)
+                                                                                                                 4368 G07                                                                                                               4368 G08
+
+
+                                                                                                                                                                                                                                                                           4368f
+
+
+
+
+ 6                                                                                               For more information www.linear.com/LTC4368
+                                                                                                                                                                                                                 LTC4368
+Typical Performance Characteristics
+                      UV, OV Thresholds vs
+                      Temperature                                                                    ∆VRR Threshold vs VOUT                                                            FAULT Leakage vs Temperature
+                508                                                                            120                                                                                10
+                                                    VIN = VOUT = 12V                                     VIN = 12V                                                                         VIN = 12V
+                                                                                                                                              125°C                                        FAULT = 5V
+                                                                                                                                                                                   8
+                                                                                               102
+                504
+                                                                                                             –45°C                                                                 6
+                                                                                                84                                  25°C
+
+
+
+
+                                                                                                                                                                   IFAULT (nA)
+                                                                                ∆VRR (mV)
+VUV (mV)
+
+
+
+
+                500                                                                                                                                                                4
+                                                                                                66
+                                                                                                                                                                                   2
+                496
+                                                                                                48
+                                                                                                                                                                                   0
+
+
+                492                                                                             30                                                                                –2
+                   –50       –25    0    25   50    75         100       125                         0        10      20       30      40         50          60                    –50       –25       0    25   50    75         100      125
+                                     TEMPERATURE (°C)                                                                       VOUT (V)                                                                     TEMPERATURE (°C)
+                                                                    4368 G09                                                                            4368 G10                                                                         4368 G11
+
+
+
+
+                                                                                                     UV/OV Propagation Delay vs
+                      FAULT Output Current vs Voltage                                                Overdrive                                                                         GATE Turn-On Delay Time vs VIN
+                30                                                                             50                                                                                 50
+                          VIN = 12V                                                                                                 VIN = VOUT = 12V
+                                                    –45°C                                                                                  TA = 25°C
+                          UV = SHDN = 0V
+                24                                                                             40                                                                                 40
+                                                                                                                                                                                                    TA = 125°C                 TA = –45°C
+
+                18                                             25°C                            30                                                                                 30
+                                                                                                                                                                   t D(ON) (ms)
+  IFAULT (mA)
+
+
+
+
+                                                                                t FAULT (µs)
+
+
+
+
+                                                                                                                                                                                                                     TA = 25°C
+
+                12                                                                             20                                                                                 20
+
+
+                  6                                                                            10                                                                                 10
+                                   125°C
+
+                  0                                                                             0                                                                                  0
+                      0        2         4      6       8      10        12                         1                10          100                        1k                         0       10        20      30       40      50         60
+                                             VOL (V)                                                                 OVERDRIVE (mV)                                                                            VIN (V)
+                                                                     4368 G12                                                                      4368 G13                                                                            4368 G14
+
+
+
+
+                      AC Blocking                                                                    Turn-On Timing                                                                    Turn-Off Timing
+     1V/DIV                                                 VOUT
+                                                                                                                                                                                                                  DUAL Si7942 MOSFET
+       GND                                                                                                           GATE
+                                                                                                                                                                                                    GATE             100µF, 12Ω LOAD
+                                                                                                                                                                     5V/DIV
+                                                                                                                                           VOUT                                                                              VIN = 12V
+                                   VIN
+  20V/DIV                                                                          5V/DIV                                                                                                   VOUT
+            GND
+                           GATE
+                                                                                           GND                                            VIN = 12V                         GND
+                                                                                                                               DUAL Si7942 MOSFET
+                                                                                                                                  100µF, 12Ω LOAD
+                                                         DUAL Si7942
+                                               1k, 10µF LOAD ON VOUT                                                                                                 3V/DIV                         SHDN
+                                                                                   3V/DIV                  SHDN
+                                                                    4368 G15                                                                           4368 G16                                                                        4368 G17
+                                             5ms/DIV                                                                       400µs/DIV                                                                          400µs/DIV
+
+
+
+
+                                                                                                                                                                                                                                           4368f
+
+
+
+
+                                                                                           For more information www.linear.com/LTC4368                                                                                                    7
+LTC4368
+Pin Functions
+Exposed Pad: The exposed pad may be left open or con-                  disconnecting the load from the input. After a reverse
+nected to device ground.                                               current fault, when VOUT falls 100mV below VIN, the
+                                                                       LTC4368 automatically turns on the external MOSFETs.
+FAULT: Fault Indication Output. Connect to a pull-up resis-
+                                                                       A forward overcurrent fault uses the RETRY pin to set the
+tor. This high voltage open drain output is pulled low if there
+is a voltage or current fault, if SHDN is low, or if VIN has           conditions for reconnecting power to the load. Connect
+not risen above VIN(UVLO). Leave unconnected if unused.                to VOUT if unused.
+                                                                       SHDN: Shutdown Control Input. Assuming no voltage or
+GATE: Gate Drive Output for External N-channel MOSFETs.
+                                                                       current faults, SHDN high enables the GATE charge pump
+An internal charge pump provides 35µA of pull-up current
+                                                                       which in turn enhances the gate of the external N-channel
+and up to 13.1V of enhancement to the gate of an external
+                                                                       MOSFETs. A low on SHDN generates a pull down on the
+MOSFET. When turned off, GATE is pulled just below the
+                                                                       GATE output with a 90µA current sink and places the
+lower of VIN or VOUT. When VIN goes negative, GATE is
+automatically connected to VIN.                                        LTC4368 in low current mode (5µA). If a forward overcur-
+                                                                       rent condition latches off the external MOSFETs (RETRY
+GND: Device Ground.                                                    grounded), the SHDN pin must be toggled low then high
+OV: Overvoltage Comparator Input. Connect this pin to an               to re-enable the charge pump that enhances the external
+external resistive divider to set the desired VIN overvolt-            MOSFETs. If VIN goes above 80V, the SHDN pin voltage
+age fault threshold. This input connects an accurate, fast             must be kept below 80V.
+(1µs) comparator with a 0.5V rising threshold and 25mV                 UV: Undervoltage Comparator Input. Connect this pin to an
+of hysteresis. When OV rises above its threshold, a 60mA               external resistive divider to set the desired VIN undervoltage
+current sink pulls down on the GATE output. When OV                    fault threshold. This input connects to an accurate, fast
+falls back below 0.475V, and after a 32ms GATE turn-on                 (1µs) comparator with a 0.5V falling threshold and 25mV
+delay waiting period, the GATE charge pump is enabled.                 of hysteresis. When UV falls below its threshold, a 60mA
+The low leakage current on this input allows the use of                current sink pulls down on the GATE output. When UV
+large valued resistors for the external resistive divider.             rises back above 0.525V, and after a 32ms GATE turn-on
+Connect to GND if unused.                                              delay waiting period, the GATE charge pump is enabled.
+RETRY: Retry or Latch-Off Selection Input. Connect to                  The low leakage current on this input allows the use of
+ground to latch off the MOSFETs after a forward overcurrent            large valued resistors for the external resistive divider. If
+fault. To turn the external MOSFETs back on, the SHDN                  unused and VIN is less than 80V, connect to VIN with a
+pin must be toggled low then high. Connect RETRY to an                 510k resistor.
+external capacitor to configure a 5.5ms/nF delay before                VIN: Power Supply Input. Maximum protection range: –40V
+the MOSFETs automatically turn on again. Leave uncon-                  to 100V. Operating range: 2.5V to 60V. This pin can be
+nected if unused.                                                      hot swapped and has a 2.2V UVLO.
+SENSE: Overcurrent Sense Input. Connect a current                      VOUT: Output Voltage Sense Input. Connect a current sense
+sense resistor between SENSE and VOUT. This input                      resistor between VOUT and SENSE. The GATE charge pump
+detects overcurrent faults in both directions: forward                 voltage is referenced to VOUT. It is used as the charge pump
+at ∆VSENSE = 50mV, and reverse at ∆VSENSE = –50mV                      input when VOUT is greater than approximately 5V. The
+(LTC4368-1 option) or ∆VSENSE = –3mV (LTC4368-2                        reverse current fault comparators require that VOUT rise
+option). When an overcurrent fault is detected, a 60mA                 above its 2.2V UVLO. VOUT cannot be hot swapped with
+current sink pulls down on the GATE output, thus quickly               supplies above 24V. Place at least 1µF from VOUT to GND.
+
+
+
+
+                                                                                                                                 4368f
+
+
+
+
+8                                              For more information www.linear.com/LTC4368
+                                                                                                                                         LTC4368
+Block Diagram
+
+
+               VIN                                            GATE                                          SENSE       VOUT
+               –40V TO 100V
+                            REVERSE                                                                                      50mV
+                                                                                                                                  +
+                           PROTECTION
+                                                                                           –                             –+
+                                                                                OC_REV                                                  OC_FWD
+                                                                                                     –+                           –
+                                                                                           +
+                               –
+                                                                                                50mV (4368-1)
+                               +                                                                 3mV (4368-2)              OVERCURRENT
+                                   CLOSES SWITCH                                                                VOUT       COMPARATORS
+                                   WHEN VIN IS NEGATIVE
+                                                                                            –
+                                                                             REV_RESET
+                                                                                                     –+         VIN
+                                                                                            +
+           LDO                               IGATE                                                  100mV
+                   5V
+                                 GATE        35µA
+                    VOUT       CHARGE
+                                 PUMP
+                  ENABLE      f = 400kHz
+
+                                                                                                                               17µA
+                                                                                                                                       START TIMER
+                                                                                                            31 CYCLES
+
+                                     SLOW                       FAST
+                                       OFF                      OFF                       FWD_RESET                                          RETRY
+
+                                                                                                                               3.5µA
+
+                                               90µA      60mA
+
+                                              GATE PULLDOWN
+                                                                            LOGIC
+                                                                                                            FORWARD OVERCURRENT
+                                                                                                                   TIMER
+   SHDN
+
+
+
+
+            VIN                                DELAY TIMERS
+           2.2V
+           UVLO                                      LOGIC
+   UV      –
+                                                                                                                                             FAULT
+           +
+    0.5V
+                  25mV
+   OV          HYSTERESIS
+           +
+
+    0.5V   –
+
+
+
+                                                                               GND
+                                                                                                                                                 4368 BD
+
+
+
+
+                                                                                                                                                           4368f
+
+
+
+
+                                                      For more information www.linear.com/LTC4368                                                          9
+LTC4368
+Operation
+Many of today’s electronic systems get their power from                of a single catastrophic event, or over time as devices
+external sources such as wall adapters, batteries and                  degrade from repeated overstress.
+custom power supplies. Figure 1 shows a supply arrange-                The LTC4368 limits these errant overvoltage and overcur-
+ment using a DC barrel connector. Power is supplied by                 rent conditions and helps extend the life of the electronic
+an AC adapter or, if the plug is withdrawn, by a removable             systems it protects. When the part detects an overcurrent
+battery. Note that the polarity of the AC adapter and barrel           or overvoltage fault, it isolates the input supply from the
+connector varies by manufacturer. Trouble arises when                  load by turning off the external back-to-back MOSFETs.
+any of the following occurs:
+                                                                       The LTC4368 provides accurate overvoltage and under-
+• The battery is installed backwards                                   voltage comparators to ensure that power is applied to
+• A wall adapter of opposite polarity is attached                      the load only if the input supply meets the user selectable
+                                                                       voltage window. Additionally, two accurate overcurrent
+• A wall adapter of excessive voltage is attached
+                                                                       comparators disconnect the load from the supply when
+• A wall adapter with an AC output is attached                         excessive current flows in either the forward (+50mV/
+• The battery is discharged below a safe level                         RSENSE) or reverse (–50mV or –3mV/RSENSE) direction.
+                                                                       Reverse supply voltage protection circuits automatically
+• The load or the input is shorted to ground or to another             isolate the load from negative input voltages. During normal
+  supply                                                               operation, a high voltage charge pump enhances the gate
+• Excessive current flows from the supply to the load or               of dual external N-channel power MOSFETs, thus providing
+  from the load to the supply                                          a low loss path for qualified power. Power consumption
+                                                                       is 5µA during shutdown and 80µA while operating. The
+These conditions, if unchecked, can damage electronic                  LTC4368 integrates all these functions in small 10-lead
+systems and their connectors. Damage can take the form                 3mm × 3mm DFN and MSOP packages.
+
+                                                                                                 BI-DIRECTIONAL
+                                                                                             OVERCURRENT PROTECTION
+                                         –40V TO 100V PROTECTION RANGE                                   +50mV
+                                                                                 M1           M2
+                     +                            2.5V TO 60V     INRUSH
+                                               OPERATING RANGE    CONTROL                                –3mV
+                 AC                  BATTERY                           RGATE                                             LOAD
+              ADAPTER                                                                                                   CIRCUIT
+               INPUT                                                     CGATE
+                     –                                                                GATE         SENSE     VOUT
+                                                                               VIN
+                                                                  R4
+                                                                               SHDN
+
+                                        OV, UV PROTECTION         R3
+                                                                                             LTC4368-2
+                                       THRESHOLDS SET TO                       UV                           FAULT
+                                      SATISFY LOAD CIRCUIT
+                                                                  R2
+                                                                               OV                          RETRY
+                                                                  R1                  GND                             CRETRY
+
+                                                                                                                       4368 F01
+
+
+
+
+                                     Figure 1. Polarity Protection for DC Barrel Connectors
+
+
+
+
+                                                                                                                                  4368f
+
+
+
+
+10                                             For more information www.linear.com/LTC4368
+                                                                                                                                                        LTC4368
+Applications Information
+                                                                                  +50mV
+                                                     M1          M2
+                                                PSMN4R8-100BSE SiR662             0.004Ω                   VOUT
+                               VIN
+                                                                                                           7V TO 36V
+                               24V      INRUSH                                                             –0.75A TO 12.5A
+                                        CONTROL                                   –3mV
+
+                                                22k
+
+                                                2.2nF
+
+                                                               GATE         SENSE     VOUT
+                                                        VIN
+                                        R4
+                                        464k
+                                                        SHDN
+                             OV = 36V   R3
+                                        1500k                         LTC4368-2
+                              UV = 7V
+                                                        UV                            FAULT
+                                                                                                           1200ms COOLDOWN
+                                        R2                                                                 AFTER FORWARD
+                                        121k                                                               OC FAULT
+                                                        OV                           RETRY
+                                        R1
+                                                               GND                                          0.22µF
+                                        29.4k
+                                                                                                             4368 F02
+
+
+
+
+               Figure 2. LTC4368-2 Protects Load from Voltage (–40V to 100V) and Current (–0.75A to 12.5A) Faults
+
+
+The LTC4368 is an N-channel MOSFET controller that                                GATE Drive
+protects a load from overvoltage faults (both positive and
+                                                                                  The LTC4368 turns on the external N-channel MOSFETs by
+negative) and from overcurrent faults (both forward and
+                                                                                  driving the GATE pin above VOUT. The voltage difference
+reverse). A typical application circuit using the LTC4368-2                       between the GATE and VOUT pins (gate drive) is a function
+is shown in Figure 2. The circuit provides a low loss con-                        of VIN and VOUT.
+nection from VIN to VOUT as long as there are no voltage
+or current faults.                                                                Figure 3 highlights the dependence of the gate drive on VIN
+                                                                                  and VOUT. When system power is first turned on (SHDN low
+Voltages at VIN outside of the 7V to 36V range are prevented                      to high, SENSE = VOUT = 0V), gate drive is at a maximum
+from getting to the load and can be as high as 100V and                           for all values of VIN. This helps prevent startup problems
+as negative as –40V. Load currents (including inrush                              into heavy loads by ensuring that there is enough gate
+currents) above 12.5A (forward from VIN to VOUT) and                              drive to support the load.
+below –0.75A (reverse from VOUT to VIN) will cause the
+load to be disconnected from VIN. The circuit of Figure 2                                                   14
+                                                                                                                                                        TA = 25°C
+protects against negative voltages at VIN as shown. Note                                                    12
+                                                                                                                                                     IGATE = –1µA
+
+that the SOA and voltage requirements are not the same                                                                  VIN = 12V, 60V
+                                                                                                            10
+for the two external MOSFETs. During power-up, the input
+MOSFET (M1) will stand off more voltage (up to VIN) than
+                                                                                              ∆VGATE (V)
+
+
+
+
+                                                                                                             8
+                                                                                                                               VIN = 5V
+the output MOSFET (M2). The body diode of M2 will limit                                                      6
+its drain to source voltage. This allows the use of smaller                                                                VIN = 3.3V
+                                                                                                             4
+MOSFETs at the output.                                                                                                  VIN = 2.5V
+                                                                                                             2
+During normal operation, the LTC4368 provides up to
+13.1V of gate enhancement to the external back-to-back                                                       0
+                                                                                                                 0             5                10               15
+N-channel MOSFETs. This turns on the MOSFETs, thus                                                                                   VOUT (V)
+                                                                                                                                                              4365 F03
+
+connecting the load at VOUT to the supply at VIN.
+                                                                                                  Figure 3. Gate Drive (GATE – VOUT) vs VOUT
+
+                                                                                                                                                                          4368f
+
+
+
+
+                                                  For more information www.linear.com/LTC4368                                                                            11
+LTC4368
+Applications Information
+As VOUT ramps up from 0V, the absolute value of the GATE                    The external resistive divider allows the user to select
+voltage remains fixed until VOUT is greater than the lower                  an input supply range that is compatible with the load at
+of (VIN – 1V) or 5V. Once VOUT crosses this threshold, gate                 VOUT. Furthermore, the UV and OV inputs have very low
+drive begins to increase up to a maximum of 13.1V. The                      leakage currents (typically < 1nA at 100°C), allowing for
+curves of Figure 3 were taken with a GATE load of –1µA.                     large values in the external resistive divider. In the applica-
+If there were no DC load on GATE, the gate drive for each                   tion of Figure 4, the load is connected to the supply only if
+VIN would be slightly higher.                                               VIN lies between 3.5V and 18V. In the event that VIN goes
+                                                                            above 18V or below 3.5V, the gate of the external N-channel
+Note that when VIN is at the lower end of the operating
+                                                                            MOSFET is immediately discharged with a 60mA current
+range, the external N-channel MOSFET must be selected
+                                                                            sink, thus isolating the load from the supply.
+with a correspondingly lower threshold voltage.
+                                                                            Figure 5 shows the timing associated with the UV pin.
+Overvoltage and Undervoltage Protection                                     Once a UV fault propagates through the UV comparator
+The LTC4368 provides two accurate comparators to moni-                      (tFAULT), the FAULT output is asserted low and a 60mA
+tor for overvoltage (OV) and undervoltage (UV) conditions                   current sink discharges the GATE pin. As VOUT falls, the
+at VIN. If the input supply rises above the user adjustable                 GATE pin tracks VOUT.
+OV threshold, the gates of the external MOSFETs are                                          VUV                          VUV + VUVHYST
+quickly turned off, thus disconnecting the load from the                         UV
+
+input. Similarly, if the input supply falls below the user                                                  tFAULT
+adjustable UV threshold, the gates of the external MOSFETs
+are quickly turned off. Figure 4 shows a UV/OV application                    FAULT
+
+for an input supply of 12V.                                                           tD(FAST)                                 tD(ON)
+
+                                                                                                             EXTERNAL N-CHANNEL MOSFETS
+                                                                               GATE
+                                         LTC4368                                                                      TURN OFF
+     12V              VIN                                                                                                                  4368 F05
+
+
+              R3                  UV
+              1820k           COMPARATOR
+                                                                               Figure 5. UV Timing (OV < (VOV – VOVHYST), SHDN > 1.2V)
+                      UV      –
+UVTH = 3.5V
+                                  25mV
+              R2       0.5V
+                              +                                             Figure 6 shows the timing associated with the OV pin.
+                                                   DISCHARGE GATE
+              243k
+                                  OV               WITH 60mA SINK           Once an OV fault propagates through the OV comparator
+                              COMPARATOR
+                      OV
+                                                                            (tFAULT), the FAULT output is asserted low and a 60mA
+OVTH = 18V                    +                                             current sink discharges the GATE pin. As VOUT falls, the
+              R1
+                                  25mV
+                                                                            GATE pin tracks VOUT.
+              59k      0.5V   –
+                                                                                            VOV
+                                                                                OV                                         VOV – VOVHYST
+                                                                 4368 F04
+
+
+                                                                                                   tFAULT
+        Figure 4. UV, OV Comparators Monitor 12V Supply
+                                                                              FAULT
+
+                                                                                      tD(FAST)                                  tD(ON)
+
+                                                                                                               EXTERNAL N-CHANNEL MOSFET
+                                                                              GATE
+                                                                                                                       TURNS OFF
+                                                                                                                                            4368 F06
+
+
+
+                                                                               Figure 6. OV Timing (UV > (VUV + VUVHYST), SHDN > 1.2V)
+
+
+                                                                                                                                                4368f
+
+
+
+
+12                                                 For more information www.linear.com/LTC4368
+                                                                                                              LTC4368
+Applications Information
+When both the UV and OV faults are removed, the exter-              The example of Figure 4 uses standard 1% resistor values.
+nal MOSFETs are not immediately turned on. The input                The following parameters were selected:
+supply must remain within the user selected power good                 VOS(UV) = 3mV
+window for typically 32ms (tD(ON)) before the load is again
+connected to the supply. This recovery timeout period                  IUV = 10nA
+filters noise (including line noise) at the input supply and           UVTH = 3.5V
+prevents chattering of power at the load.
+                                                                       OVTH = 18V
+Procedure for Selecting UV/OV External Resistor Values              The resistor values can then be solved:
+The following 3-step procedure helps select the resistor                                  3mV
+values for the resistive divider of Figure 4. This procedure        1. R1+ R2 =                = 300k
+                                                                                          10nA
+minimizes UV and OV offset errors caused by leakage
+currents at the respective pins.                                                    3mV
+                                                                    2. R3 = 2 •          • (3.5V – 0.5V) = 1.8M
+1. Choose maximum tolerable offset at the UV pin, VOS(UV).                          10nA
+   Divide by the worst case leakage current at the UV pin,
+                                                                    The closest 1% value: R3 = 1.82M
+   IUV (10nA). Set the sum of R1 + R2 equal to VOS(UV)
+   divided by 10nA. Note that due to the presence of R3,                        300k + 1.82M
+                                                                    3. R1 =                  = 58.9k
+   the actual offset at UV will be slightly lower.                                 2 • 18V
+              VOS(UV)                                               The closest 1% value: R1 = 59K
+   R1+ R2 =
+                   I UV                                                R2 = 300K – 59K = 241K
+2. Select the desired VIN UV trip threshold, UVTH. Find the         The closest 1% value: R2 = 243K
+   value of R3:                                                     Therefore: OV = 17.93V, UV = 3.51V.
+          VOS(UV)     ⎛ UV TH – 0.5V⎞
+   R3 =              •⎜                                             Limiting Inrush Current During Turn On
+            I UV      ⎝    0.5V     ⎟⎠
+                                                                    Charging large capacitors on VOUT can lead to excessive
+3. Select the desired VIN OV trip threshold, OVTH. Find the         inrush currents when LTC4368 turns on the external
+   values of R1 and R2:                                             N-channel MOSFET. The maximum slew rate at the GATE
+                                                                    pin can be reduced by adding a capacitor on the GATE pin:
+        ⎛ VOS(UV) ⎞
+                                                                                           IGATE(UP)
+        ⎜         ⎟ + R3                                               Slew Rate =
+        ⎝ I UV ⎠                                                                            CGATE
+   R1 =                  • 0.5V
+             OV TH
+
+          VOS(UV)
+   R2 =              – R1
+           I UV
+
+
+
+
+                                                                                                                         4368f
+
+
+
+
+                                            For more information www.linear.com/LTC4368                              13
+LTC4368
+Applications Information
+Since the MOSFET acts like a source follower, the slew                                          Forward Overcurrent Fault
+rate at VOUT equals the slew rate at GATE. Therefore, the                                       Forward overcurrent protection prevents large currents
+inrush current due to the capacitance on VOUT is given by:                                      from flowing from VIN to VOUT. This threshold current is
+                    COUT                                                                        determined by the external sense resistor (RSENSE) and an
+      IINRUSH =           •IGATE(UP)
+                    CGATE                                                                       internal comparator (Figure 7, U1) with a 50mV threshold:
+                                                                                                                50mV
+For example, a 1A inrush current into a 100µF output                                               IOC,FWD =
+capacitance requires a GATE capacitance of (using                                                               RSENSE
+IGATE(UP) = 35µA):                                                                              For the example of Figure 7, if 2.5A flows to the output
+              35µA • COUT                                                                       across the 20mΩ sense resistor, the external MOSFETs
+      CGATE =
+                IINRUSH                                                                         (M1, M2) are immediately (8µs) turned off. This discon-
+                                                                                                nects the load from the input supply.
+                  35µA • 100µF                                                                  Note that during initial startup, the output capacitance
+      CGATE =                  = 3.5nF
+                      1A                                                                        (COUT) charges from ground to VIN. To prevent this ca-
+The 3.3nF CGATE capacitor in the application circuit of                                         pacitive inrush current (IINRUSH) from falsely triggering
+Figure 7 limits the inrush current to just over 1A. RGATE                                       the forward overcurrent comparator, place an inrush
+prevents CGATE from slowing down the reverse polarity                                           limiting capacitor (CGATE) on the GATE pin (see Limiting
+protection circuits. It also stabilizes the fast pull-down                                      Inrush Current During Turn-On). This inrush current plus
+circuits and prevents chatter during fault conditions. Set                                      the output current must be less than the desired forward
+RGATE to 22k for most applications.                                                             overcurrent threshold:
+                                                 2.5A                                             IOC,FWD > IINRUSH + IOUT
+                            FDS3992
+                           100V DUAL            RSENSE
+VIN                       M1       M2           0.02Ω                            IOUT < 2.5A    For the example of Figure 7, the 3.3nF GATE capacitor
+24V
+                  RGATE                                           +                             and the 100µF output capacitor limit the inrush current
+                                                –0.15A                     COUT          IOUT
+  INRUSH
+CONTROL:
+                   22k
+                                                                           100µF                (IINRUSH) to approximately 1A. This means that the output
+     ~1A          CGATE
+                  3.3nF
+                                                                                                current (IOUT) must be less than 1.5A during turn on in
+                                                                                                order to avoid a forward overcurrent fault during turn on.
+            VIN           GATE      SENSE                  VOUT                                 Once VOUT has ramped to its final value, the output current
+             TURN OFF                           50mV                                            is limited to 2.5A.
+                                                           +
+                            –                    –+
+             MOSFETS
+                          U2+
+                                  –+                       –
+                                                             U1
+                                                                                                Once a forward overcurrent fault is triggered, there are
+                                 3mV                                                            two application choices for turning the external MOSFETs
+           TURN MOSFETS
+             BACK ON
+                            –            VOUT                                                   back on:
+                      U3
+                                  –+     VIN       LTC4368-2
+                            +
+                                                                                                1. Automatically restart by placing an external capacitor on
+                                 100mV
+                                                                                                   the RETRY pin. An internal cool-down timer will charge/
+             TURN MOSFETS
+                                                             START
+                                                             TIMER
+                                                                                                   discharge this capacitor 31 times with a 5.5ms/nF total
+             BACK ON AFTER
+                 31 CYCLES                                                                         delay. At the end of this delay, the external MOSFETs
+                                               31 CYCLES
+        SHDN                                                   RETRY                               are turned back on, thus reconnecting the load to the
+            RESET FORWARD
+               OC LATCH   OC FORWARD TIMER/LATCH
+                                                                                      CRETRY       input supply. The 0.22µF capacitor (CRETRY) in the
+                                                                                      0.22µF
+                                                                                                   application of Figure 7 yields a 1200ms cool-down
+                                                                      4368 F07                     timer delay. Note that the adjustable cool-down period
+        Figure 7. Overcurrent Comparators Monitor 2.5A/–0.15A                                      provides the user with a means of keeping the external
+        Current Faults
+
+                                                                                                                                                        4368f
+
+
+
+
+14                                                                     For more information www.linear.com/LTC4368
+                                                                                                                                     LTC4368
+Applications Information
+  MOSFETs within the rated SOA (safe operating area).               SENSE – VOUT              50mV                        IINRUSH
+  See Figure 8 timing diagram.                                                     STEADY STATE LOAD            0mV      LIMITED
+                                                                                                                                        STEADY STATE LOAD
+                                                                                                             t p(GATE)
+2. Latch off the MOSFETs by grounding the RETRY pin
+   (no external RETRY capacitor needed). This latches                      GATE                         EXTERNAL N-CHANNEL
+                                                                                                                                      EXTERNAL N-CHANNEL
+   the forward overcurrent fault. The external MOSFETs                                                   MOSFETs TURN OFF
+                                                                                                                                     MOSFETs TURN BACK ON
+   are kept in the off condition until the SHDN input pin is                                               31 CYCLES
+                                                                                                  (1200ms COOL-DOWN PERIOD)
+   toggled low then high (tCLEAR pulse width < tLOWPWR).
+   See Figure 9 timing diagram.                                           RETRY
+
+
+
+Reverse Overcurrent Protection                                                                                 t RETRY
+
+
+Reverse overcurrent protection prevents large currents                    FAULT
+
+from flowing from VOUT to VIN. There are two options for                                                                                               4368 F08
+
+
+reverse overcurrent protection thresholds. The LTC4368-1            Figure 8. Forward Overcurrent Fault with 0.22µF RETRY Capacitor
+(–50mV) bidirectional circuit breaker allows load current
+to flow in either direction: from VIN to VOUT or from VOUT
+                                                                                              50mV
+to VIN. The LTC4368-2 provides diode-like behavior by               SENSE – VOUT
+                                                                                                                0mV
+                                                                                                                          IINRUSH
+                                                                                                                         LIMITED
+                                                                                   STEADY STATE LOAD
+making the reverse overcurrent threshold (–3mV) sig-                                                                                    STEADY STATE LOAD
+                                                                                                             t p(GATE)
+nificantly smaller than the forward overcurrent threshold
+(+50mV). The reverse overcurrent fault threshold is                        GATE                         EXTERNAL N-CHANNEL
+                                                                                                                                       EXTERNAL N-CHANNEL
+                                                                                                         MOSFETs TURN OFF
+determined by the external sense resistor (RSENSE) and                                                                                MOSFETs TURN BACK ON
+
+an internal comparator (Figure 7, U2). For the LTC4368-2
+application of Figure 7:
+                                                                          SHDN
+              –3mV –3mV
+   IOC,REV =       =     = –0.15A
+             RSENSE 20mΩ                                                                                                        t      t CLEAR < t < tLOWPWR
+
+
+
+If –0.15A flows from the output across the 20mΩ sense                     FAULT
+
+resistor, the external MOSFETs (M1,M2) are immediately                                                                                                 4368 F08
+
+
+
+(8µs) turned off.                                                    Figure 9. Forward Overcurrent Fault with RETRY Pin Grounded
+To turn the MOSFETs back on, an internal comparator
+(Figure 7, U3) detects when VOUT drops 100mV below VIN:                                                FAULT
+                                                                                                                              STEADY STATE LOAD
+                                                                                                        0mV
+  VOUT < VIN – 100mV                                                        SENSE – VOUT               –3mV
+                                                                                                                             IINRUSH
+                                                                                                                             LIMITED
+
+Once this condition is met, the gates of the external                                                                    t p(GATE)
+                                                                                                                                              11V
+MOSFETs are turned on again to reconnect the input sup-
+ply to the load. See timing diagrams of Figure 10. Note                      GATE – VOUT
+that if the LTC4368-1 option is used, the reverse current                                               0V
+                                                                                                                         EXTERNAL N-CHANNEL
+threshold becomes:                                                                                                       MOSFETs TURN BACK ON
+                                                                                              VIN – 100mV
+             –50mV                                                                    VOUT
+   IOC,REV =
+             RSENSE
+                                                                                     FAULT
+                                                                                                                                            4368 F10
+
+
+
+                                                                      Figure 10. Reverse Overcurrent Fault: SENSE – VOUT < –3mV
+                                                                                             (LTC4368-2)
+                                                                                                                                                       4368f
+
+
+
+
+                                            For more information www.linear.com/LTC4368                                                            15
+LTC4368
+Applications Information
+Reverse VIN Protection                                                                  parasitic inductance of the VIN and GATE connections, the
+                                                                                        voltage at the VIN and GATE pins ring significantly below
+The LTC4368’s rugged and hot swappable VIN helps protect
+                                                                                        –20V. Therefore, hot swapping a negative input voltage
+the more sensitive circuits at the output load. If the input
+                                                                                        more negative than –20V should not be performed without
+supply is plugged in backwards, or a negative supply is
+                                                                                        additional overshoot mitigation techniques in place. The
+inadvertently connected, the LTC4368 prevents this nega-
+                                                                                        front page application was used to generate the waveforms
+tive voltage from passing to the output load.
+                                                                                        of Figure 12.
+As shown in Figure 11, external back-to-back N-channel
+MOSFETs are required for reverse supply protection. When
+VIN goes negative, the reverse VIN comparator closes the                                                                 VOUT
+
+internal switch, which in turn connects the gates of the
+external MOSFETs to the negative VIN voltage. The body                                        5V/DIV
+                                                                                                                                GATE
+diode (D1) of M1 turns on, but the body diode (D2) of M2                                       –20V
+remains in reverse blocking mode. This means that the                                                                   VIN
+common source connection of M1 and M2 remains about
+a diode drop higher than VIN. Since the gate voltage of                                                                            LTC4368 F12
+                                                                                                                  200ns/DIV
+M2 is shorted to VIN, M2 will be turned off and no current
+can flow from VOUT to VIN. Note that the voltage rating of                                             Figure 12. Hot Swapping VIN to –20V
+M2 must withstand the reverse voltage excursion at VIN.
+                              Si7942 100V DUAL
+                                                                                        The speed of the LTC4368 reverse protection circuits is
+                         D1                      D2                                     evident by how closely the GATE pin follows VIN during
+                                                                                        the negative transients. The two waveforms are almost
+ VIN                     M1                      M2
+–40V     INRUSH
+                                                                                 TO
+                                                                                 LOAD
+                                                                                        indistinguishable on the scale shown.
+         CONTROL
+                                                                  +        COUT
+              RGATE
+                                      CHOTSWAP
+                                      (OPTIONAL
+                                                                           100µF        The trace at VOUT, on the other hand, does not respond
+               22k                    4.4nF)                                            to the negative voltage at VIN, demonstrating the desired
+                 CGATE                                                                  reverse supply protection. The waveforms of Figure 12
+                 3.3nF
+                                                                                        were captured using a 40V dual N-channel MOSFET, a 10µF
+         VIN                        GATE              SENSE   VOUT                      ceramic output capacitor and no load current on VOUT.
+
+             REVERSE VIN                         LTC4368
+                                                                                        Hot Swap VIN Protection
+             COMPARATOR
+                –                                                                       The VIN input of the LTC4368 can be live inserted or hot
+                +                                                                       swapped into a backplane with minor disturbance to the
+                      CLOSES SWITCH
+       GND          WHEN VIN IS NEGATIVE
+                                                                      4368 F11
+                                                                                        VIN supply. The idea is to keep the parasitic capacitances
+                                                                                        of the external MOSFETs (CGD) from coupling onto the
+              Figure 11. Reverse VIN Protection Circuits                                GATE pin and enhancing the MOSFETs. To improve positive
+                                                                                        VIN hot swap capability (without jeopardizing reverse
+To avoid large currents when the reverse voltage is hot
+                                                                                        polarity protection), place CHOTSWAP across the gate and
+plugged, set RGATE to 22k. To further improve reverse
+                                                                                        source terminals of the back-to-back MOSFETs. Figure 13
+hot swap performance, place the optional CHOTSWAP ≥
+                                                                                        illustrates the waveforms that result when the VIN of the
+4.4nF capacitor across the gate and source terminals of
+                                                                                        front page application is hot plugged to +48V. The top
+the external MOSFETs.
+                                                                                        trace is VIN. The bottom two traces are the MOSFETs gate
+Figure 12 illustrates the waveforms that result when VIN                                and source terminals. Note that the bottom two traces
+is hot plugged to –20V. VIN, GATE and VOUT start out at                                 ring together and thus keep the MOSFETs off during the
+ground just before the connection is made. Due to the                                   fast transients. To further improve positive hot swap,
+                                                                                                                                                 4368f
+
+
+
+
+16                                                            For more information www.linear.com/LTC4368
+                                                                                                                                                    LTC4368
+Applications Information
+                                                                                         Slow Shutdown
+                                              VIN
+                                                                                         The SHDN input turns off the external MOSFETs in a slow,
+                                                                                         controlled manner. When SHDN is asserted low, a 90µA
+          10V/DIV                                                                        current sink slowly begins to turn off the external MOSFETs.
+                                  GREEN (TOP): MOSFET GATE                               Once the voltage at the GATE pin falls below the voltage
+                                BLUE (BOTTOM): MOSFET SOURCE                             at the VOUT pin, the current sink is throttled back and a
+                                                                                         feedback loop takes over. This loop forces the GATE voltage
+                                                                                         to track VOUT, thus keeping the external MOSFETs off as
+                                                           4368 F13
+                                      100ns/DIV
+
+                                                                                         VOUT decays. Note that when VOUT < 2.5V, the GATE pin
+                Figure 13. Hot Swapping VIN to +48V
+                                                                                         is pulled all the way to ground.
+place the optional CHOTSWAP = 6.8nF capacitor across the                                 Slow gate turn off reduces load current slew rates and
+gate/source of the external MOSFETs. For even more hot                                   mitigates voltage spikes due to parasitic inductances. To
+swap protection, add a diode (MBR0540) across RGATE                                      further decrease GATE pin slew rate, place a capacitor
+(connect cathode to CGATE). Make sure this diode has a                                   (CHOTSWAP, see Figure 11) across the gate and source
+reverse breakdown of at least 40V.                                                       terminals of the external MOSFETs. The waveforms of
+                                                                                         Figure 15 were captured using the Si7942 Dual N-channel
+Recovery Delay Timer                                                                     MOSFETs, and a 2A load with 100µF output capacitor.
+The LTC4368 has a recovery delay timer that filters noise
+at VIN and helps prevent chatter at VOUT. After either an OV                                             GATE
+                                                                                                                                    100µF, 6Ω LOAD ON VOUT
+                                                                                                                                       DUAL Si7942 MOSFET
+or UV fault has occurred, the input supply must return to                                                                                         VIN = 12V
+
+the desired operating voltage window for typically 32ms
+                                                                                                         VOUT
+(tD(ON)) in order to turn the external MOSFET back on, as
+illustrated in Figures 5 and 6. Going out of and then back                                      5V/DIV
+
+into fault in fewer than 32ms will keep the MOSFET off                                                   SHDN
+
+continuously. Similarly, coming out of shutdown (SHDN                                             GND
+low to high) triggers an 800µs startup delay timer (tSTART,
+see Figure 16).
+                                                                                                                                                            4368 F15
+                                                                                                                            400µs/DIV
+The recovery delay timer is also active while the LTC4368
+is powering up. The 32ms timer starts once VIN rises above                                  Figure 15. Slow Shutdown: GATE Tracks VOUT as VOUT Decays
+VIN(UVLO) and VIN lies within the user selectable UV/OV
+power good window. See Figure 14.                                                            SHDN
+
+
+                                    VUV                                                                                tD(SLOW)                    tSTART
+    VIN
+                    VIN(UVLO)
+                                                                                              GATE
+                                                  tD(ON)                                                 ΔVGATE
+
+  GATE                                                                                                                               GATE = VOUT
+                                MOSFET OFF                            MOSFET ON
+                                                                            4368 F14          VOUT
+
+                                                                                                                         tSHDN(F)
+          Figure 14. Recovery Timing During Power-On
+                  OV = GND, UV = SHDN = VIN
+                                                                                             FAULT
+                                                                                                                                                                       4368 F16
+
+
+
+
+                                                                                                                Figure 16. Slow Shutdown Timing
+                                                                                                                                                                             4368f
+
+
+
+
+                                                                  For more information www.linear.com/LTC4368                                                          17
+LTC4368
+Applications Information
+FAULT Status                                                                    By driving the SHDN pins separately, this potential backflow
+                                                                                can be avoided. VOUT can then be selected from either V1
+The FAULT high voltage open drain output is driven low
+if SHDN is asserted low, if VIN is outside the desired UV/                      or V2, irrespective of which supply voltage is higher or
+                                                                                lower. While in shutdown, the LTC4368-2 drives the GATE
+OV voltage window, if there is an overcurrent fault, or if
+                                                                                pin just below the lower of VIN and VOUT, thus allowing
+VIN has not risen above VIN(UVLO). Figures 5, 6, 8, 9, 10
+                                                                                VOUT to be larger than VIN while in the off condition.
+and 16 show the FAULT output timing.
+
+Ideal Diode Alternative                                                         Single MOSFET Higher Power Application
+
+Figure 17 shows two LTC4368-2 connected in parallel.                            When reverse VIN protection is not needed, only a single
+With both devices turned on, the output will be the higher                      external N-channel MOSFET is necessary. This provides
+of V1 or V2. Unlike ideal diode controllers, the LTC4368                        the user with a larger selection of MOSFETs (not just
+always fully enhances the MOSFETs, even at light loads.                         dual packages), especially for higher power applications.
+Note, however, that if the voltage difference between V1 and                    Note that care must be taken to stay within the SOA of the
+V2 is less than 3mV, the reverse overcurrent comparators                        external MOSFET. The RETRY pin of the LTC4368 can be
+will not detect a fault and up to 150mA can flow from the                       used to help keep the MOSFET within its SOA. The user
+higher to the lower supply. Similarly, disconnecting the                        can ground the RETRY pin to latch off the MOSFET after a
+higher supply may not generate sufficient reverse current                       forward current fault. For automatic retry after a forward
+to turn off the MOSFETs. A subsequent reconnection may                          current fault, CRETRY must be large enough to maintain a
+result in an inrush current that temporarily trips the circuit                  low on duty cycle for the MOSFET. See Figure 18.
+breakers.                                                                                                                             +50mV
+                                                                                                                                                  VOUT          IOUT
+                                                                                VIN                         PSMN4R8-100BSE            0.003Ω   3.5V TO 18V –1A TO 16.67A
+       MOSFETs TURN OFF WHEN REVERSE CURRENT EXCEEDS –150mA
+                                          RSENSE                                12V
+                                          0.02Ω
+                                                                                          INRUSH
+                                                                                                              22k                     –3mV        +
+                                                                                          CONTROL
+V1                                                                                                                                                     100µF
+                                                                                                      2.2nF
+                                            –3mV
+                                                                                                                     GATE       SENSE     VOUT
+                                                                                                       VIN
+                      GATE               SENSE   VOUT
+              VIN
+                                                                                          453k
+                                                                                                       SHDN
+     SEL V1   SHDN           LTC4368-2                               VOUT
+                                                                                          1330k                           LTC4368-2       FAULT
+                                                                                                       UV                                          1200ms COOLDOWN
+                                                                                                                                                   AFTER FORWARD
+                                                                                          243k                                                     OC FAULT
+       MOSFETs TURN OFF WHEN REVERSE CURRENT EXCEEDS –150mA                                            OV                                 RETRY
+                                          RSENSE                                                                                      OV = 18V
+                                          0.02Ω                                           59k                       GND               UV = 3.5V           0.22µF
+V2
+                                                                                                                                                           4368 F18
+                                            –3mV
+
+                                                                                        Figure 18. Single MOSFET High Power Application
+                      GATE               SENSE   VOUT
+              VIN
+
+
+     SEL V2   SHDN           LTC4368-2
+                                                          4368 F17
+
+
+
+              Figure 17. Alternative to Ideal Diode
+
+
+
+
+                                                                                                                                                                      4368f
+
+
+
+
+18                                                      For more information www.linear.com/LTC4368
+                                                                                                                                               LTC4368
+Applications Information
+              300nH                       FDS3992       RSENSE
+      (12 INCH WIRE LENGTH)              100V DUAL      0.02Ω
+VIN
+48V                INRUSH                                            +      COUT
+                   CONTROL: ~1A                                                           48Ω         GATE
+                         RGATE                                              100µF
+                                                                                                      VOUT                                                      60V
+                          22k
+                                                                                                    20V/DIV
+                           CGATE
+                           3.3nF
+             D1                                                                                         VIN
+                                           GATE      SENSE    VOUT                                  20V/DIV
+                                   VIN                                                                                                                          60V
+                   R4
+                   100k
+                                   SHDN                      FAULT
+                                   UV         LTC4368-2                  1200ms COOLDOWN
+                   R2                                                    AFTER FORWARD                   IIN
+                   2430k                                                 OC FAULT                    2A/DIV
+      OV = 60V                     OV                        RETRY                                                                                              0A
+                                                                                                                                                     4368 F20
+
+                   R1                                                         CRETRY                                            400ns/DIV
+                                            GND
+                   20.5k                                                      0.22µF
+                                                                               4368 F19
+
+
+                                                                                                               Figure 20. Transients During 0V Fault when
+                  Figure 19. OV Fault with Large VIN Inductance                                                No TransZorb (TVS) Is Used
+
+
+Transients During OV Fault                                                                      Layout Considerations
+The circuit of Figure 19 is used to illustrate transients                                       The trace length between the VIN pin and the drain of the
+commonly encountered during an overvoltage condition.                                           external MOSFET should be minimized, as well as the
+The nominal input supply is 48V and it has an overvoltage                                       trace length between the GATE pin of the LTC4368 and
+threshold of 60V. The parasitic inductance is that of a 1                                       the gates of the external MOSFETs. The SENSE and VOUT
+foot wire (roughly 300nH). Figure 20 shows the waveforms                                        pins must be connected with traces that tie directly and
+during on overvoltage condition at VIN. These transients                                        solely to the sense resistor.
+depend on the parasitic inductance and resistance of the                                        Place the bypass capacitors at VOUT as close as possible
+wire along with the capacitance at the VIN node. D1 is an
+                                                                                                to the external MOSFET. Use high frequency ceramic
+optional power clamp (TVS, TransZorb) recommended for                                           capacitors in addition to bulk capacitors to mitigate hot
+applications where the DC input voltage can exceed 24V                                          swap ringing. Place the high frequency capacitors closest
+and with large VIN parasitic inductance. No clamp was                                           to the MOSFET. Note that bulk capacitors mitigate ringing
+used to capture the waveforms of Figure 20. In order to                                         by virtue of their ESR. Ceramic capacitors have low ESR
+maintain reverse supply protection, D1 must be a bidirec-                                       and can thus ring near their resonant frequency. The trace
+tional clamp with appropriate voltage and power ratings.                                        length of the GATE pin should be kept as small as possible,
+                                                                                                and the number of components connected to the GATE
+                                                                                                pin should also be minimized.
+                                                                                                The SOA of the external MOSFET might require the board to
+                                                                                                have a minimum total area as well as a minimum amount
+                                                                                                of trace volume connected to the drain and source pins.
+
+
+
+
+                                                                                                                                                                      4368f
+
+
+
+
+                                                                 For more information www.linear.com/LTC4368                                                    19
+LTC4368
+Package Description
+Please refer to http://www.linear.com/product/LTC4368#packaging for the most recent package drawings.
+
+
+
+                                                         MS Package
+                                                     10-Lead Plastic MSOP
+                                            (Reference LTC DWG # 05-08-1661 Rev F)
+
+
+                                                 0.889 ±0.127
+                                                 (.035 ±.005)
+
+
+
+                       5.10
+                      (.201)                      3.20 – 3.45
+                       MIN                       (.126 – .136)
+
+
+                                                                             3.00 ±0.102
+                                                     0.50                    (.118 ±.004)                     0.497 ±0.076
+                0.305 ±0.038
+               (.0120 ±.0015)                      (.0197)                     (NOTE 3)                       (.0196 ±.003)
+                                                                                                10 9 8 7 6
+                    TYP                              BSC                                                           REF
+                            RECOMMENDED SOLDER PAD LAYOUT
+
+
+                                                                              4.90 ±0.152                    3.00 ±0.102
+                                            DETAIL “A”                        (.193 ±.006)                   (.118 ±.004)
+                                   0.254                                                                       (NOTE 4)
+                                   (.010)
+                                                    0° – 6° TYP
+                     GAUGE PLANE
+                                                                                                 1 2 3 4 5
+                                                           0.53 ±0.152
+                                                           (.021 ±.006)                1.10                    0.86
+                                                                                      (.043)                  (.034)
+                                              DETAIL “A”                                                       REF
+                                                                                       MAX
+                       0.18
+                      (.007)
+                                                                   SEATING
+                                                                     PLANE    0.17 – 0.27                      0.1016 ±0.0508
+                                                                             (.007 – .011)                       (.004 ±.002)
+                                                                                                 0.50
+                                                                                 TYP                            MSOP (MS) 0213 REV F
+                      NOTE:                                                                    (.0197)
+                      1. DIMENSIONS IN MILLIMETER/(INCH)                                         BSC
+                      2. DRAWING NOT TO SCALE
+                      3. DIMENSION DOES NOT INCLUDE MOLD FLASH, PROTRUSIONS OR GATE BURRS.
+                         MOLD FLASH, PROTRUSIONS OR GATE BURRS SHALL NOT EXCEED 0.152mm (.006") PER SIDE
+                      4. DIMENSION DOES NOT INCLUDE INTERLEAD FLASH OR PROTRUSIONS.
+                         INTERLEAD FLASH OR PROTRUSIONS SHALL NOT EXCEED 0.152mm (.006") PER SIDE
+                      5. LEAD COPLANARITY (BOTTOM OF LEADS AFTER FORMING) SHALL BE 0.102mm (.004") MAX
+
+
+
+
+                                                                                                                                       4368f
+
+
+
+
+20                                                  For more information www.linear.com/LTC4368
+                                                                                                                                                                            LTC4368
+Package Description
+Please refer to http://www.linear.com/product/LTC4368#packaging for the most recent package drawings.
+
+
+
+                                                                                    DD Package
+                                                                         10-Lead Plastic DFN (3mm × 3mm)
+                                                                       (Reference LTC DWG # 05-08-1699 Rev C)
+
+
+
+
+                                                                                  0.70 ±0.05
+
+
+
+                  3.55 ±0.05       1.65 ±0.05
+                        2.15 ±0.05 (2 SIDES)
+
+                                                                                      PACKAGE
+                                                                                      OUTLINE
+
+
+                                  0.25 ±0.05
+                                                                    0.50
+                                                                    BSC
+                                                          2.38 ±0.05
+                                                          (2 SIDES)
+
+                                RECOMMENDED SOLDER PAD PITCH AND DIMENSIONS
+                                                                                                                          R = 0.125                 0.40 ±0.10
+                                                                                                                                TYP
+                                                                                                                          6                10
+
+
+
+
+                                                                                  3.00 ±0.10        1.65 ±0.10
+                                                                                  (4 SIDES)         (2 SIDES)                                           PIN 1 NOTCH
+                                      PIN 1                                                                                                             R = 0.20 OR
+                                 TOP MARK                                                                                                               0.35 × 45°
+                               (SEE NOTE 6)                                                                                                             CHAMFER
+                                                                                                                                                      (DD) DFN REV C 0310
+
+                                                                                                                          5                 1
+                                        0.200 REF                                 0.75 ±0.05                                                     0.25 ±0.05
+                                                                                                                                                0.50 BSC
+                                                                                                                              2.38 ±0.10
+                                                                                                                              (2 SIDES)
+                                                                                            0.00 – 0.05
+                                                                                                                 BOTTOM VIEW—EXPOSED PAD
+                                             NOTE:
+                                             1. DRAWING TO BE MADE A JEDEC PACKAGE OUTLINE M0-229 VARIATION OF (WEED-2).
+                                                CHECK THE LTC WEBSITE DATA SHEET FOR CURRENT STATUS OF VARIATION ASSIGNMENT
+                                             2. DRAWING NOT TO SCALE
+                                             3. ALL DIMENSIONS ARE IN MILLIMETERS
+                                             4. DIMENSIONS OF EXPOSED PAD ON BOTTOM OF PACKAGE DO NOT INCLUDE
+                                                MOLD FLASH. MOLD FLASH, IF PRESENT, SHALL NOT EXCEED 0.15mm ON ANY SIDE
+                                             5. EXPOSED PAD SHALL BE SOLDER PLATED
+                                             6. SHADED AREA IS ONLY A REFERENCE FOR PIN 1 LOCATION ON THE
+                                                TOP AND BOTTOM OF PACKAGE
+
+
+
+
+                                                                                                                                                                                 4368f
+
+                                   Information furnished by Linear Technology Corporation is believed to be accurate and reliable.
+                                   However, no responsibility is assumed for its use. Linear Technology Corporation makes no representa-
+                                                           For more
+                                   tion that the interconnection         information
+                                                                 of its circuits        www.linear.com/LTC4368
+                                                                                 as described herein will not infringe on existing patent rights.                              21
+LTC4368
+Typical Application
+                                               LTC2966 Extends UV/OV Hysteresis Window
+
+                                                                                                            Si7942DP      0.02Ω
+                               VIN
+                                                                                                                                                   VOUT
+                               12V
+                                                      1.96k                                                                                 +
+                                                                                                                                                 100µF
+                                                                                             3.3nF
+                                                                                                     22k
+
+                                                                          100k
+                                               VINA   VINB
+                                         REF             RS1A
+                                                                                 100k                        GATE      SENSE    VOUT
+                  1nF   200k                               RS2A                                       VIN
+                                         INHA              RS1B                            510k                                                 100k
+
+                        301k                               RS2B                                        SHDN                    FAULT
+                                                 LTC2966
+                                         INLA       U1                                                          LTC4368-2
+                                                           OUTA                                       UV           U2          RETRY
+                        698k    301k
+                                         INHB               PSA                                                                                  0.22µF
+                                150k                       OUTB                                       OV
+                                                                                                                    GND
+                                         INLB               PSB           UV: OFF AT 7V                                         4368 TA02
+                                750k              GND                         ON AT 10V
+
+                                                                          OV: OFF AT 18V
+                                                                              ON AT 15V
+
+
+
+
+Related Parts
+PART NUMBER         DESCRIPTION                                               COMMENTS
+LTC4365             Overvoltage, Undervoltage and Reverse Supply              Wide Operating Range: 2.5V to 34V, Protection Range: –40V to 60V,
+                    Protection Controller                                     No TVS Required for Most Applications
+LTC4367             100V Overvoltage, Undervoltage and Reverse Supply         Wide Operating Range: 2.5V to 60V, Protection Range: –40V to 100V,
+                    Protection Controller                                     No TVS Required for Most Applications
+LT4363              High Voltage Surge Stopper with Current Limit             Wide Operating Range: 4V to 80V, Reverse Protection to –60V, Adjustable
+                                                                              Output Clamp Voltage
+LTC4380             8µA IQ Surge Stopper                                      4V to 72V Operation, Pin Selectable Clamp Voltage
+LTC4364             Surge Stopper with Ideal Diode                            4V to 80V Operation, –40V Reverse Input, –20V Reverse Output
+LTC4366             High Voltage Surge Stopper                                9V to >500V Operation, 8-Pin TSOT and 3mm × 2mm DFN Packages
+LTC4361             Overvoltage/Overcurrent Protection Controllers            5.8V Overvoltage Threshold, 85V Absolute Maximum
+LTC2909             Triple/Dual Inputs UV/OV Negative Monitor                 Pin Selectable Input Polarity Allows Negative and OV Monitoring
+LTC2912/LTC2913     Single/Dual UV/OV Voltage Monitor                         Adjustable UV and OV Trip Values, ±1.5% Threshold Accuracy
+LTC2914             Quad UV/OV Monitor                                        For Positive and Negative Supplies
+LTC2955             Pushbutton On/Off Controller                              Automatic Turn-On, 1.5V to 36V Input, ±36V PB Input
+LT4256              Positive 48V Hot Swap Controller with                     Foldback Current Limiting, Open-Circuit and Overcurrent Fault Output,
+                    Open-Circuit Detect                                       Up to 80V Supply
+LTC4260             Positive High Voltage Hot Swap Controller with            Wide Operating Range 8.5V to 80V
+                    ADC and I2C
+LTC4352             Ideal Diode Controller                                    External N-Channel MOSFETs Replace ORing Diodes, 0V to 18V Operation
+LTC4371             Dual Negative Voltage Ideal Diode-OR Controller           External N-Channel MOSFETs, –4.5V to > –100V Operation
+LTC4355             Dual Positive Voltage Ideal Diode-OR Controller           External N-Channel MOSFETs, 0.4µs Turn-Off, 80V Operation
+LT1913              Step-Down Switching Regulator                             3.6V to 25V Input, 3.5A Maximum Current, 200kHz to 2.4MHz
+
+
+                                                                                                                                                                     4368f
+
+
+
+
+22 Linear Technology Corporation
+                                                                                                                                                  LT 0217 • PRINTED IN USA
+
+          1630 McCarthy Blvd., Milpitas, CA 95035-7417
+                                              For more information www.linear.com/LTC4368
+          (408) 432-1900 ● FAX: (408) 434-0507 ● www.linear.com/LTC4368                                                      LINEAR TECHNOLOGY CORPORATION 2017
+

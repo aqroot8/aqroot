@@ -377,11 +377,19 @@
 #   P3V3               1.0 A design         0.302 mm    1.799 mm
 #                      0.64 A measured pk   0.163 mm    0.972 mm
 #     The class now also carries NFC_SUPPLY, U9's VDD/VDD_TX rail.
-#   ACC_3V3            0.277 A guaranteed   0.051 mm    0.306 mm
-#                      0.537 A worst ILIM   0.128 mm    0.763 mm
-#   ACC_5V             0.277 A guaranteed   0.051 mm    0.306 mm
-#                      0.537 A worst ILIM   0.128 mm    0.763 mm
-#     D-753 RETUNED BOTH ILIM RESISTORS TO 2.7 kOhm; see section 5d.
+#   ACC_3V3            0.400 A PUBLISHED    0.085 mm    0.508 mm
+#                      0.428 A guaranteed   0.094 mm    0.558 mm
+#                      0.849 A worst ILIM   0.241 mm    1.436 mm
+#   ACC_5V             0.300 A PUBLISHED    0.057 mm    0.342 mm
+#                      0.322 A guaranteed   0.063 mm    0.377 mm
+#                      0.639 A worst ILIM   0.163 mm    0.970 mm
+#     D-771 RETUNED THE ILIM RESISTORS AGAIN -- R97 2.7 -> 1.78 kOhm,
+#     R101 2.7 -> 2.32 kOhm -- because at 2.7 kOhm each rail
+#     GUARANTEED only 0.277 A against the 400 mA / 300 mA D-098
+#     PUBLISHES for them.  The rows now print the PUBLISHED figure
+#     first, because that is the number the product promises and the
+#     one the guarantee is measured against.  Every outer floor below
+#     still covers every row.  See sections 5d and 5f.
 #   VBUS_CHG           1.1 A (ILIM1100)     0.345 mm    2.052 mm
 #     D-743 RAISED THIS FROM THE FORMER ILIM500 SETTING, AND THE OUTER
 #     FLOOR STILL
@@ -582,6 +590,21 @@
 # ---------------------------------------------------------------------
 # 5d. THE ACCESSORY ENVELOPE IS BOUNDED BY SILICON NOW - D-753
 #
+# SUPERSEDED IN ITS NUMBERS BY D-771 - SEE 5f.  Every sentence below
+# about WHY the envelope must be silicon rather than policy stands.
+# The RESISTORS, the currents in its table and the LTC4368 figure it
+# orders against do not: R97 is 1.78 kOhm and R101 2.32 kOhm, because
+# 2.7 kOhm GUARANTEED only 0.277 amps against the 400 mA / 300 mA
+# D-098 PUBLISHES for these two rails, and the "LTC4368 at 3.33" this
+# section orders against is 50 mV / 15 mOhm - a TYPICAL used as a
+# limit.  ADI guarantees 40 / 50 / 60 mV, so at 15 mOhm the breaker's
+# real band was 2.640 .. 4.040 amps and OVERLAPPED the charger's own
+# 2.5625 .. 3.6875, with the LATCHING protection able to fire first.
+# R75 is 10 mOhm and the band is 3.960 .. 6.061.  F6 now carries
+# FOURTEEN live negative controls, two of which are the boards D-753
+# and D-765 actually shipped.  The section is kept verbatim below
+# because it is the record of the decision D-771 corrects.
+#
 # D-750 answered the external first-spin review's combined-load item with
 # a POLICY: "firmware must not raise both accessory rails to their
 # per-rail maxima together".  A policy is not an enforcement mechanism.
@@ -654,19 +677,37 @@
 # programming resistor's whole tolerance band, and refuses a limiter
 # this contract has no published range for at all.
 #
-# RESIDUAL, NAMED NOT HIDDEN: BAT_MAIN copper is sized for 1.5 amps
-# sustained, and the new worst SUSTAINED case - both accessories at
-# their guaranteed current with the full internal load - is 1.69 at
-# 3.7 V and 2.08 at the 3.0 V cutoff corner.  It therefore still exceeds
-# that sizing point at the low-battery end, on one unavoidable
+# RESIDUAL, NAMED NOT HIDDEN - RE-DERIVED AT D-771: BAT_MAIN copper is
+# sized for 1.5 amps sustained, and the worst SUSTAINED case exceeds that
+# sizing point at the low-battery end, on one unavoidable
 # 5.525 mm x 0.200 mm segment: U11's DLH0010A pin-2 BAT land, which
-# nothing wider can land on (D-269, D-708).  The plane-coupled model
-# this repository uses puts that segment's ceiling near 37 K over the
-# adjacent In4 plane at 2.08, about 19 K at 1.5, and that model ignores
-# lateral spreading, conduction along the copper and convection from an
-# OUTER layer, so it is a ceiling and not a prediction.  FIRST-ARTICLE
-# THERMAL MEASUREMENT, not a pre-order blocker: the electrical envelope
-# is closed by hardware and every number above fell.
+# nothing wider can land on (D-269, D-708).
+#
+#   sustained state (full 1.0 A internal +3V3 load)   3.7 V    3.0 V
+#   both rails at D-098's PUBLISHED budget            1.844    2.274
+#   both rails at their GUARANTEED currents           1.905    2.349
+#
+# (amps).  D-765 PRINTED 1.69 AND 2.08 HERE, and those were the numbers
+# of a board whose limiters could not deliver what the product publishes.
+# THE PUBLISHED ROW IS THE REQUIREMENT AND IT HAS NOT MOVED: D-098 has
+# promised 400 mA + 300 mA since 2026-08-23, which is 2.274 amps at the
+# 3.0 V corner whatever the ILIM resistors are set to.  What D-771
+# changed is that the hardware can now honour it; the GUARANTEED row sits
+# 3.3 % above the PUBLISHED one because the limiter must be set with
+# margin to guarantee anything at all.
+#
+# The plane-coupled model this repository uses puts that segment's
+# ceiling at 47.8 K over the adjacent In4 plane at 2.349 amps, 44.8 K at
+# 2.274 and 19.5 K at 1.5, and that model ignores lateral spreading,
+# conduction along the copper and convection from an OUTER layer - and
+# the necked copper is 0.575 mm long before it tapers 0.3 / 0.4 / 0.6 /
+# 0.8 / 1.0 / 1.2 mm, against a copper thermal length of about 2.6 mm, so
+# both of the neck's ends sink most of it.  It is a ceiling and not a
+# prediction.  FIRST-ARTICLE THERMAL MEASUREMENT at the 3.0 V corner with
+# both accessory rails loaded, not a pre-order blocker: the electrical
+# envelope is closed by hardware, no user-reachable state trips the pack,
+# and the alternative - leaving the limiters where D-753 left them -
+# publishes a budget the board can refuse to deliver.
 #
 # HISTORY, kept out of the table above because the parser that reads it
 # collects every current a class row mentions: D-750 corrected the old
@@ -674,6 +715,70 @@
 # IPC-2221B answer for 0.731 amps and not for 0.760.  D-753 retired both
 # ILIM figures, so the row and its correction are both superseded.
 #
+# 5f. THE TWO ACCESSORY RAILS THEMSELVES - D-771
+#
+# THE RAILS HAD NEVER BEEN MEASURED.  `audit_rail_ampacity.py` walked the
+# SYS trunk that feeds the 5 V boost (5c) and the charger input (5a), and
+# it had no entry for /ACC_3V3_SW or /ACC_5V_SW at all - the two
+# conductors that leave the board through the Community Port and the only
+# two whose current an ARBITRARY EXTERNAL ACCESSORY chooses.  They matter
+# now because guaranteeing D-098's published budget forces each limiter's
+# WORST-CASE limit up with it, and a rail whose copper is sized for the
+# PUBLISHED figure while its silicon may pass twice that is exactly the
+# gap D-766 named.
+#
+# THE TWO DUPLICATE CONTACTS ON EACH RAIL SHARE THE RAIL LIMIT (D-098),
+# so each path is sized for the WHOLE current and not for half of it.
+#
+#   rail         design A   layer   w      length     R        drop    IPC    plane
+#   ACC_3V3_SW     0.849    In2   0.400  91.1 mm  224.4 mO  191 mV  82.1 K  2.29 K
+#   ACC_5V_SW      0.639    In3   0.400  40.6 mm  110.6 mO   71 mV  43.1 K  1.30 K
+#
+# The design current is the LOAD SWITCH's worst-case limit, not the
+# published budget: TI SLVSGP6A equation 1 over the fitted R97 1.78 kOhm
+# and R101 2.32 kOhm, bracketed by the widest ratio the part's own EC
+# table publishes (0.68x / 1.32x of typical over -40..+125 C) and by each
+# resistor's own 1 % band.  The PUBLISHED budget is what an accessory
+# actually sees: 0.400 A on ACC_3V3_SW and 0.300 A on ACC_5V_SW.
+#
+# ACCEPTED, with the same model and the same two planes section 5c
+# already rests on, and with the same scope discipline:
+#
+#   * ACC_3V3_SW on In2.Cu at 0.400 mm, where section 5's INTERNAL curve
+#     asks 1.436 mm at 0.849 amps and returns 82.1 K.  That curve is an
+#     isolated coupon in still air (IPC-2221B, superseded by IPC-2152).
+#     In2.Cu on THIS board sits 0.4000 mm of core from the In1.Cu GND
+#     plane and 0.2028 mm of prepreg from the In3.Cu +3V3 plane, and the
+#     plane-coupled rise derived from those two distances is 2.29 K for
+#     0.162 W over the whole rail.
+#   * ACC_5V_SW on In3.Cu at 0.400 mm: 0.970 mm asked, 43.1 K returned,
+#     1.30 K plane-coupled, 0.045 W.  In2.Cu is a ROUTING layer rather
+#     than a solid plane, so the upper half of that model is optimistic -
+#     the In4.Cu side ALONE, at 0.4000 mm of core, still gives 3.9 K -
+#     and the track runs inside In3's own +3V3 pour at 0.250 mm lateral
+#     clearance, a heat path the model ignores entirely.
+#
+# THE ELECTRICAL COST IS ACCEPTED WITH ITS NUMBER AND ITS CONSEQUENCE.
+# What a conforming accessory sees at the PUBLISHED budget is 90 mV of
+# track drop on the 3.3 V rail and 33 mV on the 5 V one; adding the
+# limiter's own worst-case RON (68 mOhm at 3.3 V, 54 mOhm at 5 V, both
+# -40..+125 C maxima) gives 117 mV and 49 mV.  The Community Port
+# therefore sits above 3.18 V against a 3.135 V -5 % floor and above
+# 4.90 V against 4.75 V, at the worst corner of both.
+#
+# THE OUTER FLOORS ARE UNCHANGED AND STILL COVER BOTH RAILS: ACC_3V3 asks
+# 0.241 mm outer at 0.849 amps against a 0.35 mm rule, ACC_5V 0.163 mm at
+# 0.639 against 0.40 mm.  Nothing below is relaxed; this is a recorded
+# engineering acceptance of an INNER-layer figure, exactly as 5a and 5c
+# are, and it is bounded by LENGTH so a re-route cannot grow it silently:
+# 76.0 mm budgeted against 73.3 used on ACC_3V3_SW and 41.0 against 38.6
+# on ACC_5V_SW.
+#
+# SCOPE.  /ACC_3V3_SW on In2.Cu and /ACC_5V_SW on In3.Cu ONLY.  A hot
+# segment on any other layer of either net, or on any other net, still
+# FAILS.
+# ---------------------------------------------------------------------
+
 # 5c. THE SYS TRUNK TO THE TWO SOUTHERN BOOSTS - D-750
 #
 # Section 5's SYS_MAIN row has carried this sentence since D-185:
@@ -688,11 +793,19 @@
 # D-750 declares both feeds as rails and measures them:
 #
 #     rail                 design A   length     R        drop    IPC    plane
-#     SYS -> U21/L4 (5 V)    1.21    201.8 mm  183.3 mO  222 mV  58.6 K  1.16 K
+#     SYS -> U21/L4 (5 V)    1.100   201.8 mm  183.3 mO  202 mV  47.2 K  0.96 K
 #     SYS -> U13/L2 (NFC)    0.86    222.1 mm  196.5 mO  169 mV  27.0 K  0.59 K
 #
-# THE DESIGN CURRENT IS THE INPUT AVERAGE, NOT THE PEAK.  0.70 A out of
-# U21 at 5.0 V, 88 % efficient, from a 3.3 V SYS node, is 1.21 A into
+#     D-771 RE-RULED THE 5 V ROW.  It read 1.21 A from D-750's 0.70 A
+#     ACC_5V figure, and D-753 moved the audit to 0.925 A WITHOUT
+#     MOVING THIS TABLE -- the prose kept a number the tool no longer
+#     used.  The rail is sized by the LOAD SWITCH's worst-case limit,
+#     which D-771 raised so the rail can GUARANTEE the 300 mA D-098
+#     publishes: 0.639 A out of U21 is 1.100 A into VIN.  Still below
+#     the 1.21 A this trunk was originally built for.
+#
+# THE DESIGN CURRENT IS THE INPUT AVERAGE, NOT THE PEAK.  0.639 A out of
+# U21 at 5.0 V, 88 % efficient, from a 3.3 V SYS node, is 1.100 A into
 # VIN.  The 2.19 A figure is the PEAK INDUCTOR current, and D-750 gave
 # U21 the local input capacitor it never had (C83, 10 uF, 5.8 mm from
 # U21.3 through 0.8-1.0 mm copper, against 93.5 mm before) precisely so
@@ -703,9 +816,9 @@
 # land and leaves it -- so moving either would have cut the rail.
 #
 # ACCEPTED, with the same derivation as 5a and the same scope discipline:
-# three In2 legs at 0.800 mm where section 5 asks 2.232 mm at 1.21 A.
-# The plane-coupled rise is 1.16 K and the whole rail dissipates 0.268 W.
-# The 222 mV drop is accepted against a TPS61023 input range of
+# three In2 legs at 0.800 mm where section 5 asks 2.052 mm at 1.100 A.
+# The plane-coupled rise is 0.96 K and the whole rail dissipates 0.222 W.
+# The 202 mV drop is accepted against a TPS61023 input range of
 # 0.5-5.5 V and a U12 TPS63020 input range of 1.8-5.5 V on the same node.
 #
 # SCOPE.  `/01_POWER_TREE/BQ25185_SYS` on In2.Cu, between the SYS pour

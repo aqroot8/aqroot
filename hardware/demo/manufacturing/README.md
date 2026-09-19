@@ -1805,10 +1805,17 @@ grew **17 -> 48** established nodes, each naming the supply or part limit that
 bounds it.  `LTC_GATE` came from the board itself: the U18 footprint's own
 description gives the LTC4368 charge pump **up to 13.1 V above VOUT**.
 
-`R75` is gated on a part CLASS.  `15mR 1% 1W` is satisfied on paper by a thick
-film at +/-1500 ppm/degC -- 19 % of drift over -40..+85 degC, on the shunt that
-sets the LTC4368's 3.33 A trip.  The gate requires a current-sense / alloy part
-at <=100 ppm/degC.
+`R75` is gated on a part CLASS.  Its value string -- `10mR 1% 3W` since D-771,
+`15mR 1% 1W` before it -- is satisfied on paper by a thick film at
++/-1500 ppm/degC, 19 % of drift over -40..+85 degC, on the shunt that sets the
+LTC4368's forward trip.  The gate requires a current-sense / alloy part at
+<=100 ppm/degC, and **D-771 added the case where the catalogue states no type
+at all**: an ABSENT `Type` field may be answered by a named series prefix
+(`CRA2512-FZ`), a type this rule does not accept may not.  D-771 also corrected
+the number the gate sizes against: the trip is **not** 3.33 A, because ADI
+guarantees `dVSENSE,F` as **40 / 50 / 60 mV** and 50 mV is a TYPICAL -- at
+10 mOhm +/-1 % the band is **3.960 / 5.000 / 6.061 A** and the part must survive
+the top of it.
 
 **THE FINDING.**  `screen_part_land_parity.py` asks D-613's `C26` question of
 every sourced line at once, against the catalogue's own package field.  119

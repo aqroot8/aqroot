@@ -1,6 +1,54 @@
 # AQROOT Demo — FABRICATION HANDOFF
 
 
+> # **STATUS: READY FOR FABRICATION — BOARD AUTHORITY `c15672df` (D-771, 2026-09-19).**
+>
+> **This banner supersedes every status block below it.**  D-765's banner, which
+> stood here unchanged through D-766…D-770, is retained as history.
+>
+> **The path from there to here, in one line each:**
+>
+> * **D-766** closed external review round 2's second item (firmware fault /
+>   warm-reset handling) and found five more defects on the way — `Q11` a 30 V
+>   part on a node this board publishes at 39 V, a GND barrel inside `L4`'s
+>   printed no-via strip, a `MAX17048` `VCELL` read 16× low, a non-deterministic
+>   ampacity audit, and `LAND8` blind to rotated instances.
+> * **D-767** asked both of D-766's defect classes of the whole board and
+>   corrected an arithmetic error in D-766 itself.
+> * **D-768** found the **released BOM naming the wrong display**, and proved the
+>   BOM-row leg of `F7` load-bearing by walking into it.
+> * **D-769** found the other superseded part name (`U8`'s retired `FXP890`
+>   antenna) and turned `F7` into a registry.
+> * **D-770** re-declared readiness on board `5849b658`.
+> * **The CTO withdrew that declaration for one item** — *D-098 locks first-five
+>   `ACC_3V3_SW` = 400 mA total and `ACC_5V_SW` = 300 mA total; the 2.7 kΩ
+>   `TPS22950-Q1` settings guarantee only ~277 mA per rail* — and **D-771 closes
+>   it**, together with a second defect of the same shape that chasing it exposed
+>   in the battery protection chain.
+>
+> **D-771 in three sentences.**  `R97` → **1.78 kΩ** and `R101` → **2.32 kΩ**, so
+> each accessory rail **GUARANTEES** the budget D-098 publishes for it (0.428 A
+> against 400 mA, 0.322 A against 300 mA) instead of the 0.277 A the old setting
+> guaranteed.  `R75` → **10 mΩ**, because ADI guarantees the `LTC4368`'s forward
+> threshold only as 40/50/60 mV and at 15 mΩ the **LATCHING** breaker's band
+> overlapped the charger's **RECOVERABLE** `IBAT_OCP` band — so on an unlucky
+> unit the latching protection fired first.  **Zero copper objects moved**; every
+> copper Gerber is byte-identical to the D-770 package apart from its timestamp.
+>
+> **Full D-771 verification:** promotion PASS with 0 objects added or removed;
+> connectivity 174 retained / 173 connected / 1 owner-approved open (`U11.3`) /
+> **0 unapproved**; KiCad DRC **199 `lib_footprint_issues`, all warnings, zero
+> other classes**, 17 unconnected; parity **246 warnings / 0 errors**; protected
+> copper 15 nets / 406 objects, differences `{}`; `D-186`/`D-269` live and true;
+> rail ampacity `all_ok`; **F1–F7 PASS**; **FAB1–FAB15 PASS**, sourcing
+> **252/252**, coverage 1.0; **19 standing contracts, none failing**; firmware
+> **H1–H6 PASS** and four PlatformIO builds SUCCESS; `hardware/beta-v2`
+> UNTOUCHED.  There is **no open owner decision** and **no unresolved Demo
+> fabrication blocker**.  Residual risks are named in `CTO_DECISIONS.md` **D-771
+> §10** and **D-770 §5**.
+>
+> **The assembly PDFs print `RELEASE D-771`.**
+
 > # **STATUS: NOT READY — READINESS WITHDRAWN, ONE OF TWO CAUSES CLOSED (D-765, 2026-09-18).**
 >
 > **BOARD AUTHORITY `9e4728ae`** (copper byte-identical to `1a06b058`; only the two
@@ -426,7 +474,14 @@ orderable** (coverage 1.0). D-752 added ONE purchasing identity — `D14`, LCSC
 already carries for `D8`/`D10`/`D11`/`D12` — while `C85` and `R132` joined
 existing lines. D-753 then RETIRED one: `R97` and `R101` both became 2.7 kΩ on a
 single new BASIC line (LCSC `C13167`), which also retired `R101`'s superseded
-`ERJ-PA3F1651V`, an EXTENDED part with 2 763 in stock.
+`ERJ-PA3F1651V`, an EXTENDED part with 2 763 in stock.  **D-771 SPLIT THAT LINE
+AGAIN AND MOVED A THIRD**: `R97` → `0603WAF1781T5E` (LCSC `C22849`, 1.78 kΩ),
+`R101` → `0603WAF2321T5E` (`C22905`, 2.32 kΩ) and `R75` →
+`CRA2512-FZ-R010ELF` (`C840621`, 10 mΩ).  All three are the SAME series, the
+SAME manufacturer and the SAME land pattern as the parts they replace, so no
+footprint, no copper and no assembly step changes — the two 0603 resistors are
+`expand` rather than `BASIC`, because 1.78 kΩ and 2.32 kΩ are E96 values and
+JLCPCB lists no BASIC part at either.
 
 **THE VIA-IN-PAD COUNT MOVED 135 → 136 AND THE ONE THAT MOVED IT IS NAMED.**
 `Q11.3`'s tap put a 0.600/0.300 barrel at `(10.950, 112.800)`, half inside the
@@ -682,25 +737,53 @@ can only be confirmed by eye. `MK1` and `U5` share one `/I2S_BCLK` and one
    **A revision that wants to PWM `Q11` independently must re-rate it to at
    least 40 V `VDS` first.**
 
-11. **THE ACCESSORY ENVELOPE IS NOW BOUNDED BY SILICON, AND ONE THERMAL
+11. **THE ACCESSORY ENVELOPE IS BOUNDED BY SILICON, THE PUBLISHED BUDGET IS
+   GUARANTEED, THE PROTECTION CHAIN IS ORDERED OVER TOLERANCE, AND ONE THERMAL
    RESIDUAL IS NAMED** (D-753; limiter silicon corrected by D-765 to the
-   `TPS22950-Q1`, which is specified from 0.05 A). Both `ILIM` resistors are **2.7 kΩ**
-   (`R97` was 1.5 kΩ, `R101` 1.65 kΩ), so each accessory rail guarantees
-   **0.277 A** and cannot pass more than **0.537 A** over −40…+125 °C. At the
-   3.0 V cell corner with the full 1.0 A internal `+3V3` load, no state a user
-   can reach exceeds the `BQ25185` `IBAT_OCP` **minimum of 2.5625 A** — the
-   worst is 2.229 A, 13 % under — and a *simultaneous double limiter fault*
-   reaches 2.886 A, which trips the charger's own OCP and **auto-retries**,
-   below the `LTC4368`'s 3.33 A and far below `F1`. `demo_feature_contract.py`
-   **F6** recomputes this from the two resistors with four live controls.
-   **THE RESIDUAL:** `BAT_MAIN` copper is sized for 1.5 A sustained, and the new
+   `TPS22950-Q1`, which is specified from 0.05 A; **budget and chain corrected by
+   D-771**).
+
+   **`R97` = 1.78 kΩ and `R101` = 2.32 kΩ**, both 2.7 kΩ until D-771 and
+   1.5 kΩ / 1.65 kΩ before that. D-098 locks the first five boards at
+   **`ACC_3V3_SW` = 400 mA TOTAL** and **`ACC_5V_SW` = 300 mA TOTAL** — the two
+   duplicate `J5` contacts on each rail SHARE that limit — and at 2.7 kΩ each
+   limiter **GUARANTEED only 0.277 A**. The board published a budget its own
+   silicon could refuse to deliver. It now guarantees **0.428 A** and **0.322 A**
+   (7.0 % and 7.4 % over) and passes no more than **0.849 A** / **0.639 A** over
+   −40…+125 °C, over the programming resistor's own 1 % band as well.
+
+   At the 3.0 V cell corner with the full 1.0 A internal `+3V3` load, no state a
+   user can reach exceeds the `BQ25185` `IBAT_OCP` **minimum of 2.5625 A** — the
+   worst is **2.420 A, 5.6 % under** — and a *simultaneous double limiter fault*
+   reaches **3.457 A**, which trips the charger's own OCP and **auto-retries**.
+
+   **AND THE CHAIN WAS ORDERED AGAINST A TYPICAL.** ADI guarantees the
+   `LTC4368`'s forward threshold only as **40 / 50 / 60 mV**; at the old `R75`
+   15 mΩ the LATCHING breaker's real band was **2.640–4.040 A**, overlapping the
+   charger's RECOVERABLE 2.5625–3.6875 A. **`R75` is now 10 mΩ** — same Bourns
+   `CRA2512-FZ` series, same 2512 land, same 3 W — and the breaker is
+   **3.960–6.061 A**, entirely above it. `demo_feature_contract.py` **F6**
+   recomputes all of it from `R97`, `R101`, `U20`, `U22`, **`R75` and `U18`**,
+   with **fourteen** live controls, two of which are the boards D-753 and D-765
+   actually shipped, and refuses a limiter its own converter cannot source.
+
+   **THE RESIDUAL:** `BAT_MAIN` copper is sized for 1.5 A sustained, and the
    worst *sustained* case — both accessories at their guaranteed current with
-   the full internal load — is 1.69 A at 3.7 V and 2.08 A at the 3.0 V corner,
-   on one unavoidable 5.525 mm × 0.200 mm segment (`U11`'s `DLH0010A` pin-2
-   `BAT` land). The plane-coupled ceiling is ≈ 37 K over the adjacent `In4`
-   plane at 2.08 A, from a model that ignores lateral spreading, conduction and
-   convection. **Measure that segment at first article with both accessory rails
-   loaded and the cell at 3.3 V.**
+   the full internal load — is **1.905 A at 3.7 V and 2.349 A at the 3.0 V
+   corner**, on one unavoidable 5.525 mm × 0.200 mm segment (`U11`'s `DLH0010A`
+   pin-2 `BAT` land). *D-098's PUBLISHED budget alone is 2.274 A at that corner
+   and has been since 2026-08-23, so the requirement did not move; the hardware's
+   ability to meet it did.* The plane-coupled ceiling is **47.8 K** over the
+   adjacent `In4` plane at 2.349 A, from a model that ignores lateral spreading,
+   conduction and convection, on copper that is necked for only 0.575 mm before
+   it tapers to 1.2 mm. **Measure that segment at first article with both
+   accessory rails loaded and the cell at 3.0 V.**
+
+   **AND THE TWO ACCESSORY RAILS THEMSELVES ARE NOW MEASURED** (`.kicad_dru`
+   §5f, new at D-771): `ACC_3V3_SW` 224 mΩ / 82.1 K IPC / 2.29 K plane-coupled on
+   `In2.Cu`, `ACC_5V_SW` 111 mΩ / 43.1 K / 1.30 K on `In3.Cu`, both declared with
+   length budgets. What a conforming accessory sees at the published budget is
+   **3.18 V** and **4.90 V** at the worst corner of every term.
 
 12. **`J4` BATTERY-CONNECTOR LEAD TRIM IS A RELEASE ASSEMBLY REQUIREMENT,
    NOT AN OPTIONAL REWORK** (D-763).  `J4` is the only through-hole part whose

@@ -1,0 +1,4073 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": false,
+ "fetched_utc": "2026-09-18T23:42:46Z",
+ "keyword": "0603 1.78k 1%",
+ "page_size": 25,
+ "pages": 2,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thick Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±100ppm/℃"
+    }
+   ],
+   "componentBrandEn": "RALEC",
+   "componentCode": "C13118",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RTT031781FTP",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0014,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.001,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.0009,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": 49999,
+     "productPrice": 0.0008,
+     "startNumber": 10000
+    },
+    {
+     "endNumber": 50199,
+     "productPrice": 0.0007,
+     "startNumber": 50000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0007,
+     "startNumber": 50200
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_RALEC-RTT031781FTP_C13118.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 100mW 75V Thick Film Resistor ±1% ±100ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "厚膜电阻 1.78kΩ ±1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_ralec-rtt031781ftp_C13118.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 471
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thick Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±100ppm/℃"
+    }
+   ],
+   "componentBrandEn": "UNI-ROYAL(Uniroyal Elec)",
+   "componentCode": "C22849",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0603WAF1781T5E",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0027,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0021,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.0018,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": 49999,
+     "productPrice": 0.0017,
+     "startNumber": 10000
+    },
+    {
+     "endNumber": 50199,
+     "productPrice": 0.0015,
+     "startNumber": 50000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0015,
+     "startNumber": 50200
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010130_UNI-ROYAL-Uniroyal-Elec-0603WAF1781T5E_C22849.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 100mW 75V Thick Film Resistor ±1% ±100ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "厚膜电阻 1.78kΩ ±1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_uni-royal-uniroyal-elec-0603waf1781t5e_C22849.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 19278
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thick Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±100ppm/℃"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C137775",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RC0603FR-071K78L",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0036,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0029,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.0025,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": 49999,
+     "productPrice": 0.0024,
+     "startNumber": 10000
+    },
+    {
+     "endNumber": 50199,
+     "productPrice": 0.0021,
+     "startNumber": 50000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0021,
+     "startNumber": 50200
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-071K78L_C137775.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 100mW 75V Thick Film Resistor ±1% ±100ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "厚膜电阻 1.78kΩ ±1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-rc0603fr-071k78l_C137775.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2407
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thick Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±100ppm/℃"
+    }
+   ],
+   "componentBrandEn": "BOURNS",
+   "componentCode": "C203353",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CR0603-FX-1781ELF",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0097,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0078,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0068,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 24999,
+     "productPrice": 0.005,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": 49999,
+     "productPrice": 0.0044,
+     "startNumber": 25000
+    },
+    {
+     "endNumber": 99999,
+     "productPrice": 0.0041,
+     "startNumber": 50000
+    },
+    {
+     "endNumber": 199999,
+     "productPrice": 0.0041,
+     "startNumber": 100000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.004,
+     "startNumber": 200000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_BOURNS-CR0603-FX-1781ELF_C203353.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 100mW 50V Thick Film Resistor ±1% ±100ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "厚膜电阻 1.78kΩ ±1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_bourns-cr0603-fx-1781elf_C203353.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 71
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Viking Tech",
+   "componentCode": "C218186",
+   "componentLibraryType": "expand",
+   "componentModelEn": "ARG03FTC1781",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0099,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0079,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0067,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 24999,
+     "productPrice": 0.0049,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": 49999,
+     "productPrice": 0.0043,
+     "startNumber": 25000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.004,
+     "startNumber": 50000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Viking-Tech-ARG03FTC1781_C218186.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 100mW 75V Thin Film Resistor ±1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 1.78kΩ ±1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_viking-tech-arg03ftc1781_C218186.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 19
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thick Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±100ppm/℃"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C227661",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AC0603FR-071K78L",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0022,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0017,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.0014,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": 49999,
+     "productPrice": 0.0013,
+     "startNumber": 10000
+    },
+    {
+     "endNumber": 50199,
+     "productPrice": 0.0011,
+     "startNumber": 50000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0011,
+     "startNumber": 50200
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1811141356_YAGEO-AC0603FR-071K78L_C227661.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 100mW 75V Thick Film Resistor ±1% ±100ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "厚膜电阻 1.78kΩ ±1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-ac0603fr-071k78l_C227661.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 4
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "62.5mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Viking Tech",
+   "componentCode": "C234686",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AR03FTC1781",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0124,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0097,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0083,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 24999,
+     "productPrice": 0.0074,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": 49999,
+     "productPrice": 0.0066,
+     "startNumber": 25000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0062,
+     "startNumber": 50000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Viking-Tech-AR03FTC1781_C234686.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 50V 62.5mW Thin Film Resistor ±1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 1.78kΩ ±1% 62.5mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_viking-tech-ar03ftc1781_C234686.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 7894
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thick Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±100ppm/℃"
+    }
+   ],
+   "componentBrandEn": "TyoHM",
+   "componentCode": "C269473",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RMC06031.78K1%N",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0033,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0025,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.0021,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": 49999,
+     "productPrice": 0.0019,
+     "startNumber": 10000
+    },
+    {
+     "endNumber": 50199,
+     "productPrice": 0.0016,
+     "startNumber": 50000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0016,
+     "startNumber": 50200
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_TyoHM-RMC06031-78K1-N_C269473.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 100mW 50V Thick Film Resistor ±1% ±100ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "厚膜电阻 1.78kΩ ±1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_tyohm-rmc06031-78k1-n_C269473.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 3998
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thick Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±100ppm/℃"
+    }
+   ],
+   "componentBrandEn": "FH (Guangdong Fenghua Advanced Tech)",
+   "componentCode": "C321755",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RS-03K1781FT",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0013,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.001,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.0008,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": 49999,
+     "productPrice": 0.0008,
+     "startNumber": 10000
+    },
+    {
+     "endNumber": 50199,
+     "productPrice": 0.0007,
+     "startNumber": 50000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0007,
+     "startNumber": 50200
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_FH--Guangdong-Fenghua-Advanced-Tech-RS-03K1781FT_C321755.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 100mW 50V Thick Film Resistor ±1% ±100ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "厚膜电阻 1.78kΩ ±1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_fh-guangdong-fenghua-advanced-tech-rs-03k1781ft_C321755.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 13
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thick Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±100ppm/℃"
+    }
+   ],
+   "componentBrandEn": "RESI",
+   "componentCode": "C365106",
+   "componentLibraryType": "expand",
+   "componentModelEn": "HPCR0603F1K78K9",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0009,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0007,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.0005,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": 49999,
+     "productPrice": 0.0005,
+     "startNumber": 10000
+    },
+    {
+     "endNumber": 50199,
+     "productPrice": 0.0004,
+     "startNumber": 50000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0004,
+     "startNumber": 50200
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_RESI-HPCR0603F1K78K9_C365106.pdf",
+   "describe": "-55℃~+125℃ 1.78kΩ 125mW 50V Thick Film Resistor ±1% ±100ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "厚膜电阻 1.78kΩ ±1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_resi-hpcr0603f1k78k9_C365106.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 10
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thick Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "150V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±100ppm/℃"
+    }
+   ],
+   "componentBrandEn": "PANASONIC",
+   "componentCode": "C403029",
+   "componentLibraryType": "expand",
+   "componentModelEn": "ERJ3EKF1781V",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.01,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0078,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0066,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 24999,
+     "productPrice": 0.0059,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": 49999,
+     "productPrice": 0.0053,
+     "startNumber": 25000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.005,
+     "startNumber": 50000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2410121547_PANASONIC-ERJ3EKF1781V_C403029.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 100mW 150V Thick Film Resistor ±1% ±100ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "厚膜电阻 1.78kΩ ±1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_panasonic-erj3ekf1781v_C403029.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1157,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thick Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±100ppm/℃"
+    }
+   ],
+   "componentBrandEn": "FOJAN",
+   "componentCode": "C2974030",
+   "componentLibraryType": "expand",
+   "componentModelEn": "FRC0603F1781TS",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0023,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0019,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.0016,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": 49999,
+     "productPrice": 0.0015,
+     "startNumber": 10000
+    },
+    {
+     "endNumber": 50199,
+     "productPrice": 0.0014,
+     "startNumber": 50000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0014,
+     "startNumber": 50200
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2202151130_FOJAN-FRC0603F1781TS_C2974030.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 100mW 75V Thick Film Resistor ±1% ±100ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "厚膜电阻 1.78kΩ ±1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_fojan-frc0603f1781ts_C2974030.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 13409
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thick Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±100ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C4031480",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CRCW06031K78FKEA",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0128,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0104,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0091,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 24999,
+     "productPrice": 0.0073,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": 49999,
+     "productPrice": 0.0066,
+     "startNumber": 25000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0063,
+     "startNumber": 50000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312130929_Vishay-Intertech-CRCW06031K78FKEA_C4031480.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 100mW Thick Film Resistor ±1% ±100ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "厚膜电阻 1.78kΩ ±1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_vishay-intertech-crcw06031k78fkea_C4031480.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 172
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thick Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    }
+   ],
+   "componentBrandEn": "UNI-ROYAL(Uniroyal Elec)",
+   "componentCode": "C50670464",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CQ03WAF1781T5E",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0027,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0021,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.0017,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": 49999,
+     "productPrice": 0.0016,
+     "startNumber": 10000
+    },
+    {
+     "endNumber": 50199,
+     "productPrice": 0.0014,
+     "startNumber": 50000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0014,
+     "startNumber": 50200
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": null,
+   "describe": "-55℃~+155℃ 1.78kΩ 100mW Thick Film Resistor ±1% 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "厚膜电阻 1.78kΩ ±1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2600
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thick Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±100ppm/℃"
+    }
+   ],
+   "componentBrandEn": "VO",
+   "componentCode": "C2906489",
+   "componentLibraryType": "expand",
+   "componentModelEn": "0603 ±1% 1K78",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0044,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1199,
+     "productPrice": 0.0044,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 19999,
+     "productPrice": 0.0044,
+     "startNumber": 1200
+    },
+    {
+     "endNumber": 49999,
+     "productPrice": 0.0017,
+     "startNumber": 20000
+    },
+    {
+     "endNumber": 99999,
+     "productPrice": 0.0017,
+     "startNumber": 50000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0016,
+     "startNumber": 100000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": null,
+   "describe": "-55℃~+155℃ 1.78kΩ 100mW 75V Thick Film Resistor ±1% ±100ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "厚膜电阻 1.78kΩ ±1% 100mW",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 2051,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thick Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±100ppm/℃"
+    }
+   ],
+   "componentBrandEn": "LIZ Elec",
+   "componentCode": "C100816",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CR0603FA1781G",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0007,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0007,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.0007,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": 10199,
+     "productPrice": 0.0006,
+     "startNumber": 10000
+    },
+    {
+     "endNumber": 10399,
+     "productPrice": 0.0006,
+     "startNumber": 10200
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0006,
+     "startNumber": 10400
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_LIZ-Elec-CR0603FA1781G_C100816.pdf",
+   "describe": "-55℃~+125℃ 1.78kΩ 100mW 50V Thick Film Resistor ±1% ±100ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "厚膜电阻 1.78kΩ ±1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_liz-elec-cr0603fa1781g_C100816.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 5000,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thick Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±100ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Walsin Tech Corp",
+   "componentCode": "C334775",
+   "componentLibraryType": "expand",
+   "componentModelEn": "WR06X1781FTL",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0023,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0017,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.0013,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": 49999,
+     "productPrice": 0.0011,
+     "startNumber": 10000
+    },
+    {
+     "endNumber": 50199,
+     "productPrice": 0.001,
+     "startNumber": 50000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.001,
+     "startNumber": 50200
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Walsin-Tech-Corp-WR06X1781FTL_C334775.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 100mW 75V Thick Film Resistor ±1% ±100ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "厚膜电阻 1.78kΩ ±1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_walsin-tech-corp-wr06x1781ftl_C334775.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 5000,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "FH (Guangdong Fenghua Advanced Tech)",
+   "componentCode": "C667554",
+   "componentLibraryType": "expand",
+   "componentModelEn": "TD03G1781FT",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0078,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0077,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0076,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 5099,
+     "productPrice": 0.0063,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": 5199,
+     "productPrice": 0.0063,
+     "startNumber": 5100
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0063,
+     "startNumber": 5200
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_FH--Guangdong-Fenghua-Advanced-Tech-TD03G1781FT_C667554.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 100mW 50V Thin Film Resistor ±1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 1.78kΩ ±1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_fh-guangdong-fenghua-advanced-tech-td03g1781ft_C667554.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1172,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C863649",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RT0603FRE071K78L",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0031,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0031,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0031,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0012,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0012,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0012,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2210182300_YAGEO-RT0603FRE071K78L_C863649.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 100mW Thin Film Resistor ±1% ±50ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 1.78kΩ ±1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-rt0603fre071k78l_C863649.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 5000,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thick Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "150V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±100ppm/℃"
+    }
+   ],
+   "componentBrandEn": "PANASONIC",
+   "componentCode": "C1013198",
+   "componentLibraryType": "expand",
+   "componentModelEn": "ERJ-U03F1781V",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0295,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0295,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0295,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0114,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.011,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0108,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2201131430_PANASONIC-ERJ-U03F1781V_C1013198.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 100mW 150V Thick Film Resistor ±1% ±100ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "厚膜电阻 1.78kΩ ±1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_panasonic-erj-u03f1781v_C1013198.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 8,
+   "minPurchaseNum": 821,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "250mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thick Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±100ppm/℃"
+    }
+   ],
+   "componentBrandEn": "PANASONIC",
+   "componentCode": "C1869635",
+   "componentLibraryType": "expand",
+   "componentModelEn": "ERJ-UP3F1781V",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0305,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0305,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0305,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0118,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0114,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0112,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2201272300_PANASONIC-ERJ-UP3F1781V_C1869635.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 250mW Thick Film Resistor ±1% ±100ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "厚膜电阻 1.78kΩ ±1% 250mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_panasonic-erj-up3f1781v_C1869635.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 792,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thick Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±150ppm/℃"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C2100982",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AA0603FR-071K78L",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0103,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0103,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0103,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.004,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0039,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0038,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2309251211_YAGEO-AA0603FR-071K78L_C2100982.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 100mW 75V Thick Film Resistor ±1% ±150ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "厚膜电阻 1.78kΩ ±1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-aa0603fr-071k78l_C2100982.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 2375,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thick Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "150V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±100ppm/℃"
+    }
+   ],
+   "componentBrandEn": "PANASONIC",
+   "componentCode": "C2111778",
+   "componentLibraryType": "expand",
+   "componentModelEn": "ERJ-S03F1781V",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0277,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0277,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0277,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0108,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0104,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0102,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "",
+   "describe": "-55℃~+155℃ 1.78kΩ 100mW 150V Thick Film Resistor ±1% ±100ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "厚膜电阻 1.78kΩ ±1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_panasonic-erj-s03f1781v_C2111778.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 868,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "62.5mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "TE Connectivity",
+   "componentCode": "C2114429",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CPF0603F1K78C1",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0225,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0225,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0225,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0088,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0085,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0083,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TE-Connectivity-CPF0603F1K78C1_C2114429.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 50V 62.5mW Thin Film Resistor ±1% ±50ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 1.78kΩ ±1% 62.5mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_te-connectivity-cpf0603f1k78c1_C2114429.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 1000,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "200mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thick Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±200ppm/℃"
+    }
+   ],
+   "componentBrandEn": "PANASONIC",
+   "componentCode": "C2123667",
+   "componentLibraryType": "expand",
+   "componentModelEn": "ERJP03F1781V",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0507,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0507,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0507,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0196,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0189,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0186,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2202030000_PANASONIC-ERJP03F1781V_C2123667.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 200mW Thick Film Resistor ±1% ±200ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "厚膜电阻 1.78kΩ ±1% 200mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_panasonic-erjp03f1781v_C2123667.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 178,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C2132010",
+   "componentLibraryType": "expand",
+   "componentModelEn": "TNPW06031K78FEEA",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0433,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0433,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0433,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0168,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0162,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0159,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-TNPW06031K78FEEA_C2132010.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 125mW 75V Thin Film Resistor ±1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 1.78kΩ ±1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_vishay-intertech-tnpw06031k78feea_C2132010.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 557,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C2132011",
+   "componentLibraryType": "expand",
+   "componentModelEn": "TNPW06031K78FHEA",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0433,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0433,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0433,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0168,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0162,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0159,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-TNPW06031K78FHEA_C2132011.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 125mW 75V Thin Film Resistor ±1% ±50ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 1.78kΩ ±1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_vishay-intertech-tnpw06031k78fhea_C2132011.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 557,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "150V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±100ppm/℃"
+    }
+   ],
+   "componentBrandEn": "SEI(Stackpole Elec)",
+   "componentCode": "C2483813",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNCP0603FTD1K78",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.006,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.006,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.006,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0024,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0023,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0022,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_SEI-Stackpole-Elec-RNCP0603FTD1K78_C2483813.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 125mW 150V Thin Film Resistor ±1% ±100ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 1.78kΩ ±1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_sei-stackpole-elec-rncp0603ftd1k78_C2483813.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 4102,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C2495447",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN73R1JTTD1781F50",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0422,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.0339,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.0297,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0266,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0241,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0228,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_KOA-Speer-Elec-RN73R1JTTD1781F50_C2495447.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 100mW 75V Thin Film Resistor ±1% ±50ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 1.78kΩ ±1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rn73r1jttd1781f50_C2495447.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 340,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±100ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C2497795",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN73R1JTTD1781F100",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0422,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.0339,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.0297,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0266,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0241,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0228,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_KOA-Speer-Elec-RN73R1JTTD1781F100_C2497795.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 100mW 75V Thin Film Resistor ±1% ±100ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 1.78kΩ ±1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rn73r1jttd1781f100_C2497795.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 340,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thick Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C2577910",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RK73G1JTTD1781F",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.028,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.0222,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.0189,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.017,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0152,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0143,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_KOA-Speer-Elec-RK73G1JTTD1781F_C2577910.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 100mW Thick Film Resistor ±1% ±50ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "厚膜电阻 1.78kΩ ±1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rk73g1jttd1781f_C2577910.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 594,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thick Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±100ppm/℃"
+    }
+   ],
+   "componentBrandEn": "VO",
+   "componentCode": "C3016453",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SCR0603F1K78",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0011,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0008,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.0007,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": 49999,
+     "productPrice": 0.0006,
+     "startNumber": 10000
+    },
+    {
+     "endNumber": 50199,
+     "productPrice": 0.0005,
+     "startNumber": 50000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0005,
+     "startNumber": 50200
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2206021245_VO-SCR0603F1K78_C3016453.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 100mW 75V Thick Film Resistor ±1% ±100ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "厚膜电阻 1.78kΩ ±1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_vo-scr0603f1k78_C3016453.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 5000,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "200mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thick Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C3935454",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RS73F1JTTD1781F",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0611,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0611,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0611,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0237,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0228,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0225,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404081209_KOA-Speer-Elec-RS73F1JTTD1781F_C3935454.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 200mW Thick Film Resistor ±1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "厚膜电阻 1.78kΩ ±1% 200mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rs73f1jttd1781f_C3935454.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 148,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thick Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±100ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C3970411",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CRCW06031K78FKTB",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0193,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0193,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.0193,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 24999,
+     "productPrice": 0.0075,
+     "startNumber": 10000
+    },
+    {
+     "endNumber": 49999,
+     "productPrice": 0.0072,
+     "startNumber": 25000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0071,
+     "startNumber": 50000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312121736_Vishay-Intertech-CRCW06031K78FKTB_C3970411.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 100mW Thick Film Resistor ±1% ±100ppm/℃ 0603 Chip Resistor - Surface Mount",
+   "erpComponentName": "停产 厚膜电阻 1.78kΩ ±1% 100mW",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_vishay-intertech-crcw06031k78fktb_C3970411.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 468,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thick Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±100ppm/℃"
+    }
+   ],
+   "componentBrandEn": "SEI(Stackpole Elec)",
+   "componentCode": "C3984612",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RGC0603FTD1K78",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0114,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0114,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0114,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0045,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0043,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0042,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404081640_SEI-Stackpole-Elec-RGC0603FTD1K78_C3984612.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 100mW Thick Film Resistor ±1% ±100ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "厚膜电阻 1.78kΩ ±1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_sei-stackpole-elec-rgc0603ftd1k78_C3984612.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 2149,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thick Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±100ppm/℃"
+    }
+   ],
+   "componentBrandEn": "ROHM Semicon",
+   "componentCode": "C3995023",
+   "componentLibraryType": "expand",
+   "componentModelEn": "TRR03EZPF1781",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0215,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0215,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0215,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0084,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0081,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0079,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404081745_ROHM-Semicon-TRR03EZPF1781_C3995023.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 100mW Thick Film Resistor ±1% ±100ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "厚膜电阻 1.78kΩ ±1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_rohm-semicon-trr03ezpf1781_C3995023.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 1143,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "250mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thick Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±100ppm/℃"
+    }
+   ],
+   "componentBrandEn": "PANASONIC",
+   "componentCode": "C3996295",
+   "componentLibraryType": "expand",
+   "componentModelEn": "ERJ-PA3F1781V",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0194,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0194,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0194,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0075,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0073,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0071,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404081752_PANASONIC-ERJ-PA3F1781V_C3996295.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 250mW Thick Film Resistor ±1% ±100ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "厚膜电阻 1.78kΩ ±1% 250mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_panasonic-erj-pa3f1781v_C3996295.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 1271,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "200mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thick Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C4009227",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RS73G1JTTD1781F",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0611,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0611,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0611,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0237,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0228,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0225,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404090959_KOA-Speer-Elec-RS73G1JTTD1781F_C4009227.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 200mW Thick Film Resistor ±1% ±50ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "厚膜电阻 1.78kΩ ±1% 200mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rs73g1jttd1781f_C4009227.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 148,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C4038179",
+   "componentLibraryType": "expand",
+   "componentModelEn": "MCT06030C1781FP500",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0204,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0204,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0204,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0079,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0077,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0075,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312130933_Vishay-Intertech-MCT06030C1781FP500_C4038179.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 125mW Thin Film Resistor ±1% ±50ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 1.78kΩ ±1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_vishay-intertech-mct06030c1781fp500_C4038179.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 1204,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±100ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C4048722",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN73H1JTTD1781F100",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0645,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0645,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0645,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.025,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0241,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0237,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404091247_KOA-Speer-Elec-RN73H1JTTD1781F100_C4048722.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 100mW Metal Film Resistor ±1% ±100ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "金属膜电阻 1.78kΩ ±1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rn73h1jttd1781f100_C4048722.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 140,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±10ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C4066992",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN73H1JTTD1781F10",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.1348,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.1348,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.1348,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0521,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0503,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0495,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404091405_KOA-Speer-Elec-RN73H1JTTD1781F10_C4066992.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 100mW Metal Film Resistor ±1% ±10ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "金属膜电阻 1.78kΩ ±1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rn73h1jttd1781f10_C4066992.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 67,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "62.5mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C4075779",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN731JTTD1781F25",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0531,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 119,
+     "productPrice": 0.0531,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.0531,
+     "startNumber": 120
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0206,
+     "startNumber": 2000
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.0199,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0196,
+     "startNumber": 10000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2403201252_KOA-Speer-Elec-RN731JTTD1781F25_C4075779.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 62.5mW Thin Film Resistor ±1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 1.78kΩ ±1% 62.5mW",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rn731jttd1781f25_C4075779.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 170,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±10ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C4076385",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN731JTTD1781F10",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1093,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 59,
+     "productPrice": 0.1093,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1093,
+     "startNumber": 60
+    },
+    {
+     "endNumber": 2499,
+     "productPrice": 0.0424,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0409,
+     "startNumber": 2500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0401,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2403201253_KOA-Speer-Elec-RN731JTTD1781F10_C4076385.pdf",
+   "describe": "1.78kΩ ±1% ±10ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "1.78kΩ ±1%",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rn731jttd1781f10_C4076385.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 83,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "62.5mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±100ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C4088471",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN731JTTD1781F100",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0531,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 119,
+     "productPrice": 0.0531,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.0531,
+     "startNumber": 120
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0206,
+     "startNumber": 2000
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.0199,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0196,
+     "startNumber": 10000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2403201258_KOA-Speer-Elec-RN731JTTD1781F100_C4088471.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 62.5mW Thin Film Resistor ±1% ±100ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 1.78kΩ ±1% 62.5mW",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rn731jttd1781f100_C4088471.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 170,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thick Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±100ppm/℃"
+    }
+   ],
+   "componentBrandEn": "PANASONIC",
+   "componentCode": "C4112352",
+   "componentLibraryType": "expand",
+   "componentModelEn": "ERJ-H3EF1781V",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.031,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.031,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.031,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.012,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0116,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0114,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404101000_PANASONIC-ERJ-H3EF1781V_C4112352.pdf",
+   "describe": "-55℃~+175℃ 1.78kΩ 125mW Thick Film Resistor ±1% ±100ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "厚膜电阻 1.78kΩ ±1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_panasonic-erj-h3ef1781v_C4112352.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 778,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "333mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thick Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±100ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C4137878",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SG73P1JTTD1781F",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0206,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0206,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0206,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.008,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0077,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0076,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404101205_KOA-Speer-Elec-SG73P1JTTD1781F_C4137878.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 333mW Thick Film Resistor ±1% ±100ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "厚膜电阻 1.78kΩ ±1% 333mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-sg73p1jttd1781f_C4137878.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 1188,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thick Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±100ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Meritek",
+   "componentCode": "C4151713",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CR161781F",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0018,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0018,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0018,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0007,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0007,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0007,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404101343_Meritek-CR161781F_C4151713.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 100mW Thick Film Resistor ±1% ±100ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "厚膜电阻 1.78kΩ ±1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_meritek-cr161781f_C4151713.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 5000,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C4193740",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN73H1JTTD1781F50",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0645,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0645,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0645,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.025,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0241,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0237,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404110928_KOA-Speer-Elec-RN73H1JTTD1781F50_C4193740.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 100mW Metal Film Resistor ±1% ±50ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "金属膜电阻 1.78kΩ ±1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rn73h1jttd1781f50_C4193740.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 140,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C4198298",
+   "componentLibraryType": "expand",
+   "componentModelEn": "TNPW06031K78FHTA",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.1169,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.1169,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.1169,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0453,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0437,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.043,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312131054_Vishay-Intertech-TNPW06031K78FHTA_C4198298.pdf",
+   "describe": "-55℃~+125℃ 1.78kΩ 100mW Thin Film Resistor ±1% ±50ppm/℃ 0603 Chip Resistor - Surface Mount",
+   "erpComponentName": "薄膜电阻 1.78kΩ ±1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_vishay-intertech-tnpw06031k78fhta_C4198298.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 78,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.78kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.78kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thick Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±100ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C4212122",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CRCW06031K78FKTA",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0206,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0206,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0206,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.008,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0077,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0076,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312181502_Vishay-Intertech-CRCW06031K78FKTA_C4212122.pdf",
+   "describe": "-55℃~+155℃ 1.78kΩ 100mW Thick Film Resistor ±1% ±100ppm/℃ 0603 Chip Resistor - Surface Mount",
+   "erpComponentName": "厚膜电阻 1.78kΩ ±1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_vishay-intertech-crcw06031k78fkta_C4212122.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 1188,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  }
+ ],
+ "returned": 50,
+ "schema": 1,
+ "total_matches": 922
+}

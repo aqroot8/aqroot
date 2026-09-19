@@ -1,0 +1,93 @@
+{
+ "all_pass": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "c15672df8f019f21b855b1b21198f17bf6c86176bcabe9370cf8e8f4be43f3e4",
+ "checks": {
+  "B1_exact_first_five_identity": {
+   "ok": true,
+   "supplier": "Adafruit Industries",
+   "supplier_sku": "328"
+  },
+  "B2_datasheet_is_pinned": {
+   "actual_sha256": "826149daa4aa9ba3ab7b635993a022d6521572a44d1d0588171468507b58ecd3",
+   "expected_sha256": "826149daa4aa9ba3ab7b635993a022d6521572a44d1d0588171468507b58ecd3",
+   "ok": true
+  },
+  "B3_capacity_is_the_selected_low_timer_margin_option": {
+   "capacity_mAh": 2500,
+   "ok": true
+  },
+  "B4_pack_fits_reserved_envelope": {
+   "dimensions_mm": {
+    "length": 60.5,
+    "thickness": 7.9,
+    "width": 50.5
+   },
+   "limits_mm": {
+    "length": 75.0,
+    "thickness": 8.0,
+    "width": 57.0
+   },
+   "ok": true
+  },
+  "B5_pack_discharge_covers_live_D753_envelope": {
+   "margin_ratio": 1.2,
+   "max_user_reachable_battery_A": 2.4199,
+   "ok": true,
+   "pack_max_discharge_A": 5.0,
+   "required_with_margin_A": 2.9039
+  },
+  "B6_pack_charge_rating_covers_BQ25185_envelope": {
+   "board_required_A": 0.8547,
+   "ok": true,
+   "supplier_max_charge_A": 1.2
+  },
+  "B7_protection_connector_and_polarity_are_explicit": {
+   "board_positive_pin": "J4.1",
+   "connector": "genuine 2-pin JST-PH",
+   "incoming_polarity_check": true,
+   "ok": true,
+   "pcm": true
+  },
+  "B8_no_thermistor_requires_supervised_prototype_charging": {
+   "ok": true,
+   "permitted_charge_temp_C": [
+    0,
+    40
+   ],
+   "supervised": true,
+   "thermistor_present": false
+  }
+ },
+ "contract": "battery_pack",
+ "controls_refused": {
+  "1p5A_discharge_variant_refused": true,
+  "700mA_charge_variant_refused": true,
+  "8p1mm_thick_variant_refused": true,
+  "datasheet_hash_tamper_refused": true,
+  "skipped_polarity_check_refused": true,
+  "unprotected_pack_refused": true,
+  "unsupervised_no_thermistor_refused": true,
+  "wrong_connector_refused": true
+ },
+ "decision": "CTO-BAT-01",
+ "requirements": {
+  "accessory_modes_A": {
+   "acc3v3_alone_at_its_limiter": 2.2594,
+   "acc5v_alone_at_its_limiter": 2.4199,
+   "both_at_their_guaranteed_currents": 2.3491,
+   "both_at_their_published_budgets": 2.2736,
+   "both_limiters_in_fault": 3.457
+  },
+  "board_sha256": "c15672df8f019f21b855b1b21198f17bf6c86176bcabe9370cf8e8f4be43f3e4",
+  "discharge_margin_ratio": 1.2,
+  "ichg_nominal_A": 0.7692307692307693,
+  "max_user_reachable_battery_A": 2.4199,
+  "r37_ohm": 390.0,
+  "required_pack_charge_A": 0.8547008547008548,
+  "required_pack_discharge_A": 2.90388
+ },
+ "schema": 1,
+ "selected_record": "docs/full-beta-v2/assembly/SELECTED_BATTERY.json",
+ "verdict": "PASS"
+}

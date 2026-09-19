@@ -1,3 +1,305 @@
+## D-771 — **THE BOARD PUBLISHED AN ACCESSORY BUDGET ITS OWN LIMITER COULD REFUSE TO DELIVER, AND ORDERED ITS BATTERY PROTECTION CHAIN AGAINST A TYPICAL**
+
+    authority  5849b658 -> c15672df.  ZERO copper objects added or removed;
+               every copper Gerber is byte-identical apart from its timestamp
+    closes     the external-review hold on D-770 ("D-098 locks first-five
+               ACC_3V3_SW = 400 mA total and ACC_5V_SW = 300 mA total; current
+               2.7 kOhm TPS22950-Q1 settings guarantee only ~277 mA per rail.
+               Correct resistor/current/protection/concurrency contract before
+               order.")
+    changed    R97 2.7k -> 1.78k, R101 2.7k -> 2.32k, R75 15 mOhm -> 10 mOhm
+               (values, MPNs, LCSC codes, notes, sourcing notes);
+               01_power_tree.kicad_sch four sheet texts and two part
+               descriptions; libraries/AQROOT_Beta.kicad_sym (same two);
+               aqroot-Beta-v2.kicad_pcb (three Values, three descr);
+               aqroot-Beta-v2.kicad_dru (section 5 ACC rows, 5c, a D-771 banner
+               on 5d, 5e's residual RE-DERIVED, and a NEW section 5f);
+               checks/demo_feature_contract.py (F6 three new clauses and six new
+               controls; F7 three new references and six new controls);
+               checks/battery_pack_contract.py (reads R75/U18, and the published
+               -budget mode); audit_rail_ampacity.py (three new rails, and the
+               method self-check now PARSES the .kicad_dru instead of carrying a
+               frozen copy of it); rule_open_sourcing.py; screen_bom_sourcing.py;
+               export_fab_package.py (release id); the fabrication package;
+               Firmware/src/hw/aqroot_demo_board.{h,json} (board digest only);
+               DEVICE_SPEC 6.2/6.3a, ARCHITECTURE, POWER_FAULT_STATE_TABLE,
+               SOURCING_LEDGER, AQROOT_DEMO_FAB_HANDOFF, two READMEs
+    vendor     adi-ltc4368-revC-farnell-2243878.pdf and
+               ti-tps63020-slvsaa7-DSJ0010A.pdf ARCHIVED -- neither had ever
+               been committed, and the first is the primary source for the
+               defect below
+    evidence   d771-* and evidence/jlc-live/{cra2512-fz-r010elf,0603waf1781t5e,
+               0603waf2321t5e,ltc4368ims-1}-*.json
+
+### 1. THE TWO DEFECTS, AND THE ONE THING THEY HAVE IN COMMON
+
+Both are the same shape as D-766 .. D-769: **the repository stating a number
+and nothing checking it against the part.**
+
+**(1) THE ENVELOPE HAD ONLY EVER BEEN CHECKED FROM ABOVE.**  D-753 made the
+accessory envelope silicon and D-765 corrected that silicon, and every clause
+either of them wrote asks *"can an accessory pull TOO MUCH"*.  **Not one asks
+whether the rail DELIVERS what the product promises.**  `D-098` (2026-08-23)
+locks the first five boards at **`ACC_3V3_SW` = 400 mA TOTAL** and
+**`ACC_5V_SW` = 300 mA TOTAL** and requires those figures in accessory-facing
+documentation *in those words* — and at 2.7 kOhm each limiter **GUARANTEES only
+0.277 A**.  The board published a budget its own silicon could refuse to
+deliver, on the two contacts the Community Port exists for.
+
+**(2) THE PROTECTION CHAIN WAS ORDERED AGAINST A TYPICAL.**  `F6`'s
+`double_fault_stays_inside_the_protection_chain` compared against **3.3333 A =
+50 mV / 15 mOhm**, as if 50 mV were a limit.  ADI's own Rev C Electrical
+Characteristics guarantees `dVSENSE,F` — forward overcurrent fault threshold,
+`VOUT = VIN` — only as **40 / 50 / 60 mV** over the full operating temperature
+range.  At `R75` = 15 mOhm ±1 % the breaker's real band was **2.640 – 4.040 A**,
+which **OVERLAPPED** the `BQ25185`'s `IBAT_OCP` band of **2.5625 – 3.6875 A** by
+1.05 A.  **`RETRY` is grounded** on this board (sheet 01, D-050/D-052/D-064/
+D-068), so the LTC4368 breaker **LATCHES OFF** and is cleared only by toggling
+`SHDN`, while `IBAT_OCP` **hiccups and auto-retries** — so on an unlucky unit
+the *latching* protection fires before the *recoverable* one, and a user with a
+short in an accessory gets a device that will not come back until it is power
+cycled at the pack.  **The board D-765 shipped reached 2.886 A in double fault,
+above the breaker's own 2.640 A minimum: the clause was FALSE on the board that
+passed it.**
+
+### 2. WHAT MOVED, AND WHY EACH VALUE IS THE ONE IT IS
+
+| | was | now | why not lower | why not higher |
+|---|---|---|---|---|
+| `R97` (ACC_3V3 ILIM) | 2.7 kΩ | **1.78 kΩ** | ≥ 1.495 kΩ or `U12` cannot source 1.0 A internal + the limiter's worst case against its own rated 2 A | ≤ 1.905 kΩ or the rail cannot GUARANTEE D-098's 400 mA |
+| `R101` (ACC_5V ILIM) | 2.7 kΩ | **2.32 kΩ** | ≥ 2.077 kΩ or the 5 V rail alone at its limiter trips `IBAT_OCP`'s minimum | ≤ 2.53 kΩ or the rail cannot GUARANTEE D-098's 300 mA |
+| `R75` (LTC4368 sense) | 15 mΩ | **10 mΩ** | the breaker must stay above `IBAT_OCP`'s 3.6875 A **maximum** on every unit | it must stay usefully below `F1` and it does, on time–current |
+
+Each setting sits near the middle of its own legal window, not at an edge.
+`1.78 kΩ` balances 7.0 % of delivery headroom against 7.6 % of `U12` capability
+margin; `2.32 kΩ` is the geometric centre of its window.
+
+**The tolerance model got stricter at the same time.**  The bracket is TI's
+widest published EC ratio — **0.68× / 1.32×** of typical over −40…+125 °C, read
+off the `19.2 kΩ` row — and D-771 folds in **the programming resistor's own 1 %
+band**, which the envelope modes had never done.  That ratio is conservative in
+*both* directions at once: the two rows that actually bracket these settings
+(1.15 kΩ and 2.21 kΩ) publish 0.75–0.76× / 1.24–1.25×.
+
+    rail          typ      GUARANTEED   worst case   published   headroom
+    ACC_3V3_SW   0.636 A    0.428 A      0.849 A      400 mA      +7.0 %
+    ACC_5V_SW    0.479 A    0.322 A      0.639 A      300 mA      +7.4 %
+
+    state the Community Port can reach        D-765      D-771
+    3.3 V rail alone at its limiter           1.879      2.259   (+11.9 %)
+    5 V rail alone at its limiter             2.229      2.420   (+5.6 %)
+    both rails at their GUARANTEED currents   2.079      2.349   (+8.3 %)
+    both rails at their PUBLISHED budgets     unreachable 2.274  (+11.3 %)
+    both limiters in fault (double fault)     2.886 *    3.457   (12.7 % under
+                                                                  the breaker)
+    * ABOVE the breaker's real 2.640 A minimum -- the defect
+
+    protection chain, over tolerance     min      typ      max
+    BQ25185 IBAT_OCP   recoverable      2.5625   3.125    3.6875
+    LTC4368 breaker    LATCHING         3.960    5.000    6.061
+    F1 Nano2           one-shot                  5.0
+
+The recoverable protection's **whole band** now sits below the latching one's
+**minimum**, with 6.89 % of ordering margin.  Ordering against `F1` is a
+**time–current** result and not a threshold comparison: `tp(GATE)` is 3–18 µs
+against a 5 A fast-acting Nano2 that needs 5 s at 200 % of rating.  The
+hard-short EC row (`VOUT = 0 V`, 30/50/70 mV) is REPORTED and deliberately not
+the ordering row — it describes a collapsed output, where latching is the
+wanted behaviour.
+
+### 3. THREE CLAUSES THAT HAD NO WORDS, AND A FOURTH QUESTION NOBODY HAD ASKED
+
+`F6` gains:
+
+* **`each_rail_guarantees_its_published_accessory_budget`** — the missing half
+  of the envelope.
+* **`recoverable_trip_is_ordered_below_the_latching_breaker`** — computed from
+  `R75` and `U18` **read off the board**, over ADI's own guaranteed band, not
+  from a constant.
+* **`converters_can_source_their_worst_case_rail`** — nothing in this repository
+  had ever asked whether `U12` and `U21` can deliver what their load switch is
+  allowed to pass.  `U12` `TPS63020` is rated **2 A for VIN > 2.5 V, VOUT =
+  3.3 V** (`SLVSAA7`) against 1.849 A; `U21` `TPS61023` delivers **0.973 A** by
+  `SLVSF14B` equation 1 with `ILIM_SW` at its **2.7 A EC minimum** and `L4` at
+  its −20 % corner, against 0.639 A.
+
+`F6` now runs **fourteen** live controls.  Two are load-bearing: **`f6i` is the
+board D-765 actually shipped** (2.7 kΩ on both rails) and **`f6j` is the sense
+resistor it shipped** (15 mΩ) — each refused by a clause its own decision could
+not state.  And one existing control was RENAMED rather than left standing:
+`f6a` refused D-750's 1.5 kΩ for a reason that is no longer true, and now
+refuses it — alone — on converter capability.  *A control that refuses for a
+different reason than its name claims is the defect D-767 named.*
+
+### 4. AND THE RAILS THEMSELVES HAD NEVER BEEN MEASURED
+
+`audit_rail_ampacity.py` walked the SYS trunk and the charger input and had **no
+entry for `/ACC_3V3_SW` or `/ACC_5V_SW` at all** — the two conductors that leave
+the board through the Community Port, and the only two whose current an
+*arbitrary external accessory* chooses.  They matter now because guaranteeing
+the published budget forces each limiter's worst case up with it.
+
+    rail         design A  layer   w      length    R        drop    IPC    plane
+    ACC_3V3_SW     0.849    In2   0.400  91.1 mm  224.4 mO  191 mV  82.1 K  2.29 K
+    ACC_5V_SW      0.639    In3   0.400  40.6 mm  110.6 mO   71 mV  43.1 K  1.30 K
+
+Declared in a new **`.kicad_dru` section 5f** on the same model and the same two
+planes section 5c already rests on, bounded by LENGTH so a re-route cannot grow
+them silently.  **What a conforming accessory actually sees at the published
+budget**, at the worst corner of every term including the limiter's own maximum
+`RON`: **3.18 V** against a 3.135 V −5 % floor, and **4.90 V** against 4.75 V.
+
+**`+3V3` is declared too, and the answer is that nothing carries it in the track
+sense**: it is delivered by its two F.Cu pours (5 993 and 8 764 mm²) and the
+In3.Cu plane, exactly as `BQ25185_SYS` is, and the track-graph search correctly
+returns NO PATH.  The four package-limited conductors at either end are measured
+in the declaration and the widest is **12.2 K** at 1.849 A, on `U12`'s own
+0.240 mm output lands.
+
+### 5. THE SELF-CHECK SAID IT READ THE `.kicad_dru` AND IT READ A COPY
+
+`audit_rail_ampacity.selfcheck` documented itself as *"re-derive `.kicad_dru`
+section 5's published table before ruling"* and re-derived a **seven-row
+transcription** of that table.  It had already drifted: the transcription
+carried `ACC_5V 0.70 A -> 0.185 / 1.100 mm`, a row **D-753 retired from the file**
+and which appears nowhere in it, and the self-check went on reporting
+`method_reproduces_dru: true`.  It now **parses the file** — the same block
+`checks/pour_partition_contract.published_rail_currents` already parses for its
+CURRENTS — finds **fourteen** rows including three the frozen copy never had,
+reproduces every one to a worst residual of **0.71 %**, FAILS on an empty parse,
+and proves on every run that it can fail at all by perturbing one parsed row and
+requiring the same arithmetic to refuse it.
+
+### 6. RE-DERIVED, NOT QUIETLY LEFT STANDING
+
+`.kicad_dru` **§5e's residual** said the worst sustained case was 1.69 A at 3.7 V
+and 2.08 A at the 3.0 V corner.  Those were the numbers of a board whose
+limiters could not deliver what the product publishes.
+
+    sustained state (full 1.0 A internal +3V3 load)   3.7 V    3.0 V
+    both rails at D-098's PUBLISHED budget            1.844    2.274
+    both rails at their GUARANTEED currents           1.905    2.349
+
+**The PUBLISHED row is the requirement and it has not moved** — D-098 has
+promised 400 mA + 300 mA since 2026-08-23, which is 2.274 A at that corner
+*whatever the ILIM resistors are set to*.  What D-771 changed is that the
+hardware can now honour it.  The plane-coupled ceiling on `U11.2`'s 0.200 mm
+`DLH0010A` `BAT` land moves **37.5 K → 47.8 K**, from a model that ignores
+lateral spreading, conduction along the copper and convection from an OUTER
+layer, on copper that is necked for only **0.575 mm** before it tapers
+0.3/0.4/0.6/0.8/1.0/1.2 mm against a copper thermal length of ≈ 2.6 mm.  It
+remains a **first-article thermal measurement**, now specified at the 3.0 V
+corner with both accessory rails loaded.  **No protected copper was touched to
+improve it**: `BAT_PROTECTED_P` is protected, the D-655 authorization is explicit
+that no other `BAT_*` net may be changed under it, and a marginal thermal
+improvement is not a reason to spend an authorization this decision does not
+have.
+
+### 7. THE CLASS, NOT JUST THE INSTANCE
+
+Three previous value changes on these same parts (D-750 → D-753 → D-765) each
+left their old numbers standing somewhere.  This one swept them: four sheet
+texts, the `LTC4368-1` symbol description (which printed `+50 mV / −50 mV` as
+though they were the values), the `TPS22950-Q1` description, `DEVICE_SPEC` §6.2
+and §6.3a, `ARCHITECTURE`, `POWER_FAULT_STATE_TABLE`, `SOURCING_LEDGER`,
+`AQROOT_DEMO_FAB_HANDOFF`, `rule_open_sourcing.py`, `screen_bom_sourcing.py` and
+the manufacturing `README`.
+
+**And the sweep became a gate.**  `F7` — *"no retired part name survives on the
+part that replaced it"* — was built for semiconductors, where the retired name
+is wrong wherever it appears.  A passive is different: its own Note is *expected*
+to say what it replaced.  So `R75`, `R97` and `R101` join the registry with
+`only_fields`, scanning the **PURCHASING identity alone** (Value, MPN, LCSC) plus
+the released BOM row — the leg D-768 proved load-bearing — and free prose is out
+of scope **by construction rather than by exemption**.  Two further corrections
+fell out of building it:
+
+* **the BOM-row matcher tested a substring.**  A BOM row GROUPS references —
+  `"R97,R101","2.7k 1%",…`, which is exactly the row this board carried until
+  D-771 split it — and `'"R97"' in line` walks straight past it.  It now parses
+  the row's reference field and splits it.  Control `f7g` is that exact row.
+* **absence of the old name is not presence of the new one.**  For a passive the
+  whole identity IS the MPN, so both legs now assert it POSITIVELY as well.
+  Controls `f7i` (a released BOM with no row for the part at all) and `f7j` (a
+  symbol whose MPN does not name the locked part) are both refused.
+
+`F7` covers **five** references with **ten** live controls, all refused.
+
+### 8. SOURCING
+
+All three replacements are the SAME series, the SAME manufacturer and the SAME
+land pattern as the parts they replace, verified live per D-096 through the
+JLCPCB parts API on 2026-09-18:
+
+| ref | part | LCSC | library | stock |
+|---|---|---|---|---|
+| `R75` | BOURNS `CRA2512-FZ-R010ELF`, 10 mΩ ±1 %, 2512, 3 W, ±50 ppm/°C | `C840621` | expand | 10 613 |
+| `R97` | UNI-ROYAL `0603WAF1781T5E`, 1.78 kΩ ±1 %, 0603 | `C22849` | expand | 19 278 |
+| `R101` | UNI-ROYAL `0603WAF2321T5E`, 2.32 kΩ ±1 %, 0603 | `C22905` | expand | 6 268 |
+
+**No footprint, no copper and no assembly step changes.**  The two 0603 parts
+are `expand` rather than `BASIC` because 1.78 kΩ and 2.32 kΩ are **E96** values
+and JLCPCB lists no BASIC part at either; the extended-part fee is accepted
+because every E24 alternative either fails the published-budget clause or spends
+the pack margin.
+
+**And the sourcing gate learned one thing from the sense resistor.**  JLCPCB's
+record for the 10 mΩ member of the `CRA2512-FZ` series leaves its `Type` field
+blank where the 15 mΩ member's reads `Current Sense Resistor`, and
+`rule_open_sourcing`'s class rule would have refused the part this decision
+selects.  **An ABSENT catalogue field is UNKNOWN, not DISQUALIFYING**: the rule
+now accepts a named series prefix in place of an absent type — and only an
+absent one — while still refusing a stated type outside the class, and the
+tempco clause (the actual discriminator, ±50 ppm/°C on the record) is unchanged.
+Its `R75` current ruling moved from `(3.33, 3.33)` — 50 mV across the superseded
+element, a typical used as a limit — to `(6.061, 6.061)`, the top of the real
+trip band.
+
+### 9. VERIFICATION
+
+    board            c15672df, six layers, 77.0 x 148.0 mm
+    copper           objects_added 0, objects_removed 0; every copper Gerber
+                     (F, B, In1-In4) and Edge_Cuts byte-identical to the
+                     D-770 package apart from its CreationDate
+    promotion        verify_promotion PASS, all 16 checks, 0 added / 0 removed
+    connectivity     174 retained multi-pad nets, 173 connected,
+                     1 owner-approved open (U11.3 /BQ25185_STAT2),
+                     0 UNAPPROVED open edges, raw ratsnest 17
+    KiCad DRC        199 violations, ALL lib_footprint_issues, ALL WARNING,
+                     ZERO of every other class; 17 unconnected items
+    parity           246 warnings, 0 ERRORS
+    protected copper 15 nets / 406 objects, differences {} -- IDENTICAL to d769
+    D-186 / D-269    dru_contracts live and TRUE
+    ampacity         all_ok; method self-check now PARSES the .kicad_dru,
+                     14 rows, 0 not reproduced, worst residual 0.71 %,
+                     and its own perturbation control REFUSED
+    features         F1-F7 PASS.  F6 fourteen live controls, F7 five
+                     references and ten live controls, all refused
+    battery pack     B1-B8 PASS, required discharge 2.904 A against the
+                     selected pack's 5.0 A
+    contracts        19 standing contracts, all ran, NONE failing; the only
+                     non-input difference against d769 in the whole suite is
+                     PP2's published ACC_3V3 bar, 0.537 -> 0.849 A, which is
+                     this decision
+    fab package      regenerated at release D-771; 29 files (24 deterministic),
+                     FAB1-FAB15 PASS, sourcing 252/252, coverage 1.0;
+                     BOM 124 -> 125 lines (R97 and R101 no longer share one)
+    firmware         H1-H6 PASS with all controls refused; four PlatformIO
+                     environments SUCCESS; the only firmware change is the
+                     generated board digest
+    hardware/beta-v2 UNTOUCHED
+
+### 10. WHAT THIS DOES NOT CLOSE
+
+* **`U11.2`'s thermal residual** is re-derived, not removed, and is a
+  first-article measurement (§6).  No protected copper was spent on it.
+* **The `U11.3` / `STAT2` NC** remains owner-approved and unchanged.
+* Everything `D-770` §5 named as a residual risk still stands, with item 5's
+  *"accessory limiter fold-back at 0.407 A"* now reading **0.636 A on
+  `ACC_3V3_SW` and 0.479 A on `ACC_5V_SW`**, and with the `U11.2` measurement
+  respecified at the 3.0 V corner with both accessory rails loaded.
+
+
 ## D-770 — **`DEMO_READY_FOR_FAB` IS RE-DECLARED: BOTH ROUND-2 CAUSES ARE CLOSED, AND SO IS EVERY DEFECT CLASS THEY TURNED OUT TO BELONG TO**
 
     authority  5849b658.  No PCB, schematic or firmware change in this entry --

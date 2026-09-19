@@ -1,0 +1,488 @@
+{
+ "board": "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "c15672df8f019f21b855b1b21198f17bf6c86176bcabe9370cf8e8f4be43f3e4",
+ "checks": {
+  "FAB10_via_geometry": {
+   "board_sub_floor_vias": 38,
+   "concession_requested_in_the_notes": true,
+   "dru_annular_floor_mm": 0.125,
+   "families_agree": true,
+   "ok": true,
+   "package_sub_floor_vias": 38,
+   "setup_min_via_diameter_mm": 0.5
+  },
+  "FAB11_mask_dams": {
+   "board_dams_below_floor": 21,
+   "floor_mm": 0.125,
+   "kicad_solder_mask_min_width_mm": 0.0,
+   "missing_from_the_package": [],
+   "named_in_the_notes": true,
+   "ok": true,
+   "package_dams_below_floor": 21,
+   "tightest_mm": -0.05
+  },
+  "FAB12_identity": {
+   "contradiction_count": 0,
+   "contradictions": [],
+   "controls_refused": {
+    "fab12a_refuses_2x12_on_a_1x24_land": true,
+    "fab12b_refuses_footprint_the_board_does_not_carry": true,
+    "fab12b_refuses_superseded_j5_mpn": true
+   },
+   "critical_identities": 42,
+   "identity_drift": [],
+   "method": "FAB12a: the row's stated geometry/contact-count/pitch against the footprint's own pads.  FAB12b: a curated pin of the identities whose package is load-bearing (D-750); three live negative controls that put the J5 defect back (D-751)",
+   "missing_pin_file": [],
+   "ok": true,
+   "rows_examined": 626
+  },
+  "FAB13_nfc_tuning_access": {
+   "board_sites": [
+    {
+     "b_mask_exposed": true,
+     "copper_edge_gap_mm": 0.325,
+     "drill_mm": 0.3,
+     "f_mask_tented": true,
+     "match_net": "/04_SPI_B_RADIOS_NFC/NFC_MATCH_A",
+     "name": "A",
+     "source": "C71.2",
+     "via_dia_mm": 0.6,
+     "via_net": "GND",
+     "x": 43.5,
+     "y": 26.7
+    },
+    {
+     "b_mask_exposed": true,
+     "copper_edge_gap_mm": 0.325,
+     "drill_mm": 0.3,
+     "f_mask_tented": true,
+     "match_net": "/04_SPI_B_RADIOS_NFC/NFC_MATCH_B",
+     "name": "B",
+     "source": "C72.2",
+     "via_dia_mm": 0.6,
+     "via_net": "GND",
+     "x": 43.5,
+     "y": 33.3
+    }
+   ],
+   "controls_refused": {
+    "a_retented_via_refused": true,
+    "b_mask_gerber_without_the_opening_refused": true,
+    "c_manifest_coordinate_drift_refused": true,
+    "d_notes_without_the_do_not_tent_instruction_refused": true
+   },
+   "gerber_bottom_mask": {
+    "A": {
+     "aperture": "C,0.600000",
+     "flashed": true,
+     "opens_the_via_cap": true
+    },
+    "B": {
+     "aperture": "C,0.600000",
+     "flashed": true,
+     "opens_the_via_cap": true
+    }
+   },
+   "manifest_sites": [
+    {
+     "b_mask_exposed": true,
+     "copper_edge_gap_mm": 0.325,
+     "drill_mm": 0.3,
+     "f_mask_tented": true,
+     "match_net": "/04_SPI_B_RADIOS_NFC/NFC_MATCH_A",
+     "name": "A",
+     "source": "C71.2",
+     "via_dia_mm": 0.6,
+     "via_net": "GND",
+     "x": 43.5,
+     "y": 26.7
+    },
+    {
+     "b_mask_exposed": true,
+     "copper_edge_gap_mm": 0.325,
+     "drill_mm": 0.3,
+     "f_mask_tented": true,
+     "match_net": "/04_SPI_B_RADIOS_NFC/NFC_MATCH_B",
+     "name": "B",
+     "source": "C72.2",
+     "via_dia_mm": 0.6,
+     "via_net": "GND",
+     "x": 43.5,
+     "y": 33.3
+    }
+   ],
+   "ok": true,
+   "problems": [],
+   "required_process_stated_in_notes": true
+  },
+  "FAB14_assembly_drawing_identity": {
+   "board_sha256": "c15672df8f019f21b855b1b21198f17bf6c86176bcabe9370cf8e8f4be43f3e4",
+   "controls_refused": {
+    "critical_ref_missing_from_drawing_is_refused": true,
+    "missing_bottom_mirror_statement_is_refused": true,
+    "missing_pin1_polarity_statement_is_refused": true,
+    "wrong_board_hash_is_refused": true
+   },
+   "drawings": {
+    "bottom": {
+     "checks": {
+      "board_sha_printed": true,
+      "critical_refs_visible": true,
+      "file_present": true,
+      "j1_orientation_printed": true,
+      "layer_matches": true,
+      "manual_note_printed": true,
+      "mirror_matches": true,
+      "pin1_polarity_printed": true,
+      "release_printed": true,
+      "side_printed": true,
+      "view_is_explicit": true
+     },
+     "critical_refs": [
+      "J4"
+     ],
+     "file": "aqroot-Demo-assembly-bottom.pdf"
+    },
+    "top": {
+     "checks": {
+      "board_sha_printed": true,
+      "critical_refs_visible": true,
+      "file_present": true,
+      "j1_orientation_printed": true,
+      "layer_matches": true,
+      "manual_note_printed": true,
+      "mirror_matches": true,
+      "pin1_polarity_printed": true,
+      "release_printed": true,
+      "side_printed": true,
+      "view_is_explicit": true
+     },
+     "critical_refs": [
+      "J1",
+      "J5",
+      "D1",
+      "U6"
+     ],
+     "file": "aqroot-Demo-assembly-top.pdf"
+    }
+   },
+   "ok": true,
+   "problems": [],
+   "release": "D-771"
+  },
+  "FAB15_manual_THT_route": {
+   "controls_refused": {
+    "a_leaded_part_in_a_machine_class_is_refused": true,
+    "a_missing_THT_manual_route_is_refused": true,
+    "the_superseded_J5_drill_is_refused": true
+   },
+   "ok": true,
+   "plan": "docs/full-beta-v2/assembly/FIRST_FIVE_ASSEMBLY_PLAN.md",
+   "survey": {
+    "board_leaded_tHT": [
+     "D1",
+     "J4",
+     "J5",
+     "J6",
+     "U6"
+    ],
+    "class_E_refs_seen": [
+     "D1",
+     "J4",
+     "J5",
+     "J6",
+     "U6"
+    ],
+    "j5": {
+     "current_drill_written_in_class_E": true,
+     "drill_mm": [
+      1.02
+     ],
+     "footprint": "AQROOT_Beta:Samtec_SSQ-124-02-G-S-RA",
+     "ok": true
+    },
+    "leaded_refs_in_machine_classes": [],
+    "missing_from_class_E": [],
+    "ok": true,
+    "stale_release_phrases": []
+   }
+  },
+  "FAB1_provenance": {
+   "artifacts": 29,
+   "authoritative_board_sha256": "c15672df8f019f21b855b1b21198f17bf6c86176bcabe9370cf8e8f4be43f3e4",
+   "deterministic": 24,
+   "drift": [],
+   "kicad": "10.0.5",
+   "manifest_board_sha256": "c15672df8f019f21b855b1b21198f17bf6c86176bcabe9370cf8e8f4be43f3e4",
+   "ok": true,
+   "schematic_sheet_drift": [],
+   "schematic_sheets": 10,
+   "unmanifested": []
+  },
+  "FAB2_fill": {
+   "after": "c15672df8f019f21b855b1b21198f17bf6c86176bcabe9370cf8e8f4be43f3e4",
+   "before": "c15672df8f019f21b855b1b21198f17bf6c86176bcabe9370cf8e8f4be43f3e4",
+   "note": "Gerber export does not refill; a stale stored fill would ship copper the gate never inspected",
+   "ok": true
+  },
+  "FAB3_layers": {
+   "board_copper_stackup": [
+    "F.Cu",
+    "In1.Cu",
+    "In2.Cu",
+    "In3.Cu",
+    "In4.Cu",
+    "B.Cu"
+   ],
+   "empty_layer_files": [],
+   "gbrjob_layers": [
+    "B_Cu",
+    "B_Mask",
+    "B_Paste",
+    "B_Silkscreen",
+    "Edge_Cuts",
+    "F_Cu",
+    "F_Mask",
+    "F_Paste",
+    "F_Silkscreen",
+    "In1_Cu",
+    "In2_Cu",
+    "In3_Cu",
+    "In4_Cu"
+   ],
+   "missing_non_copper": [],
+   "ok": true,
+   "shipped_copper": [
+    "F_Cu",
+    "In1_Cu",
+    "In2_Cu",
+    "In3_Cu",
+    "In4_Cu",
+    "B_Cu"
+   ],
+   "shipped_layers": [
+    "B_Cu",
+    "B_Mask",
+    "B_Paste",
+    "B_Silkscreen",
+    "Edge_Cuts",
+    "F_Cu",
+    "F_Mask",
+    "F_Paste",
+    "F_Silkscreen",
+    "In1_Cu",
+    "In2_Cu",
+    "In3_Cu",
+    "In4_Cu"
+   ]
+  },
+  "FAB4_drill": {
+   "board_holes": 973,
+   "control": {
+    "count_mismatch": [],
+    "displaced_hole": [
+     40110000,
+     145305000
+    ],
+    "fires": true,
+    "moved_by_nm": 1001,
+    "ran": true,
+    "tool": [
+     "N",
+     650000,
+     650000
+    ],
+    "unmatched": 2
+   },
+   "max_residual_nm": 500,
+   "min_drill_mm": 0.2,
+   "ok": true,
+   "plated": 966,
+   "residual_histogram_nm": {
+    "0": 955,
+    "1": 1,
+    "100": 1,
+    "158": 1,
+    "200": 1,
+    "219": 1,
+    "300": 4,
+    "303": 1,
+    "314": 1,
+    "363": 1,
+    "400": 3,
+    "500": 1,
+    "57": 1,
+    "64": 1
+   },
+   "shipped_holes": 973,
+   "slots": 4,
+   "tolerance_nm": 1000,
+   "tool_census": {
+    "N 0.650": 2,
+    "N 0.900": 2,
+    "N 1.050": 1,
+    "N 2.200": 2,
+    "P 0.200": 68,
+    "P 0.250": 52,
+    "P 0.300": 650,
+    "P 0.400": 159,
+    "P 0.600x1.400": 2,
+    "P 0.600x1.700": 2,
+    "P 0.750": 4,
+    "P 0.900": 2,
+    "P 1.020": 24,
+    "P 1.100": 3
+   },
+   "tool_count_mismatch": [],
+   "tools": 14,
+   "unmatched_holes": [],
+   "unplated": 7,
+   "widest_candidate_list": 1
+  },
+  "FAB5_cpl": {
+   "board_placeable": 268,
+   "checks": "position, side and ROTATION, on BOTH placement files, with per-file reference uniqueness and four live negative controls (D-750, controls D-751)",
+   "controls_refused": {
+    "duplicate_fitted_row": true,
+    "position_plus_10mm": true,
+    "rotation_180": true,
+    "side_flipped": true
+   },
+   "dnp_still_placed": [],
+   "duplicated_rows": [],
+   "fitted_dropped": [],
+   "misplaced": [],
+   "ok": true,
+   "rows_all": 268,
+   "rows_fitted": 252,
+   "unexpected_rows": []
+  },
+  "FAB6_bom": {
+   "assembly_ref_not_built": [],
+   "board_says_not_purchased": [
+    "BOSS1",
+    "BOSS2",
+    "TP1",
+    "TP10",
+    "TP11",
+    "TP12",
+    "TP13",
+    "TP15",
+    "TP16",
+    "TP17",
+    "TP18",
+    "TP19",
+    "TP2",
+    "TP20",
+    "TP21",
+    "TP22",
+    "TP23",
+    "TP24",
+    "TP25",
+    "TP26",
+    "TP27",
+    "TP28",
+    "TP29",
+    "TP3",
+    "TP30",
+    "TP31",
+    "TP32",
+    "TP33",
+    "TP34",
+    "TP35",
+    "TP36",
+    "TP37",
+    "TP38",
+    "TP39",
+    "TP4",
+    "TP40",
+    "TP42",
+    "TP43",
+    "TP44",
+    "TP45",
+    "TP46",
+    "TP47",
+    "TP5",
+    "TP6",
+    "TP7",
+    "TP8",
+    "TP9"
+   ],
+   "built_purchased_ref_without_line": [],
+   "do_not_populate_mismatch": [],
+   "non_purchased_mismatch": [],
+   "ok": true,
+   "part_identity_on_two_footprints": [],
+   "references_in_two_views": [],
+   "schematic_refs_in_no_view": [],
+   "schematic_symbols": 314,
+   "view_lines": {
+    "BOM-assembly": 125,
+    "DO-NOT-POPULATE": 16,
+    "NON-PURCHASED": 45,
+    "OFF-BOARD": 1
+   },
+   "view_refs": {
+    "BOM-assembly": 252,
+    "DO-NOT-POPULATE": 16,
+    "NON-PURCHASED": 45,
+    "OFF-BOARD": 1
+   },
+   "view_refs_not_in_schematic": []
+  },
+  "FAB7_sourcing": {
+   "assembly_refs": 252,
+   "coverage": 1.0,
+   "needs_a_sourcing_decision": {
+    "by_line": {},
+    "lines": 0,
+    "parts": 0
+   },
+   "ok": true,
+   "orderable": 252,
+   "pending_first_article_tune": {
+    "basis": "DEVICE_SPEC s.14 -- the VALUE is not final; no part number can close these lines",
+    "by_line": {},
+    "lines": 0,
+    "parts": 0
+   },
+   "unsourced": 0,
+   "unsourced_lines": 0,
+   "unsourced_prefixes": {}
+  },
+  "FAB8_outline": {
+   "board_outline_mm": [
+    0.0,
+    0.0,
+    77.0,
+    148.0
+   ],
+   "gerber_extent_mm": [
+    0.0,
+    0.0,
+    77.0,
+    148.0
+   ],
+   "max_delta_nm": 0,
+   "ok": true,
+   "profile_operations": 16,
+   "size_mm": [
+    77.0,
+    148.0
+   ]
+  },
+  "FAB9_via_in_pad": {
+   "board_lands_with_an_open_barrel": 136,
+   "manifest_lands": 136,
+   "measured": true,
+   "missing_from_the_package": [],
+   "ok": true,
+   "required_process_stated_in_the_notes": true
+  }
+ },
+ "failing": [],
+ "package": "hardware/demo/fab",
+ "provenance_only": false,
+ "schema": 1,
+ "verdict": "PASS"
+}

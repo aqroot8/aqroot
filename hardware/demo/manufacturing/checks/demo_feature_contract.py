@@ -417,8 +417,9 @@ def judge_backlight(nets_by_contact, values):
 
 
 # --------------------------------------------------------------------------
-# F6 -- THE ACCESSORY RAILS MAY NOT PULL THE PACK INTO ITS OWN PROTECTION.
-# D-753.
+# F6 -- THE ACCESSORY RAILS MAY NOT PULL THE PACK INTO ITS OWN PROTECTION,
+# AND THE PACK PROTECTION MUST NOT FIRE ON A RAIL THE PRODUCT PUBLISHES.
+# D-753 (envelope) + D-765 (limiter silicon) + D-771 (this decision).
 #
 # D-750 answered the external first-spin review's combined-load item with a
 # POLICY: *"firmware must not raise both accessory rails to their per-rail
@@ -431,12 +432,41 @@ def judge_backlight(nets_by_contact, values):
 #
 # So this clause computes the envelope from the two resistors that set it, and
 # refuses the board if any state the Community Port can reach exceeds the pack
-# protection's MINIMUM trip.  TI SLVSFJ2B equation 1 for the TPS22950C:
+# protection's MINIMUM trip.  TI SLVSFJ2B / SLVSGP6A equation 1:
 #
 #     ILIM = 1.18 x (R_ILIM[kOhm]) ^ -1.072            (amps, kilohms)
 #
 # and the part's own EC table brackets that typ at 0.68x / 1.32x over
 # -40..+125 C (the widest ratio it publishes, read off the 19.2 kOhm row).
+#
+# ---- D-771.  TWO THINGS THAT HAD NO WORDS HERE ---------------------------
+#
+# (1) THE ENVELOPE WAS ONLY EVER CHECKED FROM ABOVE.  Every clause D-753 and
+#     D-765 wrote asks "can an accessory pull TOO MUCH".  None of them asks
+#     whether the rail can deliver what the product PROMISES.  D-098 locks the
+#     first five boards at ACC_3V3_SW = 400 mA TOTAL and ACC_5V_SW = 300 mA
+#     TOTAL and requires those numbers to appear in accessory-facing
+#     documentation in those words -- and at 2.7 kOhm each limiter GUARANTEES
+#     only 0.277 A.  The board published a budget its own silicon could refuse
+#     to deliver, on the two contacts the Community Port exists for.
+#
+# (2) THE CHAIN WAS ORDERED AGAINST A TYPICAL.  `double_fault_stays_inside_the
+#     _protection_chain` compared the double-fault current against 3.3333 A --
+#     50 mV / 15 mOhm -- as though 50 mV were a limit.  ADI's own EC table
+#     (Rev C, archived at vendor/ADI/) guarantees the LTC4368 forward
+#     overcurrent threshold only as 40 / 50 / 60 mV over temperature, so at
+#     R75 = 15 mOhm +/-1 % the breaker's real band was 2.640 .. 4.040 A.  The
+#     board D-765 shipped reaches 2.886 A in double fault -- ABOVE the 2.640 A
+#     minimum -- so the clause was FALSE on the board that passed it.  And
+#     RETRY is grounded (sheet 01 note, D-050/D-052/D-064/D-068): the LTC4368
+#     breaker LATCHES OFF and is cleared only by toggling SHDN, while the
+#     BQ25185's IBAT_OCP hiccups and retries.  The two bands overlapped by
+#     1.05 A, so on an unlucky unit the LATCHING protection fired first.
+#
+# BOTH ARE NOW CLAUSES, and both are computed from board values.  R75 moves to
+# 10 mOhm, which puts the breaker at 3.960 .. 6.061 A -- ENTIRELY ABOVE the
+# IBAT_OCP band's 3.6875 A maximum, so the recoverable protection is now
+# guaranteed to act first on every unit rather than on a typical one.
 # --------------------------------------------------------------------------
 ILIM_R = {"ACC_3V3": "R97", "ACC_5V": "R101"}
 ILIM_SWITCH = {"ACC_3V3": "U20", "ACC_5V": "U22"}
@@ -457,6 +487,33 @@ ILIM_SPEC_RANGE = {
 }
 # UL 2367 recognition, file E169910, stated identically by both datasheets.
 UL2367_ILIM_RANGE = (0.066, 2.46)
+# D-771.  D-098, 2026-08-23, IN ITS OWN WORDS: "First five boards:
+# ACC_3V3_SW = 400 mA TOTAL, ACC_5V_SW = 300 mA TOTAL ... THE TWO DUPLICATE
+# CONTACTS ON EACH RAIL SHARE THE RAIL LIMIT - they do not double it ... This
+# must appear in accessory-facing documentation in these words."  A number the
+# product PUBLISHES is a number the hardware must GUARANTEE.
+PUBLISHED_RAIL_BUDGET_A = {"ACC_3V3": 0.400, "ACC_5V": 0.300}
+# D-771.  THE PROTECTION CHAIN, OVER TOLERANCE, FROM EACH PART'S OWN TABLE.
+SENSE_R = "R75"                        # LTC4368 current-sense element
+BREAKER = "U18"
+# ADI LTC4368 Rev C, Electrical Characteristics, dVSENSE,F "Overcurrent Fault
+# Threshold, Forward (SENSE - VOUT)", the `l` row -- GUARANTEED over the full
+# operating temperature range, not a typical.  mV.
+BREAKER_SENSE_mV = {
+    "LTC4368-1": (40.0, 50.0, 60.0),
+    "LTC4368-2": (40.0, 50.0, 60.0),   # same forward row; differs in reverse
+}
+# REPORTED, NOT ORDERED AGAINST.  The same EC table carries a THIRD forward row
+# at `VIN = 12 V, VOUT = 0 V` -- 30 / 50 / 70 mV -- which is a COLLAPSED output,
+# i.e. a hard short downstream of the sense element.  It is deliberately not the
+# ordering row: the clause below asks which protection fires first on an
+# OVERLOAD, where VOUT tracks VIN and the 40/50/60 row applies.  On a genuine
+# dead short both protections fire and latching is the wanted behaviour.  It is
+# printed so the choice of row is visible rather than implicit.
+BREAKER_SENSE_HARD_SHORT_mV = (30.0, 50.0, 70.0)
+# D-753's constant, now carried as a BAND.  BQ25185 SLUSF65B: 3.125 A typ +/-18 %.
+IBAT_OCP_A = (3.125 * 0.82, 3.125, 3.125 * 1.18)
+IBAT_OCP_MIN = IBAT_OCP_A[0]           # retained name; D-753's number, unchanged
 # D-765, REPORT ONLY -- NOT A CLAUSE AND DELIBERATELY NOT IN `ok`.
 # A parallel proposal screened NORMAL operation instead of the fault envelope: a
 # 250 mA per-rail working budget, accessories shed below a 3.50 V cell, and a
@@ -465,6 +522,7 @@ UL2367_ILIM_RANGE = (0.066, 2.46)
 # NOT a clause, because NOTHING ON THIS BOARD ENFORCES EITHER ASSUMPTION: there is
 # no accessory current measurement and no gated cell-voltage accessory shed.  The
 # clauses stay on the FAULT envelope, which is the part the silicon does enforce.
+# D-771 keeps it and adds the PUBLISHED budget as a real clause beside it.
 NORMAL_BUDGET_A = 0.250                # proposed per-rail working budget
 NORMAL_VBAT_FLOOR = 3.50               # proposed accessory-enable cell floor
 NORMAL_PATH_OHM = 0.36                 # conservative common-path resistance
@@ -473,9 +531,18 @@ VBAT_CORNER = 3.0                      # 1S Li-ion working floor
 V_3V3, ETA_U12 = 3.3, 0.90             # TPS63020 buck-boost
 V_ACC5V, ETA_U21 = 4.95, 0.88          # TPS61023 boost, R99/R100 divider
 I_INTERNAL = 1.0                       # the published internal +3V3 budget
-IBAT_OCP_MIN = 3.125 * 0.82            # BQ25185 SLUSF65B, 3.125 A typ +/-18 %
-LTC4368_TRIP = 0.050 / 0.015           # 50 mV across R75 15 mOhm
+LTC4368_TRIP = 0.050 / 0.015           # D-753's figure, KEPT so the decision
+                                       # that replaced it stays legible
 FUSE_A = 5.0                           # F1 0466005 one-shot
+# D-771.  AND THE CONVERTERS MUST BE ABLE TO SOURCE WHAT THE LIMITERS PERMIT.
+# Nothing in this repository had ever asked whether U12 and U21 can deliver the
+# current their downstream load switch is allowed to pass.  Both numbers come
+# from the fitted part's own datasheet, archived under vendor/.
+U12_IOUT_A = 2.0          # SLVSAA7 Features: "Output current for VIN > 2.5 V,
+U12_VIN_FLOOR = 2.5       # VOUT = 3.3 V: 2 A"
+U21_ILIM_VALLEY_MIN = 2.7  # SLVSF14B EC: ILIM_SW valley current limit, MIN
+U21_L_H, U21_L_TOL = 1.0e-6, 0.20      # L4 Wurth 74438357010 WE-MAPI, 1 uH
+U21_FSW_HZ = 1.0e6                     # SLVSF14B EC: fSW 1.0 MHz, VIN > 1.5 V
 
 
 def _farads(value):
@@ -492,6 +559,19 @@ def _ohms(value):
         return None
     n = float(m.group(1))
     return n * {"": 1.0, "k": 1e3, "K": 1e3, "m": 1e6, "M": 1e6}[m.group(2)]
+
+
+def _milliohms(value):
+    """Ohms from a milliohm sense-resistor value string such as "10mR 1% 3W".
+
+    `_ohms` reads a bare `m` suffix as MEGohms, which is right for the signal
+    resistors it was written for and catastrophically wrong for R75.  This is
+    the only reader that may be pointed at a current-sense element.
+    """
+    m = re.match(r"\s*([\d.]+)\s*(m)(?:R|Ohm|Ω)", value or "", re.I)
+    if not m:
+        return None
+    return float(m.group(1)) / 1000.0
 
 
 def _tol(value):
@@ -511,16 +591,14 @@ def _ilim_typ(r_ohms):
 
 
 def judge_accessory_envelope(values):
-    """Pure over {ref: value}; returns (ok, detail).  D-753 + D-765.
+    """Pure over {ref: value}; returns (ok, detail).  D-753 + D-765 + D-771.
 
-    D-753's four modes and its two refusal clauses are UNCHANGED.  D-765 adds
-    the three clauses that were missing, and whose absence let a 0.407 A
-    setting ship on a part specified from 0.5 A:
-
-      * the limiter silicon must be a part this contract has a range for;
-      * the ILIM setting must sit inside THAT part's own specified range,
-        over the programming resistor's whole tolerance band;
-      * both rails must carry the same MPN (D-088).
+    D-753's four modes and its two refusal clauses are UNCHANGED in intent.
+    D-765's three identity/range clauses are unchanged.  D-771 adds the two
+    that had no words -- the PUBLISHED budget each rail must guarantee, and
+    the protection chain ordered over its own TOLERANCE rather than over a
+    typical -- and folds the programming resistor's tolerance into the
+    envelope modes, which previously used the nominal value alone.
     """
     d, rails, parts = {}, {}, {}
     for rail, ref in ILIM_R.items():
@@ -542,8 +620,40 @@ def judge_accessory_envelope(values):
             setting_band_A=[round(typ_lo, 4), round(typ_hi, 4)],
             setting_inside_spec_range=bool(
                 rng and rng[0] <= typ_lo and typ_hi <= rng[1]))
-        rails[rail] = dict(ref=ref, r_ohms=r, r_tol=tol, ilim_min=typ * ILIM_LO,
-                           ilim_typ=typ, ilim_max=typ * ILIM_HI)
+        # D-771: the ENVELOPE band now carries the resistor tolerance too.  It
+        # used to be typ*0.68 .. typ*1.32 about the NOMINAL resistor, so a 1 %
+        # part at its corner was judged by a limit no part would actually have.
+        rails[rail] = dict(ref=ref, r_ohms=r, r_tol=tol,
+                           ilim_min=typ_lo * ILIM_LO,
+                           ilim_typ=typ,
+                           ilim_max=typ_hi * ILIM_HI,
+                           published_budget_A=PUBLISHED_RAIL_BUDGET_A[rail])
+
+    # ---- D-771: the protection chain, read from the board, over tolerance --
+    r75 = _milliohms(values.get(SENSE_R))
+    r75_tol = _tol(values.get(SENSE_R))
+    breaker_part = (values.get(BREAKER) or "").strip()
+    sense_mv = BREAKER_SENSE_mV.get(breaker_part)
+    if not r75 or not sense_mv:
+        return False, dict(error="protection chain unreadable: %s=%r %s=%r"
+                           % (SENSE_R, values.get(SENSE_R), BREAKER,
+                              values.get(BREAKER)))
+    breaker = dict(
+        ref=BREAKER, part=breaker_part, sense_ref=SENSE_R,
+        sense_ohms=r75, sense_tol=r75_tol,
+        threshold_mV=list(sense_mv),
+        trip_min_A=sense_mv[0] / 1000.0 / (r75 * (1 + r75_tol)),
+        trip_typ_A=sense_mv[1] / 1000.0 / r75,
+        trip_max_A=sense_mv[2] / 1000.0 / (r75 * (1 - r75_tol)),
+        response="LATCH-OFF (RETRY grounded); cleared only by toggling SHDN",
+        hard_short_threshold_mV=list(BREAKER_SENSE_HARD_SHORT_mV),
+        hard_short_trip_min_A=BREAKER_SENSE_HARD_SHORT_mV[0] / 1000.0
+                              / (r75 * (1 + r75_tol)),
+        hard_short_row_is_reported_not_ordered_against=(
+            "VIN = 12 V, VOUT = 0 V describes a COLLAPSED output; the ordering "
+            "clause asks about an OVERLOAD, where VOUT tracks VIN and the "
+            "40/50/60 mV row applies.  On a dead short both protections fire "
+            "and latching is the wanted behaviour"))
 
     def ibat(i3, i5):
         return ((I_INTERNAL + i3) * V_3V3 / ETA_U12
@@ -554,29 +664,95 @@ def judge_accessory_envelope(values):
         acc3v3_alone_at_its_limiter=ibat(a3["ilim_max"], 0.0),
         acc5v_alone_at_its_limiter=ibat(0.0, a5["ilim_max"]),
         both_at_their_guaranteed_currents=ibat(a3["ilim_min"], a5["ilim_min"]),
+        both_at_their_published_budgets=ibat(a3["published_budget_A"],
+                                             a5["published_budget_A"]),
         both_limiters_in_fault=ibat(a3["ilim_max"], a5["ilim_max"]))
+    # The user-reachable set.  `both_limiters_in_fault` is NOT in it: it is two
+    # simultaneous accessory overcurrents, judged separately below.
+    REACHABLE = ("acc3v3_alone_at_its_limiter", "acc5v_alone_at_its_limiter",
+                 "both_at_their_guaranteed_currents",
+                 "both_at_their_published_budgets")
+    # D-771.  The floor a reachable state must stay under is the LOWEST trip
+    # ANY protection in the chain can have on ANY unit -- not the charger's
+    # alone.  With R75 at 15 mOhm that floor was the charger's 2.5625 A only
+    # because the breaker's 2.640 A minimum was never computed.
+    first_trip_min = min(IBAT_OCP_A[0], breaker["trip_min_A"])
     d.update(rails_A={k: {kk: round(vv, 4) for kk, vv in v.items() if kk != "ref"}
                       for k, v in rails.items()},
              ilim_resistors={k: v["ref"] for k, v in rails.items()},
              modes_I_bat_A={k: round(v, 4) for k, v in modes.items()},
+             ibat_ocp_A=[round(x, 4) for x in IBAT_OCP_A],
              ibat_ocp_min_A=round(IBAT_OCP_MIN, 4),
+             breaker={k: (round(v, 4) if isinstance(v, float) else v)
+                      for k, v in breaker.items()},
+             first_trip_min_A=round(first_trip_min, 4),
              ltc4368_trip_A=round(LTC4368_TRIP, 4), fuse_A=FUSE_A,
              vbat_corner_V=VBAT_CORNER, internal_3v3_A=I_INTERNAL)
     # Every state a USER can reach with conforming accessories must stay under
-    # the pack protection's MINIMUM trip ...
+    # the FIRST protection any unit can trip ...
     d["no_reachable_state_trips_the_pack"] = all(
-        modes[k] < IBAT_OCP_MIN for k in
-        ("acc3v3_alone_at_its_limiter", "acc5v_alone_at_its_limiter",
-         "both_at_their_guaranteed_currents"))
+        modes[k] < first_trip_min for k in REACHABLE)
     # ... and the DOUBLE limiter fault must still land inside the protection
-    # chain rather than on the copper or the one-shot fuse.
+    # chain rather than on the copper or the one-shot fuse.  D-771: against the
+    # breaker's GUARANTEED MINIMUM, so the answer does not depend on a unit
+    # happening to sit at its typical.
     d["double_fault_stays_inside_the_protection_chain"] = (
-        modes["both_limiters_in_fault"] < LTC4368_TRIP
+        modes["both_limiters_in_fault"] < breaker["trip_min_A"]
         and modes["both_limiters_in_fault"] < FUSE_A)
     d["margin_to_ocp_min_pct"] = round(
-        (IBAT_OCP_MIN - max(modes[k] for k in
-         ("acc3v3_alone_at_its_limiter", "acc5v_alone_at_its_limiter",
-          "both_at_their_guaranteed_currents"))) / IBAT_OCP_MIN * 100.0, 2)
+        (IBAT_OCP_MIN - max(modes[k] for k in REACHABLE))
+        / IBAT_OCP_MIN * 100.0, 2)
+    d["margin_to_first_trip_pct"] = round(
+        (first_trip_min - max(modes[k] for k in REACHABLE))
+        / first_trip_min * 100.0, 2)
+    # ---- D-771 CLAUSE 1: the rail must DELIVER what the product publishes ---
+    for rail, v in rails.items():
+        v["guarantees_published_budget"] = (
+            v["ilim_min"] >= v["published_budget_A"])
+        v["headroom_over_published_pct"] = round(
+            (v["ilim_min"] - v["published_budget_A"])
+            / v["published_budget_A"] * 100.0, 2)
+    d["rails_A"] = {k: {kk: (round(vv, 4) if isinstance(vv, float) else vv)
+                        for kk, vv in v.items() if kk != "ref"}
+                    for k, v in rails.items()}
+    d["published_rail_budget_A"] = dict(PUBLISHED_RAIL_BUDGET_A)
+    d["each_rail_guarantees_its_published_accessory_budget"] = all(
+        v["guarantees_published_budget"] for v in rails.values())
+    # ---- D-771 CLAUSE 2: the chain must be ordered over TOLERANCE -----------
+    # The RECOVERABLE protection (BQ25185 IBAT_OCP: hiccup, auto-retry) must
+    # act before the LATCHING one (LTC4368 breaker with RETRY grounded) on
+    # EVERY unit, which means its whole band must sit below the breaker's.
+    d["protection_chain_A"] = dict(
+        recoverable_ibat_ocp=[round(x, 4) for x in IBAT_OCP_A],
+        latching_breaker=[breaker["trip_min_A"], breaker["trip_typ_A"],
+                          breaker["trip_max_A"]],
+        one_shot_fuse=FUSE_A)
+    d["recoverable_trip_is_ordered_below_the_latching_breaker"] = (
+        IBAT_OCP_A[2] < breaker["trip_min_A"])
+    d["ordering_margin_pct"] = round(
+        (breaker["trip_min_A"] - IBAT_OCP_A[2]) / breaker["trip_min_A"] * 100.0, 2)
+    # ---- D-771 CLAUSE 3: the converters can source what the limiters allow --
+    u12_load = I_INTERNAL + a3["ilim_max"]
+    # TPS61023 SLVSF14B equation 1, at the cell corner, with the inductor at
+    # its unlucky -20 % corner (larger ripple) and the valley limit at its MIN.
+    duty = 1.0 - (VBAT_CORNER * ETA_U21 / V_ACC5V)
+    d_ripple = (VBAT_CORNER * duty) / (U21_L_H * (1 - U21_L_TOL) * U21_FSW_HZ)
+    u21_capability = (1.0 - duty) * (U21_ILIM_VALLEY_MIN - d_ripple / 2.0)
+    d["converter_capability_A"] = dict(
+        u12_part="TPS63020", u12_rated_A=U12_IOUT_A,
+        u12_vin_floor_V=U12_VIN_FLOOR, u12_worst_case_load_A=round(u12_load, 4),
+        u12_ok=(VBAT_CORNER > U12_VIN_FLOOR and u12_load <= U12_IOUT_A),
+        u21_part="TPS61023", u21_duty=round(duty, 4),
+        u21_ripple_A=round(d_ripple, 4),
+        u21_capability_A=round(u21_capability, 4),
+        u21_worst_case_load_A=round(a5["ilim_max"], 4),
+        u21_ok=a5["ilim_max"] <= u21_capability,
+        method="U12 from SLVSAA7's own Features figure at VIN > 2.5 V; U21 "
+               "from SLVSF14B equation 1 with ILIM_SW at its EC MINIMUM and "
+               "L4 at its -20 % corner")
+    d["converters_can_source_their_worst_case_rail"] = (
+        d["converter_capability_A"]["u12_ok"]
+        and d["converter_capability_A"]["u21_ok"])
     # ---- D-765 REPORT ONLY: the normal-operation screen --------------------
     # Reported so the working headroom is visible beside the fault envelope.
     # It is NOT in `ok`: see the NORMAL_* comment block for why.
@@ -599,7 +775,8 @@ def judge_accessory_envelope(values):
         why_not_a_clause="no accessory current measurement and no gated "
                          "cell-voltage accessory shed exist on this board, so "
                          "neither assumption is enforced; the CLAUSES stay on "
-                         "the fault envelope the silicon does enforce")
+                         "the fault envelope the silicon does enforce, and on "
+                         "D-098's published budget, which D-771 made a clause")
 
     # ---- D-765: the three clauses that had no words before -----------------
     d["limiter_parts"] = parts
@@ -621,7 +798,10 @@ def judge_accessory_envelope(values):
           and d["limiter_silicon_is_a_part_with_a_published_range"]
           and d["ilim_setting_is_inside_the_parts_own_spec_range"]
           and d["one_limiter_mpn_on_both_rails"]
-          and d["ilim_band_is_inside_ul2367_recognition"])
+          and d["ilim_band_is_inside_ul2367_recognition"]
+          and d["each_rail_guarantees_its_published_accessory_budget"]
+          and d["recoverable_trip_is_ordered_below_the_latching_breaker"]
+          and d["converters_can_source_their_worst_case_rail"])
     return ok, d
 
 
@@ -777,9 +957,16 @@ def main():
         return name, not ok
 
     env_controls = dict(x for x in (
-        # D-753's four.  These prove the ENVELOPE arithmetic still refuses a
-        # limit set too HIGH -- the defect D-753 itself existed to remove.
-        _env_control("f6a_refuses_the_d750_acc3v3_ilim",
+        # D-753's four.  These prove the arithmetic still refuses a limit set
+        # too HIGH -- the defect D-753 itself existed to remove.  D-771 MOVED
+        # f6a's refusing clause and says so rather than leaving the old
+        # sentence standing: with the 5 V rail retuned, 1.5 kOhm on R97 no
+        # longer reaches the pack's trip, and it is now refused -- ALONE -- by
+        # the converter-capability clause, because 1.019 A of worst-case
+        # accessory plus the 1.0 A internal budget is more than the TPS63020's
+        # own rated 2 A.  A control that refuses for a different reason than
+        # its name claims is the defect D-767 named; the name is corrected.
+        _env_control("f6a_refuses_the_d750_acc3v3_ilim_u12_cannot_source",
                      lambda v: v.__setitem__("R97", "1.5k 1%")),
         _env_control("f6b_refuses_the_d750_acc5v_ilim",
                      lambda v: v.__setitem__("R101", "1.65k 1%")),
@@ -798,7 +985,33 @@ def main():
         _env_control("f6g_refuses_a_limiter_with_no_published_ilim_range",
                      lambda v: v.__setitem__("U20", "TPS22918")),
         _env_control("f6h_refuses_an_ilim_under_the_parts_own_floor",
-                     lambda v: v.__setitem__("R97", "20k 1%"))))
+                     lambda v: v.__setitem__("R97", "20k 1%")),
+        # ---- D-771's six.  The first two are the LOAD-BEARING pair: each is
+        # the board a previous decision shipped, and each is refused by a
+        # clause that decision's contract could not state.
+        # f6i IS THE BOARD D-765 SHIPPED -- 2.7 kOhm on both rails, which
+        # guarantees 0.277 A against a PUBLISHED 400 mA / 300 mA.
+        _env_control("f6i_refuses_the_board_d765_actually_shipped",
+                     lambda v: v.update(R97="2.7k 1%", R101="2.7k 1%")),
+        # f6j IS THE SENSE RESISTOR D-765 SHIPPED -- 15 mOhm, which puts the
+        # LATCHING breaker's 2.640 A minimum BELOW the recoverable charger
+        # trip's 3.6875 A maximum.  Nothing else changes.
+        _env_control("f6j_refuses_the_15mOhm_sense_that_overlapped_the_charger",
+                     lambda v: v.__setitem__("R75", "15mR 1% 1W")),
+        # the published budget must be met on EITHER rail, not just one
+        _env_control("f6k_refuses_an_acc5v_ilim_below_the_published_300mA",
+                     lambda v: v.__setitem__("R101", "3.3k 1%")),
+        # the chain must be READ, not assumed: an unreadable sense element or
+        # a breaker this contract has no threshold table for is a refusal,
+        # exactly as an unknown limiter MPN is
+        _env_control("f6l_refuses_an_unreadable_sense_resistor",
+                     lambda v: v.__setitem__("R75", "DNP")),
+        _env_control("f6m_refuses_a_breaker_with_no_published_threshold",
+                     lambda v: v.__setitem__("U18", "LTC4368-9")),
+        # and a limiter the CONVERTER cannot feed is refused even when every
+        # battery-side mode passes
+        _env_control("f6n_refuses_an_acc3v3_ilim_past_both_bounds",
+                     lambda v: v.__setitem__("R97", "1.3k 1%"))))
 
     # ---- F7: the DISPLAY IDENTITY, everywhere it is written -------------
     # D-768.  D-074 locked the EastRising ER-TFT035IPS-6 (3.5in 320x480,
@@ -840,6 +1053,39 @@ def main():
             why="D-198 superseded the internal Taoglas FXP890 flex with the "
                 "EXTERNAL TI.92.2113 SMA dipole on a top-panel bulkhead; "
                 "DEVICE_SPEC has flagged the schematic text STALE since"),
+        # ---- D-771 ADDS THE THREE PASSIVES WHOSE IDENTITY IT MOVED --------
+        # The registry was built for SEMICONDUCTOR identities, where the
+        # retired name is wrong wherever it appears.  A PASSIVE is different:
+        # its symbol Note is expected to say what it replaced and why, and a
+        # clause that refused that would refuse the very sentence that records
+        # the supersession.  So these three entries carry `only_fields` and
+        # look at the PURCHASING identity alone -- Value, MPN, LCSC -- plus the
+        # released BOM row, which is the leg D-768 proved load-bearing.  Free
+        # prose is out of scope for them BY CONSTRUCTION, not by exemption.
+        "R75": dict(
+            locked="CRA2512-FZ-R010ELF",
+            lib_id_contains=None,
+            only_fields=("Value", "MPN", "LCSC"),
+            retired=("CRA2512-FZ-R015ELF", "C2073490", "15mR"),
+            why="D-771 moved the LTC4368 current sense 15 -> 10 mOhm because "
+                "ADI guarantees dVSENSE,F as 40/50/60 mV, so at 15 mOhm the "
+                "LATCHING breaker band (2.640-4.040 A) OVERLAPPED the "
+                "BQ25185's RECOVERABLE IBAT_OCP band (2.5625-3.6875 A)"),
+        "R97": dict(
+            locked="0603WAF1781T5E",
+            lib_id_contains=None,
+            only_fields=("Value", "MPN", "LCSC"),
+            retired=("0603WAF2701T5E", "C13167", "2.7k"),
+            why="D-771 moved the ACC_3V3 limiter setting 2.7 -> 1.78 kOhm so "
+                "the rail GUARANTEES the 400 mA TOTAL D-098 publishes for it; "
+                "2.7 kOhm guaranteed only 0.277 A"),
+        "R101": dict(
+            locked="0603WAF2321T5E",
+            lib_id_contains=None,
+            only_fields=("Value", "MPN", "LCSC"),
+            retired=("0603WAF2701T5E", "C13167", "2.7k"),
+            why="D-771 moved the ACC_5V limiter setting 2.7 -> 2.32 kOhm so "
+                "the rail GUARANTEES the 300 mA TOTAL D-098 publishes for it"),
     }
     RETIREMENT_MARKERS = ("RETIRED", "CORRECTED THIS FIELD", "corrected this field",
                           "DO NOT INSTANTIATE", "which is NOT the locked",
@@ -885,19 +1131,29 @@ def main():
                 out["library_symbol"] = lt[i:j + 1]
         return out
 
+    def _bom_row_refs(line):
+        """The references a BOM row covers.  D-771: a row groups them --
+        `"R97,R101","2.7k 1%",...` -- so a substring test for `"R97"` misses
+        the exact row the clause exists to read."""
+        m = re.match(r'\s*"([^"]*)"', line)
+        return {x.strip() for x in (m.group(1) if m else "").split(",")}
+
     def judge_identity(ref, spec, fields, bom_text):
         bad = []
+        only = spec.get("only_fields")
         for where in ("instance", "library_symbol"):
             blk = fields.get(where) or ""
             for m in re.finditer(r'\(property "([^"]+)" "((?:[^"\\]|\\.)*)"', blk):
                 name, txt = m.group(1), m.group(2)
+                if only and name not in only:
+                    continue
                 for tok in spec["retired"]:
                     if tok in txt and not any(k in txt for k in RETIREMENT_MARKERS):
                         bad.append([where, name, tok, txt[:120]])
                         break
         bom_bad = sorted({tok for tok in spec["retired"]
                           for line in bom_text.splitlines()
-                          if tok in line and ('"%s"' % ref) in line})
+                          if tok in line and ref in _bom_row_refs(line)})
         want = spec.get("lib_id_contains")
         d = dict(
             reference=ref, why=spec["why"], locked=spec["locked"],
@@ -907,9 +1163,24 @@ def main():
             no_retired_name_in_the_symbol=not bad,
             no_retired_name_on_the_released_bom_row=not bom_bad,
             offending_fields=bad, offending_bom_tokens=bom_bad)
-        d["ok"] = all(d[k] for k in ("symbol_is_the_locked_part",
-                                     "no_retired_name_in_the_symbol",
-                                     "no_retired_name_on_the_released_bom_row"))
+        clauses = ["symbol_is_the_locked_part", "no_retired_name_in_the_symbol",
+                   "no_retired_name_on_the_released_bom_row"]
+        # D-771.  ABSENCE OF THE OLD NAME IS NOT PRESENCE OF THE NEW ONE.  For a
+        # passive the whole identity IS the MPN, so both legs assert it
+        # POSITIVELY as well: the symbol's own MPN field and the released BOM
+        # row for that reference must both name the locked part.  (For J1/U8 the
+        # `lib_id` clause already carries the positive half.)
+        if only:
+            inst = fields.get("instance") or ""
+            m = re.search(r'\(property "MPN" "((?:[^"\\]|\\.)*)"', inst)
+            d["symbol_mpn"] = m.group(1) if m else None
+            d["symbol_names_the_locked_part"] = (d["symbol_mpn"] == spec["locked"])
+            d["bom_row_names_the_locked_part"] = any(
+                spec["locked"] in line and ref in _bom_row_refs(line)
+                for line in bom_text.splitlines())
+            clauses += ["symbol_names_the_locked_part",
+                        "bom_row_names_the_locked_part"]
+        d["ok"] = all(d[k] for k in clauses)
         return d["ok"], d
 
     bom_path = rl.ROOT / "hardware/demo/fab/aqroot-Demo-BOM-assembly.csv"
@@ -944,6 +1215,41 @@ def main():
         "f7d_refuses_the_superseded_fxp890_antenna_on_u8":
             not judge_identity("U8", IDENTITY_GUARD["U8"], stale_u8, bom_text)[0],
     }
+    # ---- D-771's four.  The first two are the SYMBOL leg on a passive, the
+    # second two are the BOM-ROW leg -- including, deliberately, a GROUPED row
+    # of the exact shape the released BOM carried until D-771 split it, which
+    # the pre-D-771 substring matcher would have walked straight past.
+    r75 = _symbol_fields("R75")
+    r97 = _symbol_fields("R97")
+    stale_r75 = dict(r75, instance=(r75.get("instance", "")
+                                    + '\n(property "MPN" "CRA2512-FZ-R015ELF")'))
+    stale_r97 = dict(r97, instance=(r97.get("instance", "")
+                                    + '\n(property "Value" "2.7k 1%")'))
+    grouped_bom = ('"R97,R101","2.7k 1%","Resistor_SMD:R_0603_1608Metric",'
+                   '"UNI-ROYAL(Uniroyal Elec)","0603WAF2701T5E","C13167","","2",""')
+    sense_bom = ('"R75","15mR 1% 1W","Resistor_SMD:R_2512_6332Metric","BOURNS",'
+                 '"CRA2512-FZ-R015ELF","C2073490","","1",""')
+    ident_controls.update({
+        "f7e_refuses_the_superseded_15mOhm_sense_mpn_on_r75":
+            not judge_identity("R75", IDENTITY_GUARD["R75"], stale_r75, bom_text)[0],
+        "f7f_refuses_the_superseded_2k7_ilim_value_on_r97":
+            not judge_identity("R97", IDENTITY_GUARD["R97"], stale_r97, bom_text)[0],
+        "f7g_refuses_the_superseded_ilim_part_on_a_GROUPED_released_bom_row":
+            not judge_identity("R101", IDENTITY_GUARD["R101"], r97, grouped_bom)[0],
+        "f7h_refuses_the_superseded_sense_part_on_the_released_bom":
+            not judge_identity("R75", IDENTITY_GUARD["R75"], r75, sense_bom)[0],
+        # and ABSENCE of the retired name is not PRESENCE of the locked one:
+        # a BOM with no R75 row at all, and a symbol whose MPN field is simply
+        # missing, both carry zero retired tokens and are both refused.
+        "f7i_refuses_a_released_bom_with_no_row_for_the_locked_part":
+            not judge_identity("R75", IDENTITY_GUARD["R75"], r75, "")[0],
+        "f7j_refuses_a_symbol_that_does_not_name_the_locked_part":
+            not judge_identity(
+                "R97", IDENTITY_GUARD["R97"],
+                dict(r97, instance=(r97.get("instance", "") or "").replace(
+                    '(property "MPN" "0603WAF1781T5E"', '(property "MPN" "x"'),
+                ), bom_text)[0],
+    })
 
     nc = ledger["approved_demo_nc"]
     checks = {
@@ -1000,8 +1306,16 @@ def main():
                    "must ALSO sit inside the fitted part's OWN specified ILIM "
                    "range over the programming resistor's tolerance band -- "
                    "TPS22950-Q1 is specified 0.05-3.5 A (SLVSGP6A), the "
-                   "TPS22950C it replaces only 0.5-3.5 A (SLVSFJ2B s.5), and "
-                   "the fitted 2.7 kOhm programs 0.407 A",
+                   "TPS22950C it replaces only 0.5-3.5 A (SLVSFJ2B s.5).  "
+                   "D-771: the envelope is now checked from BELOW as well -- "
+                   "each rail must GUARANTEE the budget D-098 publishes "
+                   "(ACC_3V3_SW 400 mA total, ACC_5V_SW 300 mA total), which "
+                   "the 2.7 kOhm setting did not; the protection chain is "
+                   "read from R75 and U18 over the LTC4368's own guaranteed "
+                   "40/50/60 mV threshold band instead of its 50 mV typical, "
+                   "so the LATCHING breaker must sit entirely above the "
+                   "RECOVERABLE charger trip; and both converters must be "
+                   "able to source what their load switch is allowed to pass",
             controls_refused=env_controls, **env),
         "F7_no_retired_part_name_survives_on_the_part_that_replaced_it": dict(
             ok=ident_ok and all(ident_controls.values()),

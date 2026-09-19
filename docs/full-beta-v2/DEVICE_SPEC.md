@@ -334,7 +334,7 @@ sockets); the only on-board RF network is the 13.56 MHz NFC differential front e
 |---|---|---|---|
 | Ideal-diode + OV/UV/reverse-current controller | `U18` **LTC4368IMS-1#TRPBF**, LCSC `C688401`, **MSOP-10** (the "-1", so it does NOT block forward charge). **D-615 corrected the order code: the schematic carried `LTC4368IDD-1#PBF`, and `DD` is DFN-10 against an MSOP-10 land — D-099 / FBV2-PWR-002 require this part to be leaded and inspectable.** | FITTED · LOCKED (safety) | `01_power_tree.kicad_sch:U18` |
 | Back-to-back reverse-protection FETs | `Q2`, `Q3` **NTMD4820NR2G** (anti-series pairs) | FITTED · LOCKED (safety) | `01_power_tree.kicad_sch:Q2,Q3` |
-| Current-sense resistor | `R75` **15 mΩ 1 % 1 W** (Kelvin pair to U18.8/U18.9); D-615 selected Bourns **`CRA2512-FZ-R015ELF`**, LCSC `C2073490`, a **CURRENT-SENSE class part at ±50 ppm/°C, 3 W** — a thick film at ±1500 ppm/°C would move the 3.33 A LTC4368 trip ~19 % over −40…+85 °C | FITTED | `01_power_tree.kicad_sch:R75` |
+| Current-sense resistor | `R75` **10 mΩ 1 % 3 W** (Kelvin pair to U18.8/U18.9) — Bourns **`CRA2512-FZ-R010ELF`**, LCSC `C840621`, a **CURRENT-SENSE class part at ±50 ppm/°C, 3 W** (a thick film at ±1500 ppm/°C would move the trip ~19 % over −40…+85 °C).  **D-771 MOVED IT FROM 15 mΩ** (`CRA2512-FZ-R015ELF`, `C2073490`, D-615): ADI guarantees the LTC4368 forward threshold only as **40 / 50 / 60 mV** over temperature, so 15 mΩ put the LATCHING breaker at **2.640–4.040 A**, overlapping the charger's own recoverable `IBAT_OCP` band of 2.5625–3.6875 A.  At 10 mΩ the breaker is **3.960–6.061 A**, entirely above it.  Same series, same 2512 land, same 3 W — only the resistance | FITTED | `01_power_tree.kicad_sch:R75`; CTO_DECISIONS D-771 |
 | Protected-node Schottky | `D9` **PMEG2010AEH,115** | FITTED | `01_power_tree.kicad_sch:D9` |
 | Recovery / dead-cell comparator | `U19` **TLV7032DDFR** (dual) | FITTED | `01_power_tree.kicad_sch:U19` |
 
@@ -353,7 +353,33 @@ power/NFC review, and CTO decisions.
 | **ACC_5V_SW** load switch | `U22` | TPS22950CQDDCRQ1 (TPS22950-Q1, D-765) | FITTED | `01_power_tree.kicad_sch:U22` |
 | Accessory I²C hot-swap buffer | `U16` | TCA4307DGKR | FITTED | `08/09` |
 
-### 6.3a Accessory-power ENVELOPE (D-753, silicon corrected D-765) — ENGINEERING-ONLY, **bounded by hardware**
+### 6.3a Accessory-power ENVELOPE (D-753, silicon corrected D-765, **budget guaranteed and protection chain ordered at D-771**) — ENGINEERING-ONLY, **bounded by hardware**
+
+> ## THE PUBLISHED ACCESSORY BUDGET — D-098, and the number the hardware now GUARANTEES
+>
+> **`ACC_3V3_SW` = 400 mA TOTAL.  `ACC_5V_SW` = 300 mA TOTAL** for the first five
+> boards.  **THE TWO DUPLICATE CONTACTS ON EACH RAIL SHARE THE RAIL LIMIT — they
+> do not double it**: `ACC_5V_SW` on `J5` pin 1 + pin 24 = 300 mA combined, **not**
+> 300 mA each, and `ACC_3V3_SW` on pin 3 + pin 22 = 400 mA combined.  There is one
+> load switch and one current limit per rail.  Later validation targets, **only
+> after measured bring-up and a CTO ruling**: 600–800 mA and 500 mA respectively.
+> **This wording is D-098's own and is MANDATORY in accessory-facing
+> documentation.**
+>
+> **D-771 MADE IT A GUARANTEE RATHER THAN A HOPE.**  Every clause D-753 and D-765
+> wrote asked whether an accessory could pull TOO MUCH; none asked whether the
+> rail could DELIVER what the product promises.  At the 2.7 kΩ both rails carried,
+> each limiter GUARANTEED only **0.277 A** — the board published a budget its own
+> silicon could refuse to deliver, on the two contacts the Community Port exists
+> for.  `R97` is now **1.78 kΩ** (0.636 A typ → **0.428 A guaranteed**, 7.0 % over
+> the published 400 mA) and `R101` **2.32 kΩ** (0.479 A typ → **0.322 A
+> guaranteed**, 7.4 % over the published 300 mA).  `F6` refuses any setting that
+> does not guarantee its own rail's published budget.
+>
+> **What an accessory actually sees at the published budget** (worst corner of
+> every term): **3.18 V** on `ACC_3V3_SW` against a 3.135 V −5 % floor, and
+> **4.90 V** on `ACC_5V_SW` against 4.75 V — 117 mV and 49 mV of track + `RON`
+> drop respectively (`.kicad_dru` §5f).
 
 **D-750 answered the external first-spin review's combined-load item with a
 POLICY; D-753 replaced it with a LIMIT the silicon enforces.**  The policy read
@@ -364,37 +390,76 @@ accessory then draws.  The only thing that actually bounds an accessory is the
 accessory limiter's own current limit, and at the values D-750 shipped those
 limits sat far ABOVE what the policy permitted.
 
-**BOTH `ILIM` RESISTORS ARE 2.7 kΩ** (`R97` was 1.5 kΩ, `R101` was
-1.65 kΩ; LCSC `C13167`, JLCPCB BASIC).  TI equation 1 —
-`ILIM = 1.18 × (R[kΩ])^−1.072` — gives **0.407 A typ**, and the widest tolerance
-ratio the part's own EC table publishes (0.68× / 1.32× of typ over −40…+125 °C)
-brackets each rail at **0.277 A guaranteed / 0.537 A worst case**.
+**`R97` IS 1.78 kΩ AND `R101` IS 2.32 kΩ** — D-771; both were 2.7 kΩ at D-753
+(LCSC `C22849` and `C22905`, UNI-ROYAL `0603WAF1781T5E` / `0603WAF2321T5E`, the
+same 0603WAF series and the same 0603 land as the part they replace).  TI
+equation 1 — `ILIM = 1.18 × (R[kΩ])^−1.072` — gives **0.636 A** and **0.479 A**
+typ, and the widest tolerance ratio the part's own EC table publishes
+(0.68× / 1.32× of typ over −40…+125 °C, read off its 19.2 kΩ row) **taken over
+the programming resistor's own 1 % band as well** brackets the rails at:
+
+| rail | guaranteed | worst case | published budget (D-098) | headroom |
+|---|---|---|---|---|
+| `ACC_3V3_SW` (`R97` 1.78 kΩ) | **0.428 A** | 0.849 A | 400 mA | **+7.0 %** |
+| `ACC_5V_SW` (`R101` 2.32 kΩ) | **0.322 A** | 0.639 A | 300 mA | **+7.4 %** |
+
+The 0.68×/1.32× ratio is the widest of the four `ILIM` rows TI publishes and is
+**conservative in both directions at once** — the two rows that bracket these
+settings (1.15 kΩ and 2.21 kΩ) publish 0.75–0.76× / 1.24–1.25×.
 
 Modelled at the 3.0 V cell corner with the full 1.0 A internal `+3V3` load,
 `U12` at 90 % and `U21` at 88 % into 4.95 V:
 
-| state the Community Port can reach | WAS (1.5 k / 1.65 k) | NOW (2.7 k / 2.7 k) |
-|---|---|---|
-| 3.3 V rail alone at its limiter | 2.455 A | **1.879 A** (+27 %) |
-| 5 V rail alone at its limiter | **2.930 A — TRIPS** | **2.229 A** (+13 %) |
-| both rails at their GUARANTEED currents | **2.737 A — TRIPS** | **2.079 A** (+19 %) |
-| both limiters in fault (double fault) | 4.162 A — past the LTC4368 | 2.886 A — charger OCP, auto-retry |
+| state the Community Port can reach | D-750 (1.5 k / 1.65 k) | D-753/D-765 (2.7 k / 2.7 k) | **D-771 (1.78 k / 2.32 k)** |
+|---|---|---|---|
+| 3.3 V rail alone at its limiter | 2.455 A | 1.879 A | **2.259 A** (+11.9 %) |
+| 5 V rail alone at its limiter | **2.930 A — TRIPS** | 2.229 A | **2.420 A** (+5.6 %) |
+| both rails at their GUARANTEED currents | **2.737 A — TRIPS** | 2.079 A | **2.349 A** (+8.3 %) |
+| both rails at their PUBLISHED budgets | — | *unreachable — the limiter could refuse it* | **2.274 A** (+11.3 %) |
+| both limiters in fault (double fault) | 4.162 A — past the LTC4368 | 2.886 A — **above the breaker's real 2.640 A minimum** | **3.457 A** — charger OCP, auto-retry, **12.7 % under the breaker's 3.960 A minimum** |
 
-against a `BQ25185` `IBAT_OCP` **MINIMUM of 2.5625 A** (3.125 A typ ± 18 %,
-`SLUSF65B`), the `LTC4368` trip at **3.33 A** (50 mV across `R75` 15 mΩ) and
-`F1` at 5 A.
+against a `BQ25185` `IBAT_OCP` band of **2.5625 / 3.125 / 3.6875 A** (3.125 A typ
+± 18 %, `SLUSF65B`), the `LTC4368` breaker at **3.960 / 5.000 / 6.061 A**
+(40/50/60 mV guaranteed across `R75` 10 mΩ ± 1 %) and `F1` at 5 A.
 
 > **ENVELOPE.**  No state a user can reach with conforming accessories exceeds
-> the pack protection's minimum trip; the worst is **2.229 A, 13 % under it**.
-> A *simultaneous double limiter fault* — two accessories each in overcurrent at
-> once — reaches 2.886 A, which trips the charger's own `IBAT_OCP` and
-> **auto-retries**, below the `LTC4368` and far below the one-shot fuse.  Each
-> rail GUARANTEES **0.277 A**, which is MORE than the superseded policy
-> permitted at this corner (0.15 A at 5 V / 0.23 A at 3.3 V).
+> the FIRST trip any unit can have; the worst is **2.420 A, 5.6 % under the
+> 2.5625 A `IBAT_OCP` minimum**.  A *simultaneous double limiter fault* — two
+> accessories each in overcurrent at once — reaches 3.457 A, which trips the
+> charger's own `IBAT_OCP` and **auto-retries**, below the `LTC4368` breaker's
+> guaranteed minimum and below the one-shot fuse.
 > `checks/demo_feature_contract.py` **F6** recomputes all of this from the two
-> resistors AND the two limiter part numbers the board actually carries, with
-> **eight** live negative controls — two that put the D-750 values back, and one
-> that is the board D-753 itself shipped.
+> resistors, the two limiter part numbers, **`R75` and `U18`** — the board's own
+> values, not constants — with **fourteen** live negative controls, two of which
+> are the boards **D-753 and D-765 actually shipped**.
+
+> **D-771 — THE PROTECTION CHAIN WAS ORDERED AGAINST A TYPICAL.**  `F6`'s
+> `double_fault_stays_inside_the_protection_chain` clause compared the double-fault
+> current against **3.3333 A = 50 mV / 15 mΩ**, as though 50 mV were a limit.  ADI's
+> own Rev C Electrical Characteristics guarantees `ΔVSENSE,F` only as
+> **40 / 50 / 60 mV** over temperature (`VOUT = VIN`), so at `R75` = 15 mΩ ± 1 % the
+> breaker's real band was **2.640–4.040 A** — which OVERLAPPED the `BQ25185`'s
+> `IBAT_OCP` band of 2.5625–3.6875 A by 1.05 A.  **`RETRY` is grounded** (sheet 01,
+> D-050/D-052/D-064/D-068), so this breaker **LATCHES OFF** and is cleared only by
+> toggling `SHDN`, while `IBAT_OCP` hiccups and auto-retries.  On an unlucky unit
+> the LATCHING protection fired first, and the board D-765 shipped reached 2.886 A
+> in double fault — **above the breaker's own 2.640 A minimum**, so the clause was
+> FALSE on the board that passed it.  At **10 mΩ** the breaker is 3.960–6.061 A,
+> **entirely above** `IBAT_OCP`'s 3.6875 A maximum: the RECOVERABLE protection is
+> now guaranteed to act first on **every** unit.  Ordering against `F1` is a
+> TIME-CURRENT result, not a threshold comparison — `tp(GATE)` 3–18 µs against a
+> 5 A fast-acting Nano2 that needs 5 s at 200 % of rating.  The hard-short row
+> (`VOUT = 0 V`, 30/50/70 mV) is not the ordering row: it describes a collapsed
+> output, where latching is the wanted behaviour.
+>
+> **AND THE CONVERTERS MUST BE ABLE TO SOURCE WHAT THE LIMITERS PERMIT** — a
+> question nothing in this repository had ever asked.  `U12` `TPS63020` is rated
+> **2 A for VIN > 2.5 V, VOUT = 3.3 V** (`SLVSAA7` Features) against a worst case
+> of 1.0 A internal + 0.849 A accessory = **1.849 A**.  `U21` `TPS61023` delivers
+> **0.973 A** at this operating point by `SLVSF14B` equation 1 with `ILIM_SW` at
+> its **2.7 A EC minimum** and `L4` at its −20 % corner, against a worst case of
+> **0.639 A**.  `F6` refuses a limiter its converter cannot feed — which is what
+> now refuses D-750's 1.5 kΩ setting on `R97`.
 
 > **D-765 — THE ENVELOPE WAS RIGHT AND THE SILICON COULD NOT LEGALLY HOLD IT.**
 > Every number in the table above is unchanged.  What was wrong was the part.
@@ -420,26 +485,45 @@ against a `BQ25185` `IBAT_OCP` **MINIMUM of 2.5625 A** (3.125 A typ ± 18 %,
 > and reverse current only), the same **170 °C / 150 °C** thermal shutdown — and
 > it is **AEC-Q100 grade 1**.  Turn-on is slower (1 037 µs vs 800 µs at 5 V),
 > which only softens accessory inrush.  `IMAX` falls 3.2 A → 2.7 A, against a
-> 0.537 A worst-case use.  Prototype cost delta ≈ **US$0.03 per device**.  At
-> 2.7 kΩ the setting also sits inside the **UL 2367** recognised window
-> (66 mA–2.46 A).  **F6 now refuses any limiter whose `ILIM` setting falls
+> 0.537 A worst-case use *at the resistors D-765 inherited* — **0.849 A at
+> D-771's**, still 3.2× under `IMAX`.  Prototype cost delta ≈ **US$0.03 per
+> device**.  The settings also sit inside the **UL 2367** recognised window
+> (66 mA–2.46 A) at 2.7 kΩ and at D-771's 1.78 kΩ / 2.32 kΩ alike.  **F6 now
+> refuses any limiter whose `ILIM` setting falls
 > outside that part's OWN published range** over the programming resistor's
 > whole tolerance band, refuses a limiter it has no published range for, and
 > refuses two different limiter MPNs across the two rails.
 
-**RESIDUAL, NAMED NOT HIDDEN.**  `.kicad_dru` section 5 sizes `BAT_MAIN` copper
-for **1.5 A sustained**.  The new worst *sustained* case — both accessories at
-their guaranteed current with the full internal load — is **1.69 A at 3.7 V**
-and **2.08 A at the 3.0 V cutoff corner**, so it still exceeds that sizing
-point at the low-battery end, on one unavoidable 5.525 mm × 0.200 mm segment:
-`U11`'s `DLH0010A` pin-2 `BAT` land, which nothing wider can land on (D-269,
-D-708).  The plane-coupled model this repository uses puts that segment's
-ceiling at ≈ 37 K over the adjacent `In4` plane at 2.08 A (≈ 19 K at 1.5 A),
-and the model explicitly ignores lateral spreading, conduction along the copper
-and convection from an OUTER layer, so it is a ceiling and not a prediction.
-**This is a FIRST-ARTICLE THERMAL MEASUREMENT**, not a pre-order blocker: the
-electrical envelope above is closed by hardware, and D-753 moves every number in
-this table DOWN from what D-750 shipped.
+**RESIDUAL, NAMED NOT HIDDEN — RE-DERIVED AT D-771.**  `.kicad_dru` section 5
+sizes `BAT_MAIN` copper for **1.5 A sustained**, and the worst *sustained* case
+exceeds that sizing point at the low-battery end, on one unavoidable
+5.525 mm × 0.200 mm segment: `U11`'s `DLH0010A` pin-2 `BAT` land, which nothing
+wider can land on (D-269, D-708).
+
+| sustained state (full 1.0 A internal `+3V3` load) | at 3.7 V | at 3.0 V |
+|---|---|---|
+| both rails at D-098's **PUBLISHED** budget | 1.844 A | **2.274 A** |
+| both rails at their **GUARANTEED** currents | 1.905 A | **2.349 A** |
+
+D-765 printed **1.69 A / 2.08 A** here, and those were the numbers of a board
+whose limiters could not deliver what the product publishes.  **THE PUBLISHED
+ROW IS THE REQUIREMENT AND IT HAS NOT MOVED**: D-098 has promised 400 mA +
+300 mA since 2026-08-23, which is 2.274 A at the 3.0 V corner *whatever the
+`ILIM` resistors are set to*.  What D-771 changed is that the hardware can now
+honour it; the GUARANTEED row sits 3.3 % above the PUBLISHED one because a
+limiter must be set with margin to guarantee anything at all.
+
+The plane-coupled model puts that segment's ceiling at **47.8 K** over the
+adjacent `In4` plane at 2.349 A, **44.8 K** at 2.274 A and **19.5 K** at 1.5 A.
+The model explicitly ignores lateral spreading, conduction along the copper and
+convection from an OUTER layer — and the necked copper is **0.575 mm** long
+before it tapers 0.3 / 0.4 / 0.6 / 0.8 / 1.0 / 1.2 mm, against a copper thermal
+length of ≈ 2.6 mm, so both ends of the neck sink most of it.  It is a ceiling,
+not a prediction.  **This is a FIRST-ARTICLE THERMAL MEASUREMENT** at the 3.0 V
+corner with both accessory rails loaded — not a pre-order blocker: the
+electrical envelope above is closed by hardware, no user-reachable state trips
+the pack, and the alternative (leaving the limiters where D-753 left them)
+publishes a budget the board can refuse to deliver.
 
 ### 6.4 Safety floors (governing routing rules — ENGINEERING-ONLY)
 - **BAT_MAIN** netclass (1.5 A design): trunk 1.00 mm, min **0.60 mm** (LOCKED).

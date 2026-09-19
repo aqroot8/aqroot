@@ -50,7 +50,11 @@ def board_requirements():
     # D-765: the envelope is a function of the two programming resistors AND the
     # two limiter part numbers -- an ILIM setting outside the fitted part's own
     # published range is not an envelope, so U20/U22 are read here as well.
-    for ref in ("R97", "R101", "U20", "U22"):
+    # D-771 ADDS R75 AND U18.  `judge_accessory_envelope` now also orders the
+    # PROTECTION CHAIN over tolerance, and it reads the sense element and the
+    # breaker part from the same {ref: value} map; omitting them makes the whole
+    # envelope unreadable rather than merely unchecked.
+    for ref in ("R97", "R101", "U20", "U22", "R75", "U18"):
         fp = board.FindFootprintByReference(ref)
         if not fp:
             raise RuntimeError("missing %s" % ref)
@@ -61,10 +65,13 @@ def board_requirements():
         raise RuntimeError("D-753/D-765 accessory envelope itself does not pass: %s"
                            % (failed or env.get("error")))
     modes = env["modes_I_bat_A"]
+    # D-771: the same REACHABLE set `judge_accessory_envelope` uses, including
+    # the state where BOTH rails deliver the budget D-098 publishes for them.
     reachable = (
         "acc3v3_alone_at_its_limiter",
         "acc5v_alone_at_its_limiter",
         "both_at_their_guaranteed_currents",
+        "both_at_their_published_budgets",
     )
     max_reachable = max(modes[k] for k in reachable)
 

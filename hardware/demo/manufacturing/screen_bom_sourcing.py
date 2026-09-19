@@ -182,11 +182,12 @@ NET_MAX_DC = {
     "ACC_5V_FB": (0.6, 5.5, "U21 feedback node, VREF 0.595 V (D-185);"
                             " bounded from above by ACC_5V_RAW"),
     "ACC_5V_ILIM": (1.0, 5.5, "U22 TPS22950-Q1 ILIM programming pin"
-                              " (D-753 R101 2.7k -> 0.407 A typ); bounded by"
-                              " its own ACC_5V_RAW supply"),
-    "BAT_SENSE": (4.2, 4.35, "the cell side of the R75 15 mOhm sense; the"
-                             " LTC4368-1 trips at +/-50 mV, so this node is"
-                             " within 50 mV of BAT_PROTECTED_P"),
+                              " (D-771 R101 2.32k -> 0.479 A typ); bounded"
+                              " by its own ACC_5V_RAW supply"),
+    "BAT_SENSE": (4.2, 4.35, "the cell side of the R75 10 mOhm sense (D-771;"
+                             " was 15 mOhm); the LTC4368-1 trips at 40/50/60"
+                             " mV guaranteed, so this node is within 60 mV"
+                             " of BAT_PROTECTED_P"),
     "LTC_OV": (4.2, 4.35, "LTC4368-1 OV divider node, R77 3.65M / R78 442k off"
                           " BAT_RAW (P-21, D-104); bounded by its source"),
     "LTC_UV": (4.2, 4.35, "LTC4368-1 UV pin, R79 510k to VIN per the datasheet"
@@ -482,10 +483,11 @@ DIELECTRICS = set(DIELECTRIC_RANK)
 ANNOTATIONS = {"FIT", "DNP"}
 
 RE_CAP = re.compile(r"^(\d+(?:\.\d+)?)\s*([pnuµm]?)F$", re.I)
-# `15mR` is fifteen MILLIohms and `1M` is one MEGohm; a pattern that reads only
+# `10mR` is ten MILLIohms and `1M` is one MEGohm; a pattern that reads only
 # a single suffix letter silently drops the first and this board has one --
-# `R75`, the 15 mOhm 1 W battery current sense.  It came back with no
-# requirement at all until the screen was made to say so out loud.
+# `R75`, the 10 mOhm 3 W battery current sense (15 mOhm 1 W until D-771).  It
+# came back with no requirement at all until the screen was made to say so
+# out loud.
 RE_RES = re.compile(r"^(\d+(?:\.\d+)?)(mR|uR|\u00b5R|R|k|K|M|G)?$")
 RE_RES_DP = re.compile(r"^(\d+)R(\d+)$")           # 1R1 = 1.1 ohm
 RE_VOLT = re.compile(r"^(\d+(?:\.\d+)?)V$", re.I)

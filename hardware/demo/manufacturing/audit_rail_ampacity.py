@@ -50,7 +50,7 @@ saves it.  Parallel paths only ever help, so this under-states the board.
 
     python3 audit_rail_ampacity.py [--board B] [-o OUT.json]
 """
-import argparse, json, math, re, sys
+import argparse, hashlib, json, math, re, sys
 from collections import defaultdict
 from pathlib import Path
 
@@ -166,7 +166,7 @@ RAILS = (
     # rail with a source, a sink and a number.
     dict(name="SYS_TO_ACC5V_BOOST", net="/01_POWER_TREE/BQ25185_SYS",
          src=("U12.1", "U12.10", "U12.11", "C24.1", "C26.2", "C28.1"),
-         snk=("L4.1",), amps=0.925,
+         snk=("L4.1",), amps=1.100,
          accept=(dict(layer="In2.Cu", reason="dru-5c", max_length_mm=80.0),),
          accept_reason="D-750 / .kicad_dru section 5c.  The SYS trunk's three "
                "In2 legs run 0.800 mm, where IPC-2221B's INTERNAL curve asks "
@@ -174,18 +174,23 @@ RAILS = (
                "an isolated coupon in still air and IPC-2152 superseded it; "
                "the PLANE-COUPLED rise this file derives from the board's own "
                "declared stackup -- In2 between In1 across 0.4000 mm of core "
-               "and In3 across 0.2028 mm of prepreg -- is 0.68 K, and the whole "
-               "rail dissipates 0.157 W.  The ELECTRICAL cost is accepted with "
-               "its number: 183 mOhm and 169 mV at the enforced ACC_5V "
+               "and In3 across 0.2028 mm of prepreg -- is derived below from "
+               "the rail's OWN current rather than quoted, and the dissipation "
+               "is reported beside it.  The ELECTRICAL cost is accepted with "
+               "its number: 183 mOhm and 201 mV at D-771's enforced ACC_5V "
                "maximum, against a TPS61023 input range of 0.5-5.5 V.",
          basis="U21 TPS61023 INPUT current at the ENFORCED ACC_5V maximum: "
-               "0.537 A x 5.0 V / (0.88 efficiency x 3.3 V VBAT) = 0.925 A rms. "
-               "D-753 RETUNED R101 1.65 kOhm -> 2.7 kOhm, so the number that "
-               "sizes this trunk is no longer a PUBLISHED figure but the load "
-               "switch's own worst-case limit: TI SLVSFJ2B equation 1 gives "
-               "0.407 A typ at 2.7 kOhm and the EC table's widest ratio (1.32x) "
-               "gives 0.537 A over -40..+125 C.  It WAS 1.21 A, from the 0.70 A "
-               "the old 1.65 kOhm allowed. "
+               "0.639 A x 5.0 V / (0.88 efficiency x 3.3 V VBAT) = 1.100 A rms. "
+               "The number that sizes this trunk is not a PUBLISHED figure but "
+               "the load switch's own worst-case limit: TI SLVSGP6A equation 1 "
+               "gives 0.479 A typ at D-771's 2.32 kOhm and the EC table's "
+               "widest ratio (1.32x), over the resistor's own 1 % band, gives "
+               "0.639 A over -40..+125 C.  D-771 RAISED R101's SETTING because "
+               "2.7 kOhm GUARANTEED only 0.277 A against the 300 mA D-098 "
+               "publishes for this rail; the trunk pays for that guarantee in "
+               "current.  It WAS 0.925 A (D-753, 2.7 kOhm) and 1.21 A before "
+               "that (D-750, 1.65 kOhm), so this is still BELOW the figure the "
+               "trunk was originally built for. "
                "The 2.19 A the section 5 note quotes is the PEAK INDUCTOR "
                "current (D-185), which the input capacitor C83 supplies "
                "locally; the trunk carries the average.  THE SINK IS L4.1, NOT "
@@ -194,6 +199,94 @@ RAILS = (
                "lies 0.075 mm outside L4.1's land and OVERLAPS it as copper, "
                "which KiCad's connectivity resolves and this file's "
                "endpoint-in-pad graph does not."),
+    # D-771 ADDED THESE TWO.  The accessory rails THEMSELVES had never been
+    # measured -- only the SYS trunk that feeds the 5 V boost.  They matter now
+    # because guaranteeing D-098's published budget forces each limiter's
+    # WORST-CASE limit up with it: the enforced maximum is not the 400/300 mA
+    # the product publishes but what the load switch is allowed to pass at its
+    # unlucky corner.  A rail whose copper is sized for the published figure
+    # and whose silicon permits twice it is exactly the gap D-766 named.
+    # The two duplicate contacts on each rail SHARE the rail limit (D-098), so
+    # each path is sized for the WHOLE current rather than half of it.
+    dict(name="ACC_3V3_SW", net="/ACC_3V3_SW",
+         src=("U20.5",), snk=("J5.3", "J5.22"), amps=0.849,
+         accept=(dict(layer="In2.Cu", reason="dru-5f", max_length_mm=76.0,
+                      max_width_mm=0.40),),
+         accept_reason="D-771 / .kicad_dru section 5f, the SAME model and the "
+               "SAME two planes section 5c already rests on.  The rail leaves "
+               "U20 on In2.Cu at 0.400 mm, where IPC-2221B's INTERNAL curve "
+               "asks 1.436 mm for 0.849 A and returns 82.1 K.  That curve is "
+               "an isolated coupon in still air; In2.Cu on THIS board sits "
+               "0.4000 mm of core from the In1.Cu GND plane and 0.2028 mm of "
+               "prepreg from the In3.Cu +3V3 plane, and the plane-coupled rise "
+               "derived from those two distances is 2.29 K for 0.162 W over the "
+               "whole rail.  THE ELECTRICAL COST IS ACCEPTED WITH ITS NUMBER: "
+               "224 mOhm, which is 190 mV at the limiter's worst case and "
+               "90 mV at D-098's PUBLISHED 400 mA -- the figure an accessory "
+               "actually sees.  With U20's own 68 mOhm max RON that is 117 mV "
+               "at the published budget, leaving the Community Port above "
+               "3.18 V against a 3.135 V -5 % floor.  Length is bounded at "
+               "76.0 mm against 73.3 used, so a re-route cannot grow it "
+               "silently.",
+         basis="U20 TPS22950-Q1 worst-case ILIM at D-771's R97 = 1.78 kOhm: "
+               "SLVSGP6A equation 1 gives 0.636 A typ, and the EC table's "
+               "widest ratio (1.32x) over the resistor's own 1 % band gives "
+               "0.849 A over -40..+125 C.  The PUBLISHED budget is D-098's "
+               "400 mA total, which the same setting GUARANTEES (0.428 A); "
+               "this row is sized by the limiter, not by the publication."),
+    dict(name="ACC_5V_SW", net="/ACC_5V_SW",
+         src=("U22.5",), snk=("J5.1", "J5.24"), amps=0.639,
+         accept=(dict(layer="In3.Cu", reason="dru-5f", max_length_mm=41.0,
+                      max_width_mm=0.40),),
+         accept_reason="D-771 / .kicad_dru section 5f.  Same model on In3.Cu, "
+               "whose own declared stackup puts it 0.2028 mm of prepreg from "
+               "In2.Cu and 0.4000 mm of core from the In4.Cu GND plane: "
+               "IPC-2221B asks 0.970 mm and returns 43.1 K, the plane-coupled "
+               "rise derived from those two distances is 1.30 K, and the rail "
+               "dissipates 0.045 W.  In2.Cu is a ROUTING layer rather than a "
+               "solid plane, so that side of the model is optimistic -- but "
+               "the In4 side ALONE, at 0.4000 mm, still gives 3.9 K, and the "
+               "track runs inside In3's own +3V3 pour at 0.250 mm lateral "
+               "clearance, a heat path this model ignores entirely.  111 mOhm, "
+               "71 mV at the limiter's worst case and 33 mV at D-098's "
+               "PUBLISHED 300 mA.  Length bounded at 41.0 mm against 38.6 "
+               "used.",
+         basis="U22 TPS22950-Q1 worst-case ILIM at D-771's R101 = 2.32 kOhm: "
+               "0.479 A typ, 0.639 A worst case on the same basis.  The "
+               "PUBLISHED budget is D-098's 300 mA total, GUARANTEED at "
+               "0.322 A.  The ACC_5V class floor is 0.400 mm where IPC-2221B "
+               "asks 0.163 mm OUTER at this current, so no width rule moves."),
+    # D-771 DECLARES THE +3V3 RAIL, WHICH HAD NEVER APPEARED HERE AT ALL.
+    # Raising R97's ILIM so the 3.3 V accessory rail can GUARANTEE D-098's
+    # published 400 mA also raises what U12 must SOURCE -- 1.0 A internal plus
+    # 0.849 A worst-case accessory = 1.849 A -- and nothing in this file had
+    # ever asked what carries it.  The answer is that NOTHING DOES, in the
+    # track sense: `+3V3` is delivered by its two F.Cu pours (5 993 and
+    # 8 764 mm2) and the In3.Cu plane, exactly as BQ25185_SYS is delivered by
+    # its own, and a track-graph search between U12's output and U20's input
+    # correctly returns NO PATH.  Declared so the gap is VISIBLE rather than
+    # silent, with the two package-limited ends measured by hand at 1.849 A:
+    #
+    #   U12.4/U12.5  0.240 mm DSJ0010A output lands, TWO IN PARALLEL   12.2 K
+    #   0.800 mm B.Cu trunk out of them                                 8.1 K
+    #   0.600 mm B.Cu branches to the three plane vias (each shares)   13.1 K *
+    #   U20.2  0.400 mm B.Cu input stub, 2.5 mm, at 0.849 A             4.3 K
+    #   * the figure if ONE branch carried the WHOLE rail; three share it
+    #
+    # All four are inside this file's own 20 K limit, and the widest is a
+    # package land nothing can be laid wider on -- the same class of residual
+    # as U11.2 (see .kicad_dru section 5e).
+    dict(name="P3V3_MAIN", net="+3V3",
+         src=("U12.4", "U12.5"), snk=("U20.2",), amps=1.849,
+         basis="P3V3 1.0 A design current (.kicad_dru section 5) PLUS the "
+               "0.849 A worst-case ACC_3V3 limiter D-771 sets -- the total "
+               "U12 must source, and the figure checks/demo_feature_contract.py "
+               "F6 measures against the TPS63020's own rated 2 A for VIN > "
+               "2.5 V, VOUT = 3.3 V (SLVSAA7)",
+         pour_delivered="delivered by the two F.Cu +3V3 pours and the In3.Cu "
+               "plane, not by a trunk; a track-graph NO_PATH is the expected "
+               "answer and is not a defect.  The four local conductors at "
+               "either end are measured in the comment above this entry"),
     dict(name="SYS_TO_NFC5V_BOOST", net="/01_POWER_TREE/BQ25185_SYS",
          src=("U12.1", "U12.10", "U12.11", "C24.1", "C26.2", "C28.1"),
          snk=("L2.1",), amps=0.86,
@@ -341,14 +434,65 @@ def stackup_selfcheck(board_path):
                      "own declared stackup (D-750)")
 
 
-def selfcheck():
-    """Re-derive `.kicad_dru` section 5's published table before ruling."""
-    published = (
-        ("BAT_MAIN", 1.5, 0.529, 3.148), ("SYS_MAIN", 1.0, 0.302, 1.799),
-        ("P3V3", 1.0, 0.302, 1.799), ("ACC_3V3", 0.40, 0.085, 0.508),
-        ("ACC_5V", 0.70, 0.185, 1.100), ("VBUS_CHG", 1.1, 0.345, 2.052),
-        ("SPK_OUT", 0.29, 0.055, 0.326),
-    )
+DRU = BOARD.with_suffix(".kicad_dru")
+SECTION5 = "# 5. POWER RAILS"
+
+
+def published_width_table(dru_path=None):
+    """Every `<amps> A ... <outer> mm <inner> mm` row `.kicad_dru` section 5
+    ACTUALLY prints, read from the file.
+
+    D-771 REPLACED A FROZEN COPY.  `selfcheck` said in its own docstring that it
+    "re-derives `.kicad_dru` section 5's published table", and it re-derived a
+    seven-row TRANSCRIPTION of that table instead -- so a row the `.kicad_dru`
+    edited, retired or added was invisible to it.  It had already drifted: the
+    transcription carried `ACC_5V 0.70 A -> 0.185 / 1.100 mm`, a row D-753
+    retired from the file in 2026-09-18 and which no longer appears anywhere in
+    it, and the self-check went on reporting `method_reproduces_dru: true`.
+    That is the same defect class D-766..D-769 closed elsewhere on this board:
+    a figure a reviewer edits in one place and a tool charges against in
+    another.  `checks/pour_partition_contract.published_rail_currents` already
+    parses this same block for its CURRENTS; this parses it for its WIDTHS.
+
+    A row is `<class>? <amps> A <words> <outer> mm <outer> mm`; continuation
+    lines belong to the class above them.  A row with no width pair -- the
+    `LED_BOOST` "clearance-driven, not width" line -- is correctly skipped, and
+    so is every prose line in the notes under a class, because none of them
+    states two millimetre figures after a current.
+    """
+    p = Path(dru_path or DRU)
+    try:
+        txt = p.read_text(encoding="utf-8", errors="replace")
+        i = txt.index(SECTION5)
+    except (OSError, ValueError):
+        return [], dict(source=str(p), found=False)
+    blk = txt[i:]
+    end = blk.find("\n(rule")
+    blk = blk[:end if end > 0 else len(blk)]
+    rows, cur = [], None
+    row_re = re.compile(
+        r"^#\s{2,}(?:([A-Z][A-Z0-9_]+)\s+)?"
+        r"([0-9]*\.?[0-9]+)\s*A\b[^#]*?"
+        r"([0-9]*\.?[0-9]+)\s*mm\s+([0-9]*\.?[0-9]+)\s*mm\s*$")
+    for line in blk.splitlines():
+        m = row_re.match(line.rstrip())
+        if not m:
+            # a class row with no width pair still sets the current class name
+            n = re.match(r"^#\s{3}([A-Z][A-Z0-9_]+)\s", line)
+            if n:
+                cur = n.group(1)
+            continue
+        if m.group(1):
+            cur = m.group(1)
+        rows.append((cur, float(m.group(2)), float(m.group(3)),
+                     float(m.group(4))))
+    return rows, dict(source=str(p), found=True,
+                      sha256=hashlib.sha256(p.read_bytes()).hexdigest(),
+                      rows=len(rows))
+
+
+def _reproduce(published):
+    """Shared arithmetic for `selfcheck` and its own live control."""
     rows, worst, mismatched = [], 0.0, []
     for name, amps, outer, inner in published:
         o, i = width_for(amps, DT_REF, True), width_for(amps, DT_REF, False)
@@ -358,23 +502,49 @@ def selfcheck():
         # A RELATIVE tolerance, because the DRU's published figures are rounded
         # to 3 decimals and the inner widths are millimetres: 2.7498 against a
         # published 2.734 is rounding, 0.285 against 0.365 is a different
-        # current.  1.5 % separates the two cleanly on all seven rows.
+        # current.  1.5 % separates the two cleanly on all fourteen rows.
         if max(abs(o - outer) / outer, abs(i - inner) / inner) > 0.015:
             # The method is not wrong -- the DRU row is.  Report the current its
             # OWN published widths correspond to, so the discrepancy is named
             # rather than rounded away.  D-743 found exactly one: SPK_OUT, whose
-            # 0.070/0.365 mm widths are 0.347 A, matching neither the 0.29 A rms
-            # nor the 0.41 A peak the same line names.
+            # 0.070/0.365 mm widths were 0.347 A, matching neither the 0.29 A
+            # rms nor the 0.41 A peak the same line named; the row it corrected
+            # is one of the fourteen this now reads back out of the file.
             row["dru_width_implies_amps"] = round(
                 ampacity(outer * OUTER_MM, DT_REF, True), 4)
             mismatched.append(name)
         else:
             worst = max(worst, abs(o - outer) / outer, abs(i - inner) / inner)
         rows.append(row)
+    return rows, worst, mismatched
+
+
+def selfcheck():
+    """Re-derive `.kicad_dru` section 5's published table before ruling.
+
+    D-771: the table is now READ FROM THE FILE (see `published_width_table`).
+    An empty parse is a FAILURE, not a vacuous pass -- a self-check that
+    reproduces nothing has not reproduced the board.  And the comparison is
+    proved capable of failing on every run: one parsed row is perturbed by a
+    factor this tolerance must reject, and the same arithmetic must refuse it.
+    """
+    published, src = published_width_table()
+    control = None
+    if published:
+        mutated = list(published)
+        n, a, o, i = mutated[0]
+        mutated[0] = (n, a, o * 1.20, i)
+        _, _, ctl_bad = _reproduce(mutated)
+        control = dict(row=n, perturbation="outer x 1.20", refused=bool(ctl_bad))
+    rows, worst, mismatched = _reproduce(published)
     return dict(rows=rows, worst_relative_residual=round(worst, 5),
                 dru_rows_not_reproduced=mismatched,
-                method_reproduces_dru=len(mismatched) < len(published) // 2,
-                ok=worst <= 0.015)
+                source=src, published_rows=len(published),
+                control_refuses_a_perturbed_row=control,
+                method_reproduces_dru=bool(published)
+                                      and len(mismatched) < len(published) // 2,
+                ok=bool(published) and not mismatched and worst <= 0.015
+                   and bool(control and control["refused"]))
 
 
 def pad_key(pad):

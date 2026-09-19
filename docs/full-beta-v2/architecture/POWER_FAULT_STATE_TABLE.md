@@ -7,6 +7,34 @@ Task: FBV2-ARCH-002, revised FBV2-PWR-001
 Scope: analysis only. No schematic, PCB or hardware file was created or modified
 **by this document**.
 
+> ## AQROOT DEMO DELTA — `R75` IS 10 mΩ, AND EVERY TRIP FIGURE BELOW IS A TYPICAL (D-771, 2026-09-19)
+>
+> **Every "3.33 A trip" in this document is `50 mV / 15 mΩ`, and both terms have
+> moved.**  ADI's LTC4368 Rev C Electrical Characteristics guarantees `ΔVSENSE,F`
+> — the forward overcurrent fault threshold — only as **40 / 50 / 60 mV** over the
+> full operating temperature range at `VOUT = VIN`.  50 mV is a **TYPICAL**, and
+> this repository had used it as a limit everywhere.  At `R75` = 15 mΩ ± 1 % the
+> breaker's real band was **2.640 – 4.040 A**, which **OVERLAPPED** the
+> `BQ25185`'s own `IBAT_OCP` band of **2.5625 – 3.6875 A** by 1.05 A.  `RETRY` is
+> grounded here, so the LTC4368 breaker **LATCHES OFF** and is cleared only by
+> toggling `SHDN`, while `IBAT_OCP` **hiccups and auto-retries** — so on an unlucky
+> unit the *latching* protection fired before the *recoverable* one.
+>
+> **On AQROOT Demo `R75` is 10 mΩ** (Bourns `CRA2512-FZ-R010ELF`, same series,
+> same 2512 land, same 3 W) and the breaker band is **3.960 / 5.000 / 6.061 A** —
+> entirely above `IBAT_OCP`'s 3.6875 A maximum.
+>
+> **NO CASE IN THIS TABLE CHANGES ITS VERDICT, AND EVERY MARGIN IN IT IMPROVES.**
+> Case 11 / F9 hot insertion: 350 mA of designed inrush against a **3.960 A**
+> guaranteed minimum rather than a 3.33 A typical — **11.3× instead of 9.5×**.
+> Case 10: ~35 mA against the same.  `F1` is still a 5 A backstop that must not
+> pre-empt the breaker, and it does not: ordering against a one-shot fuse is a
+> **time–current** result (`tp(GATE)` 3–18 µs against 5 s at 200 % of rating), not
+> a threshold comparison.  The reverse threshold scales with the shunt in the same
+> way: −42/−50/−58 mV gives **4.16 – 5.86 A**, far above any charge current this
+> board programs (`ICHG` 769 mA).  The dated analyses below are retained verbatim
+> as the primary-source record.
+
 > ## AQROOT DEMO DELTA — `STAT2` IS NOT LANDED, AND THE SCHEMATIC'S DECODE WAS INVERTED (D-742, 2026-09-18)
 >
 > **This document analyses the Full Beta v2 topology, in which BOTH `BQ25185`
@@ -66,7 +94,7 @@ Scope: analysis only. No schematic, PCB or hardware file was created or modified
 >
 > **The topology this table analyses is now CAPTURED**, in
 > `hardware/beta-v2/kicad/aqroot-beta-v2/01_power_tree.kicad_sch`: `U18` LTC4368-1,
-> `Q2`/`Q3` as the P2 pass path in two packages, `R75` 15 mΩ, `F1` 5 A, `D9` secondary
+> `Q2`/`Q3` as the P2 pass path in two packages, `R75` 15 mΩ *(10 mΩ on AQROOT Demo since D-771)*, `F1` 5 A, `D9` secondary
 > clamp, and the full Candidate-B recovery branch on `U19`. **This table remains the
 > authority for behaviour** — the capture does not supersede a single case, and no case
 > has been re-derived against the captured values.
@@ -412,6 +440,18 @@ CTO decisions (**P-11**, **P-12**).
 > `-Q1` now, the 2.7 kΩ / 0.407 A setting is in specification, and
 > `demo_feature_contract.py` **F6** refuses any `ILIM` outside the fitted part's
 > own published range.
+>
+> **D-771 — AND THE SETTING MOVED AGAIN, THIS TIME TOWARD THIS NOTE.**  The
+> 600–800 mA recommendation above was written against the `C` variant's 0.5 A
+> floor, which the `-Q1` retires.  What forced the setting up instead was D-098's
+> PUBLISHED budget: at 2.7 kΩ each rail **GUARANTEED only 0.277 A** against a
+> published 400 mA / 300 mA.  `R97` is now **1.78 kΩ (0.636 A typ, 0.428 A
+> guaranteed)** — inside this note's own 600–800 mA recommendation — and `R101`
+> **2.32 kΩ (0.479 A typ, 0.322 A guaranteed)**, which is below it because the
+> 5 V rail costs 1.875 A of pack current per amp delivered and its worst case
+> already sits 5.6 % under `IBAT_OCP`'s minimum.  `F6` now also refuses a setting
+> that does not GUARANTEE its rail's published budget, and one its converter
+> cannot source.
 
 ### Case 9 — Externally powered accessory while AQROOT is off
 

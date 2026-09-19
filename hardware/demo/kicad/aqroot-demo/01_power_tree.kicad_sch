@@ -4912,7 +4912,7 @@
 					)
 				)
 			)
-			(property "Description" "Analog Devices LTC4368-1: 2.5-60 V UV/OV and reverse-supply protection controller with bidirectional electronic circuit breaker. Drives back-to-back external N-channel MOSFETs. Forward sense threshold +50 mV, reverse -50 mV (-1 option). GATE charge pump 35 uA pull-up, up to 13.1 V enhancement, referenced to VOUT. 2.2 V VIN UVLO. Pin-selectable overcurrent auto-retry timer or latch-off. THE -1 SUFFIX IS LOAD-BEARING: the -2 trips at -3 mV and blocks normal charging."
+			(property "Description" "Analog Devices LTC4368-1: 2.5-60 V UV/OV and reverse-supply protection controller with bidirectional electronic circuit breaker. Drives back-to-back external N-channel MOSFETs. Forward sense threshold +40/+50/+60 mV and reverse -42/-50/-58 mV (-1 option), GUARANTEED OVER TEMPERATURE in the Rev C Electrical Characteristics -- 50 mV is the TYPICAL and D-771 found this repository had been using it as a limit. GATE charge pump 35 uA pull-up, up to 13.1 V enhancement, referenced to VOUT. 2.2 V VIN UVLO. Pin-selectable overcurrent auto-retry timer or latch-off. THE -1 SUFFIX IS LOAD-BEARING: the -2 trips at -3 mV and blocks normal charging."
 				(at 0 0 0)
 				(hide yes)
 				(effects
@@ -5440,7 +5440,7 @@
 					)
 				)
 			)
-			(property "Description" "TI TPS22950-Q1 (SLVSGP6A, orderable TPS22950CQDDCRQ1): 5.5 V, 2.7 A, 34 mOhm AEC-Q100 grade-1 adjustable current-limited load switch. VIN 1.8-5.5 V. ILIM 0.05-3.5 A set by R_ILIM (ILIM = 1.18 x R[kOhm]^-1.072); UL 2367 recognised from 66 mA to 2.46 A. ALWAYS-ON true reverse current blocking (44 mV / 3 us / 38 uA). Auto-retry overcurrent response. Thermal shutdown 170 C rising, 150 C falling. Open-drain FLT asserts on THERMAL SHUTDOWN and REVERSE CURRENT ONLY - a plain current-limit event leaves FLT Hi-Z. 500 kOhm smart pull-down on ON, and an external pull-down is fitted regardless. DDC SOT-23-thin 6-pin - the SAME DDC0006A land pattern and the SAME ON/VIN/GND/ILIM/VOUT/FLT pinout as the TPS22950C it replaces. D-765 REPLACED THE TPS22950C BECAUSE THAT PART'S OWN SPECIFIED ILIM RANGE IS 0.5-3.5 A (SLVSFJ2B section 5) AND THE FITTED 2.7 kOhm / 0.407 A SETTING IS BELOW IT; the -Q1 is specified from 0.05 A, so the D-753 envelope becomes an in-specification setting."
+			(property "Description" "TI TPS22950-Q1 (SLVSGP6A, orderable TPS22950CQDDCRQ1): 5.5 V, 2.7 A, 34 mOhm AEC-Q100 grade-1 adjustable current-limited load switch. VIN 1.8-5.5 V. ILIM 0.05-3.5 A set by R_ILIM (ILIM = 1.18 x R[kOhm]^-1.072); UL 2367 recognised from 66 mA to 2.46 A. ALWAYS-ON true reverse current blocking (44 mV / 3 us / 38 uA). Auto-retry overcurrent response. Thermal shutdown 170 C rising, 150 C falling. Open-drain FLT asserts on THERMAL SHUTDOWN and REVERSE CURRENT ONLY - a plain current-limit event leaves FLT Hi-Z. 500 kOhm smart pull-down on ON, and an external pull-down is fitted regardless. DDC SOT-23-thin 6-pin - the SAME DDC0006A land pattern and the SAME ON/VIN/GND/ILIM/VOUT/FLT pinout as the TPS22950C it replaces. D-765 REPLACED THE TPS22950C BECAUSE THAT PART'S OWN SPECIFIED ILIM RANGE IS 0.5-3.5 A (SLVSFJ2B section 5) AND THE 2.7 kOhm / 0.407 A SETTING D-753 FITTED WAS BELOW IT; the -Q1 is specified from 0.05 A, so the D-753 envelope becomes an in-specification setting. D-771 HAS SINCE MOVED BOTH PROGRAMMING RESISTORS -- R97 to 1.78 kOhm and R101 to 2.32 kOhm -- so that each rail GUARANTEES the accessory budget D-098 publishes for it; both settings remain inside this part's 0.05-3.5 A range. See the R97 and R101 notes."
 				(at 0 0 0)
 				(hide yes)
 				(effects
@@ -5878,7 +5878,7 @@
 		)
 		(uuid "241104a2-90c4-4da2-8f01-4051f4960df2")
 	)
-	(text "REVERSE-POLARITY PROTECTION - IMPLEMENTED (FBV2-S1)\nD-050 / D-052 / D-064 / D-068. The placeholder is RETIRED.\n\nSee block A, lower left, for the captured circuit:\nBAT_CONNECTOR_P -> F1 -> BAT_RAW -> Q2 -> BAT_MID -> Q3\n-> BAT_SENSE -> R75 15mR -> BAT_PROTECTED_P -> U11 BAT\nController U18 LTC4368-1. Recovery branch in block B.\n\nBAT_CONNECTOR_P AND BAT_PROTECTED_P\nREMAIN INTENTIONALLY DISTINCT NETS.\n\nSTATUS: CAPTURED AND ERC-CHECKED.\nNOT FABRICATION READY. NO PLACEMENT, NO ROUTING.\nFOOTPRINT AUDIT AND VALUE-TO-VERIFY ITEMS OPEN (FBV2-S2)."
+	(text "REVERSE-POLARITY PROTECTION - IMPLEMENTED (FBV2-S1)\nD-050 / D-052 / D-064 / D-068. The placeholder is RETIRED.\n\nSee block A, lower left, for the captured circuit:\nBAT_CONNECTOR_P -> F1 -> BAT_RAW -> Q2 -> BAT_MID -> Q3\n-> BAT_SENSE -> R75 10mR -> BAT_PROTECTED_P -> U11 BAT\nController U18 LTC4368-1. Recovery branch in block B.\n\nBAT_CONNECTOR_P AND BAT_PROTECTED_P\nREMAIN INTENTIONALLY DISTINCT NETS.\n\nSTATUS: CAPTURED AND ERC-CHECKED.\nNOT FABRICATION READY. NO PLACEMENT, NO ROUTING.\nFOOTPRINT AUDIT AND VALUE-TO-VERIFY ITEMS OPEN (FBV2-S2)."
 		(exclude_from_sim no)
 		(at 193.294 138.684 0)
 		(effects
@@ -18225,7 +18225,7 @@
 		)
 		(uuid "e3f66627-68ab-0315-2baa-953e9f1a28d5")
 	)
-	(text "JST J4 -> F1 (5A backstop) -> BAT_RAW -> Q2 (stage 1, 2 FETs) -> BAT_MID -> Q3 (stage 2, 2 FETs) -> BAT_SENSE -> R75 15mR -> BAT_PROTECTED_P -> BQ25185 BAT."
+	(text "JST J4 -> F1 (5A backstop) -> BAT_RAW -> Q2 (stage 1, 2 FETs) -> BAT_MID -> Q3 (stage 2, 2 FETs) -> BAT_SENSE -> R75 10mR (D-771; was 15mR) -> BAT_PROTECTED_P -> BQ25185 BAT."
 		(exclude_from_sim no)
 		(at 20 236.0 0)
 		(effects
@@ -18237,7 +18237,7 @@
 		)
 		(uuid "e36358b5-6c74-e7d4-f57f-d3913fb9b52e")
 	)
-	(text "LTC4368-1 ONLY (the -2 trips at -3 mV and blocks charging). RETRY grounded = latch-off; SHDN toggled low-then-high clears it. UV unused: 510k to VIN per datasheet (V_UV/V_OV = 492.5 / 500 / 507.5 mV, hysteresis 20 / 25 / 32 mV).\nOV TRIP (P-21, D-104): R77 3.65M / R78 442k -> 4.63 V nominal, 4.48-4.78 V over comparator + 1% resistor tolerance. Release 4.40 V nominal. Above a 4.35 V-class pack, well below the 5.05 V first capture."
+	(text "LTC4368-1 ONLY (the -2 trips at -3 mV and blocks charging). RETRY grounded = latch-off; SHDN toggled low-then-high clears it.\nD-771 FORWARD BREAKER, OVER TOLERANCE: ADI Rev C guarantees dVSENSE,F as 40 / 50 / 60 mV over temperature -- 50 mV is a TYPICAL. R75 is 10 mOhm (was 15), so the breaker trips at 3.960 / 5.000 / 6.061 A, ENTIRELY ABOVE the BQ25185 IBAT_OCP band 2.5625 / 3.125 / 3.6875 A. THE RECOVERABLE PROTECTION IS NOW GUARANTEED TO ACT BEFORE THIS LATCHING ONE ON EVERY UNIT; at 15 mOhm the two bands overlapped by 1.05 A. Ordering against F1 is time-current, not threshold: tp(GATE) 3-18 us against a 5 A fast-acting Nano2 needing 5 s at 200 %%. UV unused: 510k to VIN per datasheet (V_UV/V_OV = 492.5 / 500 / 507.5 mV, hysteresis 20 / 25 / 32 mV).\nOV TRIP (P-21, D-104): R77 3.65M / R78 442k -> 4.63 V nominal, 4.48-4.78 V over comparator + 1% resistor tolerance. Release 4.40 V nominal. Above a 4.35 V-class pack, well below the 5.05 V first capture."
 		(exclude_from_sim no)
 		(at 20 239.5 0)
 		(effects
@@ -18695,7 +18695,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "15mR 1% 1W"
+		(property "Value" "10mR 1% 3W"
 			(at 84.55 257.25 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -18741,7 +18741,7 @@
 				)
 			)
 		)
-		(property "MPN" "CRA2512-FZ-R015ELF"
+		(property "MPN" "CRA2512-FZ-R010ELF"
 			(at 84.55 254.25 0)
 			(hide yes)
 			(show_name no)
@@ -18752,7 +18752,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C2073490"
+		(property "LCSC" "C840621"
 			(at 84.55 254.25 0)
 			(hide yes)
 			(show_name no)
@@ -18763,7 +18763,7 @@
 				)
 			)
 		)
-		(property "Note_Sourcing" "SOURCING D-615 LIVE_RECORD. JLCPCB record read 2026-09-05T00:59:59Z: expand library, stock 940, land 2512, Power(Watts) 3W; Resistance 15mΩ; Temperature Coefficient ±50ppm/℃; Tolerance ±1%; Type Current Sense Resistor. Gates: land working voltage vs the highest node; 2x operating and survives single fault."
+		(property "Note_Sourcing" "SOURCING D-771 2026-09-18, verified live per D-096 through the JLCPCB parts API.  LCSC C840621, BOURNS CRA2512-FZ-R010ELF, 10 mOhm +/-1 %, 2512, 3 W, +/-50 ppm/C, -55..+170 C, componentLibraryType = expand, stock 10613.  SAME BOURNS CRA2512-FZ SERIES, SAME 2512 LAND and same 3 W rating as the CRA2512-FZ-R015ELF it replaces, so no footprint, no copper and no assembly step changes -- only the resistance."
 			(at 84.55 254.25 0)
 			(hide yes)
 			(show_name no)
@@ -18786,7 +18786,7 @@
 				(justify left)
 			)
 		)
-		(property "Note" "R_SENSE: I_OC,FWD = 50 mV / 15 mR = 3.33 A"
+		(property "Note" "R_SENSE, LTC4368-1 FORWARD BREAKER.  D-771 MOVED THIS FROM 15 mOhm.  ADI LTC4368 Rev C Electrical Characteristics guarantees dVSENSE,F -- the forward overcurrent fault threshold -- as 40 / 50 / 60 mV over the full operating temperature range.  50 mV is a TYPICAL, and every document in this repository had used it as a limit.  At 15 mOhm +/-1 % the breaker's real band was 2.640 .. 4.040 A, which OVERLAPPED the BQ25185's IBAT_OCP band of 2.5625 .. 3.6875 A (3.125 A typ +/-18 %, SLUSF65B) by 1.05 A -- and RETRY is grounded, so this breaker LATCHES OFF and is cleared only by toggling SHDN while IBAT_OCP hiccups and auto-retries.  On an unlucky unit the LATCHING protection fired first.  At 10 mOhm +/-1 % the band is 3.960 .. 6.061 A, ENTIRELY ABOVE IBAT_OCP's 3.6875 A maximum, so the recoverable protection is guaranteed to act first on EVERY unit.  The breaker still beats F1: its propagation delay is 3-18 us (tp(GATE)) against a 5 A fast-acting Nano2 that needs 5 s at 200 % of rating, so ordering against the one-shot fuse is a TIME-CURRENT result, not a threshold comparison.  Reverse threshold scales with it: -42/-50/-58 mV gives 4.16 .. 5.86 A, still far above any charge current this board programs (ICHG 769 mA).  Dissipation falls from 0.146 W to 0.098 W at 3.125 A, and D-193's fuel-gauge offset from 26 mV to 17 mV at the 1.75 A pack worst case.  Pinned by checks/demo_feature_contract.py F6."
 			(at 84.55 251.25 0)
 			(hide yes)
 			(show_name no)
@@ -28690,7 +28690,7 @@
 		)
 		(uuid "918daf74-3a10-1710-d2a7-c9d033f6eae9")
 	)
-	(text "ACC_3V3: +3V3 -> TPS22950-Q1 -> ACC_3V3_SW. R_ILIM 2.7k ~ 0.407 A typ, 0.277 A GUARANTEED / 0.537 A worst case (D-753). There is no accessory current measurement, so the LIMITER is the envelope and the GUARANTEE is the published figure."
+	(text "ACC_3V3: +3V3 -> TPS22950-Q1 -> ACC_3V3_SW. R_ILIM 1.78k ~ 0.636 A typ, 0.428 A GUARANTEED / 0.849 A worst case (D-771; was 2.7k at D-753). There is no accessory current measurement, so the LIMITER is the envelope and the GUARANTEE is the published figure -- and D-098 PUBLISHES 400 mA TOTAL for this rail across BOTH its J5 contacts, which 2.7k could not guarantee."
 		(exclude_from_sim no)
 		(at 330 236.0 0)
 		(effects
@@ -28702,7 +28702,7 @@
 		)
 		(uuid "345ef912-135a-506f-3019-a6ae55310e8f")
 	)
-	(text "ACC_5V: BQ25185_SYS -> dedicated TPS61023 (5.0 V) -> dedicated TPS22950-Q1 -> ACC_5V_SW. R_ILIM 2.7k ~ 0.407 A typ, 0.277 A GUARANTEED / 0.537 A worst case (D-753). NOT USB VBUS. NOT the NFC fallback boost (O-3 REJECTED)."
+	(text "ACC_5V: BQ25185_SYS -> dedicated TPS61023 (5.0 V) -> dedicated TPS22950-Q1 -> ACC_5V_SW. R_ILIM 2.32k ~ 0.479 A typ, 0.322 A GUARANTEED / 0.639 A worst case (D-771; was 2.7k at D-753), against the 300 mA TOTAL D-098 PUBLISHES for this rail across BOTH its J5 contacts. NOT USB VBUS. NOT the NFC fallback boost (O-3 REJECTED)."
 		(exclude_from_sim no)
 		(at 330 239.5 0)
 		(effects
@@ -29133,7 +29133,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "2.7k 1%"
+		(property "Value" "1.78k 1%"
 			(at 422.37 258.52 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -29179,7 +29179,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF2701T5E"
+		(property "MPN" "0603WAF1781T5E"
 			(at 422.37 255.52 0)
 			(hide yes)
 			(show_name no)
@@ -29190,7 +29190,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C13167"
+		(property "LCSC" "C22849"
 			(at 422.37 255.52 0)
 			(hide yes)
 			(show_name no)
@@ -29201,7 +29201,7 @@
 				)
 			)
 		)
-		(property "Note_Sourcing" "SOURCING D-753 2026-09-18, verified live per D-096 through the JLCPCB parts API: LCSC C13167, UNI-ROYAL(Uniroyal Elec) 0603WAF2701T5E, 2.7 kOhm +/-1 %, 0603, 100 mW, +/-100 ppm/C, -55..+155 C, componentLibraryType = BASE (no extended-part fee), stock 1406950.  Same 0603WAF series as most of this board's 1 %% resistors.  R101's superseded ERJ-PA3F1651V was an EXTENDED part with 2763 in stock, so this also removes a sourcing risk."
+		(property "Note_Sourcing" "SOURCING D-771 2026-09-18, verified live per D-096 through the JLCPCB parts API.  LCSC C22849, UNI-ROYAL(Uniroyal Elec) 0603WAF1781T5E, 1.78 kOhm +/-1 %, 0603, 100 mW, +/-100 ppm/C, -55..+155 C, componentLibraryType = expand, stock 19278.  SAME 0603WAF SERIES AND SAME MANUFACTURER as the 0603WAF2701T5E it replaces and as most of this board's 1 %% resistors; same 0603 land, so no copper changes.  1.78 kOhm is an E96 value and JLCPCB lists no BASIC-library part at it -- the extended-part fee is accepted because the E24 alternatives either fail the published-budget clause or spend the pack margin."
 			(at 422.37 255.52 0)
 			(hide yes)
 			(show_name no)
@@ -29224,7 +29224,7 @@
 				(justify left)
 			)
 		)
-		(property "Note" "D-753 THE ACCESSORY CONCURRENCY LIMIT BECOMES HARDWARE.  WAS 1.5 kOhm = 0.76 A typ, up to 1.01 A at the same tolerance.  TI SLVSFJ2B equation 1: ILIM = 1.18 x R[kOhm]^-1.072, so 2.7 kOhm sets 0.407 A typ; applying the WIDEST published tolerance ratio in the part's own EC table (min 0.68x / max 1.32x of typ over -40..+125 C, read off the 19.2 kOhm row) gives a guaranteed 0.277 A and a worst-case 0.537 A.  WHY IT MOVED: DEVICE_SPEC 6.3a answered the external first-spin review's combined-load item with a POLICY -- 'firmware must not raise both accessory rails to their per-rail maxima together' -- and a policy is not an enforcement mechanism.  THIS BOARD HAS NO ACCESSORY CURRENT MEASUREMENT: firmware can choose whether a rail is ON, and cannot know what an arbitrary external accessory then draws.  At the old values the hardware permitted far more than the policy did.  Modelled at the 3.0 V cell corner with the full 1.0 A internal +3V3 load, U12 at 90 % and U21 at 88 % into 4.95 V: the 5 V rail ALONE at its limiter drew 2.93 A and both rails at their GUARANTEED currents drew 2.74 A, against a BQ25185 IBAT_OCP MINIMUM of 2.5625 A (3.125 A typ, +/-18 %) -- so loads the Community Port invites could trip the pack protection and reset the device.  At 2.7 kOhm on both rails: 3V3 alone 1.88 A (+27 % margin), 5V alone 2.23 A (+13 %), BOTH at their guaranteed currents 2.08 A (+19 %).  Only a SIMULTANEOUS DOUBLE LIMITER FAULT reaches 2.89 A, which trips the BQ25185 OCP and auto-retries -- below the LTC4368's 3.33 A (50 mV / R75 15 mOhm) and far below F1's 5 A. THE ENVELOPE IS NOW BOUNDED BY SILICON AND NOT BY A DOCUMENT.  The rail still guarantees 0.277 A, which is MORE than the superseded policy permitted at this corner (0.15 A at 5 V / 0.23 A at 3.3 V).  Pinned by checks/demo_feature_contract.py F6."
+		(property "Note" "D-771 THE PUBLISHED ACCESSORY BUDGET BECOMES A GUARANTEE.  D-753 made the accessory envelope hardware and D-765 corrected the silicon, but every clause either wrote asks only whether an accessory can pull TOO MUCH.  None asked whether the rail DELIVERS what the product promises.  D-098 (2026-08-23) locks the first five boards at ACC_3V3_SW = 400 mA TOTAL and ACC_5V_SW = 300 mA TOTAL and requires those numbers in accessory-facing documentation in those words -- and 2.7 kOhm GUARANTEES only 0.277 A on either rail.  The board published a budget its own limiter could refuse to deliver, on the two contacts the Community Port exists for.  TI SLVSGP6A equation 1: ILIM = 1.18 x R[kOhm]^-1.072, bracketed by the widest tolerance ratio in the part's own EC table (0.68x / 1.32x of typ over -40..+125 C, read off the 19.2 kOhm row) and by the programming resistor's own 1 % band, which D-771 also folded in -- the envelope modes had used the NOMINAL resistor alone.  R97 = 1.78 kOhm programs 0.636 A typ and brackets the 3.3 V rail at 0.428 A GUARANTEED / 0.849 A worst case, so the published 400 mA is guaranteed with 7.0 % headroom.  The worst case is what sizes copper and what U12 must source: 1.0 A internal + 0.849 A = 1.849 A against the TPS63020's own rated 2 A for VIN > 2.5 V, VOUT = 3.3 V (SLVSAA7).  WAS 2.7 kOhm (D-753); 1.5 kOhm before that (D-750), which this contract still refuses -- now by the converter-capability clause.  Pinned by checks/demo_feature_contract.py F6."
 			(at 422.37 252.52 0)
 			(hide yes)
 			(show_name no)
@@ -33237,7 +33237,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "2.7k 1%"
+		(property "Value" "2.32k 1%"
 			(at 510.0 344.88 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -33283,7 +33283,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF2701T5E"
+		(property "MPN" "0603WAF2321T5E"
 			(at 510.0 341.88 0)
 			(hide yes)
 			(show_name no)
@@ -33294,7 +33294,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C13167"
+		(property "LCSC" "C22905"
 			(at 510.0 341.88 0)
 			(hide yes)
 			(show_name no)
@@ -33305,7 +33305,7 @@
 				)
 			)
 		)
-		(property "Note_Sourcing" "SOURCING D-753 2026-09-18, verified live per D-096 through the JLCPCB parts API: LCSC C13167, UNI-ROYAL(Uniroyal Elec) 0603WAF2701T5E, 2.7 kOhm +/-1 %, 0603, 100 mW, +/-100 ppm/C, -55..+155 C, componentLibraryType = BASE (no extended-part fee), stock 1406950.  Same 0603WAF series as most of this board's 1 %% resistors.  R101's superseded ERJ-PA3F1651V was an EXTENDED part with 2763 in stock, so this also removes a sourcing risk."
+		(property "Note_Sourcing" "SOURCING D-771 2026-09-18, verified live per D-096 through the JLCPCB parts API.  LCSC C22905, UNI-ROYAL(Uniroyal Elec) 0603WAF2321T5E, 2.32 kOhm +/-1 %, 0603, 100 mW, +/-100 ppm/C, -55..+155 C, componentLibraryType = expand, stock 6268.  SAME 0603WAF SERIES AND SAME MANUFACTURER as the 0603WAF2701T5E it replaces; same 0603 land, so no copper changes."
 			(at 510.0 341.88 0)
 			(hide yes)
 			(show_name no)
@@ -33328,7 +33328,7 @@
 				(justify left)
 			)
 		)
-		(property "Note" "D-753 THE ACCESSORY CONCURRENCY LIMIT BECOMES HARDWARE.  WAS 1.65 kOhm = 0.69 A typ, up to 0.91 A at the same tolerance.  TI SLVSFJ2B equation 1: ILIM = 1.18 x R[kOhm]^-1.072, so 2.7 kOhm sets 0.407 A typ; applying the WIDEST published tolerance ratio in the part's own EC table (min 0.68x / max 1.32x of typ over -40..+125 C, read off the 19.2 kOhm row) gives a guaranteed 0.277 A and a worst-case 0.537 A.  WHY IT MOVED: DEVICE_SPEC 6.3a answered the external first-spin review's combined-load item with a POLICY -- 'firmware must not raise both accessory rails to their per-rail maxima together' -- and a policy is not an enforcement mechanism.  THIS BOARD HAS NO ACCESSORY CURRENT MEASUREMENT: firmware can choose whether a rail is ON, and cannot know what an arbitrary external accessory then draws.  At the old values the hardware permitted far more than the policy did.  Modelled at the 3.0 V cell corner with the full 1.0 A internal +3V3 load, U12 at 90 % and U21 at 88 % into 4.95 V: the 5 V rail ALONE at its limiter drew 2.93 A and both rails at their GUARANTEED currents drew 2.74 A, against a BQ25185 IBAT_OCP MINIMUM of 2.5625 A (3.125 A typ, +/-18 %) -- so loads the Community Port invites could trip the pack protection and reset the device.  At 2.7 kOhm on both rails: 3V3 alone 1.88 A (+27 % margin), 5V alone 2.23 A (+13 %), BOTH at their guaranteed currents 2.08 A (+19 %).  Only a SIMULTANEOUS DOUBLE LIMITER FAULT reaches 2.89 A, which trips the BQ25185 OCP and auto-retries -- below the LTC4368's 3.33 A (50 mV / R75 15 mOhm) and far below F1's 5 A. THE ENVELOPE IS NOW BOUNDED BY SILICON AND NOT BY A DOCUMENT.  The rail still guarantees 0.277 A, which is MORE than the superseded policy permitted at this corner (0.15 A at 5 V / 0.23 A at 3.3 V).  Pinned by checks/demo_feature_contract.py F6."
+		(property "Note" "D-771 THE PUBLISHED ACCESSORY BUDGET BECOMES A GUARANTEE.  D-753 made the accessory envelope hardware and D-765 corrected the silicon, but every clause either wrote asks only whether an accessory can pull TOO MUCH.  None asked whether the rail DELIVERS what the product promises.  D-098 (2026-08-23) locks the first five boards at ACC_3V3_SW = 400 mA TOTAL and ACC_5V_SW = 300 mA TOTAL and requires those numbers in accessory-facing documentation in those words -- and 2.7 kOhm GUARANTEES only 0.277 A on either rail.  The board published a budget its own limiter could refuse to deliver, on the two contacts the Community Port exists for.  TI SLVSGP6A equation 1: ILIM = 1.18 x R[kOhm]^-1.072, bracketed by the widest tolerance ratio in the part's own EC table (0.68x / 1.32x of typ over -40..+125 C, read off the 19.2 kOhm row) and by the programming resistor's own 1 % band, which D-771 also folded in -- the envelope modes had used the NOMINAL resistor alone.  R101 = 2.32 kOhm programs 0.479 A typ and brackets the 5 V rail at 0.322 A GUARANTEED / 0.639 A worst case, so the published 300 mA is guaranteed with 7.4 % headroom.  The 5 V rail is the expensive one: at the 3.0 V cell corner it costs 1.875 A of pack current per amp delivered, so its worst case alone draws 2.420 A against a 2.5625 A IBAT_OCP minimum -- 5.6 %, the thinnest margin on this board and the reason R101 cannot go lower.  U21 can source it: SLVSF14B equation 1 with ILIM_SW at its 2.7 A EC MINIMUM and L4 at its -20 %% corner gives 0.973 A at this operating point.  WAS 2.7 kOhm (D-753); 1.65 kOhm before that (D-750).  Pinned by checks/demo_feature_contract.py F6."
 			(at 510.0 338.88 0)
 			(hide yes)
 			(show_name no)

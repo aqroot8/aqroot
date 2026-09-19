@@ -66,6 +66,73 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+> # **`DEMO_READY_FOR_FAB` IS RE-DECLARED ON BOARD `c15672df` (2026-09-19, D-771).**
+>
+> **D-770's declaration was WITHDRAWN by the CTO for one item, and that item is
+> closed.**  The withdrawal read: *"D-098 locks first-five `ACC_3V3_SW` = 400 mA
+> total and `ACC_5V_SW` = 300 mA total; current 2.7 kOhm `TPS22950-Q1` settings
+> guarantee only ~277 mA per rail.  Correct resistor/current/protection/
+> concurrency contract before order."*  It was right, and chasing it found a
+> second defect of the same shape in the battery protection chain.
+>
+> **THE ENVELOPE HAD ONLY EVER BEEN CHECKED FROM ABOVE.**  Every clause D-753 and
+> D-765 wrote asks whether an accessory can pull TOO MUCH.  None asked whether
+> the rail DELIVERS what the product promises.  `R97` is now **1.78 kΩ**
+> (0.636 A typ → **0.428 A GUARANTEED**, +7.0 % on the published 400 mA) and
+> `R101` **2.32 kΩ** (0.479 A typ → **0.322 A GUARANTEED**, +7.4 % on 300 mA),
+> and `F6` refuses any setting that cannot guarantee its own rail's published
+> budget — or that its converter cannot source, which is a question nothing in
+> this repository had ever asked.
+>
+> **AND THE PROTECTION CHAIN WAS ORDERED AGAINST A TYPICAL.**  ADI guarantees the
+> `LTC4368`'s forward threshold only as **40 / 50 / 60 mV**; at `R75` = 15 mΩ the
+> LATCHING breaker's real band (2.640–4.040 A) OVERLAPPED the charger's
+> RECOVERABLE `IBAT_OCP` band (2.5625–3.6875 A), and `RETRY` is grounded here —
+> so on an unlucky unit the latching protection fired first.  **The board D-765
+> shipped reached 2.886 A in double fault, above the breaker's own 2.640 A
+> minimum: the clause was FALSE on the board that passed it.**  `R75` is now
+> **10 mΩ** — same Bourns `CRA2512-FZ` series, same 2512 land, same 3 W — and the
+> breaker is **3.960–6.061 A**, entirely above `IBAT_OCP`'s maximum.
+>
+> **ZERO COPPER OBJECTS MOVED.**  Every copper Gerber is byte-identical to the
+> D-770 package apart from its timestamp.
+>
+>     connectivity     174 retained, 173 connected, 1 owner-approved open
+>                      (U11.3), 0 UNAPPROVED open edges, ratsnest 17
+>     KiCad DRC        199 lib_footprint_issues, ALL WARNING, ZERO other
+>                      classes; 17 unconnected; parity 246 warn / 0 ERRORS
+>     protected copper 15 nets / 406 objects, differences {}, identical to d769
+>     D-186 / D-269    dru_contracts live and TRUE on this board
+>     ampacity         all_ok, and the method self-check now PARSES the
+>                      .kicad_dru table it always claimed to re-derive
+>     features         F1-F7 PASS (F6 fourteen controls, F7 five references
+>                      and ten controls)
+>     land / mech      LAND1-LAND8 and MK1-MK10 PASS
+>     fab package      regenerated at release D-771; FAB1-FAB15 PASS,
+>                      sourcing 252/252, coverage 1.0
+>     contracts        19 standing contracts, all ran, NONE failing; the ONLY
+>                      non-input difference in the whole suite is PP2's
+>                      published ACC_3V3 bar 0.537 -> 0.849 A, which IS this
+>                      decision
+>     firmware         H1-H6 PASS, four builds SUCCESS, generated digest only
+>     hardware/beta-v2 UNTOUCHED
+>
+> **Two things that had never been measured now are**: the two accessory rails
+> themselves (`.kicad_dru` **§5f**, new), and `+3V3`, which turns out to be
+> POUR-DELIVERED like `BQ25185_SYS` and is declared as such rather than left
+> silent.  **`.kicad_dru` §5e's `BAT_MAIN` residual is RE-DERIVED, not left
+> standing**: the worst sustained case is 2.349 A at the 3.0 V corner against
+> 2.274 A for D-098's published budget alone — *the requirement never moved, the
+> hardware's ability to meet it did* — and `U11.2`'s land remains a
+> first-article thermal measurement, now specified at that corner with both
+> accessory rails loaded.
+>
+> **There is no open owner decision and no unresolved Demo fabrication blocker.**
+> Residual risks are `CTO_DECISIONS.md` **D-771 §10** and **D-770 §5**.
+> Independent CTO review follows.
+>
+> # **THE D-770 ENTRY BELOW STANDS AS HISTORY.**
+>
 > # **`DEMO_READY_FOR_FAB` IS RE-DECLARED (2026-09-18, D-770).**
 >
 > **Board authority `5849b658`.  External review round 2 withdrew D-764's

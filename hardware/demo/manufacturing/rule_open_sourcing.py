@@ -101,11 +101,16 @@ RESISTOR_WORST_CASE = {
     "R126": (0.00167, 0.00217, 1.0,
              "D13 blue channel current set, FBV2-S1-008: 1.67 mA nominal,"
              " 2.17 mA high corner."),
-    "R75": (3.33, 3.33, 1.0,
-            "battery current sense.  The R75 symbol note states the design's"
-            " own ceiling: I_OC,FWD = 50 mV / 15 mR = 3.33 A, the LTC4368-1"
-            " forward trip.  Nothing below it is interrupted, so it IS the"
-            " continuous current the part must survive."),
+    "R75": (6.061, 6.061, 1.0,
+            "battery current sense.  The design's own ceiling is the LTC4368-1"
+            " forward trip, and D-771 corrected that figure: ADI's Rev C EC"
+            " table guarantees dVSENSE,F only as 40 / 50 / 60 mV over"
+            " temperature, so at R75 = 10 mOhm +/-1 % the trip band is"
+            " 3.960 / 5.000 / 6.061 A and the part must survive the TOP of it."
+            " Nothing below the trip is interrupted, so the trip IS the"
+            " continuous current.  WAS (3.33, 3.33), which was 50 mV / 15 mR"
+            " -- a TYPICAL threshold across the superseded 15 mOhm element,"
+            " used as though it were a limit."),
 }
 for _r in ("R71", "R72", "R73"):
     RESISTOR_WORST_CASE[_r] = RESISTOR_WORST_CASE["R70"]
@@ -113,10 +118,21 @@ for _r in ("R71", "R72", "R73"):
 # --------------------------------------------------------------------------
 # A PART CLASS, NOT JUST A NUMBER.
 #
-# `15mR 1% 1W` is satisfied on paper by a thick-film chip at +/-1500 ppm/degC.
+# `10mR 1% 3W` is satisfied on paper by a thick-film chip at +/-1500 ppm/degC.
 # Across -40..+85 degC that part moves 19 % -- on the shunt the fuel gauge and
 # the LTC4368 trip point both read.  A current sense is an ALLOY / metal-strip
 # part and the tempco is the thing that makes it one.
+#
+# D-771: AND A CATALOGUE `Type` OF "-" IS UNKNOWN, NOT DISQUALIFYING.  The
+# fitted part moved 15 -> 10 mOhm inside the SAME Bourns `CRA2512-FZ` current
+# sense series, and JLCPCB's record for the 10 mOhm member leaves `Type` blank
+# where the 15 mOhm member's says `Current Sense Resistor`.  The TEMPCO is the
+# discriminator this rule was written around and the record states it
+# (+/-50 ppm/degC); the series identity is established by Bourns' own datasheet
+# and by this repository's prior acceptance of the same series at D-615.  So a
+# named series prefix may stand in for an ABSENT type field -- and only for an
+# absent one.  A record that states a type this rule does not accept is still
+# refused.
 # --------------------------------------------------------------------------
 # --------------------------------------------------------------------------
 # WHEN THE SYMBOL'S OWN NOTE ASKS FOR MORE THAN ITS VALUE STRING SAYS.
@@ -145,11 +161,15 @@ RESISTOR_CLASS = {
     "R75": dict(max_tempco_ppm=100,
                 types=("Current Sense Resistor", "Alloy Resistor",
                        "Metal Foil Resistor", "Shunt Resistor"),
-                why="R75 is the battery current sense: the LTC4368-1 +/-50 mV"
-                    " trip and every current the gauge reports are derived"
-                    " from its value.  A +/-1500 ppm/degC thick film moves"
-                    " ~19 % over -40..+85 degC and would move the 3.33 A trip"
-                    " with temperature; an alloy/current-sense part at"
+                # D-771.  Accepted ONLY when the catalogue states no type at
+                # all; see the comment block above.
+                series_prefixes_when_type_absent=("CRA2512-FZ",),
+                why="R75 is the battery current sense: the LTC4368-1 forward"
+                    " trip -- 40 / 50 / 60 mV guaranteed over temperature --"
+                    " and every current the gauge reports are derived from its"
+                    " value.  A +/-1500 ppm/degC thick film moves ~19 % over"
+                    " -40..+85 degC and would move the 3.960 .. 6.061 A trip"
+                    " band with temperature; an alloy/current-sense part at"
                     " <=100 ppm/degC moves ~1.3 %."),
 }
 
@@ -515,9 +535,20 @@ def main():
                         why.append("tempco %s ppm/degC against a %s ppm limit"
                                    % (part.get("tempco_ppm"),
                                       klass["max_tempco_ppm"]))
-                    if part.get("rtype") not in klass["types"]:
-                        why.append("part type %r is not a current-sense class"
-                                   % part.get("rtype"))
+                    rtype = (part.get("rtype") or "").strip()
+                    mpn = (part.get("mpn") or part.get("model") or "").upper()
+                    absent = rtype in ("", "-", "N/A")
+                    if rtype not in klass["types"] and not (
+                            absent and any(
+                                mpn.startswith(p) for p in
+                                klass.get("series_prefixes_when_type_absent",
+                                          ()))):
+                        why.append(
+                            "part type %r is not a current-sense class"
+                            % part.get("rtype")
+                            + (" and the MPN is not in a named series this"
+                               " rule accepts with an absent type"
+                               if absent else ""))
                 # Two limbs, because they are two different questions.  The
                 # HARD one is whether the first build can be bought at all.
                 # The comfort floor is a PURCHASING judgement, so it is
