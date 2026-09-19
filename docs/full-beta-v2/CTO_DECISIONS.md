@@ -175,6 +175,22 @@ placements.  A **placement preview against the assembly drawings is required**
 before the first unit.  The generator **raises** rather than skipping if the
 position file is not there yet, so the convention cannot go out unstated.
 
+**AND THE PACKAGE NEVER STATED ITS OWN STACKUP, FINISH OR TEST REQUIREMENT.**
+The `.gbrjob` carries the full Gerber X2 `MaterialStackup` and `ENIG`, so the
+information *is* in the package — but only in a file many quoting front ends
+ignore, and **nothing anywhere required a bare-board electrical test**.  A house
+default would be wrong in a way nothing downstream catches: `audit_rail_ampacity`
+sizes every power rail on this board against **0.0152 mm** of inner foil, and
+`assembly/THT_LEAD_TRIM.md` computes `J4`'s trim from the **1.5744 mm** declared
+stack rather than a nominal 1.6 mm — a substituted inner copper weight or
+finished thickness invalidates both.  The notes now carry a **derived** stackup
+table (parsed from the board's own stackup block, the same way
+`audit_rail_ampacity.stackup_dielectrics` reads it), the ENIG requirement, the
+0.000 mm mask expansion, and **bare-board electrical test as a REQUIREMENT on
+every panel** — this board has resin-filled cap-plated via-in-pad under
+fine-pitch parts, where an open in a filled barrel is neither findable at
+assembly nor repairable after it.
+
 ## D-778 — **THE DERATING RULE WAS RUN AGAINST THE SPECIFICATION AND NOT AGAINST THE PART**
 
     authority  board 880a2ece; no copper, no BOM change from this decision

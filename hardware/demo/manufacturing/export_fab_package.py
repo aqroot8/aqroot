@@ -347,6 +347,102 @@ NOTE_WHY = {
 }
 
 
+def stackup_process_notes(board):
+    """D-779.  THE STACKUP AND THE REQUIRED PROCESS, STATED WHERE A HUMAN READS.
+
+    The `.gbrjob` carries the full X2 `MaterialStackup` and the ENIG finish, so
+    the information IS in the package -- but only in a file many quoting front
+    ends ignore, and a board house that does not read it quotes its house
+    default.  For this board that default would be wrong in a way nothing
+    downstream would catch: **`audit_rail_ampacity` sizes every power rail on
+    the DECLARED inner copper**, and a substituted heavier or lighter inner
+    foil, or a HASL finish, changes both the ampacity model and the 0.000 mm
+    mask-expansion geometry this board is drawn with.  Nothing in the package
+    REQUIRED a bare-board electrical test either.
+
+    Every figure is PARSED out of the board file's own stackup block, the same
+    way `audit_rail_ampacity.stackup_dielectrics` reads it.
+    """
+    import re as _re
+    text = BOARD.read_text(encoding="utf-8", errors="replace")
+    block = text[text.find("(stackup"):]
+    end = block.find('(copper_finish')
+    finish = None
+    m = _re.search(r'\(copper_finish "([^"]*)"\)', block)
+    if m:
+        finish = m.group(1)
+    block = block[:end] if end > 0 else block[:20000]
+    order, name, kind = [], None, None
+    for line in block.splitlines():
+        mm = _re.search(r'\(layer "([^"]+)"', line)
+        if mm:
+            name, kind, mat = mm.group(1), None, ""
+            continue
+        mt = _re.search(r'\(type "([^"]+)"\)', line)
+        if mt and name:
+            kind = mt.group(1)
+            continue
+        mmat = _re.search(r'\(material "([^"]+)"\)', line)
+        if mmat and order and order[-1][0] == name:
+            order[-1] = order[-1][:3] + (mmat.group(1),)
+            continue
+        mth = _re.search(r"\(thickness ([\d.]+)\)", line)
+        if mth and name:
+            order.append((name, kind or "", float(mth.group(1)), ""))
+    if not order:
+        raise RuntimeError("the board file declares no stackup thicknesses -- "
+                           "the process section cannot be derived")
+    cu = [(n, th) for n, k, th, _ in order if n.endswith(".Cu")]
+    if not cu:
+        raise RuntimeError("the board declares no copper layers in its stackup")
+    outer = [th for n, th in cu if n in ("F.Cu", "B.Cu")]
+    inner = [th for n, th in cu if n not in ("F.Cu", "B.Cu")]
+    total = sum(th for _, _, th, _ in order)
+    lines = [
+        "## Stackup, finish and required process -- NOT SUBSTITUTABLE",
+        "",
+        "Everything below is read out of the board file's own stackup block "
+        "and is also carried machine-readably in `aqroot-Beta-v2-job.gbrjob` "
+        "(Gerber X2 `MaterialStackup`).  It is repeated here because a quote "
+        "taken against a house default would be wrong in ways nothing "
+        "downstream catches.",
+        "",
+        "| layer | type | thickness (mm) | material |",
+        "|---|---|---|---|",
+    ]
+    for n, k, th, mat in order:
+        lines.append("| `%s` | %s | **%.4f** | %s |" % (n, k, th, mat))
+    lines += [
+        "",
+        "- **%d copper layers.**  Finished outer copper **%.4f mm**; **inner "
+        "copper %.4f mm on all %d inner layers.**"
+        % (len(cu), outer[0] if outer else 0.0,
+           inner[0] if inner else 0.0, len(inner)),
+        "- **THE INNER COPPER THICKNESS IS LOAD-BEARING, NOT INCIDENTAL.**  "
+        "`audit_rail_ampacity` sizes every power rail on this board against "
+        "**%.4f mm** of inner foil.  A build substituted to a heavier or "
+        "lighter inner foil INVALIDATES that model and the ampacity audit must "
+        "be re-run before the order is placed."
+        % (inner[0] if inner else 0.0),
+        "- **Total declared stack %.4f mm.**  The `J4` lead-trim requirement "
+        "in `assembly/THT_LEAD_TRIM.md` is computed from this figure and NOT "
+        "from a nominal 1.6 mm; a different finished thickness changes it."
+        % total,
+        "- **Surface finish: %s -- not substitutable.**  HASL coplanarity is "
+        "incompatible with the fine-pitch lands on this board and with the "
+        "0.000 mm solder-mask expansion it is drawn with."
+        % (finish or "AS DECLARED IN THE BOARD STACKUP"),
+        "- **Solder-mask expansion is 0.000 mm board-wide** -- a pad's mask "
+        "aperture IS its copper.  Do not apply a house expansion.",
+        "- **BARE-BOARD ELECTRICAL TEST (flying probe or fixture) IS REQUIRED "
+        "ON EVERY PANEL.**  This is a 6-layer board with resin-filled, "
+        "cap-plated via-in-pad under fine-pitch parts: an open in a filled "
+        "barrel is not findable at assembly and not repairable after it.",
+        "",
+    ]
+    return lines
+
+
 def placement_convention_notes(out, board):
     """D-779.  THE CPL CONVENTION, STATED TO THE ASSEMBLER AND DERIVED HERE.
 
@@ -477,6 +573,7 @@ def export_fab_notes(out):
     lines += mlines
     nlines, nrows = nfc_tuning_access_notes(board)
     lines += nlines
+    lines += stackup_process_notes(board)
     lines += placement_convention_notes(out, board)
     (out / "aqroot-Demo-FAB-NOTES.md").write_text("\n".join(lines),
                                                   encoding="utf-8")

@@ -144,7 +144,15 @@
 > which is the `DISPLAY_SHADOW` **ALLOWANCE** and was never the target.  And
 > **169 of 252 fitted placements are on the BOTTOM side** with no placement
 > convention stated anywhere — now DERIVED into the fab notes from the position
-> file itself, bottom-side rotation convention included.
+> file itself, bottom-side rotation convention included.  **And the package
+> never stated its own stackup, finish or test requirement**: the `.gbrjob`
+> carries them machine-readably but nothing a human reads did, and **nothing
+> required a bare-board electrical test** on a board with resin-filled
+> cap-plated via-in-pad under fine-pitch parts.  A derived stackup table, the
+> ENIG requirement, the 0.000 mm mask expansion and a mandatory E-test are now
+> in the notes, with the two figures that are load-bearing named: ampacity is
+> sized on **0.0152 mm** inner foil and `J4`'s trim on the **1.5744 mm**
+> declared stack.
 >
 >     connectivity     174 retained, 173 connected, 1 owner-approved open
 >                      (U11.3), 0 UNAPPROVED open edges, ratsnest 17

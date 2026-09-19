@@ -133,6 +133,33 @@ Two GND vias are intentional **solderable tuning terminals** for optional 0402 p
 
 Assembly tuning is optional; **manufacturing access is not**. The board must arrive with both capped GND terminals solderable even if no parallel capacitor is fitted initially.
 
+## Stackup, finish and required process -- NOT SUBSTITUTABLE
+
+Everything below is read out of the board file's own stackup block and is also carried machine-readably in `aqroot-Beta-v2-job.gbrjob` (Gerber X2 `MaterialStackup`).  It is repeated here because a quote taken against a house default would be wrong in ways nothing downstream catches.
+
+| layer | type | thickness (mm) | material |
+|---|---|---|---|
+| `F.Mask` | Top Solder Mask | **0.0100** |  |
+| `F.Cu` | copper | **0.0350** |  |
+| `dielectric 1` | prepreg | **0.2104** | 7628 |
+| `In1.Cu` | copper | **0.0152** |  |
+| `dielectric 2` | core | **0.4000** | FR4 |
+| `In2.Cu` | copper | **0.0152** |  |
+| `dielectric 3` | prepreg | **0.2028** | 7628 |
+| `In3.Cu` | copper | **0.0152** |  |
+| `dielectric 4` | core | **0.4000** | FR4 |
+| `In4.Cu` | copper | **0.0152** |  |
+| `dielectric 5` | prepreg | **0.2104** | 7628 |
+| `B.Cu` | copper | **0.0350** |  |
+| `B.Mask` | Bottom Solder Mask | **0.0100** |  |
+
+- **6 copper layers.**  Finished outer copper **0.0350 mm**; **inner copper 0.0152 mm on all 4 inner layers.**
+- **THE INNER COPPER THICKNESS IS LOAD-BEARING, NOT INCIDENTAL.**  `audit_rail_ampacity` sizes every power rail on this board against **0.0152 mm** of inner foil.  A build substituted to a heavier or lighter inner foil INVALIDATES that model and the ampacity audit must be re-run before the order is placed.
+- **Total declared stack 1.5744 mm.**  The `J4` lead-trim requirement in `assembly/THT_LEAD_TRIM.md` is computed from this figure and NOT from a nominal 1.6 mm; a different finished thickness changes it.
+- **Surface finish: ENIG -- not substitutable.**  HASL coplanarity is incompatible with the fine-pitch lands on this board and with the 0.000 mm solder-mask expansion it is drawn with.
+- **Solder-mask expansion is 0.000 mm board-wide** -- a pad's mask aperture IS its copper.  Do not apply a house expansion.
+- **BARE-BOARD ELECTRICAL TEST (flying probe or fixture) IS REQUIRED ON EVERY PANEL.**  This is a 6-layer board with resin-filled, cap-plated via-in-pad under fine-pitch parts: an open in a filled barrel is not findable at assembly and not repairable after it.
+
 ## Component placement (CPL) convention -- READ BEFORE PROGRAMMING THE PLACER
 
 `aqroot-Demo-pos-fitted.csv` is the file to place from; `aqroot-Demo-pos-all.csv` additionally carries the DNP references and must NOT be used as the placement list.
