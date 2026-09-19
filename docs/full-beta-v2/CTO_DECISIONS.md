@@ -1,3 +1,147 @@
+## D-772 — **EVERY MARGIN THIS CONTRACT REPORTS IS A FUNCTION OF ONE HAND-WRITTEN CONSTANT, AND THE CONSTANT WAS LOW**
+
+    authority  c15672df, UNCHANGED.  NO PCB and NO schematic change; not one
+               copper object, pad, value or MPN moved
+    follows    D-771, which created the clause this decision found the bad
+               input to: `converters_can_source_their_worst_case_rail` takes
+               the internal +3V3 load as a given, and nothing gave it
+    changed    checks/demo_feature_contract.py (the budget is ITEMISED, CITED
+               and SUMMED; a new coverage clause reads the board's own +3V3
+               net; four new controls, F6 now runs EIGHTEEN);
+               aqroot-Beta-v2.kicad_dru sections 5d and 5e;
+               export_fab_package.py (release id) and the package MANIFEST,
+               which hashes the .kicad_dru; DEVICE_SPEC 6.3a,
+               AQROOT_DEMO_FAB_HANDOFF, CURRENT_STATE
+    evidence   d772-*
+
+### 1. THE CONSTANT
+
+    I_INTERNAL = 1.0                       # the published internal +3V3 budget
+
+Every mode in `F6`'s envelope, every battery-side margin it reports, `U12`'s
+capability answer and `.kicad_dru` §5e's `BAT_MAIN` residual are all functions
+of that line.  **Nothing checked it**, and D-771 had just built a clause
+(`converters_can_source_their_worst_case_rail`) that consumes it.
+
+### 2. IT WAS LOW, FOR TWO INDEPENDENT REASONS
+
+The repository's own last derivation is `audits/2026-08-23-s1-community-sheet09-
+implementation.md`: **823 mA**, built on an FBV2-COMM-001 subtotal of **769 mA**
+with five lines — Wi-Fi TX 355, display + backlight 181, touch and housekeeping
+13, microSD write 100, audio 120.
+
+* **IT CONTAINS NO NFC LINE AT ALL.**  When it was written `U9` and its **twelve
+  decoupling capacitors were still DNP** — and **D-192 FITTED them**.  **D-205**
+  then allocated the NFC front end **100 mA on `+3V3` with the field on**, from
+  `DS12484` Rev 3 Table 121 and D-134's measured network.  Nothing put that
+  100 mA into the budget.  The board has carried a fitted 13.56 MHz front end
+  with **no line in its own power budget since D-192**.
+* **"THE WORST SINGLE RADIO" IS NOT TRUE OF THIS BOARD.**  The subtotal counts
+  Wi-Fi TX as the worst single radio.  `U8` is an **EXTERNAL `E22-900M22S`
+  module on its own `+3V3` supply pin**, and **nothing in hardware stops it
+  transmitting while the ESP32 does**.  The one-TX-at-a-time discipline the Demo
+  scope states is between the **two sub-GHz radios**, which share SPI-B — not
+  between them and the Wi-Fi radio inside `U1`.  *A rule no silicon enforces is
+  the exact defect D-753 named*, and this is the same defect one rail over.
+
+### 3. THE BUDGET, ITEMISED AND CITED
+
+| line | mA | refs | source |
+|---|---|---|---|
+| Wi-Fi / BLE TX, worst published RF condition | **355** | `U1` | ESP32-S3-WROOM-1 datasheet v1.8 **Table 6-4**, 802.11b 1 Mbps @20.5 dBm, and the table states TX current is **rated at 100 % duty**.  Table 6-5's worst BLE row is 344 mA and is NOT added — one radio inside one module cannot transmit twice |
+| sub-GHz TX, the worse of the two shared-bus radios | **140** | `U7`,`U8` | Ebyte E22-M manual, emission current **100–140 mA** @22 dBm; the `E07-400M10S` CC1101 is 35 mA.  Only the worse of the two is counted, **added to** the Wi-Fi line |
+| display logic + backlight at maximum | 181 | `J1`,`U17`,`L3` | FBV2-COMM-001 |
+| audio at the capped level | 120 | `U5` | FBV2-COMM-001; D-161's 230 mA peaks are local |
+| microSD write | 100 | `J2` | FBV2-COMM-001 |
+| **NFC front end, field on** | **100** | `U9` | **D-205 — the missing line** |
+| IR transmitter, burst average | 50 | `D1`,`Q1`,`R24` | D-155; the 150 mA peaks are supplied by `C12` |
+| touch + housekeeping | 13 | `U2`,`U3`,`U4` | FBV2-COMM-001 |
+| front RGB at white | 4.2 | `D13` | FBV2-S1-008 |
+| **TOTAL** | **1 063.2 mA** | | against a **published 1 000 mA** |
+
+`I_INTERNAL` is now that **sum**, not a literal.
+
+### 4. AND THE TABLE IS A GATE, NOT A TABLE
+
+`every_fitted_p3v3_consumer_is_budgeted` reads the **board's own `+3V3` net**,
+drops passives, drops the rail's source (`U12`) and the accessory switch
+(`U20`) whose current this contract budgets separately, and requires every
+remaining FITTED reference to be named by a line.  Twelve consumers, all
+covered.  A line whose parts have all left the board is refused too — staleness
+in the other direction inflates a budget with current nothing draws.
+
+**Four new controls, all refused.**  The load-bearing one is **`f6o` — the
+budget with the NFC line removed**, which is *the budget as it actually stood
+from D-192 until this decision*.  `F6` now runs **eighteen** live controls,
+**three of which are boards or budgets this project actually shipped**.
+
+### 5. WHAT IT COSTS, STATED RATHER THAN ABSORBED
+
+    state                                     at I_INT 1.000   at 1.063
+    3.3 V rail alone at its limiter              2.259 (+11.9%)  2.337 (+8.8%)
+    5 V rail alone at its limiter                2.420 (+5.6%)   2.497 (+2.6%)
+    both rails at their GUARANTEED currents      2.349 (+8.3%)   2.426 (+5.3%)
+    both rails at their PUBLISHED budgets        2.274 (+11.3%)  2.351 (+8.3%)
+    both limiters in fault (double fault)        3.457           3.534
+    U12 load, worst case                         1.849 / 2.0     1.912 / 2.0
+
+**Every clause still passes**, and the thinnest margin on this board is now
+**2.6 %** — worth naming exactly rather than quoting.  It is the 5 V accessory
+**in overcurrent** (a FAULT, not a conforming load) *while every internal
+subsystem runs at once*: Wi-Fi TX **and** a LoRa TX **and** the NFC field **and**
+audio **and** a microSD write **and** the backlight at maximum **and** an IR
+burst — on a `BQ25185` sitting at the **−18 % corner** of its `IBAT_OCP` band,
+with the cell at 3.0 V.  Its consequence is an `IBAT_OCP` **hiccup that
+auto-retries**, and D-771 guaranteed that hiccup happens **before** the latching
+breaker on every unit.  **At a conforming accessory load the margin is 8.3 %.**
+
+`.kicad_dru` **§5e's residual is re-based** with it: the sustained worst case is
+**1.967 A at 3.7 V / 2.426 A at the 3.0 V corner**, and the plane-coupled ceiling
+on `U11.2`'s 0.200 mm land moves **47.8 K → 51.0 K** — a ceiling from a model
+that ignores lateral spreading, conduction along the copper and convection from
+an OUTER layer, on copper necked for **0.575 mm** against a ≈ 2.6 mm thermal
+length.  The first-article thermal measurement it calls for is unchanged in kind
+and now specified against the right number.
+
+### 6. WHY THE RESISTORS DID NOT MOVE AGAIN
+
+`R101` could buy pack margin by going up — `2.43 kΩ` would take the 5 V fault
+state from 2.6 % to ≈ 4.8 % — but it would cut the rail's **guaranteed delivery**
+headroom over D-098's published 300 mA from 7.4 % to 2.2 %.  **A recoverable
+hiccup in a compound-fault state is a better thing to spend than the product's
+published promise**, which is the whole subject of D-771.  `R97` is unaffected:
+its binding constraint is `U12`'s capability, which still holds at 1.912 A
+against a rated 2 A.
+
+### 7. VERIFICATION
+
+    board            c15672df, UNCHANGED -- zero copper, schematic, value or
+                     MPN changes; the .kicad_dru moved only in comments, and
+                     the package MANIFEST hashes it, so the package is
+                     regenerated and every Gerber and CSV is byte-identical
+    features         F1-F7 PASS; F6 EIGHTEEN live controls, F7 five references
+                     and ten, all refused
+    battery pack     B1-B8 PASS; required discharge 2.997 A (was 2.904 A)
+                     against the selected pack's 5.0 A
+    contracts        19 standing contracts, all ran, NONE failing
+    fab package      FAB1-FAB15 PASS, sourcing 252/252, coverage 1.0
+    KiCad DRC        199 lib_footprint_issues all WARNING, zero other classes;
+                     17 unconnected; parity 246 warn / 0 ERRORS
+    connectivity     174 / 173 / 1 owner-approved / 0 unapproved
+    ampacity         all_ok
+    firmware         H1-H6 PASS, four PlatformIO builds SUCCESS
+    hardware/beta-v2 UNTOUCHED
+
+### 8. WHAT THIS DOES NOT CLOSE
+
+* **`U11.2`'s thermal residual** is re-based, not removed.  First article.
+* **D-205's own guard rail stands**: an NFC `C_s` move to 270 pF would draw
+  ≈ 257 mA and **requires this budget to be re-run first**.  It is now a table
+  that can be re-run rather than a constant that would be forgotten.
+* The budget's concurrency assumptions are stated **in the table itself**, so
+  the next reviewer argues with a line and a citation rather than with a number.
+
+
 ## D-771 — **THE BOARD PUBLISHED AN ACCESSORY BUDGET ITS OWN LIMITER COULD REFUSE TO DELIVER, AND ORDERED ITS BATTERY PROTECTION CHAIN AGAINST A TYPICAL**
 
     authority  5849b658 -> c15672df.  ZERO copper objects added or removed;

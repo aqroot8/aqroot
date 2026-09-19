@@ -66,6 +66,81 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+> # **`DEMO_READY_FOR_FAB` IS RE-DECLARED ON BOARD `c15672df` (2026-09-19, D-771 · D-772).**
+>
+> **D-771 closed the CTO's withdrawal.  D-772 then found the bad input to the
+> clause D-771 had just built, and the board did not have to move for either.**
+>
+> **D-771 — THE PUBLISHED ACCESSORY BUDGET IS A GUARANTEE NOW, AND THE
+> PROTECTION CHAIN IS ORDERED OVER TOLERANCE.**  The withdrawal read: *"D-098
+> locks first-five `ACC_3V3_SW` = 400 mA total and `ACC_5V_SW` = 300 mA total;
+> current 2.7 kOhm `TPS22950-Q1` settings guarantee only ~277 mA per rail."*  It
+> was right.  `R97` → **1.78 kΩ** (**0.428 A guaranteed**, +7.0 %) and `R101` →
+> **2.32 kΩ** (**0.322 A guaranteed**, +7.4 %).  Chasing it found a second defect
+> of the same shape: ADI guarantees the `LTC4368`'s forward threshold only as
+> **40 / 50 / 60 mV**, and at `R75` = 15 mΩ the **LATCHING** breaker's band
+> (2.640–4.040 A) **OVERLAPPED** the charger's **RECOVERABLE** `IBAT_OCP` band
+> (2.5625–3.6875 A) — with `RETRY` grounded, so on an unlucky unit the latching
+> protection fired first.  **The board D-765 shipped reached 2.886 A in double
+> fault, above the breaker's own minimum: the clause was FALSE on the board that
+> passed it.**  `R75` → **10 mΩ**, same Bourns `CRA2512-FZ` series and 2512 land;
+> the breaker is now **3.960–6.061 A**, entirely above `IBAT_OCP`'s maximum.
+>
+> **D-772 — EVERY MARGIN THAT CONTRACT REPORTS IS A FUNCTION OF ONE HAND-WRITTEN
+> CONSTANT.**  `I_INTERNAL = 1.0  # the published internal +3V3 budget`.  It was
+> LOW.  The repository's own last derivation (823 mA) contains **no NFC line at
+> all** — `U9` and its twelve decoupling capacitors were **DNP** when it was
+> written, **D-192 fitted them**, **D-205** allocated **100 mA** with the field
+> on, and nothing added it — and it counts *"the worst single radio"*, which is
+> not true of a board whose `U8` is an **external module on its own `+3V3` pin**
+> that nothing in hardware stops transmitting while the ESP32 does.  The budget
+> is now **nine cited lines, summed: 1.063 A**, and `F6` reads the board's own
+> `+3V3` net so that **no fitted consumer can go unbudgeted**.  Every clause
+> still passes; the numbers are re-based rather than absorbed.
+>
+> **ZERO COPPER OBJECTS MOVED IN EITHER DECISION.**  Every copper Gerber is
+> byte-identical to the D-770 package apart from its timestamp.
+>
+>     connectivity     174 retained, 173 connected, 1 owner-approved open
+>                      (U11.3), 0 UNAPPROVED open edges, ratsnest 17
+>     KiCad DRC        199 lib_footprint_issues, ALL WARNING, ZERO other
+>                      classes; 17 unconnected; parity 246 warn / 0 ERRORS
+>     protected copper 15 nets / 406 objects, differences {}, identical to d769
+>     D-186 / D-269    dru_contracts live and TRUE on this board
+>     ampacity         all_ok, and the method self-check now PARSES the
+>                      .kicad_dru table it always claimed to re-derive
+>     features         F1-F7 PASS (F6 EIGHTEEN controls, F7 five references
+>                      and ten controls)
+>     battery pack     B1-B8 PASS, required discharge 2.997 A against 5.0 A
+>     land / mech      LAND1-LAND8 and MK1-MK10 PASS
+>     fab package      regenerated at release D-772; FAB1-FAB15 PASS,
+>                      sourcing 252/252, coverage 1.0
+>     contracts        19 standing contracts, all ran, NONE failing
+>     firmware         H1-H6 PASS, four builds SUCCESS
+>     hardware/beta-v2 UNTOUCHED
+>
+> **THE THINNEST MARGIN ON THIS BOARD IS 2.6 %, AND IT IS NAMED RATHER THAN
+> QUOTED**: the 5 V accessory **in overcurrent** — a fault, not a conforming load
+> — *while every internal subsystem runs at once* (Wi-Fi TX and a LoRa TX and the
+> NFC field and audio and a microSD write and the backlight at maximum and an IR
+> burst), on a `BQ25185` at the **−18 % corner** of its band, with the cell at
+> 3.0 V.  Its consequence is an `IBAT_OCP` **hiccup that auto-retries**, which
+> D-771 guaranteed happens before the latching breaker on every unit.  **At a
+> conforming accessory load the margin is 8.3 %.**
+>
+> Two things that had never been measured now are: the two accessory rails
+> themselves (`.kicad_dru` **§5f**, new at D-771) and `+3V3`, which turns out to
+> be **pour-delivered** like `BQ25185_SYS` and is declared as such rather than
+> left silent.  `.kicad_dru` **§5e's `BAT_MAIN` residual is re-derived twice** and
+> `U11.2`'s land remains a first-article thermal measurement, now specified at the
+> 3.0 V corner with both accessory rails loaded.
+>
+> **There is no open owner decision and no unresolved Demo fabrication blocker.**
+> Residual risks are `CTO_DECISIONS.md` **D-772 §8**, **D-771 §10** and **D-770
+> §5**.  Independent CTO review follows.
+>
+> # **THE D-771 AND D-770 ENTRIES BELOW STAND AS HISTORY.**
+>
 > # **`DEMO_READY_FOR_FAB` IS RE-DECLARED ON BOARD `c15672df` (2026-09-19, D-771).**
 >
 > **D-770's declaration was WITHDRAWN by the CTO for one item, and that item is

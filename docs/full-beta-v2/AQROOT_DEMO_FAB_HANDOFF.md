@@ -1,7 +1,7 @@
 # AQROOT Demo — FABRICATION HANDOFF
 
 
-> # **STATUS: READY FOR FABRICATION — BOARD AUTHORITY `c15672df` (D-771, 2026-09-19).**
+> # **STATUS: READY FOR FABRICATION — BOARD AUTHORITY `c15672df` (D-771 · D-772, 2026-09-19).**
 >
 > **This banner supersedes every status block below it.**  D-765's banner, which
 > stood here unchanged through D-766…D-770, is retained as history.
@@ -47,7 +47,19 @@
 > fabrication blocker**.  Residual risks are named in `CTO_DECISIONS.md` **D-771
 > §10** and **D-770 §5**.
 >
-> **The assembly PDFs print `RELEASE D-771`.**
+> **D-772 then found the bad input to the clause D-771 had just built.**
+> `F6`'s internal `+3V3` load was a hand-written `1.0 A`, and every margin the
+> contract reports is a function of it.  The repository's own last derivation
+> (823 mA) contains **no NFC line at all** — `U9` was DNP when it was written and
+> **D-192 fitted it**, **D-205** allocated 100 mA with the field on — and it
+> counts *"the worst single radio"*, which is not true of a board whose `U8` is
+> an external module on its own `+3V3` pin.  The budget is now **nine cited
+> lines, summed: 1.063 A**, and `F6` reads the board's own `+3V3` net so no fitted
+> consumer can go unbudgeted.  **No PCB, schematic, value or MPN change**; every
+> Gerber and CSV in the package is byte-identical.  `F6` runs **eighteen**
+> controls.
+>
+> **The assembly PDFs print `RELEASE D-772`.**
 
 > # **STATUS: NOT READY — READINESS WITHDRAWN, ONE OF TWO CAUSES CLOSED (D-765, 2026-09-18).**
 >
@@ -752,10 +764,24 @@ can only be confirmed by eye. `MK1` and `U5` share one `/I2S_BCLK` and one
    (7.0 % and 7.4 % over) and passes no more than **0.849 A** / **0.639 A** over
    −40…+125 °C, over the programming resistor's own 1 % band as well.
 
-   At the 3.0 V cell corner with the full 1.0 A internal `+3V3` load, no state a
-   user can reach exceeds the `BQ25185` `IBAT_OCP` **minimum of 2.5625 A** — the
-   worst is **2.420 A, 5.6 % under** — and a *simultaneous double limiter fault*
-   reaches **3.457 A**, which trips the charger's own OCP and **auto-retries**.
+   **AND THE INTERNAL TERM THE ENVELOPE RUNS ON WAS A HAND-WRITTEN CONSTANT**
+   (D-772).  It read 1.0 A; the repository's own last derivation (823 mA)
+   contains **no NFC line at all**, because `U9` was DNP when it was written and
+   **D-192 fitted it**, and it counts *"the worst single radio"*, which is not
+   true of a board whose `U8` is an external module on its own `+3V3` pin.  The
+   budget is now **itemised, cited and SUMMED** — nine lines, **1.063 A** — and
+   `F6` reads the board's own `+3V3` net so no fitted consumer can go
+   unbudgeted.
+
+   At the 3.0 V cell corner with that 1.063 A internal load, no state a user can
+   reach exceeds the `BQ25185` `IBAT_OCP` **minimum of 2.5625 A**.  The thinnest
+   margin on this board is **2.6 %** and it is the 5 V accessory **in
+   overcurrent** while every internal subsystem runs at once, on a charger at the
+   −18 % corner of its band, with the cell at 3.0 V; its consequence is an
+   `IBAT_OCP` hiccup that **auto-retries**, which D-771 guaranteed happens before
+   the latching breaker on every unit.  At a conforming accessory load the margin
+   is **8.3 %**.  A *simultaneous double limiter fault* reaches **3.534 A**,
+   still 10.8 % below the breaker's guaranteed minimum.
 
    **AND THE CHAIN WAS ORDERED AGAINST A TYPICAL.** ADI guarantees the
    `LTC4368`'s forward threshold only as **40 / 50 / 60 mV**; at the old `R75`
@@ -764,17 +790,18 @@ can only be confirmed by eye. `MK1` and `U5` share one `/I2S_BCLK` and one
    `CRA2512-FZ` series, same 2512 land, same 3 W — and the breaker is
    **3.960–6.061 A**, entirely above it. `demo_feature_contract.py` **F6**
    recomputes all of it from `R97`, `R101`, `U20`, `U22`, **`R75` and `U18`**,
-   with **fourteen** live controls, two of which are the boards D-753 and D-765
-   actually shipped, and refuses a limiter its own converter cannot source.
+   with **eighteen** live controls — three of them boards this project actually
+   shipped, including the internal budget with its NFC line missing — and
+   refuses a limiter its own converter cannot source.
 
    **THE RESIDUAL:** `BAT_MAIN` copper is sized for 1.5 A sustained, and the
    worst *sustained* case — both accessories at their guaranteed current with
-   the full internal load — is **1.905 A at 3.7 V and 2.349 A at the 3.0 V
+   the full internal load — is **1.967 A at 3.7 V and 2.426 A at the 3.0 V
    corner**, on one unavoidable 5.525 mm × 0.200 mm segment (`U11`'s `DLH0010A`
-   pin-2 `BAT` land). *D-098's PUBLISHED budget alone is 2.274 A at that corner
+   pin-2 `BAT` land). *D-098's PUBLISHED budget alone is 2.351 A at that corner
    and has been since 2026-08-23, so the requirement did not move; the hardware's
-   ability to meet it did.* The plane-coupled ceiling is **47.8 K** over the
-   adjacent `In4` plane at 2.349 A, from a model that ignores lateral spreading,
+   ability to meet it did.* The plane-coupled ceiling is **51.0 K** over the
+   adjacent `In4` plane at 2.426 A, from a model that ignores lateral spreading,
    conduction and convection, on copper that is necked for only 0.575 mm before
    it tapers to 1.2 mm. **Measure that segment at first article with both
    accessory rails loaded and the cell at 3.0 V.**

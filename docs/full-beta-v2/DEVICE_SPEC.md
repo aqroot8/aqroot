@@ -407,31 +407,75 @@ The 0.68×/1.32× ratio is the widest of the four `ILIM` rows TI publishes and i
 **conservative in both directions at once** — the two rows that bracket these
 settings (1.15 kΩ and 2.21 kΩ) publish 0.75–0.76× / 1.24–1.25×.
 
-Modelled at the 3.0 V cell corner with the full 1.0 A internal `+3V3` load,
+> ### THE INTERNAL `+3V3` LOAD THE ENVELOPE RUNS ON — ITEMISED AND CHECKED (D-772)
+>
+> Every figure in the table below is a function of the internal `+3V3` load, and
+> that number had been a **hand-written `1.0`** in the contract since D-753.  It
+> was LOW.  The repository's own last derivation — 823 mA, 2026-08-23 — is built
+> on an FBV2-COMM-001 subtotal that contains **no NFC line at all**, because `U9`
+> and its twelve decoupling capacitors were still **DNP** when it was written and
+> **D-192 fitted them**; **D-205** then allocated the NFC front end **100 mA on
+> `+3V3` with the field on**, and nothing added it.  The same subtotal counts
+> *"the worst single radio"*, which is **not true of this board**: `U8` is an
+> EXTERNAL `E22-900M22S` module on its own `+3V3` pin and nothing in hardware
+> stops it transmitting while the ESP32 does.  *A rule no silicon enforces is the
+> exact defect D-753 named.*
+>
+> | line | mA | refs | source |
+> |---|---|---|---|
+> | Wi-Fi / BLE TX, worst published RF condition | **355** | `U1` | ESP32-S3-WROOM-1 datasheet v1.8 Table 6-4, 802.11b 1 Mbps @20.5 dBm, **rated at 100 % duty** |
+> | sub-GHz TX, the worse of the two shared-bus radios | **140** | `U7`/`U8` | Ebyte E22-M manual, 100–140 mA @22 dBm (the CC1101 is 35 mA); one TX at a time between **those two**, but **added to** the Wi-Fi line |
+> | display logic + backlight at maximum | 181 | `J1`,`U17`,`L3` | FBV2-COMM-001 |
+> | audio at the capped level | 120 | `U5` | FBV2-COMM-001 (the 230 mA peaks are local) |
+> | microSD write | 100 | `J2` | FBV2-COMM-001 |
+> | **NFC front end, field on** | **100** | `U9` | **D-205 — the line the 823 mA figure was missing** |
+> | IR transmitter, burst average | 50 | `D1`,`Q1`,`R24` | D-155 (the 150 mA peaks are supplied by `C12`) |
+> | touch + housekeeping | 13 | `U2`,`U3`,`U4` | FBV2-COMM-001 |
+> | front RGB at white | 4.2 | `D13` | FBV2-S1-008 |
+> | **TOTAL** | **1 063.2 mA** | | **was published as 1 000 mA** |
+>
+> **`F6` sums this table rather than asserting a constant, and reads the board's
+> own `+3V3` net to prove nothing is missing from it**: every FITTED, non-passive
+> consumer on the rail — twelve of them — must be named by a line, and a line all
+> of whose parts have left the board is refused too.  The control that matters is
+> **`f6o`: the budget with the NFC line removed**, which is the budget as it
+> actually stood from D-192 until D-772.
+
+Modelled at the 3.0 V cell corner with that **1.063 A** internal `+3V3` load,
 `U12` at 90 % and `U21` at 88 % into 4.95 V:
 
-| state the Community Port can reach | D-750 (1.5 k / 1.65 k) | D-753/D-765 (2.7 k / 2.7 k) | **D-771 (1.78 k / 2.32 k)** |
+| state the Community Port can reach | D-750 (1.5 k / 1.65 k) | D-753/D-765 (2.7 k / 2.7 k) | **D-771/D-772 (1.78 k / 2.32 k)** |
 |---|---|---|---|
-| 3.3 V rail alone at its limiter | 2.455 A | 1.879 A | **2.259 A** (+11.9 %) |
-| 5 V rail alone at its limiter | **2.930 A — TRIPS** | 2.229 A | **2.420 A** (+5.6 %) |
-| both rails at their GUARANTEED currents | **2.737 A — TRIPS** | 2.079 A | **2.349 A** (+8.3 %) |
-| both rails at their PUBLISHED budgets | — | *unreachable — the limiter could refuse it* | **2.274 A** (+11.3 %) |
-| both limiters in fault (double fault) | 4.162 A — past the LTC4368 | 2.886 A — **above the breaker's real 2.640 A minimum** | **3.457 A** — charger OCP, auto-retry, **12.7 % under the breaker's 3.960 A minimum** |
+| 3.3 V rail alone at its limiter | 2.455 A | 1.879 A | **2.337 A** (+8.8 %) |
+| 5 V rail alone at its limiter | **2.930 A — TRIPS** | 2.229 A | **2.497 A** (+2.6 %) |
+| both rails at their GUARANTEED currents | **2.737 A — TRIPS** | 2.079 A | **2.426 A** (+5.3 %) |
+| both rails at their PUBLISHED budgets | — | *unreachable — the limiter could refuse it* | **2.351 A** (+8.3 %) |
+| both limiters in fault (double fault) | 4.162 A — past the LTC4368 | 2.886 A — **above the breaker's real 2.640 A minimum** | **3.534 A** — charger OCP, auto-retry, **10.8 % under the breaker's 3.960 A minimum** |
+
+*(the D-750 and D-753/D-765 columns are the figures those decisions published,
+at the 1.0 A internal term they used; only the last column is re-based on the
+1.063 A D-772 derived.)*
 
 against a `BQ25185` `IBAT_OCP` band of **2.5625 / 3.125 / 3.6875 A** (3.125 A typ
 ± 18 %, `SLUSF65B`), the `LTC4368` breaker at **3.960 / 5.000 / 6.061 A**
 (40/50/60 mV guaranteed across `R75` 10 mΩ ± 1 %) and `F1` at 5 A.
 
-> **ENVELOPE.**  No state a user can reach with conforming accessories exceeds
-> the FIRST trip any unit can have; the worst is **2.420 A, 5.6 % under the
-> 2.5625 A `IBAT_OCP` minimum**.  A *simultaneous double limiter fault* — two
-> accessories each in overcurrent at once — reaches 3.457 A, which trips the
-> charger's own `IBAT_OCP` and **auto-retries**, below the `LTC4368` breaker's
-> guaranteed minimum and below the one-shot fuse.
+> **ENVELOPE.**  No state a user can reach exceeds the FIRST trip any unit can
+> have.  **The thinnest margin on this board is 2.6 %**, and it is worth naming
+> exactly: it is the 5 V accessory **in overcurrent** — a FAULT, not a
+> conforming load — *while every internal subsystem runs at once*: Wi-Fi TX and
+> a LoRa TX and the NFC field and audio and a microSD write and the backlight at
+> maximum and an IR burst, on a `BQ25185` sitting at the −18 % corner of its
+> `IBAT_OCP` band, with the cell at 3.0 V.  Its consequence is an `IBAT_OCP`
+> **hiccup that auto-retries** — and D-771 guaranteed that hiccup happens before
+> the latching breaker on **every** unit.  At a conforming accessory load the
+> margin is 8.3 %.  A *simultaneous double limiter fault* reaches 3.534 A, still
+> **10.8 % below** the breaker's guaranteed minimum and below the one-shot fuse.
 > `checks/demo_feature_contract.py` **F6** recomputes all of this from the two
-> resistors, the two limiter part numbers, **`R75` and `U18`** — the board's own
-> values, not constants — with **fourteen** live negative controls, two of which
-> are the boards **D-753 and D-765 actually shipped**.
+> resistors, the two limiter part numbers, **`R75`, `U18` and the itemised
+> internal budget** — the board's own values, not constants — with **eighteen**
+> live negative controls, three of which are boards this project actually
+> shipped.
 
 > **D-771 — THE PROTECTION CHAIN WAS ORDERED AGAINST A TYPICAL.**  `F6`'s
 > `double_fault_stays_inside_the_protection_chain` clause compared the double-fault
@@ -455,7 +499,7 @@ against a `BQ25185` `IBAT_OCP` band of **2.5625 / 3.125 / 3.6875 A** (3.125 A ty
 > **AND THE CONVERTERS MUST BE ABLE TO SOURCE WHAT THE LIMITERS PERMIT** — a
 > question nothing in this repository had ever asked.  `U12` `TPS63020` is rated
 > **2 A for VIN > 2.5 V, VOUT = 3.3 V** (`SLVSAA7` Features) against a worst case
-> of 1.0 A internal + 0.849 A accessory = **1.849 A**.  `U21` `TPS61023` delivers
+> of **1.063 A internal (D-772) + 0.849 A accessory = 1.912 A**, a 4.4 % margin.  `U21` `TPS61023` delivers
 > **0.973 A** at this operating point by `SLVSF14B` equation 1 with `ILIM_SW` at
 > its **2.7 A EC minimum** and `L4` at its −20 % corner, against a worst case of
 > **0.639 A**.  `F6` refuses a limiter its converter cannot feed — which is what
@@ -500,21 +544,22 @@ exceeds that sizing point at the low-battery end, on one unavoidable
 5.525 mm × 0.200 mm segment: `U11`'s `DLH0010A` pin-2 `BAT` land, which nothing
 wider can land on (D-269, D-708).
 
-| sustained state (full 1.0 A internal `+3V3` load) | at 3.7 V | at 3.0 V |
+| sustained state (internal `+3V3` load **1.063 A**, D-772) | at 3.7 V | at 3.0 V |
 |---|---|---|
-| both rails at D-098's **PUBLISHED** budget | 1.844 A | **2.274 A** |
-| both rails at their **GUARANTEED** currents | 1.905 A | **2.349 A** |
+| both rails at D-098's **PUBLISHED** budget | 1.906 A | **2.351 A** |
+| both rails at their **GUARANTEED** currents | 1.967 A | **2.426 A** |
 
 D-765 printed **1.69 A / 2.08 A** here, and those were the numbers of a board
 whose limiters could not deliver what the product publishes.  **THE PUBLISHED
 ROW IS THE REQUIREMENT AND IT HAS NOT MOVED**: D-098 has promised 400 mA +
-300 mA since 2026-08-23, which is 2.274 A at the 3.0 V corner *whatever the
-`ILIM` resistors are set to*.  What D-771 changed is that the hardware can now
+300 mA since 2026-08-23, which is 2.351 A at the 3.0 V corner *whatever the
+`ILIM` resistors are set to* (2.274 A at the 1.0 A internal term D-771 used,
+before D-772 itemised it).  What D-771 changed is that the hardware can now
 honour it; the GUARANTEED row sits 3.3 % above the PUBLISHED one because a
 limiter must be set with margin to guarantee anything at all.
 
-The plane-coupled model puts that segment's ceiling at **47.8 K** over the
-adjacent `In4` plane at 2.349 A, **44.8 K** at 2.274 A and **19.5 K** at 1.5 A.
+The plane-coupled model puts that segment's ceiling at **51.0 K** over the
+adjacent `In4` plane at 2.426 A, **47.9 K** at 2.351 A and **19.5 K** at 1.5 A.
 The model explicitly ignores lateral spreading, conduction along the copper and
 convection from an OUTER layer — and the necked copper is **0.575 mm** long
 before it tapers 0.3 / 0.4 / 0.6 / 0.8 / 1.0 / 1.2 mm, against a copper thermal

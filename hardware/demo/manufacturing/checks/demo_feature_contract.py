@@ -530,7 +530,95 @@ NORMAL_LOSS_ALLOWANCE_W = 0.10         # loss beyond converter eta
 VBAT_CORNER = 3.0                      # 1S Li-ion working floor
 V_3V3, ETA_U12 = 3.3, 0.90             # TPS63020 buck-boost
 V_ACC5V, ETA_U21 = 4.95, 0.88          # TPS61023 boost, R99/R100 divider
-I_INTERNAL = 1.0                       # the published internal +3V3 budget
+# --------------------------------------------------------------------------
+# D-772 -- THE INTERNAL +3V3 LOAD WAS A HAND-WRITTEN CONSTANT, AND IT WAS LOW.
+#
+# `I_INTERNAL` read `1.0` with the comment "the published internal +3V3 budget",
+# and every envelope mode above, every `U12` capability answer and every
+# battery-side margin in this contract is a function of it.  Nothing checked it.
+#
+# THE REPOSITORY'S OWN LAST DERIVATION PREDATES THE PARTS IT HAS TO COVER.
+# `audits/2026-08-23-s1-community-sheet09-implementation.md` re-derived the
+# internal worst case as 823 mA from an FBV2-COMM-001 subtotal of 769 mA.  That
+# subtotal has FIVE lines -- Wi-Fi TX 355, display + backlight 181, touch and
+# housekeeping 13, microSD write 100, audio 120 -- and it contains **no NFC
+# line at all**, because when it was written `U9` and its twelve decoupling
+# capacitors were still DNP.  **D-192 FITTED them**, and **D-205** then
+# allocated the NFC front end **100 mA on +3V3 with the field on**.  Nothing
+# added that 100 mA to the budget.
+#
+# AND THE "WORST SINGLE RADIO" ASSUMPTION IS NOT TRUE OF THIS BOARD.  The
+# subtotal counts Wi-Fi TX as "the worst single radio".  `U8` is an EXTERNAL
+# E22-900M22S module on its own `+3V3` pin, and NOTHING IN HARDWARE STOPS IT
+# TRANSMITTING WHILE THE ESP32 DOES -- the one-TX-at-a-time discipline the Demo
+# scope states is between the two SUB-GHz radios, which share SPI-B, and not
+# between them and the Wi-Fi radio inside `U1`.  A rule no silicon enforces is
+# the exact defect D-753 named; this table therefore ADDS the worse sub-GHz
+# radio to the Wi-Fi line rather than substituting for it.
+#
+# So the budget is itemised here, every line cited, and it is SUMMED rather than
+# asserted.  `every_fitted_p3v3_consumer_is_budgeted` is what makes it a gate
+# rather than a table: the board's own `+3V3` net is read, every FITTED
+# non-passive consumer on it is collected, and a consumer no line names is a
+# FAILURE.  The next part put on this rail cannot be silently unbudgeted.
+#
+# WHAT IT COSTS, STATED: the honest figure is 1.063 A against the 1.0 A this
+# constant published, so every margin below narrows.  They all still hold --
+# see `modes_I_bat_A` and `converter_capability_A` -- and the thinnest is the
+# 5 V rail alone at its limiter, which is an accessory FAULT on top of every
+# internal subsystem running at once, and whose consequence is a `BQ25185`
+# `IBAT_OCP` hiccup that AUTO-RETRIES (D-771 guaranteed it acts before the
+# latching breaker on every unit).
+# --------------------------------------------------------------------------
+P3V3_INTERNAL_BUDGET = (
+    dict(line="Wi-Fi / BLE TX, the worst RF condition the module publishes",
+         mA=355.0, refs=("U1",),
+         cite="Espressif ESP32-S3-WROOM-1 datasheet v1.8 Table 6-4, archived at "
+              "vendor/Espressif/: 355 mA PEAK, 802.11b 1 Mbps @20.5 dBm, and "
+              "the table states TX current is rated at 100 % duty.  Table 6-5's "
+              "worst BLE row is 344 mA and is NOT added -- one radio inside one "
+              "module cannot transmit twice at once"),
+    dict(line="sub-GHz TX, the worse of the two shared-bus radios",
+         mA=140.0, refs=("U7", "U8"),
+         cite="Ebyte E22-M series user manual, archived at vendor/Ebyte/: "
+              "emission current 100-140 mA instantaneous @22 dBm for the fitted "
+              "E22-900M22S.  The E07-400M10S CC1101 is 35 mA (its own manual "
+              "v1.3).  ONLY THE WORSE OF THE TWO is counted, because the Demo "
+              "scope holds them to one TX at a time on the shared SPI-B bus -- "
+              "but it is ADDED TO the Wi-Fi line and not substituted for it"),
+    dict(line="display logic + backlight at maximum",
+         mA=181.0, refs=("J1", "U17", "L3"),
+         cite="FBV2-COMM-001 internal subtotal, retained"),
+    dict(line="audio at the capped level", mA=120.0, refs=("U5",),
+         cite="FBV2-COMM-001 internal subtotal, retained; D-161 records the "
+              "MAX98357A's 230 mA PEAKS separately as locally supplied"),
+    dict(line="microSD write", mA=100.0, refs=("J2",),
+         cite="FBV2-COMM-001 internal subtotal, retained"),
+    dict(line="NFC front end, field on", mA=100.0, refs=("U9",),
+         cite="D-205: DS12484 Rev 3 Table 121 gives I_AL-AM = 26 mA MAX for the "
+              "IC with all blocks active and D-134's first-build network draws "
+              "about 60 mA at the driver, so the +3V3 allocation with the field "
+              "on is 100 mA.  THIS LINE IS THE ONE THE 823 mA FIGURE WAS "
+              "MISSING: U9 was DNP when FBV2-COMM-001 was written and D-192 "
+              "fitted it.  D-205's own guard rail stands -- a C_s move to 270 pF "
+              "would draw about 257 mA and requires this budget to be re-run"),
+    dict(line="IR transmitter, burst average", mA=50.0, refs=("D1", "Q1", "R24"),
+         cite="D-155 / FBV2-S1-007: the 150 mA peaks are supplied by C12 22 uF "
+              "and not by the rail, so the rail sees the burst average"),
+    dict(line="touch + housekeeping (both expanders and the IMU)",
+         mA=13.0, refs=("U2", "U3", "U4"),
+         cite="FBV2-COMM-001 internal subtotal, retained"),
+    dict(line="front RGB at white", mA=4.2, refs=("D13",),
+         cite="FBV2-S1-008 / D-184's re-derivation"),
+)
+# THE SUM, NOT AN ASSERTION.  Was a hand-written 1.0.
+I_INTERNAL = round(sum(x["mA"] for x in P3V3_INTERNAL_BUDGET) / 1000.0, 4)
+I_INTERNAL_PUBLISHED_WAS = 1.0          # the constant D-772 replaced
+# Read off the board rather than listed: the source of the rail, and the
+# accessory switch whose current this contract budgets SEPARATELY as the whole
+# point of the exercise.
+P3V3_NOT_A_CONSUMER = ("U12", "U20")
+P3V3_PASSIVE_PREFIXES = ("R", "C", "L", "TP", "MK", "FID", "BOSS", "#")
 LTC4368_TRIP = 0.050 / 0.015           # D-753's figure, KEPT so the decision
                                        # that replaced it stays legible
 FUSE_A = 5.0                           # F1 0466005 one-shot
@@ -588,6 +676,50 @@ def _tol(value):
 def _ilim_typ(r_ohms):
     """TI equation 1, identical in SLVSFJ2B and SLVSGP6A.  Amps from ohms."""
     return 1.18 * ((r_ohms / 1000.0) ** -1.072)
+
+
+def judge_p3v3_budget(p3v3_consumers, dnp_refs, on_board, budget=None):
+    """D-772.  Pure over the board's OWN `+3V3` consumer set.
+
+    `p3v3_consumers` is every FITTED reference with a pad on `+3V3`, already
+    filtered of passives and of the two references that are not loads.  A
+    consumer no budget line names is a FAILURE -- that is the whole clause, and
+    it is what stops the next part put on this rail from being silently
+    unbudgeted the way the NFC front end was for 27 days.
+
+    A budget line whose references are ALL absent or DNP is also reported, so a
+    line can go stale in the other direction without going unnoticed.
+    """
+    budget = P3V3_INTERNAL_BUDGET if budget is None else budget
+    named, rows = set(), []
+    for b in budget:
+        live = [r for r in b["refs"] if r in p3v3_consumers]
+        present = [r for r in b["refs"]
+                   if r in on_board and r not in dnp_refs]
+        named.update(b["refs"])
+        rows.append(dict(line=b["line"], mA=b["mA"], refs=list(b["refs"]),
+                         on_the_p3v3_net=live,
+                         line_has_a_live_reference=bool(present),
+                         cite=b["cite"]))
+    unbudgeted = sorted(p3v3_consumers - named)
+    dead_lines = [r["line"] for r in rows if not r["line_has_a_live_reference"]]
+    total = round(sum(b["mA"] for b in budget) / 1000.0, 4)
+    d = dict(
+        lines=rows, total_A=total,
+        fitted_p3v3_consumers=sorted(p3v3_consumers),
+        unbudgeted_consumers=unbudgeted,
+        budget_lines_with_no_live_reference=dead_lines,
+        every_fitted_p3v3_consumer_is_budgeted=not unbudgeted,
+        every_budget_line_has_a_live_reference=not dead_lines,
+        superseded_published_A=I_INTERNAL_PUBLISHED_WAS,
+        method="the board's own +3V3 net, minus passives and minus the rail's "
+               "source (U12) and the accessory switch (U20) whose current this "
+               "contract budgets separately; every remaining FITTED reference "
+               "must be named by a budget line, and the envelope runs on the "
+               "SUM of the lines rather than on a constant")
+    d["ok"] = (d["every_fitted_p3v3_consumer_is_budgeted"]
+               and d["every_budget_line_has_a_live_reference"])
+    return d["ok"], d
 
 
 def judge_accessory_envelope(values):
@@ -948,7 +1080,52 @@ def main():
                      lambda v: v.__setitem__(BL_RECTIFIER, "SOME-DIODE-99"))))
 
     # ---- F6: the accessory envelope, and four live controls ---------------
+    # D-772 FIRST: the internal +3V3 budget the envelope RUNS ON, read from the
+    # board's own net rather than taken on trust.
+    p3v3_consumers = set()
+    for fp in board.GetFootprints():
+        ref = fp.GetReference()
+        if ref in P3V3_NOT_A_CONSUMER or ref in sch_dnp:
+            continue
+        if ref.startswith(P3V3_PASSIVE_PREFIXES):
+            continue
+        if any(p.GetNetname() == "+3V3" for p in fp.Pads()):
+            p3v3_consumers.add(ref)
+    budget_ok, budget = judge_p3v3_budget(p3v3_consumers, sch_dnp, on_board)
+
+    def _budget_control(name, mutate_budget):
+        b2 = mutate_budget([dict(x) for x in P3V3_INTERNAL_BUDGET])
+        ok, _ = judge_p3v3_budget(p3v3_consumers, sch_dnp, on_board,
+                                  budget=b2)
+        return name, not ok
+
+    budget_controls = dict(x for x in (
+        # THE LOAD-BEARING ONE: this is the budget as it actually stood before
+        # D-772 -- the NFC line simply absent, which is how the 823 mA figure
+        # was carried from D-192 onward while U9 sat FITTED on the rail.
+        _budget_control("f6o_refuses_the_budget_with_the_nfc_line_missing",
+                        lambda b: [x for x in b
+                                   if "NFC front end" not in x["line"]]),
+        # any consumer dropped is the same defect one part over
+        _budget_control("f6p_refuses_a_budget_that_forgets_the_microsd",
+                        lambda b: [x for x in b if "microSD" not in x["line"]]),
+        _budget_control("f6q_refuses_a_budget_that_forgets_the_audio_amp",
+                        lambda b: [x for x in b if "audio" not in x["line"]]),
+        # and a line whose parts have all left the board is stale in the other
+        # direction: it inflates the budget with current nothing draws
+        _budget_control("f6r_refuses_a_budget_line_with_no_live_reference",
+                        lambda b: b + [dict(line="a part that is not on this "
+                                                 "board", mA=500.0,
+                                            refs=("U999",), cite="control")])))
+
     env_ok, env = judge_accessory_envelope(values)
+    env["p3v3_internal_budget"] = budget
+    env["internal_3v3_A"] = I_INTERNAL
+    env["every_fitted_p3v3_consumer_is_budgeted"] = budget[
+        "every_fitted_p3v3_consumer_is_budgeted"]
+    env["every_p3v3_budget_line_has_a_live_reference"] = budget[
+        "every_budget_line_has_a_live_reference"]
+    env_ok = env_ok and budget_ok
 
     def _env_control(name, mutate):
         v2 = dict(values)
@@ -1316,7 +1493,7 @@ def main():
                    "so the LATCHING breaker must sit entirely above the "
                    "RECOVERABLE charger trip; and both converters must be "
                    "able to source what their load switch is allowed to pass",
-            controls_refused=env_controls, **env),
+            controls_refused=dict(env_controls, **budget_controls), **env),
         "F7_no_retired_part_name_survives_on_the_part_that_replaced_it": dict(
             ok=ident_ok and all(ident_controls.values()),
             method="D-768 found 'CH280QV10-CT Rev.D 2.8in 240x320' on J1's row "

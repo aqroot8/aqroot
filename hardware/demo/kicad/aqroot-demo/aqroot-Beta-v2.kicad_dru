@@ -601,8 +601,9 @@
 # real band was 2.640 .. 4.040 amps and OVERLAPPED the charger's own
 # 2.5625 .. 3.6875, with the LATCHING protection able to fire first.
 # R75 is 10 mOhm and the band is 3.960 .. 6.061.  F6 now carries
-# FOURTEEN live negative controls, two of which are the boards D-753
-# and D-765 actually shipped.  The section is kept verbatim below
+# EIGHTEEN live negative controls, two of which are the boards D-753
+# and D-765 actually shipped and one of which is the internal +3V3
+# budget as it stood before D-772, with its NFC line simply absent.  The section is kept verbatim below
 # because it is the record of the decision D-771 corrects.
 #
 # D-750 answered the external first-spin review's combined-load item with
@@ -683,22 +684,34 @@
 # 5.525 mm x 0.200 mm segment: U11's DLH0010A pin-2 BAT land, which
 # nothing wider can land on (D-269, D-708).
 #
-#   sustained state (full 1.0 A internal +3V3 load)   3.7 V    3.0 V
-#   both rails at D-098's PUBLISHED budget            1.844    2.274
-#   both rails at their GUARANTEED currents           1.905    2.349
+#   sustained state (internal +3V3 load 1.063 A)      3.7 V    3.0 V
+#   both rails at D-098's PUBLISHED budget            1.906    2.351
+#   both rails at their GUARANTEED currents           1.967    2.426
 #
 # (amps).  D-765 PRINTED 1.69 AND 2.08 HERE, and those were the numbers
 # of a board whose limiters could not deliver what the product publishes.
 # THE PUBLISHED ROW IS THE REQUIREMENT AND IT HAS NOT MOVED: D-098 has
-# promised 400 mA + 300 mA since 2026-08-23, which is 2.274 amps at the
+# promised 400 mA + 300 mA since 2026-08-23, which is 2.351 amps at the
 # 3.0 V corner whatever the ILIM resistors are set to.  What D-771
 # changed is that the hardware can now honour it; the GUARANTEED row sits
-# 3.3 % above the PUBLISHED one because the limiter must be set with
+# 3.2 % above the PUBLISHED one because the limiter must be set with
 # margin to guarantee anything at all.
 #
+# D-772 RE-BASED THE INTERNAL TERM.  These rows were computed with a
+# hand-written 1.0 A of internal +3V3 load.  That constant was LOW: the
+# repository's own last derivation (823 mA) contains NO NFC LINE, because
+# U9 and its twelve decoupling capacitors were still DNP when it was
+# written and D-192 fitted them; D-205 then allocated the NFC front end
+# 100 mA with the field on and nothing added it.  The same table also
+# counted "the worst single radio", which is not true of this board --
+# U8 is an EXTERNAL module on its own +3V3 pin and nothing in hardware
+# stops it transmitting while the ESP32 does.  The internal budget is now
+# ITEMISED AND SUMMED in checks/demo_feature_contract.py, every line
+# cited, and it comes to 1.063 A.
+#
 # The plane-coupled model this repository uses puts that segment's
-# ceiling at 47.8 K over the adjacent In4 plane at 2.349 amps, 44.8 K at
-# 2.274 and 19.5 K at 1.5, and that model ignores lateral spreading,
+# ceiling at 51.0 K over the adjacent In4 plane at 2.426 amps, 47.9 K at
+# 2.351 and 19.5 K at 1.5, and that model ignores lateral spreading,
 # conduction along the copper and convection from an OUTER layer - and
 # the necked copper is 0.575 mm long before it tapers 0.3 / 0.4 / 0.6 /
 # 0.8 / 1.0 / 1.2 mm, against a copper thermal length of about 2.6 mm, so

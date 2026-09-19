@@ -71,7 +71,7 @@ ASSEMBLY_SHEET = HERE / "aqroot_assembly.kicad_wks"
 # The assembly drawing is a RELEASE ARTIFACT, not a generic KiCad plot.  The
 # revision is intentionally explicit so a regenerated PDF cannot silently look
 # current while carrying an older review authority.
-ASSEMBLY_RELEASE = "D-771"
+ASSEMBLY_RELEASE = "D-772"
 
 # The board's own enabled copper layers, in stackup order, plus every
 # non-copper layer a fabricator and an assembler actually need.  The contract
