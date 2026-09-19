@@ -528,7 +528,14 @@ NORMAL_VBAT_FLOOR = 3.50               # proposed accessory-enable cell floor
 NORMAL_PATH_OHM = 0.36                 # conservative common-path resistance
 NORMAL_LOSS_ALLOWANCE_W = 0.10         # loss beyond converter eta
 VBAT_CORNER = 3.0                      # 1S Li-ion working floor
-V_3V3, ETA_U12 = 3.3, 0.90             # TPS63020 buck-boost
+# D-774 SWEEP.  Every other physical constant in this file now cites a primary
+# source (see ILIM_LO/HI, IBAT_OCP_A, BREAKER_SENSE_mV, BOOST_FB, U12_IOUT_A,
+# U21_*, FUSE_A, BL_*).  THESE TWO DO NOT, and are kept because both are
+# CONSERVATIVE IN THE DIRECTION THAT MATTERS: a lower efficiency means MORE pack
+# current for the same delivered load, so every margin this file reports is
+# understated by them.  The TPS63020 near unity ratio at ~1.9 A and the TPS61023
+# at 3.0 -> 5.165 V both run above these figures in their own published curves.
+V_3V3, ETA_U12 = 3.3, 0.90             # TPS63020 buck-boost, conservative
 ETA_U21 = 0.88                         # TPS61023 boost, conservative
 # --------------------------------------------------------------------------
 # D-773 -- AND THE 5 V RAIL'S OWN SETPOINT WAS A NUMBER, FROM A WRONG REFERENCE.

@@ -85,6 +85,114 @@
 >
 > **The assembly PDFs print `RELEASE D-773`.**
 
+---
+
+## ENGINEERING HANDOFF — D-774, board `8c548ece`, 2026-09-19
+
+### Final board status
+
+Six layers, **77.0 × 148.0 mm**, `JLC06161H-7628` stack (1 oz outer / 0.5 oz
+inner), **fabrication-ready**.  Board authority **`8c548ece`**.
+
+### Major design changes in this round
+
+Four decisions, **all of one class**: *the repository stating a number or a rule
+that nothing derived or applied*.  **Not one copper object moved in any of
+them** — every copper Gerber is byte-identical to the D-770 package apart from
+its timestamp.
+
+| | what was wrong | fix |
+|---|---|---|
+| **D-771** | the board **published an accessory budget its own limiter could refuse to deliver** (D-098's 400/300 mA against a guaranteed 0.277 A), and the protection chain was **ordered against a 50 mV typical** so the LATCHING breaker's real band overlapped the RECOVERABLE charger trip | `R97` → **1.78 kΩ**, `R101` → 2.32 kΩ, `R75` → **10 mΩ** |
+| **D-772** | the internal `+3V3` term every margin depends on was a **hand-written `1.0`**, missing the NFC front end `D-192` fitted and assuming a "worst single radio" nothing enforces | **nine cited lines, summed: 1.063 A**, gated against the board's own `+3V3` net |
+| **D-773** | the 5 V setpoint was **4.95 V here and 4.99 V there, both from a `VREF` TI does not publish** | setpoint **derived** (4.742 / 4.950 / 5.165 V); `R101` → **2.37 kΩ**, the E96 value nearest the centre of its computed legal window |
+| **D-774** | the **2× capacitor derating rule had never once been run** against a fitted part | `F8`; five named, reasoned exceptions; two node declarations corrected |
+
+### Connectivity
+
+**174** retained multi-pad nets, **173 connected**, **1 owner-approved open**
+(`U11.3` `/BQ25185_STAT2`, D-742), **0 UNAPPROVED open edges**, raw ratsnest 17.
+The three RGB replacement nets (`FRONT_RGB_R_N`/`_G_N`/`_B_N`) are whole with
+zero open edges.  Approved NCs are exactly the eight `J5` positions Demo scope
+names.
+
+### DRC
+
+**199 violations, ALL `lib_footprint_issues`, ALL WARNING, ZERO of every other
+class.**  17 unconnected items (the owner-approved `U11.3` and its ratsnest
+family).  Schematic/PCB parity **246 warnings, 0 ERRORS**.
+
+### Safety and power
+
+`D-186` and `D-269` are **live `dru_contracts` and TRUE on this board**, and the
+battery protection is **materially better than at D-770**: the recoverable
+`IBAT_OCP` band (2.5625–3.6875 A) now sits **entirely below** the latching
+`LTC4368` breaker (3.960–6.061 A) with 6.9 % of ordering margin, where at 15 mΩ
+the two **overlapped by 1.05 A**.  Rail ampacity `all_ok`; the two accessory
+rails and `+3V3` are measured for the first time.  Both accessory rails
+**GUARANTEE** the budget D-098 publishes (+7.0 % and +4.9 %).  Battery-pack
+contract `B1–B8` PASS.
+
+**The thinnest margin on this board is 1.6 %**, named exactly: the 5 V accessory
+**in overcurrent** while every internal subsystem runs at once, on a charger at
+the −18 % corner, cell at 3.0 V, boost at the top of its band — six unlucky
+corners at once, consequence a **recoverable `IBAT_OCP` hiccup**.  At a
+conforming accessory load it is **7.3 %**.
+
+### USB / RF / NFC / features
+
+`F1–F8` PASS.  Retained RF (SX1262 + CC1101), NFC (ST25R3916 front end with
+`RF1–RF5` symmetry), USB, display, audio, IR, microSD and accessory power all
+present, fitted and whole.  `LAND1–LAND8` and `MK1–MK11` PASS.
+
+### Manufacturing package
+
+`FAB1–FAB15` PASS.  **29 files, 24 deterministic**, release **`D-773`**.
+Sourcing **252/252 orderable, coverage 1.0**, 0 unsourced lines.  Gerbers,
+drills, BOM (125 lines), CPL, fabrication notes and assembly drawings all
+regenerated and checked.  **19 standing contracts, none failing.**  Firmware
+`H1–H6` PASS and all four PlatformIO environments build SUCCESS.
+**`hardware/beta-v2` UNTOUCHED — 0 modified paths across the whole round.**
+
+### Significant remaining prototype risks
+
+1. **`U11.2`'s `BAT` land** — 0.200 mm `DLH0010A` package land, model ceiling
+   **51.5 K** at the 2.438 A sustained worst case.  The model ignores lateral
+   spreading, conduction and convection, and the copper is necked for only
+   0.575 mm against a ≈2.6 mm thermal length.  **First-article thermal
+   measurement at the 3.0 V corner with both accessory rails loaded.**
+2. **`U11.3` / `STAT2` intentionally unconnected**, owner-approved (D-742), with
+   `R128`/`TP7` retained for probe and bodge.
+3. **The 1.6 % compound-fault margin** above — measure `IBAT_OCP` behaviour with
+   a deliberately overloaded 5 V accessory at first article.
+4. **The 5 V rail's −5.2 % low corner** (4.69 V at the connector at the bottom of
+   the boost's own setpoint band).  Inherent to the `TPS61023`'s ±2.5 % reference,
+   not to the divider.
+5. **`L2`'s DNP strip**, **`D8`'s 1.0 V margin**, **`Q11`'s deliberate 2.06×
+   ordering margin** — all carried from D-770 §5 unchanged.
+6. **Procurement, not design**: the touch silicon (`CST026` vs `FT6236` — the PO
+   must name **both** `ER-TFT035IPS-6` and `ER-TPC035-6`), the panel FPC tail
+   thickness against the Hirose `FH69`, and nine BOM lines under 10× the
+   first-five need.
+7. **Enclosure CAD** — BOOT face, power-switch position, 1×24 wall aperture,
+   corner radii — remains CAD-TO-VERIFY and is not PCB work.
+
+### Recommended post-Kickstarter improvements
+
+* **Re-spin `U11`'s `BAT` escape** — a charger whose `STAT2` pin is not adjacent
+  to `BAT`, or a package with a land taller than 0.200 mm, closes both risk 1 and
+  risk 2 at once.
+* **A tighter 5 V reference** for the accessory boost would close risk 4; the
+  divider cannot.
+* **Widen the accessory envelope** to D-098's 600–800 mA / 500 mA targets once
+  first-article measurements replace the stacked worst cases this round had to
+  assume — the limiting term is the compounded internal `+3V3` budget, which a
+  real measurement will shrink.
+* **Read capacitor ratings from the released BOM row** rather than the value
+  string, closing `F8`'s stated 39-part boundary (the leg D-768 proved
+  load-bearing for `F7`).
+
+
 > # **STATUS: NOT READY — READINESS WITHDRAWN, ONE OF TWO CAUSES CLOSED (D-765, 2026-09-18).**
 >
 > **BOARD AUTHORITY `9e4728ae`** (copper byte-identical to `1a06b058`; only the two
