@@ -1,0 +1,392 @@
+{
+  "contract": "firmware_hw_map",
+  "board": "aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "cef458b92c6e92462bea250b434a481b3e8454a991eb13b2b66623ca1f4a880e",
+  "H3_policy_corroborated": {
+    "problems": [],
+    "mcu_pins_mapped": 30,
+    "expander_bits_mapped": 32,
+    "verdict": "PASS"
+  },
+  "H1_generated_tree_is_fresh": {
+    "files": [
+      "Firmware/src/hw/aqroot_demo_board.h",
+      "Firmware/src/hw/aqroot_demo_board.json"
+    ],
+    "stale": [],
+    "verdict": "PASS"
+  },
+  "H2_board_digest": {
+    "board_sha256": "cef458b92c6e92462bea250b434a481b3e8454a991eb13b2b66623ca1f4a880e",
+    "published_in_header": "cef458b92c6e92462bea250b434a481b3e8454a991eb13b2b66623ca1f4a880e",
+    "verdict": "PASS"
+  },
+  "H4_owner_decisions_are_machine_checked": {
+    "approved_unrouted": [
+      {
+        "contact": "U11.3",
+        "net": "/BQ25185_STAT2",
+        "expander_bits": [
+          "U2.P16"
+        ],
+        "masked": true
+      }
+    ],
+    "approved_nc_absent": true,
+    "problems": [],
+    "approved_nc_contacts": [
+      "J5.10",
+      "J5.11",
+      "J5.12",
+      "J5.15",
+      "J5.16",
+      "J5.17",
+      "J5.18",
+      "J5.9"
+    ],
+    "approved_nc_nets_on_board": [
+      "unconnected-(J5-Pin_10-Pad10)",
+      "unconnected-(J5-Pin_11-Pad11)",
+      "unconnected-(J5-Pin_12-Pad12)",
+      "unconnected-(J5-Pin_15-Pad15)",
+      "unconnected-(J5-Pin_16-Pad16)",
+      "unconnected-(J5-Pin_17-Pad17)",
+      "unconnected-(J5-Pin_18-Pad18)",
+      "unconnected-(J5-Pin_9-Pad9)"
+    ],
+    "leaked_into_firmware_map": [],
+    "verdict": "PASS"
+  },
+  "H5_firmware_layer_uses_the_map": {
+    "sources": [
+      "Firmware/src/hw/aqroot_accessory_power_policy.h",
+      "Firmware/src/hw/aqroot_demo_display.h",
+      "Firmware/src/hw/aqroot_demo_expanders.h",
+      "Firmware/src/hw/aqroot_demo_peripherals.h",
+      "Firmware/src/hw/aqroot_demo_pins.h",
+      "Firmware/src/hw/aqroot_demo_radios.h",
+      "Firmware/src/hw/aqroot_i2c.h",
+      "Firmware/src/hw/aqroot_i2c_arduino.h",
+      "Firmware/src/hw/aqroot_spi_bus_b.h",
+      "Firmware/src/hw/max17048_guard.h",
+      "Firmware/src/hw/pcal9535a.h"
+    ],
+    "symbols_emitted": 91,
+    "roles_unreferenced_by_the_layer": [],
+    "symbols_the_generator_never_emitted": [],
+    "verdict": "PASS"
+  },
+  "H6_host_tests_prove_the_orderings": {
+    "tests": [
+      {
+        "test": "Firmware/test/test_expander_order.cpp",
+        "compiled": true,
+        "exit_code": 0,
+        "claims": 123,
+        "failed_claims": [],
+        "controls": [
+          {
+            "control": "UNKNOWN accessory latch state is falsely reported OFF to the caller",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] UNKNOWN caller state is pessimistically ACTIVE, never falsely OFF"
+          },
+          {
+            "control": "runtime accessory fail-safe blanket-writes U2's full boot-safe latch",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] runtime accessory fail-safe preserves released reset lines"
+          },
+          {
+            "control": "direction is written before the output latch",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] 0x20: output configuration is PUSH-PULL before direction"
+          },
+          {
+            "control": "a fresh MCU invents a valid zero output shadow after warm reset",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] fresh PCAL software shadow is explicitly INVALID"
+          },
+          {
+            "control": "Output Port Configuration is changed to open-drain before outputs",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] 0x20: output configuration is PUSH-PULL before direction"
+          },
+          {
+            "control": "warm reset skips the immediate U3 complete safe-latch write",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] warm reset: second bus write forces U3 safe latch before policy traffic"
+          },
+          {
+            "control": "the RGB cathodes boot at 0, lighting the LED at power-on",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the RGB cathodes are HIGH (dark) at boot -- D13's anode is +3V3"
+          },
+          {
+            "control": "the 5 V load switch is closed before the boost is enabled",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] 5 V up: the BOOST enable leads the LOAD SWITCH (D-186)"
+          },
+          {
+            "control": "a U2 configuration failure short-circuits the independent U3 configuration",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] begin(): U3's direction is written ANYWAY after U2 fails"
+          },
+          {
+            "control": "a U2 read error stops U3 being serviced (service short-circuits)",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] service(): U3's input port is read ANYWAY after U2 fails"
+          },
+          {
+            "control": "a failed output write leaves the shadow trusted",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] a single-bit write is REFUSED after a NACK invalidated the shadow"
+          },
+          {
+            "control": "partial 5 V enable failure no longer enters safety recovery",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] partial 5 V enable is physically repaired to a known safe state"
+          },
+          {
+            "control": "lost-ACK 3.3 V enable failure no longer enters safety recovery",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] lost-ACK 3.3 V enable is repaired before state is trusted"
+          },
+          {
+            "control": "failed boot-safe latch write is forgotten instead of staying pending",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] warm-reset failed safe write remains pending"
+          },
+          {
+            "control": "uncertain I2C-buffer OFF write is allowed to poison U2 state without safety recovery",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] uncertain I2C-buffer OFF converges immediately to known accessory-safe state"
+          },
+          {
+            "control": "generic invalid output shadow is never scheduled for accessory-safe reconciliation",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] generic shadow repair leaves accessory state known and safe"
+          }
+        ],
+        "verdict": "PASS"
+      },
+      {
+        "test": "Firmware/test/test_spi_bus_b.cpp",
+        "compiled": true,
+        "exit_code": 0,
+        "claims": 22,
+        "failed_claims": [],
+        "controls": [
+          {
+            "control": "the bus accepts a second concurrent chip select",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] re-selecting the SAME device while held is REFUSED"
+          },
+          {
+            "control": "a second radio may key while the first is transmitting",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] re-keying the SAME transmitter is REFUSED -- same re-entrancy rule"
+          },
+          {
+            "control": "Hold stops releasing the bus when it leaves scope",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the outer Hold still owned the bus when the inner scopes ended"
+          }
+        ],
+        "verdict": "PASS"
+      },
+      {
+        "test": "Firmware/test/test_accessory_power_policy.cpp",
+        "compiled": true,
+        "exit_code": 0,
+        "claims": 45,
+        "failed_claims": [],
+        "controls": [
+          {
+            "control": "dual-rail floor collapses onto the single-rail floor",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] dual floor is D-775's derived 3.80 V"
+          },
+          {
+            "control": "unreadable VCELL fails open instead of shedding active rails",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] unreadable VCELL sheds a single active rail"
+          },
+          {
+            "control": "a dual-rail load below the dual floor sheds everything instead of the 5 V rail alone",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] dual rails at 3.75 V shed the 5 V rail first"
+          },
+          {
+            "control": "the VCELL plausibility band stops excluding the all-ones code",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the all-ones VCELL code is OUTSIDE the plausible band"
+          }
+        ],
+        "verdict": "PASS"
+      },
+      {
+        "test": "Firmware/test/test_fuel_gauge_safety.cpp",
+        "compiled": true,
+        "exit_code": 0,
+        "claims": 20,
+        "failed_claims": [],
+        "controls": [
+          {
+            "control": "HIBRT write success is trusted without exact configuration readback",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] HIBRT write without exact 0x0000 readback is refused"
+          },
+          {
+            "control": "later HIBRT/reset state is no longer re-verified before VCELL",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] later HIBRT drift invalidates readiness before VCELL is trusted"
+          },
+          {
+            "control": "VCELL bus failure leaves gauge readiness trusted",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] VCELL read failure invalidates readiness"
+          },
+          {
+            "control": "implausible VCELL does not invalidate gauge readiness",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] all-ones VCELL fails closed and invalidates readiness"
+          }
+        ],
+        "verdict": "PASS"
+      }
+    ],
+    "verdict": "PASS"
+  },
+  "controls": [
+    {
+      "control": "D-732 swap: U2 P05 <-> P06",
+      "refused": true,
+      "first_reason": "U2 P05 (pad 9): policy says '/TOUCH_INT_N', board says '/SX1262_DIO1'"
+    },
+    {
+      "control": "D-733 swap: U2 P17 <-> U3 P17",
+      "refused": true,
+      "first_reason": "U2 P17 (pad 20): policy says '/BQ25185_STAT1', board says '/ACC_PWR_EN'"
+    },
+    {
+      "control": "ACC_5V_SW_EN safe latch flipped to 1 against R131",
+      "refused": true,
+      "first_reason": "U3 P03 ACC_5V_SW_EN safe latch is 1 but R131 ties the net to GND"
+    },
+    {
+      "control": "FRONT_RGB_R_N claims an external pull it does not have",
+      "refused": true,
+      "first_reason": "U3 P00 FRONT_RGB_R_N claims safe_basis=external_pull with no fitted external pull"
+    },
+    {
+      "control": "TOUCH_INT_N claims an external pull it does not have",
+      "refused": true,
+      "first_reason": "U2 P06 TOUCH_INT_N claims an external pull it does not have"
+    },
+    {
+      "control": "SX1262_DIO1 pulls against the module's push-pull driver",
+      "refused": true,
+      "first_reason": "U2 P05 SX1262_DIO1 must not pull against a push-pull driver"
+    },
+    {
+      "control": "an expander bit is dropped from the map",
+      "refused": true,
+      "first_reason": "U3 P11 (pad 14) has no policy row"
+    },
+    {
+      "control": "a U1 pad is re-pointed at the wrong net",
+      "refused": true,
+      "first_reason": "U1.9: policy says '/IR_RX_GPIO44', board says '/IR_TX_GPIO16'"
+    },
+    {
+      "control": "two firmware roles share one C identifier",
+      "refused": true,
+      "first_reason": "role NATIVE_B claimed by both U1.24 and U1.31"
+    },
+    {
+      "control": "an UNMASKED input is left with an undefined idle level",
+      "refused": true,
+      "first_reason": "U3 P14 is UNMASKED with an undefined idle level"
+    },
+    {
+      "control": "a strap loses the resistor that holds it",
+      "refused": true,
+      "first_reason": "U1.26 strap part is R111, policy names R999"
+    },
+    {
+      "control": "the VBUS_PRESENT declaration is dropped",
+      "refused": true,
+      "first_reason": "/01_POWER_TREE/VBUS_PRESENT is bench-probed (TP31.1) and reaches no U1/U2/U3 pad, and no BENCH_ONLY entry declares it"
+    },
+    {
+      "control": "the breaker-fault declaration is dropped",
+      "refused": true,
+      "first_reason": "/01_POWER_TREE/LTC4368_FAULT_N is bench-probed (TP18.1) and reaches no U1/U2/U3 pad, and no BENCH_ONLY entry declares it"
+    },
+    {
+      "control": "a net that IS readable is declared unreadable",
+      "refused": true,
+      "first_reason": "BENCH_ONLY declares /WAKE_INT_N unreadable, but the board does not put it in the probed-and-unreachable set -- a stale declaration"
+    },
+    {
+      "control": "a net that is not on the board at all is declared",
+      "refused": true,
+      "first_reason": "BENCH_ONLY declares /01_POWER_TREE/NO_SUCH_NET unreadable, but the board does not put it in the probed-and-unreachable set -- a stale declaration"
+    }
+  ],
+  "controls_verdict": "PASS",
+  "verdict": "PASS"
+}

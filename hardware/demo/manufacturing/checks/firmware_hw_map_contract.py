@@ -40,11 +40,11 @@ WHAT IS PROVED
   H6  FOUR HOST TESTS compile under `-Wall -Wextra -Werror` and pass.  Each
       carries load-bearing destructive controls that must make it FAIL.
         * the EXPANDER SAFE-ORDERING test.  The PCAL9535A resets to all-inputs
-          with its output latches at 0x00, and six of this board's expander
-          outputs are safe at 0 while three are safe at 1, so the order
-          `pulls -> mask -> latch -> direction` is a SAFETY property, not a
-          style.  It is invisible to a compile and invisible to DRC; the test
-          makes it visible by recording the I2C transactions the layer issues.
+          with its output latches at 0xFF, and six of this board's expander
+          outputs are safe at 0 while three are safe at 1, so writing the
+          complete safe latch before policy registers and direction is a SAFETY
+          property, not a style.  It is invisible to a compile and invisible
+          to DRC; the test makes it visible by recording the I2C transactions.
         * the SPI BUS B ARBITER test.  U7, U8 and U9 share one bus and the two
           rules over it -- one chip select at a time, one transmitter at a time
           -- were comments until D-748.  A comment cannot refuse.
@@ -281,6 +281,30 @@ ORDER_CONTROLS = [
     }""",
      """    if (!u2_safe || !u3_safe || !u2_ok || !u3_ok) {
       return false;
+    }"""),
+    ("uncertain I2C-buffer OFF write is allowed to poison U2 state without safety recovery",
+     "aqroot_demo_expanders.h",
+     """      (void)applyAccessorySafeState(bus);
+      return false;
+    }
+    return true;
+  }
+
+  Pcal9535a &u2()""",
+     """      if (on) (void)applyAccessorySafeState(bus);
+      return false;
+    }
+    return true;
+  }
+
+  Pcal9535a &u2()"""),
+    ("generic invalid output shadow is never scheduled for accessory-safe reconciliation",
+     "aqroot_demo_expanders.h",
+     """    if (!u2_.outputShadowValid() || !u3_.outputShadowValid()) {
+      safe_shutdown_pending_ = true;
+    }""",
+     """    if (!u2_.outputShadowValid() || !u3_.outputShadowValid()) {
+      /* uncertainty ignored */
     }"""),
 ]
 

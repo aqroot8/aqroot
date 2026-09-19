@@ -72,6 +72,23 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+> # **D-783 OUTPUT-SHADOW RECOVERY CORRECTION — EXTERNAL_REVIEW_HOLD**
+>
+> A post-D-782 CTO fault-injection probe reproduced one remaining firmware recovery hole:
+> an uncertain `ACC_PWR_EN` **OFF** transaction invalidated U2's output shadow without
+> setting pending-safe recovery, and healthy service never repaired it. The same class
+> could follow a failed non-accessory RGB/reset full-port write. D-783 makes every failed
+> accessory-I2C transaction enter safe reconciliation and makes `service()` treat any
+> invalid U2/U3 output shadow as unfinished safety work. Round-5 negative controls also
+> found that D-782 F8 still accepted manufacturer/package contradictions and could reuse
+> a named RF proof after its capacitor terminals moved. D-783 binds capacitor rating
+> evidence to exact MPN + normalized manufacturer + EIA package and binds non-DC proofs
+> to the exact current terminal-net set; all 13 realistic wrong-but-consistent probes are
+> now refused while the frozen fitted population passes. The board authority remains
+> **`cef458b92c6e92462bea250b434a481b3e8454a991eb13b2b66623ca1f4a880e`**; no PCB
+> copper, schematic, BOM, CPL, Gerber or drill changed. The release remains on external
+> review hold; D-782 is superseded by the final clean/pushed D-783 target.
+>
 > # **D-782 ROUND-4 CORRECTION CANDIDATE — NO COPPER RESPIN; EXTERNAL RE-REVIEW STILL REQUIRED**
 >
 > **Authority board SHA-256 remains `cef458b92c6e92462bea250b434a481b3e8454a991eb13b2b66623ca1f4a880e`; no PCB copper/geometry changed.**

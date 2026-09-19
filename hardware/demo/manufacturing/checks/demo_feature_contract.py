@@ -1185,6 +1185,20 @@ CAP_NON_DC_PROOFS = {
     "C80": dict(absolute_V=3.6,
                  basis="27.12 MHz crystal load on ST25R3916 3.3 V domain"),
 }
+# Bind every non-DC proof to the exact non-ground nets it was derived for.
+# A proof for C71 on NFC_EMCA<->NFC_MATCH_A must not silently authorize the
+# same reference after one terminal is moved to an unrelated unknown net.
+_CAP_NON_DC_NETS = {
+    "C69": ("NFC_EMCA",), "C70": ("NFC_EMCB",),
+    "C71": ("NFC_EMCA", "NFC_MATCH_A"),
+    "C72": ("NFC_EMCB", "NFC_MATCH_B"),
+    "C73": ("NFC_EMCA",), "C74": ("NFC_EMCB",),
+    "C75": ("NFC_ANT_A", "NFC_RXA"), "C76": ("NFC_RXA",),
+    "C77": ("NFC_ANT_B", "NFC_RXB"), "C78": ("NFC_RXB",),
+    "C79": ("NFC_XOUT",), "C80": ("NFC_XIN",),
+}
+for _ref, _nets in _CAP_NON_DC_NETS.items():
+    CAP_NON_DC_PROOFS[_ref]["nets"] = tuple(sorted(_nets))
 
 
 CAP_DERATE_EXCEPTIONS = {
@@ -1196,6 +1210,24 @@ CAP_DERATE_EXCEPTIONS = {
            "the BOM buys a 10 V part and the value string says 10 V",
     "C66": "the other half of the same 44 uF nominal pair; see C65",
 }
+
+# D-783.  A distributor record is usable only when it identifies the SAME
+# purchased part, not merely the same LCSC code.  Manufacturer spelling is
+# normalized only through explicit aliases observed in the frozen BOM/cache;
+# package comes from the KiCad footprint's EIA size and must match the record.
+_CAP_MFR_ALIASES = {
+    "murata": "murataelectronics",
+}
+
+
+def _norm_cap_mfr(name):
+    key = re.sub(r"[^a-z0-9]+", "", (name or "").casefold())
+    return _CAP_MFR_ALIASES.get(key, key)
+
+
+def _bom_cap_package(footprint):
+    m = re.search(r"(?:^|:)C_(\d{4})(?:_|$)", footprint or "")
+    return m.group(1) if m else ""
 
 
 def purchased_capacitor_ratings(spec=None):
@@ -1255,14 +1287,23 @@ def purchased_capacitor_ratings(spec=None):
             continue
         bom_mpn = (row.get("MPN") or "").strip()
         bom_mfr = (row.get("Manufacturer") or "").strip()
+        bom_footprint = (row.get("Footprint") or "").strip()
+        bom_package = _bom_cap_package(bom_footprint)
         record_mpn = (rec.get("componentModelEn") or "").strip()
         record_mfr = (rec.get("componentBrandEn") or "").strip()
+        record_package = (rec.get("componentSpecificationEn") or "").strip()
+        identity_matches = bool(
+            bom_mpn and record_mpn and
+            bom_mpn.casefold() == record_mpn.casefold() and
+            _norm_cap_mfr(bom_mfr) and
+            _norm_cap_mfr(bom_mfr) == _norm_cap_mfr(record_mfr) and
+            bom_package and record_package and
+            bom_package.casefold() == record_package.casefold())
         out[ref] = dict(
             lcsc=code, mpn=bom_mpn, manufacturer=bom_mfr,
+            bom_footprint=bom_footprint, bom_package=bom_package,
             record_mpn=record_mpn, record_manufacturer=record_mfr,
-            record_package=(rec.get("componentSpecificationEn") or "").strip(),
-            identity_matches=bool(bom_mpn and record_mpn and
-                                  bom_mpn.casefold() == record_mpn.casefold()),
+            record_package=record_package, identity_matches=identity_matches,
             rating_V=rating, read_from=how, record=name,
             describe=rec.get("describe") or "")
     return out
@@ -1303,50 +1344,85 @@ def judge_capacitor_derating(board, dnp_refs, net_max_dc, exceptions=None,
             rows.append(dict(ref=ref, value=value,
                              no_purchased_record=True))
             continue
-        if ((buy.get("mpn") or "").casefold() !=
-                (buy.get("record_mpn") or "").casefold()):
+        mpn_ok = bool((buy.get("mpn") or "") and (buy.get("record_mpn") or "") and
+                      (buy.get("mpn") or "").casefold() ==
+                      (buy.get("record_mpn") or "").casefold())
+        mfr_ok = bool(_norm_cap_mfr(buy.get("manufacturer")) and
+                      _norm_cap_mfr(buy.get("manufacturer")) ==
+                      _norm_cap_mfr(buy.get("record_manufacturer")))
+        package_ok = bool((buy.get("bom_package") or "") and
+                          (buy.get("record_package") or "") and
+                          (buy.get("bom_package") or "").casefold() ==
+                          (buy.get("record_package") or "").casefold())
+        if not (mpn_ok and mfr_ok and package_ok):
             identity_mismatch.append([
                 ref, buy.get("lcsc"), buy.get("mpn"), buy.get("record_mpn"),
-                buy.get("manufacturer"), buy.get("record_manufacturer")])
+                buy.get("manufacturer"), buy.get("record_manufacturer"),
+                buy.get("bom_package"), buy.get("record_package")])
             rows.append(dict(
                 ref=ref, value=value, lcsc=buy.get("lcsc"), mpn=buy.get("mpn"),
                 record_mpn=buy.get("record_mpn"),
                 manufacturer=buy.get("manufacturer"),
                 record_manufacturer=buy.get("record_manufacturer"),
+                bom_package=buy.get("bom_package"),
+                record_package=buy.get("record_package"),
                 purchased_record_identity_mismatch=True))
             continue
         rating = buy["rating_V"]
         op = ab = 0.0
-        unknown = []
+        unknown, nonground = [], []
         for pad in fp.Pads():
             net = pad.GetNetname()
             key = net.rsplit("/", 1)[-1]
             if key == "GND" or not key:
                 continue
+            nonground.append(key)
             if key in net_max_dc:
                 op = max(op, net_max_dc[key][0])
                 ab = max(ab, net_max_dc[key][1])
             else:
                 unknown.append(key)
-        if unknown and op == 0.0:
+        proof = None
+        if unknown:
             proof = non_dc_proofs.get(ref)
-            if not proof:
+            actual_nets = sorted(set(nonground))
+            proof_nets = sorted(set((proof or {}).get("nets") or ()))
+            if not proof or proof_nets != actual_nets:
                 unestablished.append([ref, sorted(set(unknown))])
-                rows.append(dict(ref=ref, value=value, rating_V=rating,
-                                 mpn=buy["mpn"], lcsc=buy["lcsc"],
-                                 nodes_not_established=sorted(set(unknown))))
+                rows.append(dict(
+                    ref=ref, value=value, rating_V=rating,
+                    mpn=buy["mpn"], lcsc=buy["lcsc"],
+                    nodes_not_established=sorted(set(unknown)),
+                    current_non_ground_nodes=actual_nets,
+                    named_proof_nodes=proof_nets))
                 continue
-            ab = float(proof["absolute_V"])
+            # The named bound is differential/peak evidence for THIS exact set
+            # of terminals.  If a known DC terminal is also present, retain the
+            # larger of that absolute bound and the named differential bound.
+            ab = max(ab, float(proof["absolute_V"]))
+        if unknown and op == 0.0:
             ok_abs = rating >= ab
             if not ok_abs:
                 fails_absolute.append([ref, buy["mpn"], rating, ab])
+            spec_ok_abs = True
+            if spec_V is not None:
+                spec_ok_abs = spec_V >= ab
+                if not spec_ok_abs:
+                    spec_fails_absolute.append([ref, value, spec_V, ab])
+                if spec_V > rating:
+                    spec_overstates.append([ref, value, spec_V,
+                                            buy["mpn"], rating])
+                elif spec_V < rating:
+                    understated.append([ref, value, spec_V,
+                                         buy["mpn"], rating])
             rows.append(dict(
                 ref=ref, value=value, mpn=buy["mpn"], lcsc=buy["lcsc"],
                 rating_V=rating, rating_read_from=buy["read_from"],
                 rating_record=buy["record"], specified_V=spec_V,
-                non_dc_nodes=sorted(set(unknown)), non_dc_absolute_V=ab,
+                non_dc_nodes=sorted(set(nonground)), non_dc_absolute_V=ab,
                 non_dc_basis=proof["basis"], survives_absolute=ok_abs,
-                meets_derating=None, specification_survives_absolute=True,
+                meets_derating=None,
+                specification_survives_absolute=spec_ok_abs,
                 excused_by_a_named_exception=False))
             continue
         ok_abs = rating >= ab
@@ -1396,16 +1472,21 @@ def judge_capacitor_derating(board, dnp_refs, net_max_dc, exceptions=None,
         on_a_node_with_no_established_voltage=sorted(unestablished),
         method="screen_bom_sourcing.NET_MAX_DC supplies established DC bounds. "
                "RATINGS COME FROM THE EXACT PART THE BOM BUYS -- reference -> "
-               "LCSC -> committed distributor record -- and the BOM MPN must "
-               "match that record before its voltage rating is usable.  A "
-               "fitted capacitor on an otherwise unestablished RF/crystal node "
-               "is now REFUSED unless CAP_NON_DC_PROOFS gives an explicit "
-               "differential/peak bound; the NFC bounds derive from the "
-               "ST25R3916 350 mArms regulated-TX ceiling and 3 Vpp RFI limit "
-               "and remain subject to first-article waveform verification.")
+               "LCSC -> committed distributor record -- and BOM MPN, normalized "
+               "manufacturer, and EIA package must all match that record before "
+               "its voltage rating is usable.  A fitted capacitor touching any "
+               "otherwise unestablished RF/crystal node is REFUSED unless "
+               "CAP_NON_DC_PROOFS gives a bound tied to the exact current "
+               "non-ground net set; the NFC bounds derive from the ST25R3916 "
+               "350 mArms regulated-TX ceiling and 3 Vpp RFI limit and remain "
+               "subject to first-article waveform verification.")
     d["every_fitted_capacitor_has_a_purchased_voltage_rating"] = not no_record
     d["every_fitted_capacitor_has_a_dc_or_named_non_dc_voltage_bound"] = not unestablished
-    d["every_purchased_rating_record_matches_the_bom_mpn"] = not identity_mismatch
+    d["every_purchased_rating_record_matches_bom_identity"] = not identity_mismatch
+    # Compatibility alias for existing evidence readers; D-783 broadens this
+    # old MPN-only name to the complete MPN/manufacturer/package predicate.
+    d["every_purchased_rating_record_matches_the_bom_mpn"] = \
+        d["every_purchased_rating_record_matches_bom_identity"]
     d["every_fitted_capacitor_survives_its_nodes_absolute_maximum"] = \
         not fails_absolute
     d["every_shortfall_against_the_derating_rule_is_a_named_exception"] = \
@@ -2836,6 +2917,27 @@ def main():
                          purchased_capacitor_ratings(),
                          C44=dict(purchased_capacitor_ratings()["C44"],
                                   mpn="CL21B105KAFNNNE"))),
+        _cap_control("f8k_refuses_a_manufacturer_identity_mismatch",
+                     net_max_dc=sbs.NET_MAX_DC,
+                     purchased=dict(
+                         purchased_capacitor_ratings(),
+                         C44=dict(purchased_capacitor_ratings()["C44"],
+                                  record_manufacturer="Vishay"))),
+        _cap_control("f8l_refuses_a_package_identity_mismatch",
+                     net_max_dc=sbs.NET_MAX_DC,
+                     purchased=dict(
+                         purchased_capacitor_ratings(),
+                         C44=dict(purchased_capacitor_ratings()["C44"],
+                                  record_package="0201"))),
+        # A named RF proof is valid only on the exact terminals for which its
+        # differential bound was derived; moving the same reference does not
+        # carry the old proof with it.
+        _cap_control("f8m_refuses_a_non_dc_proof_bound_to_the_wrong_nets",
+                     net_max_dc=sbs.NET_MAX_DC,
+                     non_dc_proofs=dict(
+                         CAP_NON_DC_PROOFS,
+                         C71=dict(CAP_NON_DC_PROOFS["C71"],
+                                  nets=("NFC_EMCA", "UNRELATED_NET")))),
         # A fitted RF/unknown node is accepted only through the explicit
         # non-DC proof registry.  Remove those proofs and the frozen board must
         # itself fail instead of merely reporting the omission.

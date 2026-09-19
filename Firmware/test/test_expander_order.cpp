@@ -724,6 +724,78 @@ int main() {
           reconcileAccessoryFlags(local, &r3, &r5, &buf) && !r3 && !r5 && !buf);
   }
   {
+    // D-783: an uncertain ACC_PWR_EN OFF write used to poison U2's shadow
+    // without scheduling recovery.  The buffer could remain physically ON and
+    // every later writeBit would refuse forever even after the bus recovered.
+    RecordingBus buffer;
+    DemoExpanders local;
+    check("buffer-off recovery setup: begin succeeds", local.begin(buffer));
+    check("buffer-off recovery setup: 3.3 V rail enables",
+          local.setAccessory3v3(buffer, true));
+    check("buffer-off recovery setup: I2C buffer enables",
+          local.setAccessoryI2cBuffer(buffer, true));
+    buffer.fail_address = AQROOT_EXP_U2_ADDR;
+    buffer.fail_reg = Pcal9535a::kRegOutput0;
+    buffer.fail_once = true;
+    check("uncertain I2C-buffer OFF write is reported failed",
+          !local.setAccessoryI2cBuffer(buffer, false));
+    bool r3 = true, r5 = true, buf = true;
+    check("uncertain I2C-buffer OFF converges immediately to known accessory-safe state",
+          local.accessoryState(&r3, &r5, &buf) && !r3 && !r5 && !buf);
+    check("successful fallback leaves no orphaned pending-safe state",
+          !local.safeShutdownPending());
+  }
+  {
+    // Persistent U2 failure cannot be repaired in the command itself.  It must
+    // remain pending and complete on the first healthy service pass.
+    RecordingBus buffer;
+    DemoExpanders local;
+    check("persistent buffer-off setup: begin succeeds", local.begin(buffer));
+    check("persistent buffer-off setup: 3.3 V and buffer enable",
+          local.setAccessory3v3(buffer, true) &&
+              local.setAccessoryI2cBuffer(buffer, true));
+    buffer.fail_address = AQROOT_EXP_U2_ADDR;
+    buffer.fail_reg = Pcal9535a::kRegOutput0;
+    check("persistent I2C-buffer OFF failure is reported",
+          !local.setAccessoryI2cBuffer(buffer, false));
+    check("persistent I2C-buffer failure stays pending-safe",
+          local.safeShutdownPending());
+    buffer.fail_address = -1;
+    buffer.fail_reg = -1;
+    check("healthy service completes persistent buffer-off recovery",
+          local.service(buffer));
+    bool r3 = true, r5 = true, buf = true;
+    check("post-recovery buffer state is known and accessory-safe",
+          local.accessoryState(&r3, &r5, &buf) && !r3 && !r5 && !buf);
+  }
+  {
+    // D-783: output-shadow uncertainty can also originate outside the
+    // accessory helpers.  A lost RGB/reset write must not leave the safety
+    // state permanently UNKNOWN.  service() owns the generic convergence.
+    RecordingBus generic;
+    DemoExpanders local;
+    check("generic-shadow recovery setup: begin succeeds", local.begin(generic));
+    check("generic-shadow recovery setup: 3.3 V rail enables",
+          local.setAccessory3v3(generic, true));
+    generic.fail_address = AQROOT_EXP_U3_ADDR;
+    generic.fail_reg = Pcal9535a::kRegOutput0;
+    generic.fail_once = true;
+    check("failed non-accessory output write is reported",
+          !local.setRgb(generic, true, false, false));
+    generic.fail_address = -1;
+    generic.fail_reg = -1;
+    generic.fail_once = false;
+    const size_t mark = generic.log.size();
+    check("next healthy service repairs an invalid output shadow",
+          local.service(generic));
+    bool r3 = true, r5 = true, buf = true;
+    check("generic shadow repair leaves accessory state known and safe",
+          local.accessoryState(&r3, &r5, &buf) && !r3 && !r5 && !buf);
+    check("generic shadow repair performs a confirmed U3 output write",
+          generic.countWrites(AQROOT_EXP_U3_ADDR, Pcal9535a::kRegOutput0, mark) >= 1);
+  }
+
+  {
     RecordingBus runtime;
     DemoExpanders local;
     local.begin(runtime);

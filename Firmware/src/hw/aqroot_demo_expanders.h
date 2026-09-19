@@ -271,6 +271,15 @@ class DemoExpanders {
     // mattered most was also the one that stopped the fault from being seen.
     // Every read is attempted; the verdict is taken at the end; and the fault
     // response below runs on whatever WAS read.
+    // D-783.  An invalid output shadow is itself an unfinished safety
+    // transaction.  It can come from any failed full-port write (including an
+    // RGB/reset command), not only from the accessory-enable helpers.  Do not
+    // wait for a second command to discover that software no longer knows the
+    // latch: schedule accessory-safe reconciliation on this service pass.
+    if (!u2_.outputShadowValid() || !u3_.outputShadowValid()) {
+      safe_shutdown_pending_ = true;
+    }
+
     const bool a = u2_.readInterruptStatus(bus, &u2_irq_);
     const bool b = u3_.readInterruptStatus(bus, &u3_irq_);
     const bool c = u2_.readInputs(bus, &u2_inputs_);
@@ -444,7 +453,12 @@ class DemoExpanders {
       return false;  // U16 is powered from ACC_3V3_SW; bring that up first
     }
     if (!u2_.writeBit(bus, AQROOT_U2_ACC_PWR_EN, on)) {
-      if (on) (void)applyAccessorySafeState(bus);
+      // D-783.  OFF is not exempt from uncertainty: writeBit sends the full
+      // output pair, so a NACK/lost ACK invalidates the U2 latch shadow even
+      // when the requested bit was going low.  Converge immediately to the
+      // accessory-safe state; if the bus is still bad the pending flag makes
+      // service() keep retrying after recovery.
+      (void)applyAccessorySafeState(bus);
       return false;
     }
     return true;

@@ -1,3 +1,41 @@
+## D-783 — **UNCERTAIN OUTPUT-LATCH STATE NOW CONVERGES TO SAFE, AND F8 BINDS RATING EVIDENCE TO THE FULL PART/NET IDENTITY**
+
+    authority  board cef458b92c6e92462bea250b434a481b3e8454a991eb13b2b66623ca1f4a880e
+    copper     unchanged from D-782
+    scope      firmware state reconciliation + F8 semantic verification; no board/package geometry
+    order      EXTERNAL_REVIEW_HOLD remains; D-782 review target is superseded
+
+A CTO fault-injection probe found one remaining D-782 recovery hole. An uncertain
+`ACC_PWR_EN` **OFF** transaction invalidated U2's output shadow but did not set
+pending-safe recovery. Healthy `service()` then read inputs successfully without
+repairing the latch; accessory state stayed UNKNOWN and later single-bit writes
+continued to refuse. The same generic hole existed if an unrelated RGB/reset
+full-port write poisoned either output shadow.
+
+D-783 closes both paths. Any failed `ACC_PWR_EN` transaction — ON or OFF — now
+immediately invokes accessory-safe reconciliation. Independently, `service()`
+treats either invalid U2/U3 output shadow as unfinished safety work and schedules
+reconciliation on that pass. The recovery first re-reads a reachable hardware
+latch and clears only accessory controls; U2 display/touch/LoRa reset outputs are
+preserved. If the bus remains unavailable, pending-safe stays asserted for retry.
+
+Host tests reproduce the original buffer-OFF NACK, a persistent bus failure/recovery,
+and a failed non-accessory U3 write; all converge to a known accessory-safe state,
+and destructive controls remove each repair and require failure.
+
+The same Round-5 forensic scratch review also exposed three semantic holes in D-782's
+F8 capacitor gate. A rating record could still survive a manufacturer-only mismatch or
+a package mismatch, and a named RF proof was attached only to a reference designator,
+so the same `C71` proof could be reused after its terminals moved to unrelated unknown
+nets. Mixed known/unknown terminals could also avoid the non-DC proof path. D-783 binds
+a purchased rating to exact MPN + normalized manufacturer + KiCad EIA package, and
+binds every RF/crystal proof to the exact current non-ground terminal net set. Thirteen
+wrong-but-plausible negative controls now refuse MPN/LCSC/manufacturer/package identity
+mismatches, missing records, wrong voltage nodes, missing/reused RF proofs, and mixed
+known/unknown terminals while the frozen fitted population still passes.
+
+No PCB/schematic/BOM/CPL/Gerber/drill geometry changes are involved.
+
 ## D-782 — **ROUND-4 COUNTEREXAMPLES CLOSED WITHOUT A COPPER RESPIN; STATE IS NOW FAIL-CLOSED BY CONFIRMED OUTPUT LATCH, GAUGE READINESS IS VERIFIED, AND THE RELEASE PACKAGE PROVES ITS OWN SEMANTICS**
 
     authority  board cef458b92c6e92462bea250b434a481b3e8454a991eb13b2b66623ca1f4a880e

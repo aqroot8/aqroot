@@ -1,7 +1,19 @@
 # AQROOT Demo — FABRICATION HANDOFF
 
 
-> # **STATUS: D-782 CORRECTION CANDIDATE — EXTERNAL_REVIEW_HOLD, BOARD AUTHORITY `cef458b9` (2026-09-19).**
+> # **STATUS: D-783 FIRMWARE RECOVERY CORRECTION — EXTERNAL_REVIEW_HOLD, BOARD AUTHORITY `cef458b9` (2026-09-19).**
+>
+> **D-783 supersedes the D-782 review target without moving PCB copper or changing the fabrication package.**
+> A failed `ACC_PWR_EN` OFF write could invalidate U2's output shadow without scheduling repair; healthy
+> service then left accessory state UNKNOWN. D-783 makes any failed accessory-I2C write enter fail-closed
+> reconciliation and makes `service()` repair any invalid U2/U3 output shadow. Host tests and destructive
+> controls cover the direct buffer-OFF case, persistent-bus recovery and generic shadow poisoning. D-783
+> also strengthens F8: capacitor rating records must match exact MPN + normalized manufacturer + EIA
+> package, and RF/non-DC proofs are valid only for the exact current terminal-net set. Thirteen realistic
+> wrong-but-consistent semantic mutations are now refused. **Order remains prohibited until the final
+> clean/pushed D-783 target is independently re-reviewed.**
+>
+> # **STATUS: D-782 CORRECTION CANDIDATE — SUPERSEDED BY D-783, BOARD AUTHORITY `cef458b9` (2026-09-19).**
 >
 > **D-782 closes the Round-4 executable counterexamples without changing PCB copper or geometry.**
 > Accessory state is reconciled from confirmed PCAL output latches; failed/partial enables enter
