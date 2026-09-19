@@ -138,7 +138,14 @@ NET_MAX_DC = {
     "BQ25185_SYS": (4.5, 5.5, "BQ25185 SYS; TI SLUSF65A 8.2.2.3 asks for 25 V"
                               " parts on IN/SYS, and SYS follows VBUS on adapter"),
     "ACC_3V3_SW": (3.3, 3.6, "switched 3.3 V accessory rail"),
-    "ACC_5V_SW": (5.5, 5.5, "switched 5 V accessory rail from the U21 TPS61023 boost"),
+    "ACC_5V_SW": (5.165, 6.0,
+                 "switched 5 V accessory rail, the U21 TPS61023 boost through"
+                 " the U22 load switch.  D-774 REPLACED (5.5, 5.5), a round"
+                 " placeholder in BOTH columns: D-773 derives this setpoint"
+                 " from R99/R100 and the part's own 580/595/610 mV VREF band"
+                 " as 4.742 / 4.950 / 5.165 V, and the ABSOLUTE is the"
+                 " TPS61023's own VOVP maximum of 6.0 V -- the highest this"
+                 " node can reach before the converter protects."),
     "LED_BOOST": (4.5, 38.0,
                   "U17 TPS61169 WLED boost output.  ARCHITECTURE D-079: the panel"
                   " backlight is SIX LEDs IN PARALLEL, one anode, 2.9-3.2 V, at"
@@ -176,9 +183,13 @@ NET_MAX_DC = {
                             " NFC_SUPPLY (DS12484)"),
     "NFC_VDD_RF": (3.3, 3.6, "ST25R3916 RF regulator pin, supplied from"
                              " NFC_SUPPLY (DS12484)"),
-    "ACC_5V_RAW": (5.0, 5.5, "U21 TPS61023 boost output, setpoint 4.99 V"
-                             " (D-185 R99 732k / R100 100k); bounded like"
-                             " ACC_5V_SW, the rail it feeds through U22"),
+    "ACC_5V_RAW": (5.165, 6.0,
+                  "U21 TPS61023 boost output.  D-774 REPLACED (5.0, 5.5) and"
+                  " its 'setpoint 4.99 V' note: BOTH came from a VREF of"
+                  " 0.6 V, and TI SLVSF14B publishes 580 / 595 / 610 mV."
+                  "  D-773 derives the setpoint over R99 732k / R100 100k at"
+                  " their own 1 %% bands as 4.742 / 4.950 / 5.165 V; the"
+                  " ABSOLUTE is the part's own VOVP maximum of 6.0 V."),
     "ACC_5V_FB": (0.6, 5.5, "U21 feedback node, VREF 0.595 V (D-185);"
                             " bounded from above by ACC_5V_RAW"),
     "ACC_5V_ILIM": (1.0, 5.5, "U22 TPS22950-Q1 ILIM programming pin"

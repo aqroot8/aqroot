@@ -1,0 +1,245 @@
+{
+  "contract": "firmware_hw_map",
+  "board": "aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "8c548ececd0223d88b1db4430cd025f9a01f47af7e50334d5b2c1d17b8858d6e",
+  "H3_policy_corroborated": {
+    "problems": [],
+    "mcu_pins_mapped": 30,
+    "expander_bits_mapped": 32,
+    "verdict": "PASS"
+  },
+  "H1_generated_tree_is_fresh": {
+    "files": [
+      "Firmware/src/hw/aqroot_demo_board.h",
+      "Firmware/src/hw/aqroot_demo_board.json"
+    ],
+    "stale": [],
+    "verdict": "PASS"
+  },
+  "H2_board_digest": {
+    "board_sha256": "8c548ececd0223d88b1db4430cd025f9a01f47af7e50334d5b2c1d17b8858d6e",
+    "published_in_header": "8c548ececd0223d88b1db4430cd025f9a01f47af7e50334d5b2c1d17b8858d6e",
+    "verdict": "PASS"
+  },
+  "H4_owner_decisions_are_machine_checked": {
+    "approved_unrouted": [
+      {
+        "contact": "U11.3",
+        "net": "/BQ25185_STAT2",
+        "expander_bits": [
+          "U2.P16"
+        ],
+        "masked": true
+      }
+    ],
+    "approved_nc_absent": true,
+    "problems": [],
+    "approved_nc_contacts": [
+      "J5.10",
+      "J5.11",
+      "J5.12",
+      "J5.15",
+      "J5.16",
+      "J5.17",
+      "J5.18",
+      "J5.9"
+    ],
+    "approved_nc_nets_on_board": [
+      "unconnected-(J5-Pin_10-Pad10)",
+      "unconnected-(J5-Pin_11-Pad11)",
+      "unconnected-(J5-Pin_12-Pad12)",
+      "unconnected-(J5-Pin_15-Pad15)",
+      "unconnected-(J5-Pin_16-Pad16)",
+      "unconnected-(J5-Pin_17-Pad17)",
+      "unconnected-(J5-Pin_18-Pad18)",
+      "unconnected-(J5-Pin_9-Pad9)"
+    ],
+    "leaked_into_firmware_map": [],
+    "verdict": "PASS"
+  },
+  "H5_firmware_layer_uses_the_map": {
+    "sources": [
+      "Firmware/src/hw/aqroot_demo_display.h",
+      "Firmware/src/hw/aqroot_demo_expanders.h",
+      "Firmware/src/hw/aqroot_demo_peripherals.h",
+      "Firmware/src/hw/aqroot_demo_pins.h",
+      "Firmware/src/hw/aqroot_demo_radios.h",
+      "Firmware/src/hw/aqroot_i2c.h",
+      "Firmware/src/hw/aqroot_i2c_arduino.h",
+      "Firmware/src/hw/aqroot_spi_bus_b.h",
+      "Firmware/src/hw/pcal9535a.h"
+    ],
+    "symbols_emitted": 84,
+    "roles_unreferenced_by_the_layer": [],
+    "symbols_the_generator_never_emitted": [],
+    "verdict": "PASS"
+  },
+  "H6_host_tests_prove_the_orderings": {
+    "tests": [
+      {
+        "test": "Firmware/test/test_expander_order.cpp",
+        "compiled": true,
+        "exit_code": 0,
+        "claims": 76,
+        "failed_claims": [],
+        "controls": [
+          {
+            "control": "direction is written before the output latch",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] 0x20: output configuration is PUSH-PULL before direction"
+          },
+          {
+            "control": "a fresh MCU invents a valid zero output shadow after warm reset",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] fresh PCAL software shadow is explicitly INVALID"
+          },
+          {
+            "control": "Output Port Configuration is changed to open-drain before outputs",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] 0x20: output configuration is PUSH-PULL before direction"
+          },
+          {
+            "control": "warm reset skips the immediate U3 complete safe-latch write",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] warm reset: second bus write forces U3 safe latch before policy traffic"
+          },
+          {
+            "control": "the RGB cathodes boot at 0, lighting the LED at power-on",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the RGB cathodes are HIGH (dark) at boot -- D13's anode is +3V3"
+          },
+          {
+            "control": "the 5 V load switch is closed before the boost is enabled",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] 5 V up: the BOOST enable leads the LOAD SWITCH (D-186)"
+          },
+          {
+            "control": "a U2 bus failure leaves U3 unconfigured (begin short-circuits)",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] begin(): U3's direction is written ANYWAY after U2 fails"
+          },
+          {
+            "control": "a U2 read error stops U3 being serviced (service short-circuits)",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] service(): U3's input port is read ANYWAY after U2 fails"
+          },
+          {
+            "control": "a NACKed load-switch write leaves the switch commanded ON",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] 5 V down: one SURVIVING write takes the boost AND the switch down"
+          }
+        ],
+        "verdict": "PASS"
+      },
+      {
+        "test": "Firmware/test/test_spi_bus_b.cpp",
+        "compiled": true,
+        "exit_code": 0,
+        "claims": 22,
+        "failed_claims": [],
+        "controls": [
+          {
+            "control": "the bus accepts a second concurrent chip select",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] re-selecting the SAME device while held is REFUSED"
+          },
+          {
+            "control": "a second radio may key while the first is transmitting",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] re-keying the SAME transmitter is REFUSED -- same re-entrancy rule"
+          },
+          {
+            "control": "Hold stops releasing the bus when it leaves scope",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the outer Hold still owned the bus when the inner scopes ended"
+          }
+        ],
+        "verdict": "PASS"
+      }
+    ],
+    "verdict": "PASS"
+  },
+  "controls": [
+    {
+      "control": "D-732 swap: U2 P05 <-> P06",
+      "refused": true,
+      "first_reason": "U2 P05 (pad 9): policy says '/TOUCH_INT_N', board says '/SX1262_DIO1'"
+    },
+    {
+      "control": "D-733 swap: U2 P17 <-> U3 P17",
+      "refused": true,
+      "first_reason": "U2 P17 (pad 20): policy says '/BQ25185_STAT1', board says '/ACC_PWR_EN'"
+    },
+    {
+      "control": "ACC_5V_SW_EN safe latch flipped to 1 against R131",
+      "refused": true,
+      "first_reason": "U3 P03 ACC_5V_SW_EN safe latch is 1 but R131 ties the net to GND"
+    },
+    {
+      "control": "FRONT_RGB_R_N claims an external pull it does not have",
+      "refused": true,
+      "first_reason": "U3 P00 FRONT_RGB_R_N claims safe_basis=external_pull with no fitted external pull"
+    },
+    {
+      "control": "TOUCH_INT_N claims an external pull it does not have",
+      "refused": true,
+      "first_reason": "U2 P06 TOUCH_INT_N claims an external pull it does not have"
+    },
+    {
+      "control": "SX1262_DIO1 pulls against the module's push-pull driver",
+      "refused": true,
+      "first_reason": "U2 P05 SX1262_DIO1 must not pull against a push-pull driver"
+    },
+    {
+      "control": "an expander bit is dropped from the map",
+      "refused": true,
+      "first_reason": "U3 P11 (pad 14) has no policy row"
+    },
+    {
+      "control": "a U1 pad is re-pointed at the wrong net",
+      "refused": true,
+      "first_reason": "U1.9: policy says '/IR_RX_GPIO44', board says '/IR_TX_GPIO16'"
+    },
+    {
+      "control": "two firmware roles share one C identifier",
+      "refused": true,
+      "first_reason": "role NATIVE_B claimed by both U1.24 and U1.31"
+    },
+    {
+      "control": "an UNMASKED input is left with an undefined idle level",
+      "refused": true,
+      "first_reason": "U3 P14 is UNMASKED with an undefined idle level"
+    },
+    {
+      "control": "a strap loses the resistor that holds it",
+      "refused": true,
+      "first_reason": "U1.26 strap part is R111, policy names R999"
+    }
+  ],
+  "controls_verdict": "PASS",
+  "verdict": "PASS"
+}

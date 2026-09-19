@@ -607,6 +607,42 @@ electrical envelope above is closed by hardware, no user-reachable state trips
 the pack, and the alternative (leaving the limiters where D-753 left them)
 publishes a budget the board can refuse to deliver.
 
+### 6.3b Capacitor derating — the rule, applied to the parts this board FITS (D-774)
+
+`screen_bom_sourcing.net_gate` has carried the project's rule since D-615 —
+**2× the node's OPERATING maximum, AND plain survival against its ABSOLUTE
+maximum** — over a 48-node voltage table.  **It runs only while proposing a part
+for an UNSOURCED line, and this BOM has had none since D-615**, so the rule had
+never once been applied to a part on the board.  `F8` now applies it.
+
+**Every fitted capacitor survives its node's absolute maximum.**  Five 10 V X7R
+parts on 5 V-class rails sit under the 2× *convention* and are accepted as named,
+reasoned exceptions:
+
+| ref | value | node | operating | absolute | ratio |
+|---|---|---|---|---|---|
+| `C20` | 4.7 µF 10 V X7R | `USB_VBUS_RAW` | 5.25 V | 5.50 V | **1.91×** |
+| `C65`, `C66` | 22 µF 10 V X7R | `ACC_5V_RAW` | 5.165 V | 6.00 V | **1.94×** |
+| `C38`, `C67` | 1 µF 10 V X7R | `ACC_5V_SW` | 5.165 V | 6.00 V | **1.94×** |
+
+`C20`'s operating figure **is already a worst case** — the USB 2.0 *source
+maximum*, not a 5.0 V nominal — so the convention is applied twice over; it
+survives the absolute at 1.82×.  The four accessory-rail parts are measured
+against D-773's **derived** 5.165 V, and the DC-bias capacitance loss the 2×
+convention exists for is **already in the design**: D-186 sizes the boost output
+at **44 µF NOMINAL** across `C65` + `C66` precisely because a 10 V X7R at 5 V bias
+retains roughly half.  A **22 µF 16 V X7R is a 1206 part** and does not fit the
+fitted 0805 land.
+
+> **Boundary, stated.**  Ratings are read from the VALUE STRING, which **37 of
+> the 76** fitted capacitors carry; the other **39** state only a capacitance and
+> their rating lives in the sourced part record — that count is **pinned**.
+> **Twelve** capacitors sit on nodes the table has no DC entry for: the NFC
+> matching and crystal network, 50 V C0G parts on a 13.56 MHz node whose
+> governing rating is **RF peak, not a DC rail voltage**.  They are reported,
+> not refused.  `net_gate` still refuses a *new* part grafted onto an
+> unestablished node.
+
 ### 6.4 Safety floors (governing routing rules — ENGINEERING-ONLY)
 - **BAT_MAIN** netclass (1.5 A design): trunk 1.00 mm, min **0.60 mm** (LOCKED).
 - **BAT_PROTECTED_P (BPP)** high-current trunk **≥ 1.20 mm** (D-249, LOCKED).

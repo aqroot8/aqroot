@@ -66,7 +66,7 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
-> # **`DEMO_READY_FOR_FAB` IS RE-DECLARED ON BOARD `8c548ece` (2026-09-19, D-771 · D-772 · D-773).**
+> # **`DEMO_READY_FOR_FAB` IS RE-DECLARED ON BOARD `8c548ece` (2026-09-19, D-771 · D-772 · D-773 · D-774).**
 >
 > **The CTO withdrew D-770 for one item.  Closing it exposed a chain of three
 > defects of the same shape — *a number this repository states and nothing
@@ -111,8 +111,10 @@
 >     D-186 / D-269    dru_contracts live and TRUE on this board
 >     ampacity         all_ok, and the method self-check now PARSES the
 >                      .kicad_dru table it always claimed to re-derive
->     features         F1-F7 PASS (F6 TWENTY-ONE controls, F7 five references
->                      and ten controls)
+>     features         F1-F8 PASS (F6 TWENTY-ONE controls, F7 five references
+>                      and ten controls, F8 four controls -- 76 fitted
+>                      capacitors, none failing its node's absolute maximum,
+>                      five named exceptions all still needed)
 >     battery pack     B1-B8 PASS
 >     land / mech      LAND1-LAND8 and MK1-MK10 PASS
 >     fab package      regenerated at release D-773; FAB1-FAB15 PASS,
@@ -128,6 +130,23 @@
 > band**.  Six independent parameters at their unlucky corners at once, and the
 > consequence is an `IBAT_OCP` **hiccup that auto-retries**.  **At a conforming
 > accessory load the margin is 7.3 %.**
+>
+> **D-774 — A RULE THIS REPOSITORY STATES AND NOTHING APPLIED.**  The same class
+> one step over, found while checking whether D-773's corrected setpoint moved
+> any capacitor's derating.  `screen_bom_sourcing.net_gate` carries the project's
+> *"2× the node's OPERATING maximum AND survival against its ABSOLUTE maximum"*
+> rule and a 48-node voltage table — and runs **only while proposing a part for
+> an UNSOURCED line**, of which this BOM has had none since D-615.  Run against
+> the parts the board actually fits: **every one survives its node's absolute
+> maximum**, and five 10 V X7R parts on 5 V-class rails sit at **1.91–1.94×**
+> against the 2× convention and are accepted as
+> **named, reasoned exceptions** (`C20` on VBUS, whose operating figure is
+> already the USB source maximum; `C65`/`C66`/`C38`/`C67` against D-773's derived
+> 5.165 V, where the bias loss the convention exists for is *already in* D-186's
+> 44 µF nominal sizing and a 22 µF 16 V X7R is not an 0805 part).  Two node
+> declarations were also wrong, both on the rail D-773 had just derived, and
+> both now carry the part's own `VOVP` maximum as their absolute.  **No board
+> change; the fabrication package is byte-untouched.**
 >
 > Three things that had never been measured now are: the two accessory rails
 > themselves (`.kicad_dru` **§5f**), `+3V3` (**pour-delivered**, declared rather

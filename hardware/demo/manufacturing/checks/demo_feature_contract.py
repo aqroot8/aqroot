@@ -706,6 +706,162 @@ def _ilim_typ(r_ohms):
     return 1.18 * ((r_ohms / 1000.0) ** -1.072)
 
 
+# --------------------------------------------------------------------------
+# F8 -- THE DERATING RULE THIS REPOSITORY STATES, APPLIED TO THE PARTS IT
+# ACTUALLY FITS.  D-774.
+#
+# `screen_bom_sourcing.net_gate` carries the project's rule in its own words --
+# *"the project's 2x derating rule against the node's OPERATING maximum, and
+# plain survival against its ABSOLUTE maximum"* -- and a table, `NET_MAX_DC`,
+# of every node this repository has established a voltage for.
+#
+# IT HAS NEVER BEEN APPLIED TO A FITTED PART.  `net_gate` runs only while the
+# screen is PROPOSING a candidate for an UNSOURCED line, and this BOM has been
+# fully sourced since D-615: the screen reports `unsourced_lines: 0` and the
+# gate never executes.  The rule governs parts this board might buy in future
+# and says nothing about the ones on it -- which is the same shape as D-771's
+# published budget, D-772's internal load and D-773's setpoint, one class over.
+#
+# WHAT IT FINDS, AND WHAT IT DOES NOT.  Every fitted capacitor SURVIVES its
+# node's absolute maximum with margin.  Five 10 V X7R parts on 5 V-class rails
+# sit at 1.90-1.94x against the 2x CONVENTION, and they are accepted here with
+# their numbers rather than silently passed or silently changed:
+#
+#   * `C20` on `USB_VBUS_RAW`, whose operating figure is the USB 2.0 SOURCE
+#     MAXIMUM of 5.25 V rather than a 5.0 V nominal -- 1.90x.
+#   * `C65`/`C66` (the boost output) and `C38`/`C67` (the switched rail) against
+#     D-773's derived worst-case setpoint of 5.165 V -- 1.94x.
+#
+# WHY THEY ARE ACCEPTED.  The SAFETY limit for a ceramic is its working voltage
+# against the node's ABSOLUTE maximum, and that leg holds at 1.67-1.90x on all
+# five.  The 2x convention exists for DC-bias capacitance loss, and that loss is
+# already IN the design: D-186 sizes the boost output at 44 uF NOMINAL (2 x
+# 22 uF) precisely because a 10 V X7R at 5 V bias retains roughly half, and a
+# 22 uF 16 V X7R does not exist in the fitted 0805 land -- it is a 1206 part, so
+# "just fit 16 V" is a footprint change on a rail with no electrical problem.
+# THE EXCEPTIONS ARE NAMED, SCOPED TO ONE REFERENCE EACH, AND CANNOT GROW
+# SILENTLY: a sixth part under 2x fails this clause.
+#
+# THE BOUNDARY IS STATED, NOT HIDDEN.  A rating is read from the VALUE STRING,
+# which 37 of the 76 fitted capacitors carry; the other 39 state only a
+# capacitance and their rating lives in the sourced part record.  That count is
+# PINNED, so the unrated set cannot quietly grow either.
+# --------------------------------------------------------------------------
+CAP_DERATE_X = 2.0
+CAP_UNRATED_VALUE_STRINGS = 39         # pinned; see the boundary note above
+CAP_DERATE_EXCEPTIONS = {
+    "C20": "USB_VBUS_RAW's operating figure is the USB 2.0 SOURCE MAXIMUM of "
+           "5.25 V, not a 5.0 V nominal, so a 10 V part reads 1.90x against a "
+           "number that is already a worst case.  It survives the node's "
+           "absolute 5.5 V at 1.82x.  Every USB device fits a 10 V ceramic on "
+           "VBUS",
+    "C65": "boost output capacitance, measured against D-773's DERIVED "
+           "worst-case setpoint of 5.165 V.  D-186 sizes this rail at 44 uF "
+           "NOMINAL across C65+C66 because a 10 V X7R at 5 V bias retains about "
+           "half; a 22 uF 16 V X7R is a 1206 part and does not fit the 0805 "
+           "land.  Survives the 6.0 V absolute at 1.67x",
+    "C66": "the other half of the same 44 uF nominal pair; see C65",
+    "C38": "switched-rail bypass on ACC_5V_SW, downstream of U22 and therefore "
+           "at the same derived setpoint.  1 uF 10 V X7R, survives the 6.0 V "
+           "absolute at 1.67x",
+    "C67": "the other switched-rail bypass; see C38",
+}
+
+
+def judge_capacitor_derating(board, dnp_refs, net_max_dc, exceptions=None,
+                             unrated_expected=None):
+    """D-774.  The derating rule, run over the board's OWN fitted capacitors.
+
+    Two legs, exactly as `screen_bom_sourcing.net_gate` states them:
+    survival against the node's ABSOLUTE maximum -- which is never excused --
+    and the 2x DERATING convention against its OPERATING maximum, which a named
+    exception may carry.
+    """
+    exceptions = CAP_DERATE_EXCEPTIONS if exceptions is None else exceptions
+    unrated_expected = (CAP_UNRATED_VALUE_STRINGS if unrated_expected is None
+                        else unrated_expected)
+    rated, unrated, rows = [], [], []
+    fails_absolute, under_derate, unestablished = [], [], []
+    rx = re.compile(r"(\d+(?:\.\d+)?)\s*V\b", re.I)
+    for fp in board.GetFootprints():
+        ref = fp.GetReference()
+        if not ref.startswith("C") or ref in dnp_refs:
+            continue
+        value = fp.GetValue() or ""
+        m = rx.search(value)
+        if not m:
+            unrated.append(ref)
+            continue
+        rated.append(ref)
+        rating = float(m.group(1))
+        op = ab = 0.0
+        unknown = []
+        for pad in fp.Pads():
+            net = pad.GetNetname()
+            key = net.rsplit("/", 1)[-1]
+            if key == "GND" or not key:
+                continue
+            if key in net_max_dc:
+                op = max(op, net_max_dc[key][0])
+                ab = max(ab, net_max_dc[key][1])
+            else:
+                unknown.append(key)
+        if unknown and op == 0.0:
+            unestablished.append([ref, sorted(set(unknown))])
+            rows.append(dict(ref=ref, value=value, rating_V=rating,
+                             nodes_not_established=sorted(set(unknown))))
+            continue
+        ok_abs = rating >= ab
+        ok_der = rating >= CAP_DERATE_X * op
+        excused = ref in exceptions
+        if not ok_abs:
+            fails_absolute.append([ref, value, rating, ab])
+        if not ok_der and not excused:
+            under_derate.append([ref, value, rating, op,
+                                 round(rating / op, 3) if op else None])
+        rows.append(dict(ref=ref, value=value, rating_V=rating,
+                         operating_V=op, absolute_V=ab,
+                         derate_x=round(rating / op, 3) if op else None,
+                         survives_absolute=ok_abs,
+                         meets_derating=ok_der,
+                         excused_by_a_named_exception=excused))
+    d = dict(
+        fitted_capacitors=len(rated) + len(unrated),
+        with_a_rating_in_the_value_string=len(rated),
+        without_one=len(unrated), without_one_expected=unrated_expected,
+        derating_x=CAP_DERATE_X,
+        rows=sorted(rows, key=lambda r: r["ref"]),
+        named_exceptions={k: exceptions[k] for k in sorted(exceptions)},
+        fails_absolute_maximum=sorted(fails_absolute),
+        under_derating_without_an_exception=sorted(under_derate),
+        on_a_node_with_no_established_voltage=sorted(unestablished),
+        method="screen_bom_sourcing.NET_MAX_DC, the SAME table net_gate uses, "
+               "read live rather than transcribed; ratings come from the VALUE "
+               "STRING and the count that carry none is PINNED.  A capacitor "
+               "on a node the table has no entry for is REPORTED, not refused: "
+               "the twelve that land there are the NFC matching and crystal "
+               "network, 50 V C0G TUNE parts on a 13.56 MHz node whose "
+               "governing rating is RF PEAK and not a DC rail voltage, and "
+               "inventing a DC figure for them would be the guess this table "
+               "exists to avoid.  `net_gate` still REFUSES a new part grafted "
+               "onto an unestablished node, which is the right answer for a "
+               "part nobody has chosen yet")
+    d["every_fitted_capacitor_survives_its_nodes_absolute_maximum"] = \
+        not fails_absolute
+    d["every_shortfall_against_the_derating_rule_is_a_named_exception"] = \
+        not under_derate
+    d["the_unrated_value_string_count_has_not_grown"] = \
+        len(unrated) <= unrated_expected
+    d["every_exception_is_still_needed"] = sorted(
+        k for k in exceptions
+        if any(r["ref"] == k and r.get("meets_derating") for r in rows)) == []
+    d["ok"] = (d["every_fitted_capacitor_survives_its_nodes_absolute_maximum"]
+               and d["every_shortfall_against_the_derating_rule_is_a_named_exception"]
+               and d["the_unrated_value_string_count_has_not_grown"]
+               and d["every_exception_is_still_needed"])
+    return d["ok"], d
+
+
 def judge_p3v3_budget(p3v3_consumers, dnp_refs, on_board, budget=None):
     """D-772.  Pure over the board's OWN `+3V3` consumer set.
 
@@ -1537,6 +1693,34 @@ def main():
                 ), bom_text)[0],
     })
 
+    # ---- F8: the derating rule, applied to the parts this board FITS -----
+    import screen_bom_sourcing as sbs                              # noqa: E402
+    cap_ok, caps = judge_capacitor_derating(board, sch_dnp, sbs.NET_MAX_DC)
+
+    def _cap_control(name, **kw):
+        ok, _ = judge_capacitor_derating(board, sch_dnp, **kw)
+        return name, not ok
+
+    cap_controls = dict(x for x in (
+        # a node declared ABOVE what its capacitor can survive -- the leg no
+        # exception may carry
+        _cap_control("f8a_refuses_a_capacitor_under_its_nodes_absolute_maximum",
+                     net_max_dc=dict(sbs.NET_MAX_DC,
+                                     ACC_5V_RAW=(5.165, 12.0, "control"))),
+        # the five named exceptions are load-bearing: drop them and the same
+        # arithmetic refuses the board
+        _cap_control("f8b_refuses_the_board_with_the_exception_list_emptied",
+                     net_max_dc=sbs.NET_MAX_DC, exceptions={}),
+        # an exception that is no longer needed is itself refused, so the list
+        # cannot accumulate
+        _cap_control("f8c_refuses_an_exception_that_is_no_longer_needed",
+                     net_max_dc=sbs.NET_MAX_DC,
+                     exceptions=dict(CAP_DERATE_EXCEPTIONS,
+                                     C24="a part that already meets the rule")),
+        # and the stated boundary cannot quietly grow
+        _cap_control("f8d_refuses_more_unrated_value_strings_than_are_pinned",
+                     net_max_dc=sbs.NET_MAX_DC, unrated_expected=0)))
+
     nc = ledger["approved_demo_nc"]
     checks = {
         "F1_every_scope_part_fitted": dict(
@@ -1603,6 +1787,20 @@ def main():
                    "RECOVERABLE charger trip; and both converters must be "
                    "able to source what their load switch is allowed to pass",
             controls_refused=dict(env_controls, **budget_controls), **env),
+        "F8_the_derating_rule_is_applied_to_the_parts_this_board_fits": dict(
+            ok=cap_ok and all(cap_controls.values()),
+            clause="D-774.  screen_bom_sourcing states the project's rule -- "
+                   "2x the node's OPERATING maximum AND survival against its "
+                   "ABSOLUTE maximum -- and applies it ONLY while proposing a "
+                   "part for an UNSOURCED line.  This BOM has had none since "
+                   "D-615, so the rule had never once been run against a part "
+                   "this board actually fits.  It is now, over the SAME "
+                   "NET_MAX_DC table, read live.  Survival against the "
+                   "absolute maximum is never excused; a shortfall against the "
+                   "2x CONVENTION must be a named, reasoned exception, and an "
+                   "exception that is no longer needed is itself refused",
+            controls_refused=cap_controls,
+            **{k: v for k, v in caps.items() if k != "ok"}),
         "F7_no_retired_part_name_survives_on_the_part_that_replaced_it": dict(
             ok=ident_ok and all(ident_controls.values()),
             method="D-768 found 'CH280QV10-CT Rev.D 2.8in 240x320' on J1's row "

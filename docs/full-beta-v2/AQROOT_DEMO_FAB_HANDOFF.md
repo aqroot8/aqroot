@@ -71,6 +71,18 @@
 > margin is 1.6 %** and it is a compound-fault state whose consequence is a
 > recoverable hiccup; at a conforming accessory load it is 7.3 %.
 >
+> **D-774 closed the same class one step over, with no board change at all.**
+> `screen_bom_sourcing` states a **2× capacitor derating rule** and a 48-node
+> voltage table, and runs it **only while proposing a part for an UNSOURCED
+> line** — of which this BOM has had none since D-615, so the rule had never
+> been applied to a fitted part.  Run against them: **every fitted capacitor
+> survives its node's absolute maximum**; five 10 V X7R parts on 5 V-class rails
+> sit at **1.91–1.94×** against the 2× convention and are accepted as named,
+> reasoned exceptions (the bias loss the convention exists for is already in
+> D-186's 44 µF nominal sizing, and a 22 µF 16 V X7R is not an 0805 part).  Two
+> node declarations on the rail D-773 had just derived were corrected.  `F8` is
+> the new clause; the fabrication package is **byte-untouched**.
+>
 > **The assembly PDFs print `RELEASE D-773`.**
 
 > # **STATUS: NOT READY — READINESS WITHDRAWN, ONE OF TWO CAUSES CLOSED (D-765, 2026-09-18).**

@@ -1,3 +1,125 @@
+## D-774 — **THE DERATING RULE THIS REPOSITORY STATES HAD NEVER ONCE BEEN RUN AGAINST A PART THE BOARD ACTUALLY FITS**
+
+    authority  8c548ece, UNCHANGED.  NO PCB, schematic, .kicad_dru, value or
+               MPN change; the fabrication package is untouched
+    follows    D-771 / D-772 / D-773, which closed three instances of *a number
+               this repository states and nothing derives*.  This is the same
+               class one step over: **a RULE this repository states and nothing
+               applies** — found while checking whether D-773's corrected
+               setpoint moved any capacitor's derating
+    changed    checks/demo_feature_contract.py (F8, four live controls);
+               screen_bom_sourcing.py (two node declarations);
+               DEVICE_SPEC, CURRENT_STATE, AQROOT_DEMO_FAB_HANDOFF
+    evidence   d774-*
+
+### 1. THE GAP
+
+`screen_bom_sourcing.net_gate` carries the project's rule in its own words —
+*"the project's 2x derating rule against the node's OPERATING maximum, and plain
+survival against its ABSOLUTE maximum"* — and `NET_MAX_DC`, a table of every
+node this repository has established a voltage for, 48 entries deep.
+
+**It runs only while the screen is PROPOSING a part for an UNSOURCED line.**
+This BOM has had none since D-615: the screen reports `unsourced_lines: 0` on
+every run, and the gate never executes.  The rule governs parts this board
+*might buy* and has never said anything about the ones on it.
+
+### 2. WHAT RUNNING IT FINDS
+
+**Every fitted capacitor survives its node's ABSOLUTE maximum** — the leg that
+is actually about safety — and no part fails outright.  **Five 10 V X7R parts on
+5 V-class rails sit at 1.91–1.94× against the 2× CONVENTION:**
+
+| ref | value | node | operating | absolute | ratio |
+|---|---|---|---|---|---|
+| `C20` | 4.7 µF 10 V X7R | `USB_VBUS_RAW` | 5.25 V | 5.50 V | **1.91×** |
+| `C65` | 22 µF 10 V X7R | `ACC_5V_RAW` | 5.165 V | 6.00 V | **1.94×** |
+| `C66` | 22 µF 10 V X7R | `ACC_5V_RAW` | 5.165 V | 6.00 V | **1.94×** |
+| `C38` | 1 µF 10 V X7R | `ACC_5V_SW` | 5.165 V | 6.00 V | **1.94×** |
+| `C67` | 1 µF 10 V X7R | `ACC_5V_SW` | 5.165 V | 6.00 V | **1.94×** |
+
+They are **ACCEPTED WITH THEIR NUMBERS**, not silently passed and not silently
+changed:
+
+* `C20`'s operating figure **is already a worst case** — the table declares
+  `USB_VBUS_RAW` at the **USB 2.0 SOURCE MAXIMUM of 5.25 V**, not a 5.0 V
+  nominal — so the convention is being applied twice over.  It survives the
+  5.5 V absolute at 1.82×, and a 10 V ceramic on VBUS is what every USB device
+  fits.
+* The four on the accessory rails are measured against **D-773's derived
+  worst-case setpoint of 5.165 V**.  The 2× convention exists for **DC-bias
+  capacitance loss**, and that loss is *already in the design*: **D-186 sizes the
+  boost output at 44 µF NOMINAL** (`C65` + `C66`) precisely because a 10 V X7R at
+  5 V bias retains roughly half.  A **22 µF 16 V X7R does not exist in the fitted
+  0805 land** — it is a 1206 part — so "just fit 16 V" is a footprint change, a
+  placement check and a re-route on a rail with **no electrical problem**.
+
+### 3. AND TWO NODE DECLARATIONS WERE WRONG
+
+Found by the same pass, and both on the rail D-773 had just derived:
+
+    ACC_5V_RAW   (5.0, 5.5)   "setpoint 4.99 V"   ->   (5.165, 6.0)
+    ACC_5V_SW    (5.5, 5.5)   a round placeholder ->   (5.165, 6.0)
+
+`ACC_5V_RAW`'s note carried the **4.99 V that D-773 retired** — one line below
+`ACC_5V_FB`, which had the correct **0.595 V** written on it all along.  And both
+absolutes are now the part's own **`VOVP` maximum of 6.0 V**, the highest either
+node can reach before the converter protects, rather than a 5.5 V round number.
+*Nothing on the board changed; what changed is what a future graft is gated
+against.*
+
+### 4. THE CLAUSE, AND ITS STATED BOUNDARY
+
+`F8` reads the board's own fitted capacitors and the **same `NET_MAX_DC` table**
+`net_gate` uses, live rather than transcribed:
+
+* survival against the ABSOLUTE maximum — **never excused**;
+* the 2× convention against the OPERATING maximum — a shortfall must be a
+  **named, reasoned exception**;
+* **an exception that is no longer needed is itself refused**, so the list cannot
+  accumulate.
+
+**Four live controls, all refused**: a node declared above what its capacitor can
+survive; the board with the exception list emptied; an exception for a part that
+already meets the rule; and more unrated value strings than are pinned.
+
+**THE BOUNDARY IS STATED RATHER THAN HIDDEN.**  A rating is read from the VALUE
+STRING, which **37 of the 76** fitted capacitors carry; the other **39** state
+only a capacitance and their rating lives in the sourced part record.  That count
+is **PINNED**.  And **twelve** capacitors sit on nodes the table has no entry for
+— the NFC matching and crystal network, 50 V C0G `TUNE` parts on a 13.56 MHz node
+whose governing rating is **RF peak, not a DC rail voltage**.  They are
+**REPORTED, not refused**: inventing a DC figure for them would be exactly the
+guess `NET_MAX_DC` exists to avoid.  `net_gate` still refuses a *new* part
+grafted onto an unestablished node, which is the right answer for a part nobody
+has chosen yet.
+
+### 5. VERIFICATION
+
+    board            8c548ece UNCHANGED; zero PCB, schematic, .kicad_dru,
+                     value or MPN changes, and the fabrication package is
+                     BYTE-UNTOUCHED -- this decision changes two contracts
+    features         F1-F8 PASS.  F8 is new: 76 fitted capacitors, 37 rated
+                     from the value string, 0 failing the absolute leg, 5
+                     named exceptions all still needed, 12 reported on
+                     unestablished RF nodes, 4 live controls all refused
+    contracts        19 standing contracts, all ran, NONE failing
+    connectivity     174 / 173 / 1 owner-approved / 0 unapproved
+    sourcing         0 unsourced lines, 0 unsourced parts
+    hardware/beta-v2 UNTOUCHED
+
+### 6. WHAT THIS DOES NOT CLOSE
+
+* **The 39 unrated value strings.**  Their ratings are real and sourced; what is
+  absent is the rating in the string `F8` can read.  The count is pinned so the
+  set cannot grow, and a future decision may read the rating from the released
+  BOM row instead — the leg D-768 proved load-bearing for `F7`.
+* **The twelve RF nodes.**  Establishing an RF-peak bound for a 13.56 MHz
+  matching network is a different question from a DC rail bound and should not be
+  answered by stretching this table.
+* Everything D-773 §7, D-772 §8 and D-771 §10 named still stands.
+
+
 ## D-773 — **THE 5 V SETPOINT WAS A NUMBER FROM A REFERENCE VOLTAGE TI DOES NOT PUBLISH, AND IT DECIDES THIS BOARD'S THINNEST MARGIN**
 
     authority  c15672df -> 8c548ece.  ZERO copper objects added or removed;
