@@ -39,9 +39,14 @@
 > `AQROOT_PLANE_SIGNAL` instrument D-703 built is what measures (3) without
 > restacking anything first.
 
-> **ONE OPEN OWNER DECISION (D-693, 2026-09-11): the `U11` FAN-OUT
-> RE-FLOORPLAN and its bounded `/01_POWER_TREE/BAT_PROTECTED_P` exception.**
-> Eight of the board's eighteen remaining open edges are held by `U11`'s
+> **HISTORICAL D-693 OWNER DECISION — NO LONGER OPEN.** D-693 (2026-09-11)
+> escalated the `U11` fan-out re-floorplan and a bounded
+> `/01_POWER_TREE/BAT_PROTECTED_P` exception. D-703 later granted broader CTO
+> architecture authority, and the eventual D-742 owner decision deliberately
+> retained `U11.3 / STAT2` as the single approved unrouted Demo edge instead of
+> spending that BAT_PROTECTED_P exception. The routing ledger machine-checks
+> that disposition; **there is no current owner decision on this path.**
+> At the time of D-693, eight of the board's eighteen remaining open edges were held by `U11`'s
 > fan-out and FIVE independent measurements say the pocket cannot hold another
 > conductor (D-690, D-692 x3, D-693).  Every `U11` translation dry run rips up
 > exactly one protected net, `/01_POWER_TREE/BAT_PROTECTED_P`, and the D-655
@@ -52,10 +57,11 @@
 > `evidence/d693-u11-fanout-escalation.json`.  **D-694 raises OPTION B beside
 > it** -- widen the PCB eastward below `y = 104.005`, which relieves BOTH
 > over-subscribed pockets and needs no protected-copper exception, but costs an
-> EXTERNAL DIMENSION change against a LOCKED, MARKETING-SAFE outline.  **The
-> recommendation is D-693 first and D-694 only if D-693 is spent and measured
-> insufficient.**  The paragraph below is the
-> PREVIOUS state of that question and is left standing as history.
+> EXTERNAL DIMENSION change against a LOCKED, MARKETING-SAFE outline.  **At the
+> time, the recommendation was D-693 first and D-694 only if D-693 were spent
+> and measured insufficient.** D-742 superseded that path by accepting
+> STAT2 as the one owner-approved unrouted edge. The paragraph below is the
+> PREVIOUS state of an even earlier question and is left standing as history.
 >
 > **NO OPEN OWNER DECISION (D-681, 2026-09-10).**  Every entry below dated
 > D-655 .. D-680 closes its NEXT list with *"`/I2C_SCL_INT`'s `U14.7 <-> J1.44`
