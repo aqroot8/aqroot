@@ -1,0 +1,2583 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": false,
+ "fetched_utc": "2026-09-19T06:54:55Z",
+ "keyword": "Micro-Lock Plus",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Holes Structure",
+     "attribute_value_name": "2x2P"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "2"
+    },
+    {
+     "attribute_name_en": "With Wings",
+     "attribute_value_name": "Without Fins"
+    },
+    {
+     "attribute_name_en": "Flame Retardant Rating",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "With Locker",
+     "attribute_value_name": "Locking"
+    },
+    {
+     "attribute_name_en": "Reference Series",
+     "attribute_value_name": "Micro-Fit(MX 3.0)"
+    },
+    {
+     "attribute_name_en": "Color",
+     "attribute_value_name": "Black"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Plastic Material",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Number of PINs Per Row",
+     "attribute_value_name": "2"
+    }
+   ],
+   "componentBrandEn": "BOOMELE(Boom Precision Elec)",
+   "componentCode": "C51556",
+   "componentLibraryType": "expand",
+   "componentModelEn": "3.0-2*2YPublic shell",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0635,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 299,
+     "productPrice": 0.0502,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0435,
+     "startNumber": 300
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0386,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.0346,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0326,
+     "startNumber": 10000
+    }
+   ],
+   "componentSpecificationEn": "P=3mm",
+   "componentTypeEn": "Housings (Wire To Board / Wire To Wire )",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/1810251312_BOOMELE-Boom-Precision-Elec-3-0-2-2Y_C51556.pdf",
+   "describe": "2 2 2x2P 3mm 3mm Black Locking Micro-Fit(MX 3.0) Without Fins P=3mm Housings (Wire To Board / Wire To Wire ) ROHS",
+   "erpComponentName": "2x2P 3mm",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/housings-wire-to-board-wire-to-wire_boomele-boom-precision-elec-3-0-2-2y_C51556.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 724
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Holes Structure",
+     "attribute_value_name": "2x3P"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "2"
+    },
+    {
+     "attribute_name_en": "With Wings",
+     "attribute_value_name": "Without Fins"
+    },
+    {
+     "attribute_name_en": "Flame Retardant Rating",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "With Locker",
+     "attribute_value_name": "Locking"
+    },
+    {
+     "attribute_name_en": "Reference Series",
+     "attribute_value_name": "Micro-Fit(MX 3.0)"
+    },
+    {
+     "attribute_name_en": "Color",
+     "attribute_value_name": "Black"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Plastic Material",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Number of PINs Per Row",
+     "attribute_value_name": "3"
+    }
+   ],
+   "componentBrandEn": "BOOMELE(Boom Precision Elec)",
+   "componentCode": "C63952",
+   "componentLibraryType": "expand",
+   "componentModelEn": "3.0-2*3YPublic shell",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.0922,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.0743,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0653,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.0531,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0477,
+     "startNumber": 2000
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.045,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": 19999,
+     "productPrice": 0.0445,
+     "startNumber": 10000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.044,
+     "startNumber": 20000
+    }
+   ],
+   "componentSpecificationEn": "P=3mm",
+   "componentTypeEn": "Housings (Wire To Board / Wire To Wire )",
+   "dataManualUrl": "",
+   "describe": "2 2x3P 3 3mm 3mm Black Locking Micro-Fit(MX 3.0) Without Fins P=3mm Housings (Wire To Board / Wire To Wire ) ROHS",
+   "erpComponentName": "2x3P 3mm",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/housings-wire-to-board-wire-to-wire_boomele-boom-precision-elec-3-0-2-3y_C63952.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 3
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Holes Structure",
+     "attribute_value_name": "2x9P"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "2"
+    },
+    {
+     "attribute_name_en": "With Wings",
+     "attribute_value_name": "Without Fins"
+    },
+    {
+     "attribute_name_en": "Flame Retardant Rating",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "With Locker",
+     "attribute_value_name": "Locking"
+    },
+    {
+     "attribute_name_en": "Reference Series",
+     "attribute_value_name": "Micro-Fit(MX 3.0)"
+    },
+    {
+     "attribute_name_en": "Color",
+     "attribute_value_name": "Black"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Plastic Material",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Number of PINs Per Row",
+     "attribute_value_name": "9"
+    }
+   ],
+   "componentBrandEn": "BOOMELE(Boom Precision Elec)",
+   "componentCode": "C68754",
+   "componentLibraryType": "expand",
+   "componentModelEn": "3.0-2*9YPublic shell",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.1767,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.1399,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.1241,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1042,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0866,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0814,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "P=3mm",
+   "componentTypeEn": "Housings (Wire To Board / Wire To Wire )",
+   "dataManualUrl": "",
+   "describe": "2 2x9P 3mm 3mm 9 Black Locking Micro-Fit(MX 3.0) Without Fins P=3mm Housings (Wire To Board / Wire To Wire ) ROHS",
+   "erpComponentName": "2x9P 3mm",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/housings-wire-to-board-wire-to-wire_boomele-boom-precision-elec-3-0-2-9y_C68754.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1356
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Holes Structure",
+     "attribute_value_name": "2x4P"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "2"
+    },
+    {
+     "attribute_name_en": "With Wings",
+     "attribute_value_name": "Without Fins"
+    },
+    {
+     "attribute_name_en": "Flame Retardant Rating",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "With Locker",
+     "attribute_value_name": "Locking"
+    },
+    {
+     "attribute_name_en": "Reference Series",
+     "attribute_value_name": "Micro-Fit(MX 3.0)"
+    },
+    {
+     "attribute_name_en": "Color",
+     "attribute_value_name": "Black"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Plastic Material",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Number of PINs Per Row",
+     "attribute_value_name": "4"
+    }
+   ],
+   "componentBrandEn": "BOOMELE(Boom Precision Elec)",
+   "componentCode": "C68756",
+   "componentLibraryType": "expand",
+   "componentModelEn": "3.0-2*4YPublic shell",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1122,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.0904,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0795,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.0647,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.058,
+     "startNumber": 2000
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.0547,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": 19999,
+     "productPrice": 0.0541,
+     "startNumber": 10000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0536,
+     "startNumber": 20000
+    }
+   ],
+   "componentSpecificationEn": "P=3mm",
+   "componentTypeEn": "Housings (Wire To Board / Wire To Wire )",
+   "dataManualUrl": "",
+   "describe": "2 2x4P 3mm 3mm 4 Black Locking Micro-Fit(MX 3.0) Without Fins P=3mm Housings (Wire To Board / Wire To Wire ) ROHS",
+   "erpComponentName": "2x4P 3mm",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/housings-wire-to-board-wire-to-wire_boomele-boom-precision-elec-3-0-2-4y_C68756.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 381
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Holes Structure",
+     "attribute_value_name": "1x2P"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+105℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "With Wings",
+     "attribute_value_name": "Without Fins"
+    },
+    {
+     "attribute_name_en": "Flame Retardant Rating",
+     "attribute_value_name": "UL94V-0"
+    },
+    {
+     "attribute_name_en": "With Locker",
+     "attribute_value_name": "Locking"
+    },
+    {
+     "attribute_name_en": "Reference Series",
+     "attribute_value_name": "Micro-Fit(MX 3.0)"
+    },
+    {
+     "attribute_name_en": "Color",
+     "attribute_value_name": "Black"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Plastic Material",
+     "attribute_value_name": "PA"
+    },
+    {
+     "attribute_name_en": "Number of PINs Per Row",
+     "attribute_value_name": "2"
+    }
+   ],
+   "componentBrandEn": "MOLEX",
+   "componentCode": "C114089",
+   "componentLibraryType": "expand",
+   "componentModelEn": "436450200",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1089,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.0905,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0814,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2499,
+     "productPrice": 0.0744,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0691,
+     "startNumber": 2500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0663,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "P=3mm",
+   "componentTypeEn": "Housings (Wire To Board / Wire To Wire )",
+   "dataManualUrl": "",
+   "describe": "-40℃~+105℃ 1 1x2P 2 3mm Black Locking Micro-Fit(MX 3.0) PA UL94V-0 Without Fins P=3mm Housings (Wire To Board / Wire To Wire ) ROHS",
+   "erpComponentName": "1x2P 3mm",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/housings-wire-to-board-wire-to-wire_molex-436450200_C114089.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 2,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 57923
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Holes Structure",
+     "attribute_value_name": "2x2P"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+105℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "2"
+    },
+    {
+     "attribute_name_en": "With Wings",
+     "attribute_value_name": "Without Fins"
+    },
+    {
+     "attribute_name_en": "Flame Retardant Rating",
+     "attribute_value_name": "UL94V-0"
+    },
+    {
+     "attribute_name_en": "With Locker",
+     "attribute_value_name": "Locking"
+    },
+    {
+     "attribute_name_en": "Reference Series",
+     "attribute_value_name": "Micro-Fit(MX 3.0)"
+    },
+    {
+     "attribute_name_en": "Color",
+     "attribute_value_name": "Black"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Plastic Material",
+     "attribute_value_name": "PA"
+    },
+    {
+     "attribute_name_en": "Number of PINs Per Row",
+     "attribute_value_name": "2"
+    }
+   ],
+   "componentBrandEn": "MOLEX",
+   "componentCode": "C122417",
+   "componentLibraryType": "expand",
+   "componentModelEn": "430250400",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1047,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.0835,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.073,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2499,
+     "productPrice": 0.065,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0586,
+     "startNumber": 2500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0556,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "P=3mm",
+   "componentTypeEn": "Housings (Wire To Board / Wire To Wire )",
+   "dataManualUrl": "",
+   "describe": "-40℃~+105℃ 2 2 2x2P 3mm 3mm Black Locking Micro-Fit(MX 3.0) PA UL94V-0 Without Fins P=3mm Housings (Wire To Board / Wire To Wire ) ROHS",
+   "erpComponentName": "2x2P 3mm",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/housings-wire-to-board-wire-to-wire_molex-430250400_C122417.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 27408
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Holes Structure",
+     "attribute_value_name": "2x4P"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+105℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "2"
+    },
+    {
+     "attribute_name_en": "With Wings",
+     "attribute_value_name": "Without Fins"
+    },
+    {
+     "attribute_name_en": "Flame Retardant Rating",
+     "attribute_value_name": "UL94V-0"
+    },
+    {
+     "attribute_name_en": "With Locker",
+     "attribute_value_name": "Locking"
+    },
+    {
+     "attribute_name_en": "Reference Series",
+     "attribute_value_name": "Micro-Fit(MX 3.0)"
+    },
+    {
+     "attribute_name_en": "Color",
+     "attribute_value_name": "Black"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Plastic Material",
+     "attribute_value_name": "PA"
+    },
+    {
+     "attribute_name_en": "Number of PINs Per Row",
+     "attribute_value_name": "4"
+    }
+   ],
+   "componentBrandEn": "MOLEX",
+   "componentCode": "C127351",
+   "componentLibraryType": "expand",
+   "componentModelEn": "430250800",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1384,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.1154,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1039,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2499,
+     "productPrice": 0.0954,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0884,
+     "startNumber": 2500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.085,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "P=3mm",
+   "componentTypeEn": "Housings (Wire To Board / Wire To Wire )",
+   "dataManualUrl": "",
+   "describe": "-40℃~+105℃ 2 2x4P 3mm 3mm 4 Black Locking Micro-Fit(MX 3.0) PA UL94V-0 Without Fins P=3mm Housings (Wire To Board / Wire To Wire ) ROHS",
+   "erpComponentName": "2x4P 3mm",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/housings-wire-to-board-wire-to-wire_molex-430250800_C127351.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 26248
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Holes Structure",
+     "attribute_value_name": "2x6P"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+105℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "2"
+    },
+    {
+     "attribute_name_en": "With Wings",
+     "attribute_value_name": "Without Fins"
+    },
+    {
+     "attribute_name_en": "Flame Retardant Rating",
+     "attribute_value_name": "UL94V-0"
+    },
+    {
+     "attribute_name_en": "With Locker",
+     "attribute_value_name": "Locking"
+    },
+    {
+     "attribute_name_en": "Reference Series",
+     "attribute_value_name": "Micro-Fit(MX 3.0)"
+    },
+    {
+     "attribute_name_en": "Color",
+     "attribute_value_name": "Black"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Plastic Material",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Number of PINs Per Row",
+     "attribute_value_name": "6"
+    }
+   ],
+   "componentBrandEn": "MOLEX",
+   "componentCode": "C164169",
+   "componentLibraryType": "expand",
+   "componentModelEn": "430251200",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.2334,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.1916,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.1737,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.1513,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 4499,
+     "productPrice": 0.1413,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1353,
+     "startNumber": 4500
+    }
+   ],
+   "componentSpecificationEn": "P=3mm",
+   "componentTypeEn": "Housings (Wire To Board / Wire To Wire )",
+   "dataManualUrl": "",
+   "describe": "-40℃~+105℃ 2 2x6P 3mm 3mm 6 Black Locking Micro-Fit(MX 3.0) UL94V-0 Without Fins P=3mm Housings (Wire To Board / Wire To Wire ) ROHS",
+   "erpComponentName": "2x6P 3mm",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/housings-wire-to-board-wire-to-wire_molex-430251200_C164169.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 6379
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Holes Structure",
+     "attribute_value_name": "1x3P"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+105℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "With Wings",
+     "attribute_value_name": "Without Fins"
+    },
+    {
+     "attribute_name_en": "Flame Retardant Rating",
+     "attribute_value_name": "UL94V-0"
+    },
+    {
+     "attribute_name_en": "With Locker",
+     "attribute_value_name": "Locking"
+    },
+    {
+     "attribute_name_en": "Reference Series",
+     "attribute_value_name": "Micro-Fit(MX 3.0)"
+    },
+    {
+     "attribute_name_en": "Color",
+     "attribute_value_name": "Black"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Plastic Material",
+     "attribute_value_name": "PA"
+    },
+    {
+     "attribute_name_en": "Number of PINs Per Row",
+     "attribute_value_name": "3"
+    }
+   ],
+   "componentBrandEn": "MOLEX",
+   "componentCode": "C259740",
+   "componentLibraryType": "expand",
+   "componentModelEn": "436450300",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1254,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.101,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0888,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2499,
+     "productPrice": 0.0796,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0723,
+     "startNumber": 2500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0686,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "P=3mm",
+   "componentTypeEn": "Housings (Wire To Board / Wire To Wire )",
+   "dataManualUrl": "",
+   "describe": "-40℃~+105℃ 1 1x3P 3 3mm Black Locking Micro-Fit(MX 3.0) PA UL94V-0 Without Fins P=3mm Housings (Wire To Board / Wire To Wire ) ROHS",
+   "erpComponentName": "1x3P 3mm",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/housings-wire-to-board-wire-to-wire_molex-436450300_C259740.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 2,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 16697
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Holes Structure",
+     "attribute_value_name": "2x5P"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+105℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "2"
+    },
+    {
+     "attribute_name_en": "With Wings",
+     "attribute_value_name": "Without Fins"
+    },
+    {
+     "attribute_name_en": "Flame Retardant Rating",
+     "attribute_value_name": "UL94V-0"
+    },
+    {
+     "attribute_name_en": "With Locker",
+     "attribute_value_name": "Locking"
+    },
+    {
+     "attribute_name_en": "Reference Series",
+     "attribute_value_name": "Micro-Fit(MX 3.0)"
+    },
+    {
+     "attribute_name_en": "Color",
+     "attribute_value_name": "Black"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Plastic Material",
+     "attribute_value_name": "PA"
+    },
+    {
+     "attribute_name_en": "Number of PINs Per Row",
+     "attribute_value_name": "5"
+    }
+   ],
+   "componentBrandEn": "MOLEX",
+   "componentCode": "C259745",
+   "componentLibraryType": "expand",
+   "componentModelEn": "430251000",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1885,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.1581,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.143,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.1316,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 4499,
+     "productPrice": 0.1224,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1179,
+     "startNumber": 4500
+    }
+   ],
+   "componentSpecificationEn": "P=3mm",
+   "componentTypeEn": "Housings (Wire To Board / Wire To Wire )",
+   "dataManualUrl": "",
+   "describe": "-40℃~+105℃ 2 2x5P 3mm 3mm 5 Black Locking Micro-Fit(MX 3.0) PA UL94V-0 Without Fins P=3mm Housings (Wire To Board / Wire To Wire ) ROHS",
+   "erpComponentName": "【焊接辅料】2x5P 3mm",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/housings-wire-to-board-wire-to-wire_molex-430251000_C259745.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 6250
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Holes Structure",
+     "attribute_value_name": "1x4P"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+105℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "With Wings",
+     "attribute_value_name": "Without Fins"
+    },
+    {
+     "attribute_name_en": "Flame Retardant Rating",
+     "attribute_value_name": "UL94V-0"
+    },
+    {
+     "attribute_name_en": "With Locker",
+     "attribute_value_name": "Locking"
+    },
+    {
+     "attribute_name_en": "Reference Series",
+     "attribute_value_name": "Micro-Fit(MX 3.0)"
+    },
+    {
+     "attribute_name_en": "Color",
+     "attribute_value_name": "Black"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Plastic Material",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Number of PINs Per Row",
+     "attribute_value_name": "4"
+    }
+   ],
+   "componentBrandEn": "MOLEX",
+   "componentCode": "C277618",
+   "componentLibraryType": "expand",
+   "componentModelEn": "436450400",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1705,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.1418,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1273,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.1166,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.108,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1037,
+     "startNumber": 6000
+    }
+   ],
+   "componentSpecificationEn": "P=3mm",
+   "componentTypeEn": "Housings (Wire To Board / Wire To Wire )",
+   "dataManualUrl": "",
+   "describe": "-40℃~+105℃ 1 1x4P 3mm 4 Black Locking Micro-Fit(MX 3.0) UL94V-0 Without Fins P=3mm Housings (Wire To Board / Wire To Wire ) ROHS",
+   "erpComponentName": "【焊接辅料】1x4P 3mm",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/housings-wire-to-board-wire-to-wire_molex-436450400_C277618.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 6453
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Holes Structure",
+     "attribute_value_name": "2x11P"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+105℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "2"
+    },
+    {
+     "attribute_name_en": "With Wings",
+     "attribute_value_name": "Without Fins"
+    },
+    {
+     "attribute_name_en": "Flame Retardant Rating",
+     "attribute_value_name": "UL94V-0"
+    },
+    {
+     "attribute_name_en": "With Locker",
+     "attribute_value_name": "Locking"
+    },
+    {
+     "attribute_name_en": "Reference Series",
+     "attribute_value_name": "Micro-Fit(MX 3.0)"
+    },
+    {
+     "attribute_name_en": "Color",
+     "attribute_value_name": "Black"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Plastic Material",
+     "attribute_value_name": "PA"
+    },
+    {
+     "attribute_name_en": "Number of PINs Per Row",
+     "attribute_value_name": "11"
+    }
+   ],
+   "componentBrandEn": "MOLEX",
+   "componentCode": "C277626",
+   "componentLibraryType": "expand",
+   "componentModelEn": "430252200",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.5697,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.4525,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.4021,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.3402,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.3125,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.2946,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "P=3mm",
+   "componentTypeEn": "Housings (Wire To Board / Wire To Wire )",
+   "dataManualUrl": "",
+   "describe": "-40℃~+105℃ 11 2 2x11P 3mm 3mm Black Locking Micro-Fit(MX 3.0) PA UL94V-0 Without Fins P=3mm Housings (Wire To Board / Wire To Wire ) ROHS",
+   "erpComponentName": "2x11P 3mm",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/housings-wire-to-board-wire-to-wire_molex-430252200_C277626.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 6184
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Holes Structure",
+     "attribute_value_name": "1x6P"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+105℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "With Wings",
+     "attribute_value_name": "Without Fins"
+    },
+    {
+     "attribute_name_en": "Flame Retardant Rating",
+     "attribute_value_name": "UL94V-0"
+    },
+    {
+     "attribute_name_en": "With Locker",
+     "attribute_value_name": "Locking"
+    },
+    {
+     "attribute_name_en": "Reference Series",
+     "attribute_value_name": "Micro-Fit(MX 3.0)"
+    },
+    {
+     "attribute_name_en": "Color",
+     "attribute_value_name": "Black"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Plastic Material",
+     "attribute_value_name": "PA"
+    },
+    {
+     "attribute_name_en": "Number of PINs Per Row",
+     "attribute_value_name": "6"
+    }
+   ],
+   "componentBrandEn": "MOLEX",
+   "componentCode": "C277675",
+   "componentLibraryType": "expand",
+   "componentModelEn": "436450608",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.3365,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.2782,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2533,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.2222,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.2084,
+     "startNumber": 2000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1999,
+     "startNumber": 4000
+    }
+   ],
+   "componentSpecificationEn": "P=3mm",
+   "componentTypeEn": "Housings (Wire To Board / Wire To Wire )",
+   "dataManualUrl": "",
+   "describe": "-40℃~+105℃ 1 1x6P 3mm 6 Black Locking Micro-Fit(MX 3.0) PA UL94V-0 Without Fins P=3mm Housings (Wire To Board / Wire To Wire ) ROHS",
+   "erpComponentName": "1x6P 3mm",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/housings-wire-to-board-wire-to-wire_molex-436450608_C277675.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 604
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Holes Structure",
+     "attribute_value_name": "1x4P"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+105℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "With Wings",
+     "attribute_value_name": "Without Fins"
+    },
+    {
+     "attribute_name_en": "Flame Retardant Rating",
+     "attribute_value_name": "UL94V-0"
+    },
+    {
+     "attribute_name_en": "With Locker",
+     "attribute_value_name": "Locking"
+    },
+    {
+     "attribute_name_en": "Reference Series",
+     "attribute_value_name": "Micro-Fit(MX 3.0)"
+    },
+    {
+     "attribute_name_en": "Color",
+     "attribute_value_name": "Black"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Plastic Material",
+     "attribute_value_name": "PA"
+    },
+    {
+     "attribute_name_en": "Number of PINs Per Row",
+     "attribute_value_name": "4"
+    }
+   ],
+   "componentBrandEn": "MOLEX",
+   "componentCode": "C277690",
+   "componentLibraryType": "expand",
+   "componentModelEn": "436450408",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.2717,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.2181,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1952,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.1665,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.1537,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.146,
+     "startNumber": 6000
+    }
+   ],
+   "componentSpecificationEn": "P=3mm",
+   "componentTypeEn": "Housings (Wire To Board / Wire To Wire )",
+   "dataManualUrl": "https://www.molex.com/content/dam/molex/molex-dot-com/products/automated/en-us/salesdrawingpdf/436/43645/436450408_sd.pdf?inline\\",
+   "describe": "-40℃~+105℃ 1 1x4P 3mm 4 Black Locking Micro-Fit(MX 3.0) PA UL94V-0 Without Fins P=3mm Housings (Wire To Board / Wire To Wire ) ROHS",
+   "erpComponentName": "1x4P 3mm",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/housings-wire-to-board-wire-to-wire_molex-436450408_C277690.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 798
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Holes Structure",
+     "attribute_value_name": "2x1P"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+105℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "2"
+    },
+    {
+     "attribute_name_en": "With Wings",
+     "attribute_value_name": "Without Fins"
+    },
+    {
+     "attribute_name_en": "Flame Retardant Rating",
+     "attribute_value_name": "UL94V-0"
+    },
+    {
+     "attribute_name_en": "With Locker",
+     "attribute_value_name": "Locking"
+    },
+    {
+     "attribute_name_en": "Reference Series",
+     "attribute_value_name": "Micro-Fit(MX 3.0)"
+    },
+    {
+     "attribute_name_en": "Color",
+     "attribute_value_name": "Black"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Plastic Material",
+     "attribute_value_name": "PA"
+    },
+    {
+     "attribute_name_en": "Number of PINs Per Row",
+     "attribute_value_name": "1"
+    }
+   ],
+   "componentBrandEn": "MOLEX",
+   "componentCode": "C293523",
+   "componentLibraryType": "expand",
+   "componentModelEn": "430250200",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0883,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 299,
+     "productPrice": 0.073,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0655,
+     "startNumber": 300
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0598,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.0552,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0529,
+     "startNumber": 10000
+    }
+   ],
+   "componentSpecificationEn": "P=3mm",
+   "componentTypeEn": "Housings (Wire To Board / Wire To Wire )",
+   "dataManualUrl": "",
+   "describe": "-40℃~+105℃ 1 2 2x1P 3mm 3mm Black Locking Micro-Fit(MX 3.0) PA UL94V-0 Without Fins P=3mm Housings (Wire To Board / Wire To Wire ) ROHS",
+   "erpComponentName": "2x1P 3mm",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/housings-wire-to-board-wire-to-wire_molex-430250200_C293523.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 4,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 60895
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Holes Structure",
+     "attribute_value_name": "2x2P"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+105℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "2"
+    },
+    {
+     "attribute_name_en": "With Wings",
+     "attribute_value_name": "Without Fins"
+    },
+    {
+     "attribute_name_en": "Flame Retardant Rating",
+     "attribute_value_name": "UL94V-0"
+    },
+    {
+     "attribute_name_en": "With Locker",
+     "attribute_value_name": "Locking"
+    },
+    {
+     "attribute_name_en": "Reference Series",
+     "attribute_value_name": "Micro-Fit(MX 3.0)"
+    },
+    {
+     "attribute_name_en": "Color",
+     "attribute_value_name": "Black"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Plastic Material",
+     "attribute_value_name": "PA"
+    },
+    {
+     "attribute_name_en": "Number of PINs Per Row",
+     "attribute_value_name": "2"
+    }
+   ],
+   "componentBrandEn": "MOLEX",
+   "componentCode": "C293524",
+   "componentLibraryType": "expand",
+   "componentModelEn": "430250408",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.3873,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.3052,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2701,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2499,
+     "productPrice": 0.2261,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.2066,
+     "startNumber": 2500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1949,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "P=3mm",
+   "componentTypeEn": "Housings (Wire To Board / Wire To Wire )",
+   "dataManualUrl": "",
+   "describe": "-40℃~+105℃ 2 2 2x2P 3mm 3mm Black Locking Micro-Fit(MX 3.0) PA UL94V-0 Without Fins P=3mm Housings (Wire To Board / Wire To Wire ) ROHS",
+   "erpComponentName": "2x2P 3mm",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/housings-wire-to-board-wire-to-wire_molex-430250408_C293524.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 8996
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Holes Structure",
+     "attribute_value_name": "2x3P"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+105℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "2"
+    },
+    {
+     "attribute_name_en": "With Wings",
+     "attribute_value_name": "Without Fins"
+    },
+    {
+     "attribute_name_en": "Flame Retardant Rating",
+     "attribute_value_name": "UL94V-0"
+    },
+    {
+     "attribute_name_en": "With Locker",
+     "attribute_value_name": "Locking"
+    },
+    {
+     "attribute_name_en": "Reference Series",
+     "attribute_value_name": "Micro-Fit(MX 3.0)"
+    },
+    {
+     "attribute_name_en": "Color",
+     "attribute_value_name": "Black"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Plastic Material",
+     "attribute_value_name": "PA"
+    },
+    {
+     "attribute_name_en": "Number of PINs Per Row",
+     "attribute_value_name": "3"
+    }
+   ],
+   "componentBrandEn": "MOLEX",
+   "componentCode": "C293525",
+   "componentLibraryType": "expand",
+   "componentModelEn": "430250600",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1138,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.0936,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0835,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0759,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0699,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0668,
+     "startNumber": 6000
+    }
+   ],
+   "componentSpecificationEn": "P=3mm",
+   "componentTypeEn": "Housings (Wire To Board / Wire To Wire )",
+   "dataManualUrl": "",
+   "describe": "-40℃~+105℃ 2 2x3P 3 3mm 3mm Black Locking Micro-Fit(MX 3.0) PA UL94V-0 Without Fins P=3mm Housings (Wire To Board / Wire To Wire ) ROHS",
+   "erpComponentName": "2x3P 3mm",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/housings-wire-to-board-wire-to-wire_molex-430250600_C293525.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 21006
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Holes Structure",
+     "attribute_value_name": "2x7P"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+105℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "2"
+    },
+    {
+     "attribute_name_en": "With Wings",
+     "attribute_value_name": "Without Fins"
+    },
+    {
+     "attribute_name_en": "Flame Retardant Rating",
+     "attribute_value_name": "UL94V-0"
+    },
+    {
+     "attribute_name_en": "With Locker",
+     "attribute_value_name": "Locking"
+    },
+    {
+     "attribute_name_en": "Reference Series",
+     "attribute_value_name": "Micro-Fit(MX 3.0)"
+    },
+    {
+     "attribute_name_en": "Color",
+     "attribute_value_name": "Black"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Plastic Material",
+     "attribute_value_name": "PA"
+    },
+    {
+     "attribute_name_en": "Number of PINs Per Row",
+     "attribute_value_name": "7"
+    }
+   ],
+   "componentBrandEn": "MOLEX",
+   "componentCode": "C293526",
+   "componentLibraryType": "expand",
+   "componentModelEn": "430251400",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.2496,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.2064,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.1879,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.1648,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 4499,
+     "productPrice": 0.1545,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1483,
+     "startNumber": 4500
+    }
+   ],
+   "componentSpecificationEn": "P=3mm",
+   "componentTypeEn": "Housings (Wire To Board / Wire To Wire )",
+   "dataManualUrl": "",
+   "describe": "-40℃~+105℃ 2 2x7P 3mm 3mm 7 Black Locking Micro-Fit(MX 3.0) PA UL94V-0 Without Fins P=3mm Housings (Wire To Board / Wire To Wire ) ROHS",
+   "erpComponentName": "2x7P 3mm",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/housings-wire-to-board-wire-to-wire_molex-430251400_C293526.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2376
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Holes Structure",
+     "attribute_value_name": "2x8P"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+105℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "2"
+    },
+    {
+     "attribute_name_en": "With Wings",
+     "attribute_value_name": "Without Fins"
+    },
+    {
+     "attribute_name_en": "Flame Retardant Rating",
+     "attribute_value_name": "UL94V-0"
+    },
+    {
+     "attribute_name_en": "With Locker",
+     "attribute_value_name": "Locking"
+    },
+    {
+     "attribute_name_en": "Reference Series",
+     "attribute_value_name": "Micro-Fit(MX 3.0)"
+    },
+    {
+     "attribute_name_en": "Color",
+     "attribute_value_name": "Black"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Plastic Material",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Number of PINs Per Row",
+     "attribute_value_name": "8"
+    }
+   ],
+   "componentBrandEn": "MOLEX",
+   "componentCode": "C293527",
+   "componentLibraryType": "expand",
+   "componentModelEn": "430251600",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.3817,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.3031,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.2693,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.2234,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 4499,
+     "productPrice": 0.2046,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1934,
+     "startNumber": 4500
+    }
+   ],
+   "componentSpecificationEn": "P=3mm",
+   "componentTypeEn": "Housings (Wire To Board / Wire To Wire )",
+   "dataManualUrl": "",
+   "describe": "-40℃~+105℃ 2 2x8P 3mm 3mm 8 Black Locking Micro-Fit(MX 3.0) UL94V-0 Without Fins P=3mm Housings (Wire To Board / Wire To Wire ) ROHS",
+   "erpComponentName": "2x8P 3mm",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/housings-wire-to-board-wire-to-wire_molex-430251600_C293527.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2397
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Holes Structure",
+     "attribute_value_name": "2x9P"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+105℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "2"
+    },
+    {
+     "attribute_name_en": "With Wings",
+     "attribute_value_name": "Without Fins"
+    },
+    {
+     "attribute_name_en": "Flame Retardant Rating",
+     "attribute_value_name": "UL94V-0"
+    },
+    {
+     "attribute_name_en": "With Locker",
+     "attribute_value_name": "Locking"
+    },
+    {
+     "attribute_name_en": "Reference Series",
+     "attribute_value_name": "Micro-Fit(MX 3.0)"
+    },
+    {
+     "attribute_name_en": "Color",
+     "attribute_value_name": "Black"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Plastic Material",
+     "attribute_value_name": "PA"
+    },
+    {
+     "attribute_name_en": "Number of PINs Per Row",
+     "attribute_value_name": "9"
+    }
+   ],
+   "componentBrandEn": "MOLEX",
+   "componentCode": "C293528",
+   "componentLibraryType": "expand",
+   "componentModelEn": "430251800",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.3046,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.2364,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2072,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2499,
+     "productPrice": 0.1708,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.1545,
+     "startNumber": 2500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1447,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "P=3mm",
+   "componentTypeEn": "Housings (Wire To Board / Wire To Wire )",
+   "dataManualUrl": "",
+   "describe": "-40℃~+105℃ 2 2x9P 3mm 3mm 9 Black Locking Micro-Fit(MX 3.0) PA UL94V-0 Without Fins P=3mm Housings (Wire To Board / Wire To Wire ) ROHS",
+   "erpComponentName": "2x9P 3mm",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/housings-wire-to-board-wire-to-wire_molex-430251800_C293528.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 3239
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Holes Structure",
+     "attribute_value_name": "1x8P"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+105℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "With Wings",
+     "attribute_value_name": "Without Fins"
+    },
+    {
+     "attribute_name_en": "Flame Retardant Rating",
+     "attribute_value_name": "UL94V-0"
+    },
+    {
+     "attribute_name_en": "With Locker",
+     "attribute_value_name": "Locking"
+    },
+    {
+     "attribute_name_en": "Reference Series",
+     "attribute_value_name": "Micro-Fit(MX 3.0)"
+    },
+    {
+     "attribute_name_en": "Color",
+     "attribute_value_name": "Black"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Plastic Material",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Number of PINs Per Row",
+     "attribute_value_name": "8"
+    }
+   ],
+   "componentBrandEn": "MOLEX",
+   "componentCode": "C293545",
+   "componentLibraryType": "expand",
+   "componentModelEn": "436450800",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.301,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.2429,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.218,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.1867,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.1729,
+     "startNumber": 2000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1646,
+     "startNumber": 4000
+    }
+   ],
+   "componentSpecificationEn": "P=3mm",
+   "componentTypeEn": "Housings (Wire To Board / Wire To Wire )",
+   "dataManualUrl": "",
+   "describe": "-40℃~+105℃ 1 1x8P 3mm 8 Black Locking Micro-Fit(MX 3.0) UL94V-0 Without Fins P=3mm Housings (Wire To Board / Wire To Wire ) ROHS",
+   "erpComponentName": "1x8P 3mm",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/housings-wire-to-board-wire-to-wire_molex-436450800_C293545.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 3250
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Holes Structure",
+     "attribute_value_name": "1x6P"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+105℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "With Wings",
+     "attribute_value_name": "Without Fins"
+    },
+    {
+     "attribute_name_en": "Flame Retardant Rating",
+     "attribute_value_name": "UL94V-0"
+    },
+    {
+     "attribute_name_en": "With Locker",
+     "attribute_value_name": "Locking"
+    },
+    {
+     "attribute_name_en": "Reference Series",
+     "attribute_value_name": "Micro-Fit(MX 3.0)"
+    },
+    {
+     "attribute_name_en": "Color",
+     "attribute_value_name": "Black"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Plastic Material",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Number of PINs Per Row",
+     "attribute_value_name": "6"
+    }
+   ],
+   "componentBrandEn": "MOLEX",
+   "componentCode": "C293739",
+   "componentLibraryType": "expand",
+   "componentModelEn": "436450600",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1775,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.1376,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1205,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.0992,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0897,
+     "startNumber": 2000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.084,
+     "startNumber": 4000
+    }
+   ],
+   "componentSpecificationEn": "P=3mm",
+   "componentTypeEn": "Housings (Wire To Board / Wire To Wire )",
+   "dataManualUrl": "",
+   "describe": "-40℃~+105℃ 1 1x6P 3mm 6 Black Locking Micro-Fit(MX 3.0) UL94V-0 Without Fins P=3mm Housings (Wire To Board / Wire To Wire ) ROHS",
+   "erpComponentName": "1x6P 3mm",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/housings-wire-to-board-wire-to-wire_molex-436450600_C293739.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1018
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Holes Structure",
+     "attribute_value_name": "1x7P"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+105℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "With Wings",
+     "attribute_value_name": "Without Fins"
+    },
+    {
+     "attribute_name_en": "Flame Retardant Rating",
+     "attribute_value_name": "UL94V-0"
+    },
+    {
+     "attribute_name_en": "With Locker",
+     "attribute_value_name": "Locking"
+    },
+    {
+     "attribute_name_en": "Reference Series",
+     "attribute_value_name": "Micro-Fit(MX 3.0)"
+    },
+    {
+     "attribute_name_en": "Color",
+     "attribute_value_name": "Black"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Plastic Material",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Number of PINs Per Row",
+     "attribute_value_name": "7"
+    }
+   ],
+   "componentBrandEn": "MOLEX",
+   "componentCode": "C294036",
+   "componentLibraryType": "expand",
+   "componentModelEn": "436450700",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.4415,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.3604,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.3257,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.2823,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.2631,
+     "startNumber": 2000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.2515,
+     "startNumber": 4000
+    }
+   ],
+   "componentSpecificationEn": "P=3mm",
+   "componentTypeEn": "Housings (Wire To Board / Wire To Wire )",
+   "dataManualUrl": "",
+   "describe": "-40℃~+105℃ 1 1x7P 3mm 7 Black Locking Micro-Fit(MX 3.0) UL94V-0 Without Fins P=3mm Housings (Wire To Board / Wire To Wire ) ROHS",
+   "erpComponentName": "1x7P 3mm",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/housings-wire-to-board-wire-to-wire_molex-436450700_C294036.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 40
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Holes Structure",
+     "attribute_value_name": "1x10P"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+105℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "With Wings",
+     "attribute_value_name": "Without Fins"
+    },
+    {
+     "attribute_name_en": "Flame Retardant Rating",
+     "attribute_value_name": "UL94V-0"
+    },
+    {
+     "attribute_name_en": "With Locker",
+     "attribute_value_name": "Locking"
+    },
+    {
+     "attribute_name_en": "Reference Series",
+     "attribute_value_name": "Micro-Fit(MX 3.0)"
+    },
+    {
+     "attribute_name_en": "Color",
+     "attribute_value_name": "Black"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Plastic Material",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Number of PINs Per Row",
+     "attribute_value_name": "10"
+    }
+   ],
+   "componentBrandEn": "MOLEX",
+   "componentCode": "C294040",
+   "componentLibraryType": "expand",
+   "componentModelEn": "436451000",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.4175,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.338,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.3039,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.2613,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 4499,
+     "productPrice": 0.2424,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.231,
+     "startNumber": 4500
+    }
+   ],
+   "componentSpecificationEn": "P=3mm",
+   "componentTypeEn": "Housings (Wire To Board / Wire To Wire )",
+   "dataManualUrl": "",
+   "describe": "-40℃~+105℃ 1 10 1x10P 3mm Black Locking Micro-Fit(MX 3.0) UL94V-0 Without Fins P=3mm Housings (Wire To Board / Wire To Wire ) ROHS",
+   "erpComponentName": "1x10P 3mm",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/housings-wire-to-board-wire-to-wire_molex-436451000_C294040.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2208
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Holes Structure",
+     "attribute_value_name": "1x5P"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+105℃"
+    },
+    {
+     "attribute_name_en": "Number of Rows",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "With Wings",
+     "attribute_value_name": "Without Fins"
+    },
+    {
+     "attribute_name_en": "Flame Retardant Rating",
+     "attribute_value_name": "UL94V-0"
+    },
+    {
+     "attribute_name_en": "With Locker",
+     "attribute_value_name": "Locking"
+    },
+    {
+     "attribute_name_en": "Reference Series",
+     "attribute_value_name": "Micro-Fit(MX 3.0)"
+    },
+    {
+     "attribute_name_en": "Color",
+     "attribute_value_name": "Black"
+    },
+    {
+     "attribute_name_en": "Pitch",
+     "attribute_value_name": "3mm"
+    },
+    {
+     "attribute_name_en": "Row Spacing",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Plastic Material",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Number of PINs Per Row",
+     "attribute_value_name": "5"
+    }
+   ],
+   "componentBrandEn": "MOLEX",
+   "componentCode": "C485319",
+   "componentLibraryType": "expand",
+   "componentModelEn": "436450500",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.226,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.1889,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1729,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2499,
+     "productPrice": 0.1532,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.1327,
+     "startNumber": 2500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1273,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "P=3mm",
+   "componentTypeEn": "Housings (Wire To Board / Wire To Wire )",
+   "dataManualUrl": "",
+   "describe": "-40℃~+105℃ 1 1x5P 3mm 5 Black Locking Micro-Fit(MX 3.0) UL94V-0 Without Fins P=3mm Housings (Wire To Board / Wire To Wire ) ROHS",
+   "erpComponentName": "1x5P 3mm",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/housings-wire-to-board-wire-to-wire_molex-436450500_C485319.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 3963
+  }
+ ],
+ "returned": 25,
+ "schema": 1,
+ "total_matches": 207
+}

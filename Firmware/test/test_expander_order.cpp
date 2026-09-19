@@ -472,7 +472,14 @@ int main() {
     hurt.fail_reg = Pcal9535a::kRegOutput0;
     hurt.fail_once = true;
     const bool ok = local.setAccessory5v(hurt, false);
-    check("5 V down: a NACK on the first write is REPORTED", !ok);
+    check("5 V down: a NACK on the first write reaches a safe final state", ok);
+    // D-779: reaching it THROUGH the blanket safe latch also took down the
+    // 3.3 V rail and the I2C buffer, so the caller has to be told.
+    check("5 V down: the broader safe state is REPORTED to the caller",
+          local.consumeSafeStateApplied());
+    check("5 V down: the report is consumed exactly once",
+          !local.consumeSafeStateApplied());
+
     check("5 V down: the SECOND write is attempted anyway",
           hurt.countWrites(AQROOT_EXP_U3_ADDR, Pcal9535a::kRegOutput0, mark) >= 2);
     bool both_down = false;
@@ -487,6 +494,44 @@ int main() {
     }
     check("5 V down: one SURVIVING write takes the boost AND the switch down",
           both_down);
+  }
+
+  // D-779.  THE SHADOW IS THE THING THAT MAKES A RETRY SAFE.
+  //
+  // `writeOutputs` only moves `shadow_` when the bus ACKs, which is right -- a
+  // NACKed write did not reach the device.  But it also means the shadow no
+  // longer describes the hardware, and a single-bit read-modify-write built on
+  // it would re-assert whatever the failed write was trying to clear.  D-751
+  // solved that on ONE path with `clearBits`; the general guard is that a
+  // failed write INVALIDATES the shadow and every read-modify-write then
+  // refuses until a complete latch restores it.  This asserts the guard
+  // directly rather than through one caller.
+  {
+    RecordingBus hurt;
+    Pcal9535a dev(AQROOT_EXP_U3_ADDR);
+    check("a complete latch write validates the shadow",
+          dev.writeOutputs(hurt, 0x0000));
+    check("a single-bit write works from a valid shadow",
+          dev.writeBit(hurt, AQROOT_U3_ACC_5V_SW_EN, true));
+    hurt.fail_address = AQROOT_EXP_U3_ADDR;
+    hurt.fail_reg = Pcal9535a::kRegOutput0;
+    hurt.fail_once = true;
+    check("a NACKed output write is reported",
+          !dev.writeBit(hurt, AQROOT_U3_ACC_5V_SW_EN, false));
+    hurt.fail_address = 0xFF;
+    hurt.fail_reg = -1;
+    hurt.fail_once = false;
+    // THE CLAUSE: the bus is healthy again, and the device must STILL refuse a
+    // blind read-modify-write, because nothing has re-established what the
+    // hardware holds.
+    check("a single-bit write is REFUSED after a NACK invalidated the shadow",
+          !dev.writeBit(hurt, AQROOT_U3_ACC_5V_BOOST_EN, false));
+    check("clearBits is REFUSED after a NACK invalidated the shadow",
+          !dev.clearBits(hurt, bitmask(AQROOT_U3_ACC_5V_SW_EN)));
+    check("a COMPLETE latch write is still permitted, and restores the shadow",
+          dev.writeOutputs(hurt, kU3SafeLatch));
+    check("single-bit writes work again once the shadow is re-established",
+          dev.writeBit(hurt, AQROOT_U3_ACC_5V_BOOST_EN, false));
   }
   {
     // T10d: the 3.3 V shutdown spans TWO DEVICES.  A U2 failure must not leave
@@ -558,8 +603,9 @@ int main() {
     check("lost U3 fault-input read is REPORTED", !local.service(hurt));
     check("lost U3 fault-input read is LATCHED as unknown",
           local.faultObservabilityLost());
-    check("lost U3 fault-input read ATTEMPTS shutdown writes",
-          hurt.countWrites(AQROOT_EXP_U3_ADDR, Pcal9535a::kRegOutput0, mark) >= 2);
+    check("lost U3 fault-input read writes the complete U3 safe latch",
+          hurt.countWrites(AQROOT_EXP_U3_ADDR, Pcal9535a::kRegOutput0, mark) >= 1 &&
+          hurt.u3_output == kU3SafeLatch);
     check("lost U3 fault-input read leaves all accessory enables LOW",
           !(hurt.u3_output & bitmask(AQROOT_U3_ACC_3V3_EN)) &&
           !(hurt.u3_output & bitmask(AQROOT_U3_ACC_5V_SW_EN)) &&

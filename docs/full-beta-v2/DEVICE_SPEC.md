@@ -379,6 +379,22 @@ power/NFC review, and CTO decisions.
 > BQ25185 `IBAT_OCP` hiccup on a low pack, which is worse for an accessory than a
 > deterministic refusal.
 >
+> **D-777 ADDS THE SECOND MANDATORY CONDITION, AND IT IS A CONNECTOR CONDITION.**
+> `J4` is a JST `B2B-PH-K-S(LF)(SN)` and JST publishes the PH series at **2 A
+> AC/DC (AWG #24)** — **the lowest number in the whole battery path**, below the
+> `BQ25185`'s 2.5625 A `IBAT_OCP` minimum, D-771's 3.960 A breaker and `F1`'s 5 A
+> fuse, so nothing on this board acts between 2 A and 2.5625 A.  At the full
+> internal +3V3 budget the simultaneous case carried **2.2715 A**, 13.6 % over.
+> Holding it under 2 A by VCELL alone would need a **4.16 V** pack, so the
+> bounded term is the **internal** one: while BOTH accessory rails are enabled
+> firmware **reserves** the sub-GHz transmit path, the NFC field and the IR
+> transmitter, bringing the connection to **1.8797 A — 6.0 % inside its published
+> rating**.  Accessory-facing documentation must carry this condition too:
+> *"While both switched accessory rails are enabled, the sub-GHz radio, the NFC
+> field and the IR transmitter are unavailable.  Each rail on its own leaves all
+> three available."*  **Neither published budget changes**, and the connector
+> upgrade (JST `B2B-XH-A`, 3 A) is a costed REV-B item — CTO_DECISIONS D-777 §6.
+>
 > **D-771 MADE IT A GUARANTEE RATHER THAN A HOPE.**  Every clause D-753 and D-765
 > wrote asked whether an accessory could pull TOO MUCH; none asked whether the
 > rail could DELIVER what the product promises.  At the 2.7 kΩ both rails carried,
@@ -587,7 +603,7 @@ against a `BQ25185` `IBAT_OCP` band of **2.5625 / 3.125 / 3.6875 A** (3.125 A ty
 > a LoRa TX and the NFC field and audio and a microSD write and the backlight at
 > maximum and an IR burst, on a `BQ25185` sitting at the −18 % corner of its
 > `IBAT_OCP` band, with the cell at 3.0 V.  Its consequence is an `IBAT_OCP`
-> **hiccup that auto-retries** — and D-771 guaranteed that hiccup happens before
+> **hiccup that re-enables the BATFET** — and D-771 guaranteed that hiccup happens before
 > the latching breaker on **every** unit.  At a conforming accessory load the
 > margin is 8.3 %.  A *simultaneous double limiter fault* reaches 3.534 A, still
 > **10.8 % below** the breaker's guaranteed minimum and below the one-shot fuse.
@@ -605,7 +621,7 @@ against a `BQ25185` `IBAT_OCP` band of **2.5625 / 3.125 / 3.6875 A** (3.125 A ty
 > breaker's real band was **2.640–4.040 A** — which OVERLAPPED the `BQ25185`'s
 > `IBAT_OCP` band of 2.5625–3.6875 A by 1.05 A.  **`RETRY` is grounded** (sheet 01,
 > D-050/D-052/D-064/D-068), so this breaker **LATCHES OFF** and is cleared only by
-> toggling `SHDN`, while `IBAT_OCP` hiccups and auto-retries.  On an unlucky unit
+> toggling `SHDN`, while `IBAT_OCP` hiccups. **D-779 COMPLETES THE SENTENCE**: SLUSF65B 6.3.7.3 re-enables the BATFET after `tREC_SC`, but **4 to 7 consecutive trips inside a 2 s window leave the BATFET OFF until a valid VIN is connected** — a SUSTAINED battery overcurrent is a battery-only dead stop the user clears with USB, not an indefinite retry. The D-771 ordering is unchanged; the stated consequence is.  On an unlucky unit
 > the LATCHING protection fired first, and the board D-765 shipped reached 2.886 A
 > in double fault — **above the breaker's own 2.640 A minimum**, so the clause was
 > FALSE on the board that passed it.  At **10 mΩ** the breaker is 3.960–6.061 A,

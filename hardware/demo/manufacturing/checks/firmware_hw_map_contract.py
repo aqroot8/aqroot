@@ -108,6 +108,29 @@ POWER_POLICY_CONTROLS = [
                ? AccessoryBatteryAction::Shed5v
                : AccessoryBatteryAction::ShedAll;""",
      "    return AccessoryBatteryAction::ShedAll;"),
+    # D-777.  The internal reserve that holds J4 inside JST's published 2 A.
+    # The first control is the board EXACTLY as D-775/D-776 shipped it -- no
+    # reserve, the whole 1.0632 A internal budget live beside both accessory
+    # rails at their published budgets.  The second is the edit that is much
+    # more likely than deleting the feature: the reserve SURVIVING but losing
+    # one of its three lines, which puts the demand back over the rating while
+    # every other clause still reads as if the reserve were intact.
+    ("the dual-rail internal ceiling returns to the full +3V3 budget",
+     "aqroot_accessory_power_policy.h",
+     "constexpr float kDualRailInternalCeilingA = 0.7732f;",
+     "constexpr float kDualRailInternalCeilingA = 1.0632f;"),
+    ("the reserve keeps its name but stops holding the IR transmitter off",
+     "aqroot_accessory_power_policy.h",
+     "  return InternalReserve{both, both, both};",
+     "  return InternalReserve{both, both, false};"),
+    # D-779.  The plausibility band is what stops an all-ones VCELL read from
+    # authorising the second accessory rail.  The control widens it just far
+    # enough to let 5.1199 V back in -- which is how the defect actually looked
+    # before it was named: a band that exists but does not exclude the code.
+    ("the VCELL plausibility band stops excluding the all-ones code",
+     "aqroot_accessory_power_policy.h",
+     "constexpr float kVcellPlausibleMaxV = 4.50f;",
+     "constexpr float kVcellPlausibleMaxV = 5.50f;"),
 ]
 
 
@@ -124,9 +147,24 @@ BUS_CONTROLS = [
      "aqroot_spi_bus_b.h",
      "    ~Hold() { if (ok_) bus_.release(); }",
      "    ~Hold() {}"),
+    # D-777.  The reserve rule is the one that keeps J4 inside its own
+    # published 2 A rating, and it is enforced HERE because two of the three
+    # reserved budget lines are transmitters on this bus.  The control is the
+    # edit that reads as a tidy-up: the flag kept, the refusal dropped.
+    ("a radio may key while the accessory reserve is engaged",
+     "aqroot_spi_bus_b.h",
+     "    if (internal_reserve_) return false;",
+     "    if (false) return false;"),
 ]
 
 ORDER_CONTROLS = [
+    # D-779.  The blanket safe-state fallback is broader than any single caller
+    # asked for; if it stops reporting itself, main() keeps shadow flags that
+    # the hardware no longer matches.
+    ("the broader safe state stops reporting itself to the caller",
+     "aqroot_demo_expanders.h",
+     "    if (u2_ok || u3_ok) safe_state_applied_ = true;",
+     "    if (false) safe_state_applied_ = true;"),
     ("direction is written before the output latch",
      "pcal9535a.h",
      """    shadow_valid_ = false;
@@ -179,12 +217,23 @@ ORDER_CONTROLS = [
     if (!u2_.readInputs(bus, &u2_inputs_)) return false;
     if (!u3_.readInputs(bus, &u3_inputs_)) return false;
     const bool a = true, b = true, c = true, d = true;"""),
-    ("a NACKed load-switch write leaves the switch commanded ON",
-     "aqroot_demo_expanders.h",
-     """    const bool boost = u3_.clearBits(
-        bus, uint16_t(bitmask(AQROOT_U3_ACC_5V_SW_EN) |
-                      bitmask(AQROOT_U3_ACC_5V_BOOST_EN)));""",
-     """    const bool boost = u3_.writeBit(bus, AQROOT_U3_ACC_5V_BOOST_EN, false);"""),
+    # D-751's control was `clearBits(SW|BOOST)` -> `writeBit(BOOST, false)`,
+    # the edit that let a NACKed load-switch write be followed by a single-bit
+    # write that re-commanded the switch ON.  D-779 RETIRES IT AS VACUOUS AND
+    # SAYS SO RATHER THAN DELETING IT QUIETLY: `Pcal9535a::writeOutputs` now
+    # invalidates the shadow when a write NACKs, and both `writeBit` and
+    # `clearBits` refuse a blind read-modify-write, so that mutation can no
+    # longer re-assert anything -- the host test stops catching it because the
+    # defect stopped being reachable.  The guard that actually carries the
+    # property is the invalidation itself, so THAT is what this control now
+    # mutates, one layer down.
+    ("a failed output write leaves the shadow trusted",
+     "pcal9535a.h",
+     """    if (!writePortPair(bus, address_, kRegOutput0, value)) {
+      shadow_valid_ = false;
+      return false;
+    }""",
+     """    if (!writePortPair(bus, address_, kRegOutput0, value)) return false;"""),
 ]
 
 

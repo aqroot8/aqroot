@@ -146,7 +146,10 @@ class Pcal9535a {
   }
 
   bool writeOutputs(I2cBus &bus, uint16_t value) {
-    if (!writePortPair(bus, address_, kRegOutput0, value)) return false;
+    if (!writePortPair(bus, address_, kRegOutput0, value)) {
+      shadow_valid_ = false;
+      return false;
+    }
     shadow_ = value;
     shadow_valid_ = true;
     return true;

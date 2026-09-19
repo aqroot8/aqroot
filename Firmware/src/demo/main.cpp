@@ -111,13 +111,102 @@ static bool accessoryBatteryAllows(bool other_rail_on, float *volts = nullptr,
   return accessoryEnableAllowed(read, v, other_rail_on);
 }
 
+// D-779.  ONE PLACE THAT RECONCILES THE SHADOW FLAGS WITH THE HARDWARE, AND
+// ONE PLACE THAT ENGAGES THE BATTERY-CONNECTION RESERVE.
+//
+// `DemoExpanders::applyAccessorySafeState` is the fallback every accessory
+// write path drops to, and it writes BOTH complete safe latches -- so a call
+// that only asked about the 5 V rail can take down all three outputs.  Any
+// accessory operation therefore has to ask whether that happened and drop
+// every shadow flag if it did, or the UI and the next toggle are wrong about
+// the board.
+//
+// The same function pushes the D-777 reserve into the SPI bus B arbiter,
+// because "both accessory rails enabled" is exactly the condition under which
+// J4 has no room for a sub-GHz key or the NFC field.  Keeping both in one
+// place is what stops a future rail edit from moving one and not the other.
+static void forceAccessoriesOff(const char *why);
+static void afterAccessoryChange();
+static void applyAccessoryRetention(const char *ctx);
+static void settledAccessoryRecheck(const char *what);
+
+static void afterAccessoryChange() {
+  if (g_expanders.consumeSafeStateApplied()) {
+    g_acc3v3 = false;
+    g_acc5v = false;
+    g_accessory_i2c = false;
+    Serial.println("ACCESSORY SAFE STATE APPLIED: all accessory outputs off");
+  }
+  g_spi_b.setInternalReserve(internalReserveEngaged(g_acc3v3, g_acc5v));
+}
+
+// The retention rule, in ONE place, so the periodic guard and D-779's
+// post-enable settled recheck cannot drift apart.
+static void applyAccessoryRetention(const char *ctx) {
+  if (!g_acc3v3 && !g_acc5v) return;
+  float vcell = 0.0f;
+  const bool read = readFuelCellVoltage(&vcell);
+  const AccessoryBatteryAction action =
+      accessoryRetentionAction(read, vcell, g_acc3v3, g_acc5v);
+  if (action == AccessoryBatteryAction::ShedAll) {
+    char why[136];
+    if (!read) {
+      snprintf(why, sizeof(why),
+               "%s: MAX17048 VCELL unreadable; accessory load not permitted",
+               ctx);
+    } else if (!vcellIsPlausible(vcell)) {
+      // D-779: an implausible reading is NOT a low battery, and saying so
+      // keeps a stuck bus from being diagnosed as a flat pack.
+      snprintf(why, sizeof(why),
+               "%s: VCELL %.3f V outside the plausible %.2f-%.2f V band; "
+               "treated as no measurement",
+               ctx, vcell, kVcellPlausibleMinV, kVcellPlausibleMaxV);
+    } else {
+      snprintf(why, sizeof(why),
+               "%s: VCELL %.3f V below %.2f V single-rail floor",
+               ctx, vcell, kAccessorySingleRailFloorV);
+    }
+    forceAccessoriesOff(why);
+  } else if (action == AccessoryBatteryAction::Shed5v) {
+    const bool off5 = g_expanders.setAccessory5v(g_bus, false);
+    if (off5) g_acc5v = false;
+    afterAccessoryChange();
+    if (off5) {
+      Serial.printf("ACC_5V_SW SHED (%s): VCELL %.3f V below %.2f V "
+                    "dual-rail floor\n", ctx, vcell, kAccessoryDualRailFloorV);
+    } else {
+      forceAccessoriesOff("5 V dual-rail battery shed failed");
+    }
+  }
+}
+
+// D-779.  Re-read once the step has settled and apply the same rule.  The
+// MAX17048 updates VCELL about every 250 ms in active mode, which the HIBRT
+// write in setup() guarantees it is in; 400 ms covers one update with margin.
+static void settledAccessoryRecheck(const char *what) {
+  delay(400);
+  applyAccessoryRetention(what);
+  g_last_battery_guard_ms = millis();
+}
+
+// D-779.  THE PERMISSION WAS TAKEN BEFORE THE LOAD EXISTED.
+//
+// `accessoryBatteryAllows` reads VCELL and then the rail is switched on.  The
+// reading it acted on is a PRE-STEP one: the sag the new load causes has not
+// happened yet, and on a pack near the floor the post-step voltage can be
+// below it.  F6's floors are derived FOR the loaded case, so the honest close
+// is to re-read once the step has settled and apply the ordinary retention
+// rule to the result.  One gauge update period plus margin -- the MAX17048
+// updates VCELL about every 250 ms in active mode, which the HIBRT write above
+// guarantees it is in.
 static void forceAccessoriesOff(const char *why) {
   const bool off5 = g_expanders.setAccessory5v(g_bus, false);
   const bool off3 = g_expanders.setAccessory3v3(g_bus, false);
   const bool offbuf = g_expanders.setAccessoryI2cBuffer(g_bus, false);
-  g_acc5v = false;
-  g_acc3v3 = false;
-  g_accessory_i2c = false;
+  if (off5) g_acc5v = false;
+  if (off3) g_acc3v3 = false;
+  if (offbuf) g_accessory_i2c = false;
+  afterAccessoryChange();
   Serial.printf("ACCESSORY FAIL-CLOSED: %s; 5V=%d 3V3=%d I2C=%d\n",
                 why, off5, off3, offbuf);
 }
@@ -296,6 +385,26 @@ void setup() {
              detail);
     }
   }
+  // D-779.  THE GAUGE MUST BE IN ACTIVE MODE OR ITS VCELL IS NOT FRESH.
+  //
+  // The accessory policy gates and SHEDS on VCELL, so a stale reading is a
+  // stale permission.  The MAX17048 enters hibernate on its own when the cell
+  // looks quiet, and in hibernate it updates VCELL far more slowly than the
+  // ~250 ms of active mode -- which is exactly the pre-step-to-post-step
+  // problem: the second rail is enabled against a reading taken before the
+  // load existed.  Writing HIBRT (0x0A) = 0x0000 disables hibernate entirely,
+  // so every reading the policy acts on is an active-mode one.  Reported, not
+  // asserted: a gauge that refuses this write still fails closed everywhere
+  // else, and the operator is told which case they are in.
+  {
+    static const uint8_t kHibrtAlwaysActive[3] = {0x0A, 0x00, 0x00};
+    const bool wrote = g_bus.write(AQROOT_I2C_ADDR_FUEL_GAUGE,
+                                   kHibrtAlwaysActive,
+                                   sizeof(kHibrtAlwaysActive));
+    report("MAX17048 U14 hibernate disabled (HIBRT = 0x0000)", wrote,
+           wrote ? "active-mode VCELL, ~250 ms updates"
+                 : "HIBRT write FAILED -- VCELL may be a hibernate-rate value");
+  }
   // Only reachable once TOUCH_RST_N is released, which bringUpExpanders() did.
   probeI2cDevice("touch controller (J1 FPC)", AQROOT_I2C_ADDR_TOUCH, 0xA3, 0x00,
                  false);
@@ -376,6 +485,7 @@ void loop() {
         g_acc3v3 = false;
         g_acc5v = false;
         g_accessory_i2c = false;
+        afterAccessoryChange();
       }
       if (g_expanders.u2Inputs() != g_last_u2 ||
           g_expanders.u3Inputs() != g_last_u3) {
@@ -388,10 +498,11 @@ void loop() {
       }
     } else {
       static uint32_t last_service_error = 0;
-      if (g_expanders.faultObservabilityLost()) {
+      if (g_expanders.faultObservabilityLost() && !g_expanders.safeShutdownPending()) {
         g_acc3v3 = false;
         g_acc5v = false;
         g_accessory_i2c = false;
+        afterAccessoryChange();
       }
       if (millis() - last_service_error > 1000) {
         last_service_error = millis();
@@ -405,30 +516,7 @@ void loop() {
   if ((g_acc3v3 || g_acc5v) &&
       millis() - g_last_battery_guard_ms >= 500) {
     g_last_battery_guard_ms = millis();
-    float vcell = 0.0f;
-    const bool read = readFuelCellVoltage(&vcell);
-    const AccessoryBatteryAction action =
-        accessoryRetentionAction(read, vcell, g_acc3v3, g_acc5v);
-    if (action == AccessoryBatteryAction::ShedAll) {
-      char why[112];
-      if (read) {
-        snprintf(why, sizeof(why), "VCELL %.3f V below %.2f V single-rail floor",
-                 vcell, kAccessorySingleRailFloorV);
-      } else {
-        snprintf(why, sizeof(why),
-                 "MAX17048 VCELL unreadable; accessory load not permitted");
-      }
-      forceAccessoriesOff(why);
-    } else if (action == AccessoryBatteryAction::Shed5v) {
-      const bool off5 = g_expanders.setAccessory5v(g_bus, false);
-      if (off5) {
-        g_acc5v = false;
-        Serial.printf("ACC_5V_SW SHED: VCELL %.3f V below %.2f V dual-rail floor\n",
-                      vcell, kAccessoryDualRailFloorV);
-      } else {
-        forceAccessoriesOff("5 V dual-rail battery shed failed");
-      }
-    }
+    applyAccessoryRetention("periodic");
   }
 
   if (Serial.available()) {
@@ -448,6 +536,8 @@ void loop() {
         }
         const bool ok = g_expanders.setAccessory3v3(g_bus, want);
         if (ok) g_acc3v3 = want;
+        afterAccessoryChange();
+        if (ok && want) settledAccessoryRecheck("ACC_3V3_SW");
         Serial.printf("ACC_3V3_SW %s -> %d\n", want ? "on" : "off", ok);
         break;
       }
@@ -463,6 +553,8 @@ void loop() {
         // disconnects are required by D-186 and neither is optional.
         const bool ok = g_expanders.setAccessory5v(g_bus, want);
         if (ok) g_acc5v = want;
+        afterAccessoryChange();
+        if (ok && want) settledAccessoryRecheck("ACC_5V_SW");
         Serial.printf("ACC_5V_SW %s -> %d\n", want ? "on" : "off", ok);
         break;
       }
@@ -470,6 +562,7 @@ void loop() {
         const bool want = !g_accessory_i2c;
         const bool ok = g_expanders.setAccessoryI2cBuffer(g_bus, want);
         if (ok) g_accessory_i2c = want;
+        afterAccessoryChange();
         Serial.printf("ACC_PWR_EN %s -> %d\n", want ? "on" : "off", ok);
         break;
       }

@@ -17,7 +17,7 @@ Scope: analysis only. No schematic, PCB or hardware file was created or modified
 > breaker's real band was **2.640 – 4.040 A**, which **OVERLAPPED** the
 > `BQ25185`'s own `IBAT_OCP` band of **2.5625 – 3.6875 A** by 1.05 A.  `RETRY` is
 > grounded here, so the LTC4368 breaker **LATCHES OFF** and is cleared only by
-> toggling `SHDN`, while `IBAT_OCP` **hiccups and auto-retries** — so on an unlucky
+> toggling `SHDN`, while `IBAT_OCP` **hiccups**. **D-779 COMPLETES THE SENTENCE**: SLUSF65B 6.3.7.3 re-enables the BATFET after `tREC_SC`, but **4 to 7 consecutive trips inside a 2 s window leave the BATFET OFF until a valid VIN is connected** — a SUSTAINED battery overcurrent is a battery-only dead stop the user clears with USB, not an indefinite retry. The D-771 ordering is unchanged; the stated consequence is. So on an unlucky
 > unit the *latching* protection fired before the *recoverable* one.
 >
 > **On AQROOT Demo `R75` is 10 mΩ** (Bourns `CRA2512-FZ-R010ELF`, same series,

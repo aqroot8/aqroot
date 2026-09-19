@@ -347,6 +347,87 @@ NOTE_WHY = {
 }
 
 
+def placement_convention_notes(out, board):
+    """D-779.  THE CPL CONVENTION, STATED TO THE ASSEMBLER AND DERIVED HERE.
+
+    Two thirds of this board's fitted parts are on the BOTTOM side and nothing
+    in this package said so, or said which way the numbers run.  An unstated
+    placement convention on a two-sided board is how a first-order build comes
+    back with parts rotated 180 degrees, and it is the one class of assembly
+    error that survives every electrical check in this repository.
+
+    Every figure below is COUNTED out of the position file that ships beside
+    these notes, not asserted here.
+    """
+    import csv as _csv
+    import pcbnew as _pcb
+    path = out / "aqroot-Demo-pos-fitted.csv"
+    # NOT a silent skip: these notes are DERIVED from the position file, so if
+    # it is not there yet the export order has changed and the convention would
+    # go out unstated -- which is the whole defect this block exists to close.
+    if not path.exists():
+        raise RuntimeError("placement convention notes need %s, which does not "
+                           "exist yet -- export_positions must run first" % path)
+    with path.open(encoding="utf-8") as fh:
+        rows = list(_csv.DictReader(fh))
+    if not rows:
+        raise RuntimeError("%s has no placements" % path)
+    sides = {}
+    for r in rows:
+        sides[r["Side"]] = sides.get(r["Side"], 0) + 1
+    xs = [float(r["PosX"]) for r in rows]
+    ys = [float(r["PosY"]) for r in rows]
+    rots = sorted({float(r["Rot"]) for r in rows})
+    box = board.GetBoardEdgesBoundingBox()
+    left, top = box.GetLeft() / 1e6, box.GetTop() / 1e6
+    right, bottom = box.GetRight() / 1e6, box.GetBottom() / 1e6
+    return [
+        "## Component placement (CPL) convention -- READ BEFORE PROGRAMMING "
+        "THE PLACER",
+        "",
+        "`aqroot-Demo-pos-fitted.csv` is the file to place from; "
+        "`aqroot-Demo-pos-all.csv` additionally carries the DNP references and "
+        "must NOT be used as the placement list.",
+        "",
+        "- **%d fitted placements: %s.**  The majority of this board is on the "
+        "BOTTOM side; confirm the panel orientation before the first unit."
+        % (len(rows), ", ".join("%d %s" % (v, k)
+                                for k, v in sorted(sides.items()))),
+        "- **Origin** is the KiCad page origin, NOT an auxiliary axis: no "
+        "`aux_axis_origin` is set on this board.  The `Edge_Cuts` outline "
+        "occupies X %.3f .. %.3f mm and Y %.3f .. %.3f mm in that frame."
+        % (left, right, top, bottom),
+        "- **`PosX` is millimetres, increasing to the RIGHT.**  Observed range "
+        "%.3f .. %.3f mm." % (min(xs), max(xs)),
+        "- **`PosY` is millimetres, increasing UPWARD, and is therefore "
+        "NEGATIVE across this whole board** (KiCad's internal Y axis points "
+        "down and the exporter negates it).  Observed range %.3f .. %.3f mm.  "
+        "A toolchain that expects Y-down must negate this column; one that "
+        "expects Y-up must not." % (min(ys), max(ys)),
+        "- **`Rot` is degrees COUNTER-CLOCKWISE**, 0 to 360 normalised to "
+        "(-180, 180].  Values present on this board: %s."
+        % ", ".join("%g deg" % r for r in rots),
+        "- **`Rot` for a BOTTOM-side part is given as seen from the TOP of the "
+        "board, through it** -- the KiCad convention.  An assembler whose "
+        "process expects bottom-side angles as seen from BELOW must mirror "
+        "them (negate, or equivalently subtract from 360).  **This is the "
+        "single most common way this file is misread and it affects %d of the "
+        "%d placements here.**" % (sides.get("bottom", 0), len(rows)),
+        "- **`Side` is the authority on which face a part goes to**; do not "
+        "infer it from the sign of any coordinate.",
+        "- Polarised and pin-1 references are called out individually in "
+        "`docs/full-beta-v2/assembly/FIRST_FIVE_ASSEMBLY_PLAN.md`, which is "
+        "normative for the first five units.",
+        "",
+        "> **A placement preview is REQUIRED before the first unit is built.**  "
+        "Render the loaded CPL against the assembly drawings "
+        "(`aqroot-Demo-assembly-top.pdf`, `aqroot-Demo-assembly-bottom.pdf`) "
+        "and confirm side and rotation for at least `U1`, `J1`, `J4`, `J5`, "
+        "`U11`, `U12` and `U21` before release to the line.",
+        "",
+    ]
+
+
 def export_fab_notes(out):
     """Write the fabrication notes, with every accepted clearance read live."""
     import re as _re
@@ -396,6 +477,7 @@ def export_fab_notes(out):
     lines += mlines
     nlines, nrows = nfc_tuning_access_notes(board)
     lines += nlines
+    lines += placement_convention_notes(out, board)
     (out / "aqroot-Demo-FAB-NOTES.md").write_text("\n".join(lines),
                                                   encoding="utf-8")
     return [r[0] for r in rules], vrows, grows, mrows, nrows

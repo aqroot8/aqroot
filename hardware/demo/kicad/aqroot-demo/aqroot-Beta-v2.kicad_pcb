@@ -37536,7 +37536,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Value" "100nF X7R"
+		(property "Value" "1uF 10V X7R"
 			(at 0 -1.43 180)
 			(layer "B.Fab")
 			(hide yes)

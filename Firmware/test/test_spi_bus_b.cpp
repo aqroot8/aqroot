@@ -105,6 +105,40 @@ int main() {
           bus.beginTransmit(SpiBDevice::Cc1101));
   }
 
+  // ---- D-777: the accessory reserve.  While both switched rails are on, the
+  // battery connection has no room for a sub-GHz key or the NFC field.
+  {
+    RecordingSelects selects;
+    SpiBusB bus(selects);
+    check("the reserve is not engaged by default", !bus.internalReserve());
+    bus.setInternalReserve(true);
+    check("the reserve reads back engaged", bus.internalReserve());
+    check("the sub-GHz LoRa radio is REFUSED while the reserve is engaged",
+          !bus.beginTransmit(SpiBDevice::Sx1262));
+    check("the sub-GHz CC1101 is REFUSED while the reserve is engaged",
+          !bus.beginTransmit(SpiBDevice::Cc1101));
+    check("the NFC field is REFUSED while the reserve is engaged",
+          !bus.beginTransmit(SpiBDevice::St25r3916));
+    check("nothing is keyed after three refusals",
+          bus.transmitting() == SpiBDevice::None);
+    // A SELECT must still work: status reads and standby commands cost nothing
+    // on +3V3 and a radio that cannot be commanded into standby is worse.
+    check("a chip select is still permitted while the reserve is engaged",
+          bus.select(SpiBDevice::Sx1262));
+    bus.release();
+    bus.setInternalReserve(false);
+    check("the radio keys again once the reserve is released",
+          bus.beginTransmit(SpiBDevice::Sx1262));
+    // AND THE RESERVE MUST NOT BE ABLE TO STRAND A KEYED TRANSMITTER: engaging
+    // it mid-transmit refuses the NEXT key, it does not silently unkey this one.
+    bus.setInternalReserve(true);
+    check("a transmit already in progress is not silently unkeyed",
+          bus.transmitting() == SpiBDevice::Sx1262);
+    bus.endTransmit(SpiBDevice::Sx1262);
+    check("and the next key is then refused",
+          !bus.beginTransmit(SpiBDevice::Sx1262));
+  }
+
   {
     RecordingSelects selects;
     SpiBusB bus(selects);

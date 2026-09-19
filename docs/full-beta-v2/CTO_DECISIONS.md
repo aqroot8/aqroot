@@ -1,3 +1,338 @@
+## D-779 — **AN EXTRACTED DATASHEET CHANGED A UNIT, AND THREE PROOFS WERE BUILT ON IT; PLUS THE HALF-SENTENCE, THE STALE INSTRUCTION AND THE UNSTATED CONVENTION**
+
+    authority  board 880a2ece (was 8c548ece); every copper Gerber, both drill
+               files and Edge_Cuts byte-identical apart from timestamps -- NO
+               COPPER MOVED.  One BOM row changed: C85 100nF -> 1uF, onto the
+               EXISTING 1 uF 0603 X7R line.
+    closes     round-3 external review items 2, 3, 4, 6 and 7
+    changed    03_spi_a_display_sd.kicad_sch (C85 value/MPN/LCSC + Q11/R132/C85
+               notes); 01_power_tree.kicad_sch; aqroot-Beta-v2.kicad_pcb (C85
+               Value field only); checks/demo_feature_contract.py (F5 + F6);
+               checks/firmware_hw_map_contract.py; export_fab_package.py;
+               Firmware/src/hw/{aqroot_accessory_power_policy.h,
+               aqroot_demo_expanders.h,aqroot_spi_bus_b.h}; Firmware/src/demo/
+               main.cpp; Firmware/test/*; hardware/demo/fab (re-exported);
+               DEVICE_SPEC, FAB_HANDOFF, POWER_FAULT_STATE_TABLE
+
+### 1. THE ARCHIVED AO3422 TEXT RENDERS `µ` AS `m` AND `Ω` AS `W`
+
+D-766 fitted the `AO3422` and wrote the proof that it conducts:
+
+> *"CONDUCTION IS GUARANTEED BY THE THRESHOLD SPEC ITSELF, NOT ASSUMED: VGS(th)
+> is specified 0.6 / 1.3 / 2.0 V at **ID = 250 mA**, and this circuit needs
+> 109 mA — LESS THAN HALF the threshold test current — so … the device is
+> already passing more than twice what is asked of it."*
+
+The datasheet says **ID = 250 µA**.  At `VGS(th)` the part passes **436 times
+LESS** than this string needs, so the sentence is not merely imprecise, it is
+inverted: the threshold spec proves the device is **OFF** there.
+
+**THE UNIT WAS NOT MISREAD BY A HUMAN — IT WAS DESTROYED BY THE PDF TEXT
+EXTRACTION, AND THE SAME TABLE PROVES IT THREE TIMES.**  In Symbol font the
+glyph for `Ω` is Latin `W` and the glyph for `µ` is Latin `m`, and
+`vendor/AOS/AO3422-rev2p1-2024-03.txt` carries all three casualties:
+
+| extracted | what it must be | how that is known independently |
+|---|---|---|
+| `RDS(ON) < 160mW (VGS = 4.5V)` | 160 **mΩ** | the committed JLCPCB record for `C37130` says `160mΩ@4.5V` |
+| `IDSS … 1 … mA` at `VDS=44V` | 1 **µA** | 1 mA of zero-gate leakage at 44 V is **44 mW standing** in a SOT-23 |
+| `Rg Gate resistance … 3 W` | 3 **Ω** | a 3 W gate resistor does not exist in a SOT-23 |
+| `VGS(th) … ID=250mA` | 250 **µA** | the same font mapping, and AOS specifies every threshold this way |
+
+**THE ARTIFACT IS ISOLATED AND THAT IS CHECKABLE.**  Sweeping all fifteen
+archived vendor `.txt` files: `AO3422-rev2p1-2024-03.txt` is the **only one**
+that carries bare `W` unit suffixes *and* contains **zero `µ` glyphs**.  Every
+other file with a `W` also carries real `µ` characters, so its Symbol mapping
+survived and its `W`s are genuine watts.  One file, one part, four numbers.
+
+### 2. WHAT THE CORRECTION COSTS: THE ORDERING PROOF, NOT THE PART
+
+The part choice is unaffected — 55 V `VDS` against this board's published 39 V
+`LED_BOOST` ceiling is why D-766 fitted it and that is unchanged.  What the
+correction breaks is **D-752's ordering invariant**: *`U17` must stop switching
+before `Q11` opens.*
+
+D-766 measured "opens" as *the gate falling below `VGS(th)` max 2.0 V*, giving
+5.14 ms against the `TPS61169`'s 2.5 ms `tSD` — **2.06×**.  But at `VGS(th)` the
+device passes 250 µA; the 109 mA string current collapses at some **higher**
+`VGS`, so the real margin is **smaller** than 2.06× and the datasheet does not
+say by how much.  What it does publish is the other end:
+
+    RDS(on) <= 200 mOhm  at  VGS = 2.5 V, ID = 1.5 A
+
+which is **13.8× the 109 mA asked** and only **104 mV above the held
+`VGS` of 2.396 V**.  So the collapse point lies somewhere in the **unpublished
+band [2.000, 2.396] V** and no honest proof can depend on where.
+
+**THE FIX MAKES THE ORDERING INDEPENDENT OF THAT BAND.**  `C85` 100 nF → **1 µF**
+on the **existing** `CC0603KRX7R8BB105` 1 µF 0603 X7R line — the objection D-766
+recorded against 220 nF (*"it would open a new single-piece BOM line"*) does not
+apply.  `R132` is deliberately **not** the knob: at 470 kΩ `D14`'s 1 µA plus
+`Q11`'s 100 nA reach 0.517 V against `VGS(th)` min 0.60 V, a 1.16× true-off floor
+this design will not take.
+
+| | 100 nF (D-766) | **1 µF (D-779)** |
+|---|---|---|
+| worst-case `tau` | 19.6 ms | **147 ms** |
+| decay to `VGS(th)` | 5.14 ms → 2.06× | **38.6 ms → 15.4×** |
+| break-even collapse `VGS` | 1.989 V | **2.352 V** |
+| window in which the ordering can fail | **407 mV** | **44 mV** |
+| bar (distance to the guaranteed conduction point) | 104 mV | 104 mV |
+| fraction of the unpublished band covered | ~0 % | **88.9 %** |
+
+**THE BAR IS NOT A CHOSEN NUMBER.**  A collapse inside a 44 mV window below the
+hold would require `ID` to fall from ≥ 1.5 A to < 0.109 A across **less than
+148 mV** of gate, which the same datasheet's **11 S** transconductance excludes.
+`tau`'s worst case now also carries a **declared 0.75 DC-bias retention**, because
+2.6 V on a 25 V part is no longer the negligible bias 100 nF on a 50 V part was.
+
+`F5` gains `the_ordering_does_not_depend_on_the_unspecified_band` and two
+controls: **`f5k` puts the 100 nF board D-766 shipped back** — it still clears
+the `VGS(th)` criterion at 2.06× and is refused **only** by the new clause — and
+`f5l` refuses a FET whose datasheet gives no guaranteed conduction point at all.
+
+### 3. "A HICCUP THAT AUTO-RETRIES" WAS HALF OF SLUSF65B 6.3.7.3
+
+Every decision from D-753 onward closes its accessory reasoning with the same
+consequence, and it is why D-771 ordered `IBAT_OCP` **below** the `LTC4368`'s
+latching breaker.  **The ordering is right.**  The consequence was quoted from
+half the paragraph:
+
+> *"…the device enters hiccup mode, re-enabling the BATFET tREC_SC (250 ms) after
+> being turned off… **If the overcurrent condition is triggered upon retry 4 to 7
+> consecutive times within a 2 s window, the BATFET remains off until a valid VIN
+> is connected.**"*
+
+A **sustained** accessory overcurrent is therefore **a battery-only dead stop the
+user clears with USB**, not an indefinite retry.  `F6` now **PARSES** both the
+retry-count phrase and the recovery condition out of the archived datasheet —
+three controls refuse an unreadable limit, an unreadable recovery condition and
+a missing file — so the half-sentence cannot be restated.  Corrected in
+`01_power_tree.kicad_sch`, `DEVICE_SPEC` §6.3a, `POWER_FAULT_STATE_TABLE`,
+`AQROOT_DEMO_FAB_HANDOFF` and the firmware policy header.
+
+### 4. FIRMWARE: A FAILED SHUTDOWN THAT COULD BE FORGOTTEN, AND A READ THAT WAS NOT A MEASUREMENT
+
+**(a) THE BROADER SAFE STATE DID NOT TELL ITS CALLER.**  The in-flight CTO work
+that this iteration inherited was correct in intent — `safe_shutdown_pending_`
+latches until a complete safe latch lands, `Pcal9535a::writeOutputs` invalidates
+the shadow on a NACK, and every accessory path falls back to a full safe latch.
+The defect it left is that **the fallback writes BOTH complete safe latches**, so
+a `setAccessory5v(false)` that reaches its safe final state that way has also
+dropped the 3.3 V rail and the I²C buffer — and returned `true`, while `main()`
+cleared only `g_acc5v`.  `consumeSafeStateApplied()` reports it exactly once and
+`afterAccessoryChange()` drops all three shadows.
+
+Also restored: `setAccessory5v`'s `const bool boost = sw && u3_.clearBits(...)`
+re-introduced the short-circuit shape D-750 removed.  `clearBits` already refuses
+on an invalidated shadow, so the guard changed nothing and only contradicted the
+paragraph above it.
+
+**(b) AND D-751's CONTROL HAD GONE VACUOUS — SAID, NOT DELETED.**  The control
+`clearBits(SW|BOOST)` → `writeBit(BOOST,false)` no longer fails any host test,
+because the shadow invalidation makes that mutation unable to re-assert anything.
+The guard that now carries the property is the invalidation itself, so **that** is
+what the control mutates, one layer down, and a new host block asserts it
+directly: after a NACK, both `writeBit` and `clearBits` refuse until a complete
+latch restores the shadow.
+
+**(c) 0xFFFF DECODED TO 5.1199 V AND AUTHORISED THE SECOND RAIL.**  A successful
+I²C read was treated as a measurement.  `kVcellPlausibleMinV` **2.50 V** /
+`kVcellPlausibleMaxV` **4.50 V** — above the BQ25185's regulation point with room
+for gauge error, below the all-ones code, and beneath the pack's own 2.75 V
+cut-off — and an implausible reading is handled as **no measurement**, not as a
+flat pack, so a stuck bus is not diagnosed as a low battery.
+
+**(d) FRESHNESS AND THE PRE-STEP READING.**  `HIBRT` (0x0A) is written `0x0000`
+at bring-up so the gauge never hibernates and every reading the policy acts on is
+an active-mode one (~250 ms).  And the permission was being taken **before the
+load existed**: `settledAccessoryRecheck()` re-reads 400 ms after a rail is raised
+and applies the ordinary retention rule, closing the window between the
+pre-step permission and the next 500 ms guard tick.  The retention rule itself is
+now in **one** function used by both paths.
+
+### 5. THE STALE INSTRUCTION AND THE UNSTATED CONVENTION
+
+`AQROOT_DEMO_FAB_HANDOFF` told the assembler to *"trim both leads/fillets to
+**≤ 0.80 mm above F.Cu**"* in two places.  **0.80 mm is the `DISPLAY_SHADOW`
+ALLOWANCE and was never a trim target**: D-770 retightened `J4-T1` to **≤ 0.50 mm**
+of conductive profile precisely because meeting an 0.80 mm limit with 0.80 mm of
+conductor is zero margin, and added `J4-T2` (inspect **after** cutting, rework a
+damaged fillet) and `J4-T3` (a **≤ 0.10 mm** polyimide patch over both joints).
+`assembly/THT_LEAD_TRIM.md` was already correct; the handoff had gone on quoting
+the allowance.  D-763's superseded sentence in this file is marked, not deleted.
+
+**AND THE PLACEMENT CONVENTION WAS NOWHERE.**  **169 of the 252 fitted
+placements on this board are on the BOTTOM side** and no artifact in the package
+said which way the numbers run.  `export_fab_package.py` now **derives** a
+convention section from the position file it ships beside: side counts, the
+absence of an `aux_axis_origin` (so the frame is the page origin, with the
+`Edge_Cuts` extents given in it), `PosX` right-positive, **`PosY` up-positive and
+therefore negative across this whole board**, `Rot` counter-clockwise with the
+values actually present, and — the one that costs a build — **bottom-side `Rot`
+is given as seen from the TOP, through the board**, which affects 169 of 252
+placements.  A **placement preview against the assembly drawings is required**
+before the first unit.  The generator **raises** rather than skipping if the
+position file is not there yet, so the convention cannot go out unstated.
+
+## D-778 — **THE DERATING RULE WAS RUN AGAINST THE SPECIFICATION AND NOT AGAINST THE PART**
+
+    authority  board 880a2ece; no copper, no BOM change from this decision
+    closes     round-3 external review item 5
+    changed    checks/demo_feature_contract.py (F8)
+
+D-774 read every capacitor rating out of the **value string** and honestly
+**pinned** the 39 fitted capacitors whose value states only a capacitance.  The
+boundary was stated — and it meant the project's own 2× rule covered barely half
+the parts on the board, and the half it did cover it got **wrong in the safe
+direction**.
+
+**TWENTY-FOUR VALUE STRINGS UNDERSTATE THE PART THE BOM ACTUALLY BUYS.**  `C20`
+reads `4.7uF 10V X7R` and the BOM buys `CC0805KKX7R8BB475`, which is **25 V**.
+`C38`/`C67` read 10 V and buy 25 V parts.  `C29`–`C32` read 10 V and buy 16 V.
+**Three of D-774's five named exceptions were therefore exceptions against a
+rating this board does not have.**
+
+**THE RATING NOW COMES FROM THE PART.**  Every fitted capacitor is joined
+reference → LCSC → the committed live distributor record under
+`evidence/jlc-live/` — the same D-096 instrument every part selection in this
+repository was confirmed against, **replayed rather than re-queried** so the
+answer is deterministic.  **All 76 are covered**; a capacitor whose record cannot
+be found is a **REFUSAL**, which is what replaces the pinned count.
+
+**AND THE SPECIFICATION IS STILL A CLAUSE, BECAUSE A RE-SOURCE READS IT.**
+Leg A is the part that is **FITTED**: survive the node's absolute maximum, and
+meet 2× the operating maximum or carry a named exception.  Leg B is the part that
+is **SPECIFIED**: where the value string states a rating it must also survive the
+node's absolute maximum — so any conforming re-source is safe — and it may never
+**OVERSTATE** what the BOM buys, which is the dangerous direction and the one
+D-774 could not see at all.
+
+**WHAT IS LEFT.**  Against the real parts **nothing** on this board fails its
+node's absolute maximum and **nothing** is under the 2× convention except
+`C65`/`C66` — D-186's 22 µF 10 V X7R boost-output pair, where a 16 V part in the
+fitted 0805 land does not exist and the bias loss the convention exists for is
+already in D-186's 44 µF nominal sizing.  **The exception list drops from five to
+two**, and `every_exception_is_still_needed` is what removed the other three
+rather than a hand edit.  Four new controls, including `f8e`, which puts D-774's
+own `C20`/`C38`/`C67` exceptions back and is refused.
+
+## D-777 — **THE BATTERY CONNECTION HAD NO RATING IN THIS REPOSITORY, AND IT IS THE LOWEST NUMBER IN THE BATTERY PATH**
+
+    authority  board 8c548ece at the time of the decision, UNCHANGED by it --
+               no copper, no BOM, no mechanical change
+    closes     round-3 external review item 1
+    changed    checks/demo_feature_contract.py (F6);
+               checks/firmware_hw_map_contract.py;
+               Firmware/src/hw/{aqroot_accessory_power_policy.h,
+               aqroot_spi_bus_b.h}; Firmware/src/demo/main.cpp;
+               Firmware/test/{test_accessory_power_policy,test_spi_bus_b}.cpp
+
+### 1. WHAT WAS WRONG
+
+D-771 ordered the protection chain over its own tolerance.  D-775 derived the
+VCELL floors from the live board.  D-772 summed the internal budget.  **Every one
+of those asks whether the SILICON survives.  None of them ever asked what the
+CONNECTOR is rated for** — and it is the smallest number in the path by a wide
+margin:
+
+| element | rating |
+|---|---|
+| **`J4` JST PH `B2B-PH-K-S(LF)(SN)`** | **2.0000 A** (published, AWG #24) |
+| `BQ25185` `IBAT_OCP` (recoverable) | 2.5625 – 3.6875 A |
+| `LTC4368` breaker (latching, D-771) | 3.9600 – 6.0610 A |
+| `F1` `0466005` one-shot fuse | 5.0000 A |
+
+So there is a band — **2.0 A up to the first protection that acts** — in which the
+connector is over its rating and **nothing on this board objects**.  D-775's
+published simultaneous envelope sat inside it: **2.2715 A**, **13.6 % over**, at
+the 3.80 V floor firmware enforces.  **D-776 passed with the board in that
+state.**
+
+The pack's own leads are **UL 26 AWG**, smaller than the AWG #24 the rating is
+specified at — inside the PH's applicable AWG #32…#24 range, but 2 A is an upper
+bound on this exact connection rather than a qualified figure for it.
+
+### 2. WHY THE VCELL FLOOR IS NOT THE LEVER
+
+Holding the full 1.0632 A internal +3V3 budget plus 400 mA plus 300 mA under 2 A
+needs **`VCELL ≥ 4.16 V`** — a nearly full pack — which would delete the
+simultaneous capability in all but name.  Each rail **alone** is already inside
+the rating at the enforced 3.50 V floor (1.788 A and 1.925 A).  **Only the
+simultaneous case violates.**
+
+### 3. THE LEVER THAT WORKS IS THE OTHER TERM
+
+D-772 counts the sub-GHz TX, the NFC field and the IR transmitter **precisely on
+the ground that nothing in hardware prevents them**.  *The fix for an unenforced
+rule is to enforce it, not to stop counting it.*  While **both** accessory rails
+are enabled, firmware now **RESERVES** three named budget lines:
+
+    inhibit_subghz_tx    140.0 mA   U7 / U8     sub-GHz TX
+    inhibit_nfc_field    100.0 mA   U9          NFC front end, field on
+    inhibit_ir_tx         50.0 mA   D1/Q1/R24   IR transmitter
+
+`F6` solves for the internal ceiling the connector requires (**0.8645 A** on the
+declared path ceilings), the reserve reaches **0.7732 A**, and the connection
+carries **1.8797 A — 6.0 % inside its published rating**.  `D-098`'s 400 mA and
+300 mA are **both still guaranteed**, each rail alone still runs to 3.50 V, and
+the restriction applies only while an accessory holds **both** switched rails.
+This is a concurrency condition of exactly the shape D-775 added, not a smaller
+published number.
+
+**IT IS ENFORCED WHERE THE TRANSMITTERS ALREADY PASS.**  Two of the three
+reserved lines are transmitters on SPI bus B, so `SpiBusB::beginTransmit`
+refuses while the reserve is engaged — a **select** is still permitted, because a
+radio that cannot be commanded into standby is worse.  **The accessory holds and
+the radio waits**, which is the same judgement D-775 made about shedding.
+
+### 4. NOT ONE NUMBER IS TYPED
+
+The rating, the gauge it is specified at, the connector's applicable wire range
+and the pack's lead gauge are all **PARSED** out of archived vendor text, and the
+MPN is checked against the **released BOM row** — a connector swap that does not
+bring its own archived rating fails the clause rather than inheriting 2 A.  Seven
+clauses and six controls, of which **`f6aa` is the board D-775 shipped**: the full
+internal budget live beside both published budgets, refused.
+
+### 5. THE RESIDUAL, MEASURED RATHER THAN NARRATED
+
+This board has no accessory current measurement (D-753), so an accessory that
+draws **more** than its published budget is not refusable.  What is derivable is
+how far over it must go: **+19.4 %** on the published 5 V budget before the
+connection leaves its rating, and **+89.6 %** before the `BQ25185` acts.  Between
+them nothing on this board objects.  Closing that needs accessory current
+measurement or a connector rated above `IBAT_OCP`'s minimum — see §6.
+
+### 6. THE CONNECTOR UPGRADE, COSTED AND DEFERRED — **OWNER DECISION, WITH A RECOMMENDATION**
+
+The architecturally correct end state is a connector rated **above the first
+protection that can flow through it**, i.e. above `IBAT_OCP`'s 2.5625 A minimum.
+The candidate is confirmed live per D-096:
+
+* **JST `B2B-XH-A(LF)(SN)`**, LCSC **`C158012`**, **3 A**, THT, 2.50 mm pitch,
+  body 7.4 × 5.75 mm, **Z-height 7 mm** against the PH's 6 mm, **stock 381,576**.
+  (Molex Micro-Lock Plus `505575-0271`/`C5333743` keeps the 2.00 mm pitch and is
+  rated 2.9 A at AWG 26, but is **SMT**, **8.6 mm** tall and **stock 95**.)
+
+**WHY IT IS NOT TAKEN IN THIS REVISION.**  `J4`'s positive pad carries
+`/01_POWER_TREE/BAT_CONNECTOR_P`, which is **protected copper** (7 objects), so
+the change needs an **owner protected-copper exception** of the D-655/D-697 kind.
+It also grows the courtyard from 5.55 × 6.95 mm to about 6.75 × 8.40 mm against a
+**0.52 mm** south gap to `C60`, moves a part that already carries an `MK10`
+`DISPLAY_SHADOW` finding and sits 0.82 mm inside `DISPLAY_ACTIVE`, raises the
+tallest rear part 6 → 7 mm, and requires **re-terminating the selected pack's
+leads** — a hand operation on a live lithium cell.
+
+**RECOMMENDATION: take it in REV-B, not now.**  The enforced envelope holds the
+connection 6.0 % inside its published rating in every permitted normal state at
+zero first-order risk, and the un-enforceable residual needs an accessory
+**19.4 % over its published budget** to enter.  Against that, the ECO touches
+protected battery copper, mechanical clearances and pack assembly on a board that
+is otherwise verified — the wrong trade for a five-unit demo that must work on
+the first order.  **A first-article temperature-rise measurement on `J4` at the
+worst permitted sustained load is added to the first-five bring-up.**
+
 ## D-776 — **THE AS-BUILT LIMITS TOLD FIRMWARE TO USE A SIGNAL THAT DOES NOT EXIST, AND THE LIST OF SIGNALS THAT DO NOT EXIST IS NOW COMPUTED**
 
     authority  board 8c548ece, UNCHANGED; copper Gerbers, drills and outline
@@ -2347,7 +2682,7 @@ either: D-241 placed it at doc `(7.000, 113.000)` as the one part of the
 protection chain that could not join the column, *"0.7 mm clear of the cable"*.
 
 So `assembly/THT_LEAD_TRIM.md` is NORMATIVE now, with two requirements —
-**J4-T1** trim both leads and fillets to ≤ 0.80 mm above `F.Cu` and inspect
+**J4-T1** *(**SUPERSEDED at D-770 — the requirement is now ≤ 0.50 mm of conductive profile, with `J4-T2` inspect-after-cutting and `J4-T3`'s ≤ 0.10 mm polyimide patch; 0.80 mm is the `DISPLAY_SHADOW` ALLOWANCE and was never a trim target. Left standing as history.*)* trim both leads and fillets to ≤ 0.80 mm above `F.Cu` and inspect
 before fitting the display; **J4-T2** solder, then trim, then inspect, in that
 order.  And `FBV2_P1_KEEPOUTS.md` row A no longer says only *"component
 height"*: it says **no untrimmed through-hole lead**, which is what it meant.

@@ -373,8 +373,14 @@ great many claims that nothing had ever checked.
   than only by component body.  `J4` is mounted on `B.Cu`, but its 3.4 mm THT
   leads emerge under the display on `F.Cu`; after the 1.5744 mm board they stand
   **1.8256 mm proud**, 1.0256 mm above the display-shadow allowance.  The first
-  five therefore carry a NORMATIVE `J4-T1/J4-T2` operation: solder, trim both
-  leads/fillets to **≤0.80 mm above F.Cu**, inspect, then fit the panel.  `MK10`
+  five therefore carry a NORMATIVE `J4-T1`/`J4-T2`/`J4-T3` operation: solder,
+  trim both leads/fillets to a verified conductive profile **≤0.50 mm above
+  F.Cu**, inspect *after* cutting and rework any fillet the cutter damaged, then
+  cover both joints with a **≤0.10 mm polyimide patch**, then fit the panel.
+  (**The ≤0.80 mm figure this bullet used to carry was the DISPLAY_SHADOW
+  ALLOWANCE, not the trim requirement** — D-770 retightened the trim to 0.50 mm
+  precisely because meeting a 0.80 mm limit with 0.80 mm of conductor is zero
+  margin, and D-779 corrects the instruction that had kept quoting it.)  `MK10`
   checks every opposite-face THT lead in every height-limited region and has four
   dedicated destructive controls.  The board, Gerbers, drills, BOM/CPL and
   firmware remain byte-for-byte on the D-759 authority.
@@ -949,8 +955,12 @@ can only be confirmed by eye. `MK1` and `U5` share one `/I2S_BCLK` and one
    overcurrent** while every internal subsystem runs at once, on a charger at the
    −18 % corner of its band, with the cell at 3.0 V and the boost at the top of
    its own setpoint band; its consequence is an `IBAT_OCP` hiccup that
-   **auto-retries**, which D-771 guaranteed happens before the latching breaker
-   on every unit.  At a conforming accessory load the margin is **7.3 %**.  A
+   **re-enables the BATFET after `tREC_SC`**, which D-771 guaranteed happens
+   before the latching breaker on every unit.  **D-779 completes that sentence
+   from SLUSF65B 6.3.7.3: 4 to 7 consecutive trips inside a 2 s window leave the
+   BATFET OFF until a valid VIN is connected**, so a SUSTAINED battery
+   overcurrent is a battery-only dead stop the user clears with USB rather than
+   an indefinite retry.  At a conforming accessory load the margin is **7.3 %**.  A
    *simultaneous double limiter fault* reaches **3.558 A**, still 10.2 % below
    the breaker's guaranteed minimum.
 
@@ -1000,10 +1010,18 @@ can only be confirmed by eye. `MK1` and `U5` share one `/I2S_BCLK` and one
    NOT AN OPTIONAL REWORK** (D-763).  `J4` is the only through-hole part whose
    body is on `B.Cu`.  JST's `ePH.pdf` gives a 3.4 mm lead below the seating
    plane; the board is 1.5744 mm thick, leaving **1.8256 mm** above `F.Cu` under
-   the display where only **0.80 mm** is allowed.  On every first-five unit:
-   solder `J4` from the front, trim both leads/fillets to **≤0.80 mm above the
-   F.Cu surface**, inspect the profile, and only then install the display.  The
-   governing instruction is `assembly/THT_LEAD_TRIM.md`; `MK10` refuses an
+   the display where the `DISPLAY_SHADOW` allowance is **0.80 mm**.  On every
+   first-five unit: solder `J4` from the FRONT, trim both leads/fillets to a
+   verified conductive profile **≤0.50 mm above the F.Cu surface** (`J4-T1`),
+   inspect the profile AFTER cutting and rework any fillet the cutter cracked,
+   lifted or removed (`J4-T2`), then cover both inspected joints with a
+   high-temperature polyimide patch **≤0.10 mm thick** (`J4-T3`) before the
+   display goes on.  Conductor plus insulation must remain under the 0.80 mm
+   allowance.  **The 0.80 mm figure is the ALLOWANCE, never the trim target**:
+   D-770 retightened the requirement to 0.50 mm because meeting an 0.80 mm limit
+   with 0.80 mm of conductor is zero margin, and D-779 corrects the two places
+   in this handoff that had gone on quoting the allowance as the instruction.
+   The governing instruction is `assembly/THT_LEAD_TRIM.md`; `MK10` refuses an
    undeclared or insufficient trim.  This is an assembly closure, not a PCB ECO.
 
 ## 9. Recommended post-Kickstarter improvements

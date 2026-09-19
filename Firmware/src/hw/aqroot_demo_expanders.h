@@ -147,7 +147,8 @@ class DemoExpanders {
         u2_inputs_(0xFFFF), u3_inputs_(0xFFFF),
         u2_irq_(0), u3_irq_(0), ready_(false),
         fault_shutdown_seen_(false), fault_shutdown_ok_(false),
-        fault_observability_lost_(false) {}
+        fault_observability_lost_(false), safe_shutdown_pending_(false),
+        safe_state_applied_(false) {}
 
   // Probe both devices, drive both into their safe state, then take the first
   // input snapshot -- which also deasserts /INT on both, so WAKE_INT_N is
@@ -195,6 +196,37 @@ class DemoExpanders {
   }
 
   bool ready() const { return ready_; }
+  bool safeShutdownPending() const { return safe_shutdown_pending_; }
+
+  // D-779.  THE FALLBACK IS BROADER THAN ITS CALLER ASKED FOR, AND THE CALLER
+  // HAS TO BE TOLD.  `applyAccessorySafeState` writes BOTH complete safe
+  // latches, so it takes down the 3.3 V rail, the 5 V rail AND the accessory
+  // I2C buffer -- whatever the caller was actually trying to switch.  A
+  // `setAccessory5v(false)` that reaches its safe final state THROUGH this
+  // path therefore returns true while having also dropped the other two, and
+  // a caller that only clears its own shadow flag is then wrong about the
+  // hardware.  This latch is how it finds out; `consumeSafeStateApplied` reads
+  // and clears it, so one application is reported exactly once.
+  bool consumeSafeStateApplied() {
+    const bool applied = safe_state_applied_;
+    safe_state_applied_ = false;
+    return applied;
+  }
+
+  bool applyAccessorySafeState(I2cBus &bus) {
+    safe_shutdown_pending_ = true;
+    const bool u2_ok = u2_.writeOutputs(bus, kU2SafeLatch);
+    const bool u3_ok = u3_.writeOutputs(bus, kU3SafeLatch);
+    const bool ok = u2_ok && u3_ok;
+    safe_shutdown_pending_ = !ok;
+    fault_shutdown_seen_ = true;
+    fault_shutdown_ok_ = ok;
+    // Either device reaching its safe latch has already dropped part of the
+    // accessory state, so the caller is told even when the pair did not both
+    // succeed -- the pessimistic direction is the safe one here.
+    if (u2_ok || u3_ok) safe_state_applied_ = true;
+    return ok;
+  }
 
   // Service BOTH devices.  Call on every WAKE_INT_N assertion AND poll it --
   // the line is level sensitive and shared, so an edge-only handler misses a
@@ -221,22 +253,17 @@ class DemoExpanders {
     // later successful U3 input read restores observability.
     if (!d) {
       fault_observability_lost_ = true;
-      const bool off5 = setAccessory5v(bus, false);
-      const bool off3 = setAccessory3v3(bus, false);
-      fault_shutdown_ok_ = off5 && off3;
-      fault_shutdown_seen_ = true;
+      (void)applyAccessorySafeState(bus);
       return false;
     }
 
+    if (safe_shutdown_pending_ && !applyAccessorySafeState(bus)) return false;
     fault_observability_lost_ = false;
 
     // An observed accessory power fault follows the same fail-closed path.
     if (accessoryFault()) {
-      const bool off5 = setAccessory5v(bus, false);
-      const bool off3 = setAccessory3v3(bus, false);
-      fault_shutdown_ok_ = off5 && off3;
-      fault_shutdown_seen_ = true;
-      return a && b && c && fault_shutdown_ok_;
+      const bool safe = applyAccessorySafeState(bus);
+      return a && b && c && safe;
     }
     return a && b && c;
   }
@@ -332,7 +359,7 @@ class DemoExpanders {
   // verdict.
   bool setAccessory5v(I2cBus &bus, bool on) {
     if (on) {
-      if (!ready_ || fault_observability_lost_ || accessoryFault()) return false;
+      if (!ready_ || fault_observability_lost_ || safe_shutdown_pending_ || accessoryFault()) return false;
       if (!u3_.writeBit(bus, AQROOT_U3_ACC_5V_BOOST_EN, true)) return false;
       return u3_.writeBit(bus, AQROOT_U3_ACC_5V_SW_EN, true);
     }
@@ -342,10 +369,15 @@ class DemoExpanders {
     // single-bit boost write would command the load switch back on.  This way
     // ONE surviving write takes the whole rail down.
     const bool sw = u3_.writeBit(bus, AQROOT_U3_ACC_5V_SW_EN, false);
+    // D-779: NOT `sw && ...`.  D-750's rule is that both writes are ATTEMPTED;
+    // `clearBits` already refuses on its own when the failed write invalidated
+    // the shadow, so the guard changed nothing and only contradicted the
+    // paragraph above it.
     const bool boost = u3_.clearBits(
         bus, uint16_t(bitmask(AQROOT_U3_ACC_5V_SW_EN) |
                       bitmask(AQROOT_U3_ACC_5V_BOOST_EN)));
-    return sw && boost;
+    if (sw && boost) return true;
+    return applyAccessorySafeState(bus);
   }
 
   // U16's B-side supply IS ACC_3V3_SW, so the accessory I2C buffer can only be
@@ -353,14 +385,14 @@ class DemoExpanders {
   // goes away.
   bool setAccessory3v3(I2cBus &bus, bool on) {
     if (on) {
-      if (!ready_ || fault_observability_lost_ || accessoryFault()) return false;
+      if (!ready_ || fault_observability_lost_ || safe_shutdown_pending_ || accessoryFault()) return false;
       return u3_.writeBit(bus, AQROOT_U3_ACC_3V3_EN, true);
     }
     // Same rule as setAccessory5v, and here the two writes are on DIFFERENT
     // DEVICES: a U2 bus error must not leave U3's switched 3.3 V rail on.
     const bool buf = u2_.writeBit(bus, AQROOT_U2_ACC_PWR_EN, false);
     const bool rail = u3_.writeBit(bus, AQROOT_U3_ACC_3V3_EN, false);
-    return buf && rail;
+    return (buf && rail) || applyAccessorySafeState(bus);
   }
 
   bool setAccessoryI2cBuffer(I2cBus &bus, bool on) {
@@ -396,6 +428,8 @@ class DemoExpanders {
   bool fault_shutdown_seen_;
   bool fault_shutdown_ok_;
   bool fault_observability_lost_;
+  bool safe_shutdown_pending_;
+  bool safe_state_applied_;
 };
 
 }  // namespace aqroot

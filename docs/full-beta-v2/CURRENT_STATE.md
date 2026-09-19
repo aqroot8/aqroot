@@ -66,6 +66,134 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+> # **THE ROUND-3 EXTERNAL REVIEW HOLD IS CLOSED ON BOARD `880a2ece` (2026-09-19, D-777 · D-778 · D-779).**
+>
+> **D-776's readiness was withdrawn by round-3 external review for six items.
+> All six are closed, every one of them by measurement, and NOT ONE COPPER
+> OBJECT MOVED FOR ANY OF THEM.**  One BOM row changed — `C85` 100 nF → 1 µF,
+> onto a line this board already buys — and every copper Gerber, both drill
+> files and `Edge_Cuts` are byte-identical to the D-776 package apart from
+> timestamps.
+>
+> **D-777 — THE BATTERY CONNECTION HAD NO RATING IN THIS REPOSITORY, AND IT IS
+> THE LOWEST NUMBER IN THE BATTERY PATH.**  D-771 ordered the protection chain
+> over its own tolerance, D-775 derived the VCELL floors from the live board and
+> D-772 summed the internal budget — *every one of those asks whether the
+> SILICON survives, and none ever asked what the CONNECTOR is rated for.*  `J4`
+> is a JST `B2B-PH-K-S(LF)(SN)`, published at **2 A AC/DC (AWG #24)**, against
+> the `BQ25185`'s **2.5625 A** `IBAT_OCP` minimum, D-771's **3.960 A** breaker
+> and `F1`'s **5 A** fuse — so there is a band in which the connector is over its
+> rating and nothing on this board objects, and **D-775's published simultaneous
+> envelope sat inside it at 2.2715 A, 13.6 % over.  D-776 passed in that state.**
+> Holding it under 2 A by VCELL alone needs a **4.16 V** pack, so the bounded
+> term is the internal one: while **both** accessory rails are enabled firmware
+> now **RESERVES** three named budget lines — the sub-GHz TX path, the NFC field
+> and the IR transmitter — enforced in `SpiBusB::beginTransmit`, where two of
+> the three already have to pass.  The connection carries **1.8797 A, 6.0 %
+> inside its published rating**; **D-098's 400 mA and 300 mA are both still
+> guaranteed** and each rail alone still runs to 3.50 V.  The rating, the gauge
+> it is specified at, the applicable wire range and the pack's own lead gauge
+> are **PARSED** out of archived vendor text, and `f6aa` puts the D-775 board
+> back and is refused.  **The JST `B2B-XH-A` 3 A upgrade is confirmed live,
+> costed, and DEFERRED to REV-B** — it needs an owner protected-copper exception
+> on `BAT_CONNECTOR_P` — with a first-article `J4` temperature-rise measurement
+> added instead (D-777 §6).
+>
+> **D-778 — THE DERATING RULE WAS RUN AGAINST THE SPECIFICATION, NOT THE PART.**
+> D-774 read ratings from the value string and honestly pinned the 39 capacitors
+> that carry none.  **Twenty-four value strings UNDERSTATE the part the BOM
+> buys** — `C20` reads 10 V and buys a 25 V part — so **three of D-774's five
+> exceptions were against a rating this board does not have**.  Ratings now come
+> from the part, joined reference → LCSC → the committed live distributor record,
+> replayed not re-queried; **all 76 are covered** and a missing record is a
+> refusal.  The value string is judged separately as the specification a
+> re-source reads, and **may never overstate what the BOM buys**.  Nothing fails
+> its node's absolute maximum; **the exception list drops from five to two**
+> (`C65`/`C66`, D-186's real one), removed by the clause rather than by hand.
+>
+> **D-779 — AN EXTRACTED DATASHEET CHANGED A UNIT AND A PROOF WAS BUILT ON IT.**
+> D-766's conduction proof for `Q11` read *"VGS(th) … at **ID = 250 mA** … this
+> circuit needs 109 mA — LESS THAN HALF the threshold test current"*.  **The
+> datasheet says 250 µA**; at `VGS(th)` the part passes **436× less** than the
+> string needs, so the sentence is inverted.  **The unit was destroyed by the PDF
+> text extraction, and the same table proves it three times**: in Symbol font
+> `Ω` is Latin `W` and `µ` is Latin `m`, and the archived file also reads
+> `RDS(ON) 160mW` (the committed JLCPCB record says **160 mΩ**), `IDSS 1 mA at
+> 44 V` (**44 mW standing** in a SOT-23) and `Rg 3 W`.  **The artifact is
+> isolated**: of fifteen archived vendor texts this is the only one with bare
+> `W` suffixes *and* zero `µ` glyphs.  The real ordering margin was therefore
+> **smaller** than the 2.06× claimed, by an unpublished amount, so `C85`
+> 100 nF → **1 µF** *on the existing 1 µF 0603 X7R line* makes the invariant
+> **independent of the unpublished band**: worst-case `tau` 19.6 → **147 ms**,
+> the window in which the ordering can fail **407 → 44 mV** against a **104 mV**
+> bar taken from the datasheet's own guaranteed conduction point, **88.9 %** of
+> the band covered.  `f5k` puts the 100 nF board back and is refused.
+>
+> **AND THREE MORE OF THE SAME SHAPE.**  *"A hiccup that AUTO-RETRIES"* was half
+> of SLUSF65B 6.3.7.3 — **4 to 7 consecutive trips in a 2 s window leave the
+> BATFET off until a valid VIN is connected**, so a sustained accessory
+> overcurrent is a battery-only dead stop the user clears with USB; `F6` now
+> PARSES both the retry limit and the recovery condition.  The firmware fault
+> path could **forget a failed shutdown** and its blanket safe-state fallback
+> **did not tell its caller** it had dropped all three accessory outputs; a
+> successful I²C read was treated as a measurement, so **`0xFFFF` decoded to
+> 5.1199 V and authorised the second rail** (now a 2.50–4.50 V plausibility band,
+> `HIBRT = 0x0000` for freshness, and a settled post-enable recheck).  D-751's
+> control had gone **vacuous** and is replaced one layer down rather than
+> deleted.  The handoff still told the assembler to trim `J4` to **0.80 mm**,
+> which is the `DISPLAY_SHADOW` **ALLOWANCE** and was never the target.  And
+> **169 of 252 fitted placements are on the BOTTOM side** with no placement
+> convention stated anywhere — now DERIVED into the fab notes from the position
+> file itself, bottom-side rotation convention included.
+>
+>     connectivity     174 retained, 173 connected, 1 owner-approved open
+>                      (U11.3), 0 UNAPPROVED open edges, ratsnest 17
+>     KiCad DRC        ZERO violations of every class; 17 unconnected (the
+>                      approved set); parity 246 WARNING / 0 ERRORS
+>     protected copper 15 nets / 406 objects, IDENTICAL to d776
+>     D-186 / D-269    dru_contracts live and TRUE on this board
+>     ampacity         all_ok, byte-identical to d776
+>     features         F1-F8 PASS (F5 twelve controls incl. D-779's two; F6
+>                      THIRTY-FIVE controls incl. D-777's six and D-779's three;
+>                      F8 seven, incl. one that puts D-774's stale C20/C38/C67
+>                      exceptions back)
+>     battery pack     B1-B8 PASS, byte-identical to d776
+>     land / mech      LAND1-LAND8 and MK1-MK10 PASS, 315/315 MATCH
+>     fab package      re-exported at D-779; FAB1-FAB15 PASS, sourcing 0
+>                      unsourced lines
+>     contracts        19 standing contracts ran, ALL PASS; every report
+>                      byte-identical to d776 except demo_feature (the new
+>                      clauses), leaf_land (C85's value string) and the two
+>                      that carry the board digest
+>     firmware         H1-H6 PASS; 165 host claims across three suites, 20
+>                      destructive controls, NONE uncaught; four builds SUCCESS
+>     hardware/beta-v2 UNTOUCHED
+>
+> **THE THINNEST MARGIN ON THIS BOARD IS STILL NAMED RATHER THAN QUOTED.**  The
+> 5 V accessory **in overcurrent** while every internal subsystem runs at once,
+> on a `BQ25185` at the −18 % corner with the cell at 3.0 V and the boost at the
+> top of its band — six unlucky corners at once — and its consequence is now
+> stated in full: an `IBAT_OCP` hiccup that becomes a **latch-until-USB** if it
+> repeats.  At conforming load the D-775 dual-rail case gives **12.20 %** to
+> `IBAT_OCP` and D-777 gives **6.0 %** to the connector's published rating.
+>
+> **RESIDUAL, AND IT IS MEASURED**: this board has no accessory current
+> measurement, so an accessory drawing **more** than its published budget is not
+> refusable.  It must exceed the published 5 V budget by **+19.4 %** before the
+> connection leaves its rating and by **+89.6 %** before the charger acts.
+> Closing that needs accessory current sensing or a connector rated above
+> `IBAT_OCP` — both REV-B.
+>
+> **There is no open owner decision.**  Residual risks are `CTO_DECISIONS.md`
+> **D-779 §5**, **D-777 §5-§6**, **D-776 §7**, **D-775 §6**, **D-773 §7**,
+> **D-772 §8**, **D-771 §10** and **D-770 §5**.  The one item this iteration
+> could NOT close is external: **fabricator acceptance of the stack, the 38
+> sub-floor vias, the 21 mask relationships, the `J3` NPTH, the `MK1` acoustic
+> hole, the stepped profile/tooling, ENIG and bare-board electrical test** must
+> be confirmed with the board house at quote.  **Independent CTO review follows.**
+>
+> # **THE D-776 ENTRY BELOW STANDS AS HISTORY.**
+>
 > # **`DEMO_READY_FOR_FAB` IS RE-DECLARED ON BOARD `8c548ece` (2026-09-19, D-771 · D-772 · D-773 · D-774 · D-775 · D-776).**
 >
 > **D-776 — THE AS-BUILT LIMITS NAMED A SIGNAL THAT DOES NOT EXIST, AND THE

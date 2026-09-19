@@ -132,3 +132,18 @@ Two GND vias are intentional **solderable tuning terminals** for optional 0402 p
 - **B side:** `C72.2` (`/04_SPI_B_RADIOS_NFC/NFC_MATCH_B`) -> GND via at **(43.500, 33.300) mm**, 0.60/0.30 mm via, copper-edge gap **0.325 mm**; B.Mask OPEN, F.Mask tented.
 
 Assembly tuning is optional; **manufacturing access is not**. The board must arrive with both capped GND terminals solderable even if no parallel capacitor is fitted initially.
+
+## Component placement (CPL) convention -- READ BEFORE PROGRAMMING THE PLACER
+
+`aqroot-Demo-pos-fitted.csv` is the file to place from; `aqroot-Demo-pos-all.csv` additionally carries the DNP references and must NOT be used as the placement list.
+
+- **252 fitted placements: 169 bottom, 83 top.**  The majority of this board is on the BOTTOM side; confirm the panel orientation before the first unit.
+- **Origin** is the KiCad page origin, NOT an auxiliary axis: no `aux_axis_origin` is set on this board.  The `Edge_Cuts` outline occupies X -0.050 .. 77.050 mm and Y -0.050 .. 148.050 mm in that frame.
+- **`PosX` is millimetres, increasing to the RIGHT.**  Observed range 2.125 .. 74.100 mm.
+- **`PosY` is millimetres, increasing UPWARD, and is therefore NEGATIVE across this whole board** (KiCad's internal Y axis points down and the exporter negates it).  Observed range -146.000 .. -2.250 mm.  A toolchain that expects Y-down must negate this column; one that expects Y-up must not.
+- **`Rot` is degrees COUNTER-CLOCKWISE**, 0 to 360 normalised to (-180, 180].  Values present on this board: -90 deg, 0 deg, 90 deg, 180 deg.
+- **`Rot` for a BOTTOM-side part is given as seen from the TOP of the board, through it** -- the KiCad convention.  An assembler whose process expects bottom-side angles as seen from BELOW must mirror them (negate, or equivalently subtract from 360).  **This is the single most common way this file is misread and it affects 169 of the 252 placements here.**
+- **`Side` is the authority on which face a part goes to**; do not infer it from the sign of any coordinate.
+- Polarised and pin-1 references are called out individually in `docs/full-beta-v2/assembly/FIRST_FIVE_ASSEMBLY_PLAN.md`, which is normative for the first five units.
+
+> **A placement preview is REQUIRED before the first unit is built.**  Render the loaded CPL against the assembly drawings (`aqroot-Demo-assembly-top.pdf`, `aqroot-Demo-assembly-bottom.pdf`) and confirm side and rotation for at least `U1`, `J1`, `J4`, `J5`, `U11`, `U12` and `U21` before release to the line.

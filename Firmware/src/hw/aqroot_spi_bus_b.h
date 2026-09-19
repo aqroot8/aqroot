@@ -22,6 +22,8 @@
 
 #include <stdint.h>
 
+#include "aqroot_accessory_power_policy.h"
+
 namespace aqroot {
 
 enum class SpiBDevice : uint8_t { None = 0, Cc1101, Sx1262, St25r3916 };
@@ -38,10 +40,29 @@ class SpiBusB {
  public:
   explicit SpiBusB(ChipSelects &selects)
       : selects_(selects), selected_(SpiBDevice::None),
-        transmitting_(SpiBDevice::None) {}
+        transmitting_(SpiBDevice::None), internal_reserve_(false) {}
 
   SpiBDevice selected() const { return selected_; }
   SpiBDevice transmitting() const { return transmitting_; }
+
+  // D-777.  THE THIRD RULE, AND IT IS A CONNECTOR RULE RATHER THAN AN RF ONE.
+  //
+  //   RESERVE RULE  while BOTH switched accessory rails are enabled, neither
+  //                 sub-GHz radio may key and the NFC field may not be raised.
+  //
+  // J4 is a JST PH and JST publishes it at 2 A (AWG #24).  With the whole
+  // 1.0632 A internal +3V3 budget live beside D-098's published 400 mA + 300 mA
+  // the battery connection carries 2.2715 A -- over its own rating, and BELOW
+  // the BQ25185's 2.5625 A IBAT_OCP minimum, so nothing on this board objects.
+  // `demo_feature_contract.py` F6 derives the internal ceiling that closes that
+  // gap and `aqroot_accessory_power_policy.h` names the three budget lines that
+  // reach it.  TWO OF THE THREE ARE TRANSMITTERS ON THIS BUS, and this is the
+  // one place every one of them already has to pass through.
+  //
+  // The accessory HOLDS and the radio WAITS: `beginTransmit` returns false and
+  // the caller retries, rather than an accessory losing its rail mid-operation.
+  void setInternalReserve(bool engaged) { internal_reserve_ = engaged; }
+  bool internalReserve() const { return internal_reserve_; }
 
   // Assert one select.  REFUSES while ANY device holds the bus -- INCLUDING
   // the same one.  An earlier version treated a repeat select as idempotent and
@@ -69,6 +90,12 @@ class SpiBusB {
   bool beginTransmit(SpiBDevice device) {
     if (device == SpiBDevice::None) return false;
     if (transmitting_ != SpiBDevice::None) return false;
+    // D-777.  All three devices on this bus are inside the reserve: U7/U8 are
+    // the sub-GHz TX line and U9's field is the NFC line.  A SELECT is still
+    // permitted while the reserve is engaged -- reading a status register, or
+    // commanding a radio into standby, costs nothing on +3V3 and must stay
+    // possible.  It is KEYING that is refused.
+    if (internal_reserve_) return false;
     transmitting_ = device;
     return true;
   }
@@ -92,6 +119,7 @@ class SpiBusB {
   ChipSelects &selects_;
   SpiBDevice selected_;
   SpiBDevice transmitting_;
+  bool internal_reserve_;
 };
 
 }  // namespace aqroot
