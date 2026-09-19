@@ -1,0 +1,23 @@
+{
+  "vendor": "Analog Devices / Maxim Integrated",
+  "device": "MAX17048/MAX17049",
+  "document_title": "3uA 1-Cell/2-Cell Fuel Gauge with ModelGauge",
+  "document_number": "19-6171",
+  "revision": "7",
+  "revision_date": "2016-11",
+  "official_url": "https://www.analog.com/media/en/technical-documentation/data-sheets/MAX17048-MAX17049.pdf",
+  "product_page": "https://www.analog.com/en/products/max17048.html",
+  "verified_utc_date": "2026-09-19",
+  "archived_pdf": "max17048-max17049-rev7.pdf",
+  "archived_pdf_sha256": "70dc8eef0e012276dcdc58b6dce64af08258304bcf865ceace64e856b8029330",
+  "register_facts": {
+    "MODE_address": "0x06",
+    "HibStat_mask": "0x1000",
+    "HibStat_semantics": "read-only; set while the IC is in hibernate mode",
+    "HIBRT_address": "0x0A",
+    "HIBRT_zero_semantics": "disables hibernate mode",
+    "VCELL_active_update_ms_typ": 250,
+    "VCELL_hibernate_update_s_typ": 45
+  },
+  "provenance_note": "Primary ADI Rev.7 PDF archived from the official Analog Devices datasheet URL; safety-relevant MODE/HibStat, HIBRT and VCELL timing facts were checked against the archived document."
+}

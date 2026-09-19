@@ -2,8 +2,11 @@
 // AQROOT Demo -- safety-facing MAX17048 VCELL gate.
 //
 // Accessory permission depends on VCELL.  A successful register read is not
-// enough: the gauge must first be proven in active (non-hibernate) mode, and
-// that configuration is re-read before every value used by the power policy.
+// enough: the gauge must first be proven in active (non-hibernate) mode.  The
+// guard verifies both HIBRT=0 and MODE.HibStat=0, and rechecks them before every
+// VCELL value used by the power policy. ADI 19-6171 Rev.7 is archived as
+// vendor/ADI/max17048-max17049-rev7.pdf; its hash and safety-relevant facts are
+// pinned by the adjacent source record and firmware hardware-map contract.
 
 #include <stdint.h>
 
@@ -20,10 +23,16 @@ class Max17048Guard {
   bool configureActiveMode(I2cBus &bus) {
     const uint8_t frame[3] = {kRegHibrt, 0x00, 0x00};
     uint8_t verify[2] = {0xFF, 0xFF};
+    uint8_t mode_raw[2] = {0xFF, 0xFF};
     const bool wrote = bus.write(address_, frame, sizeof(frame));
     const bool readback = wrote &&
         bus.readRegister(address_, kRegHibrt, verify, sizeof(verify));
-    active_ready_ = readback && verify[0] == 0x00 && verify[1] == 0x00;
+    const bool mode_read = readback &&
+        bus.readRegister(address_, kRegMode, mode_raw, sizeof(mode_raw));
+    const uint16_t mode =
+        (uint16_t(mode_raw[0]) << 8) | uint16_t(mode_raw[1]);
+    active_ready_ = mode_read && verify[0] == 0x00 && verify[1] == 0x00 &&
+                    (mode & kModeHibStatMask) == 0;
     return active_ready_;
   }
 
@@ -33,8 +42,16 @@ class Max17048Guard {
   bool verifyActiveMode(I2cBus &bus) {
     if (!active_ready_) return false;
     uint8_t verify[2] = {0xFF, 0xFF};
+    uint8_t mode_raw[2] = {0xFF, 0xFF};
     if (!bus.readRegister(address_, kRegHibrt, verify, sizeof(verify)) ||
-        verify[0] != 0x00 || verify[1] != 0x00) {
+        verify[0] != 0x00 || verify[1] != 0x00 ||
+        !bus.readRegister(address_, kRegMode, mode_raw, sizeof(mode_raw))) {
+      active_ready_ = false;
+      return false;
+    }
+    const uint16_t mode =
+        (uint16_t(mode_raw[0]) << 8) | uint16_t(mode_raw[1]);
+    if ((mode & kModeHibStatMask) != 0) {
       active_ready_ = false;
       return false;
     }
@@ -59,7 +76,9 @@ class Max17048Guard {
   }
 
   static constexpr uint8_t kRegVcell = 0x02;
+  static constexpr uint8_t kRegMode = 0x06;
   static constexpr uint8_t kRegHibrt = 0x0A;
+  static constexpr uint16_t kModeHibStatMask = 0x1000;
   static constexpr float kVcellLsbV = 0.000078125f;
 
  private:

@@ -127,11 +127,13 @@ static_assert(kBacklightPwmHz >= 5000 && kBacklightPwmHz <= 100000,
 inline void backlightRamp(uint8_t channel = 0) {
   ledcSetup(channel, kBacklightPwmHz, 8);
   ledcAttachPin(AQROOT_PIN_DISP_BL_PWM, channel);
-  // D-782 / Round-4: C85 is 1 uF.  From a discharged gate, very-low-duty
-  // PWM can leave Q11 poorly enhanced while U17 starts.  Prime for 2 ms at
-  // 100 % (10 cycles at 5 kHz), then enter the requested PWM ramp.
+  // D-784 / Round-5: C85 is 1 uF.  From a discharged gate, very-low-duty
+  // PWM can leave Q11 poorly enhanced while U17 starts.  Prime for an explicit
+  // 3.0 ms at 100 % (>=15 cycles at 5 kHz), then enter the requested PWM
+  // ramp.  Use the microsecond delay rather than Arduino delay(2): a tick-based
+  // millisecond delay does not itself prove the >=2 ms acceptance interval.
   ledcWrite(channel, 255);
-  delay(2);
+  delayMicroseconds(3000);
   for (int duty = 5; duty <= 255; duty += 5) {
     ledcWrite(channel, duty);
     delay(8);

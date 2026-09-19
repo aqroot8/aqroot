@@ -153,7 +153,7 @@ GPIO19/20); there is **no USB-UART bridge IC** (by design). See §9, §16.
 > have latched its backlight off and over-stressed `Q11` on the first
 > brightness ramp.
 >
-> **D-752 STRUCTURAL REPAIR, UPDATED THROUGH D-782.** `Q11`'s gate is on its own
+> **D-752 STRUCTURAL REPAIR, UPDATED THROUGH D-784.** `Q11`'s gate is on its own
 > `/03_SPI_A_DISPLAY_SD/BL_DISC_G` net. `D14` charges **C85 = 1 µF** from
 > `DISP_BL_CTL`; `R132 = 220 kΩ` discharges it. D-779 enlarged C85 tenfold, so
 > the old D-752 `100 nF` / `τ = 22 ms` figures are historical and MUST NOT be
@@ -161,8 +161,9 @@ GPIO19/20); there is **no USB-UART bridge IC** (by design). See §9, §16.
 > worst retained τ** after tolerance/DC-bias allowance. D-780 then replaced the
 > AO3422 with Vishay `SQ2364EES-T1_BE3`, whose guaranteed `RDS(on)` point at
 > `VGS = 1.5 V` closes the conduction proof without threshold/transconductance
-> extrapolation. D-782 additionally **primes `DISP_BL_CTL` at 100% for 2 ms
-> before low-duty PWM**, so the 1 µF hold capacitor is charged before dimming.
+> extrapolation. D-784 **primes `DISP_BL_CTL` at 100% for a microsecond-timed 3.0 ms
+> before low-duty PWM** (the acceptance minimum remains 2 ms), so the 1 µF hold
+> capacitor is charged before dimming without relying on scheduler-tick timing.
 > `F5` gates the exact fitted Q11/C85/R132/D14 identities and timing; first-five
 > `Q11-TEMP-01` still measures startup, PWM, reset and true-off at 0/25/40 °C.
 > The safety invariant remains: the cathode disconnect must stay enhanced until

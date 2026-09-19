@@ -75,6 +75,27 @@ import gen_firmware_hw_map as gen           # noqa: E402
 import routing_ledger                        # noqa: E402
 
 HW_DIR = ROOT / "Firmware/src/hw"
+MAX17048_PRIMARY = (
+    ROOT / "hardware/demo/kicad/aqroot-demo/vendor/ADI/max17048-max17049-rev7.pdf"
+)
+MAX17048_PRIMARY_SHA256 = (
+    "70dc8eef0e012276dcdc58b6dce64af08258304bcf865ceace64e856b8029330"
+)
+MAX17048_SOURCE_RECORD = (
+    ROOT / "hardware/demo/kicad/aqroot-demo/vendor/ADI/max17048-max17049-rev7-source.json"
+)
+MAX17048_SOURCE_EXPECTED = {
+    "vendor": "Analog Devices / Maxim Integrated",
+    "device": "MAX17048/MAX17049",
+    "document_number": "19-6171",
+    "revision": "7",
+    "official_url": "https://www.analog.com/media/en/technical-documentation/data-sheets/MAX17048-MAX17049.pdf",
+    "MODE_address": "0x06",
+    "HibStat_mask": "0x1000",
+    "HIBRT_address": "0x0A",
+    "VCELL_active_update_ms_typ": 250,
+    "VCELL_hibernate_update_s_typ": 45,
+}
 HOST_TESTS = [
     ROOT / "Firmware/test/test_expander_order.cpp",
     ROOT / "Firmware/test/test_spi_bus_b.cpp",
@@ -120,25 +141,22 @@ POWER_POLICY_CONTROLS = [
 # Each mutation is realistic enough to compile and must be rejected by the
 # dedicated MAX17048 host test.
 FUEL_GAUGE_CONTROLS = [
-    ("HIBRT write success is trusted without exact configuration readback",
+    ("HIBRT=0 readback is trusted while MODE.HibStat still reports hibernate",
      "max17048_guard.h",
-     "active_ready_ = readback && verify[0] == 0x00 && verify[1] == 0x00;",
-     "active_ready_ = wrote && readback;"),
-    ("later HIBRT/reset state is no longer re-verified before VCELL",
+     """    active_ready_ = mode_read && verify[0] == 0x00 && verify[1] == 0x00 &&
+                    (mode & kModeHibStatMask) == 0;""",
+     """    active_ready_ = mode_read && verify[0] == 0x00 && verify[1] == 0x00 &&
+                    (mode & kModeHibStatMask) == kModeHibStatMask;"""),
+    ("later MODE.HibStat assertion is ignored before a safety VCELL read",
      "max17048_guard.h",
-     """  bool verifyActiveMode(I2cBus &bus) {
-    if (!active_ready_) return false;
-    uint8_t verify[2] = {0xFF, 0xFF};
-    if (!bus.readRegister(address_, kRegHibrt, verify, sizeof(verify)) ||
-        verify[0] != 0x00 || verify[1] != 0x00) {
+     """    if ((mode & kModeHibStatMask) != 0) {
       active_ready_ = false;
       return false;
-    }
-    return true;
-  }""",
-     """  bool verifyActiveMode(I2cBus &) {
-    return active_ready_;
-  }"""),
+    }""",
+     """    if ((mode & kModeHibStatMask) != 0 && false) {
+      active_ready_ = false;
+      return false;
+    }"""),
     ("VCELL bus failure leaves gauge readiness trusted",
      "max17048_guard.h",
      """    if (!bus.readRegister(address_, kRegVcell, raw, sizeof(raw))) {
@@ -573,6 +591,54 @@ def main():
             h6["verdict"] = "FAIL"
         h6["tests"].append(entry)
     report["H6_host_tests_prove_the_orderings"] = h6
+
+    # ---- H7: the safety policy's MAX17048 primary source is pinned ---------
+    # Gate both the exact archived ADI Rev.7 PDF bytes and a small semantic
+    # provenance record that names the register/timing facts the firmware uses.
+    primary_sha = (
+        hashlib.sha256(MAX17048_PRIMARY.read_bytes()).hexdigest()
+        if MAX17048_PRIMARY.exists() else None
+    )
+    source = None
+    source_problems = []
+    if primary_sha != MAX17048_PRIMARY_SHA256:
+        source_problems.append(
+            "primary PDF SHA256 expected %s, got %s" %
+            (MAX17048_PRIMARY_SHA256, primary_sha))
+    if MAX17048_SOURCE_RECORD.exists():
+        try:
+            source = json.loads(MAX17048_SOURCE_RECORD.read_text(encoding="utf-8"))
+        except Exception as exc:
+            source_problems.append("source record is not valid JSON: %s" % exc)
+    else:
+        source_problems.append("source record is missing")
+    if source is not None:
+        facts = source.get("register_facts", {})
+        actual = {
+            "vendor": source.get("vendor"),
+            "device": source.get("device"),
+            "document_number": source.get("document_number"),
+            "revision": source.get("revision"),
+            "official_url": source.get("official_url"),
+            "MODE_address": facts.get("MODE_address"),
+            "HibStat_mask": facts.get("HibStat_mask"),
+            "HIBRT_address": facts.get("HIBRT_address"),
+            "VCELL_active_update_ms_typ": facts.get("VCELL_active_update_ms_typ"),
+            "VCELL_hibernate_update_s_typ": facts.get("VCELL_hibernate_update_s_typ"),
+        }
+        for key, expected in MAX17048_SOURCE_EXPECTED.items():
+            if actual.get(key) != expected:
+                source_problems.append(
+                    "%s expected %r, got %r" % (key, expected, actual.get(key)))
+    report["H7_MAX17048_primary_source_is_pinned"] = {
+        "pdf": MAX17048_PRIMARY.relative_to(ROOT).as_posix(),
+        "expected_pdf_sha256": MAX17048_PRIMARY_SHA256,
+        "actual_pdf_sha256": primary_sha,
+        "source_record": MAX17048_SOURCE_RECORD.relative_to(ROOT).as_posix(),
+        "expected_facts": MAX17048_SOURCE_EXPECTED,
+        "problems": source_problems,
+        "verdict": "PASS" if not source_problems else "FAIL",
+    }
 
     # ---- controls -------------------------------------------------------
     controls = []

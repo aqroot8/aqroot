@@ -27,9 +27,11 @@ class GaugeBus : public aqroot::I2cBus {
  public:
   bool write_ok = true;
   bool hibrt_read_ok = true;
+  bool mode_read_ok = true;
   bool vcell_read_ok = true;
   bool ignore_hibrt_write = false;
   uint16_t hibrt = 0x8030;
+  uint16_t mode = 0x0000;
   uint16_t vcell = 0xC000;
 
   bool write(uint8_t, const uint8_t *data, size_t length) override {
@@ -45,6 +47,10 @@ class GaugeBus : public aqroot::I2cBus {
     if (reg == aqroot::Max17048Guard::kRegHibrt) {
       if (!hibrt_read_ok) return false;
       data[0] = uint8_t(hibrt >> 8); data[1] = uint8_t(hibrt); return true;
+    }
+    if (reg == aqroot::Max17048Guard::kRegMode) {
+      if (!mode_read_ok) return false;
+      data[0] = uint8_t(mode >> 8); data[1] = uint8_t(mode); return true;
     }
     if (reg == aqroot::Max17048Guard::kRegVcell) {
       if (!vcell_read_ok) return false;

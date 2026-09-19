@@ -11,12 +11,15 @@ class GaugeBus : public I2cBus {
  public:
   bool fail_write = false;
   bool fail_hibrt_read = false;
+  bool fail_mode_read = false;
   bool fail_vcell_read = false;
   bool ignore_hibrt_write = false;
   uint16_t hibrt = 0x8030;
+  uint16_t mode = 0x0000;
   uint16_t vcell = 0xC000;  // 3.840 V
   int hibrt_writes = 0;
   int hibrt_reads = 0;
+  int mode_reads = 0;
   int vcell_reads = 0;
 
   bool write(uint8_t, const uint8_t *data, size_t length) override {
@@ -38,6 +41,13 @@ class GaugeBus : public I2cBus {
       if (fail_hibrt_read) return false;
       data[0] = uint8_t(hibrt >> 8);
       data[1] = uint8_t(hibrt);
+      return true;
+    }
+    if (reg == Max17048Guard::kRegMode) {
+      ++mode_reads;
+      if (fail_mode_read) return false;
+      data[0] = uint8_t(mode >> 8);
+      data[1] = uint8_t(mode);
       return true;
     }
     if (reg == Max17048Guard::kRegVcell) {
@@ -70,10 +80,10 @@ int main() {
     claim("gauge starts NOT READY", !gauge.activeReady());
     claim("VCELL is refused before verified active-mode configuration",
           !gauge.readVcell(bus, &v) && bus.vcell_reads == 0);
-    claim("HIBRT=0 write+readback establishes readiness",
+    claim("HIBRT=0 plus MODE.HibStat=0 establishes readiness",
           gauge.configureActiveMode(bus) && gauge.activeReady() &&
           bus.hibrt == 0x0000 && bus.hibrt_writes == 1 &&
-          bus.hibrt_reads >= 1);
+          bus.hibrt_reads >= 1 && bus.mode_reads >= 1);
     claim("plausible active-mode VCELL is accepted",
           gauge.readVcell(bus, &v) && v > 3.83f && v < 3.85f);
   }
@@ -101,10 +111,40 @@ int main() {
   {
     GaugeBus bus;
     Max17048Guard gauge(kGauge);
+    bus.mode = Max17048Guard::kModeHibStatMask;
+    claim("HIBRT=0 is not sufficient while MODE.HibStat still reports hibernate",
+          !gauge.configureActiveMode(bus) && !gauge.activeReady());
+    bus.mode = 0x0000;
+    claim("explicit retry can qualify the gauge once HibStat clears",
+          gauge.configureActiveMode(bus) && gauge.activeReady());
+  }
+
+  {
+    GaugeBus bus;
+    Max17048Guard gauge(kGauge);
+    bus.fail_mode_read = true;
+    claim("unreadable MODE/HibStat cannot establish readiness",
+          !gauge.configureActiveMode(bus) && !gauge.activeReady());
+  }
+
+  {
+    GaugeBus bus;
+    Max17048Guard gauge(kGauge);
     claim("setup for configuration-loss test", gauge.configureActiveMode(bus));
     bus.hibrt = 0x8030;
     float v = 0.0f;
     claim("later HIBRT drift invalidates readiness before VCELL is trusted",
+          !gauge.readVcell(bus, &v) && !gauge.activeReady() &&
+          bus.vcell_reads == 0);
+  }
+
+  {
+    GaugeBus bus;
+    Max17048Guard gauge(kGauge);
+    claim("setup for later HibStat transition test", gauge.configureActiveMode(bus));
+    bus.mode = Max17048Guard::kModeHibStatMask;
+    float v = 0.0f;
+    claim("later MODE.HibStat assertion invalidates readiness before VCELL is trusted",
           !gauge.readVcell(bus, &v) && !gauge.activeReady() &&
           bus.vcell_reads == 0);
   }

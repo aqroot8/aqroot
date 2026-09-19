@@ -54,6 +54,7 @@ static bool g_acc3v3 = false;
 static bool g_acc5v = false;
 static bool g_accessory_i2c = false;
 static uint32_t g_last_battery_guard_ms = 0;
+static uint32_t g_last_gauge_requal_ms = 0;
 static Max17048Guard g_fuel_gauge(AQROOT_I2C_ADDR_FUEL_GAUGE);
 
 // D-775 FIRMWARE POLICY.  Hardware current limiting remains the absolute
@@ -82,7 +83,9 @@ static bool i2cReadByte(uint8_t address, uint8_t reg, uint8_t *value) {
 
 static bool configureFuelGaugeActiveMode() {
   const bool ready = g_fuel_gauge.configureActiveMode(g_bus);
-  if (ready) delay(300);  // at least one active-mode VCELL update
+  // Only wait for an active-mode conversion AFTER both HIBRT=0 and the live
+  // MODE.HibStat bit confirm that the gauge is actually out of hibernate.
+  if (ready) delay(300);
   return ready;
 }
 
@@ -105,6 +108,19 @@ static bool readFuelCellVoltage(float *volts) {
 
 static bool accessoryBatteryAllows(bool other_rail_on, float *volts = nullptr,
                                    float *floor = nullptr) {
+  // D-784 / Round-5: HIBRT=0 is configuration, not proof of the present mode.
+  // The guard also requires MODE.HibStat=0.  A first-rail request may
+  // requalify the gauge while the accessory tree is completely off; once any
+  // rail is active, loss of gauge readiness is fail-closed and may not be
+  // hidden behind a blocking reconfiguration attempt.
+  if (!g_fuel_gauge.activeReady()) {
+    if (g_acc3v3 || g_acc5v || g_expanders.safeShutdownPending() ||
+        !configureFuelGaugeActiveMode()) {
+      if (volts) *volts = 0.0f;
+      if (floor) *floor = accessoryEnableFloor(other_rail_on);
+      return false;
+    }
+  }
   float v = 0.0f;
   const bool read = readFuelCellVoltage(&v);
   const float required = accessoryEnableFloor(other_rail_on);
@@ -515,6 +531,17 @@ void loop() {
                                                            : "available");
       }
     }
+  }
+
+  // If boot caught the gauge while MODE.HibStat was still asserted, keep
+  // trying to qualify it in the background while accessory power is safely
+  // off.  This is liveness only: no rail is energized until qualification and
+  // the subsequent VCELL permission both succeed.
+  if (!g_fuel_gauge.activeReady() && !g_acc3v3 && !g_acc5v &&
+      !g_expanders.safeShutdownPending() &&
+      millis() - g_last_gauge_requal_ms >= 1000) {
+    g_last_gauge_requal_ms = millis();
+    (void)configureFuelGaugeActiveMode();
   }
 
   if ((g_acc3v3 || g_acc5v) &&

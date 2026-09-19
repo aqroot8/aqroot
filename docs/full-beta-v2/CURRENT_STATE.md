@@ -72,6 +72,25 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+> # **D-784 ROUND-5 GAUGE/TIMING CORRECTION — EXTERNAL_REVIEW_HOLD**
+>
+> Round-5 identified two firmware/verifier residuals after D-783. MAX17048 HIBRT=0
+> is configuration, not proof of the current operating mode, so D-784 now requires
+> both exact HIBRT readback and read-only `MODE.HibStat=0` before VCELL can authorize
+> accessory power and rechecks both before every safety measurement. A hibernating or
+> unreadable gauge is fail-closed; qualification retries only while accessory rails are
+> safely off. The ADI 19-6171 Rev.7 primary PDF is archived as
+> `vendor/ADI/max17048-max17049-rev7.pdf` and hash-gated at
+> `70dc8eef0e012276dcdc58b6dce64af08258304bcf865ceace64e856b8029330`; the companion source JSON records the MODE/HIBRT/update-period facts.
+>
+> Round-5 also found that Arduino `delay(2)` did not prove the first-five requirement
+> of **at least 2 ms** full-duty backlight startup. D-784 uses an explicit **3000 us**
+> microsecond-timed prime before low-duty PWM. No PCB/schematic/BOM/CPL/Gerber/drill
+> geometry changes are involved. The board authority remains
+> **`cef458b92c6e92462bea250b434a481b3e8454a991eb13b2b66623ca1f4a880e`** and the
+> release remains **EXTERNAL_REVIEW_HOLD** pending an independent review of the final
+> clean/pushed D-784 target.
+>
 > # **D-783 OUTPUT-SHADOW RECOVERY CORRECTION — EXTERNAL_REVIEW_HOLD**
 >
 > A post-D-782 CTO fault-injection probe reproduced one remaining firmware recovery hole:

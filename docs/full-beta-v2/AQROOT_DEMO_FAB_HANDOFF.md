@@ -1,7 +1,19 @@
 # AQROOT Demo — FABRICATION HANDOFF
 
 
-> # **STATUS: D-783 FIRMWARE RECOVERY CORRECTION — EXTERNAL_REVIEW_HOLD, BOARD AUTHORITY `cef458b9` (2026-09-19).**
+> # **STATUS: D-784 ROUND-5 GAUGE/TIMING CORRECTION — EXTERNAL_REVIEW_HOLD, BOARD AUTHORITY `cef458b9` (2026-09-19).**
+>
+> **D-784 supersedes D-783 without moving PCB copper or changing the fabrication package.**
+> MAX17048 accessory permission now requires both exact HIBRT=0 configuration and the live
+> read-only `MODE.HibStat=0` state; both are rechecked before safety VCELL use, and a cold/
+> hibernating gauge stays fail-closed until background qualification succeeds with accessory
+> rails off. The archived ADI 19-6171 Rev.7 PDF is hash-pinned at
+> `70dc8eef0e012276dcdc58b6dce64af08258304bcf865ceace64e856b8029330`. The backlight
+> startup prime is now an explicit **3000 us** full-duty hold instead of tick-based `delay(2)`,
+> closing Round-5's minimum-2-ms timing objection. **Order remains prohibited until the final
+> clean/pushed D-784 target is independently re-reviewed.**
+>
+> # **STATUS: D-783 FIRMWARE RECOVERY CORRECTION — SUPERSEDED BY D-784, BOARD AUTHORITY `cef458b9` (2026-09-19).**
 >
 > **D-783 supersedes the D-782 review target without moving PCB copper or changing the fabrication package.**
 > A failed `ACC_PWR_EN` OFF write could invalidate U2's output shadow without scheduling repair; healthy

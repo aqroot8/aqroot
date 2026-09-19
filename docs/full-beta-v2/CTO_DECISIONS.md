@@ -1,3 +1,48 @@
+## D-784 — **ROUND-5 GAUGE-MODE AND BACKLIGHT-TIMING RESIDUALS ARE CLOSED FAIL-CLOSED; NO PCB CHANGE**
+
+    authority  board cef458b92c6e92462bea250b434a481b3e8454a991eb13b2b66623ca1f4a880e
+    copper     unchanged from D-783
+    scope      MAX17048 live-mode qualification + guaranteed backlight startup prime
+    order      EXTERNAL_REVIEW_HOLD remains; independent re-review still required
+
+Round-5 found two real firmware/verifier residuals after D-783. First, HIBRT=0 is a
+configuration value, not proof that the MAX17048 has already left hibernate. Rev.7
+(ADI document 19-6171) exposes read-only `MODE.HibStat` for that state; active VCELL
+updates are nominally 250 ms while hibernate updates are nominally 45 s. D-784 therefore
+requires **both** exact HIBRT=0 readback and `MODE.HibStat=0` before gauge readiness,
+rechecks both before every safety VCELL read, and invalidates readiness on either
+configuration/mode/read failure. While accessory rails are safely off, firmware retries
+qualification in the background; while a rail is active, loss of qualification remains
+fail-closed. The primary ADI source identity, revision and safety-relevant register/timing
+facts are machine-gated against the archived primary PDF
+`vendor/ADI/max17048-max17049-rev7.pdf`, SHA-256
+`70dc8eef0e012276dcdc58b6dce64af08258304bcf865ceace64e856b8029330`.
+The companion source JSON records the official URL, document/revision identity and
+register facts; H7 refuses a missing or different PDF.
+
+Second, Round-5 correctly observed that Arduino `delay(2)` is scheduler-tick based and
+therefore does not prove the assembly plan's **at least 2 ms** backlight prime. D-784
+replaces it with an explicit **3000 us** full-duty prime before PWM ramping. `F5` now
+gates that exact released behavior; `Q11-TEMP-01` still requires measured startup,
+PWM, shutdown and restart waveforms at 0/25/40 °C on the first five units.
+
+Host tests cover hibernate-at-configuration, MODE read failure, later HibStat assertion,
+configuration loss, stale/plausible VCELL refusal and explicit requalification. Destructive
+controls remove the HibStat checks and must fail. This is firmware/release verification
+only: PCB, schematic, BOM, CPL, Gerbers, drills and protected copper remain unchanged.
+
+**Release verification.** All 19 standing contracts ran and returned passing verdicts against
+the unchanged board; 17 are field-identical to D-783, `pour_partition` differs only in recorded
+commit context, and `firmware_hw_map` differs by the five new fuel-gauge claims. F1-F9 PASS,
+H1-H7 PASS, FAB package and battery contracts PASS, the routing ledger remains 174 retained /
+173 connected / one owner-approved `U11.3` open / zero unapproved opens, and fresh KiCad DRC
+is unchanged at 199 library-footprint warnings, 17 declared unconnected items and 246 parity
+warnings. A clean sequential PlatformIO pass builds all four environments successfully,
+including the authoritative `aqroot-demo` image (19,412 B RAM / 323,793 B flash). The PCB SHA
+remains `cef458b92c6e92462bea250b434a481b3e8454a991eb13b2b66623ca1f4a880e`; because no
+fabrication deliverable changed, the frozen fab MANIFEST remains
+`93db694cff54001516ef06ead4a926f9c519a1f5e216dd32171fc7e00abc302b`.
+
 ## D-783 — **UNCERTAIN OUTPUT-LATCH STATE NOW CONVERGES TO SAFE, AND F8 BINDS RATING EVIDENCE TO THE FULL PART/NET IDENTITY**
 
     authority  board cef458b92c6e92462bea250b434a481b3e8454a991eb13b2b66623ca1f4a880e
