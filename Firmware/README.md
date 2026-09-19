@@ -29,6 +29,33 @@
 > `esp32-s3-aqroot` onto an assembled AQROOT Demo board.**
 >
 > See `docs/full-beta-v2/CTO_DECISIONS.md` D-747.
+>
+> ### ACCESSORY POWER IS UNDER A DERIVED VCELL POLICY — D-775
+>
+> `src/hw/aqroot_accessory_power_policy.h` is the ONE authority for when the
+> Community Port's switched rails may be on.  Both floors are **derived** by
+> `hardware/demo/manufacturing/checks/demo_feature_contract.py` `F6` from the
+> MAX17048 measurement node, the live `BAT_PROTECTED_P` copper, the BQ25185
+> BATFET maximum and D-098's published 400 mA / 300 mA — **do not hand-edit
+> either constant**; `F6` FAILS if one drops below what it derives, and `H6`
+> mutates this header to prove the behaviour is really enforced.
+>
+> ```bash
+> g++ -std=c++17 -I Firmware/src/hw -o /tmp/t \
+>     Firmware/test/test_accessory_power_policy.cpp && /tmp/t   # 23 claims
+> ```
+>
+> Behaviour: one rail from **3.50 V**; both published budgets at once need
+> **3.80 V**; an unreadable gauge is **fail-closed**; below the dual floor the
+> **5 V rail sheds first** so the 3.3 V rail keeps its full 400 mA; below 3.50 V
+> all accessory power sheds.  The serial console's `3` and `5` keys are refused
+> with the floor they missed printed beside the reading.
+>
+> **STAT2 IS NOT AVAILABLE ON THIS REVISION** (owner-approved, `U11.3` NC):
+> `STAT1` LOW directly observes a charger fault, `STAT1` HIGH is non-faulted but
+> **ambiguous between charging and charge-complete/sleep/disabled**, and fault
+> SUBTYPE is unavailable.  Anything the firmware says about charging-versus-
+> complete state must be labelled **inference**.
 
 
 Full working firmware stack for the AQROOT handheld: driver abstraction layer + an

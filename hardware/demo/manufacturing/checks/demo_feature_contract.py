@@ -34,10 +34,13 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 MFG = HERE.parent
+ROOT = HERE.parents[3]
 sys.path.insert(0, str(MFG))
 import routing_ledger as rl                                  # noqa: E402
+import audit_rail_ampacity as ara                            # noqa: E402
 
 DRU = rl.PROJECT / "aqroot-Beta-v2.kicad_dru"
+POWER_POLICY = ROOT / "Firmware/src/hw/aqroot_accessory_power_policy.h"
 
 # --------------------------------------------------------------------------
 # `AQROOT_DEMO_SCOPE.md` -> board.  `refs` must be FITTED; `nets` must be whole.
@@ -514,20 +517,123 @@ BREAKER_SENSE_HARD_SHORT_mV = (30.0, 50.0, 70.0)
 # D-753's constant, now carried as a BAND.  BQ25185 SLUSF65B: 3.125 A typ +/-18 %.
 IBAT_OCP_A = (3.125 * 0.82, 3.125, 3.125 * 1.18)
 IBAT_OCP_MIN = IBAT_OCP_A[0]           # retained name; D-753's number, unchanged
-# D-765, REPORT ONLY -- NOT A CLAUSE AND DELIBERATELY NOT IN `ok`.
-# A parallel proposal screened NORMAL operation instead of the fault envelope: a
-# 250 mA per-rail working budget, accessories shed below a 3.50 V cell, and a
-# sag-aware I*(Vcell - I*R) = P solve instead of putting cell voltage straight on
-# the converter inputs.  That is a USEFUL NUMBER and it is computed below.  It is
-# NOT a clause, because NOTHING ON THIS BOARD ENFORCES EITHER ASSUMPTION: there is
-# no accessory current measurement and no gated cell-voltage accessory shed.  The
-# clauses stay on the FAULT envelope, which is the part the silicon does enforce.
-# D-771 keeps it and adds the PUBLISHED budget as a real clause beside it.
-NORMAL_BUDGET_A = 0.250                # proposed per-rail working budget
-NORMAL_VBAT_FLOOR = 3.50               # proposed accessory-enable cell floor
-NORMAL_PATH_OHM = 0.36                 # conservative common-path resistance
-NORMAL_LOSS_ALLOWANCE_W = 0.10         # loss beyond converter eta
-VBAT_CORNER = 3.0                      # 1S Li-ion working floor
+# --------------------------------------------------------------------------
+# D-775 -- NORMAL D-098 OPERATION IS A SEPARATE CONTRACT FROM LIMITER FAULTS,
+# AND ITS FLOOR IS DERIVED RATHER THAN DECLARED.
+#
+# Everything above this point screens a FAULT: what an accessory can pull
+# through a limiter that is doing its job.  None of it asks the other question
+# -- what the board costs itself when it HONOURS D-098's published budget.  At
+# the bottom of the pack's discharge, ACC_3V3_SW = 400 mA and ACC_5V_SW =
+# 300 mA delivered AT THE SAME TIME, on top of every internal subsystem
+# running at once, pull the BQ25185 past its own IBAT_OCP minimum.  That is the
+# published budget hiccupping the charger, not an accessory misbehaving.
+#
+# TWO EARLIER ATTEMPTS AND WHAT WAS WRONG WITH EACH.  D-765 screened it from
+# 0.36 ohm measured FROM THE CELL -- which double-counts Q2/Q3, R75 and the
+# pack's own internal resistance, all UPSTREAM of the node the MAX17048
+# actually reads -- and left it REPORT-ONLY because nothing enforced a floor.
+# The first D-775 draft fixed the node and made it a clause, but priced it from
+# a ROUND 0.250 ohm "bound with contingency" and a flat 60 mW "branch-loss
+# allowance", and then checked the margin AT a hand-written 3.75 V floor.  A
+# check at an asserted floor is not a derivation: nothing in the repository
+# could say why the number was 3.75 and not 3.55 or 3.95.
+#
+# SO THE FLOOR IS SOLVED FOR.  Every series term is either measured off this
+# board on every run or read from the part's own table:
+#
+#   R_bat      live BAT_PROTECTED_P copper (R75.2 -> U11.2, measured by
+#              audit_rail_ampacity's own graph) at CU_HOT_RISE_K, plus the
+#              BQ25185 BATFET maximum;
+#   R_trunk    live SYS -> L4.1 trunk, the U21 boost's input path;
+#   R_a3/R_a5  live accessory-rail copper plus each load switch's own RON max.
+#
+# and `required_vcell_floor_V` is the VCELL at which the resulting battery
+# current reaches IBAT_OCP's MINIMUM less NORMAL_OCP_MARGIN_MIN.  The firmware
+# constants in Firmware/src/hw/aqroot_accessory_power_policy.h must be at or
+# above it; F6 FAILS if they are not.  THE FLOOR NOW MOVES BY ITSELF: a wider
+# +3V3 budget, a different boost setpoint, a re-routed BAT_PROTECTED_P or a new
+# limiter setting all change the requirement, and the firmware has to follow.
+#
+# WHAT IT COST.  On this board the derived dual-rail requirement is 3.7622 V,
+# ABOVE the 3.75 V the first draft asserted -- the draft passed only because
+# its round 0.250 ohm and flat 60 mW under-counted the accessory-rail copper,
+# the two limiters' RON and the SYS->U21 trunk.  The firmware floor moves to
+# 3.80 V.  The single-rail requirement is 3.1232 V, so D-766's existing 3.50 V
+# policy floor stands unchanged and well clear.
+# --------------------------------------------------------------------------
+# BQ25185 SLUSF65B Electrical Characteristics, RON_BAT: 115 typ / 140 MAX at
+# VBAT = 4.5 V, IBAT = 400 mA.  The EC table header reads "VIN = 5 V, VBAT =
+# 3.6 V.  -40 C < TJ < 125 C unless otherwise noted", and the RON_BAT row
+# overrides only VBAT and IBAT -- so 140 mOhm is ALREADY the over-temperature
+# maximum and no thermal allowance is owed on it.
+RON_BAT_MAX_OHM = 0.140
+# WHAT IS NOT PUBLISHED: RON_BAT vs VBAT.  The row is specified at 4.5 V and
+# this model runs the BATFET at about 3.2 V of SYS with 2.3 A through it; TI
+# prints no curve and no second row, and SLUSF65B has no RON figure in its
+# Typical Characteristics.  A DECLARED 1.40x allowance covers the gate-drive
+# extrapolation.  IT IS NOT LOAD-BEARING BY ACCIDENT: the clause below also
+# reports `batfet_breakeven_ohm`, the resistance at which the derived floor
+# would stop holding the margin, so how much unpublished degradation is
+# tolerated is a printed number rather than a hidden assumption.  At the 3.80 V
+# floor the margin survives 1.52x the datasheet maximum and IBAT_OCP's own
+# minimum is not reached until 2.18x.
+RON_BAT_VBAT_ALLOWANCE = 1.40
+# Copper's own temperature coefficient, applied to every LIVE resistance below,
+# because audit_rail_ampacity states RHO_CU at 20 C.  65 K is the rise used:
+# that same audit's worst ACCEPTED segment rise on THIS rail is 49.6 K over
+# ambient (the U11.2 package-land neck), which at a 25 C ambient is 75 C, i.e.
+# 55 K above where RHO_CU is stated.
+CU_TC_PER_K = 0.00393
+CU_HOT_RISE_K = 65.0
+# TPS22950-Q1 SLVSGP6A EC, ON-Resistance: the -40..+125 C rows, which is the
+# grade-1 part's own widest guaranteed band and the row audit_rail_ampacity
+# already quotes for U20.
+ACC_SWITCH_RON_OHM = {"ACC_3V3": 0.068, "ACC_5V": 0.054}
+# THE PATHS.  `bound_ohm` is a sanity ceiling on the LIVE measurement, not the
+# value the model runs at -- the model runs at the measured number, and a live
+# path that exceeds its ceiling FAILS loudly instead of being absorbed.  The
+# requirement is derived twice, once on the live values and once on the
+# ceilings, and the FIRMWARE must satisfy the worse of the two.
+NORMAL_PATHS = {
+    "bat_protected_p": dict(rail="BAT_PROTECTED_P", src=("R75.2",),
+                            snk=("U11.2",), bound_ohm=0.050,
+                            last_measured_ohm=0.043116,
+                            what="MAX17048 measurement node -> BQ25185 BAT"),
+    "sys_to_u21": dict(rail="SYS_TO_ACC5V_BOOST",
+                       src=("U12.1", "U12.10", "U12.11",
+                            "C24.1", "C26.2", "C28.1"),
+                       snk=("L4.1",), bound_ohm=0.200,
+                       last_measured_ohm=0.183309,
+                       what="SYS -> the ACC_5V boost's input inductor"),
+    "acc_3v3_sw": dict(rail="ACC_3V3_SW", src=("U20.5",),
+                       snk=("J5.3", "J5.22"), bound_ohm=0.240,
+                       last_measured_ohm=0.224426,
+                       what="U20 output -> the Community Port 3.3 V contacts"),
+    "acc_5v_sw": dict(rail="ACC_5V_SW", src=("U22.5",),
+                      snk=("J5.1", "J5.24"), bound_ohm=0.120,
+                      last_measured_ohm=0.110567,
+                      what="U22 output -> the Community Port 5 V contacts"),
+}
+# `last_measured_ohm` is the D-773 release run of audit_rail_ampacity.py
+# (evidence/d773-rail-ampacity.json, series_resistance_mohm per rail) and is
+# only the DEFAULT that keeps judge_accessory_envelope a pure function for its
+# own mutation controls.  main() re-measures all four off the live board and
+# passes them in; `live_path_ohm` in the report is always the measured set.
+# A DECLARED DESIGN CONVENTION, stated as one because it is not a datasheet
+# number: normal, conforming, fully-published operation keeps 10 % of headroom
+# to the RECOVERABLE IBAT_OCP minimum.  It exists to cover what the model does
+# not itemise -- pour-delivered +3V3 distribution, converter efficiency below
+# the conservative figures used here, and cell-to-cell spread.  The
+# zero-margin floor is reported beside every case so the split between physics
+# and convention is visible.
+NORMAL_OCP_MARGIN_MIN = 0.10
+# Firmware carries a float constant a human reads; the requirement is rounded
+# UP onto this grid before it is compared with one.
+FLOOR_GRID_V = 0.05
+NORMAL_SINGLE_VBAT_FLOOR = 3.50         # D-766's retained policy floor
+NORMAL_DUAL_VBAT_FLOOR = 3.80           # D-775's DERIVED requirement, gridded
+VBAT_CORNER = 3.0                      # fault-envelope 1S Li-ion corner
 # D-774 SWEEP.  Every other physical constant in this file now cites a primary
 # source (see ILIM_LO/HI, IBAT_OCP_A, BREAKER_SENSE_mV, BOOST_FB, U12_IOUT_A,
 # U21_*, FUSE_A, BL_*).  THESE TWO DO NOT, and are kept because both are
@@ -913,7 +1019,8 @@ def judge_p3v3_budget(p3v3_consumers, dnp_refs, on_board, budget=None):
     return d["ok"], d
 
 
-def judge_accessory_envelope(values):
+def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
+                             live_ohms=None):
     """Pure over {ref: value}; returns (ok, detail).  D-753 + D-765 + D-771.
 
     D-753's four modes and its two refusal clauses are UNCHANGED in intent.
@@ -924,6 +1031,12 @@ def judge_accessory_envelope(values):
     envelope modes, which previously used the nominal value alone.
     """
     d, rails, parts = {}, {}, {}
+    single_floor = (NORMAL_SINGLE_VBAT_FLOOR if single_floor is None
+                    else single_floor)
+    dual_floor = NORMAL_DUAL_VBAT_FLOOR if dual_floor is None else dual_floor
+    bound_ohms = {k: v["bound_ohm"] for k, v in NORMAL_PATHS.items()}
+    live_ohms = ({k: v["last_measured_ohm"] for k, v in NORMAL_PATHS.items()}
+                 if live_ohms is None else live_ohms)
     for rail, ref in ILIM_R.items():
         switch = ILIM_SWITCH[rail]
         part = (values.get(switch) or "").strip()
@@ -1133,30 +1246,177 @@ def judge_accessory_envelope(values):
     d["converters_can_source_their_worst_case_rail"] = (
         d["converter_capability_A"]["u12_ok"]
         and d["converter_capability_A"]["u21_ok"])
-    # ---- D-765 REPORT ONLY: the normal-operation screen --------------------
-    # Reported so the working headroom is visible beside the fault envelope.
-    # It is NOT in `ok`: see the NORMAL_* comment block for why.
-    p_load = ((I_INTERNAL + NORMAL_BUDGET_A) * V_3V3 / ETA_U12
-              + NORMAL_BUDGET_A * V_ACC5V / ETA_U21
-              + NORMAL_LOSS_ALLOWANCE_W)
-    disc = NORMAL_VBAT_FLOOR ** 2 - 4.0 * NORMAL_PATH_OHM * p_load
-    i_budget = (float("inf") if disc <= 0 else
-                (NORMAL_VBAT_FLOOR - disc ** 0.5) / (2.0 * NORMAL_PATH_OHM))
-    d["normal_operation_screen_REPORT_ONLY"] = dict(
-        per_rail_budget_A=NORMAL_BUDGET_A,
-        assumed_accessory_enable_floor_V=NORMAL_VBAT_FLOOR,
-        assumed_common_path_ohm=NORMAL_PATH_OHM,
-        loss_allowance_W=NORMAL_LOSS_ALLOWANCE_W,
-        battery_A=round(i_budget, 4),
-        margin_to_ocp_min_pct=round((IBAT_OCP_MIN - i_budget) / IBAT_OCP_MIN * 100.0, 2),
-        under_ocp_min=i_budget < IBAT_OCP_MIN,
-        each_rail_guarantees_at_least_the_budget=all(
-            v["ilim_min"] >= NORMAL_BUDGET_A for v in rails.values()),
-        why_not_a_clause="no accessory current measurement and no gated "
-                         "cell-voltage accessory shed exist on this board, so "
-                         "neither assumption is enforced; the CLAUSES stay on "
-                         "the fault envelope the silicon does enforce, and on "
-                         "D-098's published budget, which D-771 made a clause")
+    # ---- D-775: THE NORMAL-OPERATION FLOOR, SOLVED FOR --------------------
+    # The load-switch maxima above are FAULT ceilings.  This is the other
+    # question: what does the board cost itself when it HONOURS D-098's
+    # published 400 mA / 300 mA?  See the NORMAL_* comment block for why the
+    # floor is derived rather than asserted and what the two earlier attempts
+    # got wrong.  VCELL is BAT_PROTECTED_P, so the model starts at that node.
+    k_cu = 1.0 + CU_TC_PER_K * CU_HOT_RISE_K
+    r_batfet = RON_BAT_MAX_OHM * RON_BAT_VBAT_ALLOWANCE
+    i3_pub, i5_pub = a3["published_budget_A"], a5["published_budget_A"]
+
+    def _model(ohms):
+        """The series terms, hot, from one set of path resistances."""
+        return dict(
+            bat=ohms["bat_protected_p"] * k_cu + r_batfet,
+            trunk=ohms["sys_to_u21"] * k_cu,
+            a3=ohms["acc_3v3_sw"] * k_cu + ACC_SWITCH_RON_OHM["ACC_3V3"],
+            a5=ohms["acc_5v_sw"] * k_cu + ACC_SWITCH_RON_OHM["ACC_5V"])
+
+    def battery_current(m, vcell, i3, i5, r_bat=None):
+        """I_bat at the MAX17048 node, sag-aware and self-consistent.
+
+        The U12 path delivers the internal +3V3 budget plus the published
+        accessory current, and pays for its own rail copper and U20's RON; the
+        U21 path delivers the published 5 V current at D-773's worst-case
+        setpoint, pays for ACC_5V's copper and U22's RON, and its INPUT current
+        is taken through the live SYS->U21 trunk, so the trunk loss is solved
+        rather than allowed for.
+        """
+        r_bat = m["bat"] if r_bat is None else r_bat
+        p12 = ((I_INTERNAL + i3) * V_3V3 + i3 * i3 * m["a3"]) / ETA_U12
+        p21 = ((i5 * V_ACC5V + i5 * i5 * m["a5"]) / ETA_U21) if i5 else 0.0
+        current = (p12 + p21) / vcell
+        for _ in range(200):
+            vsys = vcell - current * r_bat
+            if vsys <= 0.0:
+                return float("inf"), 0.0, 0.0
+            if p21:
+                iu = p21 / vsys
+                for _ in range(80):
+                    vin = vsys - iu * m["trunk"]
+                    if vin <= 0.0:
+                        return float("inf"), 0.0, 0.0
+                    iu = p21 / vin
+                trunk_W = iu * iu * m["trunk"]
+            else:
+                trunk_W = 0.0
+            nxt = (p12 + p21 + trunk_W) / vsys
+            if abs(nxt - current) < 1e-12:
+                current = nxt
+                break
+            current = nxt
+        return current, vsys, p12 + p21 + trunk_W
+
+    def required_floor(m, i3, i5, margin):
+        """The VCELL at which I_bat reaches IBAT_OCP_MIN less `margin`."""
+        target = IBAT_OCP_MIN * (1.0 - margin)
+        lo, hi = 2.5, 4.4
+        for _ in range(200):
+            mid = 0.5 * (lo + hi)
+            if battery_current(m, mid, i3, i5)[0] > target:
+                lo = mid
+            else:
+                hi = mid
+        return hi
+
+    def breakeven_bat_ohm(m, vcell, i3, i5, margin):
+        """How large the whole BAT path could be before `vcell` stops holding."""
+        target = IBAT_OCP_MIN * (1.0 - margin)
+        lo, hi = 0.0, 3.0
+        for _ in range(300):
+            mid = 0.5 * (lo + hi)
+            if battery_current(m, vcell, i3, i5, r_bat=mid)[0] <= target:
+                lo = mid
+            else:
+                hi = mid
+        return lo
+
+    def grid_up(v):
+        return math.ceil(v / FLOOR_GRID_V - 1e-9) * FLOOR_GRID_V
+
+    LOADS = (("acc3v3_published", i3_pub, 0.0),
+             ("acc5v_published", 0.0, i5_pub),
+             ("both_published", i3_pub, i5_pub))
+    bases, requirement = {}, {}
+    for basis, ohms in (("live", live_ohms), ("path_bound", bound_ohms)):
+        m = _model(ohms)
+        single = max(required_floor(m, i3, i5, NORMAL_OCP_MARGIN_MIN)
+                     for name, i3, i5 in LOADS if name != "both_published")
+        dual = required_floor(m, i3_pub, i5_pub, NORMAL_OCP_MARGIN_MIN)
+        bases[basis] = dict(
+            series_ohm={k: round(v, 6) for k, v in m.items()},
+            required_single_rail_floor_V=round(single, 4),
+            required_dual_rail_floor_V=round(dual, 4),
+            zero_margin_single_rail_floor_V=round(
+                max(required_floor(m, i3, i5, 0.0)
+                    for name, i3, i5 in LOADS if name != "both_published"), 4),
+            zero_margin_dual_rail_floor_V=round(
+                required_floor(m, i3_pub, i5_pub, 0.0), 4))
+        requirement[basis] = (single, dual)
+    # THE FIRMWARE MUST SATISFY THE WORSE OF THE TWO BASES.
+    req_single = max(v[0] for v in requirement.values())
+    req_dual = max(v[1] for v in requirement.values())
+    req_single_grid, req_dual_grid = grid_up(req_single), grid_up(req_dual)
+
+    # The cases are reported on the LIVE basis at the floors firmware enforces.
+    m_live = _model(live_ohms)
+    normal_cases = {}
+    for name, i3, i5 in LOADS:
+        floor = dual_floor if name == "both_published" else single_floor
+        current, vsys, p = battery_current(m_live, floor, i3, i5)
+        margin = ((IBAT_OCP_MIN - current) / IBAT_OCP_MIN
+                  if current != float("inf") else -float("inf"))
+        normal_cases[name] = dict(
+            vcell_floor_V=round(floor, 4), delivered_W=round(p, 4),
+            sys_V_at_the_floor=round(vsys, 4), battery_A=round(current, 4),
+            margin_to_ibat_ocp_min_pct=round(margin * 100.0, 2),
+            margin_at_least_the_convention=margin >= NORMAL_OCP_MARGIN_MIN)
+
+    be_margin = breakeven_bat_ohm(m_live, dual_floor, i3_pub, i5_pub,
+                                  NORMAL_OCP_MARGIN_MIN)
+    be_trip = breakeven_bat_ohm(m_live, dual_floor, i3_pub, i5_pub, 0.0)
+    live_cu_hot = live_ohms["bat_protected_p"] * k_cu
+
+    d["normal_operation"] = dict(
+        measurement_node="BAT_PROTECTED_P (MAX17048 U14.2/U14.3 and BQ25185 U11.2)",
+        copper_hot_factor=round(k_cu, 4),
+        copper_hot_rise_K=CU_HOT_RISE_K,
+        batfet_max_ohm=RON_BAT_MAX_OHM,
+        batfet_vbat_allowance=RON_BAT_VBAT_ALLOWANCE,
+        batfet_modelled_ohm=round(r_batfet, 6),
+        accessory_switch_ron_ohm=dict(ACC_SWITCH_RON_OHM),
+        live_path_ohm={k: round(v, 6) for k, v in live_ohms.items()},
+        path_bound_ohm={k: v["bound_ohm"] for k, v in NORMAL_PATHS.items()},
+        every_live_path_inside_its_bound=all(
+            live_ohms[k] <= v["bound_ohm"] for k, v in NORMAL_PATHS.items()),
+        bases=bases,
+        required_single_rail_floor_V=round(req_single, 4),
+        required_dual_rail_floor_V=round(req_dual, 4),
+        required_single_rail_floor_gridded_V=round(req_single_grid, 4),
+        required_dual_rail_floor_gridded_V=round(req_dual_grid, 4),
+        floor_grid_V=FLOOR_GRID_V,
+        firmware_single_rail_floor_V=single_floor,
+        firmware_dual_rail_floor_V=dual_floor,
+        required_margin_to_ibat_ocp_min_pct=NORMAL_OCP_MARGIN_MIN * 100.0,
+        ibat_ocp_min_A=round(IBAT_OCP_MIN, 4),
+        cases=normal_cases,
+        batfet_breakeven_ohm=dict(
+            at_the_margin_convention=round(be_margin - live_cu_hot, 6),
+            at_the_ibat_ocp_minimum=round(be_trip - live_cu_hot, 6),
+            as_a_multiple_of_the_datasheet_max=dict(
+                at_the_margin_convention=round(
+                    (be_margin - live_cu_hot) / RON_BAT_MAX_OHM, 3),
+                at_the_ibat_ocp_minimum=round(
+                    (be_trip - live_cu_hot) / RON_BAT_MAX_OHM, 3))),
+        method="the floor is SOLVED FOR, not checked at: I_bat is found "
+               "self-consistently from the MAX17048 BAT_PROTECTED_P node "
+               "through the live hot copper and the BQ25185 BATFET maximum, "
+               "with the U21 boost's input current taken through the live "
+               "SYS->U21 trunk and each accessory rail paying for its own "
+               "copper and its load switch's RON; required_*_floor_V is the "
+               "VCELL at which that current reaches IBAT_OCP's minimum less "
+               "the margin convention, derived on BOTH the live resistances "
+               "and the declared path ceilings, and the firmware constants "
+               "must satisfy the worse of the two")
+    d["firmware_floors_meet_the_derived_requirement"] = (
+        single_floor >= req_single_grid - 1e-9
+        and dual_floor >= req_dual_grid - 1e-9)
+    d["published_normal_load_respects_vcell_policy"] = all(
+        row["margin_at_least_the_convention"] for row in normal_cases.values())
+    d["every_live_normal_path_is_inside_its_bound"] = (
+        d["normal_operation"]["every_live_path_inside_its_bound"])
 
     # ---- D-765: the three clauses that had no words before -----------------
     d["limiter_parts"] = parts
@@ -1182,7 +1442,10 @@ def judge_accessory_envelope(values):
           and d["each_rail_guarantees_its_published_accessory_budget"]
           and d["recoverable_trip_is_ordered_below_the_latching_breaker"]
           and d["converters_can_source_their_worst_case_rail"]
-          and d["boost_setpoint_is_clear_of_its_own_ovp"])
+          and d["boost_setpoint_is_clear_of_its_own_ovp"]
+          and d["published_normal_load_respects_vcell_policy"]
+          and d["firmware_floors_meet_the_derived_requirement"]
+          and d["every_live_normal_path_is_inside_its_bound"])
     return ok, d
 
 
@@ -1367,7 +1630,59 @@ def main():
                                                  "board", mA=500.0,
                                             refs=("U999",), cite="control")])))
 
-    env_ok, env = judge_accessory_envelope(values)
+    # D-775: bind the derived floor to the ACTUAL firmware policy, to the
+    # MAX17048 measurement node, and to the FOUR live resistances the
+    # derivation needs.  This closes a cross-domain hole in both directions: a
+    # correct analytical floor is useless if firmware does not enforce it, and
+    # a firmware constant is not proof of the power model.
+    policy_text = POWER_POLICY.read_text(encoding="utf-8") if POWER_POLICY.exists() else ""
+    sm = re.search(r"kAccessorySingleRailFloorV\s*=\s*([0-9.]+)f", policy_text)
+    dm = re.search(r"kAccessoryDualRailFloorV\s*=\s*([0-9.]+)f", policy_text)
+    policy_single = float(sm.group(1)) if sm else float("nan")
+    policy_dual = float(dm.group(1)) if dm else float("nan")
+
+    # THE MEASUREMENT POINT IS A CLAUSE, not a comment: the whole model rests
+    # on the gauge reading the SAME node U11's BAT pin sits on.
+    measurement_contacts = ("U14.2", "U14.3", "U11.2")
+    measurement_nets = {c: nets_by_contact.get(c) for c in measurement_contacts}
+    measurement_ok = all(measurement_nets[c] == "/01_POWER_TREE/BAT_PROTECTED_P"
+                         for c in measurement_contacts)
+
+    pad_index = {"%s.%s" % (fp.GetReference(), pd.GetNumber()): pd
+                 for fp in board.GetFootprints() for pd in fp.Pads()
+                 if pd.GetNumber()}
+    rails_by_name = {r["name"]: r for r in ara.RAILS}
+
+    def _live_series_ohm(key):
+        """Series resistance of one NORMAL_PATHS entry, off the live board."""
+        spec = NORMAL_PATHS[key]
+        rail = rails_by_name[spec["rail"]]
+        nodes, edges = ara.build_graph(board, rail["net"])
+        src = [ara.pad_key(pad_index[r]) for r in spec["src"] if r in pad_index]
+        snk = [ara.pad_key(pad_index[r]) for r in spec["snk"] if r in pad_index]
+        if not src or not snk:
+            return float("inf")
+        path, _ = ara.widest_bottleneck(nodes, edges, src, snk, rail["amps"])
+        if not path:
+            return float("inf")
+        return sum(ara.RHO_CU * e["length_mm"] / e["area_mm2"] for e in path
+                   if e["kind"] != "pad" and e["area_mm2"])
+
+    live_ohms = {k: _live_series_ohm(k) for k in NORMAL_PATHS}
+
+    env_ok, env = judge_accessory_envelope(
+        values, single_floor=policy_single, dual_floor=policy_dual,
+        live_ohms=live_ohms)
+    env["normal_operation"]["firmware_policy_file"] = str(
+        POWER_POLICY.relative_to(ROOT)) if POWER_POLICY.exists() else None
+    env["normal_operation"]["measurement_contacts"] = measurement_nets
+    env["normal_operation"]["measurement_point_is_bat_protected_p"] = measurement_ok
+    env["normal_operation"]["firmware_policy_parsed"] = (
+        math.isfinite(policy_single) and math.isfinite(policy_dual))
+    env["normal_operation"]["live_paths_measured_off_the_board"] = True
+    env_ok = (env_ok and measurement_ok
+              and math.isfinite(policy_single) and math.isfinite(policy_dual))
+
     env["p3v3_internal_budget"] = budget
     env["internal_3v3_A"] = I_INTERNAL
     env["every_fitted_p3v3_consumer_is_budgeted"] = budget[
@@ -1380,6 +1695,13 @@ def main():
         v2 = dict(values)
         mutate(v2)
         ok, _ = judge_accessory_envelope(v2)
+        return name, not ok
+
+    def _env_policy_control(name, single_floor=None, dual_floor=None):
+        ok, _ = judge_accessory_envelope(
+            values,
+            single_floor=(policy_single if single_floor is None else single_floor),
+            dual_floor=(policy_dual if dual_floor is None else dual_floor))
         return name, not ok
 
     env_controls = dict(x for x in (
@@ -1457,6 +1779,45 @@ def main():
         # minimum would make a good board fault on itself
         _env_control("f6u_refuses_a_divider_that_sets_into_its_own_ovp",
                      lambda v: v.__setitem__("R99", "820k 1%"))))
+    # ---- D-775's five.  The floor is DERIVED, so the controls have to prove
+    # the derivation REFUSES -- both a floor below what it derives and a model
+    # whose live inputs have drifted past what it was derived on.
+    def _env_ohm_control(name, **over):
+        live2 = dict(live_ohms)
+        live2.update(over)
+        ok, _ = judge_accessory_envelope(
+            values, single_floor=policy_single, dual_floor=policy_dual,
+            live_ohms=live2)
+        return name, not ok
+
+    env_controls.update(dict((
+        # f6v IS THE POLICY THE PRE-D-775 FIRMWARE SHIPPED: one 3.50 V floor
+        # for both rails, which at the published 400 + 300 mA leaves 0.36 % of
+        # margin to a RECOVERABLE charger trip on the live resistances and is
+        # NEGATIVE on the declared ceilings.
+        _env_policy_control(
+            "f6v_refuses_the_old_single_3p50V_floor_for_both_D098_rails",
+            dual_floor=3.50),
+        # f6w IS THE FIRST D-775 DRAFT'S ASSERTED 3.75 V.  It is refused by the
+        # SAME arithmetic that produced 3.80 -- the draft passed only because
+        # its round 0.250 ohm path and flat 60 mW allowance under-counted the
+        # accessory-rail copper, the two limiter RONs and the SYS->U21 trunk.
+        _env_policy_control(
+            "f6w_refuses_the_asserted_3p75V_floor_the_first_draft_carried",
+            dual_floor=3.75),
+        # and the single-rail floor is a clause too, not just the dual one
+        _env_policy_control(
+            "f6x_refuses_a_single_rail_floor_under_its_own_requirement",
+            single_floor=3.10),
+        # ---- the LIVE inputs.  A path that grows past its declared ceiling
+        # must fail rather than be absorbed into the margin.
+        _env_ohm_control(
+            "f6y_refuses_bat_protected_p_copper_past_its_ceiling",
+            bat_protected_p=0.060),
+        _env_ohm_control(
+            "f6z_refuses_a_sys_to_u21_trunk_past_its_ceiling",
+            sys_to_u21=0.260),
+    )))
 
     # ---- F7: the DISPLAY IDENTITY, everywhere it is written -------------
     # D-768.  D-074 locked the EastRising ER-TFT035IPS-6 (3.5in 320x480,
@@ -1791,8 +2152,11 @@ def main():
                    "read from R75 and U18 over the LTC4368's own guaranteed "
                    "40/50/60 mV threshold band instead of its 50 mV typical, "
                    "so the LATCHING breaker must sit entirely above the "
-                   "RECOVERABLE charger trip; and both converters must be "
-                   "able to source what their load switch is allowed to pass",
+                   "RECOVERABLE charger trip; both converters must be able "
+                   "to source what their load switch is allowed to pass; and "
+                   "D-775 binds D-098 normal 400/300 mA operation to the "
+                   "firmware VCELL policy with a sag-aware model from the "
+                   "MAX17048 BAT_PROTECTED_P measurement point",
             controls_refused=dict(env_controls, **budget_controls), **env),
         "F8_the_derating_rule_is_applied_to_the_parts_this_board_fits": dict(
             ok=cap_ok and all(cap_controls.values()),

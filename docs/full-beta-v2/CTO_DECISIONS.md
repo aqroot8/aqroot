@@ -1,3 +1,159 @@
+## D-775 — **D-098 NORMAL CONCURRENCY IS NOW DERIVED FROM THE LIVE BOARD AND ENFORCED BY FIRMWARE**
+
+    authority  board 8c548ece, UNCHANGED; no schematic/PCB/BOM/CPL/Gerber/drill change
+    closes     independent CTO hold after D-774: normal simultaneous 400 mA
+               ACC_3V3 + 300 mA ACC_5V was still an ideal-source calculation,
+               while firmware used one 3.50 V floor for both one and two rails
+    changed    Firmware/src/hw/aqroot_accessory_power_policy.h;
+               Firmware/src/demo/main.cpp; Firmware/test/test_accessory_power_policy.cpp;
+               checks/firmware_hw_map_contract.py; checks/demo_feature_contract.py;
+               release evidence and docs
+
+### 1. THE HOLD WAS REAL; THE FIRST ~3.85 V ESTIMATE USED THE WRONG REFERENCE POINT
+
+`MAX17048` does **not** measure at the cell connector. `U14.2/U14.3` are on
+`/01_POWER_TREE/BAT_PROTECTED_P`, the same node as `BQ25185 U11.2 BAT`.  F6 now
+asserts those three contacts are on that exact net.  Therefore Q2/Q3, R75 and the
+pack's internal resistance — all upstream of the gauge — must not be counted a
+second time when deriving a firmware policy from MAX17048 `VCELL`.
+
+The final model does not replace that first round number with another chosen
+constant.  It **solves the floor** from the live authoritative board and the fitted
+parts, every run:
+
+* live `BAT_PROTECTED_P`, `SYS -> U21`, `ACC_3V3_SW` and `ACC_5V_SW` series paths
+  are independently extracted with the rail-audit graph;
+* copper is raised by `1 + 0.00393 × 65 K = 1.2554` for a deliberately hot case;
+* BQ25185 `RON_BAT` uses TI's **140 mΩ max** at its stated test point and a declared
+  **1.40× low-VBAT/high-current allowance**, i.e. 196 mΩ modeled;
+* TPS22950-Q1 output-switch `RON` maxima are included (**68 mΩ / 54 mΩ**);
+* D-772's itemised **1.063 A** internal +3V3 budget and D-773's **5.165 V** worst
+  boost setpoint remain the loads;
+* D-098 remains **400 mA total on 3V3 + 300 mA total on 5V**;
+* converter efficiencies remain conservative at 90% / 88%;
+* the design convention requires **10% headroom** to the BQ25185 `IBAT_OCP`
+  minimum, rather than merely staying one count below it.
+
+### 2. LIVE PATHS, DECLARED CEILINGS, AND THE DERIVED FLOOR
+
+The current board measures:
+
+| path | live 20 C resistance | declared ceiling |
+|---|---:|---:|
+| `R75.2 -> U11.2` / BAT_PROTECTED_P | **43.116 mΩ** | 50 mΩ |
+| `SYS -> L4.1` / 5 V boost input | **183.310 mΩ** | 200 mΩ |
+| `U20.5 -> J5.3/J5.22` / ACC_3V3_SW | **224.425 mΩ** | 240 mΩ |
+| `U22.5 -> J5.1/J5.24` / ACC_5V_SW | **110.567 mΩ** | 120 mΩ |
+
+F6 derives the requirement on **both** the live measurements and the declared
+ceilings and requires firmware to satisfy the worse result.  On the ceiling basis:
+
+* zero-margin single-rail floor: **2.9522 V**;
+* 10%-margin single-rail floor: **3.1232 V**, rounded upward to **3.15 V**;
+* zero-margin dual-rail floor: **3.5207 V**;
+* 10%-margin dual-rail floor: **3.7622 V**, rounded upward on the 50 mV policy grid
+  to **3.80 V**.
+
+The existing D-766 single-rail policy at **3.50 V** is already far above its
+3.15 V requirement, so it stays.  The dual-rail policy is **3.80 V**.
+
+### 3. THE ENFORCED FIRMWARE BEHAVIOUR
+
+`aqroot_accessory_power_policy.h` is the one policy authority and its behaviour is
+host-tested:
+
+* first/only accessory rail: require `VCELL >= 3.50 V`;
+* second rail / simultaneous D-098 budgets: require `VCELL >= 3.80 V`;
+* unreadable MAX17048 VCELL: **fail closed**;
+* both rails active and VCELL drops below 3.80 V but stays >=3.50 V: **shed 5 V
+  first**, retaining the less expensive 3V3 rail;
+* below 3.50 V: shed all accessory power.
+
+At the live board and the firmware floors, F6 reports:
+
+| conforming normal load | floor | modeled battery current | margin to 2.5625 A OCP min |
+|---|---:|---:|---:|
+| 3.3 V, 400 mA | **3.50 V** | **1.7761 A** | **30.69%** |
+| 5 V, 300 mA | **3.50 V** | **1.9078 A** | **25.55%** |
+| both budgets | **3.80 V** | **2.2499 A** | **12.20%** |
+
+The model also prints its own uncertainty boundary: at the 3.80 V dual floor the
+BATFET alone could rise to **0.223392 Ω** before the 10%-margin convention is lost
+(**1.596×** TI's 140 mΩ maximum), and to **0.315862 Ω** before the OCP minimum is
+reached (**2.256×**).  The release model uses 0.196 Ω.
+
+### 4. WHY THIS IS A CROSS-DOMAIN GATE, NOT ANOTHER DOCUMENTED ASSUMPTION
+
+F6 parses the actual firmware floor constants, verifies `U14.2/U14.3/U11.2` are on
+`BAT_PROTECTED_P`, independently extracts all four live series paths, checks every
+path remains inside its ceiling, solves the required floors and refuses firmware
+below them.  **Five destructive controls are refused**, and two of them are the
+boards this decision replaced:
+
+| control | what it puts back | why it is refused |
+|---|---|---|
+| `f6v` | the pre-D-775 policy: one **3.50 V** floor for both rails | both published budgets at 3.50 V leave **0.36 %** on the live resistances and are **negative** on the ceilings |
+| `f6w` | **the first D-775 draft's asserted 3.75 V** | the same arithmetic that produced 3.80 refuses it — the draft passed only on its round 0.250 Ω and flat 60 mW |
+| `f6x` | a **3.10 V** single-rail floor | below the 3.15 V gridded single-rail requirement |
+| `f6y` | `BAT_PROTECTED_P` copper at **60 mΩ** | past its 50 mΩ declared ceiling |
+| `f6z` | the `SYS`→`U21` trunk at **260 mΩ** | past its 200 mΩ declared ceiling |
+
+`f6w` is the load-bearing one: it is this decision's own first answer, refused by
+its own corrected model.
+
+The firmware contract separately compiles/runs the policy host test and mutates:
+(1) the dual floor back onto the single floor, (2) unreadable VCELL into fail-open,
+and (3) the 5 V-first shed into an all-off policy.  The contract must catch all
+three.  Thus firmware, PCB geometry, gauge attachment and analytical assumptions
+cannot drift independently while the release remains green.
+
+### 5. DISPOSITION
+
+D-775 does **not** weaken D-753/D-765/D-771's hardware fault envelope. TPS22950-Q1
+remains the absolute accessory-current ceiling; BQ25185 OCP remains the recoverable
+first protection; LTC4368 remains ordered above it. D-775 governs conforming D-098
+normal operation only.
+
+**PCB authority remains `8c548ece`; fabrication data is unchanged.**  The earlier
+~3.85 V estimate is superseded because it double-counted upstream loss relative to
+the actual MAX17048 measurement point; the final **3.80 V** value is not a relaxed
+judgement call but the upward-grid result of the live/path-bound solver.
+
+### 6. RESIDUAL RISKS, STATED
+
+1. **`RON_BAT` vs `VBAT` IS NOT PUBLISHED.**  `SLUSF65B` specifies the BATFET at
+   `VBAT = 4.5 V` / `IBAT = 400 mA` and prints no curve; this model runs it at
+   about 3.2 V of `SYS` with 2.3 A through it, on a declared **1.40×** allowance.
+   The allowance is bounded rather than hidden — at the 3.80 V floor the 10 %
+   convention survives **1.60×** the datasheet maximum and `IBAT_OCP`'s own
+   minimum is not reached until **2.26×** — but it is an extrapolation.
+   **FIRST-ARTICLE MEASUREMENT:** `V(U11.2) − V(U11.1)` at the 3.5 V corner with
+   both accessory rails at their published budgets, against a 196 mΩ model.
+
+2. **THE POLICY IS NOT `VIN`-AWARE.**  With USB attached, `SYS` is fed from `VIN`
+   and the pack supplies only the shortfall, so the floor is conservative rather
+   than necessary — yet a user on a 60 %-charged pack is refused simultaneous
+   dual-rail accessory power *while charging*.  Nothing in hardware was changed
+   for this: the `BQ25185` has no `VIN`-present output this board routes, and
+   `STAT2` is the owner-approved NC (`.aqroot-owner-decision-stat2.txt`).
+   **POST-KICKSTARTER:** route a `VBUS`-present sense to the MCU and make the
+   dual-rail floor conditional on it.
+
+3. **THE 10 % HEADROOM IS A CONVENTION, NOT A DATASHEET NUMBER.**  The
+   zero-margin dual-rail floor is **3.5207 V**; the convention covers what the
+   model does not itemise (pour-delivered `+3V3` distribution, efficiency below
+   the conservative 90 % / 88 %, cell-to-cell spread).  Both figures are printed
+   in `normal_operation` so a reviewer can re-order the two.
+
+4. **THE RESTRICTION IS REAL AND IT IS A PRODUCT FACT.**  Simultaneous
+   *full-budget* `ACC_3V3_SW` + `ACC_5V_SW` requires `VCELL >= 3.80 V`.  Each
+   rail individually remains available to 3.50 V, and below the dual floor the
+   5 V rail sheds first so the 3.3 V rail keeps its full published 400 mA — but
+   accessory-facing documentation must say so.  **This is not a capability
+   removal:** D-098's numbers are unchanged and both are still guaranteed by the
+   limiters (+7.0 % / +4.9 %); what is bounded is the pack state in which they
+   may be drawn *at the same time*, and the alternative is a charger hiccup.
+
 ## D-774 — **THE DERATING RULE THIS REPOSITORY STATES HAD NEVER ONCE BEEN RUN AGAINST A PART THE BOARD ACTUALLY FITS**
 
     authority  8c548ece, UNCHANGED.  NO PCB, schematic, .kicad_dru, value or

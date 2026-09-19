@@ -66,7 +66,7 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
-> # **`DEMO_READY_FOR_FAB` IS RE-DECLARED ON BOARD `8c548ece` (2026-09-19, D-771 · D-772 · D-773 · D-774).**
+> # **`DEMO_READY_FOR_FAB` IS RE-DECLARED ON BOARD `8c548ece` (2026-09-19, D-771 · D-772 · D-773 · D-774 · D-775).**
 >
 > **The CTO withdrew D-770 for one item.  Closing it exposed a chain of three
 > defects of the same shape — *a number this repository states and nothing
@@ -111,8 +111,11 @@
 >     D-186 / D-269    dru_contracts live and TRUE on this board
 >     ampacity         all_ok, and the method self-check now PARSES the
 >                      .kicad_dru table it always claimed to re-derive
->     features         F1-F8 PASS (F6 TWENTY-ONE controls, F7 five references
->                      and ten controls, F8 four controls -- 76 fitted
+>     features         F1-F8 PASS (F6 TWENTY-SIX controls incl. D-775's five --
+>                      the old single floor, the first draft's asserted 3.75 V,
+>                      a single-rail floor under its own requirement and either
+>                      live path past its ceiling; F7 five references and ten controls,
+>                      F8 four controls -- 76 fitted
 >                      capacitors, none failing its node's absolute maximum,
 >                      five named exceptions all still needed)
 >     battery pack     B1-B8 PASS
@@ -120,7 +123,8 @@
 >     fab package      regenerated at release D-773; FAB1-FAB15 PASS,
 >                      sourcing 252/252, coverage 1.0
 >     contracts        19 standing contracts, all ran, NONE failing
->     firmware         H1-H6 PASS, four builds SUCCESS
+>     firmware         H1-H6 PASS; host policy test 23/23 and all three destructive
+>                      policy controls caught; four builds SUCCESS
 >     hardware/beta-v2 UNTOUCHED
 >
 > **THE THINNEST MARGIN ON THIS BOARD IS 1.6 %, AND IT IS NAMED RATHER THAN
@@ -128,8 +132,9 @@
 > — *while every internal subsystem runs at once*, on a `BQ25185` at the **−18 %
 > corner**, the cell at **3.0 V** and the boost at the **top of its own setpoint
 > band**.  Six independent parameters at their unlucky corners at once, and the
-> consequence is an `IBAT_OCP` **hiccup that auto-retries**.  **At a conforming
-> accessory load the margin is 7.3 %.**
+> consequence is an `IBAT_OCP` **hiccup that auto-retries**.  The separate D-775
+> normal-use contract gives **12.20 % sag-aware margin** for simultaneous
+> conforming 400/300 mA operation at its enforced 3.80 V VCELL floor.
 >
 > **D-774 — A RULE THIS REPOSITORY STATES AND NOTHING APPLIED.**  The same class
 > one step over, found while checking whether D-773's corrected setpoint moved
@@ -148,6 +153,27 @@
 > both now carry the part's own `VOVP` maximum as their absolute.  **No board
 > change; the fabrication package is byte-untouched.**
 >
+> **D-775 — THE NORMAL D-098 CONCURRENCY HOLD IS CLOSED BY A LIVE-BOARD-DERIVED
+> VCELL POLICY.**  The hold correctly found that F6 priced D-098's 400/300 mA
+> simultaneous normal load as an ideal source while firmware used one 3.50 V
+> floor.  Its first ~3.85 V estimate counted upstream pack/Q2/Q3/R75 loss twice:
+> MAX17048 `U14.2/U14.3` and BQ25185 `U11.2` are the same `BAT_PROTECTED_P` node.
+> F6 now derives the floor every run from four live PCB paths, hot-copper scaling,
+> TI's BQ25185 **140 mΩ max BATFET** with a declared 1.40× low-VBAT/high-current
+> allowance, both TPS22950-Q1 `RON` maxima, D-772's 1.063 A internal budget and
+> D-773's 5.165 V worst boost setpoint.  The worse path-bound result for 10%
+> OCP headroom is **3.7622 V**, rounded upward on the 50 mV policy grid to
+> **3.80 V**; the corresponding single-rail requirement is only 3.1232 V, so
+> the existing **3.50 V** single floor remains.  Firmware therefore enforces
+> **3.50 V single / 3.80 V dual**, fails closed on unreadable VCELL, sheds 5 V
+> first below the dual floor and sheds all below 3.50 V.  At the live board,
+> simultaneous 400/300 mA normal use at 3.80 V models **2.2499 A**, **12.20%**
+> below BQ25185 OCP minimum; single 3V3/5V cases at 3.50 V retain **30.69% /
+> 25.55%**.  F6 parses the real firmware constants, verifies the gauge/BAT
+> topology, measures all live paths and refuses floors below the derived result.
+> The policy host test passes **23/23** and three destructive policy controls are
+> caught.  **PCB and fabrication package remain unchanged.**
+>
 > Three things that had never been measured now are: the two accessory rails
 > themselves (`.kicad_dru` **§5f**), `+3V3` (**pour-delivered**, declared rather
 > than left silent), and the boost's own setpoint against its own OVP.
@@ -156,8 +182,8 @@
 > the 3.0 V corner with both accessory rails loaded.
 >
 > **There is no open owner decision and no unresolved Demo fabrication blocker.**
-> Residual risks are `CTO_DECISIONS.md` **D-773 §7**, **D-772 §8**, **D-771 §10**
-> and **D-770 §5**.  Independent CTO review follows.
+> Residual risks are `CTO_DECISIONS.md` **D-775 §6**, **D-773 §7**, **D-772 §8**,
+> **D-771 §10** and **D-770 §5**.  Independent CTO review follows.
 >
 > # **THE D-771, D-772 AND D-770 ENTRIES BELOW STAND AS HISTORY.**
 >

@@ -366,6 +366,19 @@ power/NFC review, and CTO decisions.
 > **This wording is D-098's own and is MANDATORY in accessory-facing
 > documentation.**
 >
+> **D-775 ADDS ONE MANDATORY CONDITION TO THE SAME WORDING, AND IT IS A PACK-STATE
+> CONDITION, NOT A SMALLER NUMBER.**  Both budgets remain guaranteed by the
+> limiters (+7.0 % / +4.9 %, below), and each rail on its own is available down to
+> a **3.50 V** cell.  What is bounded is drawing BOTH at full budget **at the same
+> time**: that requires `VCELL >= 3.80 V`, the floor `F6` derives from the live
+> board (§ D-775 below).  Below it, firmware sheds the **5 V rail first** and the
+> 3.3 V rail keeps its full published 400 mA.  Accessory-facing documentation must
+> carry this condition: *"400 mA on 3.3 V and 300 mA on 5 V simultaneously
+> requires a battery at or above 3.80 V; below that the 5 V accessory rail is
+> switched off and the 3.3 V rail keeps its full budget."*  The alternative is a
+> BQ25185 `IBAT_OCP` hiccup on a low pack, which is worse for an accessory than a
+> deterministic refusal.
+>
 > **D-771 MADE IT A GUARANTEE RATHER THAN A HOPE.**  Every clause D-753 and D-765
 > wrote asked whether an accessory could pull TOO MUCH; none asked whether the
 > rail could DELIVER what the product promises.  At the 2.7 kΩ both rails carried,
@@ -476,7 +489,7 @@ settings (1.15 kΩ and 2.21 kΩ) publish 0.75–0.76× / 1.24–1.25×.
 > (0.52 % → 1.6 %).  **D-771's 2.32 kΩ broke no clause and is not described as
 > if it had.**
 
-Modelled at the 3.0 V cell corner with that **1.063 A** internal `+3V3` load,
+**FAULT-ENVELOPE screen** — modelled at the 3.0 V BAT corner with that **1.063 A** internal `+3V3` load,
 `U12` at 90 % and `U21` at 88 % into the boost's **worst-case 5.165 V setpoint**
 (D-773, block below; at the 4.950 V *typical* setpoint the same rows read
 2.337 / 2.470 / 2.410 / 2.351 / 3.508 A):
@@ -493,6 +506,76 @@ Modelled at the 3.0 V cell corner with that **1.063 A** internal `+3V3` load,
 at the 1.0 A internal term they used; only the last column is re-based on the
 1.063 A D-772 derived.)*
 
+> ### D-775 — NORMAL D-098 CONCURRENCY IS GATED, AND THE FLOOR IS SOLVED FOR RATHER THAN CHOSEN
+>
+> The table above is the **hardware fault envelope**; it is not the normal-load
+> battery-sag proof.  MAX17048 `VCELL` is measured on **`BAT_PROTECTED_P`**
+> (`U14.2/U14.3`), the same node as BQ25185 `BAT` (`U11.2`).  The CTO hold
+> correctly found that normal 400 mA + 300 mA concurrency lacked a gate, but its
+> first ~3.85 V estimate counted cell/`Q2`/`Q3`/`R75` loss upstream of the gauge
+> a second time.  D-775 starts at the actual measurement node instead — and the
+> floor it enforces is **DERIVED**, not asserted.  A first D-775 draft priced the
+> sag from a round **0.250 Ω** path "bound with contingency" plus a flat **60 mW**
+> branch allowance and then checked the margin **at** a hand-written **3.75 V**;
+> that is a check, not a derivation, and nothing in the repository could say why
+> the number was 3.75 rather than 3.55 or 3.95.
+>
+> **EVERY SERIES TERM IS NOW MEASURED OR CITED.**  `F6` re-measures four paths off
+> the live board on every run — `BAT_PROTECTED_P` (`R75.2`→`U11.2`) **43.1 mΩ**,
+> the `SYS`→`U21` boost trunk **183.3 mΩ**, `ACC_3V3_SW` **224.4 mΩ** and
+> `ACC_5V_SW` **110.6 mΩ** — takes each at its hot resistivity (×**1.2554**, from
+> copper's own 0.00393/K over a 65 K rise; the same audit's worst accepted rise on
+> the `BAT_PROTECTED_P` rail is 49.6 K), adds the BQ25185 BATFET maximum
+> (`SLUSF65B` `RON_BAT` = **140 mΩ**, which the EC table's own
+> −40…+125 °C header already covers) with a declared **1.40×** allowance for the
+> 3.5 V / 2.3 A corner TI does not publish, and adds each load switch's own
+> `RON` max (`SLVSGP6A` −40…+125 °C: **68 mΩ** at 3.3 V, **54 mΩ** at 5 V).  The
+> `U21` boost's input current is then taken **through** the live trunk, so its loss
+> is solved rather than allowed for.
+>
+> **THE FLOOR IS THE ANSWER, NOT AN INPUT.**  `required_*_floor_V` is the `VCELL`
+> at which the resulting battery current reaches `IBAT_OCP`'s **minimum less 10 %**,
+> derived twice — once on the live resistances, once on the declared path ceilings —
+> with the firmware required to satisfy the worse of the two, rounded up onto a
+> 0.05 V grid:
+>
+> | conforming normal load | derived requirement | enforced VCELL floor | modeled battery current | margin to 2.5625 A OCP min |
+> |---|---:|---:|---:|---:|
+> | 3.3 V, 400 mA | 2.9516 V | **3.50 V** | **1.776 A** | **30.7 %** |
+> | 5 V, 300 mA | **3.1232 V** → 3.15 | **3.50 V** | **1.908 A** | **25.6 %** |
+> | both published budgets | **3.7622 V** → **3.80** | **3.80 V** | **2.250 A** | **12.2 %** |
+>
+> **THE DERIVATION MOVED THE FLOOR.**  3.7622 V is **above** the 3.75 V the first
+> draft asserted: the draft passed only because its round 0.250 Ω and flat 60 mW
+> under-counted the accessory-rail copper, the two limiter `RON`s and the
+> `SYS`→`U21` trunk.  The firmware dual-rail floor is **3.80 V**.  The single-rail
+> requirement is 3.1232 V, so D-766's existing **3.50 V** policy floor stands
+> unchanged and well clear.  Without any floor at all, both published budgets at
+> 3.50 V leave **0.4 %** of margin on the live resistances and are **negative** on
+> the declared ceilings — the gate is not decorative.
+>
+> **HOW MUCH OF THE FLOOR IS CONVENTION.**  The zero-margin dual-rail floor is
+> **3.5207 V**; the 10 % headroom is a declared design convention covering what the
+> model does not itemise (pour-delivered `+3V3` distribution, efficiency below the
+> conservative 90 %/88 % used, cell-to-cell spread), and it is reported beside every
+> case so physics and convention stay separable.  The unpublished BATFET
+> extrapolation is bounded the same way: at 3.80 V the 10 % margin survives a BATFET
+> up to **1.60×** the datasheet maximum, and `IBAT_OCP`'s own minimum is not reached
+> until **2.26×**.
+>
+> **WHAT THE USER GETS.**  Firmware permits one rail from 3.50 V, requires 3.80 V
+> before a second rail is enabled, fails closed when `VCELL` is unreadable, sheds the
+> **5 V rail first** if a dual-rail load falls below 3.80 V — leaving the 3.3 V rail
+> its full published 400 mA — and sheds all accessory power below 3.50 V.  Only the
+> **simultaneous full-budget** case is restricted; each rail individually remains
+> available to 3.50 V.  `F6` parses the actual firmware constants, requires the gauge
+> and charger `BAT` pins to be on `BAT_PROTECTED_P`, and refuses a live path that has
+> grown past its declared ceiling.  Five destructive controls are refused: the old
+> single 3.50 V dual floor, **the first draft's asserted 3.75 V**, a single-rail floor
+> under its own requirement, and `BAT_PROTECTED_P` or `SYS`→`U21` copper past its
+> ceiling.  `H6` adds three C++ mutations — collapsing the dual floor, failing open on
+> an unreadable gauge, and losing the 5 V-first shed order.
+>
 against a `BQ25185` `IBAT_OCP` band of **2.5625 / 3.125 / 3.6875 A** (3.125 A typ
 ± 18 %, `SLUSF65B`), the `LTC4368` breaker at **3.960 / 5.000 / 6.061 A**
 (40/50/60 mV guaranteed across `R75` 10 mΩ ± 1 %) and `F1` at 5 A.
@@ -510,7 +593,7 @@ against a `BQ25185` `IBAT_OCP` band of **2.5625 / 3.125 / 3.6875 A** (3.125 A ty
 > **10.8 % below** the breaker's guaranteed minimum and below the one-shot fuse.
 > `checks/demo_feature_contract.py` **F6** recomputes all of this from the two
 > resistors, the two limiter part numbers, **`R75`, `U18` and the itemised
-> internal budget** — the board's own values, not constants — with **eighteen**
+> internal budget** — the board's own values, not constants — with **twenty-three**
 > live negative controls, three of which are boards this project actually
 > shipped.
 

@@ -28,6 +28,7 @@
 #include <Arduino.h>
 #include <SPI.h>
 
+#include "../hw/aqroot_accessory_power_policy.h"
 #include "../hw/aqroot_demo_board.h"
 #include "../hw/aqroot_demo_display.h"
 #include "../hw/aqroot_demo_expanders.h"
@@ -53,16 +54,18 @@ static bool g_acc5v = false;
 static bool g_accessory_i2c = false;
 static uint32_t g_last_battery_guard_ms = 0;
 
-// D-766 FIRMWARE POLICY, NOT A HARDWARE GATE.  Nothing on this board measures
-// accessory current, and the only HARDWARE bound on an external accessory is
-// the TPS22950-Q1's own current limit -- which is what D-753/D-765 sized and
-// what demo_feature_contract F6 still enforces absolutely.  This floor is a
-// SECOND, INDEPENDENT, SOFTWARE-SIDE reduction of exposure: refuse to switch an
-// accessory rail on, and shed one already on, while the pack is below 3.50 V,
-// where the ACC_5V boost draws its highest input current for a given output and
-// where a pack near the end of its discharge has the least headroom to a PCM
-// trip.  It must never be read as permission to weaken F6's envelope.
-static constexpr float kAccessoryBatteryFloorV = 3.50f;
+// D-775 FIRMWARE POLICY.  Hardware current limiting remains the absolute
+// safety boundary.  This separate VCELL policy enforces the NORMAL D-098 load
+// contract: one accessory rail uses D-766's retained 3.50 V floor, and
+// enabling or retaining BOTH published rails requires the 3.80 V that
+// demo_feature_contract F6 DERIVES from the MAX17048 measurement node, the
+// live BAT_PROTECTED_P copper, the BQ25185 BATFET maximum and D-098's
+// published 400 mA / 300 mA.  The 5 V rail -- the expensive one, since its
+// pack current scales with the boost ratio -- is shed FIRST when a dual-rail
+// load crosses that floor, so the 3.3 V rail keeps its full published budget.
+// Unreadable VCELL is always fail-closed.  Both constants and the derivation
+// live in ../hw/aqroot_accessory_power_policy.h and F6 refuses either one
+// dropping below what it derives.
 
 static void report(const char *stage, bool ok, const char *detail = nullptr) {
   Serial.printf("[%-4s] %-34s %s\n", ok ? "PASS" : "FAIL", stage,
@@ -98,11 +101,14 @@ static bool readFuelCellVoltage(float *volts) {
   return true;
 }
 
-static bool accessoryBatteryOk(float *volts = nullptr) {
+static bool accessoryBatteryAllows(bool other_rail_on, float *volts = nullptr,
+                                   float *floor = nullptr) {
   float v = 0.0f;
   const bool read = readFuelCellVoltage(&v);
+  const float required = accessoryEnableFloor(other_rail_on);
   if (volts) *volts = v;
-  return read && v >= kAccessoryBatteryFloorV;
+  if (floor) *floor = required;
+  return accessoryEnableAllowed(read, v, other_rail_on);
 }
 
 static void forceAccessoriesOff(const char *why) {
@@ -400,16 +406,28 @@ void loop() {
       millis() - g_last_battery_guard_ms >= 500) {
     g_last_battery_guard_ms = millis();
     float vcell = 0.0f;
-    if (!accessoryBatteryOk(&vcell)) {
-      char why[96];
-      if (vcell > 0.0f) {
-        snprintf(why, sizeof(why), "VCELL %.3f V below %.2f V Demo floor",
-                 vcell, kAccessoryBatteryFloorV);
+    const bool read = readFuelCellVoltage(&vcell);
+    const AccessoryBatteryAction action =
+        accessoryRetentionAction(read, vcell, g_acc3v3, g_acc5v);
+    if (action == AccessoryBatteryAction::ShedAll) {
+      char why[112];
+      if (read) {
+        snprintf(why, sizeof(why), "VCELL %.3f V below %.2f V single-rail floor",
+                 vcell, kAccessorySingleRailFloorV);
       } else {
         snprintf(why, sizeof(why),
                  "MAX17048 VCELL unreadable; accessory load not permitted");
       }
       forceAccessoriesOff(why);
+    } else if (action == AccessoryBatteryAction::Shed5v) {
+      const bool off5 = g_expanders.setAccessory5v(g_bus, false);
+      if (off5) {
+        g_acc5v = false;
+        Serial.printf("ACC_5V_SW SHED: VCELL %.3f V below %.2f V dual-rail floor\n",
+                      vcell, kAccessoryDualRailFloorV);
+      } else {
+        forceAccessoriesOff("5 V dual-rail battery shed failed");
+      }
     }
   }
 
@@ -422,10 +440,10 @@ void loop() {
       case 'o': g_expanders.setRgb(g_bus, false, false, false); break;
       case '3': {
         const bool want = !g_acc3v3;
-        float vcell = 0.0f;
-        if (want && !accessoryBatteryOk(&vcell)) {
+        float vcell = 0.0f, floor = 0.0f;
+        if (want && !accessoryBatteryAllows(g_acc5v, &vcell, &floor)) {
           Serial.printf("ACC_3V3_SW REFUSED: VCELL %.3f V / floor %.2f V\n",
-                        vcell, kAccessoryBatteryFloorV);
+                        vcell, floor);
           break;
         }
         const bool ok = g_expanders.setAccessory3v3(g_bus, want);
@@ -435,10 +453,10 @@ void loop() {
       }
       case '5': {
         const bool want = !g_acc5v;
-        float vcell = 0.0f;
-        if (want && !accessoryBatteryOk(&vcell)) {
+        float vcell = 0.0f, floor = 0.0f;
+        if (want && !accessoryBatteryAllows(g_acc3v3, &vcell, &floor)) {
           Serial.printf("ACC_5V_SW REFUSED: VCELL %.3f V / floor %.2f V\n",
-                        vcell, kAccessoryBatteryFloorV);
+                        vcell, floor);
           break;
         }
         // Boost first, switch second, and the reverse on the way down.  Both

@@ -1,7 +1,7 @@
 # AQROOT Demo — FABRICATION HANDOFF
 
 
-> # **STATUS: READY FOR FABRICATION — BOARD AUTHORITY `8c548ece` (D-771 · D-772 · D-773, 2026-09-19).**
+> # **STATUS: READY FOR FABRICATION — BOARD AUTHORITY `8c548ece` (through D-775, 2026-09-19).**
 >
 > **This banner supersedes every status block below it.**  D-765's banner, which
 > stood here unchanged through D-766…D-770, is retained as history.
@@ -83,11 +83,27 @@
 > node declarations on the rail D-773 had just derived were corrected.  `F8` is
 > the new clause; the fabrication package is **byte-untouched**.
 >
+> **D-775 closes the later CTO normal-concurrency hold.**  F6 had still priced
+> D-098's simultaneous normal 400 mA + 300 mA load as an ideal source, and
+> firmware used the same 3.50 V floor for one or two rails.  MAX17048 actually
+> measures `BAT_PROTECTED_P`, the same node as BQ25185 BAT, so D-775 starts at
+> that real measurement point and **solves the floor rather than asserting it**.
+> Four live PCB paths are extracted every run, hot-copper scaling is applied,
+> BQ25185 BATFET uses TI's 140 mΩ max with a declared 1.40× low-VBAT/high-current
+> allowance, and TPS22950-Q1 RON is included.  The worse path-bound result for
+> 10% OCP headroom is **3.7622 V**, rounded upward to **3.80 V**; single-rail
+> requirement is only 3.1232 V, so the existing 3.50 V floor stays.  Firmware
+> enforces **3.50 V single / 3.80 V dual**, fails closed on unreadable VCELL and
+> sheds 5 V first below the dual floor.  At the live board the simultaneous
+> published load models **2.2499 A, 12.20% below** `IBAT_OCP` minimum.  F6 and
+> the firmware host suite cross-check the same policy with destructive controls.
+> **No PCB, schematic, BOM, CPL, Gerber or drill artifact changed.**
+>
 > **The assembly PDFs print `RELEASE D-773`.**
 
 ---
 
-## ENGINEERING HANDOFF — D-774, board `8c548ece`, 2026-09-19
+## ENGINEERING HANDOFF — D-775, board `8c548ece`, 2026-09-19
 
 ### Final board status
 
@@ -96,10 +112,11 @@ inner), **fabrication-ready**.  Board authority **`8c548ece`**.
 
 ### Major design changes in this round
 
-Four decisions, **all of one class**: *the repository stating a number or a rule
-that nothing derived or applied*.  **Not one copper object moved in any of
-them** — every copper Gerber is byte-identical to the D-770 package apart from
-its timestamp.
+Five decisions in the final closure sequence. D-771–D-774 closed stated numbers/rules
+that were not derived or applied; D-775 closed the cross-domain gap between the
+normal accessory-load model and the firmware VCELL policy. **No copper moved in
+D-775**, and the fabrication package remains the D-773 package bound to board
+`8c548ece`.
 
 | | what was wrong | fix |
 |---|---|---|
@@ -107,6 +124,7 @@ its timestamp.
 | **D-772** | the internal `+3V3` term every margin depends on was a **hand-written `1.0`**, missing the NFC front end `D-192` fitted and assuming a "worst single radio" nothing enforces | **nine cited lines, summed: 1.063 A**, gated against the board's own `+3V3` net |
 | **D-773** | the 5 V setpoint was **4.95 V here and 4.99 V there, both from a `VREF` TI does not publish** | setpoint **derived** (4.742 / 4.950 / 5.165 V); `R101` → **2.37 kΩ**, the E96 value nearest the centre of its computed legal window |
 | **D-774** | the **2× capacitor derating rule had never once been run** against a fitted part | `F8`; five named, reasoned exceptions; two node declarations corrected |
+| **D-775** | D-098 normal 400/300 mA concurrency was still an ideal-source calculation and firmware had one 3.50 V floor | live-board/path-bound solver + **3.50 V single / 3.80 V dual** firmware policy; fail-closed/5V-first shedding host tests and F6 controls |
 
 ### Connectivity
 
@@ -130,14 +148,17 @@ battery protection is **materially better than at D-770**: the recoverable
 `LTC4368` breaker (3.960–6.061 A) with 6.9 % of ordering margin, where at 15 mΩ
 the two **overlapped by 1.05 A**.  Rail ampacity `all_ok`; the two accessory
 rails and `+3V3` are measured for the first time.  Both accessory rails
-**GUARANTEE** the budget D-098 publishes (+7.0 % and +4.9 %).  Battery-pack
-contract `B1–B8` PASS.
+**GUARANTEE** the budget D-098 publishes (+7.0 % and +4.9 %). D-775 separately
+proves normal simultaneous 400/300 mA operation at the enforced **3.80 V VCELL**
+floor with **12.20%** modeled margin to BQ25185 OCP minimum; single-rail cases
+at 3.50 V retain **30.69% / 25.55%**. Battery-pack contract `B1–B8` PASS.
 
 **The thinnest margin on this board is 1.6 %**, named exactly: the 5 V accessory
 **in overcurrent** while every internal subsystem runs at once, on a charger at
 the −18 % corner, cell at 3.0 V, boost at the top of its band — six unlucky
-corners at once, consequence a **recoverable `IBAT_OCP` hiccup**.  At a
-conforming accessory load it is **7.3 %**.
+corners at once, consequence a **recoverable `IBAT_OCP` hiccup**.  That is a fault-envelope number;
+D-775's normal conforming dual-rail operating contract is **12.20%** at its
+firmware-enforced 3.80 V VCELL floor.
 
 ### USB / RF / NFC / features
 
@@ -151,7 +172,10 @@ present, fitted and whole.  `LAND1–LAND8` and `MK1–MK11` PASS.
 Sourcing **252/252 orderable, coverage 1.0**, 0 unsourced lines.  Gerbers,
 drills, BOM (125 lines), CPL, fabrication notes and assembly drawings all
 regenerated and checked.  **19 standing contracts, none failing.**  Firmware
-`H1–H6` PASS and all four PlatformIO environments build SUCCESS.
+`H1–H6` PASS; the D-775 power-policy host test passes **23/23** and all three
+of its destructive C++ controls are caught (the dual floor collapsed onto the
+single floor, an unreadable gauge failing open, and the 5 V-first shed order
+lost); all four PlatformIO environments build SUCCESS.
 **`hardware/beta-v2` UNTOUCHED — 0 modified paths across the whole round.**
 
 ### Significant remaining prototype risks

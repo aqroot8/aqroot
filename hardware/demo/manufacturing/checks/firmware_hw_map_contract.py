@@ -78,11 +78,39 @@ HW_DIR = ROOT / "Firmware/src/hw"
 HOST_TESTS = [
     ROOT / "Firmware/test/test_expander_order.cpp",
     ROOT / "Firmware/test/test_spi_bus_b.cpp",
+    ROOT / "Firmware/test/test_accessory_power_policy.cpp",
 ]
 
 # Each control is (name, file under src/hw, exact text, replacement).  The
 # replacement must be a DEFENSIBLE-LOOKING mistake -- the kind a future edit
 # actually makes -- not a syntax error.
+# D-775.  The accessory VCELL policy.  Both floors are DERIVED by
+# checks/demo_feature_contract.py F6 -- which is what refuses a floor BELOW the
+# derivation.  What H6 has to prove is the other half: that the C++ this board
+# actually ships behaves as the derivation assumes, and that a plausible future
+# edit to it is CAUGHT.  The first control is the pre-D-775 policy (one floor
+# for both rails); the second is the fail-open inversion; the third drops the
+# 5 V-first shed order, which is what keeps the 3.3 V rail's published budget
+# available below the dual-rail floor.
+POWER_POLICY_CONTROLS = [
+    ("dual-rail floor collapses onto the single-rail floor",
+     "aqroot_accessory_power_policy.h",
+     "constexpr float kAccessoryDualRailFloorV = 3.80f;",
+     "constexpr float kAccessoryDualRailFloorV = 3.50f;"),
+    ("unreadable VCELL fails open instead of shedding active rails",
+     "aqroot_accessory_power_policy.h",
+     "if (!vcell_valid) return AccessoryBatteryAction::ShedAll;",
+     "if (!vcell_valid) return AccessoryBatteryAction::Keep;"),
+    ("a dual-rail load below the dual floor sheds everything instead of the "
+     "5 V rail alone",
+     "aqroot_accessory_power_policy.h",
+     """    return vcell >= kAccessorySingleRailFloorV
+               ? AccessoryBatteryAction::Shed5v
+               : AccessoryBatteryAction::ShedAll;""",
+     "    return AccessoryBatteryAction::ShedAll;"),
+]
+
+
 BUS_CONTROLS = [
     ("the bus accepts a second concurrent chip select",
      "aqroot_spi_bus_b.h",
@@ -353,7 +381,8 @@ def main():
 
     # ---- H6 -------------------------------------------------------------
     h6 = {"tests": [], "verdict": "PASS"}
-    for test, controls in zip(HOST_TESTS, (ORDER_CONTROLS, BUS_CONTROLS)):
+    for test, controls in zip(
+            HOST_TESTS, (ORDER_CONTROLS, BUS_CONTROLS, POWER_POLICY_CONTROLS)):
         compiled, code, output = run_host_test(test)
         claims = [line for line in output.splitlines() if line.startswith("[")]
         entry = {
