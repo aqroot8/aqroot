@@ -2234,15 +2234,28 @@ def main():
                    if DEMO_PERIPHERALS.exists() else "")
 
     def _backlight_prime_ok(text):
-        return all(token in text for token in (
-            "ledcWrite(channel, 255);", "delayMicroseconds(3000);",
-            "for (int duty = 5; duty <= 255; duty += 5)"))
+        # D-785: presence is not sequencing.  The full-duty write must occur
+        # BEFORE the explicit hold, and the PWM ramp only AFTER that hold.
+        markers = (
+            "ledcWrite(channel, 255);",
+            "delayMicroseconds(3000);",
+            "for (int duty = 5; duty <= 255; duty += 5)",
+        )
+        pos = [text.find(token) for token in markers]
+        return all(p >= 0 for p in pos) and pos[0] < pos[1] < pos[2]
 
     backlight_startup_prime_explicit = _backlight_prime_ok(periph_text)
-    # Round-5 load-bearing control: the exact pre-D-784 tick-based prime must
-    # fail even though every board-level F5 condition is otherwise unchanged.
+    # Load-bearing controls: restore the exact pre-D-784 tick delay, shorten
+    # the explicit prime, or move the hold before the full-duty command.
     backlight_prime_control_refuses_tick_delay = not _backlight_prime_ok(
         periph_text.replace("delayMicroseconds(3000);", "delay(2);", 1))
+    backlight_prime_control_refuses_short_hold = not _backlight_prime_ok(
+        periph_text.replace("delayMicroseconds(3000);",
+                            "delayMicroseconds(1500);", 1))
+    backlight_prime_control_refuses_reordered_hold = not _backlight_prime_ok(
+        periph_text.replace(
+            "ledcWrite(channel, 255);\n  delayMicroseconds(3000);",
+            "delayMicroseconds(3000);\n  ledcWrite(channel, 255);", 1))
     tps61169_primary_archived = (TPS61169_PRIMARY.exists() and
         hashlib.sha256(TPS61169_PRIMARY.read_bytes()).hexdigest() ==
         "7d0b8ace2459a9fd22fe7145086cbad4ccb3bb43219247459313fcba75230151")
@@ -2981,6 +2994,8 @@ def main():
                 and q11_temp_acceptance_explicit
                 and backlight_startup_prime_explicit
                 and backlight_prime_control_refuses_tick_delay
+                and backlight_prime_control_refuses_short_hold
+                and backlight_prime_control_refuses_reordered_hold
                 and tps61169_primary_archived),
             method="TI SNVSA40B 6.3.5 makes CTRL an ANALOG dimming input: the "
                    "converter keeps switching through every PWM low phase, so "
@@ -3004,6 +3019,10 @@ def main():
             startup_prime_explicit=backlight_startup_prime_explicit,
             startup_prime_control_refuses_tick_delay=
                 backlight_prime_control_refuses_tick_delay,
+            startup_prime_control_refuses_short_hold=
+                backlight_prime_control_refuses_short_hold,
+            startup_prime_control_refuses_reordered_hold=
+                backlight_prime_control_refuses_reordered_hold,
             tps61169_primary_archived=tps61169_primary_archived,
             fet=fet,
             **{k: v for k, v in bl.items() if k != "ok"}),

@@ -55,6 +55,9 @@ static bool g_acc5v = false;
 static bool g_accessory_i2c = false;
 static uint32_t g_last_battery_guard_ms = 0;
 static uint32_t g_last_gauge_requal_ms = 0;
+// ADI 19-6171 Rev.7 gives a 250 ms active ADC period and +/-3.5% time-base
+// accuracy.  300 ms is therefore above the 258.75 ms worst timing bound.
+static constexpr uint32_t kFuelGaugeActiveSettleMs = 300;
 static Max17048Guard g_fuel_gauge(AQROOT_I2C_ADDR_FUEL_GAUGE);
 
 // D-775 FIRMWARE POLICY.  Hardware current limiting remains the absolute
@@ -85,7 +88,7 @@ static bool configureFuelGaugeActiveMode() {
   const bool ready = g_fuel_gauge.configureActiveMode(g_bus);
   // Only wait for an active-mode conversion AFTER both HIBRT=0 and the live
   // MODE.HibStat bit confirm that the gauge is actually out of hibernate.
-  if (ready) delay(300);
+  if (ready) delay(kFuelGaugeActiveSettleMs);
   return ready;
 }
 

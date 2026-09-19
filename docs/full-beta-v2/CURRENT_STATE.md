@@ -72,6 +72,28 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+> # **D-785 ROUND-5 VERIFICATION HARDENING — EXTERNAL_REVIEW_HOLD**
+>
+> Independent CTO review found that D-784's H7 source gate pinned the correct ADI PDF
+> but did not prove all safety-critical semantics or bind the released 300 ms gauge wait
+> to the source timing tolerance. D-785 gates `MODE.HibStat` read-only hibernate meaning,
+> `HIBRT=0x0000` disabling hibernate, the 250 ms active VCELL update period and the
+> -3.5/+3.5% time-base limit; **300 ms > 258.75 ms** source-derived upper timing bound.
+> Six destructive H7 controls must fail. F5 is also strengthened from token-presence to
+> sequencing: **full duty -> 3000 us hold -> PWM ramp**, with old-tick, short-hold and
+> reordered-hold negative controls. No PCB/schematic/BOM/CPL/Gerber/drill geometry changes
+> are involved. Board authority remains
+> **`cef458b92c6e92462bea250b434a481b3e8454a991eb13b2b66623ca1f4a880e`**. D-784 is
+> superseded as the external-review target; fabrication/order remains prohibited pending
+> independent Astra/Fable adjudication of the final clean/pushed D-785 target.
+>
+> Final D-785 release verification reran all **19/19** standing contracts identically and
+> non-vacuously against the D-785 baseline; fab-package, sourcing, battery, provenance and
+> rail-ampacity gates pass; four firmware environments build; fresh DRC has 199
+> library-footprint warnings only plus the established 17 unconnected / 246 parity items;
+> routing remains 174 retained / 173 connected / one approved `U11.3` open / zero
+> unapproved opens; and all 30 frozen fab-package file hashes match MANIFEST.
+>
 > # **D-784 ROUND-5 GAUGE/TIMING CORRECTION — EXTERNAL_REVIEW_HOLD**
 >
 > Round-5 identified two firmware/verifier residuals after D-783. MAX17048 HIBRT=0

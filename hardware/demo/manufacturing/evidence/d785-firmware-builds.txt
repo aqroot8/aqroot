@@ -1,0 +1,152 @@
+==== esp32-s3-aqroot ====
+Processing esp32-s3-aqroot (platform: espressif32@6.9.0; board: esp32-s3-devkitc-1; framework: arduino)
+--------------------------------------------------------------------------------
+Verbose mode can be enabled via `-v, --verbose` option
+CONFIGURATION: https://docs.platformio.org/page/boards/espressif32/esp32-s3-devkitc-1.html
+PLATFORM: Espressif 32 (6.9.0) > Espressif ESP32-S3-DevKitC-1-N8 (8 MB QD, No PSRAM)
+HARDWARE: ESP32S3 240MHz, 320KB RAM, 8MB Flash
+DEBUG: Current (esp-builtin) On-board (esp-builtin) External (cmsis-dap, esp-bridge, esp-prog, iot-bus-jtag, jlink, minimodule, olimex-arm-usb-ocd, olimex-arm-usb-ocd-h, olimex-arm-usb-tiny-h, olimex-jtag-tiny, tumpa)
+PACKAGES: 
+ - framework-arduinoespressif32 @ 3.20017.241212+sha.dcc1105b 
+ - tool-esptoolpy @ 1.40501.0 (4.5.1) 
+ - toolchain-riscv32-esp @ 8.4.0+2021r2-patch5 
+ - toolchain-xtensa-esp32s3 @ 8.4.0+2021r2-patch5
+LDF: Library Dependency Finder -> https://bit.ly/configure-pio-ldf
+LDF Modes: Finder ~ chain, Compatibility ~ soft
+Found 39 compatible libraries
+Scanning dependencies...
+Dependency Graph
+|-- lvgl @ 8.4.0
+|-- RadioLib @ 6.6.0
+|-- Adafruit PN532 @ 1.3.4
+|-- Adafruit BusIO @ 1.17.4
+|-- Adafruit Unified Sensor @ 1.1.15
+|-- LovyanGFX @ 1.2.29
+|-- Wire @ 2.0.0
+Building in release mode
+Retrieving maximum program size .pio/build/esp32-s3-aqroot/firmware.elf
+Checking size .pio/build/esp32-s3-aqroot/firmware.elf
+Advanced Memory Usage is available via "PlatformIO Home > Project Inspect"
+RAM:   [===       ]  33.9% (used 111172 bytes from 327680 bytes)
+Flash: [==        ]  20.1% (used 673145 bytes from 3342336 bytes)
+========================= [SUCCESS] Took 6.16 seconds =========================
+
+Environment      Status    Duration
+---------------  --------  ------------
+esp32-s3-aqroot  SUCCESS   00:00:06.157
+========================= 1 succeeded in 00:00:06.157 =========================
+==== wokwi ====
+Processing wokwi (platform: espressif32@6.9.0; board: esp32-s3-devkitc-1; framework: arduino)
+--------------------------------------------------------------------------------
+Verbose mode can be enabled via `-v, --verbose` option
+CONFIGURATION: https://docs.platformio.org/page/boards/espressif32/esp32-s3-devkitc-1.html
+PLATFORM: Espressif 32 (6.9.0) > Espressif ESP32-S3-DevKitC-1-N8 (8 MB QD, No PSRAM)
+HARDWARE: ESP32S3 240MHz, 320KB RAM, 8MB Flash
+DEBUG: Current (esp-builtin) On-board (esp-builtin) External (cmsis-dap, esp-bridge, esp-prog, iot-bus-jtag, jlink, minimodule, olimex-arm-usb-ocd, olimex-arm-usb-ocd-h, olimex-arm-usb-tiny-h, olimex-jtag-tiny, tumpa)
+PACKAGES: 
+ - framework-arduinoespressif32 @ 3.20017.241212+sha.dcc1105b 
+ - tool-esptoolpy @ 1.40501.0 (4.5.1) 
+ - toolchain-riscv32-esp @ 8.4.0+2021r2-patch5 
+ - toolchain-xtensa-esp32s3 @ 8.4.0+2021r2-patch5
+LDF: Library Dependency Finder -> https://bit.ly/configure-pio-ldf
+LDF Modes: Finder ~ chain, Compatibility ~ soft
+Found 39 compatible libraries
+Scanning dependencies...
+Dependency Graph
+|-- lvgl @ 8.4.0
+|-- RadioLib @ 6.6.0
+|-- Adafruit PN532 @ 1.3.4
+|-- Adafruit BusIO @ 1.17.4
+|-- Adafruit Unified Sensor @ 1.1.15
+|-- LovyanGFX @ 1.2.29
+|-- Wire @ 2.0.0
+Building in release mode
+Retrieving maximum program size .pio/build/wokwi/firmware.elf
+Checking size .pio/build/wokwi/firmware.elf
+Advanced Memory Usage is available via "PlatformIO Home > Project Inspect"
+RAM:   [===       ]  33.8% (used 110748 bytes from 327680 bytes)
+Flash: [==        ]  18.4% (used 614969 bytes from 3342336 bytes)
+========================= [SUCCESS] Took 6.13 seconds =========================
+
+Environment    Status    Duration
+-------------  --------  ------------
+wokwi          SUCCESS   00:00:06.133
+========================= 1 succeeded in 00:00:06.133 =========================
+==== esp32-s3-aqroot-dm ====
+Processing esp32-s3-aqroot-dm (platform: espressif32@6.9.0; board: esp32-s3-devkitc-1; framework: arduino)
+--------------------------------------------------------------------------------
+Verbose mode can be enabled via `-v, --verbose` option
+CONFIGURATION: https://docs.platformio.org/page/boards/espressif32/esp32-s3-devkitc-1.html
+PLATFORM: Espressif 32 (6.9.0) > Espressif ESP32-S3-DevKitC-1-N8 (8 MB QD, No PSRAM)
+HARDWARE: ESP32S3 240MHz, 320KB RAM, 8MB Flash
+DEBUG: Current (esp-builtin) On-board (esp-builtin) External (cmsis-dap, esp-bridge, esp-prog, iot-bus-jtag, jlink, minimodule, olimex-arm-usb-ocd, olimex-arm-usb-ocd-h, olimex-arm-usb-tiny-h, olimex-jtag-tiny, tumpa)
+PACKAGES: 
+ - framework-arduinoespressif32 @ 3.20017.241212+sha.dcc1105b 
+ - tool-esptoolpy @ 1.40501.0 (4.5.1) 
+ - toolchain-riscv32-esp @ 8.4.0+2021r2-patch5 
+ - toolchain-xtensa-esp32s3 @ 8.4.0+2021r2-patch5
+LDF: Library Dependency Finder -> https://bit.ly/configure-pio-ldf
+LDF Modes: Finder ~ chain, Compatibility ~ soft
+Found 39 compatible libraries
+Scanning dependencies...
+Dependency Graph
+|-- lvgl @ 8.4.0
+|-- RadioLib @ 6.6.0
+|-- Adafruit PN532 @ 1.3.4
+|-- Adafruit BusIO @ 1.17.4
+|-- Adafruit Unified Sensor @ 1.1.15
+|-- LovyanGFX @ 1.2.29
+|-- Wire @ 2.0.0
+Building in release mode
+Retrieving maximum program size .pio/build/esp32-s3-aqroot-dm/firmware.elf
+Checking size .pio/build/esp32-s3-aqroot-dm/firmware.elf
+Advanced Memory Usage is available via "PlatformIO Home > Project Inspect"
+RAM:   [===       ]  33.9% (used 111172 bytes from 327680 bytes)
+Flash: [==        ]  20.1% (used 673145 bytes from 3342336 bytes)
+========================= [SUCCESS] Took 6.19 seconds =========================
+
+Environment         Status    Duration
+------------------  --------  ------------
+esp32-s3-aqroot-dm  SUCCESS   00:00:06.187
+========================= 1 succeeded in 00:00:06.187 =========================
+==== aqroot-demo ====
+Processing aqroot-demo (platform: espressif32@6.9.0; board: esp32-s3-devkitc-1; framework: arduino)
+--------------------------------------------------------------------------------
+Verbose mode can be enabled via `-v, --verbose` option
+CONFIGURATION: https://docs.platformio.org/page/boards/espressif32/esp32-s3-devkitc-1.html
+PLATFORM: Espressif 32 (6.9.0) > Espressif ESP32-S3-DevKitC-1-N8 (8 MB QD, No PSRAM)
+HARDWARE: ESP32S3 240MHz, 320KB RAM, 8MB Flash
+DEBUG: Current (esp-builtin) On-board (esp-builtin) External (cmsis-dap, esp-bridge, esp-prog, iot-bus-jtag, jlink, minimodule, olimex-arm-usb-ocd, olimex-arm-usb-ocd-h, olimex-arm-usb-tiny-h, olimex-jtag-tiny, tumpa)
+PACKAGES: 
+ - framework-arduinoespressif32 @ 3.20017.241212+sha.dcc1105b 
+ - tool-esptoolpy @ 1.40501.0 (4.5.1) 
+ - toolchain-riscv32-esp @ 8.4.0+2021r2-patch5 
+ - toolchain-xtensa-esp32s3 @ 8.4.0+2021r2-patch5
+LDF: Library Dependency Finder -> https://bit.ly/configure-pio-ldf
+LDF Modes: Finder ~ chain, Compatibility ~ soft
+Found 33 compatible libraries
+Scanning dependencies...
+Dependency Graph
+|-- SPI @ 2.0.0
+|-- Wire @ 2.0.0
+Building in release mode
+Compiling .pio/build/aqroot-demo/src/demo/main.cpp.o
+Linking .pio/build/aqroot-demo/firmware.elf
+Retrieving maximum program size .pio/build/aqroot-demo/firmware.elf
+Checking size .pio/build/aqroot-demo/firmware.elf
+Advanced Memory Usage is available via "PlatformIO Home > Project Inspect"
+RAM:   [=         ]   5.9% (used 19412 bytes from 327680 bytes)
+Flash: [          ]   4.9% (used 323793 bytes from 6553600 bytes)
+Building .pio/build/aqroot-demo/firmware.bin with action:
+  "$PYTHONEXE" "$OBJCOPY" --chip esp32s3 elf2image --flash_mode ${__get_board_flash_mode(__env__)} --flash_freq ${__get_board_f_image(__env__)} --flash_size 16MB --elf-sha256-offset 0xb0 -o $TARGET $SOURCES
+Building .pio/build/aqroot-demo/firmware.bin
+esptool.py v4.5.1
+Creating esp32s3 image...
+Merged 2 ELF sections
+Successfully created esp32s3 image.
+========================= [SUCCESS] Took 2.66 seconds =========================
+
+Environment    Status    Duration
+-------------  --------  ------------
+aqroot-demo    SUCCESS   00:00:02.660
+========================= 1 succeeded in 00:00:02.660 =========================

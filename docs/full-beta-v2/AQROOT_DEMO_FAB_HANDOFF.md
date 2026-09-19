@@ -1,6 +1,17 @@
 # AQROOT Demo — FABRICATION HANDOFF
 
 
+> # **STATUS: D-785 ROUND-5 VERIFICATION HARDENING — EXTERNAL_REVIEW_HOLD, BOARD AUTHORITY `cef458b9` (2026-09-19).**
+>
+> **D-785 supersedes D-784 without moving PCB copper or changing the fabrication package.**
+> The MAX17048 release gate now binds the primary-source meanings of `MODE.HibStat` and
+> `HIBRT=0`, plus the 250 ms active VCELL period and +/-3.5% time-base limit, to the actual
+> 300 ms firmware settle; the source-derived upper period is 258.75 ms. Six destructive
+> source/timing controls must be refused. The backlight gate now proves the released order
+> **100% duty -> 3000 us hold -> PWM ramp**, not mere token presence, with tick-delay,
+> short-hold and reordered-hold controls. **Order remains prohibited until the final
+> clean/pushed D-785 target is independently re-reviewed.**
+>
 > # **STATUS: D-784 ROUND-5 GAUGE/TIMING CORRECTION — EXTERNAL_REVIEW_HOLD, BOARD AUTHORITY `cef458b9` (2026-09-19).**
 >
 > **D-784 supersedes D-783 without moving PCB copper or changing the fabrication package.**

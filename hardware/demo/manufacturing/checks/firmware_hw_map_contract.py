@@ -75,6 +75,7 @@ import gen_firmware_hw_map as gen           # noqa: E402
 import routing_ledger                        # noqa: E402
 
 HW_DIR = ROOT / "Firmware/src/hw"
+DEMO_MAIN = ROOT / "Firmware/src/demo/main.cpp"
 MAX17048_PRIMARY = (
     ROOT / "hardware/demo/kicad/aqroot-demo/vendor/ADI/max17048-max17049-rev7.pdf"
 )
@@ -92,9 +93,13 @@ MAX17048_SOURCE_EXPECTED = {
     "official_url": "https://www.analog.com/media/en/technical-documentation/data-sheets/MAX17048-MAX17049.pdf",
     "MODE_address": "0x06",
     "HibStat_mask": "0x1000",
+    "HibStat_semantics": "read-only; set while the IC is in hibernate mode",
     "HIBRT_address": "0x0A",
+    "HIBRT_zero_semantics": "disables hibernate mode",
     "VCELL_active_update_ms_typ": 250,
     "VCELL_hibernate_update_s_typ": 45,
+    "time_base_accuracy_pct_min": -3.5,
+    "time_base_accuracy_pct_max": 3.5,
 }
 HOST_TESTS = [
     ROOT / "Firmware/test/test_expander_order.cpp",
@@ -592,52 +597,130 @@ def main():
         h6["tests"].append(entry)
     report["H6_host_tests_prove_the_orderings"] = h6
 
-    # ---- H7: the safety policy's MAX17048 primary source is pinned ---------
-    # Gate both the exact archived ADI Rev.7 PDF bytes and a small semantic
-    # provenance record that names the register/timing facts the firmware uses.
+    # ---- H7: MAX17048 primary-source semantics and timing are pinned ----
+    # D-785: a hash alone proves document identity, not that firmware's safety
+    # interpretation or its active-conversion wait still matches that source.
+    # Gate the exact PDF, the critical register semantics, AND the 300 ms wait
+    # against the datasheet's 250 ms active period plus +3.5% time-base limit.
     primary_sha = (
         hashlib.sha256(MAX17048_PRIMARY.read_bytes()).hexdigest()
         if MAX17048_PRIMARY.exists() else None
     )
-    source = None
-    source_problems = []
-    if primary_sha != MAX17048_PRIMARY_SHA256:
-        source_problems.append(
-            "primary PDF SHA256 expected %s, got %s" %
-            (MAX17048_PRIMARY_SHA256, primary_sha))
-    if MAX17048_SOURCE_RECORD.exists():
-        try:
-            source = json.loads(MAX17048_SOURCE_RECORD.read_text(encoding="utf-8"))
-        except Exception as exc:
-            source_problems.append("source record is not valid JSON: %s" % exc)
-    else:
-        source_problems.append("source record is missing")
-    if source is not None:
-        facts = source.get("register_facts", {})
+    try:
+        source = json.loads(MAX17048_SOURCE_RECORD.read_text(encoding="utf-8"))
+    except Exception:
+        source = None
+    demo_main_text = (
+        DEMO_MAIN.read_text(encoding="utf-8", errors="replace")
+        if DEMO_MAIN.exists() else ""
+    )
+
+    def _max17048_source_problems(source_obj, pdf_sha, main_text):
+        problems = []
+        if pdf_sha != MAX17048_PRIMARY_SHA256:
+            problems.append(
+                "primary PDF SHA256 expected %s, got %s" %
+                (MAX17048_PRIMARY_SHA256, pdf_sha))
+        if not isinstance(source_obj, dict):
+            problems.append("source record is missing or is not valid JSON")
+            return problems, None, None
+        facts = source_obj.get("register_facts", {})
         actual = {
-            "vendor": source.get("vendor"),
-            "device": source.get("device"),
-            "document_number": source.get("document_number"),
-            "revision": source.get("revision"),
-            "official_url": source.get("official_url"),
+            "vendor": source_obj.get("vendor"),
+            "device": source_obj.get("device"),
+            "document_number": source_obj.get("document_number"),
+            "revision": source_obj.get("revision"),
+            "official_url": source_obj.get("official_url"),
             "MODE_address": facts.get("MODE_address"),
             "HibStat_mask": facts.get("HibStat_mask"),
+            "HibStat_semantics": facts.get("HibStat_semantics"),
             "HIBRT_address": facts.get("HIBRT_address"),
+            "HIBRT_zero_semantics": facts.get("HIBRT_zero_semantics"),
             "VCELL_active_update_ms_typ": facts.get("VCELL_active_update_ms_typ"),
             "VCELL_hibernate_update_s_typ": facts.get("VCELL_hibernate_update_s_typ"),
+            "time_base_accuracy_pct_min": facts.get("time_base_accuracy_pct_min"),
+            "time_base_accuracy_pct_max": facts.get("time_base_accuracy_pct_max"),
         }
         for key, expected in MAX17048_SOURCE_EXPECTED.items():
             if actual.get(key) != expected:
-                source_problems.append(
+                problems.append(
                     "%s expected %r, got %r" % (key, expected, actual.get(key)))
+
+        settle_match = re.search(
+            r"kFuelGaugeActiveSettleMs\s*=\s*(\d+)", main_text)
+        settle_ms = int(settle_match.group(1)) if settle_match else None
+        timing_bound_ms = None
+        try:
+            timing_bound_ms = float(actual["VCELL_active_update_ms_typ"]) * (
+                1.0 + float(actual["time_base_accuracy_pct_max"]) / 100.0)
+        except (TypeError, ValueError):
+            problems.append("active-conversion timing bound cannot be derived")
+        if settle_ms is None:
+            problems.append("kFuelGaugeActiveSettleMs is missing from demo/main.cpp")
+        elif timing_bound_ms is not None and settle_ms < timing_bound_ms:
+            problems.append(
+                "active settle %d ms is below derived %.3f ms timing bound" %
+                (settle_ms, timing_bound_ms))
+        if "if (ready) delay(kFuelGaugeActiveSettleMs);" not in main_text:
+            problems.append("qualified gauge path does not use kFuelGaugeActiveSettleMs")
+        return problems, settle_ms, timing_bound_ms
+
+    source_problems, settle_ms, timing_bound_ms = _max17048_source_problems(
+        source, primary_sha, demo_main_text)
+
+    h7_controls = []
+    if isinstance(source, dict):
+        def _source_mutation(name, mutate):
+            candidate = copy.deepcopy(source)
+            mutate(candidate)
+            p, _, _ = _max17048_source_problems(
+                candidate, primary_sha, demo_main_text)
+            h7_controls.append(dict(control=name, refused=bool(p),
+                                    first_reason=p[0] if p else None))
+
+        _source_mutation(
+            "HibStat mask moves to the wrong MODE bit",
+            lambda d: d["register_facts"].__setitem__("HibStat_mask", "0x0800"))
+        _source_mutation(
+            "HIBRT=0 is misdescribed as forcing hibernate",
+            lambda d: d["register_facts"].__setitem__(
+                "HIBRT_zero_semantics", "forces hibernate mode"))
+        _source_mutation(
+            "active ADC period drifts to 450 ms",
+            lambda d: d["register_facts"].__setitem__(
+                "VCELL_active_update_ms_typ", 450))
+        _source_mutation(
+            "time-base maximum is silently removed",
+            lambda d: d["register_facts"].pop("time_base_accuracy_pct_max", None))
+    fake_sha_problems, _, _ = _max17048_source_problems(
+        source, "0" * 64, demo_main_text)
+    h7_controls.append(dict(
+        control="archived primary PDF bytes change",
+        refused=bool(fake_sha_problems),
+        first_reason=fake_sha_problems[0] if fake_sha_problems else None))
+    short_wait_text = re.sub(
+        r"(kFuelGaugeActiveSettleMs\s*=\s*)300", r"\g<1>250",
+        demo_main_text, count=1)
+    short_wait_problems, _, _ = _max17048_source_problems(
+        source, primary_sha, short_wait_text)
+    h7_controls.append(dict(
+        control="active-mode settle is shortened below the source-derived bound",
+        refused=bool(short_wait_problems),
+        first_reason=short_wait_problems[0] if short_wait_problems else None))
+
+    h7_controls_ok = all(c["refused"] for c in h7_controls)
     report["H7_MAX17048_primary_source_is_pinned"] = {
         "pdf": MAX17048_PRIMARY.relative_to(ROOT).as_posix(),
         "expected_pdf_sha256": MAX17048_PRIMARY_SHA256,
         "actual_pdf_sha256": primary_sha,
         "source_record": MAX17048_SOURCE_RECORD.relative_to(ROOT).as_posix(),
         "expected_facts": MAX17048_SOURCE_EXPECTED,
+        "active_settle_ms": settle_ms,
+        "derived_active_sample_period_max_ms": timing_bound_ms,
         "problems": source_problems,
-        "verdict": "PASS" if not source_problems else "FAIL",
+        "controls": h7_controls,
+        "controls_verdict": "PASS" if h7_controls_ok else "FAIL",
+        "verdict": ("PASS" if not source_problems and h7_controls_ok else "FAIL"),
     }
 
     # ---- controls -------------------------------------------------------

@@ -1,3 +1,47 @@
+## D-785 — **ROUND-5 RELEASE GATES NOW PROVE THE GAUGE TIMING/SEMANTICS AND THE BACKLIGHT PRIME ORDER; NO PCB CHANGE**
+
+    authority  board cef458b92c6e92462bea250b434a481b3e8454a991eb13b2b66623ca1f4a880e
+    copper     unchanged from D-784
+    scope      source-bound MAX17048 timing/semantic gate + ordered backlight-prime gate
+    order      EXTERNAL_REVIEW_HOLD remains; D-784 review target is superseded
+
+Independent CTO review of D-784 found two **verification gaps, not new hardware
+defects**. H7 hash-pinned ADI 19-6171 Rev.7 and several copied register values, but it
+did not machine-gate the two meanings the safety policy actually depends on: `HibStat`
+is a read-only indication that the IC is in hibernate, and `HIBRT=0x0000` disables
+hibernate. It also called the 300 ms post-qualification wait an active conversion wait
+without tying that wait to the source timing tolerance. The archived primary source gives
+an active VCELL update period of **250 ms** and active/hibernate time-base accuracy of
+**-3.5/+3.5%**; the derived upper timing bound is therefore **258.75 ms**. The released
+**300 ms** wait clears that bound by **41.25 ms (15.9%)**. H7 now binds all of those
+source facts, the exact PDF hash, and the actual C++ settle constant/use site; six
+destructive controls independently corrupt the HibStat bit, HIBRT semantics, ADC period,
+time-base limit, PDF bytes, and settle time and all must be refused.
+
+F5 had a second semantic weakness: its D-784 backlight check only asked whether the
+full-duty write, 3000 us delay and ramp loop were all present somewhere in the file. A
+reordered implementation could therefore delay first and enable full duty afterward while
+still passing. D-785 requires the released order **full duty -> 3000 us hold -> PWM ramp**
+and adds controls for the old tick delay, an undersized 1500 us hold, and the reordered
+hold. Firmware behavior is unchanged apart from naming the already-released 300 ms gauge
+settle as a constant. PCB, schematic, BOM, CPL, Gerbers, drills and protected copper are
+unchanged.
+
+**Release verification.** The D-785 self-regression reran all **19/19** standing
+contracts against the D-785 emitted baseline and they are **all identical**, non-vacuous,
+with no failing verdict. The full fab-package contract is PASS; BOM sourcing reports
+**124 assembly lines / 0 unsourced / 0 near-miss / 0 refused / 0 tune-pending**; rail
+ampacity is PASS with the board's real **15.2 um** inner copper; the routing ledger remains
+**174 retained / 173 connected / one owner-approved `U11.3 / BQ25185_STAT2` open / zero
+unapproved opens**. Fresh KiCad DRC reports **199 warnings, all `lib_footprint_issues`**,
+17 declared unconnected items and 246 schematic-parity issues, with no ordinary-rule
+violation. All four PlatformIO environments build successfully, including `aqroot-demo` at
+19,412 B RAM / 323,793 B flash. The 30-file frozen fab package has **0 manifest hash
+mismatches**. PCB SHA-256 remains
+`cef458b92c6e92462bea250b434a481b3e8454a991eb13b2b66623ca1f4a880e`; fab
+MANIFEST SHA-256 remains
+`93db694cff54001516ef06ead4a926f9c519a1f5e216dd32171fc7e00abc302b`.
+
 ## D-784 — **ROUND-5 GAUGE-MODE AND BACKLIGHT-TIMING RESIDUALS ARE CLOSED FAIL-CLOSED; NO PCB CHANGE**
 
     authority  board cef458b92c6e92462bea250b434a481b3e8454a991eb13b2b66623ca1f4a880e

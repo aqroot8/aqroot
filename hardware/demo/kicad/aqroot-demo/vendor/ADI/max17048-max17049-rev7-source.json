@@ -17,7 +17,9 @@
     "HIBRT_address": "0x0A",
     "HIBRT_zero_semantics": "disables hibernate mode",
     "VCELL_active_update_ms_typ": 250,
-    "VCELL_hibernate_update_s_typ": 45
+    "VCELL_hibernate_update_s_typ": 45,
+    "time_base_accuracy_pct_min": -3.5,
+    "time_base_accuracy_pct_max": 3.5
   },
   "provenance_note": "Primary ADI Rev.7 PDF archived from the official Analog Devices datasheet URL; safety-relevant MODE/HibStat, HIBRT and VCELL timing facts were checked against the archived document."
 }
