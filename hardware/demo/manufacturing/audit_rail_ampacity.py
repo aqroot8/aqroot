@@ -166,7 +166,7 @@ RAILS = (
     # rail with a source, a sink and a number.
     dict(name="SYS_TO_ACC5V_BOOST", net="/01_POWER_TREE/BQ25185_SYS",
          src=("U12.1", "U12.10", "U12.11", "C24.1", "C26.2", "C28.1"),
-         snk=("L4.1",), amps=1.100,
+         snk=("L4.1",), amps=1.110,
          accept=(dict(layer="In2.Cu", reason="dru-5c", max_length_mm=80.0),),
          accept_reason="D-750 / .kicad_dru section 5c.  The SYS trunk's three "
                "In2 legs run 0.800 mm, where IPC-2221B's INTERNAL curve asks "
@@ -177,15 +177,18 @@ RAILS = (
                "and In3 across 0.2028 mm of prepreg -- is derived below from "
                "the rail's OWN current rather than quoted, and the dissipation "
                "is reported beside it.  The ELECTRICAL cost is accepted with "
-               "its number: 183 mOhm and 201 mV at D-771's enforced ACC_5V "
+               "its number: 183 mOhm and 203 mV at D-773's enforced ACC_5V "
                "maximum, against a TPS61023 input range of 0.5-5.5 V.",
          basis="U21 TPS61023 INPUT current at the ENFORCED ACC_5V maximum: "
-               "0.639 A x 5.0 V / (0.88 efficiency x 3.3 V VBAT) = 1.100 A rms. "
+               "0.624 A x 5.1654 V / (0.88 efficiency x 3.3 V VBAT) = 1.110 A "
+               "rms -- D-773, at the boost's DERIVED worst-case setpoint "
+               "rather than a 5.0 V constant. "
                "The number that sizes this trunk is not a PUBLISHED figure but "
                "the load switch's own worst-case limit: TI SLVSGP6A equation 1 "
                "gives 0.479 A typ at D-771's 2.32 kOhm and the EC table's "
                "widest ratio (1.32x), over the resistor's own 1 % band, gives "
-               "0.639 A over -40..+125 C.  D-771 RAISED R101's SETTING because "
+               "0.624 A over -40..+125 C at D-773's 2.37 kOhm.  D-771 "
+               "RAISED R101's SETTING because "
                "2.7 kOhm GUARANTEED only 0.277 A against the 300 mA D-098 "
                "publishes for this rail; the trunk pays for that guarantee in "
                "current.  It WAS 0.925 A (D-753, 2.7 kOhm) and 1.21 A before "
@@ -235,27 +238,32 @@ RAILS = (
                "400 mA total, which the same setting GUARANTEES (0.428 A); "
                "this row is sized by the limiter, not by the publication."),
     dict(name="ACC_5V_SW", net="/ACC_5V_SW",
-         src=("U22.5",), snk=("J5.1", "J5.24"), amps=0.639,
+         src=("U22.5",), snk=("J5.1", "J5.24"), amps=0.624,
          accept=(dict(layer="In3.Cu", reason="dru-5f", max_length_mm=41.0,
                       max_width_mm=0.40),),
-         accept_reason="D-771 / .kicad_dru section 5f.  Same model on In3.Cu, "
-               "whose own declared stackup puts it 0.2028 mm of prepreg from "
-               "In2.Cu and 0.4000 mm of core from the In4.Cu GND plane: "
-               "IPC-2221B asks 0.970 mm and returns 43.1 K, the plane-coupled "
-               "rise derived from those two distances is 1.30 K, and the rail "
-               "dissipates 0.045 W.  In2.Cu is a ROUTING layer rather than a "
-               "solid plane, so that side of the model is optimistic -- but "
-               "the In4 side ALONE, at 0.4000 mm, still gives 3.9 K, and the "
-               "track runs inside In3's own +3V3 pour at 0.250 mm lateral "
-               "clearance, a heat path this model ignores entirely.  111 mOhm, "
-               "71 mV at the limiter's worst case and 33 mV at D-098's "
-               "PUBLISHED 300 mA.  Length bounded at 41.0 mm against 38.6 "
-               "used.",
-         basis="U22 TPS22950-Q1 worst-case ILIM at D-771's R101 = 2.32 kOhm: "
-               "0.479 A typ, 0.639 A worst case on the same basis.  The "
-               "PUBLISHED budget is D-098's 300 mA total, GUARANTEED at "
-               "0.322 A.  The ACC_5V class floor is 0.400 mm where IPC-2221B "
-               "asks 0.163 mm OUTER at this current, so no width rule moves."),
+         accept_reason="D-771, re-measured at D-773 / .kicad_dru section 5f.  "
+               "Same model on In3.Cu, whose own declared stackup puts it "
+               "0.2028 mm of prepreg from In2.Cu and 0.4000 mm of core from "
+               "the In4.Cu GND plane: IPC-2221B asks 0.939 mm and returns "
+               "40.8 K, the plane-coupled rise derived from those two "
+               "distances is 1.24 K, and the rail dissipates 0.043 W.  In2.Cu "
+               "is a ROUTING layer rather than a solid plane, so that side of "
+               "the model is optimistic -- but the In4 side ALONE, at "
+               "0.4000 mm, still gives 3.7 K, and the track runs inside In3's "
+               "own +3V3 pour at 0.250 mm lateral clearance, a heat path this "
+               "model ignores entirely.  111 mOhm, 69 mV at the limiter's "
+               "worst case and 33 mV at D-098's PUBLISHED 300 mA.  Length "
+               "bounded at 41.0 mm against 38.6 used.",
+         basis="U22 TPS22950-Q1 worst-case ILIM at D-773's R101 = 2.37 kOhm: "
+               "0.468 A typ, 0.624 A worst case on the same basis.  It was "
+               "2.32 kOhm and 0.639 A at D-771, and moved once the 5 V "
+               "SETPOINT was DERIVED from the board's own R99/R100 and the "
+               "TPS61023's published 580/595/610 mV VREF band instead of "
+               "taken as a 4.95 V constant -- at the worst case of that band "
+               "the old setting left 0.52 %% of pack margin.  The PUBLISHED "
+               "budget is D-098's 300 mA total, GUARANTEED at 0.315 A.  The "
+               "ACC_5V class floor is 0.400 mm where IPC-2221B asks 0.158 mm "
+               "OUTER at this current, so no width rule moves."),
     # D-771 DECLARES THE +3V3 RAIL, WHICH HAD NEVER APPEARED HERE AT ALL.
     # Raising R97's ILIM so the 3.3 V accessory rail can GUARANTEE D-098's
     # published 400 mA also raises what U12 must SOURCE -- 1.0 A internal plus

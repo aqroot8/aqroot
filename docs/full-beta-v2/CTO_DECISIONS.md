@@ -1,3 +1,173 @@
+## D-773 — **THE 5 V SETPOINT WAS A NUMBER FROM A REFERENCE VOLTAGE TI DOES NOT PUBLISH, AND IT DECIDES THIS BOARD'S THINNEST MARGIN**
+
+    authority  c15672df -> 8c548ece.  ZERO copper objects added or removed;
+               every copper Gerber byte-identical apart from its timestamp
+    follows    D-771 (the published budget became a guarantee) and D-772 (the
+               internal +3V3 term became an itemised sum).  This is the LAST
+               constant in that chain
+    changed    R101 2.32k -> 2.37k (value, MPN, LCSC, note, sourcing note) in
+               01_power_tree.kicad_sch and aqroot-Beta-v2.kicad_pcb;
+               checks/demo_feature_contract.py (the setpoint is DERIVED, a new
+               OVP clause, three new controls, F6 now runs TWENTY-ONE; F7's
+               R101 entry retires the 2.32k identity);
+               checks/battery_pack_contract.py (reads R99/R100/U21);
+               audit_rail_ampacity.py (the ACC_5V_SW rail's current);
+               aqroot-Beta-v2.kicad_dru sections 5, 5e and 5f;
+               export_fab_package.py and the package; ARCHITECTURE, DEVICE_SPEC,
+               SOURCING_LEDGER, AQROOT_DEMO_FAB_HANDOFF, CURRENT_STATE
+    evidence   d773-*, evidence/jlc-live/0603waf2371t5e-757eecf8.json
+
+### 1. THE DEFECT
+
+The pack cost of `ACC_5V_SW` scales **directly** with the boost's output
+voltage.  That voltage was a constant in two places, and they disagreed:
+
+    checks/demo_feature_contract.py   V_ACC5V = 4.95
+    architecture/ARCHITECTURE.md      "VREF 0.6 V -> 4.99 V"
+
+**Both were derived from `VREF` = 0.6 V.**  TI `SLVSF14B`'s Electrical
+Characteristics gives the `TPS61023`'s FB reference as **580 / 595 / 610 mV** in
+PWM mode — the typical is **595 mV**, not 600 — so neither figure was this
+board's, and the *typical* was being used where a worst case belongs.
+
+Over `R99` 732 kΩ and `R100` 100 kΩ at their own 1 % bands:
+
+    ACC_5V_RAW setpoint      4.742 V   4.950 V   5.165 V
+
+**AND THIS REPOSITORY ALREADY HELD THE RIGHT REFERENCE, IN THE ONE PLACE
+NOBODY READ** — the same shape as D-765.  `R99`'s own symbol `Note` has said
+**`VOUT = 0.595 V x (1 + 732k/100k) = 4.95 V`** since it was written.  The
+schematic was right; `ARCHITECTURE.md` and the contract constant were the
+strays.  That note now carries the whole band and the reason the band matters.
+
+**Costed at 5.165 V, D-771's `R101` = 2.32 kΩ left 0.52 % of margin** between the
+5 V rail at its limiter and the `BQ25185`'s `IBAT_OCP` **minimum** — the thinnest
+state this board has, and nobody knew the number.
+
+### 2. THE FIX, AND WHY 2.37 kΩ
+
+`R101` = **2.37 kΩ** (`0603WAF2371T5E`, LCSC `C25964`, same UNI-ROYAL `0603WAF`
+series, same 0603 land, 11 268 in stock, verified live per D-096).
+
+**It is the E96 value nearest the centre of its own legal window**, and the
+window is computed rather than asserted:
+
+    R101 >= 2.298 kOhm   or the limiter's worst case reaches the pack's own
+                         minimum trip at the worst-case setpoint
+    R101 <= 2.478 kOhm   or the rail cannot GUARANTEE the 300 mA D-098 publishes
+
+    R101     guarantees        worst case    published    pack margin
+    2.32 k   0.322 A (+7.4%)   0.639 A       300 mA       +0.52 %
+    2.37 k   0.315 A (+4.9%)   0.624 A       300 mA       +1.62 %
+    2.43 k   0.307 A (+2.2%)   0.608 A       300 mA       +2.88 %
+
+It **trades delivery headroom there is plenty of for pack margin there was
+almost none of**.  2.43 kΩ would buy more pack margin and spend the product's
+published promise to do it, which is the thing D-771 exists to protect.
+
+**D-771's 2.32 kΩ BROKE NO CLAUSE, and this entry does not pretend it did.**
+The control that would have claimed so was written, found not to refuse, and
+replaced by one that does — `f6s`, at 2.2 kΩ, just past the computed bound.  *A
+control whose name claims a refusal its clause does not make is the defect D-767
+named.*
+
+### 3. TWO CLAUSES THAT HAD NO WORDS
+
+* **The setpoint is DERIVED.**  `F6` reads `R99`, `R100` and `U21` off the board,
+  brackets the divider over both 1 % bands and the part's own published `VREF`
+  band, runs the envelope on the **worst case**, and reports the typical beside
+  it so the sensitivity of every margin is visible rather than buried.  A boost
+  this contract has no `VREF` table for is refused, exactly as an unknown limiter
+  MPN already was.
+* **`boost_setpoint_is_clear_of_its_own_ovp`.**  The same EC table carries
+  `VOVP` — output over-voltage protection, **5.5 / 5.7 / 6.0 V rising** — and
+  nothing in this repository had ever compared the two.  A divider whose
+  worst-case high reached the **minimum** OVP threshold would make a good board
+  fault on itself.  It clears by **6.1 %**.
+
+**Three new controls, all refused**: the setting past the pack bound, a boost
+with no published `VREF` band, and a divider (`R99` → 820 kΩ) that sets itself
+into its own OVP.  `F6` runs **twenty-one**.
+
+### 4. WHERE THE BOARD NOW STANDS, AT EVERY TERM DERIVED
+
+    state the Community Port can reach     worst setpoint   typical setpoint
+    3.3 V rail alone at its limiter         2.337 (+8.8%)    2.337 (+8.8%)
+    5 V rail alone at its limiter           2.521 (+1.6%)    2.470 (+3.6%)
+    both rails at their GUARANTEED currents 2.438 (+4.8%)    2.410 (+5.9%)
+    both rails at their PUBLISHED budgets   2.375 (+7.3%)    2.351 (+8.3%)
+    both limiters in fault (double fault)   3.558            3.508
+                                            (breaker min 3.960, fuse 5.0)
+
+    U12 worst-case load   1.912 A against a rated 2 A          (+4.4 %)
+    U21 capability        0.911 A against a 0.624 A worst case (+31.5 %)
+    boost vs its own OVP  5.165 V against a 5.5 V minimum      (+6.1 %)
+
+**THE THINNEST MARGIN ON THIS BOARD IS 1.6 %, AND IT IS WORTH NAMING EXACTLY.**
+It is the 5 V accessory **in overcurrent** — a FAULT, not a conforming load —
+*while every internal subsystem runs at once* (Wi-Fi TX **and** a LoRa TX **and**
+the NFC field **and** audio **and** a microSD write **and** the backlight at
+maximum **and** an IR burst), on a `BQ25185` at the **−18 % corner** of its
+`IBAT_OCP` band, with the cell at **3.0 V**, and the boost at the **top of its
+own setpoint band**.  That is **six independent parameters at their unlucky
+corners simultaneously**, and its consequence is an `IBAT_OCP` **hiccup that
+auto-retries** — which D-771 guaranteed happens before the latching breaker on
+every unit.  **At a conforming accessory load the margin is 7.3 %.**
+
+### 5. AND WHAT AN ACCESSORY ACTUALLY SEES
+
+The correction cuts both ways and the low end is stated too: at the **bottom** of
+the same setpoint band the boost delivers **4.742 V**, and after 111 mΩ of track
+and `U22`'s worst-case `RON` a conforming 300 mA accessory sees **≈ 4.69 V**.
+That is a **5 V rail with a −5.2 % low corner**, and it is recorded here rather
+than rounded to "5 V".  It is not moved, because raising the setpoint to lift
+that corner raises the worst-case high with it and spends the pack margin §4
+just bought.  `ACC_3V3_SW` is unaffected at **3.18 V** against a 3.135 V floor.
+
+### 6. VERIFICATION
+
+    board            c15672df -> 8c548ece; objects_added 0, objects_removed 0;
+                     every copper Gerber and Edge_Cuts byte-identical apart
+                     from its CreationDate
+    promotion        verify_promotion PASS, all 16 checks
+    connectivity     174 retained, 173 connected, 1 owner-approved open
+                     (U11.3), 0 UNAPPROVED open edges, ratsnest 17
+    KiCad DRC        199 lib_footprint_issues, ALL WARNING, ZERO other
+                     classes; 17 unconnected; parity 246 warn / 0 ERRORS
+    protected copper 15 nets / 406 objects, differences {}
+    D-186 / D-269    dru_contracts live and TRUE
+    ampacity         all_ok; self-check parses the .kicad_dru, 14 rows, none
+                     unreproduced, its perturbation control REFUSED
+    features         F1-F7 PASS; F6 TWENTY-ONE live controls, F7 five
+                     references and ten, all refused
+    battery pack     B1-B8 PASS
+    contracts        19 standing contracts, all ran, NONE failing
+    fab package      regenerated at release D-773; FAB1-FAB15 PASS,
+                     sourcing 252/252, coverage 1.0
+    firmware         H1-H6 PASS; four PlatformIO environments SUCCESS
+    hardware/beta-v2 UNTOUCHED
+
+### 6a. AND ONE CONSEQUENCE, FOLLOWED RATHER THAN LEFT
+
+The `SYS -> U21/L4` trunk's design current is *derived from this setpoint*:
+`.kicad_dru` §5c and `audit_rail_ampacity` both read **1.100 A**, from
+`0.639 A x 5.0 V`.  With the setpoint derived and `R101` moved it is
+**0.624 A x 5.1654 V / (0.88 x 3.3 V) = 1.110 A** — slightly HIGHER despite the
+lower accessory current, because the old figure used a **5.0 V constant** that
+was neither the typical nor the worst case.  Re-measured: **183 mΩ, 203 mV,
+48.2 K IPC, 0.98 K plane-coupled, 0.226 W**, inside the same declared exception
+and still below the **1.21 A** the trunk was originally built for.
+
+### 7. WHAT THIS DOES NOT CLOSE
+
+* **`U11.2`'s thermal residual** re-bases once more with the worst-case setpoint:
+  **2.438 A at the 3.0 V corner, 51.5 K** on the model's ceiling.  First article.
+* **The 5 V rail's −5.2 % low corner** (§5) is recorded, not removed.  A revision
+  that wants a tighter 5 V should use a converter with a tighter reference, not a
+  different divider.
+* Everything D-772 §8 and D-771 §10 named still stands.
+
+
 ## D-772 — **EVERY MARGIN THIS CONTRACT REPORTS IS A FUNCTION OF ONE HAND-WRITTEN CONSTANT, AND THE CONSTANT WAS LOW**
 
     authority  c15672df, UNCHANGED.  NO PCB and NO schematic change; not one

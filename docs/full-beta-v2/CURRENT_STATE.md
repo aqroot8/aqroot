@@ -66,6 +66,82 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
+> # **`DEMO_READY_FOR_FAB` IS RE-DECLARED ON BOARD `8c548ece` (2026-09-19, D-771 · D-772 · D-773).**
+>
+> **The CTO withdrew D-770 for one item.  Closing it exposed a chain of three
+> defects of the same shape — *a number this repository states and nothing
+> derives* — and all three are now closed and gated.  Not one copper object
+> moved for any of them.**
+>
+> **D-771 — THE PUBLISHED ACCESSORY BUDGET BECAME A GUARANTEE, AND THE
+> PROTECTION CHAIN WAS ORDERED OVER TOLERANCE.**  D-098 publishes `ACC_3V3_SW`
+> **400 mA TOTAL** and `ACC_5V_SW` **300 mA TOTAL**; at 2.7 kΩ each limiter
+> GUARANTEED only **0.277 A**.  `R97` → **1.78 kΩ**.  And ADI guarantees the
+> `LTC4368`'s forward threshold only as **40 / 50 / 60 mV**: at `R75` = 15 mΩ the
+> **LATCHING** breaker's band (2.640–4.040 A) **OVERLAPPED** the charger's
+> **RECOVERABLE** `IBAT_OCP` band (2.5625–3.6875 A), with `RETRY` grounded — *the
+> board D-765 shipped reached 2.886 A in double fault, above the breaker's own
+> minimum, so the clause was FALSE on the board that passed it*.  `R75` →
+> **10 mΩ**; the breaker is now **3.960–6.061 A**, entirely above `IBAT_OCP`.
+>
+> **D-772 — THE INTERNAL `+3V3` TERM WAS A HAND-WRITTEN `1.0`.**  The
+> repository's own last derivation (823 mA) contains **no NFC line at all** —
+> `U9` was DNP when it was written, **D-192 fitted it**, **D-205** allocated
+> **100 mA** — and it counts *"the worst single radio"*, which is not true of a
+> board whose `U8` is an external module on its own `+3V3` pin.  Nine cited
+> lines, **summed: 1.063 A**, and `F6` reads the board's own `+3V3` net so no
+> fitted consumer can go unbudgeted.
+>
+> **D-773 — THE 5 V SETPOINT WAS A NUMBER FROM A REFERENCE TI DOES NOT
+> PUBLISH.**  The contract carried **4.95 V** and `ARCHITECTURE.md` **4.99 V**,
+> *both* from `VREF` = 0.6 V; `SLVSF14B` gives **580 / 595 / 610 mV**.  Over
+> `R99`/`R100` the real band is **4.742 / 4.950 / 5.165 V** — and **`R99`'s own
+> symbol note had carried the correct 0.595 V all along**, the same shape as
+> D-765 — and the pack cost of the 5 V rail scales directly with it — at the worst case D-771's `R101` =
+> 2.32 kΩ left **0.52 %** of margin.  `R101` → **2.37 kΩ**, the E96 value nearest
+> the centre of its own computed legal window (**2.298–2.478 kΩ**).  `F6` now
+> DERIVES the setpoint and refuses a divider whose worst case reaches the
+> `TPS61023`'s own `VOVP` minimum (it clears by 6.1 %).
+>
+>     connectivity     174 retained, 173 connected, 1 owner-approved open
+>                      (U11.3), 0 UNAPPROVED open edges, ratsnest 17
+>     KiCad DRC        199 lib_footprint_issues, ALL WARNING, ZERO other
+>                      classes; 17 unconnected; parity 246 warn / 0 ERRORS
+>     protected copper 15 nets / 406 objects, differences {}
+>     D-186 / D-269    dru_contracts live and TRUE on this board
+>     ampacity         all_ok, and the method self-check now PARSES the
+>                      .kicad_dru table it always claimed to re-derive
+>     features         F1-F7 PASS (F6 TWENTY-ONE controls, F7 five references
+>                      and ten controls)
+>     battery pack     B1-B8 PASS
+>     land / mech      LAND1-LAND8 and MK1-MK10 PASS
+>     fab package      regenerated at release D-773; FAB1-FAB15 PASS,
+>                      sourcing 252/252, coverage 1.0
+>     contracts        19 standing contracts, all ran, NONE failing
+>     firmware         H1-H6 PASS, four builds SUCCESS
+>     hardware/beta-v2 UNTOUCHED
+>
+> **THE THINNEST MARGIN ON THIS BOARD IS 1.6 %, AND IT IS NAMED RATHER THAN
+> QUOTED**: the 5 V accessory **in overcurrent** — a fault, not a conforming load
+> — *while every internal subsystem runs at once*, on a `BQ25185` at the **−18 %
+> corner**, the cell at **3.0 V** and the boost at the **top of its own setpoint
+> band**.  Six independent parameters at their unlucky corners at once, and the
+> consequence is an `IBAT_OCP` **hiccup that auto-retries**.  **At a conforming
+> accessory load the margin is 7.3 %.**
+>
+> Three things that had never been measured now are: the two accessory rails
+> themselves (`.kicad_dru` **§5f**), `+3V3` (**pour-delivered**, declared rather
+> than left silent), and the boost's own setpoint against its own OVP.
+> `.kicad_dru` **§5e's `BAT_MAIN` residual** is re-derived at every step and
+> `U11.2`'s land remains a first-article thermal measurement, now specified at
+> the 3.0 V corner with both accessory rails loaded.
+>
+> **There is no open owner decision and no unresolved Demo fabrication blocker.**
+> Residual risks are `CTO_DECISIONS.md` **D-773 §7**, **D-772 §8**, **D-771 §10**
+> and **D-770 §5**.  Independent CTO review follows.
+>
+> # **THE D-771, D-772 AND D-770 ENTRIES BELOW STAND AS HISTORY.**
+>
 > # **`DEMO_READY_FOR_FAB` IS RE-DECLARED ON BOARD `c15672df` (2026-09-19, D-771 · D-772).**
 >
 > **D-771 closed the CTO's withdrawal.  D-772 then found the bad input to the

@@ -1,7 +1,7 @@
 # AQROOT Demo — FABRICATION HANDOFF
 
 
-> # **STATUS: READY FOR FABRICATION — BOARD AUTHORITY `c15672df` (D-771 · D-772, 2026-09-19).**
+> # **STATUS: READY FOR FABRICATION — BOARD AUTHORITY `8c548ece` (D-771 · D-772 · D-773, 2026-09-19).**
 >
 > **This banner supersedes every status block below it.**  D-765's banner, which
 > stood here unchanged through D-766…D-770, is retained as history.
@@ -26,10 +26,11 @@
 >   it**, together with a second defect of the same shape that chasing it exposed
 >   in the battery protection chain.
 >
-> **D-771 in three sentences.**  `R97` → **1.78 kΩ** and `R101` → **2.32 kΩ**, so
-> each accessory rail **GUARANTEES** the budget D-098 publishes for it (0.428 A
-> against 400 mA, 0.322 A against 300 mA) instead of the 0.277 A the old setting
-> guaranteed.  `R75` → **10 mΩ**, because ADI guarantees the `LTC4368`'s forward
+> **D-771 in three sentences.**  `R97` → **1.78 kΩ** and `R101` → **2.32 kΩ**
+> (moved again to **2.37 kΩ** by D-773 below), so each accessory rail
+> **GUARANTEES** the budget D-098 publishes for it — **0.428 A against 400 mA
+> and 0.315 A against 300 mA as fitted** — instead of the 0.277 A the old
+> setting guaranteed.  `R75` → **10 mΩ**, because ADI guarantees the `LTC4368`'s forward
 > threshold only as 40/50/60 mV and at 15 mΩ the **LATCHING** breaker's band
 > overlapped the charger's **RECOVERABLE** `IBAT_OCP` band — so on an unlucky
 > unit the latching protection fired first.  **Zero copper objects moved**; every
@@ -59,7 +60,18 @@
 > Gerber and CSV in the package is byte-identical.  `F6` runs **eighteen**
 > controls.
 >
-> **The assembly PDFs print `RELEASE D-772`.**
+> **D-773 then derived the last constant in that chain.**  The 5 V rail's
+> setpoint was **4.95 V** in the contract and **4.99 V** in `ARCHITECTURE.md`,
+> *both* from `VREF` = 0.6 V — and TI publishes **580 / 595 / 610 mV**.  Over
+> `R99`/`R100` the real band is **4.742 / 4.950 / 5.165 V**; costed at the
+> worst-case high, D-771's `R101` = 2.32 kΩ left **0.52 %** of pack margin, so
+> `R101` → **2.37 kΩ**, the E96 value nearest the centre of its own legal window
+> (2.298–2.478 kΩ).  `F6` also refuses a divider whose worst case reaches the
+> `TPS61023`'s own `VOVP` minimum; it clears by 6.1 %.  **The board's thinnest
+> margin is 1.6 %** and it is a compound-fault state whose consequence is a
+> recoverable hiccup; at a conforming accessory load it is 7.3 %.
+>
+> **The assembly PDFs print `RELEASE D-773`.**
 
 > # **STATUS: NOT READY — READINESS WITHDRAWN, ONE OF TWO CAUSES CLOSED (D-765, 2026-09-18).**
 >
@@ -488,11 +500,12 @@ existing lines. D-753 then RETIRED one: `R97` and `R101` both became 2.7 kΩ on 
 single new BASIC line (LCSC `C13167`), which also retired `R101`'s superseded
 `ERJ-PA3F1651V`, an EXTENDED part with 2 763 in stock.  **D-771 SPLIT THAT LINE
 AGAIN AND MOVED A THIRD**: `R97` → `0603WAF1781T5E` (LCSC `C22849`, 1.78 kΩ),
-`R101` → `0603WAF2321T5E` (`C22905`, 2.32 kΩ) and `R75` →
+`R101` → `0603WAF2371T5E` (`C25964`, 2.37 kΩ at D-773; `0603WAF2321T5E` /
+`C22905` / 2.32 kΩ at D-771) and `R75` →
 `CRA2512-FZ-R010ELF` (`C840621`, 10 mΩ).  All three are the SAME series, the
 SAME manufacturer and the SAME land pattern as the parts they replace, so no
 footprint, no copper and no assembly step changes — the two 0603 resistors are
-`expand` rather than `BASIC`, because 1.78 kΩ and 2.32 kΩ are E96 values and
+`expand` rather than `BASIC`, because 1.78 kΩ and 2.37 kΩ are E96 values and
 JLCPCB lists no BASIC part at either.
 
 **THE VIA-IN-PAD COUNT MOVED 135 → 136 AND THE ONE THAT MOVED IT IS NAMED.**
@@ -755,13 +768,13 @@ can only be confirmed by eye. `MK1` and `U5` share one `/I2S_BCLK` and one
    `TPS22950-Q1`, which is specified from 0.05 A; **budget and chain corrected by
    D-771**).
 
-   **`R97` = 1.78 kΩ and `R101` = 2.32 kΩ**, both 2.7 kΩ until D-771 and
-   1.5 kΩ / 1.65 kΩ before that. D-098 locks the first five boards at
+   **`R97` = 1.78 kΩ (D-771) and `R101` = 2.37 kΩ (D-773)**, both 2.7 kΩ until
+   D-771 and 1.5 kΩ / 1.65 kΩ before that. D-098 locks the first five boards at
    **`ACC_3V3_SW` = 400 mA TOTAL** and **`ACC_5V_SW` = 300 mA TOTAL** — the two
    duplicate `J5` contacts on each rail SHARE that limit — and at 2.7 kΩ each
    limiter **GUARANTEED only 0.277 A**. The board published a budget its own
-   silicon could refuse to deliver. It now guarantees **0.428 A** and **0.322 A**
-   (7.0 % and 7.4 % over) and passes no more than **0.849 A** / **0.639 A** over
+   silicon could refuse to deliver. It now guarantees **0.428 A** and **0.315 A**
+   (7.0 % and 4.9 % over) and passes no more than **0.849 A** / **0.624 A** over
    −40…+125 °C, over the programming resistor's own 1 % band as well.
 
    **AND THE INTERNAL TERM THE ENVELOPE RUNS ON WAS A HAND-WRITTEN CONSTANT**
@@ -775,13 +788,25 @@ can only be confirmed by eye. `MK1` and `U5` share one `/I2S_BCLK` and one
 
    At the 3.0 V cell corner with that 1.063 A internal load, no state a user can
    reach exceeds the `BQ25185` `IBAT_OCP` **minimum of 2.5625 A**.  The thinnest
-   margin on this board is **2.6 %** and it is the 5 V accessory **in
+   margin on this board is **1.6 %** and it is the 5 V accessory **in
    overcurrent** while every internal subsystem runs at once, on a charger at the
-   −18 % corner of its band, with the cell at 3.0 V; its consequence is an
-   `IBAT_OCP` hiccup that **auto-retries**, which D-771 guaranteed happens before
-   the latching breaker on every unit.  At a conforming accessory load the margin
-   is **8.3 %**.  A *simultaneous double limiter fault* reaches **3.534 A**,
-   still 10.8 % below the breaker's guaranteed minimum.
+   −18 % corner of its band, with the cell at 3.0 V and the boost at the top of
+   its own setpoint band; its consequence is an `IBAT_OCP` hiccup that
+   **auto-retries**, which D-771 guaranteed happens before the latching breaker
+   on every unit.  At a conforming accessory load the margin is **7.3 %**.  A
+   *simultaneous double limiter fault* reaches **3.558 A**, still 10.2 % below
+   the breaker's guaranteed minimum.
+
+   **AND THE 5 V SETPOINT ITSELF WAS A CONSTANT FROM A WRONG REFERENCE**
+   (D-773).  This contract carried 4.95 V and `ARCHITECTURE.md` published
+   4.99 V, *both* derived from `VREF` = 0.6 V; TI `SLVSF14B` gives the
+   `TPS61023`'s FB reference as **580 / 595 / 610 mV** — and **`R99`'s own
+   symbol note had carried the correct 0.595 V all along**.  Over `R99`/`R100`
+   at their 1 % bands the real setpoint is **4.742 / 4.950 / 5.165 V**; the
+   envelope now runs on the worst-case high, and `F6` refuses a divider whose
+   worst case reaches the part's own `VOVP` minimum of 5.5 V (it clears by
+   **6.1 %**).  That correction is what moved `R101` to **2.37 kΩ** — the E96
+   value nearest the centre of its own legal window, **2.298–2.478 kΩ**.
 
    **AND THE CHAIN WAS ORDERED AGAINST A TYPICAL.** ADI guarantees the
    `LTC4368`'s forward threshold only as **40 / 50 / 60 mV**; at the old `R75`
@@ -790,27 +815,29 @@ can only be confirmed by eye. `MK1` and `U5` share one `/I2S_BCLK` and one
    `CRA2512-FZ` series, same 2512 land, same 3 W — and the breaker is
    **3.960–6.061 A**, entirely above it. `demo_feature_contract.py` **F6**
    recomputes all of it from `R97`, `R101`, `U20`, `U22`, **`R75` and `U18`**,
-   with **eighteen** live controls — three of them boards this project actually
-   shipped, including the internal budget with its NFC line missing — and
+   with **twenty-one** live controls — including the internal budget with its
+   NFC line missing, which is the budget as it actually stood from D-192 — and
    refuses a limiter its own converter cannot source.
 
    **THE RESIDUAL:** `BAT_MAIN` copper is sized for 1.5 A sustained, and the
    worst *sustained* case — both accessories at their guaranteed current with
-   the full internal load — is **1.967 A at 3.7 V and 2.426 A at the 3.0 V
+   the full internal load — is **1.977 A at 3.7 V and 2.438 A at the 3.0 V
    corner**, on one unavoidable 5.525 mm × 0.200 mm segment (`U11`'s `DLH0010A`
-   pin-2 `BAT` land). *D-098's PUBLISHED budget alone is 2.351 A at that corner
+   pin-2 `BAT` land). *D-098's PUBLISHED budget alone is 2.375 A at that corner
    and has been since 2026-08-23, so the requirement did not move; the hardware's
-   ability to meet it did.* The plane-coupled ceiling is **51.0 K** over the
-   adjacent `In4` plane at 2.426 A, from a model that ignores lateral spreading,
+   ability to meet it did.* The plane-coupled ceiling is **51.5 K** over the
+   adjacent `In4` plane at 2.438 A, from a model that ignores lateral spreading,
    conduction and convection, on copper that is necked for only 0.575 mm before
    it tapers to 1.2 mm. **Measure that segment at first article with both
    accessory rails loaded and the cell at 3.0 V.**
 
    **AND THE TWO ACCESSORY RAILS THEMSELVES ARE NOW MEASURED** (`.kicad_dru`
    §5f, new at D-771): `ACC_3V3_SW` 224 mΩ / 82.1 K IPC / 2.29 K plane-coupled on
-   `In2.Cu`, `ACC_5V_SW` 111 mΩ / 43.1 K / 1.30 K on `In3.Cu`, both declared with
+   `In2.Cu`, `ACC_5V_SW` 111 mΩ / 40.8 K / 1.24 K on `In3.Cu`, both declared with
    length budgets. What a conforming accessory sees at the published budget is
-   **3.18 V** and **4.90 V** at the worst corner of every term.
+   **3.18 V** on `ACC_3V3_SW`, and on `ACC_5V_SW` **4.69 V at the bottom of the
+   boost's own setpoint band** (4.742 V − 49 mV of track + `RON` drop) against a
+   4.95 V typical.
 
 12. **`J4` BATTERY-CONNECTOR LEAD TRIM IS A RELEASE ASSEMBLY REQUIREMENT,
    NOT AN OPTIONAL REWORK** (D-763).  `J4` is the only through-hole part whose

@@ -529,7 +529,35 @@ NORMAL_PATH_OHM = 0.36                 # conservative common-path resistance
 NORMAL_LOSS_ALLOWANCE_W = 0.10         # loss beyond converter eta
 VBAT_CORNER = 3.0                      # 1S Li-ion working floor
 V_3V3, ETA_U12 = 3.3, 0.90             # TPS63020 buck-boost
-V_ACC5V, ETA_U21 = 4.95, 0.88          # TPS61023 boost, R99/R100 divider
+ETA_U21 = 0.88                         # TPS61023 boost, conservative
+# --------------------------------------------------------------------------
+# D-773 -- AND THE 5 V RAIL'S OWN SETPOINT WAS A NUMBER, FROM A WRONG REFERENCE.
+#
+# `V_ACC5V` read `4.95` and `architecture/ARCHITECTURE.md` published `4.99 V`,
+# both derived from **VREF = 0.6 V**.  TI `SLVSF14B`'s Electrical
+# Characteristics gives the TPS61023's FB reference as **580 / 595 / 610 mV** in
+# PWM mode -- the TYPICAL is 595 mV, not 600 -- so neither figure was the
+# board's, and the two did not even agree with each other.
+#
+# The rail's pack cost scales DIRECTLY with this voltage, and it is the term
+# that decides the thinnest margin on this board.  So it is DERIVED from the
+# board's own `R99`/`R100` over their 1 % bands and the part's own published
+# VREF band, the envelope runs on the WORST CASE (highest, because that is what
+# costs the most pack current), and the band is reported beside it.
+#
+# AND THE SAME EC TABLE CARRIES A CLAUSE NOTHING HAD CHECKED: `VOVP`, the
+# output over-voltage protection threshold, is **5.5 / 5.7 / 6.0 V rising**.  A
+# divider whose WORST-CASE HIGH setpoint reaches the MINIMUM OVP threshold would
+# make the converter fault on a good board.  Nothing in this repository had ever
+# compared the two.
+# --------------------------------------------------------------------------
+BOOST_FB = dict(
+    ref="U21", top="R99", bottom="R100",
+    parts={
+        # TI SLVSF14B EC, archived at vendor/TI/.  mV.
+        "TPS61023": dict(vref_mV=(580.0, 595.0, 610.0),
+                         vovp_V=(5.5, 5.7, 6.0)),
+    })
 # --------------------------------------------------------------------------
 # D-772 -- THE INTERNAL +3V3 LOAD WAS A HAND-WRITTEN CONSTANT, AND IT WAS LOW.
 #
@@ -787,6 +815,47 @@ def judge_accessory_envelope(values):
             "40/50/60 mV row applies.  On a dead short both protections fire "
             "and latching is the wanted behaviour"))
 
+    # ---- D-773: the 5 V setpoint, DERIVED from the board's own divider -----
+    r_top, r_bot = _ohms(values.get(BOOST_FB["top"])), \
+        _ohms(values.get(BOOST_FB["bottom"]))
+    t_top, t_bot = _tol(values.get(BOOST_FB["top"])), \
+        _tol(values.get(BOOST_FB["bottom"]))
+    boost_part = (values.get(BOOST_FB["ref"]) or "").strip()
+    fb_spec = BOOST_FB["parts"].get(boost_part)
+    if not r_top or not r_bot or not fb_spec:
+        return False, dict(error="5 V boost setpoint unreadable: %s=%r %s=%r "
+                                 "%s=%r" % (BOOST_FB["top"],
+                                            values.get(BOOST_FB["top"]),
+                                            BOOST_FB["bottom"],
+                                            values.get(BOOST_FB["bottom"]),
+                                            BOOST_FB["ref"], boost_part))
+    ratio_lo = (r_top * (1 - t_top)) / (r_bot * (1 + t_bot))
+    ratio_hi = (r_top * (1 + t_top)) / (r_bot * (1 - t_bot))
+    vref = fb_spec["vref_mV"]
+    v5 = (vref[0] / 1000.0 * (1 + ratio_lo),
+          vref[1] / 1000.0 * (1 + r_top / r_bot),
+          vref[2] / 1000.0 * (1 + ratio_hi))
+    # THE ENVELOPE RUNS ON THE WORST CASE.  A higher output costs more pack
+    # current for the same delivered accessory current, and this term decides
+    # the thinnest margin on this board.
+    V_ACC5V = v5[2]
+    boost = dict(
+        ref=BOOST_FB["ref"], part=boost_part,
+        top=BOOST_FB["top"], bottom=BOOST_FB["bottom"],
+        top_ohms=r_top, bottom_ohms=r_bot,
+        vref_mV=list(vref), vovp_V=list(fb_spec["vovp_V"]),
+        setpoint_V=[round(x, 4) for x in v5],
+        setpoint_used_by_the_envelope_V=round(V_ACC5V, 4),
+        superseded_constant_V=4.95,
+        clear_of_its_own_ovp=(v5[2] < fb_spec["vovp_V"][0]),
+        ovp_margin_pct=round((fb_spec["vovp_V"][0] - v5[2])
+                             / fb_spec["vovp_V"][0] * 100.0, 2),
+        method="TI SLVSF14B equation 4 over the board's own R99/R100 and their "
+               "1 %% bands, with the part's OWN published VREF band "
+               "(580/595/610 mV PWM) -- NOT the 0.6 V both this contract's old "
+               "4.95 constant and ARCHITECTURE's published 4.99 V were derived "
+               "from")
+
     def ibat(i3, i5):
         return ((I_INTERNAL + i3) * V_3V3 / ETA_U12
                 + i5 * V_ACC5V / ETA_U21) / VBAT_CORNER
@@ -882,6 +951,22 @@ def judge_accessory_envelope(values):
         method="U12 from SLVSAA7's own Features figure at VIN > 2.5 V; U21 "
                "from SLVSF14B equation 1 with ILIM_SW at its EC MINIMUM and "
                "L4 at its -20 % corner")
+    # ---- D-773 CLAUSE: the boost may not set itself into its own OVP -------
+    d["boost_setpoint"] = boost
+    d["boost_setpoint_is_clear_of_its_own_ovp"] = boost["clear_of_its_own_ovp"]
+    # and reported beside it: what the SAME modes look like at the TYPICAL
+    # setpoint, so the sensitivity of the thinnest margin is visible rather
+    # than buried in one number.
+    d["modes_at_typical_setpoint_A_REPORT_ONLY"] = {
+        k: round(((I_INTERNAL + i3) * V_3V3 / ETA_U12
+                  + i5 * v5[1] / ETA_U21) / VBAT_CORNER, 4)
+        for k, (i3, i5) in dict(
+            acc3v3_alone_at_its_limiter=(a3["ilim_max"], 0.0),
+            acc5v_alone_at_its_limiter=(0.0, a5["ilim_max"]),
+            both_at_their_guaranteed_currents=(a3["ilim_min"], a5["ilim_min"]),
+            both_at_their_published_budgets=(a3["published_budget_A"],
+                                             a5["published_budget_A"]),
+            both_limiters_in_fault=(a3["ilim_max"], a5["ilim_max"])).items()}
     d["converters_can_source_their_worst_case_rail"] = (
         d["converter_capability_A"]["u12_ok"]
         and d["converter_capability_A"]["u21_ok"])
@@ -933,7 +1018,8 @@ def judge_accessory_envelope(values):
           and d["ilim_band_is_inside_ul2367_recognition"]
           and d["each_rail_guarantees_its_published_accessory_budget"]
           and d["recoverable_trip_is_ordered_below_the_latching_breaker"]
-          and d["converters_can_source_their_worst_case_rail"])
+          and d["converters_can_source_their_worst_case_rail"]
+          and d["boost_setpoint_is_clear_of_its_own_ovp"])
     return ok, d
 
 
@@ -1188,7 +1274,26 @@ def main():
         # and a limiter the CONVERTER cannot feed is refused even when every
         # battery-side mode passes
         _env_control("f6n_refuses_an_acc3v3_ilim_past_both_bounds",
-                     lambda v: v.__setitem__("R97", "1.3k 1%"))))
+                     lambda v: v.__setitem__("R97", "1.3k 1%")),
+        # ---- D-773's three.
+        # THE HONEST STATEMENT OF WHAT MOVED.  D-771's 2.32 kOhm is NOT refused
+        # by any clause here and D-773 does not pretend otherwise: at the
+        # setpoint this contract now DERIVES it leaves 0.52 % of pack margin,
+        # which is a MARGIN the engineering judgement moved, not a clause it
+        # broke.  What IS refused is a setting past the bound -- 2.2 kOhm, just
+        # below the 2.298 kOhm where the limiter's worst case reaches the pack's
+        # own minimum trip at that setpoint.  A control whose name claims a
+        # refusal its clause does not make is the defect D-767 named.
+        _env_control("f6s_refuses_an_acc5v_ilim_past_the_pack_bound",
+                     lambda v: v.__setitem__("R101", "2.2k 1%")),
+        # the divider must be READ, and a boost this contract has no VREF
+        # table for is a refusal exactly as an unknown limiter MPN is
+        _env_control("f6t_refuses_a_boost_with_no_published_vref_band",
+                     lambda v: v.__setitem__("U21", "TPS61023X")),
+        # and a divider whose worst-case HIGH reaches the part's own OVP
+        # minimum would make a good board fault on itself
+        _env_control("f6u_refuses_a_divider_that_sets_into_its_own_ovp",
+                     lambda v: v.__setitem__("R99", "820k 1%"))))
 
     # ---- F7: the DISPLAY IDENTITY, everywhere it is written -------------
     # D-768.  D-074 locked the EastRising ER-TFT035IPS-6 (3.5in 320x480,
@@ -1257,12 +1362,16 @@ def main():
                 "the rail GUARANTEES the 400 mA TOTAL D-098 publishes for it; "
                 "2.7 kOhm guaranteed only 0.277 A"),
         "R101": dict(
-            locked="0603WAF2321T5E",
+            locked="0603WAF2371T5E",
             lib_id_contains=None,
             only_fields=("Value", "MPN", "LCSC"),
-            retired=("0603WAF2701T5E", "C13167", "2.7k"),
-            why="D-771 moved the ACC_5V limiter setting 2.7 -> 2.32 kOhm so "
-                "the rail GUARANTEES the 300 mA TOTAL D-098 publishes for it"),
+            retired=("0603WAF2701T5E", "C13167", "2.7k",
+                     "0603WAF2321T5E", "C22905", "2.32k"),
+            why="D-771 moved the ACC_5V limiter setting 2.7 -> 2.32 kOhm so the "
+                "rail GUARANTEES the 300 mA TOTAL D-098 publishes for it, and "
+                "D-773 moved it again to 2.37 kOhm once the 5 V setpoint was "
+                "derived from the board rather than taken from a 0.6 V VREF "
+                "that is not what TI publishes"),
     }
     RETIREMENT_MARKERS = ("RETIRED", "CORRECTED THIS FIELD", "corrected this field",
                           "DO NOT INSTANTIATE", "which is NOT the locked",

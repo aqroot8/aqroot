@@ -372,8 +372,9 @@ power/NFC review, and CTO decisions.
 > each limiter GUARANTEED only **0.277 A** — the board published a budget its own
 > silicon could refuse to deliver, on the two contacts the Community Port exists
 > for.  `R97` is now **1.78 kΩ** (0.636 A typ → **0.428 A guaranteed**, 7.0 % over
-> the published 400 mA) and `R101` **2.32 kΩ** (0.479 A typ → **0.322 A
-> guaranteed**, 7.4 % over the published 300 mA).  `F6` refuses any setting that
+> the published 400 mA) and `R101` **2.37 kΩ** (0.468 A typ → **0.315 A
+> guaranteed**, 4.9 % over the published 300 mA; D-771 set 2.32 kΩ and D-773
+> moved it once the 5 V setpoint was derived from the board).  `F6` refuses any setting that
 > does not guarantee its own rail's published budget.
 >
 > **What an accessory actually sees at the published budget** (worst corner of
@@ -390,18 +391,18 @@ accessory then draws.  The only thing that actually bounds an accessory is the
 accessory limiter's own current limit, and at the values D-750 shipped those
 limits sat far ABOVE what the policy permitted.
 
-**`R97` IS 1.78 kΩ AND `R101` IS 2.32 kΩ** — D-771; both were 2.7 kΩ at D-753
-(LCSC `C22849` and `C22905`, UNI-ROYAL `0603WAF1781T5E` / `0603WAF2321T5E`, the
-same 0603WAF series and the same 0603 land as the part they replace).  TI
-equation 1 — `ILIM = 1.18 × (R[kΩ])^−1.072` — gives **0.636 A** and **0.479 A**
-typ, and the widest tolerance ratio the part's own EC table publishes
+**`R97` IS 1.78 kΩ (D-771) AND `R101` IS 2.37 kΩ (D-773)**; both were 2.7 kΩ at
+D-753 (LCSC `C22849` and `C25964`, UNI-ROYAL `0603WAF1781T5E` /
+`0603WAF2371T5E`, the same 0603WAF series and the same 0603 land as the parts
+they replace).  TI equation 1 — `ILIM = 1.18 × (R[kΩ])^−1.072` — gives
+**0.636 A** and **0.468 A** typ, and the widest tolerance ratio the part's own EC table publishes
 (0.68× / 1.32× of typ over −40…+125 °C, read off its 19.2 kΩ row) **taken over
 the programming resistor's own 1 % band as well** brackets the rails at:
 
 | rail | guaranteed | worst case | published budget (D-098) | headroom |
 |---|---|---|---|---|
 | `ACC_3V3_SW` (`R97` 1.78 kΩ) | **0.428 A** | 0.849 A | 400 mA | **+7.0 %** |
-| `ACC_5V_SW` (`R101` 2.32 kΩ) | **0.322 A** | 0.639 A | 300 mA | **+7.4 %** |
+| `ACC_5V_SW` (`R101` **2.37 kΩ**, D-773) | **0.315 A** | 0.624 A | 300 mA | **+4.9 %** |
 
 The 0.68×/1.32× ratio is the widest of the four `ILIM` rows TI publishes and is
 **conservative in both directions at once** — the two rows that bracket these
@@ -441,16 +442,52 @@ settings (1.15 kΩ and 2.21 kΩ) publish 0.75–0.76× / 1.24–1.25×.
 > **`f6o`: the budget with the NFC line removed**, which is the budget as it
 > actually stood from D-192 until D-772.
 
-Modelled at the 3.0 V cell corner with that **1.063 A** internal `+3V3` load,
-`U12` at 90 % and `U21` at 88 % into 4.95 V:
+> ### THE 5 V SETPOINT — DERIVED, NOT ASSERTED (D-773)
+>
+> The pack cost of `ACC_5V_SW` scales **directly** with the boost's output
+> voltage, and that voltage was a constant in two places that disagreed: this
+> contract carried **4.95 V** and `ARCHITECTURE.md` published **4.99 V**, *both
+> derived from `VREF` = 0.6 V*.  **TI `SLVSF14B`'s EC table gives the `TPS61023`'s
+> FB reference as 580 / 595 / 610 mV in PWM mode** — the typical is **595 mV**,
+> not 600.  **`R99`'s own symbol note in the schematic had carried the correct
+> 0.595 V all along**: the same shape as D-765, where this repository held the
+> right number in a place the decision did not read.
+>
+> Over `R99` 732 kΩ and `R100` 100 kΩ at their own 1 % bands the real setpoint is
+>
+> | | min | typ | max |
+> |---|---|---|---|
+> | `ACC_5V_RAW` | **4.742 V** | **4.950 V** | **5.165 V** |
+>
+> **The envelope now runs on the maximum**, because that is what costs the most
+> pack current, and the typical is reported beside it.  The same EC table carries
+> `VOVP` — output over-voltage protection, **5.5 / 5.7 / 6.0 V rising** — and
+> nothing had ever compared the two: a divider whose worst-case high reached the
+> **minimum** OVP threshold would make a good board fault on itself.  It clears by
+> **6.1 %**, and `F6` now refuses a divider that does not.
+>
+> **This is what moved `R101` from 2.32 kΩ to 2.37 kΩ.**  At the corrected
+> setpoint, D-771's 2.32 kΩ left **0.52 %** of pack margin on the 5 V rail's
+> limiter state.  2.37 kΩ is the **E96 value nearest the centre of that
+> resistor's own legal window — 2.298 kΩ to 2.478 kΩ**: below 2.298 the limiter's
+> worst case reaches the pack's minimum trip, above 2.478 the rail can no longer
+> GUARANTEE the 300 mA D-098 publishes.  It trades delivery headroom there is
+> plenty of (7.4 % → 4.9 %) for pack margin there was almost none of
+> (0.52 % → 1.6 %).  **D-771's 2.32 kΩ broke no clause and is not described as
+> if it had.**
 
-| state the Community Port can reach | D-750 (1.5 k / 1.65 k) | D-753/D-765 (2.7 k / 2.7 k) | **D-771/D-772 (1.78 k / 2.32 k)** |
+Modelled at the 3.0 V cell corner with that **1.063 A** internal `+3V3` load,
+`U12` at 90 % and `U21` at 88 % into the boost's **worst-case 5.165 V setpoint**
+(D-773, block below; at the 4.950 V *typical* setpoint the same rows read
+2.337 / 2.470 / 2.410 / 2.351 / 3.508 A):
+
+| state the Community Port can reach | D-750 (1.5 k / 1.65 k) | D-753/D-765 (2.7 k / 2.7 k) | **D-771…D-773 (1.78 k / 2.37 k)** |
 |---|---|---|---|
 | 3.3 V rail alone at its limiter | 2.455 A | 1.879 A | **2.337 A** (+8.8 %) |
-| 5 V rail alone at its limiter | **2.930 A — TRIPS** | 2.229 A | **2.497 A** (+2.6 %) |
-| both rails at their GUARANTEED currents | **2.737 A — TRIPS** | 2.079 A | **2.426 A** (+5.3 %) |
-| both rails at their PUBLISHED budgets | — | *unreachable — the limiter could refuse it* | **2.351 A** (+8.3 %) |
-| both limiters in fault (double fault) | 4.162 A — past the LTC4368 | 2.886 A — **above the breaker's real 2.640 A minimum** | **3.534 A** — charger OCP, auto-retry, **10.8 % under the breaker's 3.960 A minimum** |
+| 5 V rail alone at its limiter | **2.930 A — TRIPS** | 2.229 A | **2.521 A** (+1.6 %) |
+| both rails at their GUARANTEED currents | **2.737 A — TRIPS** | 2.079 A | **2.438 A** (+4.8 %) |
+| both rails at their PUBLISHED budgets | — | *unreachable — the limiter could refuse it* | **2.375 A** (+7.3 %) |
+| both limiters in fault (double fault) | 4.162 A — past the LTC4368 | 2.886 A — **above the breaker's real 2.640 A minimum** | **3.558 A** — charger OCP, auto-retry, **10.2 % under the breaker's 3.960 A minimum** |
 
 *(the D-750 and D-753/D-765 columns are the figures those decisions published,
 at the 1.0 A internal term they used; only the last column is re-based on the
@@ -500,9 +537,9 @@ against a `BQ25185` `IBAT_OCP` band of **2.5625 / 3.125 / 3.6875 A** (3.125 A ty
 > question nothing in this repository had ever asked.  `U12` `TPS63020` is rated
 > **2 A for VIN > 2.5 V, VOUT = 3.3 V** (`SLVSAA7` Features) against a worst case
 > of **1.063 A internal (D-772) + 0.849 A accessory = 1.912 A**, a 4.4 % margin.  `U21` `TPS61023` delivers
-> **0.973 A** at this operating point by `SLVSF14B` equation 1 with `ILIM_SW` at
-> its **2.7 A EC minimum** and `L4` at its −20 % corner, against a worst case of
-> **0.639 A**.  `F6` refuses a limiter its converter cannot feed — which is what
+> **0.911 A** at this operating point by `SLVSF14B` equation 1 with `ILIM_SW` at
+> its **2.7 A EC minimum**, `L4` at its −20 % corner and the boost at its
+> worst-case setpoint, against a worst case of **0.624 A**.  `F6` refuses a limiter its converter cannot feed — which is what
 > now refuses D-750's 1.5 kΩ setting on `R97`.
 
 > **D-765 — THE ENVELOPE WAS RIGHT AND THE SILICON COULD NOT LEGALLY HOLD IT.**
@@ -529,10 +566,10 @@ against a `BQ25185` `IBAT_OCP` band of **2.5625 / 3.125 / 3.6875 A** (3.125 A ty
 > and reverse current only), the same **170 °C / 150 °C** thermal shutdown — and
 > it is **AEC-Q100 grade 1**.  Turn-on is slower (1 037 µs vs 800 µs at 5 V),
 > which only softens accessory inrush.  `IMAX` falls 3.2 A → 2.7 A, against a
-> 0.537 A worst-case use *at the resistors D-765 inherited* — **0.849 A at
-> D-771's**, still 3.2× under `IMAX`.  Prototype cost delta ≈ **US$0.03 per
+> 0.537 A worst-case use *at the resistors D-765 inherited* — **0.849 A at the
+> fitted ones**, still 3.2× under `IMAX`.  Prototype cost delta ≈ **US$0.03 per
 > device**.  The settings also sit inside the **UL 2367** recognised window
-> (66 mA–2.46 A) at 2.7 kΩ and at D-771's 1.78 kΩ / 2.32 kΩ alike.  **F6 now
+> (66 mA–2.46 A) at 2.7 kΩ and at the fitted 1.78 kΩ / 2.37 kΩ alike.  **F6 now
 > refuses any limiter whose `ILIM` setting falls
 > outside that part's OWN published range** over the programming resistor's
 > whole tolerance band, refuses a limiter it has no published range for, and
@@ -544,22 +581,22 @@ exceeds that sizing point at the low-battery end, on one unavoidable
 5.525 mm × 0.200 mm segment: `U11`'s `DLH0010A` pin-2 `BAT` land, which nothing
 wider can land on (D-269, D-708).
 
-| sustained state (internal `+3V3` load **1.063 A**, D-772) | at 3.7 V | at 3.0 V |
+| sustained state (internal `+3V3` load **1.063 A**, boost at its worst-case **5.165 V**) | at 3.7 V | at 3.0 V |
 |---|---|---|
-| both rails at D-098's **PUBLISHED** budget | 1.906 A | **2.351 A** |
-| both rails at their **GUARANTEED** currents | 1.967 A | **2.426 A** |
+| both rails at D-098's **PUBLISHED** budget | 1.926 A | **2.375 A** |
+| both rails at their **GUARANTEED** currents | 1.977 A | **2.438 A** |
 
 D-765 printed **1.69 A / 2.08 A** here, and those were the numbers of a board
 whose limiters could not deliver what the product publishes.  **THE PUBLISHED
 ROW IS THE REQUIREMENT AND IT HAS NOT MOVED**: D-098 has promised 400 mA +
-300 mA since 2026-08-23, which is 2.351 A at the 3.0 V corner *whatever the
-`ILIM` resistors are set to* (2.274 A at the 1.0 A internal term D-771 used,
-before D-772 itemised it).  What D-771 changed is that the hardware can now
+300 mA since 2026-08-23, which is 2.375 A at the 3.0 V corner *whatever the
+`ILIM` resistors are set to* (2.274 A at the 1.0 A internal term and 4.95 V
+setpoint D-771 used, before D-772 itemised the one and D-773 derived the other).  What D-771 changed is that the hardware can now
 honour it; the GUARANTEED row sits 3.3 % above the PUBLISHED one because a
 limiter must be set with margin to guarantee anything at all.
 
-The plane-coupled model puts that segment's ceiling at **51.0 K** over the
-adjacent `In4` plane at 2.426 A, **47.9 K** at 2.351 A and **19.5 K** at 1.5 A.
+The plane-coupled model puts that segment's ceiling at **51.5 K** over the
+adjacent `In4` plane at 2.438 A, **48.9 K** at 2.375 A and **19.5 K** at 1.5 A.
 The model explicitly ignores lateral spreading, conduction along the copper and
 convection from an OUTER layer — and the necked copper is **0.575 mm** long
 before it tapers 0.3 / 0.4 / 0.6 / 0.8 / 1.0 / 1.2 mm, against a copper thermal

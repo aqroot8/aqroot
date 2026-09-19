@@ -54,7 +54,11 @@ def board_requirements():
     # PROTECTION CHAIN over tolerance, and it reads the sense element and the
     # breaker part from the same {ref: value} map; omitting them makes the whole
     # envelope unreadable rather than merely unchecked.
-    for ref in ("R97", "R101", "U20", "U22", "R75", "U18"):
+    # D-773 ADDS R99/R100/U21: the 5 V rail's setpoint is DERIVED from the
+    # board's own feedback divider and the boost's own published VREF band, and
+    # the envelope's pack cost scales directly with it.
+    for ref in ("R97", "R101", "U20", "U22", "R75", "U18",
+                "R99", "R100", "U21"):
         fp = board.FindFootprintByReference(ref)
         if not fp:
             raise RuntimeError("missing %s" % ref)

@@ -381,8 +381,8 @@
 #                      0.428 A guaranteed   0.094 mm    0.558 mm
 #                      0.849 A worst ILIM   0.241 mm    1.436 mm
 #   ACC_5V             0.300 A PUBLISHED    0.057 mm    0.342 mm
-#                      0.322 A guaranteed   0.063 mm    0.377 mm
-#                      0.639 A worst ILIM   0.163 mm    0.970 mm
+#                      0.315 A guaranteed   0.061 mm    0.366 mm
+#                      0.624 A worst ILIM   0.158 mm    0.939 mm
 #     D-771 RETUNED THE ILIM RESISTORS AGAIN -- R97 2.7 -> 1.78 kOhm,
 #     R101 2.7 -> 2.32 kOhm -- because at 2.7 kOhm each rail
 #     GUARANTEED only 0.277 A against the 400 mA / 300 mA D-098
@@ -684,14 +684,16 @@
 # 5.525 mm x 0.200 mm segment: U11's DLH0010A pin-2 BAT land, which
 # nothing wider can land on (D-269, D-708).
 #
-#   sustained state (internal +3V3 load 1.063 A)      3.7 V    3.0 V
-#   both rails at D-098's PUBLISHED budget            1.906    2.351
-#   both rails at their GUARANTEED currents           1.967    2.426
+#   sustained state (internal +3V3 load 1.063 A, and the
+#   boost at the worst case of its DERIVED setpoint band,
+#   4.742 / 4.950 / 5.165 V -- D-773)                  3.7 V    3.0 V
+#   both rails at D-098's PUBLISHED budget            1.926    2.375
+#   both rails at their GUARANTEED currents           1.977    2.438
 #
 # (amps).  D-765 PRINTED 1.69 AND 2.08 HERE, and those were the numbers
 # of a board whose limiters could not deliver what the product publishes.
 # THE PUBLISHED ROW IS THE REQUIREMENT AND IT HAS NOT MOVED: D-098 has
-# promised 400 mA + 300 mA since 2026-08-23, which is 2.351 amps at the
+# promised 400 mA + 300 mA since 2026-08-23, which is 2.375 amps at the
 # 3.0 V corner whatever the ILIM resistors are set to.  What D-771
 # changed is that the hardware can now honour it; the GUARANTEED row sits
 # 3.2 % above the PUBLISHED one because the limiter must be set with
@@ -709,9 +711,20 @@
 # ITEMISED AND SUMMED in checks/demo_feature_contract.py, every line
 # cited, and it comes to 1.063 A.
 #
+# D-773 THEN DERIVED THE OTHER TERM.  These rows had also been costed
+# against a 4.95 V boost output, a constant taken from VREF = 0.6 V --
+# and TI SLVSF14B gives the TPS61023's FB reference as 580 / 595 / 610
+# mV, typ 595.  Over R99 732k and R100 100k at their own 1 % bands the
+# real setpoint is 4.742 / 4.950 / 5.165 V, and the rows above use the
+# WORST CASE because the pack cost scales directly with it.  R101 moved
+# 2.32 -> 2.37 kOhm at the same time: at the corrected setpoint 2.32
+# left 0.52 % of pack margin on the 5 V rail's limiter state, and
+# 2.37 kOhm is the E96 value nearest the centre of that resistor's own
+# legal window of 2.298 .. 2.478 kOhm.
+#
 # The plane-coupled model this repository uses puts that segment's
-# ceiling at 51.0 K over the adjacent In4 plane at 2.426 amps, 47.9 K at
-# 2.351 and 19.5 K at 1.5, and that model ignores lateral spreading,
+# ceiling at 51.5 K over the adjacent In4 plane at 2.438 amps, 48.9 K at
+# 2.375 and 19.5 K at 1.5, and that model ignores lateral spreading,
 # conduction along the copper and convection from an OUTER layer - and
 # the necked copper is 0.575 mm long before it tapers 0.3 / 0.4 / 0.6 /
 # 0.8 / 1.0 / 1.2 mm, against a copper thermal length of about 2.6 mm, so
@@ -745,7 +758,7 @@
 #
 #   rail         design A   layer   w      length     R        drop    IPC    plane
 #   ACC_3V3_SW     0.849    In2   0.400  91.1 mm  224.4 mO  191 mV  82.1 K  2.29 K
-#   ACC_5V_SW      0.639    In3   0.400  40.6 mm  110.6 mO   71 mV  43.1 K  1.30 K
+#   ACC_5V_SW      0.624    In3   0.400  40.6 mm  110.6 mO   69 mV  40.8 K  1.24 K
 #
 # The design current is the LOAD SWITCH's worst-case limit, not the
 # published budget: TI SLVSGP6A equation 1 over the fitted R97 1.78 kOhm
@@ -764,8 +777,8 @@
 #     plane and 0.2028 mm of prepreg from the In3.Cu +3V3 plane, and the
 #     plane-coupled rise derived from those two distances is 2.29 K for
 #     0.162 W over the whole rail.
-#   * ACC_5V_SW on In3.Cu at 0.400 mm: 0.970 mm asked, 43.1 K returned,
-#     1.30 K plane-coupled, 0.045 W.  In2.Cu is a ROUTING layer rather
+#   * ACC_5V_SW on In3.Cu at 0.400 mm: 0.939 mm asked, 40.8 K returned,
+#     1.24 K plane-coupled, 0.043 W.  In2.Cu is a ROUTING layer rather
 #     than a solid plane, so the upper half of that model is optimistic -
 #     the In4.Cu side ALONE, at 0.4000 mm of core, still gives 3.9 K -
 #     and the track runs inside In3's own +3V3 pour at 0.250 mm lateral
@@ -780,8 +793,8 @@
 # 4.90 V against 4.75 V, at the worst corner of both.
 #
 # THE OUTER FLOORS ARE UNCHANGED AND STILL COVER BOTH RAILS: ACC_3V3 asks
-# 0.241 mm outer at 0.849 amps against a 0.35 mm rule, ACC_5V 0.163 mm at
-# 0.639 against 0.40 mm.  Nothing below is relaxed; this is a recorded
+# 0.241 mm outer at 0.849 amps against a 0.35 mm rule, ACC_5V 0.158 mm at
+# 0.624 against 0.40 mm.  Nothing below is relaxed; this is a recorded
 # engineering acceptance of an INNER-layer figure, exactly as 5a and 5c
 # are, and it is bounded by LENGTH so a re-route cannot grow it silently:
 # 76.0 mm budgeted against 73.3 used on ACC_3V3_SW and 41.0 against 38.6
@@ -806,7 +819,7 @@
 # D-750 declares both feeds as rails and measures them:
 #
 #     rail                 design A   length     R        drop    IPC    plane
-#     SYS -> U21/L4 (5 V)    1.100   201.8 mm  183.3 mO  202 mV  47.2 K  0.96 K
+#     SYS -> U21/L4 (5 V)    1.110   201.8 mm  183.3 mO  203 mV  48.2 K  0.98 K
 #     SYS -> U13/L2 (NFC)    0.86    222.1 mm  196.5 mO  169 mV  27.0 K  0.59 K
 #
 #     D-771 RE-RULED THE 5 V ROW.  It read 1.21 A from D-750's 0.70 A
@@ -814,11 +827,13 @@
 #     MOVING THIS TABLE -- the prose kept a number the tool no longer
 #     used.  The rail is sized by the LOAD SWITCH's worst-case limit,
 #     which D-771 raised so the rail can GUARANTEE the 300 mA D-098
-#     publishes: 0.639 A out of U21 is 1.100 A into VIN.  Still below
-#     the 1.21 A this trunk was originally built for.
+#     publishes: 0.624 A out of U21 is 1.110 A into VIN at D-773's
+#     DERIVED worst-case 5.1654 V setpoint -- the old figure used a
+#     5.0 V constant.  Still below the 1.21 A this trunk was
+#     originally built for.
 #
-# THE DESIGN CURRENT IS THE INPUT AVERAGE, NOT THE PEAK.  0.639 A out of
-# U21 at 5.0 V, 88 % efficient, from a 3.3 V SYS node, is 1.100 A into
+# THE DESIGN CURRENT IS THE INPUT AVERAGE, NOT THE PEAK.  0.624 A out of
+# U21 at 5.1654 V, 88 % efficient, from a 3.3 V SYS node, is 1.110 A into
 # VIN.  The 2.19 A figure is the PEAK INDUCTOR current, and D-750 gave
 # U21 the local input capacitor it never had (C83, 10 uF, 5.8 mm from
 # U21.3 through 0.8-1.0 mm copper, against 93.5 mm before) precisely so
@@ -829,9 +844,9 @@
 # land and leaves it -- so moving either would have cut the rail.
 #
 # ACCEPTED, with the same derivation as 5a and the same scope discipline:
-# three In2 legs at 0.800 mm where section 5 asks 2.052 mm at 1.100 A.
-# The plane-coupled rise is 0.96 K and the whole rail dissipates 0.222 W.
-# The 202 mV drop is accepted against a TPS61023 input range of
+# three In2 legs at 0.800 mm where section 5 asks 2.078 mm at 1.110 A.
+# The plane-coupled rise is 0.98 K and the whole rail dissipates 0.226 W.
+# The 203 mV drop is accepted against a TPS61023 input range of
 # 0.5-5.5 V and a U12 TPS63020 input range of 1.8-5.5 V on the same node.
 #
 # SCOPE.  `/01_POWER_TREE/BQ25185_SYS` on In2.Cu, between the SYS pour
