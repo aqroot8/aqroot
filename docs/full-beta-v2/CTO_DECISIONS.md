@@ -339,6 +339,33 @@ liquidity gate (`1 part x 5 boards x 10 = 50`), but it is under `rule_open_sourc
 187 kOhm part it replaces read 6 884.  That is the price of `R7-N01`'s centring and it is
 stated here rather than buried: **buy `R40` with the consignment batch.**
 
+### D-788 REVIEW-TARGET IDENTITY
+
+    branch            aqroot-demo                      remote  origin/aqroot-demo
+    content commit    243d8d82f5c1b586f3f8bac40813f2ba46c52318
+    PCB     sha256    57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b
+    MANIFEST sha256   a6341542db5a7943c45bc74039a2c6173bac2d9bb2fdad2fba8967e66592ae4a
+    order             NONE.  Manufacturer CAM (B01-B08) and first-article
+                      acceptance (C01-C15 plus the new C-PWR-TRANSIENT-01)
+                      remain outstanding.  DO NOT ORDER.
+
+`content commit` is the D-788 milestone.  The HEAD that carries the identity record
+`evidence/d788-review-target.json` is ONE COMMIT LATER, because a record cannot contain its
+own hash -- the same two-commit shape D-787 used and Round-7 reviewed.  Every suite artifact
+listed in that record was produced on the identical tree; the worktree was clean at the
+milestone commit.
+
+**POST-COMMIT, AGAINST THE COMMITTED TREE:** `F1`-`F9` PASS (`all_pass`), `H1`-`H8` PASS with
+controls PASS and **every production timing mutation caught**, `fab_package_contract` PASS,
+`rail_ampacity` `all_ok`, protected copper **identical to D-787** (15 nets / 406 objects),
+KiCad DRC **199 `lib_footprint_issues` warnings / 0 errors**, 17 declared unconnected items,
+**246 schematic-parity warnings / 0 errors**.  All **19** standing contracts ran and none
+failed; the wrapper's own self-regression is **byte-identical, non-vacuous**.  Connectivity
+**174 retained / 173 connected / 1 owner-approved `U11.3` open / 0 unapproved**.  Sourcing
+**124/124** lines, **ten** consignment identities.  Four PlatformIO environments SUCCESS.
+`hardware/beta-v2` untouched.
+
+---
 ### 18a. SIX DEFECTS ROUND-7 DID NOT RAISE  ·  `R7-N01` .. `R7-N06`  ·  ALL CLOSED
 
 Round-7's instruction says *"Do not assume the Round-6 list is exhaustive."*  Auditing the

@@ -7,6 +7,8 @@ product decision the display fix forced is **CLOSED**: the owner approved **OPTI
 2026-09-20.
 
 **Board authority `57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b`.**
+**`MANIFEST` `a6341542db5a7943c45bc74039a2c6173bac2d9bb2fdad2fba8967e66592ae4a`.**
+**Content commit `243d8d82f5c1b586f3f8bac40813f2ba46c52318` on `origin/aqroot-demo`.**
 
 - **R7-D787-01** — the fitted `ER-TFT035IPS-6` is an ILI9488 whose **ABSOLUTE
   MAXIMUM** on `VCI` and `IOVCC` is **3.3 V** (Table 41 of the now-archived

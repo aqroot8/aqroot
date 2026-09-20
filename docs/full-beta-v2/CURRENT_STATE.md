@@ -174,6 +174,9 @@
 > `hardware/beta-v2` is untouched.
 >
 > PCB SHA-256 `57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b`.
+> `MANIFEST` SHA-256 `a6341542db5a7943c45bc74039a2c6173bac2d9bb2fdad2fba8967e66592ae4a`.
+> D-788 content commit `243d8d82f5c1b586f3f8bac40813f2ba46c52318` on `origin/aqroot-demo`;
+> the identity record `evidence/d788-review-target.json` is one commit later.
 >
 > ---
 >

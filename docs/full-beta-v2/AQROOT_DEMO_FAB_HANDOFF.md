@@ -77,6 +77,26 @@
 > `PS/SYNC` is a **REV-B** item because power save may only be re-enabled on a
 > rail the panel is not on.
 >
+>
+> ### D-788 review-target identity
+>
+> | field | value |
+> |---|---|
+> | branch / remote | `aqroot-demo` / `origin/aqroot-demo` |
+> | content commit | `243d8d82f5c1b586f3f8bac40813f2ba46c52318` |
+> | PCB `sha256` | `57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b` |
+> | `MANIFEST` `sha256` | `a6341542db5a7943c45bc74039a2c6173bac2d9bb2fdad2fba8967e66592ae4a` |
+> | order authorization | **NONE — manufacturer CAM (B01–B08) and first-article (C01–C15 + `C-PWR-TRANSIENT-01`) outstanding. DO NOT ORDER.** |
+>
+> The identity record is `hardware/demo/manufacturing/evidence/d788-review-target.json`, and
+> the HEAD carrying it is one commit after the milestone — a record cannot contain its own
+> hash. Post-commit, against the committed tree: **F1–F9 PASS**, **H1–H8 PASS** with every
+> production timing mutation caught, **fab package PASS**, **ampacity all_ok**, **protected
+> copper identical to D-787**, DRC **199 warnings / 0 errors** + 17 declared unconnected +
+> **246 parity warnings / 0 errors**, **19/19 contracts** with a **byte-identical,
+> non-vacuous** self-regression, **174/173/1/0** connectivity, **124/124** sourced with ten
+> consignment identities, **four** PlatformIO environments SUCCESS, `hardware/beta-v2`
+> untouched.
 > ### Owner decision closed — Option A approved
 >
 > A rail capped under 3.3 V cannot also guarantee **3.3 V −5 %** at the

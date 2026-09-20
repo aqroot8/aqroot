@@ -1,0 +1,130 @@
+{
+ "beta_v2_untouched": true,
+ "branch": "aqroot-demo",
+ "connectivity": {
+  "approved_unrouted_edges": 1,
+  "connected_retained_nets": 173,
+  "open_retained_nets": 1,
+  "raw_board_ratsnest": 17,
+  "retained_multi_pad_nets": 174,
+  "retained_open_edges": 1,
+  "unapproved_open_edges": 0,
+  "unapproved_open_retained_nets": 0
+ },
+ "content_commit": "243d8d82f5c1b586f3f8bac40813f2ba46c52318",
+ "decision": "D-788",
+ "fab_manifest_sha256": "a6341542db5a7943c45bc74039a2c6173bac2d9bb2fdad2fba8967e66592ae4a",
+ "firmware_environments": [
+  "esp32-s3-aqroot",
+  "wokwi",
+  "esp32-s3-aqroot-dm",
+  "aqroot-demo"
+ ],
+ "order_authorization": "NONE.  This is an external-review target.  Manufacturer CAM acceptance (B01-B08) and first-article acceptance (C01-C15 plus the new C-PWR-TRANSIENT-01) remain outstanding.  DO NOT ORDER.",
+ "pcb_sha256": "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b",
+ "post_commit_verification": {
+  "demo_feature_F1_F9": {
+   "F1_every_scope_part_fitted": true,
+   "F2_every_scope_net_whole": true,
+   "F3_approved_nc_exactly_as_scoped": true,
+   "F4_every_exposed_signal_contact_has_esd": true,
+   "F5_backlight_disconnect_control_is_independent": true,
+   "F6_accessory_envelope_is_bounded_by_hardware": true,
+   "F7_no_retired_part_name_survives_on_the_part_that_replaced_it": true,
+   "F8_the_derating_rule_is_applied_to_the_parts_this_board_fits": true,
+   "F9_manual_battery_harness_metadata_matches_the_frozen_build": true
+  },
+  "demo_feature_all_pass": true,
+  "fab_package_contract_verdict": "PASS",
+  "firmware_hw_map_H1_H8": {
+   "H1_generated_tree_is_fresh": "PASS",
+   "H2_board_digest": "PASS",
+   "H3_policy_corroborated": "PASS",
+   "H4_owner_decisions_are_machine_checked": "PASS",
+   "H5_firmware_layer_uses_the_map": "PASS",
+   "H6_host_tests_prove_the_orderings": "PASS",
+   "H7_MAX17048_primary_source_is_pinned": "PASS",
+   "H8_released_firmware_runs_the_tested_timing_seam": "PASS"
+  },
+  "firmware_hw_map_controls_verdict": "PASS",
+  "firmware_hw_map_verdict": "PASS",
+  "kicad_drc": {
+   "schematic_parity": {
+    "extra_footprint": 2,
+    "footprint_symbol_field_mismatch": 199,
+    "footprint_symbol_mismatch": 45
+   },
+   "unconnected_items": 17,
+   "violations": {
+    "lib_footprint_issues": 199
+   }
+  },
+  "production_timing_mutations_all_caught": true,
+  "protected_copper_identical": true,
+  "protected_copper_nets": 15,
+  "protected_copper_objects": 406,
+  "protected_copper_ref": "HEAD~1",
+  "rail_ampacity_all_ok": true
+ },
+ "remote": "origin/aqroot-demo",
+ "schema": 1,
+ "sourcing": {
+  "assembly_lines": 124,
+  "consignment_lines": [
+   "74438357010",
+   "DMM-4026-B-I2S-R",
+   "LQW18AN39NG80D",
+   "LTC4368IMS-1#TRPBF",
+   "NTMD4820NR2G",
+   "PCAL9535APW,118",
+   "SQ2364EES-T1_BE3",
+   "SSQ-124-02-G-S-RA",
+   "ST25R3916-AQET",
+   "TLV7032DDFR"
+  ],
+  "unsourced_lines": 0,
+  "unsourced_parts": 0
+ },
+ "standing_contracts": {
+  "all_ran": true,
+  "failing": [],
+  "run": 19,
+  "self_regression_all_identical": true,
+  "self_regression_no_substantive_difference": true,
+  "self_regression_vacuous": false,
+  "vs_d787_all_identical_where_comparable": true
+ },
+ "suite_evidence": [
+  "d788-battery-pack-contract.json",
+  "d788-bom-sourcing.json",
+  "d788-connection-width-contract.json",
+  "d788-contract-regression.json",
+  "d788-demo-feature-contract.json",
+  "d788-fab-package-contract.json",
+  "d788-fab-provenance-verify.json",
+  "d788-fab_provenance-contract.json",
+  "d788-firmware-builds.txt",
+  "d788-firmware-hw-map-contract.json",
+  "d788-keepout_stackup-contract.json",
+  "d788-kicad-drc.json",
+  "d788-land_parity-contract.json",
+  "d788-leaf-land-contract.json",
+  "d788-mechanical_keepout-contract.json",
+  "d788-neck-contract.json",
+  "d788-obstacle_model-contract.json",
+  "d788-placement-contract.json",
+  "d788-population-contract.json",
+  "d788-pour_bond-contract.json",
+  "d788-pour_partition-contract.json",
+  "d788-protected-copper.json",
+  "d788-rail-ampacity.json",
+  "d788-rf_symmetry-contract.json",
+  "d788-routing-ledger.json",
+  "d788-self-regression.json",
+  "d788-sourcing-sweep.json",
+  "d788-sweep-sourcing.py",
+  "d788-tap-contract.json",
+  "d788-trunk_floor-contract.json"
+ ],
+ "what_this_is": "The external-review identity of the D-788 target, plus the critical checks re-run AGAINST THE COMMITTED TREE after the milestone commit.  `content_commit` is the D-788 milestone; the HEAD that carries THIS file is one commit later, because a record cannot contain its own hash -- the same two-commit shape D-787 used.  The full suite evidence listed below was produced on the identical tree (the worktree was clean at the milestone commit)."
+}
