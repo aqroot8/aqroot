@@ -8893,7 +8893,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "180K 1%"
+		(property "Value" "178K 0.1%"
 			(at 220.98 100.3299 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8926,7 +8926,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
+		(property "Manufacturer" "Viking Tech"
 			(at 218.44 99.06 0)
 			(hide yes)
 			(show_name no)
@@ -8937,7 +8937,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF1803T5E"
+		(property "MPN" "ARG03BTC1783"
 			(at 218.44 99.06 0)
 			(hide yes)
 			(show_name no)
@@ -8948,7 +8948,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C22827"
+		(property "LCSC" "C2441185"
 			(at 218.44 99.06 0)
 			(hide yes)
 			(show_name no)
@@ -8959,7 +8959,7 @@
 				)
 			)
 		)
-		(property "Note_Sourcing" "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '180K 1%' (REJECTED - JLC match wrong); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; tolerance 1.0% meets 1.0%."
+		(property "Note_Sourcing" "SOURCING D-787 2026-09-20, verified live per D-096 through the JLCPCB parts API.  LCSC C2441185, Viking Tech ARG03BTC1783, 178 kOhm +/-0.1 pct, 0603, 100 mW thin film, +/-25 ppm/C, -55..+155 C, componentLibraryType = expand, stock 3973 (evidence/jlc-live/arg03btc1783-*.json).  SAME Viking ARG03B SERIES AND SAME 0.1 pct / 25 ppm GRADE as R39, so the divider's two halves track.  This REPLACES the D-614 line 'EXACT_PRIOR from the beta-dm audit line 180K 1 pct', which sourced UNI-ROYAL 0603WAF1803T5E C22827.  176 kOhm WAS THE FIRST D-787 CANDIDATE AND IS REFUSED ON AVAILABILITY, not on electricals: every 176 kOhm 0603 part at 0.1 pct or better in the JLCPCB catalogue reads stock 0 -- including the KOA RN73H1JTTD1763B10 C4086101 that draft named (evidence/jlc-live/176k-0603-0-1-*.json) -- so it fails this project's own rule_open_sourcing stock floor of 5 boards x 10 liquidity.  178 kOhm is the nearest STOCKED 0.1 pct value that keeps the derived envelope inside BOTH the 3.135 V Community Port minimum and the 3.600 V internal consumer maximum, and it is also the low-side magnitude TI's own SLVS916I Table 3 prints for a 3.3 V output.  Same 0603 land: no footprint, no copper and no assembly step change."
 			(at 218.44 99.06 0)
 			(hide yes)
 			(show_name no)
@@ -8968,6 +8968,18 @@
 				(font
 					(size 1.27 1.27)
 				)
+			)
+		)
+		(property "Note" "D-787 / R6-A01 THE MAIN 3.3 V RAIL IS ADJUSTABLE AND ITS SETPOINT WAS NEVER A PROOF TERM.  Every accessory clause before D-787 ran on a TYPED 3.3 V constant, so the released 1 MOhm / 180 kOhm 1 pct divider could sit anywhere in a band the contract could not see, and F6 stayed green while the Community Port's PUBLISHED 3.135 V minimum was not guaranteed at the PUBLISHED 400 mA.  F6 now DERIVES the whole envelope: TI SLVS916I VFB_PWM 495 / 500 / 505 mV, the fitted value tolerance, the SELECTED PART's temperature coefficient over -40..+85 C, TI's 0.5 pct maximum line and 0.5 pct maximum load regulation applied together, and the +5 pct power-save high side checked separately.  At R39 = 1 MOhm and R40 = 178 kOhm, both Viking ARG03B 0.1 pct / 25 ppm, the raw PWM band is 3.261337 / 3.308989 / 3.357013 V, the heavy-load minimum is 3.228806 V and the power-save high side is 3.542487 V against the 3.600 V tightest internal consumer maximum.  DELIVERY IS A SEPARATE CLAUSE: the bounded hot U20->TP12 prefix, the manual first-five reinforcement lead at its <=30 mOhm acceptance and U20's 68 mOhm maximum RON cost 82.4 mV at 400 mA, leaving 3.146366 V at either duplicated 3.3 V contact.  THE WINDOW IS NARROW IN BOTH DIRECTIONS -- 180 kOhm falls below the connector minimum and 174 kOhm exceeds the internal consumer maximum -- which is why the divider's tolerance grade and temperature coefficient are locked by F7 and why F6 refuses an MPN whose coefficient this repository has not read.  WAS 180 kOhm 1 pct (D-614).  Pinned by checks/demo_feature_contract.py F6 and F7."
+			(at 218.44 99.06 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.0 1.0)
+				)
+				(justify left)
 			)
 		)
 		(property "Description" "Resistor"
@@ -15481,7 +15493,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "1M 1%"
+		(property "Value" "1M 0.1%"
 			(at 220.98 87.6299 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15514,7 +15526,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
+		(property "Manufacturer" "Viking Tech"
 			(at 218.44 86.36 0)
 			(hide yes)
 			(show_name no)
@@ -15525,7 +15537,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF1004T5E"
+		(property "MPN" "ARG03BTC1004"
 			(at 218.44 86.36 0)
 			(hide yes)
 			(show_name no)
@@ -15536,7 +15548,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C22935"
+		(property "LCSC" "C335092"
 			(at 218.44 86.36 0)
 			(hide yes)
 			(show_name no)
@@ -15547,7 +15559,7 @@
 				)
 			)
 		)
-		(property "Note_Sourcing" "SOURCING D-614. EXACT_PRIOR from the beta-dm audit line '1M 1%' (REJECTED - JLC match wrong); manufacturer derived from the UNI-ROYAL(Uniroyal Elec) part-number family and corroborated by the audit text; tolerance 1.0% meets 1.0%."
+		(property "Note_Sourcing" "SOURCING D-787 2026-09-20, verified live per D-096 through the JLCPCB parts API.  LCSC C335092, Viking Tech ARG03BTC1004, 1 MOhm +/-0.1 pct, 0603, 100 mW thin film, +/-25 ppm/C, -55..+155 C, componentLibraryType = expand, stock 54797 (evidence/jlc-live/arg03btc1004-*.json).  This REPLACES the D-614 line 'EXACT_PRIOR from the beta-dm audit line 1M 1 pct', which sourced UNI-ROYAL 0603WAF1004T5E C22935 at 1 pct / 100 ppm.  That sentence was correct when nothing depended on which 1 MOhm part this was; D-787 makes the TPS63020 divider a PROOF TERM in checks/demo_feature_contract.py F6, so tolerance and temperature coefficient are now load-bearing.  Same 0603 land: no footprint, no copper and no assembly step change."
 			(at 218.44 86.36 0)
 			(hide yes)
 			(show_name no)
@@ -33237,7 +33249,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "2.37k 1%"
+		(property "Value" "2.43k 1%"
 			(at 510.0 344.88 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -33283,7 +33295,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF2371T5E"
+		(property "MPN" "0603WAF2431T5E"
 			(at 510.0 341.88 0)
 			(hide yes)
 			(show_name no)
@@ -33294,7 +33306,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25964"
+		(property "LCSC" "C22906"
 			(at 510.0 341.88 0)
 			(hide yes)
 			(show_name no)
@@ -33305,7 +33317,7 @@
 				)
 			)
 		)
-		(property "Note_Sourcing" "SOURCING D-773 2026-09-19, verified live per D-096 through the JLCPCB parts API.  LCSC C25964, UNI-ROYAL(Uniroyal Elec) 0603WAF2371T5E, 2.37 kOhm +/-1 %%, 0603, 100 mW, +/-100 ppm/C, -55..+155 C, componentLibraryType = expand, stock 11268.  SAME 0603WAF SERIES, SAME MANUFACTURER and same 0603 land as the 0603WAF2321T5E it replaces, so no footprint, no copper and no assembly step changes -- only the resistance."
+		(property "Note_Sourcing" "SOURCING D-787 2026-09-20, verified live per D-096 through the JLCPCB parts API.  LCSC C22906, UNI-ROYAL(Uniroyal Elec) 0603WAF2431T5E, 2.43 kOhm +/-1 pct, 0603, 100 mW, +/-100 ppm/C, -55..+155 C, componentLibraryType = expand, stock 4325 (evidence/jlc-live/0603waf2431t5e-*.json).  SAME 0603WAF SERIES, SAME MANUFACTURER and same 0603 land as the 0603WAF2371T5E C25964 it replaces, so no footprint, no copper and no assembly step changes -- only the resistance."
 			(at 510.0 341.88 0)
 			(hide yes)
 			(show_name no)
@@ -33328,7 +33340,7 @@
 				(justify left)
 			)
 		)
-		(property "Note" "D-773 THE 5 V SETPOINT WAS A NUMBER FROM A WRONG REFERENCE, AND IT DECIDES THIS RAIL'S MARGIN.  D-771 set R101 = 2.32 kOhm against a boost output modelled at 4.95 V, and ARCHITECTURE.md published 4.99 V; BOTH were derived from VREF = 0.6 V.  TI SLVSF14B's Electrical Characteristics gives the TPS61023's FB reference as 580 / 595 / 610 mV in PWM mode -- the TYPICAL is 595 mV, not 600 -- so over R99 732k and R100 100k at their own 1 %% bands the real setpoint is 4.742 / 4.950 / 5.165 V.  THE PACK COST OF THIS RAIL SCALES DIRECTLY WITH THAT VOLTAGE: at the worst-case 5.165 V the 5 V rail alone at its limiter drew 2.549 A against a BQ25185 IBAT_OCP MINIMUM of 2.5625 A -- 0.52 %% of margin, on the thinnest state this board has.  R101 = 2.37 kOhm programs 0.468 A typ and brackets the rail at 0.315 A GUARANTEED / 0.624 A worst case: the published 300 mA is still guaranteed with 4.9 %% headroom and the pack margin becomes 1.62 %%.  IT IS THE E96 VALUE NEAREST THE CENTRE OF ITS OWN LEGAL WINDOW, which is 2.298 .. 2.478 kOhm -- below 2.298 the limiter's worst case trips the pack, above 2.478 the rail cannot guarantee what D-098 publishes.  F6 now DERIVES the setpoint from R99/R100 and the part's own VREF band instead of carrying a constant, runs the envelope on the worst case, reports the typical beside it, and refuses a divider whose worst-case high reaches the TPS61023's own VOVP minimum of 5.5 V (margin 6.1 %%).  WAS 2.32 kOhm (D-771); 2.7 kOhm (D-753); 1.65 kOhm (D-750).  Pinned by checks/demo_feature_contract.py F6."
+		(property "Note" "D-787 / R6-A01 THE 5 V LIMITER SETTING MOVES AGAIN BECAUSE THE 3.3 V RAIL IT SHARES A PACK WITH STOPPED BEING A CONSTANT.  D-773's window was solved against a typed 3.3 V main rail.  With F6 deriving that rail from R39/R40 the internal +3V3 load is costed at the HIGH PWM corner instead, which moves the whole 5 V window.  On the D-787 candidate the legal window is about 2.367 .. 2.479 kOhm -- below it the limiter's worst user-reachable corner reaches the BQ25185 IBAT_OCP MINIMUM of 2.5625 A, above it the rail can no longer GUARANTEE the 300 mA D-098 publishes -- and 2.43 kOhm is the E96 value nearest that window's centre, the same rule D-773 used.  It brackets the rail at 0.3065 A GUARANTEED / 0.6078 A worst case (2.16 pct headroom over the published 300 mA) and leaves the worst user-reachable pack state at 2.5244 A, 1.49 pct below IBAT_OCP minimum -- still the thinnest margin on this board, and the reason this value is locked by F7.  WAS 2.37 kOhm (D-773).  THE D-773 PARAGRAPH BELOW IS RETAINED AS HISTORY; its 2.298 .. 2.478 kOhm window and its 0.315 A / 1.62 pct figures belong to the typed-3.3 V model D-787 replaced.  D-773 THE 5 V SETPOINT WAS A NUMBER FROM A WRONG REFERENCE, AND IT DECIDES THIS RAIL'S MARGIN.  D-771 set R101 = 2.32 kOhm against a boost output modelled at 4.95 V, and ARCHITECTURE.md published 4.99 V; BOTH were derived from VREF = 0.6 V.  TI SLVSF14B's Electrical Characteristics gives the TPS61023's FB reference as 580 / 595 / 610 mV in PWM mode -- the TYPICAL is 595 mV, not 600 -- so over R99 732k and R100 100k at their own 1 %% bands the real setpoint is 4.742 / 4.950 / 5.165 V.  THE PACK COST OF THIS RAIL SCALES DIRECTLY WITH THAT VOLTAGE: at the worst-case 5.165 V the 5 V rail alone at its limiter drew 2.549 A against a BQ25185 IBAT_OCP MINIMUM of 2.5625 A -- 0.52 %% of margin, on the thinnest state this board has.  R101 = 2.37 kOhm programs 0.468 A typ and brackets the rail at 0.315 A GUARANTEED / 0.624 A worst case: the published 300 mA is still guaranteed with 4.9 %% headroom and the pack margin becomes 1.62 %%.  IT IS THE E96 VALUE NEAREST THE CENTRE OF ITS OWN LEGAL WINDOW, which is 2.298 .. 2.478 kOhm -- below 2.298 the limiter's worst case trips the pack, above 2.478 the rail cannot guarantee what D-098 publishes.  F6 now DERIVES the setpoint from R99/R100 and the part's own VREF band instead of carrying a constant, runs the envelope on the worst case, reports the typical beside it, and refuses a divider whose worst-case high reaches the TPS61023's own VOVP minimum of 5.5 V (margin 6.1 %%).  WAS 2.32 kOhm (D-771); 2.7 kOhm (D-753); 1.65 kOhm (D-750).  Pinned by checks/demo_feature_contract.py F6."
 			(at 510.0 338.88 0)
 			(hide yes)
 			(show_name no)

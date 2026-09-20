@@ -689,10 +689,15 @@ NORMAL_PATHS = {
                        snk=("L4.1",), bound_ohm=0.200,
                        last_measured_ohm=0.183309,
                        what="SYS -> the ACC_5V boost's input inductor"),
+    # D-787 / R6-A01. The release no longer claims the 224 mOhm routed
+    # U20->J5 path is the guaranteed-delivery path. Both J5 contacts receive
+    # independent first-five reinforcement leads from TP12, downstream of U20.
+    # The board-owned prefix is therefore U20.5->TP12.1; the manual lead's
+    # separately measured <=30 mOhm limit is added by the envelope model.
     "acc_3v3_sw": dict(rail="ACC_3V3_SW", src=("U20.5",),
-                       snk=("J5.3", "J5.22"), bound_ohm=0.240,
-                       last_measured_ohm=0.224426,
-                       what="U20 output -> the Community Port 3.3 V contacts"),
+                       snk=("TP12.1",), bound_ohm=0.080,
+                       last_measured_ohm=0.070186,
+                       what="U20 output -> TP12 reinforcement source"),
     "acc_5v_sw": dict(rail="ACC_5V_SW", src=("U22.5",),
                       snk=("J5.1", "J5.24"), bound_ohm=0.120,
                       last_measured_ohm=0.110567,
@@ -714,8 +719,18 @@ NORMAL_OCP_MARGIN_MIN = 0.10
 # Firmware carries a float constant a human reads; the requirement is rounded
 # UP onto this grid before it is compared with one.
 FLOOR_GRID_V = 0.05
+# THESE TWO ARE THE MODULE DEFAULTS, AND THEY MUST EQUAL WHAT THE FIRMWARE
+# CARRIES.  `main()` always parses the real constants out of
+# `aqroot_accessory_power_policy.h` and passes them in; these exist only so
+# `judge_accessory_envelope` stays a pure function for its own mutation
+# controls and for `battery_pack_contract`, which calls it with no floors at
+# all.  D-787 found the failure mode: the derived dual requirement moved to
+# 3.8094 V and the firmware to 3.85 V, and this default stayed at D-775's
+# 3.80 V, so `battery_pack_contract` -- the one caller that uses the default --
+# refused a board every other gate had passed.  `firmware_policy_defaults_match`
+# below makes that class of drift a CLAUSE instead of a surprise.
 NORMAL_SINGLE_VBAT_FLOOR = 3.50         # D-766's retained policy floor
-NORMAL_DUAL_VBAT_FLOOR = 3.80           # D-775's DERIVED requirement, gridded
+NORMAL_DUAL_VBAT_FLOOR = 3.85           # D-787's DERIVED requirement, gridded
 VBAT_CORNER = 3.0                      # fault-envelope 1S Li-ion corner
 # D-774 SWEEP.  Every other physical constant in this file now cites a primary
 # source (see ILIM_LO/HI, IBAT_OCP_A, BREAKER_SENSE_mV, BOOST_FB, U12_IOUT_A,
@@ -724,8 +739,34 @@ VBAT_CORNER = 3.0                      # fault-envelope 1S Li-ion corner
 # current for the same delivered load, so every margin this file reports is
 # understated by them.  The TPS63020 near unity ratio at ~1.9 A and the TPS61023
 # at 3.0 -> 5.165 V both run above these figures in their own published curves.
-V_3V3, ETA_U12 = 3.3, 0.90             # TPS63020 buck-boost, conservative
+ETA_U12 = 0.90                         # TPS63020 buck-boost, conservative
 ETA_U21 = 0.88                         # TPS61023 boost, conservative
+# D-787 / R6-A01. The main 3.3-V rail is adjustable; a typed 3.3 V constant
+# allowed the released divider to violate the accessory connector minimum while
+# F6 stayed green. Derive the complete PWM and power-save envelope from the
+# fitted divider and TI's published VFB/regulation bands instead.
+#
+# THE TEMPERATURE COEFFICIENT IS A PROPERTY OF THE PART, NOT OF THE DESIGNATOR.
+# A TCR keyed by reference is a hand-written constant that survives a part
+# swap: the first D-787 draft carried `R40: 10.0` because the 176 kOhm KOA
+# RN73H...B10 it had selected is a 10 ppm part, and that number would have
+# stayed put when the part moved.  So the table is keyed by the PURCHASED MPN,
+# read off the schematic, and an MPN this table does not know has NO TCR and
+# F6 REFUSES rather than defaulting.
+P3V3_FB = dict(
+    top="R39", bottom="R40", vfb_V=(0.495, 0.500, 0.505),
+    max_line_reg=0.005, max_load_reg=0.005, ps_high_relative_to_pwm=0.05,
+    reference_temp_C=25.0, temp_min_C=-40.0, temp_max_C=85.0,
+    # Viking Tech ARG03B, 0603 thin film, 0.1 % / 25 ppm per C, -55..+155 C.
+    # Confirmed live per D-096: evidence/jlc-live/arg03btc1004-*.json (C335092,
+    # stock 54797) and evidence/jlc-live/arg03btc1783-*.json (C2441185,
+    # stock 3973).
+    tcr_ppm_per_C_by_mpn={"ARG03BTC1004": 25.0, "ARG03BTC1783": 25.0},
+    # The released selection, so `judge_accessory_envelope` stays a pure
+    # function of `values` for its own mutation controls.  main() ALWAYS passes
+    # the live schematic MPNs; `divider_mpns` in the report is what was read.
+    released_mpns={"R39": "ARG03BTC1004", "R40": "ARG03BTC1783"})
+ACC_3V3_REINFORCEMENT = ROOT / "docs/full-beta-v2/assembly/ACC_3V3_REINFORCEMENT.json"
 # --------------------------------------------------------------------------
 # D-773 -- AND THE 5 V RAIL'S OWN SETPOINT WAS A NUMBER, FROM A WRONG REFERENCE.
 #
@@ -1189,13 +1230,20 @@ CAP_NON_DC_PROOFS = {
 # A proof for C71 on NFC_EMCA<->NFC_MATCH_A must not silently authorize the
 # same reference after one terminal is moved to an unrelated unknown net.
 _CAP_NON_DC_NETS = {
-    "C69": ("NFC_EMCA",), "C70": ("NFC_EMCB",),
-    "C71": ("NFC_EMCA", "NFC_MATCH_A"),
-    "C72": ("NFC_EMCB", "NFC_MATCH_B"),
-    "C73": ("NFC_EMCA",), "C74": ("NFC_EMCB",),
-    "C75": ("NFC_ANT_A", "NFC_RXA"), "C76": ("NFC_RXA",),
-    "C77": ("NFC_ANT_B", "NFC_RXB"), "C78": ("NFC_RXB",),
-    "C79": ("NFC_XOUT",), "C80": ("NFC_XIN",),
+    # D-787 / R6-E03. Bind proofs to KiCad's COMPLETE canonical net names.
+    # Leaf names are not identities: /OTHER/NFC_EMCA is not the NFC front end.
+    "C69": ("/04_SPI_B_RADIOS_NFC/NFC_EMCA",),
+    "C70": ("/04_SPI_B_RADIOS_NFC/NFC_EMCB",),
+    "C71": ("/04_SPI_B_RADIOS_NFC/NFC_EMCA", "/04_SPI_B_RADIOS_NFC/NFC_MATCH_A"),
+    "C72": ("/04_SPI_B_RADIOS_NFC/NFC_EMCB", "/04_SPI_B_RADIOS_NFC/NFC_MATCH_B"),
+    "C73": ("/04_SPI_B_RADIOS_NFC/NFC_EMCA",),
+    "C74": ("/04_SPI_B_RADIOS_NFC/NFC_EMCB",),
+    "C75": ("/04_SPI_B_RADIOS_NFC/NFC_ANT_A", "/04_SPI_B_RADIOS_NFC/NFC_RXA"),
+    "C76": ("/04_SPI_B_RADIOS_NFC/NFC_RXA",),
+    "C77": ("/04_SPI_B_RADIOS_NFC/NFC_ANT_B", "/04_SPI_B_RADIOS_NFC/NFC_RXB"),
+    "C78": ("/04_SPI_B_RADIOS_NFC/NFC_RXB",),
+    "C79": ("/04_SPI_B_RADIOS_NFC/NFC_XOUT",),
+    "C80": ("/04_SPI_B_RADIOS_NFC/NFC_XIN",),
 }
 for _ref, _nets in _CAP_NON_DC_NETS.items():
     CAP_NON_DC_PROOFS[_ref]["nets"] = tuple(sorted(_nets))
@@ -1228,6 +1276,15 @@ def _norm_cap_mfr(name):
 def _bom_cap_package(footprint):
     m = re.search(r"(?:^|:)C_(\d{4})(?:_|$)", footprint or "")
     return m.group(1) if m else ""
+
+
+def _norm_cap_package(package):
+    """Canonical EIA size for BOM/cache comparisons (R6-E04)."""
+    raw = (package or "").strip()
+    m = re.search(r"(?<!\d)(0201|0402|0603|0805|1206|1210|1812|2010|2512)(?!\d)", raw)
+    if m:
+        return m.group(1)
+    return re.sub(r"[^a-z0-9]+", "", raw.casefold())
 
 
 def purchased_capacitor_ratings(spec=None):
@@ -1298,7 +1355,7 @@ def purchased_capacitor_ratings(spec=None):
             _norm_cap_mfr(bom_mfr) and
             _norm_cap_mfr(bom_mfr) == _norm_cap_mfr(record_mfr) and
             bom_package and record_package and
-            bom_package.casefold() == record_package.casefold())
+            _norm_cap_package(bom_package) == _norm_cap_package(record_package))
         out[ref] = dict(
             lcsc=code, mpn=bom_mpn, manufacturer=bom_mfr,
             bom_footprint=bom_footprint, bom_package=bom_package,
@@ -1352,8 +1409,8 @@ def judge_capacitor_derating(board, dnp_refs, net_max_dc, exceptions=None,
                       _norm_cap_mfr(buy.get("record_manufacturer")))
         package_ok = bool((buy.get("bom_package") or "") and
                           (buy.get("record_package") or "") and
-                          (buy.get("bom_package") or "").casefold() ==
-                          (buy.get("record_package") or "").casefold())
+                          _norm_cap_package(buy.get("bom_package")) ==
+                          _norm_cap_package(buy.get("record_package")))
         if not (mpn_ok and mfr_ok and package_ok):
             identity_mismatch.append([
                 ref, buy.get("lcsc"), buy.get("mpn"), buy.get("record_mpn"),
@@ -1373,15 +1430,20 @@ def judge_capacitor_derating(board, dnp_refs, net_max_dc, exceptions=None,
         unknown, nonground = [], []
         for pad in fp.Pads():
             net = pad.GetNetname()
-            key = net.rsplit("/", 1)[-1]
-            if key == "GND" or not key:
+            leaf = net.rsplit("/", 1)[-1]
+            if leaf == "GND" or not leaf:
                 continue
-            nonground.append(key)
-            if key in net_max_dc:
-                op = max(op, net_max_dc[key][0])
-                ab = max(ab, net_max_dc[key][1])
+            # R6-E03: non-DC evidence is bound to the complete canonical net.
+            # Historical DC bounds are leaf-keyed, so use leaf only for that
+            # lookup; never erase hierarchy from proof identity.
+            canonical = net or leaf
+            nonground.append(canonical)
+            dc_key = canonical if canonical in net_max_dc else leaf
+            if dc_key in net_max_dc:
+                op = max(op, net_max_dc[dc_key][0])
+                ab = max(ab, net_max_dc[dc_key][1])
             else:
-                unknown.append(key)
+                unknown.append(canonical)
         proof = None
         if unknown:
             proof = non_dc_proofs.get(ref)
@@ -1480,6 +1542,33 @@ def judge_capacitor_derating(board, dnp_refs, net_max_dc, exceptions=None,
                "non-ground net set; the NFC bounds derive from the ST25R3916 "
                "350 mArms regulated-TX ceiling and 3 Vpp RFI limit and remain "
                "subject to first-article waveform verification.")
+    # D-787 / R6-E04.  THE PACKAGE ALIAS RULE IS BOUNDED, AND SAYS SO.
+    # `_norm_cap_package` exists so `0805` and `0805 (2012 Metric)` are one
+    # package rather than an identity mismatch.  A normalizer that also
+    # collapsed two DIFFERENT sizes would silently authorize the wrong part, so
+    # the rule is asserted here rather than trusted, and the count of rows it
+    # actually changes is printed: on this board it is ZERO, i.e. the rule is
+    # currently inert and every identity leg is an exact match.  A metric-only
+    # spelling with no EIA code (`1005 Metric`) does NOT normalize and is
+    # refused -- conservative in the safe direction.
+    alias_rows = sum(
+        1 for v in purchased.values()
+        if isinstance(v, dict) and (v.get("bom_package") or "")
+        and (v.get("record_package") or "")
+        and (v["bom_package"].casefold() != v["record_package"].casefold()))
+    d["package_alias_rule"] = dict(
+        accepts_the_same_size_written_with_its_metric_code=(
+            _norm_cap_package("0805 (2012 Metric)")
+            == _norm_cap_package("0805")),
+        refuses_a_metric_code_for_a_different_size=(
+            _norm_cap_package("2012 Metric") != _norm_cap_package("0603")),
+        refuses_a_different_eia_size=(
+            _norm_cap_package("0201") != _norm_cap_package("0805")),
+        refuses_a_metric_only_spelling_with_no_eia_code=(
+            _norm_cap_package("1005 Metric") != _norm_cap_package("0402")),
+        rows_the_rule_changes_on_this_board=alias_rows)
+    d["the_package_alias_rule_is_bounded"] = all(
+        v for k, v in d["package_alias_rule"].items() if isinstance(v, bool))
     d["every_fitted_capacitor_has_a_purchased_voltage_rating"] = not no_record
     d["every_fitted_capacitor_has_a_dc_or_named_non_dc_voltage_bound"] = not unestablished
     d["every_purchased_rating_record_matches_bom_identity"] = not identity_mismatch
@@ -1497,7 +1586,8 @@ def judge_capacitor_derating(board, dnp_refs, net_max_dc, exceptions=None,
     d["every_exception_is_still_needed"] = sorted(
         k for k in exceptions
         if any(r["ref"] == k and r.get("meets_derating") for r in rows)) == []
-    d["ok"] = (d["every_fitted_capacitor_has_a_purchased_voltage_rating"]
+    d["ok"] = (d["the_package_alias_rule_is_bounded"]
+               and d["every_fitted_capacitor_has_a_purchased_voltage_rating"]
                and d["every_fitted_capacitor_has_a_dc_or_named_non_dc_voltage_bound"]
                and d["every_purchased_rating_record_matches_the_bom_mpn"]
                and d["every_fitted_capacitor_survives_its_nodes_absolute_maximum"]
@@ -1552,9 +1642,64 @@ def judge_p3v3_budget(p3v3_consumers, dnp_refs, on_board, budget=None):
     return d["ok"], d
 
 
+def live_stock_for(mpn):
+    """{stock, brand, record} from the COMMITTED exact-MPN distributor record.
+
+    D-787.  `rule_open_sourcing` refuses a candidate whose stock is under the
+    first-five liquidity floor -- but only while SELECTING.  Once an MPN is
+    written into the schematic nothing looked at stock again, and the first
+    D-787 draft shipped a locked `R40` whose live record reads **zero**.  This
+    reads the archived record for the exact locked part, so the check is
+    deterministic and replays from the committed evidence rather than the
+    network.  `None` means no exact-MPN record is archived at all.
+    """
+    import jlc_live
+    path = (MFG / "evidence/jlc-live" / (jlc_live.slug(mpn) + ".json")) \
+        if mpn else None
+    if not path or not path.exists():
+        return None
+    try:
+        doc = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return None
+    for rec in doc.get("records") or ():
+        if (rec.get("componentModelEn") or "").casefold() == mpn.casefold():
+            return dict(record=path.name, stock=rec.get("stockCount") or 0,
+                        brand=rec.get("componentBrandEn"),
+                        lcsc=rec.get("componentCode"),
+                        fetched_utc=doc.get("fetched_utc"))
+    return dict(record=path.name, stock=None, brand=None, lcsc=None,
+                fetched_utc=doc.get("fetched_utc"))
+
+
+def schematic_mpns(refs):
+    """{ref: the MPN the SCHEMATIC buys}, read off the hierarchical sheets.
+
+    D-787.  The PCB footprints carry only Reference/Value, so a part identity
+    that a proof depends on -- the TPS63020 divider's tolerance and temperature
+    coefficient -- can only be read here.  A reference whose symbol carries no
+    MPN comes back as the empty string rather than absent, so a caller keyed on
+    it refuses instead of falling through.
+    """
+    want, out = set(refs), {}
+    for sheet in sorted(rl.PROJECT.glob("*.kicad_sch")):
+        text = sheet.read_text(encoding="utf-8", errors="replace")
+        for ref in want - set(out):
+            idx = text.find('(property "Reference" "%s"' % ref)
+            if idx < 0:
+                continue
+            block = text[idx:idx + 9000]
+            nxt = block.find('(property "Reference" "', 1)
+            if nxt > 0:
+                block = block[:nxt]
+            m = re.search(r'\(property "MPN" "([^"]*)"', block)
+            out[ref] = m.group(1) if m else ""
+    return {ref: out.get(ref, "") for ref in want}
+
+
 def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
                              live_ohms=None, internal_ceiling=None,
-                             connection=None, reserve=None):
+                             connection=None, reserve=None, mpns=None):
     """Pure over {ref: value}; returns (ok, detail).  D-753 + D-765 + D-771.
 
     D-753's four modes and its two refusal clauses are UNCHANGED in intent.
@@ -1627,6 +1772,110 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
             "clause asks about an OVERLOAD, where VOUT tracks VIN and the "
             "40/50/60 mV row applies.  On a dead short both protections fire "
             "and latching is the wanted behaviour"))
+
+    # ---- D-787 / R6-A01: derive the actual main +3V3 envelope ------------
+    p3_top = _ohms(values.get(P3V3_FB["top"]))
+    p3_bot = _ohms(values.get(P3V3_FB["bottom"]))
+    p3_top_tol = _tol(values.get(P3V3_FB["top"]))
+    p3_bot_tol = _tol(values.get(P3V3_FB["bottom"]))
+    if not p3_top or not p3_bot:
+        return False, dict(error="3V3 divider unreadable: %s=%r %s=%r" %
+                           (P3V3_FB["top"], values.get(P3V3_FB["top"]),
+                            P3V3_FB["bottom"], values.get(P3V3_FB["bottom"])))
+    temp_delta = max(abs(P3V3_FB["temp_min_C"] - P3V3_FB["reference_temp_C"]),
+                     abs(P3V3_FB["temp_max_C"] - P3V3_FB["reference_temp_C"]))
+    # D-787.  TCR comes from the PURCHASED PART, keyed by MPN.  An MPN this
+    # table does not know has no published coefficient here and the clause
+    # REFUSES; it does not silently inherit the previous part's number.
+    divider_mpns = dict(P3V3_FB["released_mpns"])
+    divider_mpns.update({k: v for k, v in (mpns or {}).items()
+                         if k in divider_mpns})
+    top_tcr = P3V3_FB["tcr_ppm_per_C_by_mpn"].get(divider_mpns[P3V3_FB["top"]])
+    bot_tcr = P3V3_FB["tcr_ppm_per_C_by_mpn"].get(
+        divider_mpns[P3V3_FB["bottom"]])
+    divider_parts_are_known = top_tcr is not None and bot_tcr is not None
+    # A refusal must not crash the report: run the arithmetic at a coefficient
+    # no thin-film 0603 part exceeds so the numbers printed beside the refusal
+    # are still bounded, and let the CLAUSE carry the verdict.
+    top_err = p3_top_tol + (top_tcr if top_tcr is not None else 200.0) \
+        * 1e-6 * temp_delta
+    bot_err = p3_bot_tol + (bot_tcr if bot_tcr is not None else 200.0) \
+        * 1e-6 * temp_delta
+    p3_ratio_lo = p3_top * (1 - top_err) / (p3_bot * (1 + bot_err))
+    p3_ratio_hi = p3_top * (1 + top_err) / (p3_bot * (1 - bot_err))
+    p3_vfb = P3V3_FB["vfb_V"]
+    p3_raw_lo = p3_vfb[0] * (1 + p3_ratio_lo)
+    p3_raw_nom = p3_vfb[1] * (1 + p3_top / p3_bot)
+    p3_raw_hi = p3_vfb[2] * (1 + p3_ratio_hi)
+    # Heavy-load minimum pays both published line and load regulation maxima.
+    p3_pwm_heavy_lo = p3_raw_lo * (1 - P3V3_FB["max_line_reg"]) * (
+        1 - P3V3_FB["max_load_reg"])
+    # Full-load pack current is costed at the opposite PWM corner.
+    p3_pwm_heavy_hi = p3_raw_hi * (1 + P3V3_FB["max_line_reg"]) * (
+        1 + P3V3_FB["max_load_reg"])
+    # In power-save mode TI permits the output up to +5% relative to VFB_PWM.
+    # This is the light-load HIGH-side consumer-safety check.
+    p3_ps_hi = p3_raw_hi * (1 + P3V3_FB["ps_high_relative_to_pwm"]) * (
+        1 + P3V3_FB["max_line_reg"])
+
+    reinforcement = {}
+    if ACC_3V3_REINFORCEMENT.exists():
+        reinforcement = json.loads(ACC_3V3_REINFORCEMENT.read_text())
+    reinf_r = (float(reinforcement.get("electrical_acceptance", {})
+                     .get("each_TP12_to_J5_finished_path_max_milliohm_at_room_temperature", 1e9))
+               / 1000.0)
+    reinforcement_identity_ok = bool(
+        reinforcement.get("source", {}).get("reference") == "TP12.1"
+        and reinforcement.get("source", {}).get("net") == "/ACC_3V3_SW"
+        and {x.get("reference") for x in reinforcement.get("destinations", [])}
+            == {"J5.3", "J5.22"}
+        and reinforcement.get("wire", {}).get("mpn") == "2842/19 RD005"
+        and reinforcement.get("wire", {}).get("gauge_awg") == 28
+        and reinf_r <= 0.030 + 1e-12)
+
+    # Use the path-bound U20->TP12 copper, heat BOTH that copper and the manual
+    # copper lead by the same conservative 65 K coefficient, then add U20's
+    # datasheet maximum RON. Either J5 contact must pass by itself.
+    p3_delivered_path_ohm = (
+        bound_ohms["acc_3v3_sw"] * (1 + CU_TC_PER_K * CU_HOT_RISE_K)
+        + reinf_r * (1 + CU_TC_PER_K * CU_HOT_RISE_K)
+        + ACC_SWITCH_RON_OHM["ACC_3V3"])
+    p3_delivered_min = p3_pwm_heavy_lo - (
+        PUBLISHED_RAIL_BUDGET_A["ACC_3V3"] * p3_delivered_path_ohm)
+    p3v3 = dict(
+        top=P3V3_FB["top"], bottom=P3V3_FB["bottom"],
+        top_ohms=p3_top, bottom_ohms=p3_bot,
+        top_tolerance=p3_top_tol, bottom_tolerance=p3_bot_tol,
+        top_mpn=divider_mpns[P3V3_FB["top"]],
+        bottom_mpn=divider_mpns[P3V3_FB["bottom"]],
+        top_tcr_ppm_per_C=top_tcr,
+        bottom_tcr_ppm_per_C=bot_tcr,
+        divider_parts_are_a_known_precision_selection=divider_parts_are_known,
+        temperature_range_C=[P3V3_FB["temp_min_C"], P3V3_FB["temp_max_C"]],
+        raw_pwm_V=[round(p3_raw_lo, 6), round(p3_raw_nom, 6), round(p3_raw_hi, 6)],
+        pwm_heavy_min_V=round(p3_pwm_heavy_lo, 6),
+        pwm_heavy_max_V=round(p3_pwm_heavy_hi, 6),
+        power_save_high_V=round(p3_ps_hi, 6),
+        reinforcement_file=str(ACC_3V3_REINFORCEMENT.relative_to(ROOT)),
+        reinforcement_identity_ok=reinforcement_identity_ok,
+        each_reinforcement_max_ohm=reinf_r,
+        delivered_path_bound_ohm=round(p3_delivered_path_ohm, 6),
+        delivered_at_400mA_min_V=round(p3_delivered_min, 6),
+        published_connector_min_V=3.135,
+        tightest_internal_consumer_max_V=3.6,
+        delivered_min_ok=p3_delivered_min >= 3.135,
+        internal_high_ok=p3_ps_hi <= 3.6,
+        method="TPS63020 VFB_PWM 495/500/505 mV; exact R39/R40 value tolerance "
+               "plus selected-part TCR over -40..85 C; TI 0.5% line and 0.5% "
+               "load regulation applied pessimistically; +5% power-save high "
+               "checked separately; delivered minimum uses the bounded hot "
+               "U20->TP12 prefix, measured <=30 mOhm manual lead, and U20 "
+               "68 mOhm maximum RON.")
+
+    # The PACK model must no longer run on a typed 3.3 V. Full normal load is
+    # PWM, so use the HIGH PWM/regulation corner: it costs the most battery
+    # current and is the conservative direction.
+    V_3V3 = p3_pwm_heavy_hi
 
     # ---- D-773: the 5 V setpoint, DERIVED from the board's own divider -----
     r_top, r_bot = _ohms(values.get(BOOST_FB["top"])), \
@@ -1765,6 +2014,15 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
         method="U12 from SLVSAA7's own Features figure at VIN > 2.5 V; U21 "
                "from SLVSF14B equation 1 with ILIM_SW at its EC MINIMUM and "
                "L4 at its -20 % corner")
+    # ---- D-787 / R6-A01: main +3V3 delivery is an explicit contract -------
+    d["p3v3_setpoint"] = p3v3
+    d["p3v3_divider_parts_have_a_published_temperature_coefficient"] = (
+        divider_parts_are_known)
+    d["p3v3_reinforcement_is_exact_and_bounded"] = reinforcement_identity_ok
+    d["p3v3_delivers_the_published_connector_minimum"] = p3v3["delivered_min_ok"]
+    d["p3v3_stays_below_the_tightest_internal_consumer_maximum"] = p3v3[
+        "internal_high_ok"]
+
     # ---- D-773 CLAUSE: the boost may not set itself into its own OVP -------
     d["boost_setpoint"] = boost
     d["boost_setpoint_is_clear_of_its_own_ovp"] = boost["clear_of_its_own_ovp"]
@@ -2097,6 +2355,10 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
           and d["each_rail_guarantees_its_published_accessory_budget"]
           and d["recoverable_trip_is_ordered_below_the_latching_breaker"]
           and d["converters_can_source_their_worst_case_rail"]
+          and d["p3v3_divider_parts_have_a_published_temperature_coefficient"]
+          and d["p3v3_reinforcement_is_exact_and_bounded"]
+          and d["p3v3_delivers_the_published_connector_minimum"]
+          and d["p3v3_stays_below_the_tightest_internal_consumer_maximum"]
           and d["boost_setpoint_is_clear_of_its_own_ovp"]
           and d["published_normal_load_respects_vcell_policy"]
           and d["firmware_floors_meet_the_derived_requirement"]
@@ -2233,29 +2495,57 @@ def main():
     periph_text = (DEMO_PERIPHERALS.read_text(encoding="utf-8", errors="replace")
                    if DEMO_PERIPHERALS.exists() else "")
 
-    def _backlight_prime_ok(text):
-        # D-785: presence is not sequencing.  The full-duty write must occur
-        # BEFORE the explicit hold, and the PWM ramp only AFTER that hold.
-        markers = (
-            "ledcWrite(channel, 255);",
-            "delayMicroseconds(3000);",
-            "for (int duty = 5; duty <= 255; duty += 5)",
-        )
-        pos = [text.find(token) for token in markers]
-        return all(p >= 0 for p in pos) and pos[0] < pos[1] < pos[2]
+    # D-787 / Round-6. F5 owns the hardware disconnect and the existence of
+    # the shared executable timing seam. Executed startup ordering is proved by
+    # firmware_hw_map_contract H6/test_timing_policy.cpp, whose dead-code,
+    # reordered, shortened and early-PWM mutations all compile and are caught.
+    timing_policy = ROOT / "Firmware/src/hw/aqroot_demo_timing_policy.h"
+    timing_text = (timing_policy.read_text(encoding="utf-8", errors="replace")
+                   if timing_policy.exists() else "")
+    def _code(text):
+        """`//` comments removed.  A commented-out call is not a call."""
+        return re.sub(r"//[^\n]*", "", text or "")
 
-    backlight_startup_prime_explicit = _backlight_prime_ok(periph_text)
-    # Load-bearing controls: restore the exact pre-D-784 tick delay, shorten
-    # the explicit prime, or move the hold before the full-duty command.
+    def _backlight_prime_ok(periph, seam):
+        # THE ORDER, IN THE FILE THAT NOW OWNS IT.  D-785 read these markers out
+        # of aqroot_demo_peripherals.h; D-787 moved the ordering into the shared
+        # seam, so this reads the seam and separately requires the production
+        # ramp to CALL it.  The behavioural half -- that the order executes and
+        # that six evasions are caught -- is firmware_hw_map_contract H6, and
+        # that the shipped firmware runs this seam at all is H8.
+        periph, seam = _code(periph), _code(seam)
+        if "runBacklightRampPolicy(" not in periph:
+            return False
+        if "kBacklightStartupPrimeUs = 3000" not in seam:
+            return False
+        markers = ("write_duty(255);",
+                   "wait_us(kBacklightStartupPrimeUs);",
+                   "for (int duty = 5; duty <= 255; duty += 5)")
+        pos = [seam.find(token) for token in markers]
+        return all(x >= 0 for x in pos) and pos[0] < pos[1] < pos[2]
+
+    backlight_startup_prime_explicit = _backlight_prime_ok(periph_text,
+                                                           timing_text)
+    # Load-bearing controls, each restoring one real evasion: the pre-D-784 tick
+    # delay, a shortened prime, the hold moved before the full-duty command, and
+    # a production ramp that no longer calls the seam at all.
     backlight_prime_control_refuses_tick_delay = not _backlight_prime_ok(
-        periph_text.replace("delayMicroseconds(3000);", "delay(2);", 1))
+        periph_text,
+        timing_text.replace("wait_us(kBacklightStartupPrimeUs);",
+                            "wait_ms(2);", 1))
     backlight_prime_control_refuses_short_hold = not _backlight_prime_ok(
-        periph_text.replace("delayMicroseconds(3000);",
-                            "delayMicroseconds(1500);", 1))
+        periph_text,
+        timing_text.replace("kBacklightStartupPrimeUs = 3000",
+                            "kBacklightStartupPrimeUs = 1500", 1))
     backlight_prime_control_refuses_reordered_hold = not _backlight_prime_ok(
-        periph_text.replace(
-            "ledcWrite(channel, 255);\n  delayMicroseconds(3000);",
-            "delayMicroseconds(3000);\n  ledcWrite(channel, 255);", 1))
+        periph_text,
+        timing_text.replace(
+            "  write_duty(255);\n  wait_us(kBacklightStartupPrimeUs);",
+            "  wait_us(kBacklightStartupPrimeUs);\n  write_duty(255);", 1))
+    backlight_prime_control_refuses_an_uncalled_seam = not _backlight_prime_ok(
+        periph_text.replace("  runBacklightRampPolicy(",
+                            "  // runBacklightRampPolicy(", 1),
+        timing_text)
     tps61169_primary_archived = (TPS61169_PRIMARY.exists() and
         hashlib.sha256(TPS61169_PRIMARY.read_bytes()).hexdigest() ==
         "7d0b8ace2459a9fd22fe7145086cbad4ccb3bb43219247459313fcba75230151")
@@ -2384,9 +2674,24 @@ def main():
 
     live_ohms = {k: _live_series_ohm(k) for k in NORMAL_PATHS}
 
+    # D-787 / R6-A01.  THE TRAVELER NAMES PADS; THE BOARD DECIDES WHAT THEY
+    # ARE ON.  F6 already checks that the reinforcement record names TP12.1,
+    # J5.3 and J5.22 and bounds each finished path.  Nothing checked that those
+    # three contacts are actually on `/ACC_3V3_SW`, which is the whole premise
+    # -- a lead soldered downstream of U20 only keeps the limiter in series if
+    # its source pad really is U20's output net.
+    reinf_doc = (json.loads(ACC_3V3_REINFORCEMENT.read_text(encoding="utf-8"))
+                 if ACC_3V3_REINFORCEMENT.exists() else {})
+    reinf_contacts = [reinf_doc.get("source", {}).get("reference")] + [
+        x.get("reference") for x in reinf_doc.get("destinations", [])]
+    reinf_contact_nets = {c: nets_by_contact.get(c) for c in reinf_contacts if c}
+    reinforcement_contacts_are_on_the_rail = bool(reinf_contact_nets) and all(
+        net == "/ACC_3V3_SW" for net in reinf_contact_nets.values())
+
+    divider_mpns = schematic_mpns((P3V3_FB["top"], P3V3_FB["bottom"]))
     env_ok, env = judge_accessory_envelope(
         values, single_floor=policy_single, dual_floor=policy_dual,
-        live_ohms=live_ohms)
+        live_ohms=live_ohms, mpns=divider_mpns)
     env["normal_operation"]["firmware_policy_file"] = str(
         POWER_POLICY.relative_to(ROOT)) if POWER_POLICY.exists() else None
     env["normal_operation"]["measurement_contacts"] = measurement_nets
@@ -2397,6 +2702,55 @@ def main():
     env["normal_operation"]["live_paths_measured_off_the_board"] = True
     env_ok = (env_ok and measurement_ok
               and math.isfinite(policy_single) and math.isfinite(policy_dual))
+
+    # ---- D-787 / R6-E07: THE AMPACITY AUDIT'S DESIGN CURRENTS ARE A COPY --
+    # `audit_rail_ampacity.RAILS` states a design current per rail with a cited
+    # basis.  Every one of those numbers is derived from THIS contract's
+    # envelope, and Round-6 found three of them stale -- BAT/SYS still at the
+    # 1.50/1.00 A .kicad_dru class currents and P3V3 at 1.849 A -- because
+    # nothing made the copy follow the original.  Now it does: each named rail's
+    # design current must be at least the envelope number it comes from, so a
+    # limiter setting, a divider value or a budget line that moves the envelope
+    # FAILS here until the audit is rerun at the new figure.
+    worst_battery_A = max(
+        c["connection_A"] for base in env["battery_connection"]["bases"].values()
+        for k, c in base["cases"].items() if "connection_A" in c
+        and not k.startswith("legacy_"))
+    ampacity_expected = {
+        "ACC_3V3_SW": env["rails_A"]["ACC_3V3"]["ilim_max"],
+        "ACC_5V_SW": env["rails_A"]["ACC_5V"]["ilim_max"],
+        "P3V3_MAIN": env["converter_capability_A"]["u12_worst_case_load_A"],
+        "BAT_PROTECTED_P": worst_battery_A,
+        "BQ25185_SYS": worst_battery_A,
+    }
+    ampacity_rows, ampacity_stale = [], []
+    for name, need in sorted(ampacity_expected.items()):
+        have = rails_by_name.get(name, {}).get("amps")
+        ok = have is not None and have + 1e-9 >= need
+        ampacity_rows.append(dict(rail=name, audit_design_A=have,
+                                  envelope_requires_A=round(need, 4), ok=ok))
+        if not ok:
+            ampacity_stale.append(name)
+    env["rail_ampacity_design_currents"] = ampacity_rows
+    env["rail_ampacity_design_currents_cover_the_envelope"] = not ampacity_stale
+    env_ok = env_ok and not ampacity_stale
+
+    env["p3v3_setpoint"]["reinforcement_contact_nets"] = reinf_contact_nets
+    env["p3v3_reinforcement_contacts_are_on_the_rail"] = (
+        reinforcement_contacts_are_on_the_rail)
+    env_ok = env_ok and reinforcement_contacts_are_on_the_rail
+
+    # D-787.  The module defaults must equal the firmware constants, or the
+    # callers that use the defaults judge a different board from the one the
+    # firmware runs.
+    env["normal_operation"]["module_default_single_rail_floor_V"] = \
+        NORMAL_SINGLE_VBAT_FLOOR
+    env["normal_operation"]["module_default_dual_rail_floor_V"] = \
+        NORMAL_DUAL_VBAT_FLOOR
+    defaults_match = (NORMAL_SINGLE_VBAT_FLOOR == policy_single
+                      and NORMAL_DUAL_VBAT_FLOOR == policy_dual)
+    env["module_default_floors_match_the_firmware_policy"] = defaults_match
+    env_ok = env_ok and defaults_match
 
     env["p3v3_internal_budget"] = budget
     env["internal_3v3_A"] = I_INTERNAL
@@ -2614,6 +2968,11 @@ def main():
     IDENTITY_GUARD = {
         "J1": dict(
             locked="ER-TFT035IPS-6",
+            # NOT A JLCPCB CATALOGUE LINE.  The panel is bought direct from
+            # EastRising and the antenna from an RF distributor, so neither has
+            # an exact-MPN JLCPCB record and the D-787 stock clause does not
+            # apply to them.  Stated rather than silently skipped.
+            stocked=False,
             lib_id_contains="ER-TFT035IPS-6",
             retired=("CH280QV10", "ILI9341", "2.8in", "2.8-inch", "240x320"),
             why="D-074 locked the 3.5in 320x480 ILI9488 panel; D-112 replaced "
@@ -2621,6 +2980,7 @@ def main():
                 "ARRIVAL here -- LEDA/LEDK reversed, WRX/D-CX swapped"),
         "U8": dict(
             locked="TI.92.2113",
+            stocked=False,            # see J1: not a JLCPCB catalogue line
             lib_id_contains=None,
             retired=("FXP890",),
             why="D-198 superseded the internal Taoglas FXP890 flex with the "
@@ -2644,6 +3004,34 @@ def main():
                 "ADI guarantees dVSENSE,F as 40/50/60 mV, so at 15 mOhm the "
                 "LATCHING breaker band (2.640-4.040 A) OVERLAPPED the "
                 "BQ25185's RECOVERABLE IBAT_OCP band (2.5625-3.6875 A)"),
+        # ---- D-787 ADDS THE TPS63020 DIVIDER, WHOSE IDENTITY BECAME A PROOF
+        # TERM.  Until D-787 these were two ordinary 1 % thick-film parts and
+        # nothing depended on which ones they were.  F6 now DERIVES the main
+        # +3V3 envelope from their tolerance and their selected-part TCR, so a
+        # substitution back onto a 1 % / 100 ppm line would silently break the
+        # Community Port's published 3.135 V minimum while every other clause
+        # stayed green.  Same `only_fields` treatment as the other passives.
+        "R39": dict(
+            locked="ARG03BTC1004",
+            lib_id_contains=None,
+            only_fields=("Value", "MPN", "LCSC"),
+            retired=("0603WAF1004T5E", "C22935", "1M 1%"),
+            why="D-787 moved the TPS63020 feedback divider's high side to a "
+                "0.1 % / 25 ppm thin-film part because F6 now derives the rail "
+                "from it; the D-614 1 % / 100 ppm 0603WAF1004T5E cannot hold "
+                "the 3.135 V connector minimum at the published 400 mA"),
+        "R40": dict(
+            locked="ARG03BTC1783",
+            lib_id_contains=None,
+            only_fields=("Value", "MPN", "LCSC"),
+            retired=("0603WAF1803T5E", "C22827", "180K 1%",
+                     "RN73H1JTTD1763B10", "C4086101", "176K 0.1%"),
+            why="D-787 moved the TPS63020 feedback divider's low side to "
+                "178 kOhm 0.1 % / 25 ppm.  The D-614 180 kOhm 1 % part cannot "
+                "hold the envelope, and the first D-787 draft's 176 kOhm KOA "
+                "RN73H1JTTD1763B10 is UNSTOCKED (JLCPCB stock 0, as is every "
+                "other 176 kOhm 0603 part at 0.1 % or better), so it fails this "
+                "project's own rule_open_sourcing stock floor"),
         "R97": dict(
             locked="0603WAF1781T5E",
             lib_id_contains=None,
@@ -2653,16 +3041,18 @@ def main():
                 "the rail GUARANTEES the 400 mA TOTAL D-098 publishes for it; "
                 "2.7 kOhm guaranteed only 0.277 A"),
         "R101": dict(
-            locked="0603WAF2371T5E",
+            locked="0603WAF2431T5E",
             lib_id_contains=None,
             only_fields=("Value", "MPN", "LCSC"),
             retired=("0603WAF2701T5E", "C13167", "2.7k",
-                     "0603WAF2321T5E", "C22905", "2.32k"),
+                     "0603WAF2321T5E", "C22905", "2.32k",
+                     "0603WAF2371T5E", "C25964", "2.37k"),
             why="D-771 moved the ACC_5V limiter setting 2.7 -> 2.32 kOhm so the "
-                "rail GUARANTEES the 300 mA TOTAL D-098 publishes for it, and "
-                "D-773 moved it again to 2.37 kOhm once the 5 V setpoint was "
-                "derived from the board rather than taken from a 0.6 V VREF "
-                "that is not what TI publishes"),
+                "rail GUARANTEES the 300 mA TOTAL D-098 publishes for it; "
+                "D-773 moved it to 2.37 kOhm after the 5 V setpoint was derived, "
+                "and D-787 moves it to 2.43 kOhm so the corrected high-corner "
+                "3V3 rail cannot push a user-reachable 5 V limiter state above "
+                "BQ25185 IBAT_OCP minimum while still guaranteeing >300 mA."),
     }
     RETIREMENT_MARKERS = ("RETIRED", "CORRECTED THIS FIELD", "corrected this field",
                           "DO NOT INSTANTIATE", "which is NOT the locked",
@@ -2742,6 +3132,24 @@ def main():
             offending_fields=bad, offending_bom_tokens=bom_bad)
         clauses = ["symbol_is_the_locked_part", "no_retired_name_in_the_symbol",
                    "no_retired_name_on_the_released_bom_row"]
+        # D-787.  A LOCKED PART MUST STILL BE BUYABLE.  D-096 asks for a live
+        # record before an MPN is written down; it does not ask again once it
+        # IS written down, and the first D-787 draft locked an `R40` whose live
+        # JLCPCB record reads stock 0.  A part number confirmed against a
+        # record showing zero stock satisfies the letter of that rule and not
+        # its purpose, so every locked part carries the archived exact-MPN
+        # record and must clear the same first-five liquidity floor
+        # `rule_open_sourcing` refuses a CANDIDATE on: five boards x 10.
+        d["locked_part_is_a_jlcpcb_catalogue_line"] = spec.get("stocked", True)
+        if spec.get("stocked", True):
+            live = live_stock_for(spec["locked"])
+            need = 5 * 10
+            d["live_record"] = live
+            d["locked_part_is_stocked"] = bool(
+                live and isinstance(live.get("stock"), int)
+                and live["stock"] >= need)
+            d["locked_part_stock_floor"] = need
+            clauses.append("locked_part_is_stocked")
         # D-771.  ABSENCE OF THE OLD NAME IS NOT PRESENCE OF THE NEW ONE.  For a
         # passive the whole identity IS the MPN, so both legs assert it
         # POSITIVELY as well: the symbol's own MPN field and the released BOM
@@ -2826,6 +3234,24 @@ def main():
                 dict(r97, instance=(r97.get("instance", "") or "").replace(
                     '(property "MPN" "0603WAF1781T5E"', '(property "MPN" "x"'),
                 ), bom_text)[0],
+        # ---- D-787's two.  THE LOAD-BEARING ONE IS `f7k`: it is exactly the
+        # part the first D-787 draft locked -- a real 176 kOhm 0.1 % KOA line
+        # whose live JLCPCB record reads stock 0 -- and every other clause in
+        # this registry passes on it.  `f7l` is the same defect with no record
+        # archived at all, which must also refuse rather than skip.
+        "f7k_refuses_a_locked_part_whose_live_record_reads_zero_stock":
+            not judge_identity(
+                "R40", dict(IDENTITY_GUARD["R40"],
+                            locked="RN73H1JTTD1763B10", retired=()),
+                _symbol_fields("R40"),
+                '"R40","176K 0.1%","Resistor_SMD:R_0603_1608Metric",'
+                '"KOA Speer Elec","RN73H1JTTD1763B10","C4086101","Resistor","1",""')[0],
+        "f7l_refuses_a_locked_part_with_no_archived_live_record_at_all":
+            not judge_identity(
+                "R40", dict(IDENTITY_GUARD["R40"],
+                            locked="NO-SUCH-PART-9999", retired=()),
+                _symbol_fields("R40"),
+                '"R40","178K 0.1%","x","x","NO-SUCH-PART-9999","x","x","1",""')[0],
     })
 
     # ---- D-781: MANUAL J4 METADATA MUST MATCH THE FROZEN HARNESS --------
@@ -2996,6 +3422,7 @@ def main():
                 and backlight_prime_control_refuses_tick_delay
                 and backlight_prime_control_refuses_short_hold
                 and backlight_prime_control_refuses_reordered_hold
+                and backlight_prime_control_refuses_an_uncalled_seam
                 and tps61169_primary_archived),
             method="TI SNVSA40B 6.3.5 makes CTRL an ANALOG dimming input: the "
                    "converter keeps switching through every PWM low phase, so "
@@ -3023,6 +3450,11 @@ def main():
                 backlight_prime_control_refuses_short_hold,
             startup_prime_control_refuses_reordered_hold=
                 backlight_prime_control_refuses_reordered_hold,
+            startup_prime_control_refuses_an_uncalled_seam=
+                backlight_prime_control_refuses_an_uncalled_seam,
+            startup_prime_seam="Firmware/src/hw/aqroot_demo_timing_policy.h",
+            startup_prime_behavioural_proof=
+                "firmware_hw_map_contract H6 (test_timing_policy.cpp) and H8",
             tps61169_primary_archived=tps61169_primary_archived,
             fet=fet,
             **{k: v for k, v in bl.items() if k != "ok"}),

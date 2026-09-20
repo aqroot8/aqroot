@@ -65,12 +65,12 @@ class GaugeBus : public aqroot::I2cBus {
 int main() {
   claim("single floor is D-766's retained 3.50 V",
         kAccessorySingleRailFloorV == 3.50f);
-  claim("dual floor is D-775's derived 3.80 V",
-        kAccessoryDualRailFloorV == 3.80f);
+  claim("dual floor is D-787's re-derived 3.85 V",
+        kAccessoryDualRailFloorV == 3.85f);
   claim("the dual floor is strictly above the single floor",
         kAccessoryDualRailFloorV > kAccessorySingleRailFloorV);
   claim("first rail uses the single floor", accessoryEnableFloor(false) == 3.50f);
-  claim("second rail uses the dual floor", accessoryEnableFloor(true) == 3.80f);
+  claim("second rail uses the dual floor", accessoryEnableFloor(true) == 3.85f);
 
   // ---- enable permission -------------------------------------------------
   claim("unreadable VCELL refuses a first enable",
@@ -83,10 +83,10 @@ int main() {
         !accessoryEnableAllowed(true, 3.49f, false));
   claim("second rail refused at 3.75 V, below the derived dual floor",
         !accessoryEnableAllowed(true, 3.75f, true));
-  claim("second rail refused just below 3.80 V",
-        !accessoryEnableAllowed(true, 3.79f, true));
-  claim("second rail accepted exactly at 3.80 V",
-        accessoryEnableAllowed(true, 3.80f, true));
+  claim("second rail refused just below 3.85 V",
+        !accessoryEnableAllowed(true, 3.84f, true));
+  claim("second rail accepted exactly at 3.85 V",
+        accessoryEnableAllowed(true, 3.85f, true));
   claim("a single rail is still allowed at 3.60 V, between the floors",
         accessoryEnableAllowed(true, 3.60f, false));
 
@@ -109,8 +109,8 @@ int main() {
   claim("dual rails below the single floor shed everything",
         accessoryRetentionAction(true, 3.49f, true, true)
             == AccessoryBatteryAction::ShedAll);
-  claim("dual rails at 3.80 V are retained",
-        accessoryRetentionAction(true, 3.80f, true, true)
+  claim("dual rails at 3.85 V are retained",
+        accessoryRetentionAction(true, 3.85f, true, true)
             == AccessoryBatteryAction::Keep);
   claim("the 3.3 V rail alone is retained at 3.60 V",
         accessoryRetentionAction(true, 3.60f, true, false)
@@ -147,7 +147,7 @@ int main() {
         accessoryRetentionAction(true, 0.0f, true, true)
             == AccessoryBatteryAction::ShedAll);
   claim("a plausible reading at the dual floor is still retained",
-        accessoryRetentionAction(true, 3.80f, true, true)
+        accessoryRetentionAction(true, 3.85f, true, true)
             == AccessoryBatteryAction::Keep);
 
   // ---- Round 4: active-mode configuration is part of measurement validity -

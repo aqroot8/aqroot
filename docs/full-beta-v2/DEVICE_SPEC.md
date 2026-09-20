@@ -323,25 +323,60 @@ power/NFC review, and CTO decisions.
 > **This wording is D-098's own and is MANDATORY in accessory-facing
 > documentation.**
 >
-> **D-775 ADDS ONE MANDATORY CONDITION TO THE SAME WORDING, AND IT IS A LOADED
-> PROTECTED-NODE CONDITION, NOT A SMALLER CURRENT BUDGET.** Both budgets remain
-> guaranteed by the limiters (+7.0 % / +4.9 %, below). `MAX17048 VCELL` is measured
-> on **BAT_PROTECTED_P**, downstream of the cell leads, harness, fuse, Q2/Q3 and
-> R75; therefore the firmware thresholds are **loaded gauge-node voltages, not
-> open-circuit cell/SOC thresholds**. Each rail alone may be retained while a fresh
-> active-mode VCELL sample is at or above **3.50 V**. Drawing BOTH at full budget
-> at the same time requires the **post-load, settled VCELL sample to remain at or
-> above 3.80 V**. Firmware first checks before enable, then rechecks after the load
-> step; if the loaded node falls below 3.80 V it sheds the **5 V rail first**, and
-> if gauge configuration/readiness is not verified it fails closed. A pack whose
-> resting voltage is above 3.80 V can still sag below the loaded floor; full dual-
-> rail battery operation is therefore expected mainly at high state of charge or
-> lighter-than-maximum simultaneous load. USB supplement can improve that operating
-> window. Accessory-facing documentation must say: *"400 mA on 3.3 V and 300 mA
-> on 5 V are the rail limits. Using both at once requires the loaded protected-
-> battery node to remain >=3.80 V after the second rail turns on; otherwise the
-> 5 V accessory rail is shed while 3.3 V remains available."* This is deterministic
-> load management, not a promise that every battery state can sustain both maxima.
+> **D-787 SUPERSEDES D-775 FOR THE CURRENT FIRST-FIVE ACCESSORY CONTRACT.**
+> The rail budgets themselves do **not** change: `ACC_3V3_SW` remains **400 mA
+> total** across J5 pins 3+22 and `ACC_5V_SW` remains **300 mA total** across
+> J5 pins 1+24. What changed is the proof that the board can actually deliver
+> the voltage/current contract at component corners. F6 no longer assumes +3V3
+> is an ideal 3.3 V source; it derives the TPS63020 output from the fitted
+> divider, value tolerance, selected-part TCR, TI's 495/500/505 mV PWM feedback
+> band, line/load regulation and the +5% power-save high side.
+>
+> The current fitted divider is `R39` **1.000 MOhm +/-0.1%, +/-25 ppm/degC**
+> (Viking Tech `ARG03BTC1004`, LCSC `C335092`) and `R40` **178 kOhm +/-0.1%,
+> +/-25 ppm/degC** (Viking Tech `ARG03BTC1783`, LCSC `C2441185`). The derived
+> PWM raw band is **3.261337 / 3.308989 / 3.357013 V**; the conservative
+> heavy-load minimum is **3.228806 V** and the power-save high bound is
+> **3.542487 V**, below the tightest 3.6 V internal-consumer ceiling.
+>
+> **176 kOhm was the first D-787 candidate and was rejected on AVAILABILITY,
+> not electricals.** Every 176 kOhm 0603 part at 0.1% or better in the JLCPCB
+> catalogue reads stock 0, including the KOA `RN73H1JTTD1763B10` that draft
+> named, so it fails this project's own sourcing stock floor. 178 kOhm is the
+> nearest stocked 0.1% value inside the window, and the window is narrow in
+> both directions: 180 kOhm falls below the connector minimum and 174 kOhm
+> exceeds the internal-consumer maximum. Both divider identities are therefore
+> locked by `F7` and their temperature coefficients are keyed to the purchased
+> MPN in `F6`.
+>
+> To remove the old long `ACC_3V3_SW` trace drop from the guaranteed first-five
+> delivery path without bypassing protection, each duplicate 3.3 V Community
+> Port contact receives an independent manual **28-AWG** reinforcement from
+> **TP12.1 (downstream of U20)** to **J5.3** and **J5.22**. Each finished lead
+> must measure **<=30 mOhm**. U20 remains in series, so its current limiter and
+> OFF isolation remain authoritative. With the bounded U20->TP12 copper, U20's
+> 68 mOhm maximum RON, hot-copper allowance and the <=30 mOhm lead, F6 proves
+> **3.146366 V minimum at the Community Port at 400 mA**, above the **3.135 V**
+> -5% minimum.
+>
+> `R97` remains **1.78 kOhm** and guarantees **0.4279 A** on ACC_3V3. `R101`
+> is now **2.43 kOhm** (`0603WAF2431T5E`) and guarantees **0.3065 A** on
+> ACC_5V while reducing its worst limiter corner to **0.6078 A**, so a
+> user-reachable 5 V limiter state remains below BQ25185 IBAT_OCP minimum even
+> at the corrected +3V3 high corner.
+>
+> `MAX17048 VCELL` remains a **loaded BAT_PROTECTED_P measurement**, not an
+> open-circuit SOC threshold. Each rail alone retains the **3.50 V** policy
+> floor. The corrected simultaneous full-budget requirement is **3.8094 V**,
+> rounded upward to **3.85 V** on the 0.05 V firmware grid. Firmware checks
+> before enable, rechecks after the load step, sheds the **5 V rail first** if
+> loaded VCELL falls below 3.85 V, and fails closed on unqualified/unreadable
+> gauge state. Accessory-facing documentation must say: *"400 mA on 3.3 V and
+> 300 mA on 5 V are the rail limits. Using both at once requires the loaded
+> protected-battery node to remain >=3.85 V after the second rail turns on;
+> otherwise the 5 V accessory rail is shed while 3.3 V remains available."*
+> This is deterministic load management, not a promise that every battery
+> state can sustain both maxima.
 >
 > **D-781 SUPERSEDES D-777'S CONNECTOR RESTRICTION.**  D-777 correctly found
 > that the fitted JST-PH board header was only a 2 A path, but its firmware
@@ -350,11 +385,11 @@ power/NFC review, and CTO decisions.
 > existing J4 PTH pair as a manual 26-AWG pigtail land and moves the detachable
 > interface to Molex Micro-Lock Plus 2.0.  With 26-AWG conductors on both sides,
 > the frozen harness controlling rating is **2.6 A**, above the live full-feature
-> modeled battery current (~2.27 A).  **The D-777 internal-feature reservation is
+> modeled battery current (**2.2701 A** path-bound at the 3.85 V floor).  **The D-777 internal-feature reservation is
 > retired:** sub-GHz, NFC and IR remain available with both accessory rails,
-> subject only to the existing internal-TX mutual-exclusion rules.  The D-775
-> **3.80 V** simultaneous 3.3 V + 5 V accessory floor remains in force because it
-> protects the battery/charger envelope independently of connector rating.
+> subject only to the existing internal-TX mutual-exclusion rules. D-787 now
+> enforces a **3.85 V** simultaneous 3.3 V + 5 V loaded-VCELL floor from the
+> corrected power envelope; connector rating remains independently satisfied.
 > Exact parts, polarity and first-article acceptance are frozen in
 > `assembly/BATTERY_HARNESS.json`.
 >
@@ -363,16 +398,17 @@ power/NFC review, and CTO decisions.
 > rail could DELIVER what the product promises.  At the 2.7 kΩ both rails carried,
 > each limiter GUARANTEED only **0.277 A** — the board published a budget its own
 > silicon could refuse to deliver, on the two contacts the Community Port exists
-> for.  `R97` is now **1.78 kΩ** (0.636 A typ → **0.428 A guaranteed**, 7.0 % over
-> the published 400 mA) and `R101` **2.37 kΩ** (0.468 A typ → **0.315 A
-> guaranteed**, 4.9 % over the published 300 mA; D-771 set 2.32 kΩ and D-773
-> moved it once the 5 V setpoint was derived from the board).  `F6` refuses any setting that
-> does not guarantee its own rail's published budget.
+> for. `R97` is **1.78 kΩ** (0.636 A typ → **0.4279 A guaranteed**, +7.0%) and
+> D-787 sets `R101` to **2.43 kΩ** (0.4555 A typ → **0.3065 A guaranteed**,
+> +2.16%). `F6` refuses any setting that does not guarantee its published budget
+> and also prices the user-reachable limiter corners against the first battery
+> protection threshold.
 >
-> **What an accessory actually sees at the published budget** (worst corner of
-> every term): **3.18 V** on `ACC_3V3_SW` against a 3.135 V −5 % floor, and
-> **4.90 V** on `ACC_5V_SW` against 4.75 V — 117 mV and 49 mV of track + `RON`
-> drop respectively (`.kicad_dru` §5f).
+> **What an accessory actually sees at the published budget** is now derived,
+> not asserted: the D-787 3.3 V first-five path guarantees **3.146366 V minimum
+> at 400 mA** against the 3.135 V floor, using the exact divider envelope and
+> the measured/bounded TP12→J5 reinforcement. ACC_5V remains above its 4.75 V
+> minimum under the existing D-773 boost/path proof.
 
 **D-750 answered the external first-spin review's combined-load item with a
 POLICY; D-753 replaced it with a LIMIT the silicon enforces.**  The policy read
@@ -383,18 +419,18 @@ accessory then draws.  The only thing that actually bounds an accessory is the
 accessory limiter's own current limit, and at the values D-750 shipped those
 limits sat far ABOVE what the policy permitted.
 
-**`R97` IS 1.78 kΩ (D-771) AND `R101` IS 2.37 kΩ (D-773)**; both were 2.7 kΩ at
+**CURRENT D-787: `R97` IS 1.78 kΩ AND `R101` IS 2.43 kΩ**; both were 2.7 kΩ at
 D-753 (LCSC `C22849` and `C25964`, UNI-ROYAL `0603WAF1781T5E` /
-`0603WAF2371T5E`, the same 0603WAF series and the same 0603 land as the parts
+`0603WAF2431T5E`, the same 0603WAF series and the same 0603 land as the parts
 they replace).  TI equation 1 — `ILIM = 1.18 × (R[kΩ])^−1.072` — gives
-**0.636 A** and **0.468 A** typ, and the widest tolerance ratio the part's own EC table publishes
+**0.636 A** and **0.4555 A** typ, and the widest tolerance ratio the part's own EC table publishes
 (0.68× / 1.32× of typ over −40…+125 °C, read off its 19.2 kΩ row) **taken over
 the programming resistor's own 1 % band as well** brackets the rails at:
 
 | rail | guaranteed | worst case | published budget (D-098) | headroom |
 |---|---|---|---|---|
 | `ACC_3V3_SW` (`R97` 1.78 kΩ) | **0.428 A** | 0.849 A | 400 mA | **+7.0 %** |
-| `ACC_5V_SW` (`R101` **2.37 kΩ**, D-773) | **0.315 A** | 0.624 A | 300 mA | **+4.9 %** |
+| `ACC_5V_SW` (`R101` **2.43 kΩ**, D-787) | **0.3065 A** | 0.6078 A | 300 mA | **+2.16 %** |
 
 The 0.68×/1.32× ratio is the widest of the four `ILIM` rows TI publishes and is
 **conservative in both directions at once** — the two rows that bracket these
@@ -473,7 +509,7 @@ settings (1.15 kΩ and 2.21 kΩ) publish 0.75–0.76× / 1.24–1.25×.
 (D-773, block below; at the 4.950 V *typical* setpoint the same rows read
 2.337 / 2.470 / 2.410 / 2.351 / 3.508 A):
 
-| state the Community Port can reach | D-750 (1.5 k / 1.65 k) | D-753/D-765 (2.7 k / 2.7 k) | **D-771…D-773 (1.78 k / 2.37 k)** |
+| state the Community Port can reach | D-750 (1.5 k / 1.65 k) | D-753/D-765 (2.7 k / 2.7 k) | D-771…D-773 (1.78 k / 2.37 k) — *HISTORICAL; D-787 fits 1.78 k / **2.43 k** and re-derives the whole table, see the D-787 block above* |
 |---|---|---|---|
 | 3.3 V rail alone at its limiter | 2.455 A | 1.879 A | **2.337 A** (+8.8 %) |
 | 5 V rail alone at its limiter | **2.930 A — TRIPS** | 2.229 A | **2.521 A** (+1.6 %) |
@@ -486,6 +522,16 @@ at the 1.0 A internal term they used; only the last column is re-based on the
 1.063 A D-772 derived.)*
 
 > ### D-775 — NORMAL D-098 CONCURRENCY IS GATED, AND THE FLOOR IS SOLVED FOR RATHER THAN CHOSEN
+>
+> **HISTORICAL. SUPERSEDED BY D-787 FOR EVERY NUMBER IN THIS SECTION.**  The
+> METHOD below is unchanged and still current — the floor is solved for, not
+> asserted — but every figure was computed against a typed 3.3 V main rail and a
+> 224 mΩ routed `ACC_3V3_SW` delivery path.  D-787 derives that rail from
+> `R39`/`R40` and replaces the delivery path with the measured `TP12`→`J5`
+> reinforcement, which moves the derived dual requirement to **3.8094 V** and the
+> enforced firmware floors to **3.50 V single / 3.85 V dual**.  Read the D-787
+> block above for the current contract; the 3.7622 V / 3.80 V / 2.250 A figures
+> below are D-775's and are retained as history.
 >
 > The table above is the **hardware fault envelope**; it is not the normal-load
 > battery-sag proof.  MAX17048 `VCELL` is measured on **`BAT_PROTECTED_P`**
@@ -601,7 +647,7 @@ against a `BQ25185` `IBAT_OCP` band of **2.5625 / 3.125 / 3.6875 A** (3.125 A ty
 > of **1.063 A internal (D-772) + 0.849 A accessory = 1.912 A**, a 4.4 % margin.  `U21` `TPS61023` delivers
 > **0.911 A** at this operating point by `SLVSF14B` equation 1 with `ILIM_SW` at
 > its **2.7 A EC minimum**, `L4` at its −20 % corner and the boost at its
-> worst-case setpoint, against a worst case of **0.624 A**.  `F6` refuses a limiter its converter cannot feed — which is what
+> worst-case setpoint, against a worst case of **0.6078 A** (D-787; **0.624 A** at D-773's 2.37 kΩ).  `F6` refuses a limiter its converter cannot feed — which is what
 > now refuses D-750's 1.5 kΩ setting on `R97`.
 
 > **D-765 — THE ENVELOPE WAS RIGHT AND THE SILICON COULD NOT LEGALLY HOLD IT.**
@@ -631,7 +677,7 @@ against a `BQ25185` `IBAT_OCP` band of **2.5625 / 3.125 / 3.6875 A** (3.125 A ty
 > 0.537 A worst-case use *at the resistors D-765 inherited* — **0.849 A at the
 > fitted ones**, still 3.2× under `IMAX`.  Prototype cost delta ≈ **US$0.03 per
 > device**.  The settings also sit inside the **UL 2367** recognised window
-> (66 mA–2.46 A) at 2.7 kΩ and at the fitted 1.78 kΩ / 2.37 kΩ alike.  **F6 now
+> (66 mA–2.46 A) at 2.7 kΩ and at 1.78 kΩ / 2.37 kΩ alike, and at the CURRENTLY FITTED 1.78 kΩ / **2.43 kΩ** (D-787).  **F6 now
 > refuses any limiter whose `ILIM` setting falls
 > outside that part's OWN published range** over the programming resistor's
 > whole tolerance band, refuses a limiter it has no published range for, and

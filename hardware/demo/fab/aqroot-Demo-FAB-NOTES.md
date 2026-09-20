@@ -143,9 +143,20 @@ The authoritative detachable-harness record is `aqroot-Demo-BATTERY-HARNESS.json
 - Controlling mated-harness rating: **2.6 A at AWG26**.
 - Polarity: cavity 1 = **BAT+ / red / J4.1**; cavity 2 = **GND / black / J4.2**.
 - J4 is drilled **0.75 mm nominal**. Supplier/assembler must guarantee a **>=0.70 mm finished plated-hole diameter** for both J4 barrels; verify one exact 217501 AWG26 tinned lead passes freely before soldering all five boards -- no force and no strand shaving.
-- Solder wires through J4 from B.Cu; front conductive profile **<=0.50 mm**, then **<=0.10 mm polyimide** before display fit. Follow `THT_LEAD_TRIM.md` J4-T1..T4.
+- Insert the tinned conductors from the rear (`B.Cu`), apply solder and inspect barrel fill from the front (`F.Cu`); keep the front conductive profile **<=0.50 mm**, then **<=0.10 mm polyimide** before display fit. Follow `THT_LEAD_TRIM.md` J4-T1..T4.
 - Rear strain relief: **DOWSIL 3145 RTV MIL-A-46146 Adhesive/Sealant, gray**. After joint/profile inspection and cleaning, apply the frozen adhesive fillet to the insulated pigtail, preserve the >=35 mm housing free-wire/service-loop rule, and never unplug by pulling wires.
 - First article: verify finished-hole/conductor fit, cured strain relief, DMM polarity, terminal retention/pull acceptance, housing-only disconnect, enclosure route, and worst-case load temperature rise per the packaged harness record.
+
+## ACC_3V3 Community-Port reinforcement -- MANUAL FIRST-FIVE OPERATION
+
+The authoritative work instruction is `aqroot-Demo-ACC-3V3-REINFORCEMENT.json` in this package.
+
+- Source: **TP12.1**, downstream of U20; this does **not** bypass the TPS22950-Q1 current limiter or OFF disconnect.
+- Destinations: **J5.3, J5.22**. Each duplicate 3.3 V contact must independently carry the full published 400 mA rail budget.
+- Wire: **Alpha Wire 2842/19 RD005, AWG28, PTFE, nominal OD 0.69 mm**.
+- Electrical acceptance: each finished TP12-to-J5 path **<=30 mOhm at room temperature**; Kelvin/4-wire preferred.
+- Route/strain-relieve exactly as the packaged traveler requires; keep clear of battery, NFC/RF, display/FPC, button mechanics and enclosure load paths.
+- Inspect continuity, adjacent-pin shorts, solder fillets, insulation, strain relief, connector insertion and enclosure closure before power.
 
 ## Stackup, finish and required process -- NOT SUBSTITUTABLE
 

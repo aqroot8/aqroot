@@ -31,8 +31,11 @@ namespace aqroot {
 //
 // The derived requirements, at F6's 10 % margin to the IBAT_OCP minimum:
 //
-//     single rail   3.1232 V   ->  3.15 V on a 0.05 V grid
-//     both rails    3.7622 V   ->  3.80 V on a 0.05 V grid
+// D-787 re-derived these after R6-A01 made the TPS63020 setpoint a real
+// tolerance envelope and the first-five ACC_3V3 reinforcement path explicit:
+//
+//     single rail    3.1671 V  -> existing 3.50 V policy remains conservative
+//     both rails      3.8094 V  -> 3.85 V on the 0.05 V grid
 //
 // so kAccessoryDualRailFloorV IS the derived requirement and
 // kAccessorySingleRailFloorV is D-766's existing 3.50 V policy floor, which
@@ -53,7 +56,7 @@ namespace aqroot {
 // and any rail already on is shed.
 // ===========================================================================
 constexpr float kAccessorySingleRailFloorV = 3.50f;
-constexpr float kAccessoryDualRailFloorV = 3.80f;
+constexpr float kAccessoryDualRailFloorV = 3.85f;
 
 // ===========================================================================
 // D-779.  AN I2C READ THAT SUCCEEDED IS NOT A MEASUREMENT.

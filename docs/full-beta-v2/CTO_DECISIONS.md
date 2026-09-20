@@ -1,3 +1,148 @@
+## D-787 — **ROUND-6 ACCESSORY-VOLTAGE CONTRACT AND RELEASE-PROOF CORRECTION; NO PROTECTED-COPPER REROUTE**
+
+    authority  board 8a22e8d914a78e6903f6368006d070e492f6cf6ddcf4c62a96133c9a080ef411
+    parent     212093a2ede222d74e4903460f075d6de69a53da (D-785)
+    scope      R6-A01 accessory-voltage delivery + R6-E01..E07 verifier/package corrections
+    order      HOLD.  This is an external-review target, not a fabrication authorization.
+
+Round-6 Astra reproduced a real pre-order electrical-contract conflict on D-785. The fitted
+TPS63020 divider and the old 224 mOhm post-switch `ACC_3V3_SW` path could legally deliver
+below the published **3.135 V** Community-Port minimum at the full **400 mA** budget, while
+F6 used a typed `3.3 V` source and therefore passed. Fable did not re-derive that rail, so
+the reproduced electrical counterexample controls this correction.
+
+D-787 keeps the published **400 mA 3.3 V / 300 mA 5 V** budgets and moves no protected
+copper.
+
+### R6-A01 — the rail is derived, and the parts that set it are locked
+
+The candidate fits `R39 = 1.000 MOhm +/-0.1%, +/-25 ppm/degC` (Viking Tech
+`ARG03BTC1004`, LCSC `C335092`), `R40 = 178 kOhm +/-0.1%, +/-25 ppm/degC` (Viking Tech
+`ARG03BTC1783`, LCSC `C2441185`) and `R101 = 2.43 kOhm +/-1%` (UNI-ROYAL
+`0603WAF2431T5E`, LCSC `C22906`).
+
+**176 kOhm WAS THE FIRST CANDIDATE AND IT IS NOT SOURCEABLE.**  The first D-787 draft
+selected KOA `RN73H1JTTD1763B10` for `R40`.  Its live JLCPCB record reads **stock 0**, and
+so does *every other* 176 kOhm 0603 part at 0.1 % or better in that catalogue
+(`evidence/jlc-live/176k-0603-0-1-*.json`), so the selection fails this repository's own
+`rule_open_sourcing` stock floor of five boards x 10 liquidity.  A part number confirmed
+against a live record showing **zero** stock satisfies the letter of D-096 and not its
+purpose.  178 kOhm is the nearest STOCKED 0.1 % value, it is the low-side magnitude TI's
+own `SLVS916I` Table 3 prints for a 3.3 V output, and it is in the same Viking `ARG03B`
+0.1 % / 25 ppm family as `R39`, so the two halves of the divider track.  **The window is
+narrow in both directions**: 180 kOhm falls below the connector minimum and 174 kOhm
+exceeds the internal-consumer maximum, which is why both divider identities are now in
+F7's locked registry and why F6 keys their temperature coefficient to the **purchased
+MPN** rather than to the designator — a TCR keyed by reference is a constant that survives
+a part swap, which is exactly how the draft's `R40: 10 ppm` would have outlived the
+10 ppm part it described.
+
+The two duplicated 3.3 V Community-Port contacts receive independent first-five
+reinforcement leads from **TP12.1**, downstream of U20, to **J5.3** and **J5.22**.  Each
+finished path must measure **<=30 mOhm**; exact wire, the two-conductor TP12 joint
+workmanship, routing, strain relief and inspection are frozen in
+`assembly/ACC_3V3_REINFORCEMENT.json`.  This does not bypass U20 current limiting or OFF
+isolation, and F6 now proves off the LIVE NETLIST that `TP12.1`, `J5.3` and `J5.22` are
+all on `/ACC_3V3_SW` rather than trusting the traveler's own words.
+
+F6 derives +3V3 from the actual divider, its value tolerance, the selected part's TCR over
+-40..+85 degC, TI's 495/500/505 mV PWM feedback band, +/-0.5 % line and +/-0.5 % load
+regulation applied together, and the +5 % power-save high side.  The candidate envelope is
+raw PWM **3.261337 / 3.308989 / 3.357013 V**, heavy-load minimum **3.228806 V**,
+heavy-load high **3.390667 V**, power-save high **3.542487 V**, and **3.146366 V minimum
+delivered at either J5 3.3 V contact at 400 mA** against the **3.135 V** product floor.
+The tightest internal maximum remains **3.600 V**.
+
+`R101 = 2.43 kOhm` gives a TPS22950-Q1 band of **0.3065 A minimum / 0.4555 A typical /
+0.6078 A maximum**: the 300 mA product budget is still guaranteed (+2.16 %), while the
+worst user-reachable 5 V limiter state sits at **2.5244 A**, **1.49 % below** the
+2.5625 A BQ25185 IBAT_OCP minimum — still the thinnest margin on this board.  The
+corrected legal window for `R101` is **2.367 .. 2.479 kOhm** and 2.43 kOhm is the E96
+value nearest its centre, the same rule D-773 used on the window it had.
+
+The corrected full-concurrency solver requires **3.8094 V** loaded VCELL for the retained
+10 % OCP margin, so firmware uses **3.50 V single / 3.85 V dual**.  The single-rail
+requirement is **3.1671 V**, so the retained 3.50 V policy floor stays conservative.  At
+3.85 V the live simultaneous published-load case is **2.2487 A, 12.25 % below** the
+2.5625 A OCP minimum; the path-bound battery-harness case is **2.2701 A**, **12.69 %**
+below the Micro-Lock AWG26 **2.6 A** rating.
+
+### R6-E01 / R6-E02 — the ordering is executed, and the shipped firmware runs it
+
+Round-6 proved D-785's timing gates could be fooled by comments and dead code.  Both
+safety sequences move into `Firmware/src/hw/aqroot_demo_timing_policy.h` and are compiled
+and RUN by `Firmware/test/test_timing_policy.cpp`: gauge qualification must precede the
+>=300 ms settle, a FAILED qualification may not fake the wait, the first backlight PWM
+command must be full duty, and >=3000 us of full duty must elapse before any dim PWM.
+`firmware_hw_map_contract` H6 mutates that seam six ways — shortened settle, reordered
+settle, dead-code settle, dead full-duty prime, early dim PWM, shortened prime — and every
+mutation compiles and is caught.
+
+**A TESTED TEMPLATE NOBODY CALLS IS THE SAME DEFECT ONE LEVEL UP**, so H8 is new: the
+released `demo/main.cpp` must call `qualifyFuelGaugeActiveMode()`, the released
+`aqroot_demo_peripherals.h` must call `runBacklightRampPolicy()`, and neither may keep a
+second untested copy of the ordering beside it.  Comments are stripped first, and four
+controls — a local `delay(kFuelGaugeActiveSettleMs)`, a commented-out gauge call, a
+re-implemented prime, a commented-out backlight call — are all refused.  F5's three
+backlight-prime controls, which the first D-787 draft had reduced to hardcoded `True`,
+are non-vacuous again against the seam, with a fourth added for an uncalled seam.
+
+### R6-E03 / R6-E04 — identity, and the bounds of the alias rule
+
+F8 binds named RF/non-DC proofs to full canonical hierarchical terminal-net identities:
+`/04_SPI_B_RADIOS_NFC/NFC_EMCA` is the NFC front end and a bare `NFC_EMCA` is not.
+Legitimate EIA package aliases normalize (`0805` and `0805 (2012 Metric)` are one
+package), and **the alias rule states its own bounds rather than being trusted**: F8 now
+asserts that it accepts a metric code only for the SAME size, refuses a metric code for a
+different size, refuses a different EIA size, and refuses a metric-only spelling with no
+EIA code — and prints that the rule currently changes **zero** rows on this board, i.e.
+every identity leg here is an exact match.  Exact purchased MPN and normalized
+manufacturer checks are unchanged.
+
+### R6-E05 / R6-E06 — the manual instructions, and what a diagnostic may claim
+
+Every normative J4 instruction now says the same thing: conductor insertion from the rear
+(`B.Cu`), solder application and barrel-fill inspection from the front (`F.Cu`),
+**<=0.50 mm** front conductive profile, then **<=0.10 mm** polyimide before display fit,
+with the strain-relief, service-loop, finished-hole-fit and polarity requirements
+unchanged — in `BATTERY_HARNESS.json`, `THT_LEAD_TRIM.md`, `FIRST_FIVE_ASSEMBLY_PLAN.md`,
+`MECHANICAL_INTERFACE_SPEC.md` M-13, the fab notes and this file.  The failed-I2C
+accessory diagnostic no longer prints "rails forced off" while the hardware state is
+unknown: it reports **shutdown pending / output state unconfirmed** until a safe state is
+physically confirmed.
+
+### R6-E07 — an isolated-coupon rise is not a board temperature
+
+`audit_rail_ampacity.py` evaluates `BAT_PROTECTED_P` and `BQ25185_SYS` at **2.35 A**
+sustained normal design current and main `+3V3` at **1.912 A**, not the stale
+1.50 / 1.00 / 1.849 A figures, and `ACC_5V_SW` moves 0.624 -> **0.608 A** with R101.
+**THE STALE-COPY CLASS IS NOW MACHINE-CHECKED**: F6 requires every one of those five design
+currents to be at least the envelope number it is derived from, so a limiter setting, a
+divider value or a budget line that moves the envelope FAILS until the audit is rerun.
+
+The `U11.2` package-land neck remains the board's one named ampacity exception and it is
+now **justified by a number instead of a caveat**.  IPC-2221B's external curve reports
+**137.6 K** for 5.525 mm of 0.200 mm `B.Cu` at 2.35 A; that describes a coupon in still
+air, and this conductor is 0.2104 mm from the `In4.Cu` plane and terminates on wide copper
+at both ends.  A one-dimensional fin with distributed heating and both ends clamped —
+`dT = p lam^2/(k_cu A) (1 - 1/cosh(L/2lam))`, `lam = sqrt(k_cu A / g)`,
+`g = k_fr4 w (1/d_up + 1/d_down)` — gives a peak of **14.3 K over the copper it terminates
+on**, against a stated **40 K** acceptance limit, and every accepted run on every other
+rail comes in at **<=2.3 K**.  An acceptance that exceeds that limit is no longer accepted.
+The model is conservative (no lateral spreading in the dielectric, no convection or
+radiation from the outer face, no soldermask) and it is a MODEL: first-article thermal
+measurement remains mandatory and separate.
+
+### Retained closures
+
+D-783/D-784/D-785 closures are re-verified unchanged: PCAL output-shadow
+uncertainty/recovery/liveness with fail-closed accessory state; exact `HIBRT=0x0000`
+readback plus live `MODE.HibStat=0` before any safety VCELL use; readiness invalidation and
+requalification on later mode/config/read failure; `0xFFFF`/implausible VCELL refusal;
+`Q11` true-off and backlight ordering; exact F8 purchased identity; protected copper
+byte-identical; the owner-approved `U11.3` / `BQ25185_STAT2` open; the rated J4 harness and
+its exact identities; and every retained RF/NFC/USB/display/audio/IR/microSD/power feature.
+
 ## D-785 — **ROUND-5 RELEASE GATES NOW PROVE THE GAUGE TIMING/SEMANTICS AND THE BACKLIGHT PRIME ORDER; NO PCB CHANGE**
 
     authority  board cef458b92c6e92462bea250b434a481b3e8454a991eb13b2b66623ca1f4a880e

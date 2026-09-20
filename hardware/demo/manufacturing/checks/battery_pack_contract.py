@@ -58,13 +58,25 @@ def board_requirements():
     # D-773 ADDS R99/R100/U21: the 5 V rail's setpoint is DERIVED from the
     # board's own feedback divider and the boost's own published VREF band, and
     # the envelope's pack cost scales directly with it.
+    # D-787 ADDS R39/R40, THE TPS63020 DIVIDER.  The envelope no longer costs
+    # the main +3V3 rail at a typed 3.3 V; it derives that rail here too, so
+    # omitting these two makes the envelope UNREADABLE rather than merely
+    # unchecked -- which is exactly what happened when D-787 added them to
+    # `judge_accessory_envelope` and not to this list.  The reference list is
+    # taken FROM the envelope's own declarations so the next term that becomes
+    # load-bearing cannot go missing here again.
     for ref in ("R97", "R101", "U20", "U22", "R75", "U18",
-                "R99", "R100", "U21"):
+                "R99", "R100", "U21",
+                dfc.P3V3_FB["top"], dfc.P3V3_FB["bottom"]):
         fp = board.FindFootprintByReference(ref)
         if not fp:
             raise RuntimeError("missing %s" % ref)
         values[ref] = fp.GetValue()
-    env_ok, env = dfc.judge_accessory_envelope(values)
+    # The divider's temperature coefficient is keyed to the PURCHASED MPN, and
+    # the MPN lives on the schematic, not on the footprint.
+    env_ok, env = dfc.judge_accessory_envelope(
+        values, mpns=dfc.schematic_mpns(
+            (dfc.P3V3_FB["top"], dfc.P3V3_FB["bottom"])))
     if not env_ok:
         failed = sorted(k for k, v in env.items() if isinstance(v, bool) and not v)
         raise RuntimeError("D-753/D-765 accessory envelope itself does not pass: %s"

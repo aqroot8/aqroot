@@ -127,26 +127,32 @@ RAILS = (
          src=("J3.A4", "J3.B4", "J3.A9", "J3.B9"), snk=("R35.1",), amps=1.10,
          basis="same charger input current, upstream of the R35 0 R link"),
     dict(name="BAT_PROTECTED_P", net="/01_POWER_TREE/BAT_PROTECTED_P",
-         src=("R75.2", "R75.4"), snk=("U11.2",), amps=1.50,
-         basis="BAT_MAIN 1.5 A sustained design current (.kicad_dru section 5); "
-               "IBAT_OCP 3.125 A is a fault trip, not a routing current",
+         src=("R75.2", "R75.4"), snk=("U11.2",), amps=2.35,
+         basis="D-787 / R6-E07: corrected full-feature normal envelope is "
+               "about 2.29 A path-bound at the 3.85 V loaded VCELL floor; "
+               "2.35 A is the routing/thermal design current with explicit "
+               "margin. IBAT_OCP is a fault threshold, not a routing current.",
          # THE PACKAGE, NOT THE LAYOUT.  U11.2's land is 0.750 x 0.200 mm, so no
          # conductor wider than 0.200 mm can LAND on it, in any layout, with any
          # charger position.  The .kicad_dru pad-escape neck rule already
          # licenses 0.200 mm inside U11's courtyard.  What is accepted here is
          # the ampacity consequence, bounded by length: 5.5 mm of 0.200 mm
          # B.Cu.  A copper thermal length of about 2.6 mm means the neck's two
-         # ends -- a large pad and wide copper -- sink a substantial part of it,
-         # and the 1.5 A figure is the CLASS design current; the charge current
-         # through it is now 769 mA, at which the same model gives 11 K.
+         # ends -- a large pad and wide copper -- sink a substantial part of it.
+         # D-787 deliberately reruns this package-limited neck at 2.35 A instead
+         # of retaining the obsolete 1.50 A class current; the isolated-coupon
+         # rise is reported as a screening number, not a predicted board temp.
          accept=(dict(layer="B.Cu", reason="package-land-neck", max_length_mm=6.0,
                       max_width_mm=0.20),),
          accept_reason="U11 DLH0010A pin-2 land is 0.200 mm tall; nothing wider "
                "can land on it.  Licensed by the .kicad_dru pad-escape neck rule "
                "and bounded here to 6.0 mm of 0.200 mm copper."),
     dict(name="BQ25185_SYS", net="/01_POWER_TREE/BQ25185_SYS",
-         src=("U11.1",), snk=("U12.1",), amps=1.00,
-         basis="SYS_MAIN 1.0 A (.kicad_dru section 5)",
+         src=("U11.1",), snk=("U12.1",), amps=2.35,
+         basis="D-787 / R6-E07: the pour feeding the full fitted system is "
+               "qualified at the same 2.35 A corrected sustained normal "
+               "envelope as BAT_PROTECTED_P; local boost ripple/inductor peak "
+               "currents remain decoupled locally and are not added as DC.",
          # NOT A TRACK RAIL.  D-720 established that BQ25185_SYS is DELIVERED BY
          # ITS POUR, not by a trunk, so a track-graph search correctly finds no
          # path and MUST NOT be read as a defect.  The instrument that rules on
@@ -177,16 +183,20 @@ RAILS = (
                "and In3 across 0.2028 mm of prepreg -- is derived below from "
                "the rail's OWN current rather than quoted, and the dissipation "
                "is reported beside it.  The ELECTRICAL cost is accepted with "
-               "its number: 183 mOhm and 203 mV at D-773's enforced ACC_5V "
+               "its number: 183 mOhm and 203 mV at the enforced ACC_5V "
                "maximum, against a TPS61023 input range of 0.5-5.5 V.",
-         basis="U21 TPS61023 INPUT current at the ENFORCED ACC_5V maximum: "
-               "0.624 A x 5.1654 V / (0.88 efficiency x 3.3 V VBAT) = 1.110 A "
-               "rms -- D-773, at the boost's DERIVED worst-case setpoint "
-               "rather than a 5.0 V constant. "
+         basis="U21 TPS61023 INPUT current at the ENFORCED ACC_5V maximum.  "
+               "D-787 moved R101 2.37 -> 2.43 kOhm, so that maximum is now "
+               "0.6078 A and the input is 0.6078 x 5.1654 / (0.88 efficiency "
+               "x 3.3 V VBAT) = 1.081 A rms.  THE RAIL IS DELIBERATELY LEFT AT "
+               "1.110 A, the figure D-773 qualified at 0.624 A: the trunk is "
+               "already proven at the higher current, re-qualifying it downward "
+               "would buy nothing and would discard evidence.  It is a ceiling, "
+               "and the accepted-exception geometry below is judged against it.  "
                "The number that sizes this trunk is not a PUBLISHED figure but "
                "the load switch's own worst-case limit: TI SLVSGP6A equation 1 "
                "gives 0.479 A typ at D-771's 2.32 kOhm and the EC table's "
-               "widest ratio (1.32x), over the resistor's own 1 % band, gives "
+               "widest ratio (1.32x), over the resistor's own 1 % band, gave "
                "0.624 A over -40..+125 C at D-773's 2.37 kOhm.  D-771 "
                "RAISED R101's SETTING because "
                "2.7 kOhm GUARANTEED only 0.277 A against the 300 mA D-098 "
@@ -211,6 +221,13 @@ RAILS = (
     # and whose silicon permits twice it is exactly the gap D-766 named.
     # The two duplicate contacts on each rail SHARE the rail limit (D-098), so
     # each path is sized for the WHOLE current rather than half of it.
+    # D-787 / R6-A01 NOTE.  F6's DELIVERY proof charges the whole published
+    # 400 mA to the manual TP12->J5 reinforcement lead and ignores this routed
+    # copper; this audit charges the whole WORST-CASE LIMITER current to the
+    # routed copper and ignores the lead.  The two are deliberately
+    # complementary worst cases of the same parallel pair: neither is allowed
+    # to lean on the other, so whichever conductor an assembled board actually
+    # favours, both are qualified alone.
     dict(name="ACC_3V3_SW", net="/ACC_3V3_SW",
          src=("U20.5",), snk=("J5.3", "J5.22"), amps=0.849,
          accept=(dict(layer="In2.Cu", reason="dru-5f", max_length_mm=76.0,
@@ -238,14 +255,14 @@ RAILS = (
                "400 mA total, which the same setting GUARANTEES (0.428 A); "
                "this row is sized by the limiter, not by the publication."),
     dict(name="ACC_5V_SW", net="/ACC_5V_SW",
-         src=("U22.5",), snk=("J5.1", "J5.24"), amps=0.624,
+         src=("U22.5",), snk=("J5.1", "J5.24"), amps=0.608,
          accept=(dict(layer="In3.Cu", reason="dru-5f", max_length_mm=41.0,
                       max_width_mm=0.40),),
          accept_reason="D-771, re-measured at D-773 / .kicad_dru section 5f.  "
                "Same model on In3.Cu, whose own declared stackup puts it "
                "0.2028 mm of prepreg from In2.Cu and 0.4000 mm of core from "
                "the In4.Cu GND plane: IPC-2221B asks 0.939 mm and returns "
-               "40.8 K, the plane-coupled rise derived from those two "
+               "38.5 K, the plane-coupled rise derived from those two "
                "distances is 1.24 K, and the rail dissipates 0.043 W.  In2.Cu "
                "is a ROUTING layer rather than a solid plane, so that side of "
                "the model is optimistic -- but the In4 side ALONE, at "
@@ -254,16 +271,17 @@ RAILS = (
                "model ignores entirely.  111 mOhm, 69 mV at the limiter's "
                "worst case and 33 mV at D-098's PUBLISHED 300 mA.  Length "
                "bounded at 41.0 mm against 38.6 used.",
-         basis="U22 TPS22950-Q1 worst-case ILIM at D-773's R101 = 2.37 kOhm: "
-               "0.468 A typ, 0.624 A worst case on the same basis.  It was "
-               "2.32 kOhm and 0.639 A at D-771, and moved once the 5 V "
-               "SETPOINT was DERIVED from the board's own R99/R100 and the "
-               "TPS61023's published 580/595/610 mV VREF band instead of "
-               "taken as a 4.95 V constant -- at the worst case of that band "
-               "the old setting left 0.52 %% of pack margin.  The PUBLISHED "
-               "budget is D-098's 300 mA total, GUARANTEED at 0.315 A.  The "
-               "ACC_5V class floor is 0.400 mm where IPC-2221B asks 0.158 mm "
-               "OUTER at this current, so no width rule moves."),
+         basis="D-787: U22 TPS22950-Q1 worst-case ILIM at R101 = 2.43 kOhm -- "
+               "0.4555 A typ, 0.6078 A worst case -- rounded up to 0.608 A.  "
+               "It was 2.32 kOhm / 0.639 A at D-771 and 2.37 kOhm / 0.624 A "
+               "at D-773, and moved again once F6 stopped costing the main "
+               "3.3 V rail at a typed 3.3 V and derived it from R39/R40 "
+               "instead, which moved the whole 5 V legal window.  The "
+               "PUBLISHED budget is D-098's 300 mA total, GUARANTEED at "
+               "0.3065 A.  The ACC_5V class floor is 0.400 mm where IPC-2221B "
+               "asks 0.156 mm OUTER at this current, so no width rule moves.  "
+               "demo_feature_contract F6 machine-checks that this design "
+               "current still covers the envelope it is derived from."),
     # D-771 DECLARES THE +3V3 RAIL, WHICH HAD NEVER APPEARED HERE AT ALL.
     # Raising R97's ILIM so the 3.3 V accessory rail can GUARANTEE D-098's
     # published 400 mA also raises what U12 must SOURCE -- 1.0 A internal plus
@@ -285,12 +303,13 @@ RAILS = (
     # package land nothing can be laid wider on -- the same class of residual
     # as U11.2 (see .kicad_dru section 5e).
     dict(name="P3V3_MAIN", net="+3V3",
-         src=("U12.4", "U12.5"), snk=("U20.2",), amps=1.849,
-         basis="P3V3 1.0 A design current (.kicad_dru section 5) PLUS the "
-               "0.849 A worst-case ACC_3V3 limiter D-771 sets -- the total "
-               "U12 must source, and the figure checks/demo_feature_contract.py "
-               "F6 measures against the TPS63020's own rated 2 A for VIN > "
-               "2.5 V, VOUT = 3.3 V (SLVSAA7)",
+         src=("U12.4", "U12.5"), snk=("U20.2",), amps=1.912,
+         basis="D-787 / R6-E07: F6's fitted internal +3V3 budget is 1.0632 A "
+               "and U20's worst programmed limiter corner is 0.8486 A, for "
+               "1.9118 A total. The audit rounds upward to 1.912 A and must "
+               "not fall back to the historical 1.0 A internal placeholder. "
+               "This remains below the TPS63020 2 A feature rating for VIN > "
+               "2.5 V near the 3.3 V output condition.",
          pour_delivered="delivered by the two F.Cu +3V3 pours and the In3.Cu "
                "plane, not by a trunk; a track-graph NO_PATH is the expected "
                "answer and is not a defect.  The four local conductors at "
@@ -385,6 +404,61 @@ def plane_coupled_rise(stack, layer, width_mm, amps):
     if cond <= 0:
         return None
     return (amps ** 2) * RHO_CU / cond
+
+
+# --------------------------------------------------------------------------
+# D-787 / R6-E07 -- AN ISOLATED-COUPON RISE IS NOT A BOARD TEMPERATURE, AND A
+# NAMED EXCEPTION IS NOT A JUSTIFIED ONE.
+#
+# `rise()` above is IPC-2221's external/internal curve.  It describes a trace
+# on a coupon whose only cooling is still air along its own length.  For the
+# ONE accepted exception on this board -- the 0.200 mm `U11.2` package-land
+# neck -- that model reports 137.6 K at the D-787 design current, and reading
+# that as a predicted board temperature would be wrong in both directions: it
+# ignores the adjacent copper plane 0.2104 mm away, and it ignores the two wide
+# terminations the 5.5 mm run ends on.
+#
+# So an ACCEPTED run also gets a CONDUCTION-BOUNDED rise, and the acceptance
+# now has to pass it.  One-dimensional fin with distributed heating, both ends
+# clamped at the temperature of the copper they join:
+#
+#     p   = I^2 rho / A_cu                      W per mm of run
+#     g   = k_fr4 w (1/d_up + 1/d_down)         W per mm per K, to the
+#                                               ADJACENT COPPER LAYERS
+#     lam = sqrt(k_cu A_cu / g)                 mm
+#     dT  = p lam^2 / (k_cu A_cu) * (1 - 1/cosh(L / (2 lam)))
+#
+# and with no adjacent copper on either face the same equation degenerates to
+# the pure conduction bar, dT = p L^2 / (8 k_cu A_cu).  It is conservative:
+# no lateral spreading in the dielectric, no convection or radiation from the
+# outer face, no soldermask, and the rise is reported OVER THE ADJACENT COPPER
+# rather than over ambient.  It is a MODEL, not a measurement -- the
+# first-article thermal acceptance in the assembly plan remains the
+# measurement -- but it is a number the exception can be judged against
+# instead of a sentence asking the reader to discount the coupon figure.
+K_CU = 0.385                    # W/(mm.K), copper
+ACCEPTED_RUN_DT_LIMIT_K = 40.0  # over the adjacent copper, for an accepted run
+
+
+def conduction_bounded_rise(stack, layer, width_mm, run_length_mm, amps):
+    """Peak rise of an accepted narrow RUN over the copper it terminates on."""
+    row = stack.get(layer)
+    if not row or not width_mm or not run_length_mm or not amps:
+        return None
+    t = row["thickness_mm"]
+    a_cu = width_mm * t                                   # mm^2
+    if a_cu <= 0:
+        return None
+    p = (amps ** 2) * RHO_CU / a_cu                       # W/mm
+    axial = K_CU * a_cu                                   # W.mm/K
+    g = K_FR4 * width_mm * sum(
+        1.0 / row[k] for k in ("dielectric_up_mm", "dielectric_down_mm")
+        if row[k])
+    if g <= 0:
+        return p * (run_length_mm ** 2) / (8.0 * axial)
+    lam = math.sqrt(axial / g)
+    return (p * lam * lam / axial) * (
+        1.0 - 1.0 / math.cosh(run_length_mm / (2.0 * lam)))
 
 
 def ampacity(area_mm2, dT, external):
@@ -798,6 +872,25 @@ def main():
         undeclared = [h for h in hot if not h.get("accepted_by")]
         accepted_len = round(sum(h["length_mm"] for h in hot
                                  if h.get("accepted_by")), 3)
+        # D-787 / R6-E07.  Every ACCEPTED hot segment is judged again on the
+        # conduction-bounded model, over the WHOLE accepted run -- the ends of
+        # a 5.5 mm neck are what clamp it, not the ends of one 0.9 mm piece --
+        # and an acceptance whose conduction-bounded peak exceeds the stated
+        # limit is NOT accepted.  The IPC coupon figure stays in the report so
+        # the two are visibly different questions.
+        over_conduction_limit = []
+        for h in hot:
+            if not h.get("accepted_by"):
+                continue
+            cb = conduction_bounded_rise(diel, h["layer"], h["width_mm"],
+                                         accepted_len, rail["amps"])
+            h["accepted_run_length_mm"] = accepted_len
+            h["conduction_bounded_rise_K"] = (round(cb, 1) if cb is not None
+                                              else None)
+            h["conduction_bounded_limit_K"] = ACCEPTED_RUN_DT_LIMIT_K
+            if cb is None or cb > ACCEPTED_RUN_DT_LIMIT_K:
+                over_conduction_limit.append(h)
+        undeclared = undeclared + over_conduction_limit
         worst_pc = [x["plane_coupled_rise_K"] for x in segs
                     if x.get("plane_coupled_rise_K") is not None]
         row.update(connected=True,
@@ -817,6 +910,11 @@ def main():
                    undeclared_hot_segments=undeclared,
                    accepted_hot_length_mm=accepted_len,
                    accepted_reason=rail.get("accept_reason"),
+                   worst_accepted_conduction_bounded_rise_K=(
+                       max([h["conduction_bounded_rise_K"] for h in hot
+                            if h.get("conduction_bounded_rise_K") is not None],
+                           default=None)),
+                   accepted_conduction_bounded_limit_K=ACCEPTED_RUN_DT_LIMIT_K,
                    worst_three=segs_sorted[:3],
                    verdict=("OK" if not hot
                             else "OK_WITH_DECLARED_EXCEPTION" if not undeclared
@@ -839,6 +937,20 @@ def main():
 
     report = dict(schema=1, board=str(args.board), dt_limit_K=args.dt_limit,
                   stackup_selfcheck=stack, stackup_dielectrics=diel,
+                  conduction_bounded_model=dict(
+                      k_cu_W_per_mmK=K_CU, k_fr4_W_per_mmK=K_FR4,
+                      limit_K=ACCEPTED_RUN_DT_LIMIT_K,
+                      form="dT = p lam^2/(k_cu A) (1 - 1/cosh(L/2lam)); "
+                           "p = I^2 rho/A; lam = sqrt(k_cu A / g); "
+                           "g = k_fr4 w (1/d_up + 1/d_down)",
+                      reports="peak rise of an ACCEPTED narrow run over the "
+                              "copper it terminates on and the adjacent "
+                              "layers, NOT over ambient and NOT a predicted "
+                              "board temperature.  Ignores lateral spreading "
+                              "in the dielectric, convection and radiation "
+                              "from an outer face, and the soldermask, so it "
+                              "is a ceiling.  First-article thermal "
+                              "acceptance remains the measurement."),
                   plane_coupled_model=dict(
                       k_fr4_W_per_mmK=K_FR4,
                       form="dT = I^2 rho / (k w^2 t (1/d_up + 1/d_down))",

@@ -33,6 +33,7 @@
 #include "../hw/aqroot_demo_display.h"
 #include "../hw/aqroot_demo_expanders.h"
 #include "../hw/max17048_guard.h"
+#include "../hw/aqroot_demo_timing_policy.h"
 #include "../hw/aqroot_demo_peripherals.h"
 #include "../hw/aqroot_demo_pins.h"
 #include "../hw/aqroot_demo_radios.h"
@@ -55,15 +56,12 @@ static bool g_acc5v = false;
 static bool g_accessory_i2c = false;
 static uint32_t g_last_battery_guard_ms = 0;
 static uint32_t g_last_gauge_requal_ms = 0;
-// ADI 19-6171 Rev.7 gives a 250 ms active ADC period and +/-3.5% time-base
-// accuracy.  300 ms is therefore above the 258.75 ms worst timing bound.
-static constexpr uint32_t kFuelGaugeActiveSettleMs = 300;
 static Max17048Guard g_fuel_gauge(AQROOT_I2C_ADDR_FUEL_GAUGE);
 
 // D-775 FIRMWARE POLICY.  Hardware current limiting remains the absolute
 // safety boundary.  This separate VCELL policy enforces the NORMAL D-098 load
 // contract: one accessory rail uses D-766's retained 3.50 V floor, and
-// enabling or retaining BOTH published rails requires the 3.80 V that
+// enabling or retaining BOTH published rails requires the 3.85 V that
 // demo_feature_contract F6 DERIVES from the MAX17048 measurement node, the
 // live BAT_PROTECTED_P copper, the BQ25185 BATFET maximum and D-098's
 // published 400 mA / 300 mA.  The 5 V rail -- the expensive one, since its
@@ -85,11 +83,11 @@ static bool i2cReadByte(uint8_t address, uint8_t reg, uint8_t *value) {
 }
 
 static bool configureFuelGaugeActiveMode() {
-  const bool ready = g_fuel_gauge.configureActiveMode(g_bus);
-  // Only wait for an active-mode conversion AFTER both HIBRT=0 and the live
-  // MODE.HibStat bit confirm that the gauge is actually out of hibernate.
-  if (ready) delay(kFuelGaugeActiveSettleMs);
-  return ready;
+  // D-787 / Round-6: the executed ordering lives in a host-tested policy seam,
+  // not in a source-text gate. The wait occurs only AFTER HIBRT=0 + HibStat=0
+  // qualification succeeds.
+  return qualifyFuelGaugeActiveMode(
+      g_fuel_gauge, g_bus, [](uint32_t ms) { delay(ms); });
 }
 
 // MAX17048 VCELL, register 0x02.  D-766 CORRECTED AN OFF-BY-SIXTEEN.  The read
@@ -529,9 +527,13 @@ void loop() {
       afterAccessoryChange();
       if (millis() - last_service_error > 1000) {
         last_service_error = millis();
-        Serial.printf("I2C service FAILED; accessory fault observability=%s\n",
-                      g_expanders.faultObservabilityLost() ? "LOST (rails forced off)"
-                                                           : "available");
+        const char *obs = "available";
+        if (g_expanders.faultObservabilityLost()) {
+          obs = g_expanders.safeShutdownPending()
+              ? "LOST (shutdown pending; output state unknown)"
+              : "LOST (output state unconfirmed)";
+        }
+        Serial.printf("I2C service FAILED; accessory fault observability=%s\n", obs);
       }
     }
   }

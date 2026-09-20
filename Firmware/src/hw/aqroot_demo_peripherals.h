@@ -27,6 +27,7 @@
 #include <driver/i2s.h>
 
 #include "aqroot_demo_board.h"
+#include "aqroot_demo_timing_policy.h"
 
 namespace aqroot {
 
@@ -127,22 +128,13 @@ static_assert(kBacklightPwmHz >= 5000 && kBacklightPwmHz <= 100000,
 inline void backlightRamp(uint8_t channel = 0) {
   ledcSetup(channel, kBacklightPwmHz, 8);
   ledcAttachPin(AQROOT_PIN_DISP_BL_PWM, channel);
-  // D-784 / Round-5: C85 is 1 uF.  From a discharged gate, very-low-duty
-  // PWM can leave Q11 poorly enhanced while U17 starts.  Prime for an explicit
-  // 3.0 ms at 100 % (>=15 cycles at 5 kHz), then enter the requested PWM
-  // ramp.  Use the microsecond delay rather than Arduino delay(2): a tick-based
-  // millisecond delay does not itself prove the >=2 ms acceptance interval.
-  ledcWrite(channel, 255);
-  delayMicroseconds(3000);
-  for (int duty = 5; duty <= 255; duty += 5) {
-    ledcWrite(channel, duty);
-    delay(8);
-  }
-  for (int duty = 255; duty >= 0; duty -= 5) {
-    ledcWrite(channel, duty);
-    delay(8);
-  }
-  ledcWrite(channel, 0);
+  // D-787 / Round-6: C85 is 1 uF. The executable ordering is shared
+  // with a host behavioral test: first PWM command 255, >=3000 us prime, then
+  // (and only then) dim PWM. Comments/dead code cannot satisfy that test.
+  runBacklightRampPolicy(
+      [channel](uint8_t duty) { ledcWrite(channel, duty); },
+      [](uint32_t us) { delayMicroseconds(us); },
+      [](uint32_t ms) { delay(ms); });
   ledcDetachPin(AQROOT_PIN_DISP_BL_PWM);
   pinMode(AQROOT_PIN_DISP_BL_PWM, OUTPUT);
   digitalWrite(AQROOT_PIN_DISP_BL_PWM, LOW);

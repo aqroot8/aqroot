@@ -1,0 +1,1549 @@
+Processing esp32-s3-aqroot (platform: espressif32@6.9.0; board: esp32-s3-devkitc-1; framework: arduino)
+--------------------------------------------------------------------------------
+Verbose mode can be enabled via `-v, --verbose` option
+CONFIGURATION: https://docs.platformio.org/page/boards/espressif32/esp32-s3-devkitc-1.html
+PLATFORM: Espressif 32 (6.9.0) > Espressif ESP32-S3-DevKitC-1-N8 (8 MB QD, No PSRAM)
+HARDWARE: ESP32S3 240MHz, 320KB RAM, 8MB Flash
+DEBUG: Current (esp-builtin) On-board (esp-builtin) External (cmsis-dap, esp-bridge, esp-prog, iot-bus-jtag, jlink, minimodule, olimex-arm-usb-ocd, olimex-arm-usb-ocd-h, olimex-arm-usb-tiny-h, olimex-jtag-tiny, tumpa)
+PACKAGES: 
+ - framework-arduinoespressif32 @ 3.20017.241212+sha.dcc1105b 
+ - tool-esptoolpy @ 1.40501.0 (4.5.1) 
+ - toolchain-riscv32-esp @ 8.4.0+2021r2-patch5 
+ - toolchain-xtensa-esp32s3 @ 8.4.0+2021r2-patch5
+LDF: Library Dependency Finder -> https://bit.ly/configure-pio-ldf
+LDF Modes: Finder ~ chain, Compatibility ~ soft
+Found 39 compatible libraries
+Scanning dependencies...
+Dependency Graph
+|-- lvgl @ 8.4.0
+|-- RadioLib @ 6.6.0
+|-- Adafruit PN532 @ 1.3.4
+|-- Adafruit BusIO @ 1.17.4
+|-- Adafruit Unified Sensor @ 1.1.15
+|-- LovyanGFX @ 1.2.29
+|-- Wire @ 2.0.0
+Building in release mode
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/Fonts/IPA/lgfx_font_japan.c.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/Fonts/efont/lgfx_efont_cn.c.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/Fonts/efont/lgfx_efont_ja.c.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/Fonts/efont/lgfx_efont_kr.c.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/Fonts/efont/lgfx_efont_tw.c.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/utility/lgfx_miniz.c.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/utility/lgfx_pngle.c.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/utility/lgfx_qoi.c.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/utility/lgfx_qrcode.c.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/utility/lgfx_tjpgd.c.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/LGFXBase.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/LGFX_Button.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/LGFX_Sprite.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/lgfx_fonts.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/misc/DividedFrameBuffer.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/misc/SpriteBuffer.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/misc/common_function.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/misc/pixelcopy.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/panel/Panel_AMOLED.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/panel/Panel_Device.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/panel/Panel_ED2208.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/panel/Panel_EPDiy.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/panel/Panel_FlexibleFrameBuffer.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/panel/Panel_FrameBufferBase.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/panel/Panel_GDEW0154D67.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/panel/Panel_GDEW0154M09.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/panel/Panel_HUB75.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/panel/Panel_HasBuffer.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/panel/Panel_ILI9225.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/panel/Panel_IT8951.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/panel/Panel_LCD.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/panel/Panel_M5HDMI.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/panel/Panel_M5UnitGLASS.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/panel/Panel_M5UnitLCD.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/panel/Panel_NT35510.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/panel/Panel_NV3031B.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/panel/Panel_NV3041A.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/panel/Panel_RA8875.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/panel/Panel_RM68120.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/panel/Panel_SH8601Z.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/panel/Panel_SSD1306.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/panel/Panel_SSD1327.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/panel/Panel_SSD1331.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/panel/Panel_SSD1351.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/panel/Panel_SSD1677.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/panel/Panel_SSD1963.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/panel/Panel_ST77916.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/panel/Panel_SharpLCD.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/panel/Panel_TM1680.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/arduino_default/Bus_SPI.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/arduino_default/Bus_Stream.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/arduino_default/common.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/esp32/Bus_EPD.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/esp32/Bus_HUB75.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/esp32/Bus_I2C.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/esp32/Bus_Parallel8.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/esp32/Bus_SPI.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/esp32/Light_CH422G.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/esp32/Light_PWM.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/esp32/Panel_CVBS.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/esp32/Panel_EPD.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/esp32/common.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/esp32c3/Bus_Parallel8.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/esp32p4/Bus_DSI.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/esp32p4/Panel_DSI.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/esp32p4/Panel_LT8912B.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/esp32p4/Touch_ST7123.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/esp32s2/Bus_Parallel16.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/esp32s2/Bus_Parallel8.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/esp32s3/Bus_Parallel16.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/esp32s3/Bus_Parallel8.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/esp32s3/Bus_RGB.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/esp32s3/Panel_RGB.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/esp8266/Bus_I2C.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/esp8266/Bus_SPI.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/esp8266/common.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/framebuffer/Panel_fb.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/framebuffer/common.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/opencv/Panel_OpenCV.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/opencv/common.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/rp2040/Bus_I2C.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/rp2040/Bus_SPI.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/rp2040/Light_PWM.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/rp2040/common.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/samd21/Bus_I2C.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/samd21/Bus_SPI.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/samd21/common.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/samd51/Bus_I2C.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/samd51/Bus_SPI.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/samd51/common.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/sdl/Panel_sdl.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/sdl/common.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/spresense/Bus_SPI.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/spresense/common.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/stm32/Bus_SPI.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/platforms/stm32/common.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/touch/Touch_CHSC6540.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/touch/Touch_CHSC6x.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/touch/Touch_CSTxxx.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/touch/Touch_FT5x06.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/touch/Touch_GSLx680.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/touch/Touch_GT911.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/touch/Touch_NS2009.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/touch/Touch_RA8875.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/touch/Touch_STMPE610.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/touch/Touch_TT21xxx.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libcaf/LovyanGFX/lgfx/v1/touch/Touch_XPT2046.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/src/drivers/audio.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/src/drivers/display.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/src/drivers/nfc.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/src/drivers/radio.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/src/drivers/sensors.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/src/drivers/touch.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/src/main.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/src/ui/launcher.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/src/ui/screens/bluetooth_screen.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/src/ui/screens/gpio_screen.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/src/ui/screens/ir_screen.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/src/ui/screens/nfc_screen.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/src/ui/screens/scan_screen.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/src/ui/screens/tools_screen.cpp.o
+Building .pio/build/esp32-s3-aqroot/bootloader.bin
+Generating partitions .pio/build/esp32-s3-aqroot/partitions.bin
+esptool.py v4.5.1
+Creating esp32s3 image...
+Merged 1 ELF section
+Successfully created esp32s3 image.
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/core/lv_disp.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/core/lv_event.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/core/lv_group.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/core/lv_indev.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/core/lv_indev_scroll.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/core/lv_obj.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/core/lv_obj_class.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/core/lv_obj_draw.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/core/lv_obj_pos.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/core/lv_obj_scroll.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/core/lv_obj_style.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/core/lv_obj_style_gen.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/core/lv_obj_tree.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/core/lv_refr.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/core/lv_theme.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/arm2d/lv_gpu_arm2d.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/lv_draw.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/lv_draw_arc.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/lv_draw_img.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/lv_draw_label.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/lv_draw_layer.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/lv_draw_line.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/lv_draw_mask.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/lv_draw_rect.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/lv_draw_transform.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/lv_draw_triangle.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/lv_img_buf.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/lv_img_cache.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/lv_img_decoder.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/nxp/pxp/lv_draw_pxp.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/nxp/pxp/lv_draw_pxp_blend.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/nxp/pxp/lv_gpu_nxp_pxp.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/nxp/pxp/lv_gpu_nxp_pxp_osa.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/nxp/vglite/lv_draw_vglite.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/nxp/vglite/lv_draw_vglite_arc.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/nxp/vglite/lv_draw_vglite_blend.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/nxp/vglite/lv_draw_vglite_line.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/nxp/vglite/lv_draw_vglite_rect.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/nxp/vglite/lv_vglite_buf.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/nxp/vglite/lv_vglite_utils.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/renesas/lv_gpu_d2_draw_label.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/renesas/lv_gpu_d2_ra6m3.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/sdl/lv_draw_sdl.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/sdl/lv_draw_sdl_arc.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/sdl/lv_draw_sdl_bg.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/sdl/lv_draw_sdl_composite.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/sdl/lv_draw_sdl_img.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/sdl/lv_draw_sdl_label.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/sdl/lv_draw_sdl_layer.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/sdl/lv_draw_sdl_line.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/sdl/lv_draw_sdl_mask.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/sdl/lv_draw_sdl_polygon.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/sdl/lv_draw_sdl_rect.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/sdl/lv_draw_sdl_stack_blur.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/sdl/lv_draw_sdl_texture_cache.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/sdl/lv_draw_sdl_utils.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/stm32_dma2d/lv_gpu_stm32_dma2d.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/sw/lv_draw_sw.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/sw/lv_draw_sw_arc.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/sw/lv_draw_sw_blend.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/sw/lv_draw_sw_dither.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/sw/lv_draw_sw_gradient.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/sw/lv_draw_sw_img.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/sw/lv_draw_sw_layer.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/sw/lv_draw_sw_letter.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/sw/lv_draw_sw_line.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/sw/lv_draw_sw_polygon.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/sw/lv_draw_sw_rect.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/sw/lv_draw_sw_transform.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/draw/swm341_dma2d/lv_gpu_swm341_dma2d.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/layouts/flex/lv_flex.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/layouts/grid/lv_grid.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/libs/bmp/lv_bmp.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/libs/ffmpeg/lv_ffmpeg.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/libs/freetype/lv_freetype.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/libs/fsdrv/lv_fs_fatfs.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/libs/fsdrv/lv_fs_littlefs.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/libs/fsdrv/lv_fs_posix.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/libs/fsdrv/lv_fs_stdio.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/libs/fsdrv/lv_fs_win32.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/libs/gif/gifdec.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/libs/gif/lv_gif.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/libs/png/lodepng.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/libs/png/lv_png.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/libs/qrcode/lv_qrcode.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/libs/qrcode/qrcodegen.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/libs/rlottie/lv_rlottie.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/libs/sjpg/lv_sjpg.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/libs/sjpg/tjpgd.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/libs/tiny_ttf/lv_tiny_ttf.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/lv_extra.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/others/fragment/lv_fragment.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/others/fragment/lv_fragment_manager.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/others/gridnav/lv_gridnav.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/others/ime/lv_ime_pinyin.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/others/imgfont/lv_imgfont.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/others/monkey/lv_monkey.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/others/msg/lv_msg.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/others/snapshot/lv_snapshot.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/themes/basic/lv_theme_basic.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/themes/default/lv_theme_default.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/themes/mono/lv_theme_mono.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/widgets/animimg/lv_animimg.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/widgets/calendar/lv_calendar.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/widgets/calendar/lv_calendar_header_arrow.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/widgets/calendar/lv_calendar_header_dropdown.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/widgets/chart/lv_chart.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/widgets/colorwheel/lv_colorwheel.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/widgets/imgbtn/lv_imgbtn.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/widgets/keyboard/lv_keyboard.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/widgets/led/lv_led.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/widgets/list/lv_list.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/widgets/menu/lv_menu.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/widgets/meter/lv_meter.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/widgets/msgbox/lv_msgbox.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/widgets/span/lv_span.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/widgets/spinbox/lv_spinbox.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/widgets/spinner/lv_spinner.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/widgets/tabview/lv_tabview.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/widgets/tileview/lv_tileview.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/extra/widgets/win/lv_win.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/font/lv_font.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/font/lv_font_dejavu_16_persian_hebrew.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/font/lv_font_fmt_txt.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/font/lv_font_loader.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/font/lv_font_montserrat_10.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/font/lv_font_montserrat_12.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/font/lv_font_montserrat_12_subpx.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/font/lv_font_montserrat_14.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/font/lv_font_montserrat_16.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/font/lv_font_montserrat_18.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/font/lv_font_montserrat_20.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/font/lv_font_montserrat_22.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/font/lv_font_montserrat_24.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/font/lv_font_montserrat_26.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/font/lv_font_montserrat_28.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/font/lv_font_montserrat_28_compressed.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/font/lv_font_montserrat_30.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/font/lv_font_montserrat_32.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/font/lv_font_montserrat_34.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/font/lv_font_montserrat_36.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/font/lv_font_montserrat_38.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/font/lv_font_montserrat_40.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/font/lv_font_montserrat_42.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/font/lv_font_montserrat_44.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/font/lv_font_montserrat_46.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/font/lv_font_montserrat_48.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/font/lv_font_montserrat_8.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/font/lv_font_simsun_16_cjk.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/font/lv_font_unscii_16.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/font/lv_font_unscii_8.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/hal/lv_hal_disp.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/hal/lv_hal_indev.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/hal/lv_hal_tick.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/misc/lv_anim.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/misc/lv_anim_timeline.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/misc/lv_area.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/misc/lv_async.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/misc/lv_bidi.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/misc/lv_color.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/misc/lv_fs.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/misc/lv_gc.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/misc/lv_ll.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/misc/lv_log.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/misc/lv_lru.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/misc/lv_math.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/misc/lv_mem.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/misc/lv_printf.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/misc/lv_style.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/misc/lv_style_gen.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/misc/lv_templ.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/misc/lv_timer.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/misc/lv_tlsf.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/misc/lv_txt.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/misc/lv_txt_ap.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/misc/lv_utils.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/widgets/lv_arc.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/widgets/lv_bar.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/widgets/lv_btn.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/widgets/lv_btnmatrix.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/widgets/lv_canvas.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/widgets/lv_checkbox.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/widgets/lv_dropdown.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/widgets/lv_img.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/widgets/lv_label.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/widgets/lv_line.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/widgets/lv_objx_templ.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/widgets/lv_roller.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/widgets/lv_slider.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/widgets/lv_switch.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/widgets/lv_table.c.o
+Compiling .pio/build/esp32-s3-aqroot/lib692/lvgl/widgets/lv_textarea.c.o
+Compiling .pio/build/esp32-s3-aqroot/libaeb/SPI/SPI.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/ArduinoHal.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/Hal.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/Module.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/modules/CC1101/CC1101.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/modules/LLCC68/LLCC68.cpp.o
+Archiving .pio/build/esp32-s3-aqroot/lib692/liblvgl.a
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/modules/LR11x0/LR1110.cpp.o
+Indexing .pio/build/esp32-s3-aqroot/lib692/liblvgl.a
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/modules/LR11x0/LR1120.cpp.o
+Archiving .pio/build/esp32-s3-aqroot/libaeb/libSPI.a
+Indexing .pio/build/esp32-s3-aqroot/libaeb/libSPI.a
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/modules/LR11x0/LR1121.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/modules/LR11x0/LR11x0.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/modules/RF69/RF69.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/modules/SX123x/SX1231.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/modules/SX123x/SX1233.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/modules/SX126x/STM32WLx.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/modules/SX126x/STM32WLx_Module.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/modules/SX126x/SX1261.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/modules/SX126x/SX1262.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/modules/SX126x/SX1268.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/modules/SX126x/SX126x.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/modules/SX127x/SX1272.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/modules/SX127x/SX1273.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/modules/SX127x/SX1276.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/modules/SX127x/SX1277.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/modules/SX127x/SX1278.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/modules/SX127x/SX1279.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/modules/SX127x/SX127x.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/modules/SX128x/SX1280.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/modules/SX128x/SX1281.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/modules/SX128x/SX1282.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/modules/SX128x/SX128x.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/modules/Si443x/Si4430.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/modules/Si443x/Si4431.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/modules/Si443x/Si4432.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/modules/Si443x/Si443x.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/modules/nRF24/nRF24.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/protocols/AFSK/AFSK.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/protocols/APRS/APRS.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/protocols/AX25/AX25.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/protocols/BellModem/BellModem.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/protocols/ExternalRadio/ExternalRadio.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/protocols/FSK4/FSK4.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/protocols/Hellschreiber/Hellschreiber.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/protocols/LoRaWAN/LoRaWAN.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/protocols/LoRaWAN/LoRaWANBands.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/protocols/Morse/Morse.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/protocols/Pager/Pager.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/protocols/PhysicalLayer/PhysicalLayer.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/protocols/Print/ITA2String.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/protocols/Print/Print.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/protocols/RTTY/RTTY.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/protocols/SSTV/SSTV.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/utils/CRC.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/utils/Cryptography.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib208/RadioLib/utils/FEC.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/libe31/Wire/Wire.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib90f/Adafruit BusIO/Adafruit_BusIO_Register.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib90f/Adafruit BusIO/Adafruit_GenericDevice.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib90f/Adafruit BusIO/Adafruit_I2CDevice.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib90f/Adafruit BusIO/Adafruit_SPIDevice.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/lib575/Adafruit PN532/Adafruit_PN532.cpp.o
+Archiving .pio/build/esp32-s3-aqroot/lib208/libRadioLib.a
+Indexing .pio/build/esp32-s3-aqroot/lib208/libRadioLib.a
+Compiling .pio/build/esp32-s3-aqroot/libfdb/Adafruit Unified Sensor/Adafruit_Sensor.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/Esp.cpp.o
+Archiving .pio/build/esp32-s3-aqroot/lib90f/libAdafruit BusIO.a
+Archiving .pio/build/esp32-s3-aqroot/libe31/libWire.a
+Indexing .pio/build/esp32-s3-aqroot/lib90f/libAdafruit BusIO.a
+Indexing .pio/build/esp32-s3-aqroot/libe31/libWire.a
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/FirmwareMSC.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/FunctionalInterrupt.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/HWCDC.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/HardwareSerial.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/IPAddress.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/IPv6Address.cpp.o
+Archiving .pio/build/esp32-s3-aqroot/libfdb/libAdafruit Unified Sensor.a
+Indexing .pio/build/esp32-s3-aqroot/libfdb/libAdafruit Unified Sensor.a
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/MD5Builder.cpp.o
+Archiving .pio/build/esp32-s3-aqroot/lib575/libAdafruit PN532.a
+Indexing .pio/build/esp32-s3-aqroot/lib575/libAdafruit PN532.a
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/Print.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/Stream.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/StreamString.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/Tone.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/USB.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/USBCDC.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/USBMSC.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/WMath.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/WString.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/base64.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/cbuf.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/esp32-hal-adc.c.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/esp32-hal-bt.c.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/esp32-hal-cpu.c.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/esp32-hal-dac.c.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/esp32-hal-gpio.c.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/esp32-hal-i2c-slave.c.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/esp32-hal-i2c.c.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/esp32-hal-ledc.c.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/esp32-hal-matrix.c.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/esp32-hal-misc.c.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/esp32-hal-psram.c.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/esp32-hal-rgb-led.c.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/esp32-hal-rmt.c.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/esp32-hal-sigmadelta.c.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/esp32-hal-spi.c.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/esp32-hal-time.c.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/esp32-hal-timer.c.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/esp32-hal-tinyusb.c.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/esp32-hal-touch.c.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/esp32-hal-uart.c.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/firmware_msc_fat.c.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/libb64/cdecode.c.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/libb64/cencode.c.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/main.cpp.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/stdlib_noniso.c.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/wiring_pulse.c.o
+Compiling .pio/build/esp32-s3-aqroot/FrameworkArduino/wiring_shift.c.o
+Archiving .pio/build/esp32-s3-aqroot/libFrameworkArduino.a
+Indexing .pio/build/esp32-s3-aqroot/libFrameworkArduino.a
+Linking .pio/build/esp32-s3-aqroot/firmware.elf
+Retrieving maximum program size .pio/build/esp32-s3-aqroot/firmware.elf
+Checking size .pio/build/esp32-s3-aqroot/firmware.elf
+Advanced Memory Usage is available via "PlatformIO Home > Project Inspect"
+RAM:   [===       ]  33.9% (used 111172 bytes from 327680 bytes)
+Flash: [==        ]  20.1% (used 673145 bytes from 3342336 bytes)
+Building .pio/build/esp32-s3-aqroot/firmware.bin with action:
+  "$PYTHONEXE" "$OBJCOPY" --chip esp32s3 elf2image --flash_mode ${__get_board_flash_mode(__env__)} --flash_freq ${__get_board_f_image(__env__)} --flash_size 8MB --elf-sha256-offset 0xb0 -o $TARGET $SOURCES
+Building .pio/build/esp32-s3-aqroot/firmware.bin
+esptool.py v4.5.1
+Creating esp32s3 image...
+Merged 2 ELF sections
+Successfully created esp32s3 image.
+========================= [SUCCESS] Took 25.67 seconds =========================
+
+Processing wokwi (platform: espressif32@6.9.0; board: esp32-s3-devkitc-1; framework: arduino)
+--------------------------------------------------------------------------------
+Verbose mode can be enabled via `-v, --verbose` option
+CONFIGURATION: https://docs.platformio.org/page/boards/espressif32/esp32-s3-devkitc-1.html
+PLATFORM: Espressif 32 (6.9.0) > Espressif ESP32-S3-DevKitC-1-N8 (8 MB QD, No PSRAM)
+HARDWARE: ESP32S3 240MHz, 320KB RAM, 8MB Flash
+DEBUG: Current (esp-builtin) On-board (esp-builtin) External (cmsis-dap, esp-bridge, esp-prog, iot-bus-jtag, jlink, minimodule, olimex-arm-usb-ocd, olimex-arm-usb-ocd-h, olimex-arm-usb-tiny-h, olimex-jtag-tiny, tumpa)
+PACKAGES: 
+ - framework-arduinoespressif32 @ 3.20017.241212+sha.dcc1105b 
+ - tool-esptoolpy @ 1.40501.0 (4.5.1) 
+ - toolchain-riscv32-esp @ 8.4.0+2021r2-patch5 
+ - toolchain-xtensa-esp32s3 @ 8.4.0+2021r2-patch5
+LDF: Library Dependency Finder -> https://bit.ly/configure-pio-ldf
+LDF Modes: Finder ~ chain, Compatibility ~ soft
+Found 39 compatible libraries
+Scanning dependencies...
+Dependency Graph
+|-- lvgl @ 8.4.0
+|-- RadioLib @ 6.6.0
+|-- Adafruit PN532 @ 1.3.4
+|-- Adafruit BusIO @ 1.17.4
+|-- Adafruit Unified Sensor @ 1.1.15
+|-- LovyanGFX @ 1.2.29
+|-- Wire @ 2.0.0
+Building in release mode
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/Fonts/IPA/lgfx_font_japan.c.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/Fonts/efont/lgfx_efont_cn.c.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/Fonts/efont/lgfx_efont_ja.c.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/Fonts/efont/lgfx_efont_kr.c.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/Fonts/efont/lgfx_efont_tw.c.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/utility/lgfx_miniz.c.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/utility/lgfx_pngle.c.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/utility/lgfx_qoi.c.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/utility/lgfx_qrcode.c.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/utility/lgfx_tjpgd.c.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/LGFXBase.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/LGFX_Button.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/LGFX_Sprite.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/lgfx_fonts.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/misc/DividedFrameBuffer.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/misc/SpriteBuffer.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/misc/common_function.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/misc/pixelcopy.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/panel/Panel_AMOLED.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/panel/Panel_Device.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/panel/Panel_ED2208.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/panel/Panel_EPDiy.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/panel/Panel_FlexibleFrameBuffer.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/panel/Panel_FrameBufferBase.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/panel/Panel_GDEW0154D67.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/panel/Panel_GDEW0154M09.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/panel/Panel_HUB75.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/panel/Panel_HasBuffer.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/panel/Panel_ILI9225.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/panel/Panel_IT8951.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/panel/Panel_LCD.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/panel/Panel_M5HDMI.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/panel/Panel_M5UnitGLASS.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/panel/Panel_M5UnitLCD.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/panel/Panel_NT35510.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/panel/Panel_NV3031B.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/panel/Panel_NV3041A.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/panel/Panel_RA8875.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/panel/Panel_RM68120.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/panel/Panel_SH8601Z.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/panel/Panel_SSD1306.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/panel/Panel_SSD1327.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/panel/Panel_SSD1331.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/panel/Panel_SSD1351.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/panel/Panel_SSD1677.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/panel/Panel_SSD1963.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/panel/Panel_ST77916.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/panel/Panel_SharpLCD.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/panel/Panel_TM1680.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/arduino_default/Bus_SPI.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/arduino_default/Bus_Stream.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/arduino_default/common.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/esp32/Bus_EPD.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/esp32/Bus_HUB75.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/esp32/Bus_I2C.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/esp32/Bus_Parallel8.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/esp32/Bus_SPI.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/esp32/Light_CH422G.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/esp32/Light_PWM.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/esp32/Panel_CVBS.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/esp32/Panel_EPD.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/esp32/common.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/esp32c3/Bus_Parallel8.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/esp32p4/Bus_DSI.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/esp32p4/Panel_DSI.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/esp32p4/Panel_LT8912B.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/esp32p4/Touch_ST7123.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/esp32s2/Bus_Parallel16.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/esp32s2/Bus_Parallel8.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/esp32s3/Bus_Parallel16.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/esp32s3/Bus_Parallel8.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/esp32s3/Bus_RGB.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/esp32s3/Panel_RGB.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/esp8266/Bus_I2C.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/esp8266/Bus_SPI.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/esp8266/common.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/framebuffer/Panel_fb.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/framebuffer/common.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/opencv/Panel_OpenCV.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/opencv/common.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/rp2040/Bus_I2C.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/rp2040/Bus_SPI.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/rp2040/Light_PWM.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/rp2040/common.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/samd21/Bus_I2C.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/samd21/Bus_SPI.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/samd21/common.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/samd51/Bus_I2C.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/samd51/Bus_SPI.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/samd51/common.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/sdl/Panel_sdl.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/sdl/common.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/spresense/Bus_SPI.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/spresense/common.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/stm32/Bus_SPI.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/platforms/stm32/common.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/touch/Touch_CHSC6540.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/touch/Touch_CHSC6x.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/touch/Touch_CSTxxx.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/touch/Touch_FT5x06.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/touch/Touch_GSLx680.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/touch/Touch_GT911.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/touch/Touch_NS2009.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/touch/Touch_RA8875.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/touch/Touch_STMPE610.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/touch/Touch_TT21xxx.cpp.o
+Compiling .pio/build/wokwi/libb5f/LovyanGFX/lgfx/v1/touch/Touch_XPT2046.cpp.o
+Compiling .pio/build/wokwi/src/drivers/audio.cpp.o
+Compiling .pio/build/wokwi/src/drivers/display.cpp.o
+Compiling .pio/build/wokwi/src/drivers/nfc.cpp.o
+Compiling .pio/build/wokwi/src/drivers/radio.cpp.o
+Compiling .pio/build/wokwi/src/drivers/sensors.cpp.o
+Compiling .pio/build/wokwi/src/drivers/touch.cpp.o
+Compiling .pio/build/wokwi/src/main.cpp.o
+Compiling .pio/build/wokwi/src/ui/launcher.cpp.o
+Compiling .pio/build/wokwi/src/ui/screens/bluetooth_screen.cpp.o
+Compiling .pio/build/wokwi/src/ui/screens/gpio_screen.cpp.o
+Compiling .pio/build/wokwi/src/ui/screens/ir_screen.cpp.o
+Compiling .pio/build/wokwi/src/ui/screens/nfc_screen.cpp.o
+Compiling .pio/build/wokwi/src/ui/screens/scan_screen.cpp.o
+Compiling .pio/build/wokwi/src/ui/screens/tools_screen.cpp.o
+Building .pio/build/wokwi/bootloader.bin
+Generating partitions .pio/build/wokwi/partitions.bin
+esptool.py v4.5.1
+Creating esp32s3 image...
+Merged 1 ELF section
+Successfully created esp32s3 image.
+Compiling .pio/build/wokwi/liba7f/lvgl/core/lv_disp.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/core/lv_event.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/core/lv_group.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/core/lv_indev.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/core/lv_indev_scroll.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/core/lv_obj.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/core/lv_obj_class.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/core/lv_obj_draw.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/core/lv_obj_pos.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/core/lv_obj_scroll.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/core/lv_obj_style.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/core/lv_obj_style_gen.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/core/lv_obj_tree.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/core/lv_refr.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/core/lv_theme.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/arm2d/lv_gpu_arm2d.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/lv_draw.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/lv_draw_arc.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/lv_draw_img.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/lv_draw_label.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/lv_draw_layer.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/lv_draw_line.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/lv_draw_mask.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/lv_draw_rect.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/lv_draw_transform.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/lv_draw_triangle.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/lv_img_buf.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/lv_img_cache.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/lv_img_decoder.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/nxp/pxp/lv_draw_pxp.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/nxp/pxp/lv_draw_pxp_blend.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/nxp/pxp/lv_gpu_nxp_pxp.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/nxp/pxp/lv_gpu_nxp_pxp_osa.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/nxp/vglite/lv_draw_vglite.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/nxp/vglite/lv_draw_vglite_arc.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/nxp/vglite/lv_draw_vglite_blend.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/nxp/vglite/lv_draw_vglite_line.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/nxp/vglite/lv_draw_vglite_rect.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/nxp/vglite/lv_vglite_buf.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/nxp/vglite/lv_vglite_utils.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/renesas/lv_gpu_d2_draw_label.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/renesas/lv_gpu_d2_ra6m3.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/sdl/lv_draw_sdl.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/sdl/lv_draw_sdl_arc.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/sdl/lv_draw_sdl_bg.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/sdl/lv_draw_sdl_composite.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/sdl/lv_draw_sdl_img.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/sdl/lv_draw_sdl_label.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/sdl/lv_draw_sdl_layer.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/sdl/lv_draw_sdl_line.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/sdl/lv_draw_sdl_mask.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/sdl/lv_draw_sdl_polygon.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/sdl/lv_draw_sdl_rect.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/sdl/lv_draw_sdl_stack_blur.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/sdl/lv_draw_sdl_texture_cache.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/sdl/lv_draw_sdl_utils.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/stm32_dma2d/lv_gpu_stm32_dma2d.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/sw/lv_draw_sw.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/sw/lv_draw_sw_arc.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/sw/lv_draw_sw_blend.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/sw/lv_draw_sw_dither.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/sw/lv_draw_sw_gradient.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/sw/lv_draw_sw_img.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/sw/lv_draw_sw_layer.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/sw/lv_draw_sw_letter.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/sw/lv_draw_sw_line.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/sw/lv_draw_sw_polygon.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/sw/lv_draw_sw_rect.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/sw/lv_draw_sw_transform.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/draw/swm341_dma2d/lv_gpu_swm341_dma2d.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/layouts/flex/lv_flex.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/layouts/grid/lv_grid.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/libs/bmp/lv_bmp.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/libs/ffmpeg/lv_ffmpeg.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/libs/freetype/lv_freetype.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/libs/fsdrv/lv_fs_fatfs.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/libs/fsdrv/lv_fs_littlefs.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/libs/fsdrv/lv_fs_posix.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/libs/fsdrv/lv_fs_stdio.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/libs/fsdrv/lv_fs_win32.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/libs/gif/gifdec.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/libs/gif/lv_gif.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/libs/png/lodepng.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/libs/png/lv_png.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/libs/qrcode/lv_qrcode.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/libs/qrcode/qrcodegen.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/libs/rlottie/lv_rlottie.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/libs/sjpg/lv_sjpg.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/libs/sjpg/tjpgd.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/libs/tiny_ttf/lv_tiny_ttf.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/lv_extra.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/others/fragment/lv_fragment.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/others/fragment/lv_fragment_manager.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/others/gridnav/lv_gridnav.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/others/ime/lv_ime_pinyin.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/others/imgfont/lv_imgfont.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/others/monkey/lv_monkey.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/others/msg/lv_msg.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/others/snapshot/lv_snapshot.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/themes/basic/lv_theme_basic.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/themes/default/lv_theme_default.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/themes/mono/lv_theme_mono.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/widgets/animimg/lv_animimg.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/widgets/calendar/lv_calendar.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/widgets/calendar/lv_calendar_header_arrow.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/widgets/calendar/lv_calendar_header_dropdown.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/widgets/chart/lv_chart.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/widgets/colorwheel/lv_colorwheel.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/widgets/imgbtn/lv_imgbtn.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/widgets/keyboard/lv_keyboard.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/widgets/led/lv_led.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/widgets/list/lv_list.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/widgets/menu/lv_menu.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/widgets/meter/lv_meter.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/widgets/msgbox/lv_msgbox.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/widgets/span/lv_span.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/widgets/spinbox/lv_spinbox.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/widgets/spinner/lv_spinner.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/widgets/tabview/lv_tabview.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/widgets/tileview/lv_tileview.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/extra/widgets/win/lv_win.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/font/lv_font.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/font/lv_font_dejavu_16_persian_hebrew.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/font/lv_font_fmt_txt.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/font/lv_font_loader.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/font/lv_font_montserrat_10.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/font/lv_font_montserrat_12.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/font/lv_font_montserrat_12_subpx.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/font/lv_font_montserrat_14.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/font/lv_font_montserrat_16.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/font/lv_font_montserrat_18.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/font/lv_font_montserrat_20.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/font/lv_font_montserrat_22.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/font/lv_font_montserrat_24.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/font/lv_font_montserrat_26.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/font/lv_font_montserrat_28.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/font/lv_font_montserrat_28_compressed.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/font/lv_font_montserrat_30.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/font/lv_font_montserrat_32.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/font/lv_font_montserrat_34.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/font/lv_font_montserrat_36.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/font/lv_font_montserrat_38.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/font/lv_font_montserrat_40.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/font/lv_font_montserrat_42.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/font/lv_font_montserrat_44.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/font/lv_font_montserrat_46.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/font/lv_font_montserrat_48.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/font/lv_font_montserrat_8.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/font/lv_font_simsun_16_cjk.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/font/lv_font_unscii_16.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/font/lv_font_unscii_8.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/hal/lv_hal_disp.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/hal/lv_hal_indev.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/hal/lv_hal_tick.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/misc/lv_anim.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/misc/lv_anim_timeline.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/misc/lv_area.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/misc/lv_async.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/misc/lv_bidi.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/misc/lv_color.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/misc/lv_fs.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/misc/lv_gc.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/misc/lv_ll.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/misc/lv_log.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/misc/lv_lru.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/misc/lv_math.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/misc/lv_mem.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/misc/lv_printf.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/misc/lv_style.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/misc/lv_style_gen.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/misc/lv_templ.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/misc/lv_timer.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/misc/lv_tlsf.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/misc/lv_txt.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/misc/lv_txt_ap.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/misc/lv_utils.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/widgets/lv_arc.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/widgets/lv_bar.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/widgets/lv_btn.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/widgets/lv_btnmatrix.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/widgets/lv_canvas.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/widgets/lv_checkbox.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/widgets/lv_dropdown.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/widgets/lv_img.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/widgets/lv_label.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/widgets/lv_line.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/widgets/lv_objx_templ.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/widgets/lv_roller.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/widgets/lv_slider.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/widgets/lv_switch.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/widgets/lv_table.c.o
+Compiling .pio/build/wokwi/liba7f/lvgl/widgets/lv_textarea.c.o
+Compiling .pio/build/wokwi/libaeb/SPI/SPI.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/ArduinoHal.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/Hal.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/Module.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/modules/CC1101/CC1101.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/modules/LLCC68/LLCC68.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/modules/LR11x0/LR1110.cpp.o
+Archiving .pio/build/wokwi/liba7f/liblvgl.a
+Indexing .pio/build/wokwi/liba7f/liblvgl.a
+Compiling .pio/build/wokwi/lib3d5/RadioLib/modules/LR11x0/LR1120.cpp.o
+Archiving .pio/build/wokwi/libaeb/libSPI.a
+Indexing .pio/build/wokwi/libaeb/libSPI.a
+Compiling .pio/build/wokwi/lib3d5/RadioLib/modules/LR11x0/LR1121.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/modules/LR11x0/LR11x0.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/modules/RF69/RF69.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/modules/SX123x/SX1231.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/modules/SX123x/SX1233.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/modules/SX126x/STM32WLx.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/modules/SX126x/STM32WLx_Module.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/modules/SX126x/SX1261.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/modules/SX126x/SX1262.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/modules/SX126x/SX1268.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/modules/SX126x/SX126x.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/modules/SX127x/SX1272.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/modules/SX127x/SX1273.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/modules/SX127x/SX1276.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/modules/SX127x/SX1277.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/modules/SX127x/SX1278.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/modules/SX127x/SX1279.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/modules/SX127x/SX127x.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/modules/SX128x/SX1280.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/modules/SX128x/SX1281.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/modules/SX128x/SX1282.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/modules/SX128x/SX128x.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/modules/Si443x/Si4430.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/modules/Si443x/Si4431.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/modules/Si443x/Si4432.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/modules/Si443x/Si443x.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/modules/nRF24/nRF24.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/protocols/AFSK/AFSK.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/protocols/APRS/APRS.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/protocols/AX25/AX25.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/protocols/BellModem/BellModem.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/protocols/ExternalRadio/ExternalRadio.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/protocols/FSK4/FSK4.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/protocols/Hellschreiber/Hellschreiber.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/protocols/LoRaWAN/LoRaWAN.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/protocols/LoRaWAN/LoRaWANBands.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/protocols/Morse/Morse.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/protocols/Pager/Pager.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/protocols/PhysicalLayer/PhysicalLayer.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/protocols/Print/ITA2String.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/protocols/Print/Print.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/protocols/RTTY/RTTY.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/protocols/SSTV/SSTV.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/utils/CRC.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/utils/Cryptography.cpp.o
+Compiling .pio/build/wokwi/lib3d5/RadioLib/utils/FEC.cpp.o
+Compiling .pio/build/wokwi/libe31/Wire/Wire.cpp.o
+Compiling .pio/build/wokwi/lib3f3/Adafruit BusIO/Adafruit_BusIO_Register.cpp.o
+Compiling .pio/build/wokwi/lib3f3/Adafruit BusIO/Adafruit_GenericDevice.cpp.o
+Compiling .pio/build/wokwi/lib3f3/Adafruit BusIO/Adafruit_I2CDevice.cpp.o
+Compiling .pio/build/wokwi/lib3f3/Adafruit BusIO/Adafruit_SPIDevice.cpp.o
+Compiling .pio/build/wokwi/libf6f/Adafruit PN532/Adafruit_PN532.cpp.o
+Archiving .pio/build/wokwi/lib3d5/libRadioLib.a
+Indexing .pio/build/wokwi/lib3d5/libRadioLib.a
+Compiling .pio/build/wokwi/lib8a2/Adafruit Unified Sensor/Adafruit_Sensor.cpp.o
+Compiling .pio/build/wokwi/FrameworkArduino/Esp.cpp.o
+Archiving .pio/build/wokwi/libe31/libWire.a
+Archiving .pio/build/wokwi/lib3f3/libAdafruit BusIO.a
+Indexing .pio/build/wokwi/libe31/libWire.a
+Indexing .pio/build/wokwi/lib3f3/libAdafruit BusIO.a
+Compiling .pio/build/wokwi/FrameworkArduino/FirmwareMSC.cpp.o
+Compiling .pio/build/wokwi/FrameworkArduino/FunctionalInterrupt.cpp.o
+Compiling .pio/build/wokwi/FrameworkArduino/HWCDC.cpp.o
+Compiling .pio/build/wokwi/FrameworkArduino/HardwareSerial.cpp.o
+Compiling .pio/build/wokwi/FrameworkArduino/IPAddress.cpp.o
+Archiving .pio/build/wokwi/lib8a2/libAdafruit Unified Sensor.a
+Indexing .pio/build/wokwi/lib8a2/libAdafruit Unified Sensor.a
+Compiling .pio/build/wokwi/FrameworkArduino/IPv6Address.cpp.o
+Compiling .pio/build/wokwi/FrameworkArduino/MD5Builder.cpp.o
+Archiving .pio/build/wokwi/libf6f/libAdafruit PN532.a
+Indexing .pio/build/wokwi/libf6f/libAdafruit PN532.a
+Compiling .pio/build/wokwi/FrameworkArduino/Print.cpp.o
+Compiling .pio/build/wokwi/FrameworkArduino/Stream.cpp.o
+Compiling .pio/build/wokwi/FrameworkArduino/StreamString.cpp.o
+Compiling .pio/build/wokwi/FrameworkArduino/Tone.cpp.o
+Compiling .pio/build/wokwi/FrameworkArduino/USB.cpp.o
+Compiling .pio/build/wokwi/FrameworkArduino/USBCDC.cpp.o
+Compiling .pio/build/wokwi/FrameworkArduino/USBMSC.cpp.o
+Compiling .pio/build/wokwi/FrameworkArduino/WMath.cpp.o
+Compiling .pio/build/wokwi/FrameworkArduino/WString.cpp.o
+Compiling .pio/build/wokwi/FrameworkArduino/base64.cpp.o
+Compiling .pio/build/wokwi/FrameworkArduino/cbuf.cpp.o
+Compiling .pio/build/wokwi/FrameworkArduino/esp32-hal-adc.c.o
+Compiling .pio/build/wokwi/FrameworkArduino/esp32-hal-bt.c.o
+Compiling .pio/build/wokwi/FrameworkArduino/esp32-hal-cpu.c.o
+Compiling .pio/build/wokwi/FrameworkArduino/esp32-hal-dac.c.o
+Compiling .pio/build/wokwi/FrameworkArduino/esp32-hal-gpio.c.o
+Compiling .pio/build/wokwi/FrameworkArduino/esp32-hal-i2c-slave.c.o
+Compiling .pio/build/wokwi/FrameworkArduino/esp32-hal-i2c.c.o
+Compiling .pio/build/wokwi/FrameworkArduino/esp32-hal-ledc.c.o
+Compiling .pio/build/wokwi/FrameworkArduino/esp32-hal-matrix.c.o
+Compiling .pio/build/wokwi/FrameworkArduino/esp32-hal-misc.c.o
+Compiling .pio/build/wokwi/FrameworkArduino/esp32-hal-psram.c.o
+Compiling .pio/build/wokwi/FrameworkArduino/esp32-hal-rgb-led.c.o
+Compiling .pio/build/wokwi/FrameworkArduino/esp32-hal-rmt.c.o
+Compiling .pio/build/wokwi/FrameworkArduino/esp32-hal-sigmadelta.c.o
+Compiling .pio/build/wokwi/FrameworkArduino/esp32-hal-spi.c.o
+Compiling .pio/build/wokwi/FrameworkArduino/esp32-hal-time.c.o
+Compiling .pio/build/wokwi/FrameworkArduino/esp32-hal-timer.c.o
+Compiling .pio/build/wokwi/FrameworkArduino/esp32-hal-tinyusb.c.o
+Compiling .pio/build/wokwi/FrameworkArduino/esp32-hal-touch.c.o
+Compiling .pio/build/wokwi/FrameworkArduino/esp32-hal-uart.c.o
+Compiling .pio/build/wokwi/FrameworkArduino/firmware_msc_fat.c.o
+Compiling .pio/build/wokwi/FrameworkArduino/libb64/cdecode.c.o
+Compiling .pio/build/wokwi/FrameworkArduino/libb64/cencode.c.o
+Compiling .pio/build/wokwi/FrameworkArduino/main.cpp.o
+Compiling .pio/build/wokwi/FrameworkArduino/stdlib_noniso.c.o
+Compiling .pio/build/wokwi/FrameworkArduino/wiring_pulse.c.o
+Compiling .pio/build/wokwi/FrameworkArduino/wiring_shift.c.o
+Archiving .pio/build/wokwi/libFrameworkArduino.a
+Indexing .pio/build/wokwi/libFrameworkArduino.a
+Linking .pio/build/wokwi/firmware.elf
+Retrieving maximum program size .pio/build/wokwi/firmware.elf
+Checking size .pio/build/wokwi/firmware.elf
+Advanced Memory Usage is available via "PlatformIO Home > Project Inspect"
+RAM:   [===       ]  33.8% (used 110748 bytes from 327680 bytes)
+Flash: [==        ]  18.4% (used 614969 bytes from 3342336 bytes)
+Building .pio/build/wokwi/firmware.bin with action:
+  "$PYTHONEXE" "$OBJCOPY" --chip esp32s3 elf2image --flash_mode ${__get_board_flash_mode(__env__)} --flash_freq ${__get_board_f_image(__env__)} --flash_size 8MB --elf-sha256-offset 0xb0 -o $TARGET $SOURCES
+Building .pio/build/wokwi/firmware.bin
+esptool.py v4.5.1
+Creating esp32s3 image...
+Merged 2 ELF sections
+Successfully created esp32s3 image.
+========================= [SUCCESS] Took 25.30 seconds =========================
+
+Processing esp32-s3-aqroot-dm (platform: espressif32@6.9.0; board: esp32-s3-devkitc-1; framework: arduino)
+--------------------------------------------------------------------------------
+Verbose mode can be enabled via `-v, --verbose` option
+CONFIGURATION: https://docs.platformio.org/page/boards/espressif32/esp32-s3-devkitc-1.html
+PLATFORM: Espressif 32 (6.9.0) > Espressif ESP32-S3-DevKitC-1-N8 (8 MB QD, No PSRAM)
+HARDWARE: ESP32S3 240MHz, 320KB RAM, 8MB Flash
+DEBUG: Current (esp-builtin) On-board (esp-builtin) External (cmsis-dap, esp-bridge, esp-prog, iot-bus-jtag, jlink, minimodule, olimex-arm-usb-ocd, olimex-arm-usb-ocd-h, olimex-arm-usb-tiny-h, olimex-jtag-tiny, tumpa)
+PACKAGES: 
+ - framework-arduinoespressif32 @ 3.20017.241212+sha.dcc1105b 
+ - tool-esptoolpy @ 1.40501.0 (4.5.1) 
+ - toolchain-riscv32-esp @ 8.4.0+2021r2-patch5 
+ - toolchain-xtensa-esp32s3 @ 8.4.0+2021r2-patch5
+LDF: Library Dependency Finder -> https://bit.ly/configure-pio-ldf
+LDF Modes: Finder ~ chain, Compatibility ~ soft
+Found 39 compatible libraries
+Scanning dependencies...
+Dependency Graph
+|-- lvgl @ 8.4.0
+|-- RadioLib @ 6.6.0
+|-- Adafruit PN532 @ 1.3.4
+|-- Adafruit BusIO @ 1.17.4
+|-- Adafruit Unified Sensor @ 1.1.15
+|-- LovyanGFX @ 1.2.29
+|-- Wire @ 2.0.0
+Building in release mode
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/Fonts/IPA/lgfx_font_japan.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/Fonts/efont/lgfx_efont_cn.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/Fonts/efont/lgfx_efont_ja.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/Fonts/efont/lgfx_efont_kr.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/Fonts/efont/lgfx_efont_tw.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/utility/lgfx_miniz.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/utility/lgfx_pngle.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/utility/lgfx_qoi.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/utility/lgfx_qrcode.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/utility/lgfx_tjpgd.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/LGFXBase.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/LGFX_Button.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/LGFX_Sprite.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/lgfx_fonts.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/misc/DividedFrameBuffer.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/misc/SpriteBuffer.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/misc/common_function.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/misc/pixelcopy.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/panel/Panel_AMOLED.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/panel/Panel_Device.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/panel/Panel_ED2208.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/panel/Panel_EPDiy.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/panel/Panel_FlexibleFrameBuffer.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/panel/Panel_FrameBufferBase.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/panel/Panel_GDEW0154D67.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/panel/Panel_GDEW0154M09.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/panel/Panel_HUB75.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/panel/Panel_HasBuffer.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/panel/Panel_ILI9225.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/panel/Panel_IT8951.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/panel/Panel_LCD.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/panel/Panel_M5HDMI.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/panel/Panel_M5UnitGLASS.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/panel/Panel_M5UnitLCD.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/panel/Panel_NT35510.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/panel/Panel_NV3031B.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/panel/Panel_NV3041A.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/panel/Panel_RA8875.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/panel/Panel_RM68120.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/panel/Panel_SH8601Z.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/panel/Panel_SSD1306.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/panel/Panel_SSD1327.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/panel/Panel_SSD1331.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/panel/Panel_SSD1351.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/panel/Panel_SSD1677.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/panel/Panel_SSD1963.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/panel/Panel_ST77916.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/panel/Panel_SharpLCD.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/panel/Panel_TM1680.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/arduino_default/Bus_SPI.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/arduino_default/Bus_Stream.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/arduino_default/common.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/esp32/Bus_EPD.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/esp32/Bus_HUB75.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/esp32/Bus_I2C.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/esp32/Bus_Parallel8.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/esp32/Bus_SPI.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/esp32/Light_CH422G.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/esp32/Light_PWM.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/esp32/Panel_CVBS.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/esp32/Panel_EPD.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/esp32/common.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/esp32c3/Bus_Parallel8.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/esp32p4/Bus_DSI.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/esp32p4/Panel_DSI.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/esp32p4/Panel_LT8912B.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/esp32p4/Touch_ST7123.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/esp32s2/Bus_Parallel16.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/esp32s2/Bus_Parallel8.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/esp32s3/Bus_Parallel16.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/esp32s3/Bus_Parallel8.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/esp32s3/Bus_RGB.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/esp32s3/Panel_RGB.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/esp8266/Bus_I2C.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/esp8266/Bus_SPI.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/esp8266/common.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/framebuffer/Panel_fb.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/framebuffer/common.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/opencv/Panel_OpenCV.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/opencv/common.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/rp2040/Bus_I2C.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/rp2040/Bus_SPI.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/rp2040/Light_PWM.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/rp2040/common.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/samd21/Bus_I2C.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/samd21/Bus_SPI.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/samd21/common.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/samd51/Bus_I2C.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/samd51/Bus_SPI.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/samd51/common.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/sdl/Panel_sdl.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/sdl/common.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/spresense/Bus_SPI.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/spresense/common.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/stm32/Bus_SPI.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/platforms/stm32/common.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/touch/Touch_CHSC6540.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/touch/Touch_CHSC6x.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/touch/Touch_CSTxxx.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/touch/Touch_FT5x06.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/touch/Touch_GSLx680.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/touch/Touch_GT911.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/touch/Touch_NS2009.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/touch/Touch_RA8875.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/touch/Touch_STMPE610.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/touch/Touch_TT21xxx.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib6fd/LovyanGFX/lgfx/v1/touch/Touch_XPT2046.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/src/drivers/audio.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/src/drivers/display.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/src/drivers/nfc.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/src/drivers/radio.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/src/drivers/sensors.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/src/drivers/touch.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/src/main.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/src/ui/launcher.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/src/ui/screens/bluetooth_screen.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/src/ui/screens/gpio_screen.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/src/ui/screens/ir_screen.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/src/ui/screens/nfc_screen.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/src/ui/screens/scan_screen.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/src/ui/screens/tools_screen.cpp.o
+Building .pio/build/esp32-s3-aqroot-dm/bootloader.bin
+Generating partitions .pio/build/esp32-s3-aqroot-dm/partitions.bin
+esptool.py v4.5.1
+Creating esp32s3 image...
+Merged 1 ELF section
+Successfully created esp32s3 image.
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/core/lv_disp.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/core/lv_event.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/core/lv_group.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/core/lv_indev.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/core/lv_indev_scroll.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/core/lv_obj.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/core/lv_obj_class.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/core/lv_obj_draw.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/core/lv_obj_pos.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/core/lv_obj_scroll.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/core/lv_obj_style.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/core/lv_obj_style_gen.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/core/lv_obj_tree.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/core/lv_refr.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/core/lv_theme.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/arm2d/lv_gpu_arm2d.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/lv_draw.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/lv_draw_arc.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/lv_draw_img.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/lv_draw_label.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/lv_draw_layer.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/lv_draw_line.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/lv_draw_mask.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/lv_draw_rect.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/lv_draw_transform.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/lv_draw_triangle.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/lv_img_buf.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/lv_img_cache.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/lv_img_decoder.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/nxp/pxp/lv_draw_pxp.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/nxp/pxp/lv_draw_pxp_blend.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/nxp/pxp/lv_gpu_nxp_pxp.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/nxp/pxp/lv_gpu_nxp_pxp_osa.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/nxp/vglite/lv_draw_vglite.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/nxp/vglite/lv_draw_vglite_arc.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/nxp/vglite/lv_draw_vglite_blend.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/nxp/vglite/lv_draw_vglite_line.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/nxp/vglite/lv_draw_vglite_rect.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/nxp/vglite/lv_vglite_buf.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/nxp/vglite/lv_vglite_utils.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/renesas/lv_gpu_d2_draw_label.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/renesas/lv_gpu_d2_ra6m3.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/sdl/lv_draw_sdl.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/sdl/lv_draw_sdl_arc.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/sdl/lv_draw_sdl_bg.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/sdl/lv_draw_sdl_composite.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/sdl/lv_draw_sdl_img.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/sdl/lv_draw_sdl_label.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/sdl/lv_draw_sdl_layer.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/sdl/lv_draw_sdl_line.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/sdl/lv_draw_sdl_mask.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/sdl/lv_draw_sdl_polygon.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/sdl/lv_draw_sdl_rect.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/sdl/lv_draw_sdl_stack_blur.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/sdl/lv_draw_sdl_texture_cache.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/sdl/lv_draw_sdl_utils.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/stm32_dma2d/lv_gpu_stm32_dma2d.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/sw/lv_draw_sw.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/sw/lv_draw_sw_arc.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/sw/lv_draw_sw_blend.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/sw/lv_draw_sw_dither.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/sw/lv_draw_sw_gradient.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/sw/lv_draw_sw_img.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/sw/lv_draw_sw_layer.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/sw/lv_draw_sw_letter.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/sw/lv_draw_sw_line.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/sw/lv_draw_sw_polygon.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/sw/lv_draw_sw_rect.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/sw/lv_draw_sw_transform.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/draw/swm341_dma2d/lv_gpu_swm341_dma2d.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/layouts/flex/lv_flex.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/layouts/grid/lv_grid.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/libs/bmp/lv_bmp.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/libs/ffmpeg/lv_ffmpeg.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/libs/freetype/lv_freetype.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/libs/fsdrv/lv_fs_fatfs.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/libs/fsdrv/lv_fs_littlefs.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/libs/fsdrv/lv_fs_posix.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/libs/fsdrv/lv_fs_stdio.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/libs/fsdrv/lv_fs_win32.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/libs/gif/gifdec.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/libs/gif/lv_gif.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/libs/png/lodepng.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/libs/png/lv_png.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/libs/qrcode/lv_qrcode.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/libs/qrcode/qrcodegen.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/libs/rlottie/lv_rlottie.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/libs/sjpg/lv_sjpg.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/libs/sjpg/tjpgd.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/libs/tiny_ttf/lv_tiny_ttf.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/lv_extra.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/others/fragment/lv_fragment.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/others/fragment/lv_fragment_manager.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/others/gridnav/lv_gridnav.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/others/ime/lv_ime_pinyin.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/others/imgfont/lv_imgfont.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/others/monkey/lv_monkey.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/others/msg/lv_msg.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/others/snapshot/lv_snapshot.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/themes/basic/lv_theme_basic.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/themes/default/lv_theme_default.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/themes/mono/lv_theme_mono.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/widgets/animimg/lv_animimg.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/widgets/calendar/lv_calendar.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/widgets/calendar/lv_calendar_header_arrow.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/widgets/calendar/lv_calendar_header_dropdown.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/widgets/chart/lv_chart.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/widgets/colorwheel/lv_colorwheel.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/widgets/imgbtn/lv_imgbtn.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/widgets/keyboard/lv_keyboard.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/widgets/led/lv_led.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/widgets/list/lv_list.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/widgets/menu/lv_menu.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/widgets/meter/lv_meter.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/widgets/msgbox/lv_msgbox.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/widgets/span/lv_span.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/widgets/spinbox/lv_spinbox.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/widgets/spinner/lv_spinner.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/widgets/tabview/lv_tabview.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/widgets/tileview/lv_tileview.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/extra/widgets/win/lv_win.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/font/lv_font.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/font/lv_font_dejavu_16_persian_hebrew.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/font/lv_font_fmt_txt.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/font/lv_font_loader.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/font/lv_font_montserrat_10.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/font/lv_font_montserrat_12.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/font/lv_font_montserrat_12_subpx.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/font/lv_font_montserrat_14.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/font/lv_font_montserrat_16.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/font/lv_font_montserrat_18.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/font/lv_font_montserrat_20.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/font/lv_font_montserrat_22.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/font/lv_font_montserrat_24.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/font/lv_font_montserrat_26.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/font/lv_font_montserrat_28.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/font/lv_font_montserrat_28_compressed.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/font/lv_font_montserrat_30.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/font/lv_font_montserrat_32.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/font/lv_font_montserrat_34.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/font/lv_font_montserrat_36.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/font/lv_font_montserrat_38.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/font/lv_font_montserrat_40.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/font/lv_font_montserrat_42.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/font/lv_font_montserrat_44.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/font/lv_font_montserrat_46.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/font/lv_font_montserrat_48.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/font/lv_font_montserrat_8.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/font/lv_font_simsun_16_cjk.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/font/lv_font_unscii_16.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/font/lv_font_unscii_8.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/hal/lv_hal_disp.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/hal/lv_hal_indev.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/hal/lv_hal_tick.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/misc/lv_anim.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/misc/lv_anim_timeline.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/misc/lv_area.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/misc/lv_async.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/misc/lv_bidi.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/misc/lv_color.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/misc/lv_fs.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/misc/lv_gc.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/misc/lv_ll.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/misc/lv_log.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/misc/lv_lru.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/misc/lv_math.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/misc/lv_mem.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/misc/lv_printf.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/misc/lv_style.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/misc/lv_style_gen.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/misc/lv_templ.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/misc/lv_timer.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/misc/lv_tlsf.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/misc/lv_txt.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/misc/lv_txt_ap.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/misc/lv_utils.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/widgets/lv_arc.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/widgets/lv_bar.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/widgets/lv_btn.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/widgets/lv_btnmatrix.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/widgets/lv_canvas.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/widgets/lv_checkbox.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/widgets/lv_dropdown.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/widgets/lv_img.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/widgets/lv_label.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/widgets/lv_line.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/widgets/lv_objx_templ.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/widgets/lv_roller.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/widgets/lv_slider.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/widgets/lv_switch.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/widgets/lv_table.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib186/lvgl/widgets/lv_textarea.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/libaeb/SPI/SPI.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/ArduinoHal.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/Hal.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/Module.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/modules/CC1101/CC1101.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/modules/LLCC68/LLCC68.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/modules/LR11x0/LR1110.cpp.o
+Archiving .pio/build/esp32-s3-aqroot-dm/lib186/liblvgl.a
+Indexing .pio/build/esp32-s3-aqroot-dm/lib186/liblvgl.a
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/modules/LR11x0/LR1120.cpp.o
+Archiving .pio/build/esp32-s3-aqroot-dm/libaeb/libSPI.a
+Indexing .pio/build/esp32-s3-aqroot-dm/libaeb/libSPI.a
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/modules/LR11x0/LR1121.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/modules/LR11x0/LR11x0.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/modules/RF69/RF69.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/modules/SX123x/SX1231.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/modules/SX123x/SX1233.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/modules/SX126x/STM32WLx.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/modules/SX126x/STM32WLx_Module.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/modules/SX126x/SX1261.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/modules/SX126x/SX1262.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/modules/SX126x/SX1268.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/modules/SX126x/SX126x.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/modules/SX127x/SX1272.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/modules/SX127x/SX1273.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/modules/SX127x/SX1276.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/modules/SX127x/SX1277.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/modules/SX127x/SX1278.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/modules/SX127x/SX1279.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/modules/SX127x/SX127x.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/modules/SX128x/SX1280.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/modules/SX128x/SX1281.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/modules/SX128x/SX1282.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/modules/SX128x/SX128x.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/modules/Si443x/Si4430.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/modules/Si443x/Si4431.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/modules/Si443x/Si4432.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/modules/Si443x/Si443x.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/modules/nRF24/nRF24.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/protocols/AFSK/AFSK.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/protocols/APRS/APRS.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/protocols/AX25/AX25.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/protocols/BellModem/BellModem.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/protocols/ExternalRadio/ExternalRadio.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/protocols/FSK4/FSK4.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/protocols/Hellschreiber/Hellschreiber.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/protocols/LoRaWAN/LoRaWAN.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/protocols/LoRaWAN/LoRaWANBands.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/protocols/Morse/Morse.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/protocols/Pager/Pager.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/protocols/PhysicalLayer/PhysicalLayer.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/protocols/Print/ITA2String.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/protocols/Print/Print.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/protocols/RTTY/RTTY.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/protocols/SSTV/SSTV.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/utils/CRC.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/utils/Cryptography.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib9d8/RadioLib/utils/FEC.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/libe31/Wire/Wire.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/libd25/Adafruit BusIO/Adafruit_BusIO_Register.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/libd25/Adafruit BusIO/Adafruit_GenericDevice.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/libd25/Adafruit BusIO/Adafruit_I2CDevice.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/libd25/Adafruit BusIO/Adafruit_SPIDevice.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/lib353/Adafruit PN532/Adafruit_PN532.cpp.o
+Archiving .pio/build/esp32-s3-aqroot-dm/lib9d8/libRadioLib.a
+Indexing .pio/build/esp32-s3-aqroot-dm/lib9d8/libRadioLib.a
+Compiling .pio/build/esp32-s3-aqroot-dm/lib209/Adafruit Unified Sensor/Adafruit_Sensor.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/Esp.cpp.o
+Archiving .pio/build/esp32-s3-aqroot-dm/libd25/libAdafruit BusIO.a
+Archiving .pio/build/esp32-s3-aqroot-dm/libe31/libWire.a
+Indexing .pio/build/esp32-s3-aqroot-dm/libd25/libAdafruit BusIO.a
+Indexing .pio/build/esp32-s3-aqroot-dm/libe31/libWire.a
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/FirmwareMSC.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/FunctionalInterrupt.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/HWCDC.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/HardwareSerial.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/IPAddress.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/IPv6Address.cpp.o
+Archiving .pio/build/esp32-s3-aqroot-dm/lib209/libAdafruit Unified Sensor.a
+Indexing .pio/build/esp32-s3-aqroot-dm/lib209/libAdafruit Unified Sensor.a
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/MD5Builder.cpp.o
+Archiving .pio/build/esp32-s3-aqroot-dm/lib353/libAdafruit PN532.a
+Indexing .pio/build/esp32-s3-aqroot-dm/lib353/libAdafruit PN532.a
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/Print.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/Stream.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/StreamString.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/Tone.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/USB.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/USBCDC.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/USBMSC.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/WMath.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/WString.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/base64.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/cbuf.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/esp32-hal-adc.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/esp32-hal-bt.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/esp32-hal-cpu.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/esp32-hal-dac.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/esp32-hal-gpio.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/esp32-hal-i2c-slave.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/esp32-hal-i2c.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/esp32-hal-ledc.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/esp32-hal-matrix.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/esp32-hal-misc.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/esp32-hal-psram.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/esp32-hal-rgb-led.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/esp32-hal-rmt.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/esp32-hal-sigmadelta.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/esp32-hal-spi.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/esp32-hal-time.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/esp32-hal-timer.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/esp32-hal-tinyusb.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/esp32-hal-touch.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/esp32-hal-uart.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/firmware_msc_fat.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/libb64/cdecode.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/libb64/cencode.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/main.cpp.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/stdlib_noniso.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/wiring_pulse.c.o
+Compiling .pio/build/esp32-s3-aqroot-dm/FrameworkArduino/wiring_shift.c.o
+Archiving .pio/build/esp32-s3-aqroot-dm/libFrameworkArduino.a
+Indexing .pio/build/esp32-s3-aqroot-dm/libFrameworkArduino.a
+Linking .pio/build/esp32-s3-aqroot-dm/firmware.elf
+Retrieving maximum program size .pio/build/esp32-s3-aqroot-dm/firmware.elf
+Checking size .pio/build/esp32-s3-aqroot-dm/firmware.elf
+Advanced Memory Usage is available via "PlatformIO Home > Project Inspect"
+RAM:   [===       ]  33.9% (used 111172 bytes from 327680 bytes)
+Flash: [==        ]  20.1% (used 673145 bytes from 3342336 bytes)
+Building .pio/build/esp32-s3-aqroot-dm/firmware.bin with action:
+  "$PYTHONEXE" "$OBJCOPY" --chip esp32s3 elf2image --flash_mode ${__get_board_flash_mode(__env__)} --flash_freq ${__get_board_f_image(__env__)} --flash_size 8MB --elf-sha256-offset 0xb0 -o $TARGET $SOURCES
+Building .pio/build/esp32-s3-aqroot-dm/firmware.bin
+esptool.py v4.5.1
+Creating esp32s3 image...
+Merged 2 ELF sections
+Successfully created esp32s3 image.
+========================= [SUCCESS] Took 25.64 seconds =========================
+
+Processing aqroot-demo (platform: espressif32@6.9.0; board: esp32-s3-devkitc-1; framework: arduino)
+--------------------------------------------------------------------------------
+Verbose mode can be enabled via `-v, --verbose` option
+CONFIGURATION: https://docs.platformio.org/page/boards/espressif32/esp32-s3-devkitc-1.html
+PLATFORM: Espressif 32 (6.9.0) > Espressif ESP32-S3-DevKitC-1-N8 (8 MB QD, No PSRAM)
+HARDWARE: ESP32S3 240MHz, 320KB RAM, 8MB Flash
+DEBUG: Current (esp-builtin) On-board (esp-builtin) External (cmsis-dap, esp-bridge, esp-prog, iot-bus-jtag, jlink, minimodule, olimex-arm-usb-ocd, olimex-arm-usb-ocd-h, olimex-arm-usb-tiny-h, olimex-jtag-tiny, tumpa)
+PACKAGES: 
+ - framework-arduinoespressif32 @ 3.20017.241212+sha.dcc1105b 
+ - tool-esptoolpy @ 1.40501.0 (4.5.1) 
+ - toolchain-riscv32-esp @ 8.4.0+2021r2-patch5 
+ - toolchain-xtensa-esp32s3 @ 8.4.0+2021r2-patch5
+LDF: Library Dependency Finder -> https://bit.ly/configure-pio-ldf
+LDF Modes: Finder ~ chain, Compatibility ~ soft
+Found 33 compatible libraries
+Scanning dependencies...
+Dependency Graph
+|-- SPI @ 2.0.0
+|-- Wire @ 2.0.0
+Building in release mode
+Compiling .pio/build/aqroot-demo/src/demo/main.cpp.o
+Building .pio/build/aqroot-demo/bootloader.bin
+Generating partitions .pio/build/aqroot-demo/partitions.bin
+esptool.py v4.5.1
+Creating esp32s3 image...
+Merged 1 ELF section
+Successfully created esp32s3 image.
+Compiling .pio/build/aqroot-demo/libaeb/SPI/SPI.cpp.o
+Compiling .pio/build/aqroot-demo/libe31/Wire/Wire.cpp.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/Esp.cpp.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/FirmwareMSC.cpp.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/FunctionalInterrupt.cpp.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/HWCDC.cpp.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/HardwareSerial.cpp.o
+Archiving .pio/build/aqroot-demo/libaeb/libSPI.a
+Indexing .pio/build/aqroot-demo/libaeb/libSPI.a
+Compiling .pio/build/aqroot-demo/FrameworkArduino/IPAddress.cpp.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/IPv6Address.cpp.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/MD5Builder.cpp.o
+Archiving .pio/build/aqroot-demo/libe31/libWire.a
+Indexing .pio/build/aqroot-demo/libe31/libWire.a
+Compiling .pio/build/aqroot-demo/FrameworkArduino/Print.cpp.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/Stream.cpp.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/StreamString.cpp.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/Tone.cpp.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/USB.cpp.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/USBCDC.cpp.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/USBMSC.cpp.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/WMath.cpp.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/WString.cpp.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/base64.cpp.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/cbuf.cpp.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/esp32-hal-adc.c.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/esp32-hal-bt.c.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/esp32-hal-cpu.c.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/esp32-hal-dac.c.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/esp32-hal-gpio.c.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/esp32-hal-i2c-slave.c.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/esp32-hal-i2c.c.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/esp32-hal-ledc.c.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/esp32-hal-matrix.c.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/esp32-hal-misc.c.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/esp32-hal-psram.c.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/esp32-hal-rgb-led.c.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/esp32-hal-rmt.c.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/esp32-hal-sigmadelta.c.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/esp32-hal-spi.c.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/esp32-hal-time.c.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/esp32-hal-timer.c.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/esp32-hal-tinyusb.c.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/esp32-hal-touch.c.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/esp32-hal-uart.c.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/firmware_msc_fat.c.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/libb64/cdecode.c.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/libb64/cencode.c.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/main.cpp.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/stdlib_noniso.c.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/wiring_pulse.c.o
+Compiling .pio/build/aqroot-demo/FrameworkArduino/wiring_shift.c.o
+Archiving .pio/build/aqroot-demo/libFrameworkArduino.a
+Indexing .pio/build/aqroot-demo/libFrameworkArduino.a
+Linking .pio/build/aqroot-demo/firmware.elf
+Retrieving maximum program size .pio/build/aqroot-demo/firmware.elf
+Checking size .pio/build/aqroot-demo/firmware.elf
+Advanced Memory Usage is available via "PlatformIO Home > Project Inspect"
+RAM:   [=         ]   5.9% (used 19412 bytes from 327680 bytes)
+Flash: [          ]   4.9% (used 323853 bytes from 6553600 bytes)
+Building .pio/build/aqroot-demo/firmware.bin with action:
+  "$PYTHONEXE" "$OBJCOPY" --chip esp32s3 elf2image --flash_mode ${__get_board_flash_mode(__env__)} --flash_freq ${__get_board_f_image(__env__)} --flash_size 16MB --elf-sha256-offset 0xb0 -o $TARGET $SOURCES
+Building .pio/build/aqroot-demo/firmware.bin
+esptool.py v4.5.1
+Creating esp32s3 image...
+Merged 2 ELF sections
+Successfully created esp32s3 image.
+========================= [SUCCESS] Took 4.32 seconds =========================
+
+Environment         Status    Duration
+------------------  --------  ------------
+esp32-s3-aqroot     SUCCESS   00:00:25.668
+wokwi               SUCCESS   00:00:25.301
+esp32-s3-aqroot-dm  SUCCESS   00:00:25.635
+aqroot-demo         SUCCESS   00:00:04.319
+========================= 4 succeeded in 00:01:20.923 =========================

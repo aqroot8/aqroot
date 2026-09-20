@@ -46,7 +46,7 @@
 > ```
 >
 > Behaviour: one rail from **3.50 V**; both published budgets at once need
-> **3.80 V**; an unreadable gauge is **fail-closed**; below the dual floor the
+> **3.85 V**; an unreadable gauge is **fail-closed**; below the dual floor the
 > **5 V rail sheds first** so the 3.3 V rail keeps its full 400 mA; below 3.50 V
 > all accessory power sheds.  The serial console's `3` and `5` keys are refused
 > with the floor they missed printed beside the reading.

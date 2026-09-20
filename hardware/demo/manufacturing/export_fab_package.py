@@ -70,10 +70,12 @@ OUT = ROOT / "hardware/demo/fab"
 ASSEMBLY_SHEET = HERE / "aqroot_assembly.kicad_wks"
 BATTERY_HARNESS = ROOT / "docs/full-beta-v2/assembly/BATTERY_HARNESS.json"
 BATTERY_HARNESS_PACKAGE = "aqroot-Demo-BATTERY-HARNESS.json"
+ACC_3V3_REINFORCEMENT = ROOT / "docs/full-beta-v2/assembly/ACC_3V3_REINFORCEMENT.json"
+ACC_3V3_REINFORCEMENT_PACKAGE = "aqroot-Demo-ACC-3V3-REINFORCEMENT.json"
 # The assembly drawing is a RELEASE ARTIFACT, not a generic KiCad plot.  The
 # revision is intentionally explicit so a regenerated PDF cannot silently look
 # current while carrying an older review authority.
-ASSEMBLY_RELEASE = "D-782"
+ASSEMBLY_RELEASE = "D-787"
 
 # The board's own enabled copper layers, in stackup order, plus every
 # non-copper layer a fabricator and an assembler actually need.  The contract
@@ -560,9 +562,30 @@ def battery_harness_notes():
         % (r["rated_current_A"], r["wire_AWG"]),
         "- Polarity: cavity 1 = **%s**; cavity 2 = **%s**." % (pol["cavity_1"], pol["cavity_2"]),
         "- J4 is drilled **0.75 mm nominal**. Supplier/assembler must guarantee a **>=0.70 mm finished plated-hole diameter** for both J4 barrels; verify one exact 217501 AWG26 tinned lead passes freely before soldering all five boards -- no force and no strand shaving.",
-        "- Solder wires through J4 from B.Cu; front conductive profile **<=0.50 mm**, then **<=0.10 mm polyimide** before display fit. Follow `THT_LEAD_TRIM.md` J4-T1..T4.",
+        "- Insert the tinned conductors from the rear (`B.Cu`), apply solder and inspect barrel fill from the front (`F.Cu`); keep the front conductive profile **<=0.50 mm**, then **<=0.10 mm polyimide** before display fit. Follow `THT_LEAD_TRIM.md` J4-T1..T4.",
         "- Rear strain relief: **%s**. After joint/profile inspection and cleaning, apply the frozen adhesive fillet to the insulated pigtail, preserve the >=35 mm housing free-wire/service-loop rule, and never unplug by pulling wires." % relief["material"],
         "- First article: verify finished-hole/conductor fit, cured strain relief, DMM polarity, terminal retention/pull acceptance, housing-only disconnect, enclosure route, and worst-case load temperature rise per the packaged harness record.",
+        "",
+    ]
+
+
+def acc_3v3_reinforcement_notes():
+    """D-787 manual first-five ACC_3V3 delivery reinforcement."""
+    h = json.loads(ACC_3V3_REINFORCEMENT.read_text(encoding="utf-8"))
+    wire = h["wire"]; acc = h["electrical_acceptance"]
+    dest = ", ".join(x["reference"] for x in h["destinations"])
+    return [
+        "## ACC_3V3 Community-Port reinforcement -- MANUAL FIRST-FIVE OPERATION", "",
+        "The authoritative work instruction is `%s` in this package." % ACC_3V3_REINFORCEMENT_PACKAGE,
+        "",
+        "- Source: **TP12.1**, downstream of U20; this does **not** bypass the TPS22950-Q1 current limiter or OFF disconnect.",
+        "- Destinations: **%s**. Each duplicate 3.3 V contact must independently carry the full published 400 mA rail budget." % dest,
+        "- Wire: **%s %s, AWG%d, %s, nominal OD %.2f mm**." %
+        (wire["manufacturer"], wire["mpn"], wire["gauge_awg"], wire["insulation"], wire["nominal_od_mm"]),
+        "- Electrical acceptance: each finished TP12-to-J5 path **<=%d mOhm at room temperature**; Kelvin/4-wire preferred." %
+        acc["each_TP12_to_J5_finished_path_max_milliohm_at_room_temperature"],
+        "- Route/strain-relieve exactly as the packaged traveler requires; keep clear of battery, NFC/RF, display/FPC, button mechanics and enclosure load paths.",
+        "- Inspect continuity, adjacent-pin shorts, solder fillets, insulation, strain relief, connector insertion and enclosure closure before power.",
         "",
     ]
 
@@ -617,6 +640,7 @@ def export_fab_notes(out):
     nlines, nrows = nfc_tuning_access_notes(board)
     lines += nlines
     lines += battery_harness_notes()
+    lines += acc_3v3_reinforcement_notes()
     lines += stackup_process_notes(board)
     lines += placement_convention_notes(out, board)
     (out / "aqroot-Demo-FAB-NOTES.md").write_text("\n".join(lines),
@@ -1278,6 +1302,10 @@ def main():
     if not BATTERY_HARNESS.is_file():
         raise SystemExit("missing frozen D-781 battery harness: %s" % BATTERY_HARNESS)
     shutil.copy2(BATTERY_HARNESS, out / BATTERY_HARNESS_PACKAGE)
+    if not ACC_3V3_REINFORCEMENT.is_file():
+        raise SystemExit("missing D-787 ACC_3V3 reinforcement traveler: %s" %
+                         ACC_3V3_REINFORCEMENT)
+    shutil.copy2(ACC_3V3_REINFORCEMENT, out / ACC_3V3_REINFORCEMENT_PACKAGE)
     notes, via_in_pad, sub_floor_vias, mask_dams, nfc_tune = export_fab_notes(out)
 
     fitted, dnp = rl.schematic_population()

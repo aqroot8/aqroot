@@ -72,7 +72,106 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
-> # **D-785 ROUND-5 VERIFICATION HARDENING — EXTERNAL_REVIEW_HOLD**
+> # **D-787 ROUND-6 ELECTRICAL/RELEASE CORRECTION — CURRENT EXTERNAL-REVIEW TARGET**
+>
+> **THIS IS A REVIEW TARGET, NOT A FABRICATION AUTHORIZATION. DO NOT ORDER.**
+>
+> Round-6 independent review found one real pre-order electrical-contract defect
+> in D-785: the old TPS63020 divider/current-path proof treated `+3V3` as an ideal
+> 3.3 V source and could not guarantee the Community Port's published 3.135 V
+> minimum at the full 400 mA rail budget. D-787 closes that without reducing the
+> 400 mA / 300 mA published budgets and without moving protected copper.
+>
+> **Current D-787 values supersede the earlier current-facing D-771/D-773/D-775
+> numbers below.** `R39` = **1.000 MOhm +/-0.1%, +/-25 ppm/degC** (Viking Tech
+> `ARG03BTC1004`, LCSC `C335092`), `R40` = **178 kOhm +/-0.1%, +/-25 ppm/degC**
+> (Viking Tech `ARG03BTC1783`, LCSC `C2441185`), and `R101` = **2.43 kOhm +/-1%**
+> (UNI-ROYAL `0603WAF2431T5E`, LCSC `C22906`).
+>
+> **176 kOhm was the first D-787 candidate and is refused on AVAILABILITY.** Every
+> 176 kOhm 0603 part at 0.1% or better in the JLCPCB catalogue reads **stock 0**,
+> including the KOA `RN73H1JTTD1763B10` that draft named, so it fails this
+> repository's own `rule_open_sourcing` first-five liquidity floor. `F7` now
+> carries that as a CLAUSE: every locked part must have an archived exact-MPN live
+> record with stock at or above five boards x 10, and the two controls that put
+> the zero-stock part and a part with no record at all back are both refused.
+>
+> The two duplicated `ACC_3V3_SW` Community-Port contacts receive independent
+> manual first-five reinforcement leads from **TP12.1** (downstream of U20) to
+> **J5.3** and **J5.22**, each accepted at **<=30 mOhm** finished resistance. U20
+> remains in series, so its current limiting and OFF isolation are not bypassed,
+> and `F6` proves off the LIVE NETLIST that all three contacts are on
+> `/ACC_3V3_SW` rather than trusting the traveler's own words.
+>
+> `F6` derives the TPS63020 rail from the fitted divider, its value tolerance, the
+> SELECTED PART's TCR keyed to the purchased MPN, TI's 495/500/505 mV feedback
+> band, line/load regulation and the +5% power-save high side instead of using a
+> typed `3.3 V`. The target proves: raw PWM **3.261337 / 3.308989 / 3.357013 V**,
+> heavy-load minimum **3.228806 V**, power-save high **3.542487 V**, and
+> Community-Port delivery **3.146366 V minimum at 400 mA** against the **3.135 V**
+> contract. The internal consumer ceiling remains **3.600 V**. The window is narrow
+> in both directions: 180 kOhm falls below the connector minimum and 174 kOhm
+> exceeds the internal-consumer maximum.
+>
+> `R101 = 2.43 kOhm` guarantees **0.3065 A** on ACC_5V (+2.16% over the published
+> 300 mA) and leaves the worst user-reachable 5 V limiter state at **2.5244 A**,
+> **1.49%** below the 2.5625 A BQ25185 IBAT_OCP minimum — still this board's
+> thinnest margin. It is the E96 value nearest the centre of the corrected
+> **2.367 .. 2.479 kOhm** legal window.
+>
+> The corrected full-concurrency model re-derives the dual loaded-VCELL
+> requirement to **3.8094 V**, gridded upward to a firmware policy floor of
+> **3.85 V**; the single-rail requirement is **3.1671 V**, so the retained
+> **3.50 V** single-rail policy stays conservative. At 3.85 V the live published
+> dual-rail case is **2.2487 A** with **12.25%** margin to the 2.5625 A OCP
+> minimum; the path-bound battery-harness case is **2.2701 A**, still inside the
+> Molex AWG26 **2.6 A** rating. Older `3.80 V`, `R101 = 2.37 kOhm`, `176 kOhm`,
+> `3.18 V` and `3.8299 V` statements below are historical D-773/D-775/D-785
+> context or superseded D-787 drafts unless explicitly marked current.
+>
+> **Round-6 verifier findings are closed on the same target.** Gauge settle and
+> backlight-prime sequencing share a compiled host-test seam
+> (`Firmware/src/hw/aqroot_demo_timing_policy.h`,
+> `Firmware/test/test_timing_policy.cpp`) instead of source-token checks, and the
+> six exact shortened/reordered/dead-code/early-PWM evasions are caught. **A new
+> `H8` clause proves the SHIPPED firmware actually calls that seam** and keeps no
+> second untested copy beside it, with four controls; `F5`'s three backlight-prime
+> controls, which an earlier D-787 draft had reduced to hardcoded `True`, are
+> non-vacuous again and a fourth was added. `F8` binds RF/non-DC evidence to full
+> canonical hierarchical net identities and states the BOUNDS of its package-alias
+> rule rather than trusting it. J4 instructions say rear/`B.Cu` conductor
+> insertion with solder application and barrel inspection from `F.Cu`, and the
+> shutdown diagnostic reports pending/unknown until physical safe state is
+> confirmed.
+>
+> **Rail ampacity is rerun at 2.35 A for BAT/SYS, 1.912 A for main `+3V3` and
+> 0.608 A for ACC_5V** rather than the stale 1.50/1.00/1.849/0.624 A values, and
+> `F6` now REQUIRES every one of those design currents to cover the envelope it is
+> derived from, so the stale-copy class cannot recur silently. The `U11.2`
+> package-land neck remains the board's one named ampacity exception and is now
+> justified by a number: IPC-2221B's isolated-coupon figure is **137.6 K** and is
+> explicitly NOT a predicted board temperature, while the conduction-bounded fin
+> model over the same 5.525 mm run gives **14.3 K over the copper it terminates
+> on** against a stated **40 K** acceptance limit. First-article thermal
+> measurement remains mandatory and separate.
+>
+> **Verification on this target:** F1-F9 PASS; H1-H8 PASS including the executable
+> timing controls; all **19/19** standing contracts ran and passed, with every
+> difference from the D-785 baseline attributable to the inputs that legitimately
+> moved (`contract_regression` now treats `board_sha256` as an input key at every
+> depth, so a substantive change can no longer hide behind it); fab-package
+> contract PASS; BOM sourcing **124 assembly lines / 0 unsourced**; rail ampacity
+> PASS with named exceptions; routing ledger **174 retained / 173 connected / one
+> owner-approved `U11.3` `BQ25185_STAT2` open / zero unapproved**; KiCad DRC
+> **199 warnings, all `lib_footprint_issues`**, 17 declared unconnected items and
+> 246 schematic-parity issues, byte-for-byte the same item set as D-785; all four
+> PlatformIO environments build, `aqroot-demo` at 19,412 B RAM / 323,853 B flash.
+>
+> PCB SHA-256 `8a22e8d914a78e6903f6368006d070e492f6cf6ddcf4c62a96133c9a080ef411`;
+> fab MANIFEST SHA-256
+> `b459e73c4a377c485dec995d15c83b0ddee0eee65e6e98f6992b1f6b0ebda5b3`.
+>
+> # **D-785 ROUND-5 VERIFICATION HARDENING — SUPERSEDED AS CURRENT TARGET BY D-787 CORRECTION WORK**
 >
 > Independent CTO review found that D-784's H7 source gate pinned the correct ADI PDF
 > but did not prove all safety-critical semantics or bind the released 300 ms gauge wait

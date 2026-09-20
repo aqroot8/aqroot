@@ -106,6 +106,7 @@ HOST_TESTS = [
     ROOT / "Firmware/test/test_spi_bus_b.cpp",
     ROOT / "Firmware/test/test_accessory_power_policy.cpp",
     ROOT / "Firmware/test/test_fuel_gauge_safety.cpp",
+    ROOT / "Firmware/test/test_timing_policy.cpp",
 ]
 
 # Each control is (name, file under src/hw, exact text, replacement).  The
@@ -122,7 +123,7 @@ HOST_TESTS = [
 POWER_POLICY_CONTROLS = [
     ("dual-rail floor collapses onto the single-rail floor",
      "aqroot_accessory_power_policy.h",
-     "constexpr float kAccessoryDualRailFloorV = 3.80f;",
+     "constexpr float kAccessoryDualRailFloorV = 3.85f;",
      "constexpr float kAccessoryDualRailFloorV = 3.50f;"),
     ("unreadable VCELL fails open instead of shedding active rails",
      "aqroot_accessory_power_policy.h",
@@ -182,6 +183,44 @@ FUEL_GAUGE_CONTROLS = [
     }"""),
 ]
 
+
+# D-787 / Round-6 R6-E01/R6-E02. These mutate the EXECUTABLE policy seam
+# and are caught by test_timing_policy.cpp. They are deliberately the exact
+# classes Astra/Fable used to evade D-785's source-text gates.
+TIMING_CONTROLS = [
+    ("gauge settle is shortened to 5 ms",
+     "aqroot_demo_timing_policy.h",
+     "constexpr uint32_t kFuelGaugeActiveSettleMs = 300;",
+     "constexpr uint32_t kFuelGaugeActiveSettleMs = 5;"),
+    ("gauge settle is moved before qualification",
+     "aqroot_demo_timing_policy.h",
+     """  if (!gauge.configureActiveMode(bus)) return false;
+  wait_ms(kFuelGaugeActiveSettleMs);
+  return true;""",
+     """  wait_ms(kFuelGaugeActiveSettleMs);
+  if (!gauge.configureActiveMode(bus)) return false;
+  return true;"""),
+    ("gauge settle is hidden in dead code",
+     "aqroot_demo_timing_policy.h",
+     "  wait_ms(kFuelGaugeActiveSettleMs);",
+     "  if (false) wait_ms(kFuelGaugeActiveSettleMs);"),
+    ("backlight full-duty prime is dead code",
+     "aqroot_demo_timing_policy.h",
+     "  write_duty(255);",
+     "  if (false) write_duty(255);"),
+    ("backlight emits dim PWM before the prime",
+     "aqroot_demo_timing_policy.h",
+     """  write_duty(255);
+  wait_us(kBacklightStartupPrimeUs);""",
+     """  write_duty(3);
+  wait_ms(50);
+  write_duty(255);
+  wait_us(kBacklightStartupPrimeUs);"""),
+    ("backlight prime is shortened below 2 ms",
+     "aqroot_demo_timing_policy.h",
+     "constexpr uint32_t kBacklightStartupPrimeUs = 3000;",
+     "constexpr uint32_t kBacklightStartupPrimeUs = 1500;"),
+]
 
 BUS_CONTROLS = [
     ("the bus accepts a second concurrent chip select",
@@ -570,7 +609,7 @@ def main():
     for test, controls in zip(
             HOST_TESTS,
             (ORDER_CONTROLS, BUS_CONTROLS, POWER_POLICY_CONTROLS,
-             FUEL_GAUGE_CONTROLS)):
+             FUEL_GAUGE_CONTROLS, TIMING_CONTROLS)):
         compiled, code, output = run_host_test(test)
         claims = [line for line in output.splitlines() if line.startswith("[")]
         entry = {
@@ -597,6 +636,85 @@ def main():
         h6["tests"].append(entry)
     report["H6_host_tests_prove_the_orderings"] = h6
 
+    # ---- H8: THE RELEASED FIRMWARE MUST ACTUALLY RUN THE TESTED SEAM -----
+    # D-787 / R6-E01.  H6 proves that `aqroot_demo_timing_policy.h` orders the
+    # gauge settle and the backlight prime correctly and that six evasions are
+    # caught.  It proves NOTHING about whether the shipped firmware calls it.
+    # A template nobody invokes is the same defect one level up from the
+    # source-text gates Round-6 evaded, so the call sites are a clause: the
+    # production entry points must route through the seam, and must not carry a
+    # second, untested copy of the same ordering beside it.  Comments are
+    # stripped first -- a commented-out call is not a call.
+    def _seam_problems(main_text, periph_text):
+        problems = []
+        main_code = strip_comments(main_text)
+        periph_code = strip_comments(periph_text)
+        if "qualifyFuelGaugeActiveMode(" not in main_code:
+            problems.append("demo/main.cpp does not call "
+                            "qualifyFuelGaugeActiveMode()")
+        if "runBacklightRampPolicy(" not in periph_code:
+            problems.append("aqroot_demo_peripherals.h does not call "
+                            "runBacklightRampPolicy()")
+        # A local re-implementation beside the seam is an untested second path.
+        if re.search(r"delay\s*\(\s*kFuelGaugeActiveSettleMs\s*\)", main_code):
+            problems.append("demo/main.cpp waits the settle itself instead of "
+                            "through the tested seam")
+        if re.search(r"ledcWrite\s*\([^)]*,\s*255\s*\)", periph_code):
+            problems.append("aqroot_demo_peripherals.h drives the full-duty "
+                            "prime itself instead of through the tested seam")
+        # A LITERAL microsecond hold is a re-implemented prime; the seam's own
+        # `[](uint32_t us) { delayMicroseconds(us); }` injector is not, and must
+        # not be mistaken for one.
+        if re.search(r"delayMicroseconds\s*\(\s*\d", periph_code):
+            problems.append("aqroot_demo_peripherals.h holds the prime itself "
+                            "instead of through the tested seam")
+        return problems
+
+    main_src = DEMO_MAIN.read_text(encoding="utf-8", errors="replace") \
+        if DEMO_MAIN.exists() else ""
+    periph_src = (HW_DIR / "aqroot_demo_peripherals.h").read_text(
+        encoding="utf-8", errors="replace") \
+        if (HW_DIR / "aqroot_demo_peripherals.h").exists() else ""
+    seam_problems = _seam_problems(main_src, periph_src)
+    h8_controls = []
+    for name, m_text, p_text in (
+            ("the gauge call site drops back to a local delay",
+             main_src.replace(
+                 "return qualifyFuelGaugeActiveMode(",
+                 "if (!g_fuel_gauge.configureActiveMode(g_bus)) return false;\n"
+                 "  delay(kFuelGaugeActiveSettleMs);\n  return true;\n  "
+                 "return qualifyFuelGaugeActiveMode(", 1), periph_src),
+            ("the gauge call site is commented out",
+             main_src.replace("return qualifyFuelGaugeActiveMode(",
+                              "return false; // qualifyFuelGaugeActiveMode(", 1),
+             periph_src),
+            ("the backlight call site re-implements the prime",
+             main_src,
+             periph_src.replace(
+                 "  runBacklightRampPolicy(",
+                 "  ledcWrite(channel, 255);\n  delayMicroseconds(3000);\n"
+                 "  runBacklightRampPolicy(", 1)),
+            ("the backlight call site is commented out",
+             main_src,
+             periph_src.replace("  runBacklightRampPolicy(",
+                                "  // runBacklightRampPolicy(", 1))):
+        p_list = _seam_problems(m_text, p_text)
+        h8_controls.append(dict(control=name, refused=bool(p_list),
+                                first_reason=p_list[0] if p_list else None))
+    report["H8_released_firmware_runs_the_tested_timing_seam"] = {
+        "call_sites": {
+            "gauge": DEMO_MAIN.relative_to(ROOT).as_posix(),
+            "backlight": (HW_DIR / "aqroot_demo_peripherals.h")
+                         .relative_to(ROOT).as_posix(),
+            "seam": (HW_DIR / "aqroot_demo_timing_policy.h")
+                    .relative_to(ROOT).as_posix(),
+        },
+        "problems": seam_problems,
+        "controls": h8_controls,
+        "verdict": ("PASS" if not seam_problems
+                    and all(c["refused"] for c in h8_controls) else "FAIL"),
+    }
+
     # ---- H7: MAX17048 primary-source semantics and timing are pinned ----
     # D-785: a hash alone proves document identity, not that firmware's safety
     # interpretation or its active-conversion wait still matches that source.
@@ -610,9 +728,10 @@ def main():
         source = json.loads(MAX17048_SOURCE_RECORD.read_text(encoding="utf-8"))
     except Exception:
         source = None
+    timing_policy_path = HW_DIR / "aqroot_demo_timing_policy.h"
     demo_main_text = (
-        DEMO_MAIN.read_text(encoding="utf-8", errors="replace")
-        if DEMO_MAIN.exists() else ""
+        timing_policy_path.read_text(encoding="utf-8", errors="replace")
+        if timing_policy_path.exists() else ""
     )
 
     def _max17048_source_problems(source_obj, pdf_sha, main_text):
@@ -656,13 +775,14 @@ def main():
         except (TypeError, ValueError):
             problems.append("active-conversion timing bound cannot be derived")
         if settle_ms is None:
-            problems.append("kFuelGaugeActiveSettleMs is missing from demo/main.cpp")
+            problems.append("kFuelGaugeActiveSettleMs is missing from aqroot_demo_timing_policy.h")
         elif timing_bound_ms is not None and settle_ms < timing_bound_ms:
             problems.append(
                 "active settle %d ms is below derived %.3f ms timing bound" %
                 (settle_ms, timing_bound_ms))
-        if "if (ready) delay(kFuelGaugeActiveSettleMs);" not in main_text:
-            problems.append("qualified gauge path does not use kFuelGaugeActiveSettleMs")
+        # H6/test_timing_policy.cpp proves that this constant actually executes
+        # AFTER successful gauge qualification. H7's job is only to bind the
+        # numeric minimum to the archived primary-source timing.
         return problems, settle_ms, timing_bound_ms
 
     source_problems, settle_ms, timing_bound_ms = _max17048_source_problems(

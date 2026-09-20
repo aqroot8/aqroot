@@ -1,6 +1,79 @@
 # AQROOT Demo — FABRICATION HANDOFF
 
 
+> # **STATUS: D-787 ROUND-6 ELECTRICAL/RELEASE CORRECTION — EXTERNAL-REVIEW TARGET, BOARD AUTHORITY `8a22e8d9` (2026-09-20).**
+>
+> **D-787 supersedes D-785 as the current engineering target. THIS IS A REVIEW
+> TARGET, NOT A FABRICATION AUTHORIZATION — DO NOT ORDER.**
+>
+> Round-6 external review found that the released 3.3 V accessory proof assumed an
+> ideal 3.3 V source and could fall below the Community Port's 3.135 V minimum at
+> the full 400 mA budget. The correction keeps the published 400 mA / 300 mA rail
+> limits, moves no protected copper, and closes the voltage contract without
+> bypassing U20 protection.
+>
+> **Fitted parts.** `R39 = 1.000 MOhm +/-0.1%, +/-25 ppm/degC` (Viking Tech
+> `ARG03BTC1004`, LCSC `C335092`); `R40 = 178 kOhm +/-0.1%, +/-25 ppm/degC`
+> (Viking Tech `ARG03BTC1783`, LCSC `C2441185`); `R101 = 2.43 kOhm +/-1%`
+> (UNI-ROYAL `0603WAF2431T5E`, LCSC `C22906`). **176 kOhm was the first candidate
+> and is refused on AVAILABILITY** — every 176 kOhm 0603 part at 0.1% or better in
+> the JLCPCB catalogue reads stock 0 — and `F7` now requires every locked part to
+> carry an archived exact-MPN live record clearing the first-five liquidity floor.
+>
+> Two independent manual 28-AWG reinforcement leads run from downstream-of-U20
+> `TP12.1` to `J5.3` and `J5.22`, each accepted at **<=30 mOhm** finished
+> resistance; `F6` proves off the live netlist that all three contacts are on
+> `/ACC_3V3_SW`.
+>
+> **Derived envelope.** Raw PWM **3.261337 / 3.308989 / 3.357013 V**; heavy-load
+> minimum **3.228806 V**; power-save high **3.542487 V** against the 3.600 V
+> tightest internal-consumer ceiling; Community-Port delivery **3.146366 V minimum
+> at 400 mA** against the **3.135 V** contract. The simultaneous loaded-VCELL
+> requirement re-derives to **3.8094 V**, so firmware uses **3.50 V single /
+> 3.85 V dual**. At 3.85 V the live dual published-load case is **2.2487 A**; the
+> path-bound battery-harness case is **2.2701 A**, inside the AWG26 Micro-Lock
+> **2.6 A** rating. `R101 = 2.43 kOhm` guarantees **0.3065 A** on ACC_5V and leaves
+> the worst user-reachable limiter state **1.49%** below BQ25185 IBAT_OCP minimum.
+>
+> The manual reinforcement traveler is packaged as
+> `aqroot-Demo-ACC-3V3-REINFORCEMENT.json`; it requires the TP12/J5 identities, the
+> exact wire, the two-conductor TP12 joint workmanship, routing/strain-relief
+> rules, continuity/short inspection and each finished path <=30 mOhm. U20 remains
+> in series; no limiter or OFF isolation is bypassed. J4 instructions are
+> normalized everywhere: conductor insertion from rear/`B.Cu`, solder application
+> and barrel-fill inspection from `F.Cu`, front conductive profile <=0.50 mm, then
+> <=0.10 mm polyimide.
+>
+> **Release-verifier defects are corrected too.** Gauge-settle and backlight
+> startup sequencing share a compiled behavioral host-test seam rather than
+> source-text tokens; the exact shortened/reordered/dead-code/early-PWM mutations
+> are caught; and a new `H8` clause proves the shipped firmware actually calls that
+> seam and keeps no untested second copy. `F8` uses complete canonical hierarchical
+> net identities and states the bounds of its package-alias rule. Ampacity is rerun
+> at **2.35 A** on BAT/SYS, **1.912 A** on main +3V3 and **0.608 A** on ACC_5V, and
+> `F6` machine-checks that those design currents still cover the envelope. The
+> `U11.2` package-land neck is justified by a conduction-bounded **14.3 K** peak
+> over the copper it terminates on against a stated 40 K limit; the **137.6 K**
+> IPC isolated-coupon figure is reported as a screening number and is explicitly
+> not a predicted board temperature. First-article thermal measurement remains
+> mandatory.
+>
+> **Verification:** F1-F9 PASS; H1-H8 PASS; **19/19** standing contracts ran and
+> passed with every difference attributable to inputs that legitimately moved;
+> fab-package contract PASS; BOM sourcing 124 lines / 0 unsourced; rail ampacity
+> PASS; routing ledger 174 retained / 173 connected / one owner-approved
+> `U11.3 / BQ25185_STAT2` open / zero unapproved; KiCad DRC 199 warnings (all
+> `lib_footprint_issues`), 17 declared unconnected, 246 parity issues — the same
+> item set as D-785; all four PlatformIO environments build.
+>
+> PCB SHA-256 `8a22e8d914a78e6903f6368006d070e492f6cf6ddcf4c62a96133c9a080ef411`;
+> fab MANIFEST SHA-256
+> `b459e73c4a377c485dec995d15c83b0ddee0eee65e6e98f6992b1f6b0ebda5b3`.
+>
+> **This D-787 banner supersedes every status block below it. Older 3.80 V,
+> `R101 = 2.37 kOhm`, `R40 = 176 kOhm`, 3.18 V and 3.8299 V statements below are
+> historical or superseded D-787 drafts unless explicitly marked current.**
+>
 > # **STATUS: D-785 ROUND-5 VERIFICATION HARDENING — EXTERNAL_REVIEW_HOLD, BOARD AUTHORITY `cef458b9` (2026-09-19).**
 >
 > **D-785 supersedes D-784 without moving PCB copper or changing the fabrication package.**
@@ -73,9 +146,10 @@
 >   in the battery protection chain.
 >
 > **D-771 in three sentences.**  `R97` → **1.78 kΩ** and `R101` → **2.32 kΩ**
-> (moved again to **2.37 kΩ** by D-773 below), so each accessory rail
-> **GUARANTEES** the budget D-098 publishes for it — **0.428 A against 400 mA
-> and 0.315 A against 300 mA as fitted** — instead of the 0.277 A the old
+> (moved to **2.37 kΩ** by D-773 below and to **2.43 kΩ** by D-787, which is what
+> is FITTED), so each accessory rail
+> **GUARANTEES** the budget D-098 publishes for it — **0.4279 A against 400 mA
+> and, as fitted at D-787, 0.3065 A against 300 mA** — instead of the 0.277 A the old
 > setting guaranteed.  `R75` → **10 mΩ**, because ADI guarantees the `LTC4368`'s forward
 > threshold only as 40/50/60 mV and at 15 mΩ the **LATCHING** breaker's band
 > overlapped the charger's **RECOVERABLE** `IBAT_OCP` band — so on an unlucky
@@ -112,7 +186,9 @@
 > `R99`/`R100` the real band is **4.742 / 4.950 / 5.165 V**; costed at the
 > worst-case high, D-771's `R101` = 2.32 kΩ left **0.52 %** of pack margin, so
 > `R101` → **2.37 kΩ**, the E96 value nearest the centre of its own legal window
-> (2.298–2.478 kΩ).  `F6` also refuses a divider whose worst case reaches the
+> (2.298–2.478 kΩ).  *(D-787 SUPERSEDES BOTH NUMBERS: once `F6` stopped costing
+> the main 3.3 V rail at a typed 3.3 V the window moved to 2.367–2.479 kΩ and
+> `R101` is now **2.43 kΩ**.)*  `F6` also refuses a divider whose worst case reaches the
 > `TPS61023`'s own `VOVP` minimum; it clears by 6.1 %.  **The board's thinnest
 > margin is 1.6 %** and it is a compound-fault state whose consequence is a
 > recoverable hiccup; at a conforming accessory load it is 7.3 %.
@@ -129,7 +205,11 @@
 > node declarations on the rail D-773 had just derived were corrected.  `F8` is
 > the new clause; the fabrication package is **byte-untouched**.
 >
-> **D-775 closes the later CTO normal-concurrency hold.**  F6 had still priced
+> **D-775 closes the later CTO normal-concurrency hold.  ITS NUMBERS ARE
+> HISTORICAL — D-787 RE-DERIVED ALL OF THEM.**  The METHOD below still stands;
+> every figure in this paragraph was computed against a typed 3.3 V main rail,
+> and the current derived dual requirement is **3.8094 V** with an enforced
+> **3.85 V** firmware floor.  F6 had still priced
 > D-098's simultaneous normal 400 mA + 300 mA load as an ideal source, and
 > firmware used the same 3.50 V floor for one or two rails.  MAX17048 actually
 > measures `BAT_PROTECTED_P`, the same node as BQ25185 BAT, so D-775 starts at
@@ -292,6 +372,7 @@ D-775**, and the fabrication package remains the D-773 package bound to board
 | **D-773** | the 5 V setpoint was **4.95 V here and 4.99 V there, both from a `VREF` TI does not publish** | setpoint **derived** (4.742 / 4.950 / 5.165 V); `R101` → **2.37 kΩ**, the E96 value nearest the centre of its computed legal window |
 | **D-774** | the **2× capacitor derating rule had never once been run** against a fitted part | `F8`; five named, reasoned exceptions; two node declarations corrected |
 | **D-775** | D-098 normal 400/300 mA concurrency was still an ideal-source calculation and firmware had one 3.50 V floor | live-board/path-bound solver + **3.50 V single / 3.80 V dual** firmware policy; fail-closed/5V-first shedding host tests and F6 controls |
+| **D-787** | the accessory proof costed `+3V3` as an **ideal 3.3 V source**, so the published **3.135 V** Community-Port minimum was not guaranteed at the published 400 mA; and the first correction draft locked an `R40` whose live distributor record reads **stock 0** | `F6` derives the rail from `R39`/`R40` tolerance + selected-part TCR + TI's 495/500/505 mV band; `R39` → **1 MΩ 0.1 %/25 ppm**, `R40` → **178 kΩ 0.1 %/25 ppm** (the nearest STOCKED 0.1 % value), `R101` → **2.43 kΩ**, plus two measured ≤30 mΩ `TP12`→`J5` reinforcement leads; `F7` now requires a stocked locked part |
 | **D-776** | the as-built limits told firmware to infer charging state from **VBUS presence**, and no VBUS-present signal reaches firmware; two more unreadable signals were undeclared | the probed-but-unreadable list is **computed off the copper** (28 nets, 7 signals) and the generator refuses to emit on a gap in either direction; four new controls; board fix measured and deferred to Rev-B |
 
 ### Connectivity
@@ -823,13 +904,17 @@ existing lines. D-753 then RETIRED one: `R97` and `R101` both became 2.7 kΩ on 
 single new BASIC line (LCSC `C13167`), which also retired `R101`'s superseded
 `ERJ-PA3F1651V`, an EXTENDED part with 2 763 in stock.  **D-771 SPLIT THAT LINE
 AGAIN AND MOVED A THIRD**: `R97` → `0603WAF1781T5E` (LCSC `C22849`, 1.78 kΩ),
-`R101` → `0603WAF2371T5E` (`C25964`, 2.37 kΩ at D-773; `0603WAF2321T5E` /
+`R101` → `0603WAF2431T5E` (`C22906`, **2.43 kΩ, D-787 — the fitted part**;
+`0603WAF2371T5E` / `C25964` / 2.37 kΩ at D-773; `0603WAF2321T5E` /
 `C22905` / 2.32 kΩ at D-771) and `R75` →
 `CRA2512-FZ-R010ELF` (`C840621`, 10 mΩ).  All three are the SAME series, the
 SAME manufacturer and the SAME land pattern as the parts they replace, so no
 footprint, no copper and no assembly step changes — the two 0603 resistors are
-`expand` rather than `BASIC`, because 1.78 kΩ and 2.37 kΩ are E96 values and
-JLCPCB lists no BASIC part at either.
+`expand` rather than `BASIC`, because 1.78 kΩ and 2.43 kΩ are E96 values and
+JLCPCB lists no BASIC part at either.  **D-787 MOVED THE TPS63020 DIVIDER TOO**:
+`R39` → `ARG03BTC1004` (`C335092`, Viking Tech, 1 MΩ 0.1 % / 25 ppm) and `R40` →
+`ARG03BTC1783` (`C2441185`, Viking Tech, 178 kΩ 0.1 % / 25 ppm), both `expand`,
+both on the same 0603 land as the 1 % parts they replace.
 
 **THE VIA-IN-PAD COUNT MOVED 135 → 136 AND THE ONE THAT MOVED IT IS NAMED.**
 `Q11.3`'s tap put a 0.600/0.300 barrel at `(10.950, 112.800)`, half inside the
@@ -1107,14 +1192,19 @@ can only be confirmed by eye. `MK1` and `U5` share one `/I2S_BCLK` and one
    `TPS22950-Q1`, which is specified from 0.05 A; **budget and chain corrected by
    D-771**).
 
-   **`R97` = 1.78 kΩ (D-771) and `R101` = 2.37 kΩ (D-773)**, both 2.7 kΩ until
+   **`R97` = 1.78 kΩ (D-771) and `R101` = 2.43 kΩ (D-787; 2.37 kΩ at D-773)**,
+   both 2.7 kΩ until
    D-771 and 1.5 kΩ / 1.65 kΩ before that. D-098 locks the first five boards at
    **`ACC_3V3_SW` = 400 mA TOTAL** and **`ACC_5V_SW` = 300 mA TOTAL** — the two
    duplicate `J5` contacts on each rail SHARE that limit — and at 2.7 kΩ each
    limiter **GUARANTEED only 0.277 A**. The board published a budget its own
-   silicon could refuse to deliver. It now guarantees **0.428 A** and **0.315 A**
-   (7.0 % and 4.9 % over) and passes no more than **0.849 A** / **0.624 A** over
-   −40…+125 °C, over the programming resistor's own 1 % band as well.
+   silicon could refuse to deliver. It now guarantees **0.4279 A** and
+   **0.3065 A** (7.0 % and 2.16 % over) and passes no more than **0.849 A** /
+   **0.6078 A** over −40…+125 °C, over the programming resistor's own 1 % band as
+   well.  **D-787 ALSO ADDED THE OTHER HALF OF THE 3.3 V CONTRACT:** guaranteeing
+   a CURRENT is not guaranteeing a VOLTAGE, and the routed `U20`→`J5` copper alone
+   could not hold the published 3.135 V minimum at 400 mA.  See the D-787 banner
+   at the top of this file.
 
    **AND THE INTERNAL TERM THE ENVELOPE RUNS ON WAS A HAND-WRITTEN CONSTANT**
    (D-772).  It read 1.0 A; the repository's own last derivation (823 mA)

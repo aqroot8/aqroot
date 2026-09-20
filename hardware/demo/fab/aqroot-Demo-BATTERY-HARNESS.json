@@ -33,7 +33,7 @@
       "J4.1": "BAT_CONNECTOR_P / red",
       "J4.2": "GND / black"
     },
-    "assembly": "insert the factory pre-crimped female contacts into 5055700201 and retain the factory 75 mm pigtail/free-tip preparation for the first five; do NOT cut/re-strip/re-tin before the J4 fit check because that would void the drawing's free-tip diameter basis. Verify one exact factory tinned tip passes freely through an actual >=0.70 mm finished J4 barrel with no strand shaving or force, then solder from B.Cu and keep the front-side conductive profile <=0.50 mm. If shortening is ever required, the new stripped/tinned end becomes a new workmanship qualification and must re-pass diameter/free-fit/strand inspection before use."
+    "assembly": "insert the factory pre-crimped female contacts into 5055700201 and retain the factory 75 mm pigtail/free-tip preparation for the first five; do NOT cut/re-strip/re-tin before the J4 fit check because that would void the drawing's free-tip diameter basis. Verify one exact factory tinned tip passes freely through an actual >=0.70 mm finished J4 barrel with no strand shaving or force, then insert the tinned conductors from the rear (B.Cu), apply solder and inspect barrel fill from the front (F.Cu), trim only as required, and keep the front-side conductive profile <=0.50 mm. If shortening is ever required, the new stripped/tinned end becomes a new workmanship qualification and must re-pass diameter/free-fit/strand inspection before use."
   },
   "strain_relief": {
     "material": "DOWSIL 3145 RTV MIL-A-46146 Adhesive/Sealant, gray",

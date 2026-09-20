@@ -1,0 +1,58 @@
+{
+  "decision": "D-787 / R6-A01 correction candidate",
+  "scope": "first-five manual accessory-voltage reinforcement; no PCB copper deletion or reroute",
+  "source": {
+    "reference": "TP12.1",
+    "net": "/ACC_3V3_SW",
+    "note": "TP12 is downstream of U20 TPS22950-Q1, so the reinforcement does NOT bypass current limiting or the load-switch disconnect.",
+    "pad": "1.00 mm round SMD test pad on B.Cu at (60.000, 63.500); BOTH leads land on this ONE pad, so the joint is a stacked two-conductor solder joint, not two separate lands."
+  },
+  "destinations": [
+    {
+      "reference": "J5.3",
+      "net": "/ACC_3V3_SW",
+      "max_finished_lead_length_mm": 70
+    },
+    {
+      "reference": "J5.22",
+      "net": "/ACC_3V3_SW",
+      "max_finished_lead_length_mm": 25
+    }
+  ],
+  "wire": {
+    "manufacturer": "Alpha Wire",
+    "mpn": "2842/19 RD005",
+    "gauge_awg": 28,
+    "stranding": "19/40",
+    "conductor": "silver-plated copper",
+    "insulation": "PTFE",
+    "nominal_od_mm": 0.69,
+    "temperature_C": [
+      -60,
+      200
+    ],
+    "voltage_rating_Vrms": 250,
+    "nominal_dcr_ohm_per_1000ft_at_20C": 58,
+    "primary_source": "Alpha Wire 2842/19 product specification"
+  },
+  "electrical_acceptance": {
+    "each_TP12_to_J5_finished_path_max_milliohm_at_room_temperature": 30,
+    "measurement": "4-wire/Kelvin preferred; otherwise lead-compensated milliohm measurement with fixture resistance recorded before and after.",
+    "current_contract_A_total": 0.4,
+    "note": "Each duplicated J5 3.3-V contact must independently satisfy the resistance limit because either contact may carry the full published 400 mA total rail budget."
+  },
+  "assembly": {
+    "routing": "Route both insulated leads along the east-side Community-Port service corridor. Keep them out of BATTERY_SHADOW, NFC antenna/tuning area, RF coax path, display/FPC bend corridor, button mechanics, enclosure bosses/ribs, and connector mating volume.",
+    "strain_relief": "Secure the two insulated leads to the PCB/rear-shell harness path so J5 insertion/removal load and enclosure service cannot load TP12 or the solder fillets.",
+    "solder": "Solder to TP12 and the designated J5 through-hole lands only after machine assembly and inspection. Do not solder to U20's SOT-23-6 pad. TP12.1 IS A 1.00 mm PAD CARRYING BOTH LEADS: tin each conductor separately, lay the two tinned tips side by side within the pad outline -- they must not overhang onto adjacent copper or soldermask -- and reflow once so a single fillet wets both. Re-heating an existing joint to add the second lead is not acceptable. The finished TP12 joint must stay inside the pad outline and below 1.50 mm of profile above B.Cu so it clears the rear shell.",
+    "inspection": [
+      "continuity TP12.1 to J5.3 and TP12.1 to J5.22",
+      "no shorts to adjacent J5 contacts or nearby copper",
+      "TP12 joint inside the 1.00 mm pad outline, both conductors wetted, no overhang onto adjacent copper and <=1.50 mm profile above B.Cu",
+      "each finished path <=30 mOhm at room temperature",
+      "visual fillet/insulation/strain-relief inspection",
+      "full connector insertion and enclosure-close check with no pinching"
+    ]
+  },
+  "rationale": "The original routed ACC_3V3_SW path is approximately 224 mOhm from U20 output to the Community Port. The reinforcement makes the guaranteed-delivery path U20 -> existing U20-to-TP12 copper -> measured manual lead -> each J5 contact, while retaining U20 current limiting and OFF isolation. demo_feature_contract F6 reads this record, bounds the delivered minimum with it, and separately proves off the live netlist that TP12.1, J5.3 and J5.22 are all on /ACC_3V3_SW. audit_rail_ampacity independently qualifies the ROUTED copper alone at the worst-case limiter current, so neither conductor of the parallel pair is allowed to lean on the other."
+}

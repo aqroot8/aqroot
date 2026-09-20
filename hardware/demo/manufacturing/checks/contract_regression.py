@@ -287,7 +287,18 @@ BY_BASENAME = ("board", "schematic", "guard", "pre_board")
 # row says INCOMPARABLE rather than DIFFERS.  `all_identical` keeps its old,
 # strict meaning; `all_identical_where_comparable` is the reading a framework
 # decision needs.
-INPUT_KEYS = ("ref_commit",)
+#
+# D-787 ADDS `board_sha256`, AND THE STRIP IS NOW RECURSIVE.  The board digest
+# is an INPUT IDENTIFIER in exactly the sense `ref_commit` is: when a decision
+# legitimately changes one component value, every contract's report differs at
+# `board_sha256` and `first_diff` -- which returns the FIRST difference only --
+# stops there.  Every row then reads "DIFFERS: board_sha256", which is true and
+# says nothing about whether anything SUBSTANTIVE moved behind it.  That is the
+# question a promoting decision actually has to answer, so the digest joins the
+# input keys and `difference_excluding_inputs` becomes the real report.  It is
+# stripped at EVERY depth because `firmware_hw_map_contract` carries its copy
+# at `$.H2_board_digest.board_sha256` rather than at the top level.
+INPUT_KEYS = ("ref_commit", "board_sha256")
 
 
 def norm(doc, path=()):
@@ -434,23 +445,41 @@ def main():
             continue
         old = json.loads(ref.read_text())
         d = first_diff(norm(cur), norm(old))
+        def _find(doc, key):
+            """Every value of `key` at any depth, so a nested digest counts."""
+            out = []
+            if isinstance(doc, dict):
+                for k, v in doc.items():
+                    if k == key:
+                        out.append(v)
+                    out += _find(v, key)
+            elif isinstance(doc, list):
+                for v in doc:
+                    out += _find(v, key)
+            return out
+
         moved = [k for k in INPUT_KEYS
-                 if k in cur or k in old
-                 if cur.get(k) != old.get(k)]
+                 if _find(cur, k) or _find(old, k)
+                 if _find(cur, k) != _find(old, k)]
         # AND SAY WHAT ELSE MOVED.  An INCOMPARABLE row whose only report is
         # the input key would hide the substantive difference behind it, so
         # the same diff is taken again with the input keys removed from both.
         rest = None
         if moved:
-            strip = lambda doc: {k: v for k, v in doc.items()
-                                 if k not in INPUT_KEYS}
+            def strip(doc):
+                if isinstance(doc, dict):
+                    return {k: strip(v) for k, v in doc.items()
+                            if k not in INPUT_KEYS}
+                if isinstance(doc, list):
+                    return [strip(v) for v in doc]
+                return doc
             rest = first_diff(norm(strip(cur)), norm(strip(old)))
         row.update(baseline=ref.name, identical=(d is None), difference=d,
                    baseline_verdict=old.get(field),
                    comparable=not (moved and d is not None),
                    difference_excluding_inputs=rest,
-                   inputs_moved={k: [old.get(k), cur.get(k)] for k in moved}
-                                or None)
+                   inputs_moved={k: [_find(old, k), _find(cur, k)]
+                                 for k in moved} or None)
         rows.append(row)
         if d is None:
             verdict_text = "IDENTICAL to %s" % a.baseline
@@ -477,8 +506,14 @@ def main():
                contracts_run=len(rows),
                contracts_incomparable=sum(1 for r in rows
                                           if r.get("comparable") is False),
-               question=("does this framework change move ANY standing "
-                         "contract, on a board whose sha256 did not change"),
+               question=("does this change move ANY standing contract "
+                         "beyond the inputs it legitimately moved?  When the "
+                         "board digest or the PRE-board commit is the same, "
+                         "`all_identical` is the answer; when one of them "
+                         "moved, the row is INCOMPARABLE and "
+                         "`difference_excluding_inputs` is the answer, so a "
+                         "substantive change can never hide behind an input "
+                         "identifier"),
                method=("each contract re-run now and compared FIELD BY FIELD "
                        "with the artifact the baseline decision committed; "
                        "path-typed fields (board, schematic, guard, "
