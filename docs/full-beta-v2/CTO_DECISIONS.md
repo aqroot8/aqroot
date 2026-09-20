@@ -133,6 +133,41 @@ The model is conservative (no lateral spreading in the dielectric, no convection
 radiation from the outer face, no soldermask) and it is a MODEL: first-article thermal
 measurement remains mandatory and separate.
 
+### Review-target identity and post-commit verification
+
+A commit cannot name its own SHA.  The D-787 CONTENT COMMIT -- every board,
+package, firmware, gate and document change -- is
+`6b3dac81553bcd299b360b9f77d27fd3e86ef4cb` on `origin/aqroot-demo`; the tip
+commit above it adds only `evidence/d787-review-target.json` and the identity
+lines that name it, so `git diff 6b3dac8 HEAD` is exactly that and nothing else.
+
+    content commit  6b3dac81553bcd299b360b9f77d27fd3e86ef4cb
+    branch/remote   aqroot-demo / origin/aqroot-demo
+    PCB SHA-256     8a22e8d914a78e6903f6368006d070e492f6cf6ddcf4c62a96133c9a080ef411
+    MANIFEST SHA256 b459e73c4a377c485dec995d15c83b0ddee0eee65e6e98f6992b1f6b0ebda5b3
+
+**Verification, on the target.** F1-F9 PASS.  H1-H8 PASS, including the six
+executable timing mutations and H8's four call-site controls.  All **19/19**
+standing contracts ran and passed; every difference from the D-785 baseline is
+attributable to inputs that legitimately moved, and the self-regression against
+the emitted D-787 baseline is **all-identical**, so the suite is deterministic.
+Fab-package contract PASS and provenance-only PASS.  BOM sourcing **124 assembly
+lines / 0 unsourced / 0 refused**.  Rail ampacity `all_ok` with named,
+number-justified exceptions.  Protected copper **identical**, 15 nets /
+406 objects.  Routing ledger **174 retained / 173 connected / one owner-approved
+`U11.3` `BQ25185_STAT2` open / zero unapproved**.  KiCad DRC **199 warnings, all
+`lib_footprint_issues`**, 17 declared unconnected items and 246 schematic-parity
+issues -- the SAME ITEM SET as D-785, compared pairwise, not merely the same
+counts.  All four PlatformIO environments build; `aqroot-demo` is 19,412 B RAM /
+323,853 B flash.  `hardware/beta-v2` is byte-untouched.  The whole set was
+re-run AGAINST THE COMMITTED TREE and is recorded in
+`evidence/d787-review-target.json`.
+
+**NO ORDER IS AUTHORIZED.**  This is an external-review target.  Manufacturer
+CAM review and first-article acceptance -- including the U11.2 neck thermal
+measurement, the J4 finished-hole/pull/profile acceptance and the ACC_3V3
+reinforcement continuity/resistance acceptance -- remain outstanding.
+
 ### Retained closures
 
 D-783/D-784/D-785 closures are re-verified unchanged: PCAL output-shadow

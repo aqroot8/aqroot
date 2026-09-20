@@ -70,6 +70,21 @@
 > fab MANIFEST SHA-256
 > `b459e73c4a377c485dec995d15c83b0ddee0eee65e6e98f6992b1f6b0ebda5b3`.
 >
+> **REVIEW-TARGET IDENTITY.** A commit cannot name its own SHA, so the D-787
+> content commit -- every board, package, firmware, gate and document change --
+> is `6b3dac81553bcd299b360b9f77d27fd3e86ef4cb` on `origin/aqroot-demo`, and the
+> tip commit above it adds only `evidence/d787-review-target.json` and these
+> identity lines. `git diff 6b3dac8 HEAD` is exactly that and nothing else.
+> PCB SHA-256 `8a22e8d914a78e6903f6368006d070e492f6cf6ddcf4c62a96133c9a080ef411`;
+> fab MANIFEST SHA-256
+> `b459e73c4a377c485dec995d15c83b0ddee0eee65e6e98f6992b1f6b0ebda5b3`.
+> The same three identities, with the post-commit re-run of F1-F9, H1-H8, the
+> fab-package contract, protected copper, rail ampacity and KiCad DRC against
+> the COMMITTED tree, are in
+> `hardware/demo/manufacturing/evidence/d787-review-target.json`.
+> **No order is authorized: manufacturer CAM and first-article acceptance remain
+> outstanding.**
+>
 > **This D-787 banner supersedes every status block below it. Older 3.80 V,
 > `R101 = 2.37 kOhm`, `R40 = 176 kOhm`, 3.18 V and 3.8299 V statements below are
 > historical or superseded D-787 drafts unless explicitly marked current.**

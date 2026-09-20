@@ -1,0 +1,81 @@
+{
+  "branch": "aqroot-demo",
+  "content_commit": "6b3dac81553bcd299b360b9f77d27fd3e86ef4cb",
+  "decision": "D-787",
+  "fab_manifest_sha256": "b459e73c4a377c485dec995d15c83b0ddee0eee65e6e98f6992b1f6b0ebda5b3",
+  "order_authorization": "NONE. This is a review target. Manufacturer CAM and first-article acceptance remain outstanding.",
+  "pcb_sha256": "8a22e8d914a78e6903f6368006d070e492f6cf6ddcf4c62a96133c9a080ef411",
+  "post_commit_verification": {
+    "demo_feature_F1_F9": {
+      "F1_every_scope_part_fitted": true,
+      "F2_every_scope_net_whole": true,
+      "F3_approved_nc_exactly_as_scoped": true,
+      "F4_every_exposed_signal_contact_has_esd": true,
+      "F5_backlight_disconnect_control_is_independent": true,
+      "F6_accessory_envelope_is_bounded_by_hardware": true,
+      "F7_no_retired_part_name_survives_on_the_part_that_replaced_it": true,
+      "F8_the_derating_rule_is_applied_to_the_parts_this_board_fits": true,
+      "F9_manual_battery_harness_metadata_matches_the_frozen_build": true
+    },
+    "fab_package_contract_verdict": "PASS",
+    "firmware_hw_map_H1_H8": {
+      "H1_generated_tree_is_fresh": "PASS",
+      "H2_board_digest": "PASS",
+      "H3_policy_corroborated": "PASS",
+      "H4_owner_decisions_are_machine_checked": "PASS",
+      "H5_firmware_layer_uses_the_map": "PASS",
+      "H6_host_tests_prove_the_orderings": "PASS",
+      "H7_MAX17048_primary_source_is_pinned": "PASS",
+      "H8_released_firmware_runs_the_tested_timing_seam": "PASS"
+    },
+    "firmware_hw_map_verdict": "PASS",
+    "kicad_drc": {
+      "schematic_parity": {
+        "extra_footprint": 2,
+        "footprint_symbol_field_mismatch": 199,
+        "footprint_symbol_mismatch": 45
+      },
+      "unconnected_items": 17,
+      "violations": {
+        "lib_footprint_issues": 199
+      }
+    },
+    "protected_copper_identical": true,
+    "protected_copper_nets": 15,
+    "protected_copper_objects": 406,
+    "rail_ampacity_all_ok": true
+  },
+  "remote": "origin/aqroot-demo",
+  "schema": 1,
+  "suite_evidence": [
+    "d787-battery-pack-contract.json",
+    "d787-bom-sourcing.json",
+    "d787-connection-width-contract.json",
+    "d787-contract-regression.json",
+    "d787-demo-feature-contract.json",
+    "d787-fab-package-contract.json",
+    "d787-fab-provenance-verify.json",
+    "d787-fab_provenance-contract.json",
+    "d787-firmware-builds.txt",
+    "d787-firmware-hw-map-contract.json",
+    "d787-keepout_stackup-contract.json",
+    "d787-kicad-drc.json",
+    "d787-land_parity-contract.json",
+    "d787-leaf-land-contract.json",
+    "d787-mechanical_keepout-contract.json",
+    "d787-neck-contract.json",
+    "d787-obstacle_model-contract.json",
+    "d787-placement-contract.json",
+    "d787-population-contract.json",
+    "d787-pour_bond-contract.json",
+    "d787-pour_partition-contract.json",
+    "d787-protected-copper.json",
+    "d787-rail-ampacity.json",
+    "d787-rf_symmetry-contract.json",
+    "d787-routing-ledger.json",
+    "d787-self-regression.json",
+    "d787-tap-contract.json",
+    "d787-trunk_floor-contract.json"
+  ],
+  "what_this_is": "The external-review identity of the D-787 target, plus the critical checks re-run AGAINST THE COMMITTED TREE rather than against a working copy. A commit cannot name its own SHA, so `content_commit` is the commit that carries every board, package, firmware and gate change, and the tip commit that carries THIS FILE changes nothing else -- `git diff <content_commit> HEAD` is this record and the doc lines that name it."
+}
