@@ -1,0 +1,2006 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": false,
+ "fetched_utc": "2026-09-20T19:52:15Z",
+ "keyword": "976K 0.1% 0603",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "976kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>976kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "FH (Guangdong Fenghua Advanced Tech)",
+   "componentCode": "C667260",
+   "componentLibraryType": "expand",
+   "componentModelEn": "TD03G9763BT",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0479,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0479,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0479,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0186,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.018,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0176,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_FH--Guangdong-Fenghua-Advanced-Tech-TD03G9763BT_C667260.pdf",
+   "describe": "-55℃~+155℃ 100mW 50V 976kΩ Thin Film Resistor ±0.1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 976kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_fh-guangdong-fenghua-advanced-tech-td03g9763bt_C667260.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 189,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "976kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>976kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "62.5mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "SUSUMU",
+   "componentCode": "C1700529",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RGT1608P-9763-B-T5",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.1257,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.1257,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.1257,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0487,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0469,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0461,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_SUSUMU-RGT1608P-9763-B-T5_C1700529.pdf",
+   "describe": "-55℃~+175℃ 100V 62.5mW 976kΩ Thin Film Resistor ±0.1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 976kΩ ±0.1% 62.5mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_susumu-rgt1608p-9763-b-t5_C1700529.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 72,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "976kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>976kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "SEI(Stackpole Elec)",
+   "componentCode": "C2492188",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNCF0603BTC976K",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0473,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0473,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0473,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0183,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0178,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0175,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_SEI-Stackpole-Elec-RNCF0603BTC976K_C2492188.pdf",
+   "describe": "-55℃~+155℃ 100mW 75V 976kΩ Thin Film Resistor ±0.1% ±50ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 976kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_sei-stackpole-elec-rncf0603btc976k_C2492188.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 191,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "976kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>976kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "SEI(Stackpole Elec)",
+   "componentCode": "C2517295",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNCF0603BKE976K",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0761,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0761,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0761,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0295,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0284,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0279,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_SEI-Stackpole-Elec-RNCF0603BKE976K_C2517295.pdf",
+   "describe": "-55℃~+155℃ 100mW 75V 976kΩ Thin Film Resistor ±0.1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 976kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_sei-stackpole-elec-rncf0603bke976k_C2517295.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 119,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "976kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>976kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "RESI",
+   "componentCode": "C2849094",
+   "componentLibraryType": "expand",
+   "componentModelEn": "PTFR0603B976KP9",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0774,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 299,
+     "productPrice": 0.0627,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0556,
+     "startNumber": 300
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.05,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.0372,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.035,
+     "startNumber": 10000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2405061537_RESI-PTFR0603B976KP9_C2849094.pdf",
+   "describe": "-55℃~+155℃ 100V 100mW 976kΩ Thin Film Resistor ±0.1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 976kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_resi-ptfr0603b976kp9_C2849094.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 144,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "976kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>976kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "SEI(Stackpole Elec)",
+   "componentCode": "C3931910",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNCF0603BTE976K",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0499,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0499,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0499,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0193,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0186,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0183,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404081149_SEI-Stackpole-Elec-RNCF0603BTE976K_C3931910.pdf",
+   "describe": "-55℃~+155℃ 100mW 976kΩ Thin Film Resistor ±0.1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 976kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_sei-stackpole-elec-rncf0603bte976k_C3931910.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 181,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "976kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>976kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "62.5mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "TE Connectivity",
+   "componentCode": "C4039958",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CPF0603B976KE",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.1298,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.1298,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.1298,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0502,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0486,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0476,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "",
+   "describe": "-55℃~+155℃ 62.5mW 976kΩ Thin Film Resistor ±0.1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 976kΩ ±0.1% 62.5mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_te-connectivity-cpf0603b976ke_C4039958.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 70,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "976kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>976kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C4053399",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN73H1JTTD9763B25",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0614,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0614,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0614,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0238,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.023,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0225,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404091307_KOA-Speer-Elec-RN73H1JTTD9763B25_C4053399.pdf",
+   "describe": "-55℃~+155℃ 100mW 976kΩ Metal Film Resistor ±0.1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "金属膜电阻 976kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rn73h1jttd9763b25_C4053399.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 147,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "976kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>976kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "200mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thick Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C4151128",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RS73F1JTTD9763B",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.1029,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.1029,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.1029,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0399,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0385,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0378,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404101338_KOA-Speer-Elec-RS73F1JTTD9763B_C4151128.pdf",
+   "describe": "-55℃~+155℃ 200mW 976kΩ Thick Film Resistor ±0.1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "厚膜电阻 976kΩ ±0.1% 200mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rs73f1jttd9763b_C4151128.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 20,
+   "minPurchaseNum": 88,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "976kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>976kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "62.5mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "TE Connectivity",
+   "componentCode": "C4166774",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CPF0603B976KE1",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.1864,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.1864,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.1864,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0722,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0697,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0684,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "",
+   "describe": "-55℃~+155℃ 62.5mW 976kΩ Thin Film Resistor ±0.1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 976kΩ ±0.1% 62.5mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_te-connectivity-cpf0603b976ke1_C4166774.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 49,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "976kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>976kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C4179527",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN73H1JTTD9763B50",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.1115,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.1115,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.1115,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0432,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0417,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0409,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404101653_KOA-Speer-Elec-RN73H1JTTD9763B50_C4179527.pdf",
+   "describe": "-55℃~+155℃ 100mW 976kΩ Metal Film Resistor ±0.1% ±50ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "金属膜电阻 976kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rn73h1jttd9763b50_C4179527.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 81,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "976kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>976kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "200mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thick Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C4279736",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RS73G1JTTD9763B",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.1031,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.1031,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.1031,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0399,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0385,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0378,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404111729_KOA-Speer-Elec-RS73G1JTTD9763B_C4279736.pdf",
+   "describe": "-55℃~+155℃ 200mW 976kΩ Thick Film Resistor ±0.1% ±50ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "厚膜电阻 976kΩ ±0.1% 200mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rs73g1jttd9763b_C4279736.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 88,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "976kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>976kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C5871082",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RS73F1JRTTD9763B",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.3581,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.3581,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.3581,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.143,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1382,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1358,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312031521_KOA-Speer-Elec-RS73F1JRTTD9763B_C5871082.pdf",
+   "describe": "976kΩ ±0.1% 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "976kΩ ±0.1%",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rs73f1jrttd9763b_C5871082.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 26,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "976kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>976kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C6207676",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RT0603BRD07976KL",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0167,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0167,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0167,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0066,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0064,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0063,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404190937_YAGEO-RT0603BRD07976KL_C6207676.pdf",
+   "describe": "-55℃~+155℃ 100mW 976kΩ Thin Film Resistor ±0.1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 976kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-rt0603brd07976kl_C6207676.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 1433,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "976kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>976kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C20165708",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RT0603BRE07976KL",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.1268,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.1268,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.1268,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0507,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0489,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0481,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2401171203_YAGEO-RT0603BRE07976KL_C20165708.pdf",
+   "describe": "-55℃~+155℃ 100mW 976kΩ Thin Film Resistor ±0.1% ±50ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 976kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-rt0603bre07976kl_C20165708.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 72,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "976kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>976kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "150V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C865713",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RT0805BRD07976KL",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0407,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0323,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0276,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.0248,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": 19999,
+     "productPrice": 0.0223,
+     "startNumber": 10000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.021,
+     "startNumber": 20000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2210182130_YAGEO-RT0805BRD07976KL_C865713.pdf",
+   "describe": "-55℃~+155℃ 125mW 150V 976kΩ Thin Film Resistor ±0.1% ±25ppm/℃ 0805 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 976kΩ ±0.1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-rt0805brd07976kl_C865713.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2715
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "976kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>976kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "250mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "200V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C870948",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RT1206BRD07976KL",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0481,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 299,
+     "productPrice": 0.0386,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0341,
+     "startNumber": 300
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0305,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.0277,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0263,
+     "startNumber": 10000
+    }
+   ],
+   "componentSpecificationEn": "1206",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2210181930_YAGEO-RT1206BRD07976KL_C870948.pdf",
+   "describe": "-55℃~+155℃ 200V 250mW 976kΩ Thin Film Resistor ±0.1% ±25ppm/℃ 1206 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 976kΩ ±0.1% 250mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-rt1206brd07976kl_C870948.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 162
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "976kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>976kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "130mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "150V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "RESI",
+   "componentCode": "C2849391",
+   "componentLibraryType": "expand",
+   "componentModelEn": "PTFR0805B976KP9",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1555,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.1249,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1096,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2499,
+     "productPrice": 0.098,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0713,
+     "startNumber": 2500
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.0668,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": 19999,
+     "productPrice": 0.0658,
+     "startNumber": 10000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0652,
+     "startNumber": 20000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2405061538_RESI-PTFR0805B976KP9_C2849391.pdf",
+   "describe": "-55℃~+155℃ 130mW 150V 976kΩ Thin Film Resistor ±0.1% ±25ppm/℃ 0805 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 976kΩ ±0.1% 130mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_resi-ptfr0805b976kp9_C2849391.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 58
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "976kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>976kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C857092",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AT0805BRD07976KL",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.1565,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.1565,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.1565,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0606,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0585,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0573,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2210190200_YAGEO-AT0805BRD07976KL_C857092.pdf",
+   "describe": "-55℃~+155℃ 125mW 976kΩ Thin Film Resistor ±0.1% ±25ppm/℃ 0805 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 976kΩ ±0.1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-at0805brd07976kl_C857092.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 58,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "976kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>976kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "250mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C857595",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AT1206BRD07976KL",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.1521,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.1521,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.1521,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.059,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0569,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0559,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "1206",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404241454_YAGEO-AT1206BRD07976KL_C857595.pdf",
+   "describe": "-55℃~+155℃ 250mW 976kΩ Thin Film Resistor ±0.1% ±25ppm/℃ 1206 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 976kΩ ±0.1% 250mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-at1206brd07976kl_C857595.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 60,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "976kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>976kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C868254",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RT0805BRE07976KL",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0585,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0585,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0585,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0227,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0219,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0215,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2210182100_YAGEO-RT0805BRE07976KL_C868254.pdf",
+   "describe": "-55℃~+155℃ 125mW 976kΩ Thin Film Resistor ±0.1% ±50ppm/℃ 0805 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 976kΩ ±0.1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-rt0805bre07976kl_C868254.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 155,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "976kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>976kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "250mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±15ppm/℃"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C870350",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RT1206BRC07976KL",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.101,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.101,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.101,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0391,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0378,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0372,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "1206",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404241535_YAGEO-RT1206BRC07976KL_C870350.pdf",
+   "describe": "-55℃~+155℃ 250mW 976kΩ Thin Film Resistor ±0.1% ±15ppm/℃ 1206 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 976kΩ ±0.1% 250mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-rt1206brc07976kl_C870350.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 90,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "976kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>976kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "250mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C871519",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RT1206BRE07976KL",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0756,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0756,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0756,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0293,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0284,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0277,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "1206",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2210181900_YAGEO-RT1206BRE07976KL_C871519.pdf",
+   "describe": "-55℃~+155℃ 250mW 976kΩ Thin Film Resistor ±0.1% ±50ppm/℃ 1206 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 976kΩ ±0.1% 250mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-rt1206bre07976kl_C871519.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 120,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "976kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>976kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "250mW"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "TE Connectivity",
+   "componentCode": "C1407338",
+   "componentLibraryType": "expand",
+   "componentModelEn": "H8976KBCA",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.5209,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.5209,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.5209,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2019,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1954,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1921,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TE-Connectivity-H8976KBCA_C1407338.pdf",
+   "describe": "250mW 976kΩ ±0.1% ±50ppm/℃ 插件 Through Hole Resistors ROHS",
+   "erpComponentName": "976kΩ ±0.1% 250mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_te-connectivity-h8976kbca_C1407338.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 18,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "976kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>976kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "250mW"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "TE Connectivity",
+   "componentCode": "C1408864",
+   "componentLibraryType": "expand",
+   "componentModelEn": "H8976KBDA",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.5795,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.5795,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.5795,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2247,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.2165,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.2133,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TE-Connectivity-H8976KBDA_C1408864.pdf",
+   "describe": "250mW 976kΩ ±0.1% ±25ppm/℃ 插件 Through Hole Resistors ROHS",
+   "erpComponentName": "976kΩ ±0.1% 250mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_te-connectivity-h8976kbda_C1408864.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 16,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  }
+ ],
+ "returned": 25,
+ "schema": 1,
+ "total_matches": 183
+}

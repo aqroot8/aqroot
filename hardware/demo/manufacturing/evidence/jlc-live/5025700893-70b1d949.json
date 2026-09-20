@@ -1,0 +1,128 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-20T19:33:45Z",
+ "keyword": "5025700893",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Connector Type",
+     "attribute_value_name": "Connector and Ejector"
+    },
+    {
+     "attribute_name_en": "Supplementary Features",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Card Connection Mode",
+     "attribute_value_name": "Push-Push"
+    },
+    {
+     "attribute_name_en": "Height Above Board",
+     "attribute_value_name": "1.8mm"
+    },
+    {
+     "attribute_name_en": "Card Type",
+     "attribute_value_name": "MicroSD Card (TF Card)"
+    },
+    {
+     "attribute_name_en": "Additional Card Detection Pins",
+     "attribute_value_name": "-"
+    }
+   ],
+   "componentBrandEn": "MOLEX",
+   "componentCode": "C429846",
+   "componentLibraryType": "expand",
+   "componentModelEn": "5025700893",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 1.0808,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.9978,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.9522,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.9017,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 1299,
+     "productPrice": 0.8318,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.8204,
+     "startNumber": 1300
+    }
+   ],
+   "componentSpecificationEn": "SMD",
+   "componentTypeEn": "SD Card / Memory Card Connector",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2407022005_MOLEX-5025700893_C429846.pdf",
+   "describe": "1.8mm Connector and Ejector MicroSD Card (TF Card) Push-Push SMD SD Card / Memory Card Connector ROHS",
+   "erpComponentName": "自弹式 MicroSD卡(TF卡) 卡座",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/sd-card-memory-card-connector_molex-5025700893_C429846.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 8787
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "JLCPCB Assembly",
+   "componentCode": "C9900191297",
+   "componentLibraryType": "expand",
+   "componentModelEn": "500879-08065025700893",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0396,
+     "startNumber": 1
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0204,
+     "startNumber": 100
+    }
+   ],
+   "componentSpecificationEn": "SMD8P-P1.1",
+   "componentTypeEn": "SMT",
+   "dataManualUrl": null,
+   "describe": "SMD8P-P1.1 SMT ROHS",
+   "erpComponentName": "【邮寄专用】500879-08065025700893",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 443,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  }
+ ],
+ "returned": 2,
+ "schema": 1,
+ "total_matches": 2
+}

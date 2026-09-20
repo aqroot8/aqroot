@@ -116,18 +116,39 @@ and acceptance tests are frozen in `BATTERY_HARNESS.json`. Current `J5` is
 **These are the parts that decide whether this build succeeds.** Every one is bought from a
 broadline distributor and **consigned to JLC**, so it stays machine-placed.
 
-| part | ref | LCSC | stock | need | shortfall |
-|---|---|---|---|---|---|
-| **`PCAL9535APW,118`** NXP | `U2`, `U3` | `C2669683` | **1** | **10** | **−9** |
-| ~~`0466005.NR` Littelfuse~~ `F1` | — | — | — | — | **LEFT CLASS C at FBV2-MECH-002 — now `0466005.NRHF` `C57525`, class B** |
-| **`NTMD4820NR2G`** onsemi | `Q2`, `Q3` | `C905372` | **0** | 10 | −10 |
-| **`TLV7032DDFR`** TI | `U19` | `C2871498` | **0** | 5 | −5 |
-| **`74438357010`** Würth | `L4` (`L2` **DNP**) | `C5542269` | **0** | **5** | **−5** |
-| **`DMM-4026-B-I2S-R`** PUI | `MK1` | `C3171792` | **0** | 5 | −5 |
-| **`LTC4368IDD-1#PBF`** ADI | `U18` | `C688397` | **4** | 5 | **−1** |
-| **`ST25R3916-AQET`** ST | `U9` | `C5267441` | **6** | 5 | +1 spare only |
-| **`NSR0240HT1G`** onsemi | `D8` | `C152519` | **7** | 5 | +2 spare only |
-| **`SQ2364EES-T1_BE3`** Vishay | `Q11` | `C5758702` | **0** | 5 | **−5 — buy broadline + CONSIGN** |
+> ### **D-788 / R7-D787-19 — THE WHOLE TABLE IS RE-SWEPT LIVE, AND ONE ROW WAS THE WRONG PART.**
+>
+> The `U18` row read **`LTC4368IDD-1#PBF` / `C688397`**, which is the **DFN** part.
+> The schematic, the released BOM and the PCB footprint all carry
+> **`LTC4368IMS-1#TRPBF` / `C688401`**, which is the **MSOP-10**.  A consignment
+> line that names a different package than the board is fitted for is a build
+> stopper, and it had survived since the table was written.  **THE DFN ROW IS
+> RETIRED.**
+>
+> Every row below is a **fresh live sweep of all 124 assembly lines** taken on
+> **2026-09-20** through the D-096 JLCPCB parts API and archived under
+> `hardware/demo/manufacturing/evidence/jlc-live/`.  Ten of the 124 lines do not
+> cover a five-board build; those ten are the table.  **Archived counts are not
+> purchasing authority — re-check immediately before the order.**
+
+| part | ref | LCSC | live stock 2026-09-20 | need (5 boards) | shortfall | JLCPCB catalogue flag |
+|---|---|---|---|---|---|---|
+| **`74438357010`** Wurth Elektronik | `L4` | `C5542269` | **0** | 5 | **-5** | — |
+| **`LQW18AN39NG80D`** Murata Electronics | `L5,L6` | `C2042966` | **3** | 10 | **-7** | — |
+| **`DMM-4026-B-I2S-R`** JLCPCB Assembly | `MK1` | `C3171792` | **0** | 5 | **-5** | This product is no longer manufactured. |
+| **`SQ2364EES-T1_BE3`** Vishay Intertech | `Q11` | `C5758702` | **0** | 5 | **-5** | — |
+| **`NTMD4820NR2G`** onsemi | `Q2,Q3` | `C905372` | **0** | 10 | **-10** | This product is no longer manufactured. |
+| **`LTC4368IMS-1#TRPBF`** Analog Devices | `U18` | `C688401` | **2** | 5 | **-3** | — |
+| **`TLV7032DDFR`** Texas Instruments | `U19` | `C2871498` | **0** | 5 | **-5** | — |
+| **`PCAL9535APW,118`** NXP Semicon | `U2,U3` | `C2669683` | **1** | 10 | **-9** | — |
+| **`ST25R3916-AQET`** STMicroelectronics | `U9` | `C5267441` | **0** | 5 | **-5** | — |
+
+> **`J5` `SSQ-124-02-G-S-RA` is ALSO a consignment line and is deliberately NOT
+> in this table.**  It is a leaded through-hole part and belongs to **Class E,
+> manual by construction**; listing it in a machine-placement class would send
+> the assembler the wrong work instruction, which is exactly what `FAB15`
+> refuses.  Its live stock, its shortfall and its catalogue flag are in the
+> complete sweep at **§7b**.
 
 **`U2`/`U3` is the headline.** Demo removed `U23`; there are **two PCAL9535A per board, ten TSSOP-24 at 0.65 mm pitch** for the first five, against **one** in the archived stock snapshot. That is precisely the case the CTO ruling
 names: *"if the result would require manually installing dozens of fine-pitch parts per board,
@@ -166,8 +187,9 @@ against a need of five is a build with **one** spare; **buy spares independently
 | `TSOP38238` (`C141632`) | `U6` | 3 leads | minicast IR receiver. **Hand-solder after reflow; LEAD-FORMED 90° AND TRIMMED — [`IR_LEAD_FORMING.md`](IR_LEAD_FORMING.md), NORMATIVE.** Was incorrectly also listed as machine-placed Class B until D-764 |
 | **D-781/D-782 manual battery pigtail** — 26-AWG Molex pre-crimps `2175012101` red / `2175011101` black into housing `5055700201`; **no PCB header fitted** | **`J4`** | 2 conductors through the existing 0.75 mm nominal PTH pair, wires enter from **REAR**, solder on **FRONT** | Exact detachable harness is [`BATTERY_HARNESS.json`](BATTERY_HARNESS.json). Supplier/assembler must guarantee **≥0.70 mm finished plated-hole diameter** and prove one exact tinned lead passes freely before all five boards — no strand shaving. Cavity 1 = BAT+ / red / `J4.1`; cavity 2 = GND / black / `J4.2`. **J4-T1/T2/T3/T4 are NORMATIVE**: front conductive profile **≤0.50 mm**, both inspected joints covered with **≤0.10 mm polyimide**. Rear strain relief is now frozen to **DOWSIL 3145 RTV MIL-A-46146 gray**, applied to the insulated pigtail after joint inspection with the specified service loop; disconnect Micro-Lock by the housings only, never by pulling wires. DMM-check polarity and complete the first-article fit/pull/thermal acceptance tests. **Do not install JST `C131337` at J4.** |
 | `B2B-PH-K-S(LF)(SN)` JST PH (`C131337`) | `J6` | 2 leads | SPEAKER connector, body on `F.Cu`; its leads emerge on the rear **3.5 mm clear of `BATTERY_SHADOW`**, so no trim requirement. Was missing from this table |
+| **D-788 ACC_3V3_SW REINFORCEMENT LEAD** — ONE Alpha Wire `2842/19 RD005` 28 AWG PTFE conductor, `TP12.1` → `J5.3`, plus three DOWSIL 3145 anchor beads | `TP12` / `J5.3` | 1 conductor, 2 hand joints | **MISSING FROM THIS TABLE ENTIRELY UNTIL D-788 / R7-D787-11.**  D-787 introduced a manual accessory-voltage reinforcement and neither the master assembly plan nor the off-board BOM knew about it, so the operation was not in the sequence, the wire was not in purchasing and the completion record had no line for it.  The exact dimensioned route, waypoints, bend radius, anchor locations, bead size, cure time, joint profile and per-step inspection are NORMATIVE in [`ACC_3V3_REINFORCEMENT.json`](ACC_3V3_REINFORCEMENT.json).  **D-788 also removed the second conductor**: J5.22 is delivered by routed copper alone (79.0 mΩ measured), so only `J5.3` is reinforced and no pad carries two conductors.  Finished lead **≤ 25 mΩ**, value recorded per board.  **Sequence: after reflow and AOI, before enclosure close; full cure 72 h before any pull, thermal test or shipment.** |
 
-**FIVE through-hole references per board require manual post-reflow work: `J4`, `J5`, `J6`, `D1`, `U6`.** `J4` is a wire pigtail rather than a fitted connector. `J4`, `D1` and `U6` have NORMATIVE trim/forming requirements, and D-782 additionally freezes J4 rear strain relief using DOWSIL 3145 plus the Micro-Lock service-loop/housing-only disconnect rules in `BATTERY_HARNESS.json`.
+**FIVE through-hole references per board require manual post-reflow work: `J4`, `J5`, `J6`, `D1`, `U6`, and D-788 adds ONE non-reference manual operation: the `TP12.1` → `J5.3` accessory-voltage reinforcement lead.** `J4` is a wire pigtail rather than a fitted connector. `J4`, `D1` and `U6` have NORMATIVE trim/forming requirements, and D-782 additionally freezes J4 rear strain relief using DOWSIL 3145 plus the Micro-Lock service-loop/housing-only disconnect rules in `BATTERY_HARNESS.json`.
 
 **Also PTH but not a lead:** `J3`'s four `SH` shell stakes (GCT USB4105 is a
 top-mount SMT receptacle — the stakes are mechanical anchors, pin-in-paste or
@@ -185,6 +207,50 @@ Speaker `LS1` (`AS02008MR-LW152-R`, `C3311653`, stock 0 — consign or buy direc
 
 ---
 
+## 7b. D-788 — the complete live sourcing sweep and consignment plan
+
+**Every one of the 124 assembly lines was re-queried through the D-096 JLCPCB
+parts API on 2026-09-20** and archived at
+`hardware/demo/manufacturing/evidence/d788-sourcing-sweep.json`, so the plan
+REPLAYS rather than re-queries.  **Ten lines do not cover a five-board build.**
+Nine of them are machine-placed and are in §4; `J5` is the tenth and is Class E.
+
+| part | ref | LCSC | live stock 2026-09-20 | need (5 boards) | shortfall | JLCPCB catalogue flag | placement |
+|---|---|---|---|---|---|---|---|
+| **`SSQ-124-02-G-S-RA`** Samtec | `J5` | `C3323671` | **0** | 5 | **-5** | This product is no longer manufactured. Class E, manual |
+| **`74438357010`** Wurth Elektronik | `L4` | `C5542269` | **0** | 5 | **-5** | — machine, consigned |
+| **`LQW18AN39NG80D`** Murata Electronics | `L5,L6` | `C2042966` | **3** | 10 | **-7** | — machine, consigned |
+| **`DMM-4026-B-I2S-R`** JLCPCB Assembly | `MK1` | `C3171792` | **0** | 5 | **-5** | This product is no longer manufactured. machine, consigned |
+| **`SQ2364EES-T1_BE3`** Vishay Intertech | `Q11` | `C5758702` | **0** | 5 | **-5** | — machine, consigned |
+| **`NTMD4820NR2G`** onsemi | `Q2,Q3` | `C905372` | **0** | 10 | **-10** | This product is no longer manufactured. machine, consigned |
+| **`LTC4368IMS-1#TRPBF`** Analog Devices | `U18` | `C688401` | **2** | 5 | **-3** | — machine, consigned |
+| **`TLV7032DDFR`** Texas Instruments | `U19` | `C2871498` | **0** | 5 | **-5** | — machine, consigned |
+| **`PCAL9535APW,118`** NXP Semicon | `U2,U3` | `C2669683` | **1** | 10 | **-9** | — machine, consigned |
+| **`ST25R3916-AQET`** STMicroelectronics | `U9` | `C5267441` | **0** | 5 | **-5** | — machine, consigned |
+
+**`D8` `NSR0240HT1G` is no longer on this list** — it re-swept at **5 280** in
+stock against a need of 5.
+
+**THE THREE "NO LONGER MANUFACTURED" FLAGS ARE JLCPCB CATALOGUE FLAGS, NOT
+MANUFACTURER EOL.**  Samtec still catalogues `SSQ-124-02-G-S-RA`, PUI still
+catalogues `DMM-4026-B-I2S-R` and onsemi still catalogues `NTMD4820NR2G`.  What
+the flag means is that **JLCPCB will not source them for you**.  **Before PCBA
+payment** each must be confirmed ACTIVE against the MANUFACTURER's own lifecycle
+page and ordered from a franchised distributor.  A part that turns out to be
+genuinely EOL is an escalation, not a substitution.
+
+**NO SUBSTITUTION WITHOUT REQUALIFICATION.**  Each of these ten is a safety
+part, an RF part, or a part whose exact identity a gate in this repository
+binds — `F5` for `Q11`, `F8` for the capacitor population, `RF1`–`RF5` for
+`L5`/`L6`, `F6` for the limiter switches, `firmware_hw_map_contract` for
+`U2`/`U3`.  An electrically or mechanically different part invalidates the
+clause that qualified it.
+
+**Archived counts are not purchasing authority.  Re-check immediately before the
+order.**
+
+---
+
 ## 7a. D-780 Q11 first-five temperature acceptance — `Q11-TEMP-01`
 
 `Q11` is now Vishay **SQ2364EES-T1_BE3**. Its 60 V rating covers the board's 39 V open-LED fault ceiling, and its published **0.245 Ω MAX at VGS = 1.5 V, ID = 2 A** gives a direct low-gate conduction point below AQROOT's held **VGS = 2.396 V**. The vendor electrical-characteristics table states **TC = 25 °C unless otherwise noted**, so that 1.5 V row is not being misrepresented as an all-temperature guarantee. For these five Kickstarter prototypes this is a **reworkable first-article qualification item, not a production-temperature claim**.
@@ -192,6 +258,59 @@ Speaker `LS1` (`AS02008MR-LW152-R`, `C3311653`, stock 0 — consign or buy direc
 Before a first-five unit is accepted for Demo use, validate the backlight at **0 °C, 25 °C and 40 °C** after thermal soak: full-on, the normal firmware PWM range, commanded OFF for at least 30 s, and repeated ON→OFF→ON transitions. **D-784 startup rule:** from a discharged `C85`, firmware must first drive `DISP_BL_CTL` at **100% duty for at least 2 ms** before entering low-duty PWM; the released bring-up firmware uses a **3.0 ms microsecond-timed prime** to guarantee margin rather than relying on an Arduino millisecond tick delay. Do not start directly at 1% duty. Scope `DISP_BL_CTL`, **Q11 VGS**, `LED_BOOST`, Q11 VDS and LED current during startup/OFF/restart. Acceptance: no visible dropout/flicker at full-on or normal PWM, no TPS61169 open-LED latch during normal operation, commanded OFF remains dark, and restart is repeatable. Record the unit ID and result. The TPS61169 primary datasheet is archived at `hardware/demo/kicad/aqroot-demo/vendor/TI/tps61169.pdf` (SHA-256 `7d0b8ace2459a9fd22fe7145086cbad4ccb3bb43219247459313fcba75230151`). A failure blocks that unit and requires `Q11`/gate-drive rework before Demo use; it does **not** authorize widening the temperature claim.
 
 The release gate must preserve this exact acceptance marker (`Q11-TEMP-01`) while the fitted Q11 relies on the 25 °C low-gate `RDS(on)` row.
+
+---
+
+## 7b. D-788 / R7-N02 `+3V3` transient acceptance — `C-PWR-TRANSIENT-01`
+
+**THE PANEL'S 3.3 V IS AN ABSOLUTE MAXIMUM AND A SWITCHING RAIL IS NOT ONLY DC.**
+`demo_feature_contract` F6 proves the `+3V3` DC regulation envelope
+(**3.100334 / 3.145503 / 3.191022 V** raw PWM, **3.069405 V** heavy-load minimum,
+**3.223016 V** worst case) sits inside the fitted ILI9488's **3.3 V** absolute
+maximum and above the ESP32-S3-WROOM-1's own **3.0 V** `VDD33` minimum, and it
+computes the **output ripple** from `SLVS916I`'s published minimum oscillator
+frequency, `L1`'s own minimum inductance and the declared effective local output
+capacitance.  It does **not** claim an analytic bound on **load-transient
+overshoot**: TI publishes the TPS6302x load transient only as `SLVS916I`
+Figures 21/22 (**50 mV/div**, 500 mA → 1500 mA, on the fixed-output TPS63021
+with 4 × 22 µF), and there is no numeric overshoot row in the electrical
+characteristics table.  Reading a limit off a plot axis is not primary evidence,
+so the real excursion is **MEASURED HERE**.
+
+Before a first-five unit is accepted for Demo use, scope `+3V3` **at the
+display's own supply pins** — `J1.40`/`J1.41` (`VDDI`/`IOVCC`) and `J1.42`
+(`VCI`) — AC-coupled, ≥ 20 MHz bandwidth, ground-spring probe at the connector,
+through all of:
+
+- **accessory step**: `ACC_3V3_SW` enabled into a 400 mA load and then **hot
+  disconnected** at the J5 mating interface, ten times;
+- **backlight step**: `U17` commanded full-on → off → full-on, including the
+  D-784 3.0 ms full-duty prime;
+- **radio step**: Wi-Fi TX bursts with `U7`/`U8` idle, and the worse sub-GHz
+  radio transmitting;
+- **enable step**: `SW9` off → on from a discharged `+3V3`, watching `U12`
+  start-up overshoot;
+- each of the above at pack voltages spanning **buck, buck-boost and boost**
+  operation (`≈4.15 V`, `≈3.20 V`, `≈3.05 V` at `BAT_PROTECTED_P`).
+
+**ACCEPTANCE:** the absolute peak at `J1.40`/`J1.41`/`J1.42` must stay **below
+3.300 V** with no exception, and the absolute trough at `U1.2` must stay **above
+3.000 V**.  Record the peak, the trough and the unit ID.  A failure blocks that
+unit; **the designed lever is `C29`–`C32`**, which are 22 µF 1206 X7R parts on
+existing lands — `SLVS916I` 8.2.2.3 sets **no upper limit** on output
+capacitance, so more capacitance is a **BOM value change with no PCB change**.
+Do not widen the acceptance instead.
+
+**WHY THE DIVIDER IS WHERE IT IS.**  The window between the MCU's 3.0 V floor
+and the panel's 3.3 V absolute maximum is 300 mV and the rail's own tolerance
+band needs ~154 mV of it, so the setpoint decides how the remainder is split.
+F6 enumerates every purchasable E192 0.1 % value for `R40` with `R39` at 1 MΩ
+and requires the fitted one to **maximise the smaller of the two headrooms** —
+`189 kΩ` splits it **76.98 mV** under the damage limit against **69.41 mV** over
+the recoverable one.  `187 kΩ` (the first D-788 draft) would have left
+**47.97 mV / 96.99 mV**, and `191 kΩ` **105.36 mV / 42.46 mV**; both are refused
+by that clause.  The release gate must preserve this exact acceptance marker
+(`C-PWR-TRANSIENT-01`).
 
 ---
 
@@ -239,7 +358,7 @@ the quote stage. **`L2`/`L4` also carried two spellings of "Würth"** and were n
 | how many parts machine-placed? | **all fitted SMT parts; Class E covers five manual references (`J4`,`J5`,`J6`,`D1`,`U6`)** |
 | how many manual solder operations per board? | **5** — `J4`, `J5`, `J6`, `D1`, `U6`; J4 is a wire pigtail land, while the other four are fitted THT parts; `J4`/`D1`/`U6` also have normative trim/forming instructions |
 | how many fine-pitch/QFN parts hand-placed? | **zero** |
-| how many part identities need consignment? | **9 class-C identities in this archived snapshot** (`PCAL9535APW,118`, `NTMD4820NR2G`, `TLV7032DDFR`, `74438357010`, `DMM-4026-B-I2S-R`, `LTC4368IDD-1#PBF`, `ST25R3916-AQET`, `NSR0240HT1G`, `SQ2364EES-T1_BE3`) + 0 class D. **Re-check all stock immediately before order; any additional exact-source item whose live stock no longer covers first-five need also moves to consignment. Archived counts are not purchasing authority.** |
+| how many part identities need consignment? | **TEN, from the D-788 live sweep of all 124 assembly lines on 2026-09-20**: `SSQ-124-02-G-S-RA` (`J5`), `74438357010` (`L4`), `LQW18AN39NG80D` (`L5`/`L6`), `DMM-4026-B-I2S-R` (`MK1`), `SQ2364EES-T1_BE3` (`Q11`), `NTMD4820NR2G` (`Q2`/`Q3`), **`LTC4368IMS-1#TRPBF` MSOP-10 `C688401`** (`U18` — *the `LTC4368IDD-1#PBF` DFN row this line carried until D-788 was the WRONG PACKAGE and is RETIRED*), `TLV7032DDFR` (`U19`), `PCAL9535APW,118` (`U2`/`U3`), `ST25R3916-AQET` (`U9`) + 0 class D. **`NSR0240HT1G` (`D8`) is NO LONGER on this list** — it re-swept at 5 280 in stock against a need of 5. **Re-check all stock immediately before order; any additional exact-source item whose live stock no longer covers first-five need also moves to consignment. Archived counts are not purchasing authority.** |
 | DNP parts with no recorded reason | **zero** — eight were still undocumented at the start of FBV2-S2-002 and all eight now carry one |
 | does the build close today? | **Yes, via consignment.** It does **not** close as a pure LCSC turnkey order |
 

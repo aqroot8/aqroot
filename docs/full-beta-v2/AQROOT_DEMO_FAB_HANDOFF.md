@@ -1,7 +1,148 @@
 # AQROOT Demo — FABRICATION HANDOFF
 
 
-> # **STATUS: D-787 ROUND-6 ELECTRICAL/RELEASE CORRECTION — EXTERNAL-REVIEW TARGET, BOARD AUTHORITY `8a22e8d9` (2026-09-20).**
+> # **STATUS: D-788 ROUND-7 CORRECTION — EXTERNAL-REVIEW TARGET, BOARD AUTHORITY `57145f5c` (2026-09-20).**
+>
+> **D-788 supersedes D-787, which Round-7 external review REJECTED. THIS IS A
+> REVIEW TARGET, NOT A FABRICATION AUTHORIZATION — DO NOT ORDER. NO OWNER
+> DECISION IS OPEN: the owner approved D-788 OPTION A on 2026-09-20.**
+>
+> Astra reproduced **20 observed release defects** on D-787 (6 high, 6 medium,
+> 8 low); Fable reproduced a subset plus a sourcing concern. **All twenty are
+> closed here.**
+>
+> ### The electrical one, and it was worse than Round-7 measured
+>
+> The fitted `ER-TFT035IPS-6` is an **ILI9488** panel. ILI Technology's own
+> datasheet — archived `vendor/ILITEK/ilitek-ili9488-v100.pdf`, sha256
+> `aeb2317…1df38b`, corroborated against a second independent mirror — gives
+> **Table 41: `VCI` and `IOVCC` ABSOLUTE MAXIMUM −0.3 … +3.3 V**, and §17.2:
+> `VCI` 2.5/2.8/3.3 V, `IOVCC` 1.65/1.8/3.3 V, `VIH` max = `IOVCC`. D-787's
+> derived power-save corner was **3.542487 V — 242 mV over an ABSOLUTE
+> MAXIMUM** — and its **nominal 3.308989 V was 9 mV over it**.
+>
+> **Fixed with two objects and no new component.** `U12`'s `PS/SYNC` moves from
+> `GND` to the `EN` net, so the TPS63020 runs **forced fixed-frequency PWM** and
+> TI's `VFB_PS` +5 % excursion cannot occur; `R40` moves **178 kΩ → 189 kΩ**
+> (YAGEO `RT0603BRD07189KL`, `C861174`, 0.1 % / 25 ppm, live stock 339).
+> `R39` is unchanged at 1.000 MΩ Viking `ARG03BTC1004`.
+>
+> **Derived envelope.** Raw PWM **3.100334 / 3.145503 / 3.191022 V**;
+> heavy-load minimum **3.069408 V**; worst case **3.223012 V** — **76.99 mV
+> inside the panel's absolute maximum**, **58.78 mV** over the
+> ESP32-S3-WROOM-1's own **3.0 V `VDD33` minimum** after the `+3V3` plane's
+> bounded distribution drop. Display `VCI`/`IOVCC` and the MCU supply are **the
+> same net**, so `VIH ≤ IOVCC` holds by construction and no display input is
+> ever driven above its own supply.
+>
+> ### The one Round-7 did not raise — and it moved the divider again (`R7-N01`/`R7-N02`)
+>
+> **A DC BOUND IS NOT THE WHOLE HIGH SIDE.** The clause above compares a DC
+> regulation envelope with an **absolute maximum**; output ripple and
+> load-transient overshoot ride on top of it. The first D-788 draft fitted
+> `187 kΩ` and left **47.97 mV** of DC headroom under a **damage** limit while
+> leaving **86.36 mV** over the MCU's **recoverable** floor — the wrong way
+> round. And the low side had **no MCU clause at all**: the rail's minimum was
+> checked against the panel's `VCI` 2.5 V and the Community Port's published
+> minimum, never against the ESP32-S3-WROOM-1's own **3.0 V** `VDD33` minimum.
+>
+> `F6` now (a) **computes** the ripple — **1.68 mV** peak-to-peak, from
+> `SLVS916I`'s minimum oscillator frequency, `L1`'s minimum inductance and the
+> declared effective local output capacitance — and charges it to **both** ends;
+> (b) adds the ESP32-S3-WROOM-1 floor and the `+3V3` plane's bounded
+> distribution drop; and (c) **enumerates every purchasable E192 0.1 % value for
+> `R40`** and requires the fitted one to **maximise the smaller of the two
+> headrooms**. `189 kΩ` splits it **76.99 / 58.78 mV**; `187 kΩ` (47.97 / 86.36)
+> and `191 kΩ` (105.40 / 31.77) are both refused by that clause.
+>
+> **LOAD-TRANSIENT OVERSHOOT IS NOT GIVEN AN ANALYTIC BOUND.** TI publishes the
+> TPS6302x load transient only as `SLVS916I` Figures 21/22 (**50 mV/div**,
+> 500 mA → 1500 mA, TPS63021, 4 × 22 µF); there is no numeric overshoot row.
+> Reading a limit off a plot axis is not primary evidence, so the real excursion
+> is **measured at first article** as **`C-PWR-TRANSIENT-01`**, at the display's
+> own supply pins, across the accessory hot-disconnect, backlight, radio and
+> enable steps and across buck / buck-boost / boost pack voltages. If it eats
+> the headroom the lever is **`C29`–`C32` on their existing 1206 lands** —
+> `SLVS916I` 8.2.2.3 sets no upper limit on output capacitance, so that is a BOM
+> value change with **no PCB change**.
+>
+> **AND FORCED PWM HAS A PRICE THAT IS NOW RECORDED (`R7-N06`).** Grounding
+> `PS/SYNC` is what bought the TPS63020's **25 µA** light-load quiescent
+> current; tying it to `EN` gives that up for continuous conduction whenever the
+> converter is enabled. `SW9` OFF still disables `U12` entirely (`IS` **0.1 µA**
+> max), so "off" is a hard off — but **light-load and MCU-sleep battery drain on
+> this revision is set by continuous switching, not by the datasheet's 25 µA
+> row**. No published AQROOT figure depends on it; the measurement is part of
+> `C-PWR-TRANSIENT-01`'s instrumentation, and giving firmware control of
+> `PS/SYNC` is a **REV-B** item because power save may only be re-enabled on a
+> rail the panel is not on.
+>
+> ### Owner decision closed — Option A approved
+>
+> A rail capped under 3.3 V cannot also guarantee **3.3 V −5 %** at the
+> Community Port **at any current**, including zero. The port now delivers
+> **3.069408 V at no load** and **2.954962 V at the published 400 mA**. The
+> **400 mA / 300 mA budgets are UNCHANGED** and no promised current capability
+> is removed. The owner approved **OPTION A**: publish the corrected
+> **3.15 V-class** Community-Port envelope for the first-five units, including
+> **>=2.95 V at the J5 mating interface at 400 mA**. The dedicated-regulator
+> alternative is REV-B.
+>
+> **THE OWNER'S TEXT DELEGATED THE EXACT VALUES**, and `R7-N01`'s centred
+> divider moved them once more: the working figures the owner saw were
+> ~3.097…3.252 V unloaded and ≥2.98 V at 400 mA, and the released candidate is
+> **3.069408…3.223012 V unloaded and ≥2.95 V at 400 mA**. 28 mV of published
+> tolerance bought 29 mV of headroom under a damage limit. **No current
+> capability and no Kickstarter-visible function changes.** Every Qwiic /
+> STEMMA QT device AQROOT has qualified operates at or below 2.7 V.
+> `demo_feature_contract` F6 now also **requires `DEVICE_SPEC` to print the
+> exact figures F6 derives** (`R7-N04`), so the published contract and the gate
+> cannot drift apart again.
+>
+> ### Delivery, priced end to end
+>
+> `U20`'s RON is bounded by **interpolation between two guaranteed SLVSGP6A
+> rows** at the rail's own minimum — **75.379 mΩ**, not the 3.3 V row's 68 mΩ —
+> and the proof now prices the **complete loop** (source, board copper, lead,
+> mated signal contact, four parallel mated GND contacts, ground return,
+> process) at **286.115 mΩ** for the worst contact, with the **measurement
+> plane** stated as the J5 mating interface. **`J5.22` needs no manual lead**
+> (routed copper 79.0 mΩ); **`J5.3` carries ONE** 28-AWG lead from `TP12.1`,
+> accepted at **≤25 mΩ**, with a dimensioned corridor, three named DOWSIL 3145
+> anchors, a 6.9 mm bend radius and a 72 h cure.
+>
+> ### Thermal
+>
+> The `U11.2` package-land neck is re-derived over a **2 × 3 matrix** of axial
+> boundary × lateral treatment, solved self-consistently in temperature and
+> charged **25 K** at the clamped end for the BQ25185's own 0.773 W. Worst
+> accepted cell **19.84 K**; **predicted peak 94.84 °C against a 105 °C declared
+> absolute limit**; the fab notes now require **FR4 Tg ≥ 150 °C**. The
+> IPC-2221B **137.6 K** coupon figure is a SCREENING number and is never quoted
+> as a board temperature. First-article thermography remains the measurement of
+> record.
+>
+> ### Verification on this target
+>
+> F1–F9 PASS; H1–H8 PASS including `test_production_timing.cpp`, which compiles
+> and RUNS the shipped backlight and gauge entry points against a recording
+> Arduino HAL with **8 production mutations, all caught**; all **19/19**
+> standing contracts ran; fab-package contract **FAB1–FAB16 PASS**; BOM sourcing
+> **124 lines / 0 unsourced**; rail ampacity PASS with named exceptions; routing
+> ledger **174 retained / 173 connected / one owner-approved `U11.3` open / zero
+> unapproved**; KiCad DRC **199 warnings, all `lib_footprint_issues`**, 17
+> declared unconnected items and 246 schematic-parity items — **byte-for-byte
+> the same item set as D-787**; protected copper identical, 15 nets / 406
+> objects; all four PlatformIO environments build.
+>
+> PCB SHA-256 `57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b`.
+>
+> **No order is authorized: manufacturer CAM and first-article acceptance remain
+> outstanding, and D-788 §0 is open.**
+>
+> ---
+>
+> # **STATUS: D-787 ROUND-6 ELECTRICAL/RELEASE CORRECTION — EXTERNAL-REVIEW TARGET, BOARD AUTHORITY `8a22e8d9` (2026-09-20).**  *(HISTORICAL — superseded by D-788 above.)*
 >
 > **D-787 supersedes D-785 as the current engineering target. THIS IS A REVIEW
 > TARGET, NOT A FABRICATION AUTHORIZATION — DO NOT ORDER.**
@@ -89,7 +230,7 @@
 > `R101 = 2.37 kOhm`, `R40 = 176 kOhm`, 3.18 V and 3.8299 V statements below are
 > historical or superseded D-787 drafts unless explicitly marked current.**
 >
-> # **STATUS: D-785 ROUND-5 VERIFICATION HARDENING — EXTERNAL_REVIEW_HOLD, BOARD AUTHORITY `cef458b9` (2026-09-19).**
+> # **STATUS: D-785 ROUND-5 VERIFICATION HARDENING — EXTERNAL_REVIEW_HOLD, BOARD AUTHORITY `cef458b9` (2026-09-19).**  *(HISTORICAL — superseded by D-788 above; Round-6 and Round-7 both reopened this target.)*
 >
 > **D-785 supersedes D-784 without moving PCB copper or changing the fabrication package.**
 > The MAX17048 release gate now binds the primary-source meanings of `MODE.HibStat` and
@@ -100,7 +241,7 @@
 > short-hold and reordered-hold controls. **Order remains prohibited until the final
 > clean/pushed D-785 target is independently re-reviewed.**
 >
-> # **STATUS: D-784 ROUND-5 GAUGE/TIMING CORRECTION — EXTERNAL_REVIEW_HOLD, BOARD AUTHORITY `cef458b9` (2026-09-19).**
+> # **STATUS: D-784 ROUND-5 GAUGE/TIMING CORRECTION — EXTERNAL_REVIEW_HOLD, BOARD AUTHORITY `cef458b9` (2026-09-19).**  *(HISTORICAL — superseded by D-788 above.)*
 >
 > **D-784 supersedes D-783 without moving PCB copper or changing the fabrication package.**
 > MAX17048 accessory permission now requires both exact HIBRT=0 configuration and the live
@@ -481,7 +622,7 @@ lost); all four PlatformIO environments build SUCCESS.
   load-bearing for `F7`).
 
 
-> # **STATUS: NOT READY — READINESS WITHDRAWN, ONE OF TWO CAUSES CLOSED (D-765, 2026-09-18).**
+> # **STATUS: NOT READY — READINESS WITHDRAWN, ONE OF TWO CAUSES CLOSED (D-765, 2026-09-18).**  *(HISTORICAL — superseded by D-788 above; every number in this block, including its board authority and summary table, is D-765's.)*
 >
 > **BOARD AUTHORITY `9e4728ae`** (copper byte-identical to `1a06b058`; only the two
 > accessory-limiter footprint `descr`/`Value` fields and a `.kicad_dru` comment

@@ -32,6 +32,7 @@
 #include "../hw/aqroot_demo_board.h"
 #include "../hw/aqroot_demo_display.h"
 #include "../hw/aqroot_demo_expanders.h"
+#include "../hw/aqroot_demo_gauge_bringup.h"
 #include "../hw/max17048_guard.h"
 #include "../hw/aqroot_demo_timing_policy.h"
 #include "../hw/aqroot_demo_peripherals.h"
@@ -83,11 +84,11 @@ static bool i2cReadByte(uint8_t address, uint8_t reg, uint8_t *value) {
 }
 
 static bool configureFuelGaugeActiveMode() {
-  // D-787 / Round-6: the executed ordering lives in a host-tested policy seam,
-  // not in a source-text gate. The wait occurs only AFTER HIBRT=0 + HibStat=0
-  // qualification succeeds.
-  return qualifyFuelGaugeActiveMode(
-      g_fuel_gauge, g_bus, [](uint32_t ms) { delay(ms); });
+  // D-788 / Round-7: the executed ordering AND the wait this board actually
+  // performs both live in `../hw/aqroot_demo_gauge_bringup.h`, which
+  // `test_production_timing.cpp` compiles and runs against a recording clock.
+  // There is no second copy of the ordering here.
+  return configureFuelGaugeActiveModeOnHardware(g_fuel_gauge, g_bus);
 }
 
 // MAX17048 VCELL, register 0x02.  D-766 CORRECTED AN OFF-BY-SIXTEEN.  The read
@@ -141,6 +142,8 @@ static void afterAccessoryChange();
 static void applyAccessoryRetention(const char *ctx);
 static void settledAccessoryRecheck(const char *what);
 static bool blockingDemoTestAllowed(const char *what);
+static void reportAccessoryCommand(const char *rail, bool want, bool acked,
+                                   bool retained);
 
 static void afterAccessoryChange() {
   (void)reconcileAccessoryFlags(g_expanders, &g_acc3v3, &g_acc5v,
@@ -204,6 +207,26 @@ static void settledAccessoryRecheck(const char *what) {
   delay(400);
   applyAccessoryRetention(what);
   g_last_battery_guard_ms = millis();
+}
+
+// D-788 / R7-D787-09.  ONE LINE, THREE DIFFERENT FACTS.
+//
+// The old message was `ACC_3V3_SW on -> 1`, where the `1` was the I2C
+// acknowledgement captured BEFORE the settled recheck ran.  The recheck can
+// shed the rail it just enabled -- that is the whole point of D-779 -- so the
+// operator could be told `on -> 1` about a rail that is off.  A partial or
+// lost-ACK transaction is a third case again: the request neither succeeded
+// nor is known to have failed.  All three are printed.
+static void reportAccessoryCommand(const char *rail, bool want, bool acked,
+                                   bool retained) {
+  const bool uncertain = g_expanders.safeShutdownPending() ||
+                         !g_expanders.u2().outputShadowValid() ||
+                         !g_expanders.u3().outputShadowValid();
+  const char *state = uncertain ? "UNKNOWN (pending safe reconciliation)"
+                                : (retained ? "ON" : "OFF");
+  Serial.printf("%s requested %s, acknowledged %s, state after "
+                "reconciliation %s\n",
+                rail, want ? "on" : "off", acked ? "yes" : "no", state);
 }
 
 // D-779.  THE PERMISSION WAS TAKEN BEFORE THE LOAD EXISTED.
@@ -277,17 +300,46 @@ static void releaseExpanderResetLines() {
   // Safe latches and directions were already committed at the very start of
   // setup(), before USB/Serial waiting or bus discovery.  Only now release the
   // three downstream resets in the order the parts want them.
-  g_expanders.holdNfcBoostOff(g_bus);
-  g_expanders.setDisplayReset(g_bus, true);
-  g_expanders.setTouchReset(g_bus, true);
-  g_expanders.setLoraReset(g_bus, true);
+  //
+  // D-788 / R7-D787-08.  EVERY ONE OF THESE RETURN VALUES USED TO BE DISCARDED
+  // AND THE LINE BELOW PRINTED `PASS ... released` UNCONDITIONALLY.  A NACKed
+  // de-assert leaves the modelled latch ASSERTED and U2's output shadow
+  // INVALID, and the operator was told the resets were released.  The writes
+  // are aggregated now, and the shadow -- the only thing that says whether the
+  // device took them -- decides between CONFIRMED, FAILED and UNKNOWN.
+  bool writes_ok = g_expanders.holdNfcBoostOff(g_bus);
+  writes_ok = g_expanders.setDisplayReset(g_bus, true) && writes_ok;
+  writes_ok = g_expanders.setTouchReset(g_bus, true) && writes_ok;
+  writes_ok = g_expanders.setLoraReset(g_bus, true) && writes_ok;
   delay(10);
-  g_expanders.setDisplayReset(g_bus, false);
-  g_expanders.setTouchReset(g_bus, false);
+  writes_ok = g_expanders.setDisplayReset(g_bus, false) && writes_ok;
+  writes_ok = g_expanders.setTouchReset(g_bus, false) && writes_ok;
   delay(5);
-  g_expanders.setLoraReset(g_bus, false);
+  writes_ok = g_expanders.setLoraReset(g_bus, false) && writes_ok;
   delay(10);
-  report("reset lines released (U2 P00/P01/P04)", true);
+
+  const bool shadow_known = g_expanders.u2().outputShadowValid();
+  const uint16_t latch = g_expanders.u2().outputShadow();
+  const bool released =
+      shadow_known &&
+      Pcal9535a::bitOf(latch, AQROOT_U2_DISP_RST_N) &&
+      Pcal9535a::bitOf(latch, AQROOT_U2_TOUCH_RST_N) &&
+      Pcal9535a::bitOf(latch, AQROOT_U2_SX1262_RST_N);
+  char detail[112];
+  if (writes_ok && released) {
+    snprintf(detail, sizeof(detail),
+             "CONFIRMED from U2 output latch 0x%04X", latch);
+  } else if (!shadow_known) {
+    snprintf(detail, sizeof(detail),
+             "UNKNOWN: a reset write failed and U2's output shadow is invalid; "
+             "resets may still be asserted");
+  } else {
+    snprintf(detail, sizeof(detail),
+             "FAILED: U2 output latch 0x%04X does not show all three released",
+             latch);
+  }
+  report("reset lines released (U2 P00/P01/P04)", writes_ok && released,
+         detail);
 }
 
 static void probeRadios() {
@@ -574,7 +626,11 @@ void loop() {
         if (ok) g_acc3v3 = want;
         afterAccessoryChange();
         if (ok && want) settledAccessoryRecheck("ACC_3V3_SW");
-        Serial.printf("ACC_3V3_SW %s -> %d\n", want ? "on" : "off", ok);
+        // D-788 / R7-D787-09.  `ok` is the ACKNOWLEDGEMENT of the request, and
+        // it was captured BEFORE `settledAccessoryRecheck` -- which may have
+        // shed this very rail on the post-step VCELL.  Report the request, the
+        // acknowledgement and the RECONCILED retained state separately.
+        reportAccessoryCommand("ACC_3V3_SW", want, ok, g_acc3v3);
         break;
       }
       case '5': {
@@ -591,7 +647,11 @@ void loop() {
         if (ok) g_acc5v = want;
         afterAccessoryChange();
         if (ok && want) settledAccessoryRecheck("ACC_5V_SW");
-        Serial.printf("ACC_5V_SW %s -> %d\n", want ? "on" : "off", ok);
+        // D-788 / R7-D787-09.  `ok` is the ACKNOWLEDGEMENT of the request, and
+        // it was captured BEFORE `settledAccessoryRecheck` -- which may have
+        // shed this very rail on the post-step VCELL.  Report the request, the
+        // acknowledgement and the RECONCILED retained state separately.
+        reportAccessoryCommand("ACC_5V_SW", want, ok, g_acc5v);
         break;
       }
       case 'i': {
@@ -599,7 +659,7 @@ void loop() {
         const bool ok = g_expanders.setAccessoryI2cBuffer(g_bus, want);
         if (ok) g_accessory_i2c = want;
         afterAccessoryChange();
-        Serial.printf("ACC_PWR_EN %s -> %d\n", want ? "on" : "off", ok);
+        reportAccessoryCommand("ACC_PWR_EN", want, ok, g_accessory_i2c);
         break;
       }
       case 'm': {

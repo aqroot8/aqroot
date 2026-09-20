@@ -1,0 +1,2000 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": false,
+ "fetched_utc": "2026-09-20T19:53:41Z",
+ "keyword": "29.8K 0.1% 0603",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "29.8kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>29.8kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Viking Tech",
+   "componentCode": "C2681623",
+   "componentLibraryType": "expand",
+   "componentModelEn": "ARG03BTC2982N",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0261,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0207,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0176,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.0158,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": 19999,
+     "productPrice": 0.0143,
+     "startNumber": 10000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0134,
+     "startNumber": 20000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Viking-Tech-ARG03BTC2982N_C2681623.pdf",
+   "describe": "-55℃~+155℃ 100mW 29.8kΩ 75V Thin Film Resistor ±0.1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 29.8kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_viking-tech-arg03btc2982n_C2681623.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 8,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 318
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "29.8kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>29.8kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C861289",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RT0603BRD0729K8L",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0175,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0175,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0175,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0068,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0066,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0064,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2210190000_YAGEO-RT0603BRD0729K8L_C861289.pdf",
+   "describe": "-55℃~+155℃ 100mW 29.8kΩ Thin Film Resistor ±0.1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 29.8kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-rt0603brd0729k8l_C861289.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 1410,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "29.8kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>29.8kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "150mW"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1723237",
+   "componentLibraryType": "expand",
+   "componentModelEn": "PAT0603E2982BST1",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.2722,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.2722,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.2722,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1054,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1016,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0998,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-PAT0603E2982BST1_C1723237.pdf",
+   "describe": "-55℃~+155℃ 150mW 29.8kΩ 75V Thin Film Resistor ±0.1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 29.8kΩ ±0.1% 150mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_vishay-intertech-pat0603e2982bst1_C1723237.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 34,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "29.8kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>29.8kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±10ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C2564122",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN73R1JTTD2982B10",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.1853,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.1478,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.1317,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1117,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1028,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0974,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404021016_KOA-Speer-Elec-RN73R1JTTD2982B10_C2564122.pdf",
+   "describe": "-55℃~+155℃ 100mW 29.8kΩ Thin Film Resistor ±0.1% ±10ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 29.8kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rn73r1jttd2982b10_C2564122.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 69,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "29.8kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>29.8kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C3941562",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN73R1JTTD2982B25",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0458,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0458,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0458,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0178,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0171,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0168,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404081244_KOA-Speer-Elec-RN73R1JTTD2982B25_C3941562.pdf",
+   "describe": "-55℃~+155℃ 100mW 29.8kΩ Thin Film Resistor ±0.1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 29.8kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rn73r1jttd2982b25_C3941562.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 197,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "29.8kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>29.8kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±10ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C3953691",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN73H1JTTD2982B10",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.3312,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.3312,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.3312,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1281,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1237,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1215,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404081352_KOA-Speer-Elec-RN73H1JTTD2982B10_C3953691.pdf",
+   "describe": "-55℃~+155℃ 100mW 29.8kΩ Metal Film Resistor ±0.1% ±10ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "金属膜电阻 29.8kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rn73h1jttd2982b10_C3953691.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 28,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "29.8kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>29.8kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C3992879",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN73H1JTTD2982B25",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.1115,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.1115,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.1115,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0432,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0417,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0409,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404081732_KOA-Speer-Elec-RN73H1JTTD2982B25_C3992879.pdf",
+   "describe": "-55℃~+155℃ 100mW 29.8kΩ Metal Film Resistor ±0.1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "金属膜电阻 29.8kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rn73h1jttd2982b25_C3992879.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 81,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "29.8kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>29.8kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±5ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C4038147",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN73R1JTTD2982B05",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.4541,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.4541,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.4541,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1758,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1696,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1666,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404091202_KOA-Speer-Elec-RN73R1JTTD2982B05_C4038147.pdf",
+   "describe": "-55℃~+155℃ 100mW 29.8kΩ Thin Film Resistor ±0.1% ±5ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 29.8kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rn73r1jttd2982b05_C4038147.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 20,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "29.8kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>29.8kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "63mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C4056752",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN731JTTD2982B25",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0904,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 119,
+     "productPrice": 0.0904,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.0904,
+     "startNumber": 120
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.035,
+     "startNumber": 2000
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.0337,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0331,
+     "startNumber": 10000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2403201244_KOA-Speer-Elec-RN731JTTD2982B25_C4056752.pdf",
+   "describe": "-55℃~+155℃ 29.8kΩ 63mW Thin Film Resistor ±0.1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 29.8kΩ ±0.1% 63mW",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rn731jttd2982b25_C4056752.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 100,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "29.8kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>29.8kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "375mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C4099825",
+   "componentLibraryType": "expand",
+   "componentModelEn": "PHP00603E2982BST1",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.6983,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.6983,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.6983,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2702,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.2605,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.2572,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312181425_Vishay-Intertech-PHP00603E2982BST1_C4099825.pdf",
+   "describe": "-55℃~+155℃ 29.8kΩ 375mW Thin Film Resistor ±0.1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 29.8kΩ ±0.1% 375mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_vishay-intertech-php00603e2982bst1_C4099825.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 13,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "29.8kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>29.8kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "62.5mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±5ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C4114041",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN731JTTD2982B05",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.5892,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.5892,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.5892,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2279,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.2214,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.2165,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404101007_KOA-Speer-Elec-RN731JTTD2982B05_C4114041.pdf",
+   "describe": "-55℃~+155℃ 29.8kΩ 62.5mW Thin Film Resistor ±0.1% ±5ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 29.8kΩ ±0.1% 62.5mW",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rn731jttd2982b05_C4114041.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 16,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "29.8kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>29.8kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "62.5mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±10ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C4127242",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN731JTTD2982B10",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.2377,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 59,
+     "productPrice": 0.2377,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.2377,
+     "startNumber": 60
+    },
+    {
+     "endNumber": 2499,
+     "productPrice": 0.092,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0888,
+     "startNumber": 2500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0871,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404101104_KOA-Speer-Elec-RN731JTTD2982B10_C4127242.pdf",
+   "describe": "-55℃~+155℃ 29.8kΩ 62.5mW Thin Film Resistor ±0.1% ±10ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 29.8kΩ ±0.1% 62.5mW",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rn731jttd2982b10_C4127242.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 38,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "29.8kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>29.8kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "375mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C4167446",
+   "componentLibraryType": "expand",
+   "componentModelEn": "PHP00603E2982BBT1",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.6983,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.6983,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.6983,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2702,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.2605,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.2572,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312181447_Vishay-Intertech-PHP00603E2982BBT1_C4167446.pdf",
+   "describe": "-55℃~+155℃ 29.8kΩ 375mW Thin Film Resistor ±0.1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount",
+   "erpComponentName": "薄膜电阻 29.8kΩ ±0.1% 375mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_vishay-intertech-php00603e2982bbt1_C4167446.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 13,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "29.8kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>29.8kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±5ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C4216183",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN73H1JTTD2982B05",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.573,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.573,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.573,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.223,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.2149,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.21,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404111137_KOA-Speer-Elec-RN73H1JTTD2982B05_C4216183.pdf",
+   "describe": "-55℃~+155℃ 100mW 29.8kΩ Metal Film Resistor ±0.1% ±5ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "金属膜电阻 29.8kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rn73h1jttd2982b05_C4216183.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 16,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "29.8kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>29.8kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "62.5mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C4236398",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN731JTTD2982B50",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0904,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 119,
+     "productPrice": 0.0904,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.0904,
+     "startNumber": 120
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.035,
+     "startNumber": 2000
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.0337,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0331,
+     "startNumber": 10000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404111328_KOA-Speer-Elec-RN731JTTD2982B50_C4236398.pdf",
+   "describe": "-55℃~+155℃ 29.8kΩ 62.5mW Thin Film Resistor ±0.1% ±50ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 29.8kΩ ±0.1% 62.5mW",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rn731jttd2982b50_C4236398.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 100,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "29.8kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>29.8kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C4263114",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN73H1JTTD2982B50",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.1115,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.1115,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.1115,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0432,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0417,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0409,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404111557_KOA-Speer-Elec-RN73H1JTTD2982B50_C4263114.pdf",
+   "describe": "-55℃~+155℃ 100mW 29.8kΩ Metal Film Resistor ±0.1% ±50ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "金属膜电阻 29.8kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rn73h1jttd2982b50_C4263114.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 81,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "29.8kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>29.8kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C4300370",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN73R1JTTD2982B50",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0941,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0941,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0941,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0365,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0352,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0346,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404121038_KOA-Speer-Elec-RN73R1JTTD2982B50_C4300370.pdf",
+   "describe": "-55℃~+155℃ 100mW 29.8kΩ Thin Film Resistor ±0.1% ±50ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 29.8kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rn73r1jttd2982b50_C4300370.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 96,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "29.8kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>29.8kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1416136",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN55E2982BB14",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 1.3754,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 1.3754,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 1.3754,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.5323,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.5144,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.5046,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D2.3xL6.1mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-RN55E2982BB14_C1416136.pdf",
+   "describe": "-65℃~+175℃ 125mW 29.8kΩ Metal Film Resistor ±0.1% ±25ppm/℃ 插件,D2.3xL6.1mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 29.8kΩ ±0.1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rn55e2982bb14_C1416136.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 7,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "29.8kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>29.8kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1428995",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN55C2982BBSL",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 1.6504,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 1.6504,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 1.6504,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.6397,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.6169,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.6055,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D2.3xL6.1mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-RN55C2982BBSL_C1428995.pdf",
+   "describe": "-65℃~+175℃ 125mW 29.8kΩ Metal Film Resistor ±0.1% ±50ppm/℃ 插件,D2.3xL6.1mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 29.8kΩ ±0.1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rn55c2982bbsl_C1428995.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 6,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "29.8kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>29.8kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1430962",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN55E2982BBSL",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 1.6504,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 1.6504,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 1.6504,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.6397,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.6169,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.6055,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D2.3xL6.1mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-RN55E2982BBSL_C1430962.pdf",
+   "describe": "-65℃~+175℃ 125mW 29.8kΩ Metal Film Resistor ±0.1% ±25ppm/℃ 插件,D2.3xL6.1mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 29.8kΩ ±0.1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rn55e2982bbsl_C1430962.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 6,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "29.8kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>29.8kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "250mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±10ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1442659",
+   "componentLibraryType": "expand",
+   "componentModelEn": "PTF6529K800BYEK",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 2.4968,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 2.4968,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 2.4968,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.9668,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.9327,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.9164,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D3.7xL9.5mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-PTF6529K800BYEK_C1442659.pdf",
+   "describe": "-55℃~+150℃ 250mW 29.8kΩ Metal Film Resistor ±0.1% ±10ppm/℃ 插件,D3.7xL9.5mm Through Hole Resistors ROHS",
+   "erpComponentName": "金属膜电阻 29.8kΩ ±0.1% 250mW",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-ptf6529k800byek_C1442659.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 4,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "29.8kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>29.8kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "250mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±10ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1443433",
+   "componentLibraryType": "expand",
+   "componentModelEn": "PTF6529K800BYBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 2.4968,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 2.4968,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 2.4968,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.9668,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.9327,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.9164,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D3.7xL9.5mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-PTF6529K800BYBF_C1443433.pdf",
+   "describe": "-55℃~+150℃ 250mW 29.8kΩ Metal Film Resistor ±0.1% ±10ppm/℃ 插件,D3.7xL9.5mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 29.8kΩ ±0.1% 250mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-ptf6529k800bybf_C1443433.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 4,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "29.8kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>29.8kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1453469",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNC55H2982BSB14",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 5.3109,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 5.3109,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 5.3109,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 2.0557,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 1.9841,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 1.9483,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D2.4xL6.4mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-RNC55H2982BSB14_C1453469.pdf",
+   "describe": "-65℃~+175℃ 125mW 29.8kΩ Metal Film Resistor ±0.1% ±50ppm/℃ 插件,D2.4xL6.4mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 29.8kΩ ±0.1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rnc55h2982bsb14_C1453469.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "29.8kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>29.8kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1454366",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNC55H2982BSBSL",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 5.8464,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 5.8464,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 5.8464,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 2.2624,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 2.1843,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 2.1436,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D2.4xL6.4mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-RNC55H2982BSBSL_C1454366.pdf",
+   "describe": "-65℃~+175℃ 125mW 29.8kΩ Metal Film Resistor ±0.1% ±50ppm/℃ 插件,D2.4xL6.4mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 29.8kΩ ±0.1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rnc55h2982bsbsl_C1454366.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "29.8kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>29.8kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1455426",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNC55J2982BSB14",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 6.0433,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 6.0433,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 6.0433,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 2.3389,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 2.2575,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 2.2168,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D2.4xL6.4mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-RNC55J2982BSB14_C1455426.pdf",
+   "describe": "-65℃~+175℃ 125mW 29.8kΩ Metal Film Resistor ±0.1% ±25ppm/℃ 插件,D2.4xL6.4mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 29.8kΩ ±0.1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rnc55j2982bsb14_C1455426.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  }
+ ],
+ "returned": 25,
+ "schema": 1,
+ "total_matches": 161
+}

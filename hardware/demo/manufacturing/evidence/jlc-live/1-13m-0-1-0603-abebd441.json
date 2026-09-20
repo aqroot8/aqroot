@@ -1,0 +1,2048 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": false,
+ "fetched_utc": "2026-09-20T19:54:58Z",
+ "keyword": "1.13M 0.1% 0603",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.13MΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.13MΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "250mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C870523",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RT1206BRD071M13L",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0586,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0586,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0586,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0227,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.022,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0215,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "1206",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404241535_YAGEO-RT1206BRD071M13L_C870523.pdf",
+   "describe": "-55℃~+155℃ 1.13MΩ 250mW Thin Film Resistor ±0.1% ±25ppm/℃ 1206 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 1.13MΩ ±0.1% 250mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-rt1206brd071m13l_C870523.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 154,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.13MΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.13MΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "250mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1489430",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNC60J1134BSB14",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 23.5937,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 23.5937,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 23.5937,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 9.1309,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 8.8102,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 8.6523,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D2.5xL7.1mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-RNC60J1134BSB14_C1489430.pdf",
+   "describe": "-65℃~+175℃ 1.13MΩ 250mW Metal Film Resistor ±0.1% ±25ppm/℃ 插件,D2.5xL7.1mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 1.13MΩ ±0.1% 250mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rnc60j1134bsb14_C1489430.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.13MΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.13MΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1494606",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNC55J1134BSB14",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 24.6858,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 24.6858,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 24.6858,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 9.554,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 9.2171,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 9.0511,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D2.4xL6.4mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-RNC55J1134BSB14_C1494606.pdf",
+   "describe": "-65℃~+175℃ 1.13MΩ 125mW Metal Film Resistor ±0.1% ±25ppm/℃ 插件,D2.4xL6.4mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 1.13MΩ ±0.1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rnc55j1134bsb14_C1494606.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.13MΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.13MΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "400mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "200V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1717983",
+   "componentLibraryType": "expand",
+   "componentModelEn": "TNPW12061M13BEEA",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.2351,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.2351,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.2351,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.091,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0878,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0861,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "1206",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-TNPW12061M13BEEA_C1717983.pdf",
+   "describe": "-55℃~+155℃ 1.13MΩ 200V 400mW Thin Film Resistor ±0.1% ±25ppm/℃ 1206 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 1.13MΩ ±0.1% 400mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_vishay-intertech-tnpw12061m13beea_C1717983.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 39,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.13MΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.13MΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1839450",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNC55J1134BSRE6",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 11.4762,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 11.4762,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 11.4762,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 4.4418,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 4.2855,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 4.209,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D2.4xL6.4mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-RNC55J1134BSRE6_C1839450.pdf",
+   "describe": "-65℃~+175℃ 1.13MΩ 125mW Metal Film Resistor ±0.1% ±25ppm/℃ 插件,D2.4xL6.4mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 1.13MΩ ±0.1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rnc55j1134bsre6_C1839450.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.13MΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.13MΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "250mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1840862",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNC60J1134BSRE6",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 12.6985,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 12.6985,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 12.6985,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 4.9154,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 4.7429,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 4.6566,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D2.5xL7.1mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-RNC60J1134BSRE6_C1840862.pdf",
+   "describe": "-65℃~+175℃ 1.13MΩ 250mW Metal Film Resistor ±0.1% ±25ppm/℃ 插件,D2.5xL7.1mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 1.13MΩ ±0.1% 250mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rnc60j1134bsre6_C1840862.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.13MΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.13MΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1844845",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNC55J1134BSRSL",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 12.6302,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 12.6302,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 12.6302,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 4.8877,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 4.7168,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 4.6322,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D2.4xL6.4mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-RNC55J1134BSRSL_C1844845.pdf",
+   "describe": "-65℃~+175℃ 1.13MΩ 125mW Metal Film Resistor ±0.1% ±25ppm/℃ 插件,D2.4xL6.4mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 1.13MΩ ±0.1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rnc55j1134bsrsl_C1844845.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.13MΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.13MΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "SEI(Stackpole Elec)",
+   "componentCode": "C2498520",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNCF0805BTC1M13",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0572,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0572,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0572,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0222,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0214,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.021,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_SEI-Stackpole-Elec-RNCF0805BTC1M13_C2498520.pdf",
+   "describe": "-55℃~+155℃ 1.13MΩ 100V 100mW Thin Film Resistor ±0.1% ±50ppm/℃ 0805 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 1.13MΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_sei-stackpole-elec-rncf0805btc1m13_C2498520.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 158,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.13MΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.13MΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "SEI(Stackpole Elec)",
+   "componentCode": "C2501181",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNCF0805BTE1M13",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0634,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0634,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0634,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0246,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0237,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0233,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_SEI-Stackpole-Elec-RNCF0805BTE1M13_C2501181.pdf",
+   "describe": "-55℃~+155℃ 1.13MΩ 100V 100mW Thin Film Resistor ±0.1% ±25ppm/℃ 0805 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 1.13MΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_sei-stackpole-elec-rncf0805bte1m13_C2501181.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 143,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.13MΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.13MΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "150V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C2507715",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN73R2ATTD1134B25",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0601,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.0482,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.0422,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0378,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0342,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0324,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_KOA-Speer-Elec-RN73R2ATTD1134B25_C2507715.pdf",
+   "describe": "-55℃~+155℃ 1.13MΩ 125mW 150V Thin Film Resistor ±0.1% ±25ppm/℃ 0805 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 1.13MΩ ±0.1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rn73r2attd1134b25_C2507715.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 239,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.13MΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.13MΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "150V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "SEI(Stackpole Elec)",
+   "componentCode": "C2507752",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNCF1206BTC1M13",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0697,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0697,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0697,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0271,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0261,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0256,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "1206",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_SEI-Stackpole-Elec-RNCF1206BTC1M13_C2507752.pdf",
+   "describe": "-55℃~+155℃ 1.13MΩ 125mW 150V Thin Film Resistor ±0.1% ±50ppm/℃ 1206 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 1.13MΩ ±0.1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_sei-stackpole-elec-rncf1206btc1m13_C2507752.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 130,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.13MΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.13MΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "150V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "SEI(Stackpole Elec)",
+   "componentCode": "C2516270",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNCF1206BTE1M13",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0774,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0774,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0774,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.03,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.029,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0284,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "1206",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_SEI-Stackpole-Elec-RNCF1206BTE1M13_C2516270.pdf",
+   "describe": "-55℃~+155℃ 1.13MΩ 125mW 150V Thin Film Resistor ±0.1% ±25ppm/℃ 1206 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 1.13MΩ ±0.1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_sei-stackpole-elec-rncf1206bte1m13_C2516270.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 117,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.13MΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.13MΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "SEI(Stackpole Elec)",
+   "componentCode": "C2523323",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNCF0805BKE1M13",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.101,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.101,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.101,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0391,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0376,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.037,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_SEI-Stackpole-Elec-RNCF0805BKE1M13_C2523323.pdf",
+   "describe": "-55℃~+155℃ 1.13MΩ 100V 100mW Thin Film Resistor ±0.1% ±25ppm/℃ 0805 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 1.13MΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_sei-stackpole-elec-rncf0805bke1m13_C2523323.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 90,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.13MΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.13MΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "250mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "150V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "SEI(Stackpole Elec)",
+   "componentCode": "C2537322",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNCF1210BTC1M13",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.122,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.122,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.122,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0473,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0456,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0448,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_SEI-Stackpole-Elec-RNCF1210BTC1M13_C2537322.pdf",
+   "describe": "-55℃~+155℃ 1.13MΩ 150V 250mW Thin Film Resistor ±0.1% ±50ppm/℃ 1210 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 1.13MΩ ±0.1% 250mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_sei-stackpole-elec-rncf1210btc1m13_C2537322.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 74,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.13MΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.13MΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C2538152",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN73H2ATTD1134B25",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0997,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.08,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.07,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0627,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0567,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0538,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404011706_KOA-Speer-Elec-RN73H2ATTD1134B25_C2538152.pdf",
+   "describe": "-55℃~+155℃ 1.13MΩ 125mW Metal Film Resistor ±0.1% ±25ppm/℃ 0805 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "金属膜电阻 1.13MΩ ±0.1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rn73h2attd1134b25_C2538152.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 144,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.13MΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.13MΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "250mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "150V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "SEI(Stackpole Elec)",
+   "componentCode": "C2552001",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNCF2010BTC1M13",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.1535,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.1535,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.1535,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0595,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0573,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0564,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "2010",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_SEI-Stackpole-Elec-RNCF2010BTC1M13_C2552001.pdf",
+   "describe": "-55℃~+155℃ 1.13MΩ 150V 250mW Thin Film Resistor ±0.1% ±50ppm/℃ 2010 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 1.13MΩ ±0.1% 250mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_sei-stackpole-elec-rncf2010btc1m13_C2552001.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 59,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.13MΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.13MΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "250mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "150V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "SEI(Stackpole Elec)",
+   "componentCode": "C2559742",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNCF1210BTE1M13",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.1884,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.1884,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.1884,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.073,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0704,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0691,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_SEI-Stackpole-Elec-RNCF1210BTE1M13_C2559742.pdf",
+   "describe": "-55℃~+155℃ 1.13MΩ 150V 250mW Thin Film Resistor ±0.1% ±25ppm/℃ 1210 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 1.13MΩ ±0.1% 250mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_sei-stackpole-elec-rncf1210bte1m13_C2559742.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 48,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.13MΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.13MΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "500mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "150V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "SEI(Stackpole Elec)",
+   "componentCode": "C2560753",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNCF2512BTC1M13",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.195,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.195,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.195,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0756,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0728,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0715,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "2512",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_SEI-Stackpole-Elec-RNCF2512BTC1M13_C2560753.pdf",
+   "describe": "-55℃~+155℃ 1.13MΩ 150V 500mW Thin Film Resistor ±0.1% ±50ppm/℃ 2512 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 1.13MΩ ±0.1% 500mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_sei-stackpole-elec-rncf2512btc1m13_C2560753.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 47,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.13MΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.13MΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "250mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "150V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "SEI(Stackpole Elec)",
+   "componentCode": "C2562648",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNCF1210BKE1M13",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.1825,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.1825,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.1825,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0707,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0682,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0669,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_SEI-Stackpole-Elec-RNCF1210BKE1M13_C2562648.pdf",
+   "describe": "-55℃~+155℃ 1.13MΩ 150V 250mW Thin Film Resistor ±0.1% ±25ppm/℃ 1210 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 1.13MΩ ±0.1% 250mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_sei-stackpole-elec-rncf1210bke1m13_C2562648.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 50,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.13MΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.13MΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "500mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "150V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "SEI(Stackpole Elec)",
+   "componentCode": "C2563313",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNCF2512BKE1M13",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.2253,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.2253,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.2253,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0873,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0842,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0827,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "2512",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_SEI-Stackpole-Elec-RNCF2512BKE1M13_C2563313.pdf",
+   "describe": "-55℃~+155℃ 1.13MΩ 150V 500mW Thin Film Resistor ±0.1% ±25ppm/℃ 2512 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 1.13MΩ ±0.1% 500mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_sei-stackpole-elec-rncf2512bke1m13_C2563313.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 0,
+   "minPurchaseNum": 41,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.13MΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.13MΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "500mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "150V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "SEI(Stackpole Elec)",
+   "componentCode": "C2563662",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNCF2512BTE1M13",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.218,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.218,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.218,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0844,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0814,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.08,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "2512",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_SEI-Stackpole-Elec-RNCF2512BTE1M13_C2563662.pdf",
+   "describe": "-55℃~+155℃ 1.13MΩ 150V 500mW Thin Film Resistor ±0.1% ±25ppm/℃ 2512 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 1.13MΩ ±0.1% 500mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_sei-stackpole-elec-rncf2512bte1m13_C2563662.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 42,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.13MΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.13MΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "500mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C3359218",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNC65H1134BRRE565",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 11.9108,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 11.9108,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 11.9108,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 4.6094,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 4.4483,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 4.3685,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D4.6xL14.3mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312110959_Vishay-Intertech-RNC65H1134BRRE565_C3359218.pdf",
+   "describe": "-65℃~+175℃ 1.13MΩ 500mW Metal Film Resistor ±0.1% ±50ppm/℃ 插件,D4.6xL14.3mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 1.13MΩ ±0.1% 500mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rnc65h1134brre565_C3359218.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.13MΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.13MΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C3376047",
+   "componentLibraryType": "expand",
+   "componentModelEn": "ERC551M1300BEEB500",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 9.7738,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 9.7738,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 9.7738,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 3.7826,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 3.6491,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 3.584,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D2.4xL6.4mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312141220_Vishay-Intertech-ERC551M1300BEEB500_C3376047.pdf",
+   "describe": "-65℃~+175℃ 1.13MΩ 125mW Metal Film Resistor ±0.1% ±25ppm/℃ 插件,D2.4xL6.4mm Through Hole Resistors ROHS",
+   "erpComponentName": "金属膜电阻 1.13MΩ ±0.1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-erc551m1300beeb500_C3376047.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.13MΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.13MΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C3395140",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNC55J1134BSRE7",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 11.9271,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 11.9271,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 11.9271,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 4.6159,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 4.4531,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 4.3734,
+     "startNumber": 1500
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D2.4xL6.4mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312111140_Vishay-Intertech-RNC55J1134BSRE7_C3395140.pdf",
+   "describe": "-65℃~+175℃ 1.13MΩ 125mW Metal Film Resistor ±0.1% ±25ppm/℃ 插件,D2.4xL6.4mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 1.13MΩ ±0.1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rnc55j1134bsre7_C3395140.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "1.13MΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>1.13MΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "500mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C3399475",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNC65H1134BRRE865",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 11.9108,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 11.9108,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 11.9108,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 4.6094,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 4.4483,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 4.3685,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D4.6xL14.3mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312141335_Vishay-Intertech-RNC65H1134BRRE865_C3399475.pdf",
+   "describe": "-65℃~+175℃ 1.13MΩ 500mW Metal Film Resistor ±0.1% ±50ppm/℃ 插件,D4.6xL14.3mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 1.13MΩ ±0.1% 500mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rnc65h1134brre865_C3399475.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  }
+ ],
+ "returned": 25,
+ "schema": 1,
+ "total_matches": 69
+}

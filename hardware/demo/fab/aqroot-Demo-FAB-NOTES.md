@@ -31,7 +31,13 @@ KiCad DRC on this board reports **ZERO** `hole_clearance` violations.  3 named, 
 
 Profile extents: **77.000 x 148.000 mm** (x 0.000 .. 77.000, y 0.000 .. 148.000), 8 segments.
 
-The profile has **2 INSIDE (reflex) corners**.  A profile router cannot cut a sharp inside corner: it leaves a fillet of its own tool radius, which means **MATERIAL REMAINS** and the board is very slightly LARGER there than drawn.  **That is the correct and accepted treatment -- any tool radius is fine and the enclosure clears it.**  What is NOT accepted is squaring the corner by plunging, drilling a relief or otherwise OVER-CUTTING, because that removes material toward the copper.  The number below bounds such a relief if one is ever cut:
+The profile has **2 INSIDE (reflex) corners**.  A profile router cannot cut a sharp inside corner: it leaves a fillet of its own tool radius, which means **MATERIAL REMAINS** and the board is very slightly LARGER there than drawn.  A retained fillet is the CORRECT treatment.  What is NOT accepted is squaring the corner by plunging, drilling a relief or otherwise OVER-CUTTING, because that removes material toward the copper.
+
+**D-788 / R7-D787-13 BOUNDS THE RETAINED FILLET.**  This note previously said *"any tool radius is fine and the enclosure clears it"*, which is an unbounded permission: material left by a large tool grows the board OUTWARD at the step, and the enclosure recess it has to sit in has **1.500 mm** of inside radius at that step.  The bound is therefore stated in both directions, and CAM must show it before the profile is cut:
+
+- **MAXIMUM RETAINED FILLET / TOOL RADIUS: 1.00 mm.**  A larger tool leaves material that the enclosure recess does not clear.  A 1.00 mm or smaller routing tool satisfies it; so does any larger tool that finishes the corner with a 1.00 mm or smaller radius.
+- **NO OVER-CUT.**  Any corner relief must stay under the per-corner copper distance listed below.
+- **CAM PROFILE PREVIEW IS REQUIRED.**  The fabricator must return a profile/rout preview showing the ACTUAL retained corner geometry and the tool radius used, and it must be accepted in writing before the profile is cut.  Silent over-cut and silent over-size are both refusals.
 
 - inside corner at **(72.000, 104.005)** -- nearest copper is **0.941 mm** away, edge to edge (pad R41.2, `Net-(U12-PG)`).  A corner relief must stay under 0.941 mm of radius; **a 1.0 mm relief would reach copper here**.
 - inside corner at **(72.000, 70.500)** -- nearest copper is **0.726 mm** away, edge to edge (track, `Net-(U11-TS_MR)`).  A corner relief must stay under 0.726 mm of radius; **a 1.0 mm relief would reach copper here**.
@@ -108,7 +114,7 @@ Every dam below **0.125 mm** on the board:
 | **0.1200 mm** | B.Mask | `U12.1` | `U12.2` | **no** | no |
 | **0.1200 mm** | B.Mask | `U12.10` | `U12.11` | yes | no |
 | **0.1200 mm** | B.Mask | `U12.11` | `U12.12` | **no** | no |
-| **0.1200 mm** | B.Mask | `U12.12` | `U12.13` | **no** | no |
+| **0.1200 mm** | B.Mask | `U12.12` | `U12.13` | yes | no |
 | **0.1200 mm** | B.Mask | `U12.13` | `U12.14` | **no** | no |
 | **0.1200 mm** | B.Mask | `U12.2` | `U12.3` | **no** | no |
 | **0.1200 mm** | B.Mask | `U12.3` | `U12.4` | **no** | no |
@@ -122,7 +128,7 @@ Every dam below **0.125 mm** on the board:
 
 - Rows marked *same net* are vendor land patterns whose two contacts are one node -- the USB-C receptacle's A/B pairs are the whole of that group.  A merged aperture there is harmless and no action is requested.
 - Rows marked *declared bridge* carry `allow_soldermask_bridges` on the footprint AND on its library master; the microphone's port ring is the whole of that group and the merge is the design.
-- **The remaining 12 rows are DIFFERENT NETS, and they split in two.**  All of them are MANUFACTURER LAND PATTERNS, not routing.  **4 are at or under 0.100 mm and are not printable as a web by any process we would order** -- the four DIAGONAL CORNER pairs of `U9`'s UFQFPN32, which come straight from ST's own recommended land (0.30 x 0.75 lands, centres at +/-2.275 on a 0.50 mm pitch); the board's `.kicad_dru` already licenses their COPPER clearance by a named, footprint-scoped rule.  **Please gang those four -- one window per corner -- rather than attempting a web.**  The other 8 are `U12`'s TPS63020 land at **0.120 mm**, which is AT the usual 0.100-0.130 mm limit rather than under it: **print the web if you can hold it, gang the row if you cannot, and tell us which.**  Assembly control at both pitches is the PASTE stencil, which is per-pad and is unaffected either way.
+- **The remaining 11 rows are DIFFERENT NETS, and they split in two.**  All of them are MANUFACTURER LAND PATTERNS, not routing.  **4 are at or under 0.100 mm and are not printable as a web by any process we would order** -- the four DIAGONAL CORNER pairs of `U9`'s UFQFPN32, which come straight from ST's own recommended land (0.30 x 0.75 lands, centres at +/-2.275 on a 0.50 mm pitch); the board's `.kicad_dru` already licenses their COPPER clearance by a named, footprint-scoped rule.  **Please gang those four -- one window per corner -- rather than attempting a web.**  The other 7 are `U12`'s TPS63020 land at **0.120 mm**, which is AT the usual 0.100-0.130 mm limit rather than under it: **print the web if you can hold it, gang the row if you cannot, and tell us which.**  Assembly control at both pitches is the PASTE stencil, which is per-pad and is unaffected either way.
 
 ## NFC first-article parallel-match access -- DO NOT TENT
 
@@ -149,14 +155,18 @@ The authoritative detachable-harness record is `aqroot-Demo-BATTERY-HARNESS.json
 
 ## ACC_3V3 Community-Port reinforcement -- MANUAL FIRST-FIVE OPERATION
 
-The authoritative work instruction is `aqroot-Demo-ACC-3V3-REINFORCEMENT.json` in this package.
+The authoritative work instruction is `aqroot-Demo-ACC-3V3-REINFORCEMENT.json` in this package, and it is DIMENSIONED: corridor, waypoints, bend radius, anchor positions, bead size, cure time, joint profile, sequence and inspection are all in it.
 
+- **ONE conductor per board (D-788 / R7-D787-10).**  D-787 ran TWO conductors onto the single 1.00 mm `TP12` pad; that is retired.  No pad carries two conductors.
 - Source: **TP12.1**, downstream of U20; this does **not** bypass the TPS22950-Q1 current limiter or OFF disconnect.
-- Destinations: **J5.3, J5.22**. Each duplicate 3.3 V contact must independently carry the full published 400 mA rail budget.
-- Wire: **Alpha Wire 2842/19 RD005, AWG28, PTFE, nominal OD 0.69 mm**.
-- Electrical acceptance: each finished TP12-to-J5 path **<=30 mOhm at room temperature**; Kelvin/4-wire preferred.
-- Route/strain-relieve exactly as the packaged traveler requires; keep clear of battery, NFC/RF, display/FPC, button mechanics and enclosure load paths.
-- Inspect continuity, adjacent-pin shorts, solder fillets, insulation, strain relief, connector insertion and enclosure closure before power.
+- Destination: **J5.3**.
+- NOT reinforced: **J5.22 (routed copper alone, 79.0 mOhm measured)** -- better than any manual lead could be, so it gets none.
+- Wire: **Alpha Wire 2842/19 RD005, AWG28, PTFE, nominal OD 0.686 mm**; minimum bend radius **6.9 mm** (10 x OD) at EVERY bend.
+- Electrical acceptance: finished lead **<=25 mOhm at room temperature**, Kelvin/4-wire preferred, **value recorded per board**.
+- Retention: **DOWSIL 3145 RTV adhesive/sealant, grey, MIL-A-46146 -- the SAME material already frozen for the J4 battery-harness strain relief at D-782, so the first-five build carries one adhesive and one cure.**, three beads 4.0 x 2.0 x <=1.0 mm at A0 at (61.5, 63.5), A1 at (68.5, 40.0), A2 at (68.5, 20.0).
+- Cure: tack-free 30 min at 25 C / 50 % RH; handling strength 4 h; FULL CURE 72 h before any pull test, thermal test or shipment. Cure at 25 +/- 5 C; do not accelerate with heat while the lead is under tension.
+- Route in the corridor the traveler dimensions; keep clear of battery, NFC/RF, display/FPC, button mechanics and enclosure load paths to the clearances it states.
+- Inspect continuity, adjacent-pin shorts, the TP12 fillet BEFORE any adhesive, both faces of the J5.3 barrel, every bend radius, all three cured beads, and enclosure closure -- before power.
 
 ## Stackup, finish and required process -- NOT SUBSTITUTABLE
 
@@ -183,6 +193,7 @@ Everything below is read out of the board file's own stackup block and is also c
 - **Total declared stack 1.5744 mm; required finished thickness 1.5744 +/- 0.10 mm.**  Do not substitute a house-default thickness without written engineering approval.  `J4` is now a manual pigtail land: its front conductive profile is MEASURED <=0.50 mm after soldering, not inferred from board thickness.  Finished thickness still affects enclosure stack and PTH process capability.
 - **Surface finish: ENIG -- not substitutable.**  HASL coplanarity is incompatible with the fine-pitch lands on this board and with the 0.000 mm solder-mask expansion it is drawn with.
 - **Solder-mask expansion is 0.000 mm board-wide** -- a pad's mask aperture IS its copper.  Do not apply a house expansion.
+- **LAMINATE: FR4 with Tg >= 150 C -- D-788 / R7-D787-04.**  The board file declares FR4 and nothing more, and a house TG130 default would be a different thermal design: `audit_rail_ampacity`'s ABSOLUTE acceptance for the one named narrow-run exception on this board -- the 0.200 mm `U11.2` package-land neck -- is a 105 C predicted peak, and 105 C is chosen as the laminate's maximum continuous operating temperature with 45 K of margin below a 150 C Tg.  A TG130 build leaves 25 K and the acceptance must be re-derived before the order.  State the laminate and its Tg on the acknowledgement.
 - **100% BARE-BOARD ELECTRICAL TEST (flying probe or fixture) IS REQUIRED ON EVERY DELIVERED PCB CIRCUIT, against the final accepted netlist; panel-level sampling is not sufficient.**  This is a 6-layer board with resin-filled, cap-plated via-in-pad under fine-pitch parts: an open in a filled barrel is not findable at assembly and not repairable after it.  Provide traceable test confirmation with the lot.
 
 ## Component placement (CPL) convention -- READ BEFORE PROGRAMMING THE PLACER

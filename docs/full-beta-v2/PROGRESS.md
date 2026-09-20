@@ -2,6 +2,27 @@
 
 **Status: LIVING DASHBOARD.**
 
+**D-788 (2026-09-20) — ROUND-7 CORRECTION; EXTERNAL-REVIEW TARGET; NO OPEN OWNER DECISION.**
+Round-7 rejected D-787 with **20 observed release defects**; all twenty are closed.
+The high one was an **ABSOLUTE MAXIMUM violation**: the fitted ILI9488 panel's `VCI`/`IOVCC`
+abs max is **3.3 V** and D-787's rail reached 3.542487 V in power save, with its NOMINAL
+9 mV over.  Fixed with two objects and no new part — `U12` `PS/SYNC` `GND`→`EN` (forced PWM)
+and `R40` 178 kΩ→189 kΩ — giving 3.069408 / 3.223012 V, **76.99 mV inside the panel's
+absolute maximum** and 58.78 mV over the ESP32-S3-WROOM-1's own 3.0 V `VDD33` floor.  Six
+further defects found here and closed (`R7-N01`…`R7-N06`): the display proof was DC-only
+with no ripple or transient term, the low side had no MCU clause, the divider was not
+centred, the pack model kept the retired 68 mΩ RON row, the published contract was not
+cross-checked against `DEVICE_SPEC`, and forced PWM's loss of the 25 µA light-load
+quiescent current was unrecorded.  Board authority `57145f5c`.  Connectivity unchanged
+(174 retained / 173 connected / 1 owner-approved open / 0 unapproved); no protected copper
+moved; `hardware/beta-v2` untouched.  F1–F9, H1–H8, all 19 contracts, FAB1–FAB16, ampacity,
+sourcing, DRC/parity and four PlatformIO builds pass.  **THE COMMUNITY PORT'S PUBLISHED
+TOLERANCE IS DECIDED — the owner approved OPTION A on 2026-09-20.**  A rail capped under
+3.3 V cannot also guarantee 3.3 V −5 % at any current; the port now delivers 3.069408 V
+unloaded and 2.954962 V at the published 400 mA against a published 2.95 V minimum, with
+the 400 mA / 300 mA budgets themselves unchanged and no Kickstarter-visible capability
+removed.  `CTO_DECISIONS.md` D-788 §0.  **Not authorized for fabrication.**
+
 **FBV2-P2-039 (2026-09-01) — D-337 CHARACTERIZATION, NO COPPER/PLACEMENT CHANGE.** Eight coordinated cardinality-3 pull-up layouts (24 complete-net attempts) failed without a rule relaxation; the fixed U2/pull-up cluster is the remaining west-button wall. D-332 remains authoritative and all closeout gates pass unchanged. Next: bounded J1 display-fanout framework; U2 cluster ECO is fallback. Overall 76%; JLCPCB readiness 78%.
 
 **FBV2-P2-036 (2026-08-31) — D-334 CHARACTERIZATION, NO COPPER CHANGE.** Same-face boxed-anchor staging does not unlock the MCU EN/RC pocket: `C1.2` remains unreachable at the fine grid. The rejected prototype was removed; D-332 remains authoritative and all closeout gates pass unchanged. Next: layer-changing/owned-copper endpoint framework for the coherent west-button family. Overall 76%; JLCPCB readiness 78%.

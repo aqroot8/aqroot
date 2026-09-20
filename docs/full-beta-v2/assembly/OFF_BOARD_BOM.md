@@ -51,10 +51,20 @@ present on the standard part number. Mates MHF1/U.FL directly.
 > both orientations** (−0.97 dB straight, −1.35 dB bent). The headline figure is the *bent-peak*.
 > Budget the link with the average, not the peak.
 >
-> **Mating chain, end to end:** `E22-900M22S` IPEX/MHF1 socket → Amphenol AMC right-angle plug
-> (documented by Amphenol as *compatible with Hirose U.FL and IPEX MHF1*) → RG-178 150 mm →
-> **SMA female** bulkhead jack through the panel → **SMA male** hinged connector on the
-> `TI.92.2113`. **Every interface is female-to-male in the right direction.**
+> **CURRENT mating chain, end to end (D-788 / R7-D787-20):** `E22-900M22S` **I-PEX MHF1** socket →
+> **RF Solutions `CBA-UFLSMA20IP`** right-angle **U.FL/MHF-I plug** → **RG-178, 200 mm** →
+> **SMA female** waterproof bulkhead jack through the top panel → **SMA male** hinged connector on
+> the Taoglas `TI.92.2113`. **Every interface is female-to-male in the right direction, and the
+> 200 mm length is what the 138.48 mm routed run plus a 15 mm service loop is checked against —
+> 46.52 mm of spare.**
+>
+> ***HISTORICAL, SUPERSEDED, KEPT ONLY SO THE SUPERSESSION IS VISIBLE:*** *the chain read
+> "Amphenol AMC right-angle plug → RG-178 150 mm" until D-788.  That narrative described the
+> Amphenol RF `095-902-568-100` assembly, which **D-223 already superseded** in the purchasing
+> table below on 2026-08-24 — it was ACTIVE but 0 in stock on a 12-week factory lead.  The
+> purchasing row and the prose disagreed for eight months on BOTH the manufacturer AND the
+> length, and Round-7 found it.  Nothing about the RF design changes: the selected part is the
+> one the table has always carried.*
 >
 > **Power margin:** the module transmits **+22 dBm (0.16 W)** into an antenna rated **1 W** —
 > better than 6× headroom.
@@ -73,8 +83,9 @@ separate bulkhead MPN is needed.** Loss at 915 MHz is ≈ **0.4 dB** (RG-178 ≈
 **Ø6.5 mm** clearance hole on the **top edge, left half — now at doc X 5.000 (D-222)**. **Two spacing rules apply and BOTH are
 current** — see mechanical spec **§8.1** (authority traced at FBV2-MECH-002): **≥ 15 mm
 CENTRE-TO-CENTRE** from the bulkhead hole to either IR window, **and ≥ 8 mm EDGE-TO-EDGE between the
-SMA body and either IR aperture** (B-52, still **OPEN** — spacing recorded, **no CAD**). **B-52's floorplan half is now CLOSED (D-230): the body OD is Ø9.238 across the hex corners with a Ø10.2 lock-washer planar envelope, and the board achieves 47.250 mm centre-to-centre and 38.381 mm body-to-aperture against IR TX. Only an enclosure-CAD residual remains — the IP67 face O-ring seat diameter and the exact front protrusion, which RF Solutions does not dimension; the floorplan carries 1.6 mm of diametral headroom, which bounds it.** The right-angle AMC plug is the correct choice for a module lying flat — it keeps the
-vertical stack low.
+SMA body and either IR aperture** (B-52, still **OPEN** — spacing recorded, **no CAD**). **B-52's floorplan half is now CLOSED (D-230): the body OD is Ø9.238 across the hex corners with a Ø10.2 lock-washer planar envelope, and the board achieves 47.250 mm centre-to-centre and 38.381 mm body-to-aperture against IR TX. Only an enclosure-CAD residual remains — the IP67 face O-ring seat diameter and the exact front protrusion, which RF Solutions does not dimension; the floorplan carries 1.6 mm of diametral headroom, which bounds it.** The right-angle **U.FL/MHF-I** plug on the `CBA-UFLSMA20IP` is the correct choice for a module
+lying flat — it keeps the vertical stack low.  *(This sentence said "AMC plug" until D-788 /
+R7-D787-20; the part is the RF Solutions assembly, not the superseded Amphenol one.)*
 
 **Module interface:** the `E22-900M22S` likewise ships with **IPEX and stamp holes**.
 
@@ -107,6 +118,34 @@ Mates `J7` **`BM02B-ACHSS-GAN-ETF`** on the board.
 wire-to-wire parts and factory pre-crimped board leads are already listed in
 §2 and frozen by `BATTERY_HARNESS.json`. The JST parts in §6 are for the
 **speaker J6 only** and must not be reused for J4.
+
+---
+
+## 7a. Accessory-voltage reinforcement lead — **D-788 / R7-D787-11**
+
+**THIS SECTION DID NOT EXIST UNTIL D-788.**  D-787 introduced a manual
+reinforcement conductor on `ACC_3V3_SW` and put its wire in neither this BOM
+nor the master assembly plan, so nobody was buying it.  Round-7 found the
+omission.  The operation itself is NORMATIVE in
+[`ACC_3V3_REINFORCEMENT.json`](ACC_3V3_REINFORCEMENT.json); this section is the
+purchasing half.
+
+**ONE conductor per board, not two.**  D-788 removed the second lead: `J5.22`
+is delivered by routed copper alone at **79.0 mΩ** measured, which is better
+than any manual lead could be, so only `J5.3` is reinforced and no pad carries
+two conductors.
+
+| item | MPN | qty (five boards) | evidence |
+|---|---|---|---|
+| **Accessory-voltage reinforcement wire** | **Alpha Wire `2842/19 RD005`** | **1 reel** (≈ 0.5 m used: 5 × 78 mm nominal + waste) | 28 AWG, 19/40 silver-plated copper, **PTFE**, nominal OD **0.686 mm**, −60…+200 °C, 250 Vrms, **58 Ω/1000 ft** = 0.19029 Ω/m.  The published DCR is what the **≤ 25 mΩ** finished-lead acceptance is derived from: 78 mm of conductor is **14.8 mΩ**, leaving 10 mΩ for two hand joints and fixture.  Minimum bend radius **6.9 mm** (10 × OD) applies to every bend in the routed path |
+| **Anchor / strain-relief adhesive** | **DOWSIL `3145` RTV, grey, MIL-A-46146** | shared with the `J4` harness — **no separate purchase** | Already frozen for the `J4` battery-harness strain relief at D-782, so the first-five build carries **one** adhesive and **one** cure schedule.  Three 4 × 2 × ≤1 mm beads per board at A0/A1/A2; tack-free 30 min, handling 4 h, **full cure 72 h before any pull test, thermal test or shipment** |
+
+**Enclosure and drawing impact:** the lead runs in the east-side Community-Port
+service corridor at x = 68.5 ± 1.5 mm with a **1.6 mm** maximum profile above
+`B.Cu` and the clearances listed in the reinforcement record.  The rear-shell
+drawing must show the corridor, the three anchor positions and the 8 mm service
+loop; the completion record must carry the **measured lead resistance per
+board**.
 
 ---
 

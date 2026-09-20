@@ -117,6 +117,13 @@ LEDGER = ROOT / "hardware/beta-dm/fab/BETA-DM-MPN-LEDGER.csv"
 #              an OVP or a supply's own abs-max permits.  Equal to
 #              `operating` unless something on the node bounds a fault above it.
 # --------------------------------------------------------------------------
+# D-788 / R7-D787-16.  ONE source-bound ceiling for the backlight boost, used
+# by every row that depends on it.  TI SNVSA40B gives V_OVP_SW = 36 / 37.5 /
+# 39 V before the TPS61169 latches off, so the fault ceiling is the MAXIMUM of
+# that band; `aqroot-Beta-v2.kicad_dru` section 5 publishes the same 39 V and
+# `demo_feature_contract` F8 refuses a mismatch between the two.
+LED_BOOST_OVP_MAX_V = 39.0
+
 NET_MAX_DC = {
     "GND": (0.0, 0.0, "board ground"),
     "+3V3": (3.3, 3.6, "U12 TPS63020 buck-boost +3V3 rail (DEVICE_SPEC s.11)"),
@@ -146,7 +153,7 @@ NET_MAX_DC = {
                  " as 4.742 / 4.950 / 5.165 V, and the ABSOLUTE is the"
                  " TPS61023's own VOVP maximum of 6.0 V -- the highest this"
                  " node can reach before the converter protects."),
-    "LED_BOOST": (4.5, 39.0,
+    "LED_BOOST": (4.5, LED_BOOST_OVP_MAX_V,
                   "U17 TPS61169 WLED boost output.  ARCHITECTURE D-079: the panel"
                   " backlight is SIX LEDs IN PARALLEL, one anode, 2.9-3.2 V, at"
                   " I_LED 109 mA typ -- so the node runs at Vf 3.2 V + 109 mA"
@@ -234,13 +241,13 @@ NET_MAX_DC = {
                  " independent reason the node cannot go higher."),
     "LTC_GATE_RC": (17.5, 17.5, "the R76 22k / C57 4.7nF gate slew network"
                                 " sits on LTC_GATE and shares its bound"),
-    "LED_K": (0.25, 38.0,
+    "LED_K": (0.25, LED_BOOST_OVP_MAX_V,
               "U17 TPS61169 ISET/feedback node -- R69 1.87R develops the"
               " 0.20 V sense at I_LED 109 mA (D-079).  Its ABSOLUTE is the"
               " LED_BOOST OVP ceiling, because a shorted LED string puts the"
               " boost output on this node; the current, however, stays"
               " regulated, which is why R69 carries a current ruling."),
-    "LED_A": (4.3, 38.0,
+    "LED_A": (4.3, LED_BOOST_OVP_MAX_V,
               "the six-parallel backlight anode below the R70-R73 ballast"
               " (D-079); ABSOLUTE is the LED_BOOST OVP ceiling"),
 }
@@ -256,7 +263,16 @@ LAND_WORKING_V = {
 # of the supplies in NET_MAX_DC, and the highest of those is the TPS61169
 # open-LED OVP ceiling; every other supply is at or below 5.5 V.  A node this
 # screen has not established individually is still bounded by this number.
-BOARD_MAX_DC = 38.0
+#
+# D-788 / R7-D787-16.  IT WAS 38.0 AND THE BOARD PUBLISHES 39.  Three rows here
+# -- LED_K, LED_A and this board-wide ceiling -- carried a 38 V figure while
+# `aqroot-Beta-v2.kicad_dru` section 5 states "an open-LED fault puts up to
+# 39 V on LED_BOOST" and `NET_MAX_DC["LED_BOOST"]` already said 39.0.  A
+# sourcing screener that proposes parts against a ceiling 1 V BELOW the one the
+# board publishes can propose a part the board's own rules refuse.  All four
+# now read ONE constant, and `demo_feature_contract` F8 cross-checks that this
+# constant equals the figure PARSED out of the rules file.
+BOARD_MAX_DC = LED_BOOST_OVP_MAX_V
 
 # --------------------------------------------------------------------------
 # A FOURTH AUTHORITY, AND THE ONE PLACE A DESIGNATOR IS THE RIGHT KEY.

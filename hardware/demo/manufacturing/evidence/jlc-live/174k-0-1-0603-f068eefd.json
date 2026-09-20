@@ -1,0 +1,2068 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": false,
+ "fetched_utc": "2026-09-20T19:54:56Z",
+ "keyword": "174K 0.1% 0603",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "174kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>174kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C861163",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RT0603BRD07174KL",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0388,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0331,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.03,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.028,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": 19999,
+     "productPrice": 0.0264,
+     "startNumber": 10000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0254,
+     "startNumber": 20000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2311211102_YAGEO-RT0603BRD07174KL_C861163.pdf",
+   "describe": "-55℃~+155℃ 100mW 174kΩ 75V Thin Film Resistor ±0.1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 174kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-rt0603brd07174kl_C861163.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 5016
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "174kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>174kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C861700",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RT0603BRE07174KL",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0266,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.021,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.018,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.016,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": 19999,
+     "productPrice": 0.0145,
+     "startNumber": 10000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0136,
+     "startNumber": 20000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2210190000_YAGEO-RT0603BRE07174KL_C861700.pdf",
+   "describe": "-55℃~+155℃ 100mW 174kΩ 75V Thin Film Resistor ±0.1% ±50ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 174kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-rt0603bre07174kl_C861700.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 7
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "174kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>174kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1870358",
+   "componentLibraryType": "expand",
+   "componentModelEn": "TNPW0603174KBEEA",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1687,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.1454,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1355,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2499,
+     "productPrice": 0.1231,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.1176,
+     "startNumber": 2500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1141,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-TNPW0603174KBEEA_C1870358.pdf",
+   "describe": "-55℃~+155℃ 125mW 174kΩ 75V Thin Film Resistor ±0.1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 174kΩ ±0.1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_vishay-intertech-tnpw0603174kbeea_C1870358.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 3392
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "174kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>174kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "167mW"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "TE Connectivity",
+   "componentCode": "C2092939",
+   "componentLibraryType": "expand",
+   "componentModelEn": "1-2176090-3",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.6397,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.5111,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.4476,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.3842,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.3467,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.3272,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TE-Connectivity-1-2176090-3_C2092939.pdf",
+   "describe": "-55℃~+155℃ 167mW 174kΩ Thin Film Resistor ±0.1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 174kΩ ±0.1% 167mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_te-connectivity-1-2176090-3_C2092939.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 272
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "174kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>174kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "RESI",
+   "componentCode": "C2849073",
+   "componentLibraryType": "expand",
+   "componentModelEn": "PTFR0603B174KP9",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1236,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.0998,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0878,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2499,
+     "productPrice": 0.079,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0619,
+     "startNumber": 2500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0583,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2405061537_RESI-PTFR0603B174KP9_C2849073.pdf",
+   "describe": "-55℃~+155℃ 100V 100mW 174kΩ Thin Film Resistor ±0.1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 174kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_resi-ptfr0603b174kp9_C2849073.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "174kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>174kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "PANASONIC",
+   "componentCode": "C4123169",
+   "componentLibraryType": "expand",
+   "componentModelEn": "ERA-3AEB1743V",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.0792,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.0775,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0764,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 509,
+     "productPrice": 0.0754,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 519,
+     "productPrice": 0.0754,
+     "startNumber": 510
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0754,
+     "startNumber": 520
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404101045_PANASONIC-ERA-3AEB1743V_C4123169.pdf",
+   "describe": "-55℃~+155℃ 100mW 174kΩ Thin Film Resistor ±0.1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 174kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_panasonic-era-3aeb1743v_C4123169.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "174kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>174kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "FH (Guangdong Fenghua Advanced Tech)",
+   "componentCode": "C667172",
+   "componentLibraryType": "expand",
+   "componentModelEn": "TD03G1743BT",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0479,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0479,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0479,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0186,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.018,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0176,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_FH--Guangdong-Fenghua-Advanced-Tech-TD03G1743BT_C667172.pdf",
+   "describe": "-55℃~+155℃ 100mW 174kΩ 50V Thin Film Resistor ±0.1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 174kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_fh-guangdong-fenghua-advanced-tech-td03g1743bt_C667172.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 189,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "174kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>174kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C855650",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AT0603BRD07174KL",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.085,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.085,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.085,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0329,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0318,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0311,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2210190300_YAGEO-AT0603BRD07174KL_C855650.pdf",
+   "describe": "-55℃~+155℃ 100mW 174kΩ Thin Film Resistor ±0.1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 174kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-at0603brd07174kl_C855650.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 107,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "174kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>174kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±10ppm/℃"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C860153",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RT0603BRB07174KL",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.1534,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.1534,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.1534,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0593,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0573,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0562,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2210190100_YAGEO-RT0603BRB07174KL_C860153.pdf",
+   "describe": "-55℃~+155℃ 100mW 174kΩ Thin Film Resistor ±0.1% ±10ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 174kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-rt0603brb07174kl_C860153.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 59,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "174kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>174kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±15ppm/℃"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C860657",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RT0603BRC07174KL",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.1127,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.1127,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.1127,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0437,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.042,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0414,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404241510_YAGEO-RT0603BRC07174KL_C860657.pdf",
+   "describe": "-55℃~+155℃ 100mW 174kΩ Thin Film Resistor ±0.1% ±15ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 174kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-rt0603brc07174kl_C860657.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 81,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "174kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>174kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "62.5mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "TE Connectivity",
+   "componentCode": "C1698156",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CPF0603B174KE1",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.1127,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.1127,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.1127,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0437,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.042,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0414,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TE-Connectivity-CPF0603B174KE1_C1698156.pdf",
+   "describe": "-55℃~+155℃ 174kΩ 50V 62.5mW Thin Film Resistor ±0.1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 174kΩ ±0.1% 62.5mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_te-connectivity-cpf0603b174ke1_C1698156.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 81,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "174kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>174kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±10ppm/℃"
+    }
+   ],
+   "componentBrandEn": "SUSUMU",
+   "componentCode": "C1711789",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RG1608N-1743-B-T5",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.1695,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.1695,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.1695,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0656,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0634,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0622,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_SUSUMU-RG1608N-1743-B-T5_C1711789.pdf",
+   "describe": "-55℃~+155℃ 100V 100mW 174kΩ Thin Film Resistor ±0.1% ±10ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 174kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_susumu-rg1608n-1743-b-t5_C1711789.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 54,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "174kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>174kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±10ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1717700",
+   "componentLibraryType": "expand",
+   "componentModelEn": "TNPW0603174KBYEA",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.2227,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.2227,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.2227,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0861,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0832,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0818,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-TNPW0603174KBYEA_C1717700.pdf",
+   "describe": "-55℃~+155℃ 125mW 174kΩ 75V Thin Film Resistor ±0.1% ±10ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 174kΩ ±0.1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_vishay-intertech-tnpw0603174kbyea_C1717700.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 41,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "174kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>174kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1717705",
+   "componentLibraryType": "expand",
+   "componentModelEn": "TNPW0603174KBHEA",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.2227,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.2227,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.2227,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0861,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0832,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0818,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-TNPW0603174KBHEA_C1717705.pdf",
+   "describe": "-55℃~+155℃ 125mW 174kΩ 75V Thin Film Resistor ±0.1% ±50ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 174kΩ ±0.1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_vishay-intertech-tnpw0603174kbhea_C1717705.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 41,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "174kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>174kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1722708",
+   "componentLibraryType": "expand",
+   "componentModelEn": "TNPW0603174KBETA",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.2671,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.2671,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.2671,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1034,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0998,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.098,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-TNPW0603174KBETA_C1722708.pdf",
+   "describe": "-55℃~+125℃ 100mW 174kΩ 75V Thin Film Resistor ±0.1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount",
+   "erpComponentName": "薄膜电阻 174kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_vishay-intertech-tnpw0603174kbeta_C1722708.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 34,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "174kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>174kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1727354",
+   "componentLibraryType": "expand",
+   "componentModelEn": "TNPW0603174KBEEN",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.3093,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.3093,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.3093,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1197,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1154,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1135,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-TNPW0603174KBEEN_C1727354.pdf",
+   "describe": "-55℃~+155℃ 125mW 174kΩ 75V Thin Film Resistor ±0.1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 174kΩ ±0.1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_vishay-intertech-tnpw0603174kbeen_C1727354.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 30,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "174kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>174kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "62.5mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±10ppm/℃"
+    }
+   ],
+   "componentBrandEn": "TE Connectivity",
+   "componentCode": "C1729123",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN73C1J174KBTDF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.3179,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.3179,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.3179,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1231,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1187,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1166,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TE-Connectivity-RN73C1J174KBTDF_C1729123.pdf",
+   "describe": "-55℃~+155℃ 174kΩ 50V 62.5mW Thin Film Resistor ±0.1% ±10ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 174kΩ ±0.1% 62.5mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_te-connectivity-rn73c1j174kbtdf_C1729123.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 29,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "174kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>174kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "62.5mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±10ppm/℃"
+    }
+   ],
+   "componentBrandEn": "TE Connectivity",
+   "componentCode": "C2080659",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN73C1J174KBTD",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.2007,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.2007,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.2007,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0777,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0751,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0736,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_TE-Connectivity-RN73C1J174KBTD_C2080659.pdf",
+   "describe": "-55℃~+155℃ 174kΩ 50V 62.5mW Thin Film Resistor ±0.1% ±10ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 174kΩ ±0.1%",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_te-connectivity-rn73c1j174kbtd_C2080659.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 45,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "174kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>174kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "SUSUMU",
+   "componentCode": "C2132285",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RG1608P-1743-B-T5",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0544,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0544,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0544,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.021,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0204,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0199,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_SUSUMU-RG1608P-1743-B-T5_C2132285.pdf",
+   "describe": "-55℃~+155℃ 100V 100mW 174kΩ Thin Film Resistor ±0.1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 174kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_susumu-rg1608p-1743-b-t5_C2132285.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 166,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "174kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>174kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "62.5mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "SUSUMU",
+   "componentCode": "C2145011",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RGT1608P-1743-B-T5",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0889,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0889,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0889,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0344,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0333,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0326,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_SUSUMU-RGT1608P-1743-B-T5_C2145011.pdf",
+   "describe": "-55℃~+175℃ 100V 174kΩ 62.5mW Thin Film Resistor ±0.1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 174kΩ ±0.1% 62.5mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_susumu-rgt1608p-1743-b-t5_C2145011.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 102,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "174kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>174kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "SEI(Stackpole Elec)",
+   "componentCode": "C2492372",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNCF0603BTC174K",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0473,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0473,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0473,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0183,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0178,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0175,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_SEI-Stackpole-Elec-RNCF0603BTC174K_C2492372.pdf",
+   "describe": "-55℃~+155℃ 100mW 174kΩ 75V Thin Film Resistor ±0.1% ±50ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 174kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_sei-stackpole-elec-rncf0603btc174k_C2492372.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 191,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "174kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>174kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C2506409",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN73R1JTTD1743B25",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0559,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.0448,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.0393,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.035,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0318,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0302,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_KOA-Speer-Elec-RN73R1JTTD1743B25_C2506409.pdf",
+   "describe": "-55℃~+155℃ 100mW 174kΩ 75V Thin Film Resistor ±0.1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 174kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rn73r1jttd1743b25_C2506409.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 258,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "174kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>174kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "SEI(Stackpole Elec)",
+   "componentCode": "C2506756",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNCF0603BTE174K",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.049,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.049,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.049,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0191,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0183,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.018,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_SEI-Stackpole-Elec-RNCF0603BTE174K_C2506756.pdf",
+   "describe": "-55℃~+155℃ 100mW 174kΩ 75V Thin Film Resistor ±0.1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 174kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_sei-stackpole-elec-rncf0603bte174k_C2506756.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 185,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "174kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>174kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "SEI(Stackpole Elec)",
+   "componentCode": "C2516749",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNCF0603BKE174K",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0761,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0761,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0761,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0295,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0284,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0279,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_SEI-Stackpole-Elec-RNCF0603BKE174K_C2516749.pdf",
+   "describe": "-55℃~+155℃ 100mW 174kΩ 75V Thin Film Resistor ±0.1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 174kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_sei-stackpole-elec-rncf0603bke174k_C2516749.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 119,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "174kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>174kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "200mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thick Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C3987710",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RS73G1JTTD1743B",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.1031,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.1031,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.1031,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0399,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0385,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0378,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404081703_KOA-Speer-Elec-RS73G1JTTD1743B_C3987710.pdf",
+   "describe": "-55℃~+155℃ 174kΩ 200mW Thick Film Resistor ±0.1% ±50ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "厚膜电阻 174kΩ ±0.1% 200mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rs73g1jttd1743b_C3987710.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 88,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  }
+ ],
+ "returned": 25,
+ "schema": 1,
+ "total_matches": 324
+}

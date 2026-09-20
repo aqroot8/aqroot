@@ -1,0 +1,479 @@
+{
+ "all_identical": false,
+ "all_identical_where_comparable": true,
+ "all_ran": true,
+ "baseline": "d787",
+ "contracts": [
+  {
+   "baseline": "d787-neck-contract.json",
+   "baseline_verdict": true,
+   "board_sha256": "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b",
+   "claimed": [],
+   "comparable": false,
+   "contract": "neck",
+   "difference": "$.board_sha256: '57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b' vs '8a22e8d914a78e6903f6368006d070e492f6cf6ddcf4c62a96133c9a080ef411'",
+   "difference_excluding_inputs": null,
+   "emitted_baseline": "d788-neck-contract.json",
+   "identical": false,
+   "inputs_moved": {
+    "board_sha256": [
+     [
+      "8a22e8d914a78e6903f6368006d070e492f6cf6ddcf4c62a96133c9a080ef411"
+     ],
+     [
+      "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b"
+     ]
+    ]
+   },
+   "ran": true,
+   "returncode": 0,
+   "substantive_difference": null,
+   "verdict": true
+  },
+  {
+   "baseline": "d787-placement-contract.json",
+   "baseline_verdict": "PASS",
+   "board_sha256": null,
+   "claimed": [],
+   "comparable": true,
+   "contract": "placement",
+   "difference": null,
+   "difference_excluding_inputs": null,
+   "emitted_baseline": "d788-placement-contract.json",
+   "identical": true,
+   "inputs_moved": null,
+   "ran": true,
+   "returncode": 0,
+   "substantive_difference": null,
+   "verdict": "PASS"
+  },
+  {
+   "baseline": "d787-population-contract.json",
+   "baseline_verdict": "PASS",
+   "board_sha256": "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b",
+   "claimed": [],
+   "comparable": false,
+   "contract": "population",
+   "difference": "$.board_sha256: '57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b' vs '8a22e8d914a78e6903f6368006d070e492f6cf6ddcf4c62a96133c9a080ef411'",
+   "difference_excluding_inputs": null,
+   "emitted_baseline": "d788-population-contract.json",
+   "identical": false,
+   "inputs_moved": {
+    "board_sha256": [
+     [
+      "8a22e8d914a78e6903f6368006d070e492f6cf6ddcf4c62a96133c9a080ef411"
+     ],
+     [
+      "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b"
+     ]
+    ]
+   },
+   "ran": true,
+   "returncode": 0,
+   "substantive_difference": null,
+   "verdict": "PASS"
+  },
+  {
+   "baseline": "d787-land_parity-contract.json",
+   "baseline_verdict": "PASS",
+   "board_sha256": "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b",
+   "claimed": [],
+   "comparable": false,
+   "contract": "land_parity",
+   "difference": "$.board_sha256: '57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b' vs '8a22e8d914a78e6903f6368006d070e492f6cf6ddcf4c62a96133c9a080ef411'",
+   "difference_excluding_inputs": null,
+   "emitted_baseline": "d788-land_parity-contract.json",
+   "identical": false,
+   "inputs_moved": {
+    "board_sha256": [
+     [
+      "8a22e8d914a78e6903f6368006d070e492f6cf6ddcf4c62a96133c9a080ef411"
+     ],
+     [
+      "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b"
+     ]
+    ]
+   },
+   "ran": true,
+   "returncode": 0,
+   "substantive_difference": null,
+   "verdict": "PASS"
+  },
+  {
+   "baseline": "d787-keepout_stackup-contract.json",
+   "baseline_verdict": true,
+   "board_sha256": null,
+   "claimed": [],
+   "comparable": true,
+   "contract": "keepout_stackup",
+   "difference": null,
+   "difference_excluding_inputs": null,
+   "emitted_baseline": "d788-keepout_stackup-contract.json",
+   "identical": true,
+   "inputs_moved": null,
+   "ran": true,
+   "returncode": 0,
+   "substantive_difference": null,
+   "verdict": true
+  },
+  {
+   "baseline": "d787-rf_symmetry-contract.json",
+   "baseline_verdict": "PASS",
+   "board_sha256": null,
+   "claimed": [],
+   "comparable": true,
+   "contract": "rf_symmetry",
+   "difference": null,
+   "difference_excluding_inputs": null,
+   "emitted_baseline": "d788-rf_symmetry-contract.json",
+   "identical": true,
+   "inputs_moved": null,
+   "ran": true,
+   "returncode": 0,
+   "substantive_difference": null,
+   "verdict": "PASS"
+  },
+  {
+   "baseline": "d787-pour_partition-contract.json",
+   "baseline_verdict": true,
+   "board_sha256": null,
+   "claimed": [],
+   "comparable": false,
+   "contract": "pour_partition",
+   "difference": "$.ref_commit: 'a5c74da51cf70a5fbbdfee75628fd651a9b1ebb9' vs '212093a2ede222d74e4903460f075d6de69a53da'",
+   "difference_excluding_inputs": "$.results.PP1.net_change_control: missing in baseline",
+   "emitted_baseline": "d788-pour_partition-contract.json",
+   "identical": false,
+   "inputs_moved": {
+    "ref_commit": [
+     [
+      "212093a2ede222d74e4903460f075d6de69a53da"
+     ],
+     [
+      "a5c74da51cf70a5fbbdfee75628fd651a9b1ebb9"
+     ]
+    ]
+   },
+   "ran": true,
+   "returncode": 0,
+   "substantive_difference": "$.results.PP1.net_change_control: missing in baseline",
+   "verdict": true
+  },
+  {
+   "baseline": "d787-pour_bond-contract.json",
+   "baseline_verdict": true,
+   "board_sha256": "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b",
+   "claimed": [],
+   "comparable": false,
+   "contract": "pour_bond",
+   "difference": "$.board_sha256: '57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b' vs '8a22e8d914a78e6903f6368006d070e492f6cf6ddcf4c62a96133c9a080ef411'",
+   "difference_excluding_inputs": null,
+   "emitted_baseline": "d788-pour_bond-contract.json",
+   "identical": false,
+   "inputs_moved": {
+    "board_sha256": [
+     [
+      "8a22e8d914a78e6903f6368006d070e492f6cf6ddcf4c62a96133c9a080ef411"
+     ],
+     [
+      "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b"
+     ]
+    ]
+   },
+   "ran": true,
+   "returncode": 0,
+   "substantive_difference": null,
+   "verdict": true
+  },
+  {
+   "baseline": "d787-leaf-land-contract.json",
+   "baseline_verdict": true,
+   "board_sha256": "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b",
+   "claimed": [],
+   "comparable": false,
+   "contract": "leaf_land",
+   "difference": "$.board_sha256: '57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b' vs '8a22e8d914a78e6903f6368006d070e492f6cf6ddcf4c62a96133c9a080ef411'",
+   "difference_excluding_inputs": "$.islands[4].bounded_amps_total: 0.011614476 vs 0.011616274",
+   "emitted_baseline": "d788-leaf-land-contract.json",
+   "identical": false,
+   "inputs_moved": {
+    "board_sha256": [
+     [
+      "8a22e8d914a78e6903f6368006d070e492f6cf6ddcf4c62a96133c9a080ef411"
+     ],
+     [
+      "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b"
+     ]
+    ]
+   },
+   "ran": true,
+   "returncode": 0,
+   "substantive_difference": "$.islands[4].bounded_amps_total: 0.011614476 vs 0.011616274",
+   "verdict": true
+  },
+  {
+   "baseline": "d787-protected-copper.json",
+   "baseline_verdict": true,
+   "board_sha256": null,
+   "claimed": [],
+   "comparable": true,
+   "contract": "protected_copper",
+   "difference": null,
+   "difference_excluding_inputs": null,
+   "emitted_baseline": "d788-protected-copper.json",
+   "identical": true,
+   "inputs_moved": null,
+   "ran": true,
+   "returncode": 0,
+   "substantive_difference": null,
+   "verdict": true
+  },
+  {
+   "baseline": "d787-obstacle_model-contract.json",
+   "baseline_verdict": "PASS",
+   "board_sha256": "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b",
+   "claimed": [],
+   "comparable": false,
+   "contract": "obstacle_model",
+   "difference": "$.board_sha256: '57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b' vs '8a22e8d914a78e6903f6368006d070e492f6cf6ddcf4c62a96133c9a080ef411'",
+   "difference_excluding_inputs": null,
+   "emitted_baseline": "d788-obstacle_model-contract.json",
+   "identical": false,
+   "inputs_moved": {
+    "board_sha256": [
+     [
+      "8a22e8d914a78e6903f6368006d070e492f6cf6ddcf4c62a96133c9a080ef411"
+     ],
+     [
+      "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b"
+     ]
+    ]
+   },
+   "ran": true,
+   "returncode": 0,
+   "substantive_difference": null,
+   "verdict": "PASS"
+  },
+  {
+   "baseline": "d787-trunk_floor-contract.json",
+   "baseline_verdict": true,
+   "board_sha256": "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b",
+   "claimed": [],
+   "comparable": false,
+   "contract": "trunk_floor",
+   "difference": "$.board_sha256: '57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b' vs '8a22e8d914a78e6903f6368006d070e492f6cf6ddcf4c62a96133c9a080ef411'",
+   "difference_excluding_inputs": null,
+   "emitted_baseline": "d788-trunk_floor-contract.json",
+   "identical": false,
+   "inputs_moved": {
+    "board_sha256": [
+     [
+      "8a22e8d914a78e6903f6368006d070e492f6cf6ddcf4c62a96133c9a080ef411"
+     ],
+     [
+      "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b"
+     ]
+    ]
+   },
+   "ran": true,
+   "returncode": 0,
+   "substantive_difference": null,
+   "verdict": true
+  },
+  {
+   "baseline": "d787-tap-contract.json",
+   "baseline_verdict": true,
+   "board_sha256": "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b",
+   "claimed": [],
+   "comparable": false,
+   "contract": "tap",
+   "difference": "$.board_sha256: '57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b' vs '8a22e8d914a78e6903f6368006d070e492f6cf6ddcf4c62a96133c9a080ef411'",
+   "difference_excluding_inputs": "$.clauses.TC4.sites_offered: 194 vs 193",
+   "emitted_baseline": "d788-tap-contract.json",
+   "identical": false,
+   "inputs_moved": {
+    "board_sha256": [
+     [
+      "8a22e8d914a78e6903f6368006d070e492f6cf6ddcf4c62a96133c9a080ef411"
+     ],
+     [
+      "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b"
+     ]
+    ]
+   },
+   "ran": true,
+   "returncode": 0,
+   "substantive_difference": "$.clauses.TC4.sites_offered: 194 vs 193",
+   "verdict": true
+  },
+  {
+   "baseline": "d787-fab_provenance-contract.json",
+   "baseline_verdict": "PASS",
+   "board_sha256": "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b",
+   "claimed": [],
+   "comparable": false,
+   "contract": "fab_provenance",
+   "difference": "$.board_sha256: '57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b' vs '8a22e8d914a78e6903f6368006d070e492f6cf6ddcf4c62a96133c9a080ef411'",
+   "difference_excluding_inputs": null,
+   "emitted_baseline": "d788-fab_provenance-contract.json",
+   "identical": false,
+   "inputs_moved": {
+    "board_sha256": [
+     [
+      "8a22e8d914a78e6903f6368006d070e492f6cf6ddcf4c62a96133c9a080ef411"
+     ],
+     [
+      "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b"
+     ]
+    ]
+   },
+   "ran": true,
+   "returncode": 0,
+   "substantive_difference": null,
+   "verdict": "PASS"
+  },
+  {
+   "baseline": "d787-connection-width-contract.json",
+   "baseline_verdict": true,
+   "board_sha256": null,
+   "claimed": [],
+   "comparable": true,
+   "contract": "connection_width",
+   "difference": null,
+   "difference_excluding_inputs": null,
+   "emitted_baseline": "d788-connection-width-contract.json",
+   "identical": true,
+   "inputs_moved": null,
+   "ran": true,
+   "returncode": 0,
+   "substantive_difference": null,
+   "verdict": true
+  },
+  {
+   "baseline": "d787-demo-feature-contract.json",
+   "baseline_verdict": true,
+   "board_sha256": "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b",
+   "claimed": [],
+   "comparable": false,
+   "contract": "demo_feature",
+   "difference": "$.board_sha256: '57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b' vs '8a22e8d914a78e6903f6368006d070e492f6cf6ddcf4c62a96133c9a080ef411'",
+   "difference_excluding_inputs": "$.checks.F5_backlight_disconnect_control_is_independent.fet.first_five_temperature_validation_required_C: 3 vs 2 entries",
+   "emitted_baseline": "d788-demo-feature-contract.json",
+   "identical": false,
+   "inputs_moved": {
+    "board_sha256": [
+     [
+      "8a22e8d914a78e6903f6368006d070e492f6cf6ddcf4c62a96133c9a080ef411"
+     ],
+     [
+      "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b"
+     ]
+    ]
+   },
+   "ran": true,
+   "returncode": 0,
+   "substantive_difference": "$.checks.F5_backlight_disconnect_control_is_independent.fet.first_five_temperature_validation_required_C: 3 vs 2 entries",
+   "verdict": true
+  },
+  {
+   "baseline": "d787-firmware-hw-map-contract.json",
+   "baseline_verdict": "PASS",
+   "board_sha256": "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b",
+   "claimed": [],
+   "comparable": false,
+   "contract": "firmware_hw_map",
+   "difference": "$.H2_board_digest.board_sha256: '57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b' vs '8a22e8d914a78e6903f6368006d070e492f6cf6ddcf4c62a96133c9a080ef411'",
+   "difference_excluding_inputs": "$.H5_firmware_layer_uses_the_map.sources: 14 vs 12 entries",
+   "emitted_baseline": "d788-firmware-hw-map-contract.json",
+   "identical": false,
+   "inputs_moved": {
+    "board_sha256": [
+     [
+      "8a22e8d914a78e6903f6368006d070e492f6cf6ddcf4c62a96133c9a080ef411",
+      "8a22e8d914a78e6903f6368006d070e492f6cf6ddcf4c62a96133c9a080ef411"
+     ],
+     [
+      "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b",
+      "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b"
+     ]
+    ]
+   },
+   "ran": true,
+   "returncode": 0,
+   "substantive_difference": "$.H5_firmware_layer_uses_the_map.sources: 14 vs 12 entries",
+   "verdict": "PASS"
+  },
+  {
+   "baseline": "d787-mechanical_keepout-contract.json",
+   "baseline_verdict": true,
+   "board_sha256": "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b",
+   "claimed": [],
+   "comparable": false,
+   "contract": "mechanical_keepout",
+   "difference": "$.board_sha256: '57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b' vs '8a22e8d914a78e6903f6368006d070e492f6cf6ddcf4c62a96133c9a080ef411'",
+   "difference_excluding_inputs": null,
+   "emitted_baseline": "d788-mechanical_keepout-contract.json",
+   "identical": false,
+   "inputs_moved": {
+    "board_sha256": [
+     [
+      "8a22e8d914a78e6903f6368006d070e492f6cf6ddcf4c62a96133c9a080ef411"
+     ],
+     [
+      "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b"
+     ]
+    ]
+   },
+   "ran": true,
+   "returncode": 0,
+   "substantive_difference": null,
+   "verdict": true
+  },
+  {
+   "baseline": "d787-battery-pack-contract.json",
+   "baseline_verdict": true,
+   "board_sha256": "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b",
+   "claimed": [],
+   "comparable": false,
+   "contract": "battery_pack",
+   "difference": "$.board_sha256: '57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b' vs '8a22e8d914a78e6903f6368006d070e492f6cf6ddcf4c62a96133c9a080ef411'",
+   "difference_excluding_inputs": "$.checks.B10_D781_harness_rating_and_polarity_cover_live_board.current_margin_A: 0.1416 vs 0.0756",
+   "emitted_baseline": "d788-battery-pack-contract.json",
+   "identical": false,
+   "inputs_moved": {
+    "board_sha256": [
+     [
+      "8a22e8d914a78e6903f6368006d070e492f6cf6ddcf4c62a96133c9a080ef411",
+      "8a22e8d914a78e6903f6368006d070e492f6cf6ddcf4c62a96133c9a080ef411"
+     ],
+     [
+      "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b",
+      "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b"
+     ]
+    ]
+   },
+   "ran": true,
+   "returncode": 0,
+   "substantive_difference": "$.checks.B10_D781_harness_rating_and_polarity_cover_live_board.current_margin_A: 0.1416 vs 0.0756",
+   "verdict": true
+  }
+ ],
+ "contracts_compared": 19,
+ "contracts_incomparable": 14,
+ "contracts_run": 19,
+ "contracts_with_substantive_difference": [
+  "pour_partition",
+  "leaf_land",
+  "tap",
+  "demo_feature",
+  "firmware_hw_map",
+  "battery_pack"
+ ],
+ "contracts_without_baseline": 0,
+ "emitted_baseline": "d788",
+ "method": "each contract re-run now and compared FIELD BY FIELD with the artifact the baseline decision committed; path-typed fields (board, schematic, guard, pre_board) compare by basename because they record the path as typed",
+ "no_substantive_difference": false,
+ "question": "does this change move ANY standing contract beyond the inputs it legitimately moved?  When the board digest or the PRE-board commit is the same, `all_identical` is the answer; when one of them moved, the row is INCOMPARABLE and `difference_excluding_inputs` is the answer, so a substantive change can never hide behind an input identifier",
+ "schema": 1,
+ "vacuous": false
+}

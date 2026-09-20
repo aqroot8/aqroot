@@ -144,6 +144,23 @@ RAILS = (
          # rise is reported as a screening number, not a predicted board temp.
          accept=(dict(layer="B.Cu", reason="package-land-neck", max_length_mm=6.0,
                       max_width_mm=0.20),),
+         # D-788 / R7-D787-04.  THE CLAMPED END IS NOT AT PLANE TEMPERATURE.
+         # This neck ends on U11's own BAT land, and the BQ25185's BATFET
+         # dissipates I^2 x RON_BAT in that package: at the 2.35 A design
+         # current and SLUSF65B's 140 mOhm -40..+125 C RON_BAT maximum that is
+         # 0.773 W.  The DLH0010A's thermal pad carries most of it into the
+         # board, so the LAND this run joins sits above the surrounding plane.
+         # 25 K is a DECLARED endpoint allowance: it is roughly a third of the
+         # junction rise a 60 C/W package would show at that dissipation, which
+         # is the share a soldered thermal pad typically leaves at the land,
+         # and it is added to the absolute peak rather than assumed away.
+         # First-article thermography measures it.
+         accept_endpoint_rise_K=25.0,
+         accept_endpoint_rise_basis=(
+             "BQ25185 BATFET dissipation 2.35^2 x 0.140 = 0.773 W at the "
+             "design current; 25 K DECLARED land rise over the surrounding "
+             "plane, measured at first article (C-THERM-01)"),
+         accept_inside_battery_shadow=True,
          accept_reason="U11 DLH0010A pin-2 land is 0.200 mm tall; nothing wider "
                "can land on it.  Licensed by the .kicad_dru pad-escape neck rule "
                "and bounded here to 6.0 mm of 0.200 mm copper."),
@@ -437,28 +454,211 @@ def plane_coupled_rise(stack, layer, width_mm, amps):
 # measurement -- but it is a number the exception can be judged against
 # instead of a sentence asking the reader to discount the coupon figure.
 K_CU = 0.385                    # W/(mm.K), copper
+ALPHA_CU = 0.00393              # per K, copper resistivity temperature coefficient
 ACCEPTED_RUN_DT_LIMIT_K = 40.0  # over the adjacent copper, for an accepted run
 
+# --------------------------------------------------------------------------
+# D-788 / R7-D787-04 -- THE BOUNDARY CONDITION WAS AN ASSUMPTION, AND THE
+# ACCEPTANCE HAD NO ABSOLUTE NUMBER IN IT.
+#
+# D-787's fin solved ONE boundary condition -- both ends clamped at the
+# temperature of the copper they join -- and reported 14.3 K against a 40 K
+# limit.  Round-7's objection is correct on three counts and all three are
+# closed here rather than argued with:
+#
+#   1  BOTH ENDS CLAMPED IS THE MOST FAVOURABLE OF THREE PLAUSIBLE BOUNDARY
+#      CONDITIONS.  The run now solves all three -- both ends clamped, one end
+#      insulated, and no axial sink at all -- and the ACCEPTANCE takes the
+#      WORST.  The three differ by more than 3x, which is exactly why picking
+#      one of them silently was the defect.
+#   2  THE COPPER GETS HOTTER AND THEN MORE RESISTIVE.  rho is now solved
+#      self-consistently at the run's own peak temperature through copper's
+#      0.393 %/K coefficient, so the feedback that Round-7 said "can cross the
+#      chosen 40 K relative criterion" is inside the model instead of outside
+#      it.
+#   3  THE U11 END IS NOT AT PLANE TEMPERATURE.  The BQ25185's own BATFET
+#      dissipates I^2 x RON_BAT in the package this land belongs to, so the
+#      clamped end is clamped at something warmer than the plane.  That
+#      endpoint rise is a DECLARED input with its derivation printed, and it is
+#      added to the absolute result rather than assumed away.
+#
+# AND THE ACCEPTANCE IS NOW ABSOLUTE AS WELL AS RELATIVE.  A rise "over the
+# copper it terminates on" says nothing about how hot anything actually gets.
+# The run also reports a PREDICTED PEAK TEMPERATURE at the declared ambient and
+# is judged against the tightest absolute limit around it: the pouch cell this
+# copper sits directly beneath, whose own published charge working range tops
+# out at 40 C, is the reason the absolute limit is not simply the laminate's or
+# the charger junction's.
+#
+# IT IS STILL A MODEL.  It carries no lateral spreading in the dielectric, no
+# convection or radiation from the outer face and no soldermask, all of which
+# are real and all of which help.  THE MEASUREMENT OF RECORD IS THE
+# FIRST-ARTICLE THERMOGRAPHY in the assembly plan, and nothing here replaces
+# it.  What it replaces is the IPC-2221B isolated-coupon number, which is a
+# SCREENING figure and is never a predicted board temperature.
+AMBIENT_DESIGN_MAX_C = 40.0     # top of the declared 0..40 C prototype envelope
+BOARD_RISE_ALLOWANCE_K = 10.0   # DECLARED: bulk board rise over ambient at the
+                                # full published concurrent load; first-article
+                                # thermography measures it
+ABSOLUTE_PEAK_LIMIT_C = 105.0
+ABSOLUTE_LIMIT_BASIS = (
+    "105 C is a DECLARED design limit and it is the tighter of two: the "
+    "laminate's, and the silicon's.  The fab notes require FR4 with Tg >= "
+    "150 C, and IPC-2221's rule is that conductor temperature must stay under "
+    "the laminate's maximum operating temperature -- 105 C leaves 45 K.  The "
+    "silicon around this run (the BQ25185 this neck lands on, Q2/Q3, U18) is "
+    "specified to TJ 125 C, and a device whose own land sits on 105 C copper "
+    "has 20 K of its junction budget left for its own dissipation.  A run "
+    "inside BATTERY_SHADOW is judged instead against the pouch limit below, "
+    "which is tighter.")
+POUCH_ADJACENT_LIMIT_C = 60.0
+POUCH_ADJACENT_BASIS = (
+    "the fitted 785060 pouch cell's published discharge working range tops out "
+    "at 60 C; its charge range tops out at 40 C and firmware/charger "
+    "behaviour, not copper temperature, is what bounds that.  Applied only to "
+    "copper that is actually under the cell.")
+BATTERY_SHADOW_MM = (7.00, 64.00, 23.50, 98.50)   # x0, x1, doc-y0, doc-y1
+BOARD_H_MM = 148.0
 
-def conduction_bounded_rise(stack, layer, width_mm, run_length_mm, amps):
-    """Peak rise of an accepted narrow RUN over the copper it terminates on."""
+
+def inside_battery_shadow(x_mm, y_mm):
+    """Is this point under the pouch?  Doc-Y is measured from the board top."""
+    if x_mm is None or y_mm is None:
+        return False
+    x0, x1, dy0, dy1 = BATTERY_SHADOW_MM
+    doc_y = BOARD_H_MM - y_mm
+    return x0 <= x_mm <= x1 and dy0 <= doc_y <= dy1
+
+
+def _fin(p_per_mm, g, axial, length_mm, boundary):
+    """Peak rise of a 1-D fin with distributed heating, three boundary cases."""
+    if g <= 0:
+        return p_per_mm * (length_mm ** 2) / (8.0 * axial)
+    lam = math.sqrt(axial / g)
+    if boundary == "both_ends_clamped":
+        return (p_per_mm / g) * (1.0 - 1.0 / math.cosh(length_mm / (2.0 * lam)))
+    if boundary == "one_end_insulated":
+        return (p_per_mm / g) * (1.0 - 1.0 / math.cosh(length_mm / lam))
+    if boundary == "no_axial_sink":
+        return p_per_mm / g
+    raise ValueError(boundary)
+
+
+BOUNDARY_CASES = ("both_ends_clamped", "one_end_insulated", "no_axial_sink")
+SPREAD_CASES = ("with_dielectric_spreading", "trace_width_only")
+
+
+def _lateral_conductance(row, width_mm, spreading):
+    """W per mm of run per K, from the conductor into the ADJACENT COPPER.
+
+    `trace_width_only` is the D-787 treatment: heat leaves through a column of
+    dielectric exactly as wide as the trace.  That is NOT what a 0.200 mm strip
+    0.2104 mm above a solid plane does -- the heat spreads laterally in the
+    dielectric before it reaches the plane, and the standard thin-dielectric
+    approximation for the effective width is w + 2d.  Both are computed; see
+    `accepted_run_thermal` for which one the ACCEPTANCE uses and why.
+    """
+    g = 0.0
+    for k in ("dielectric_up_mm", "dielectric_down_mm"):
+        d = row.get(k)
+        if not d:
+            continue
+        w_eff = (width_mm + 2.0 * d) if spreading else width_mm
+        g += K_FR4 * w_eff / d
+    return g
+
+
+def conduction_bounded_rise(stack, layer, width_mm, run_length_mm, amps,
+                            boundary="both_ends_clamped", endpoint_rise_K=0.0,
+                            spreading=True, reference_C=None):
+    """Peak rise of an accepted narrow RUN over the copper it terminates on.
+
+    Solved self-consistently in temperature: copper's resistivity rises 0.393 %
+    per K, so the rise feeds back into the heat that produced it.
+    """
     row = stack.get(layer)
     if not row or not width_mm or not run_length_mm or not amps:
         return None
     t = row["thickness_mm"]
-    a_cu = width_mm * t                                   # mm^2
+    a_cu = width_mm * t
     if a_cu <= 0:
         return None
-    p = (amps ** 2) * RHO_CU / a_cu                       # W/mm
-    axial = K_CU * a_cu                                   # W.mm/K
-    g = K_FR4 * width_mm * sum(
-        1.0 / row[k] for k in ("dielectric_up_mm", "dielectric_down_mm")
-        if row[k])
-    if g <= 0:
-        return p * (run_length_mm ** 2) / (8.0 * axial)
-    lam = math.sqrt(axial / g)
-    return (p * lam * lam / axial) * (
-        1.0 - 1.0 / math.cosh(run_length_mm / (2.0 * lam)))
+    axial = K_CU * a_cu
+    g = _lateral_conductance(row, width_mm, spreading)
+    reference_C = (AMBIENT_DESIGN_MAX_C + BOARD_RISE_ALLOWANCE_K
+                   + endpoint_rise_K) if reference_C is None else reference_C
+    dt = 0.0
+    for _ in range(80):
+        rho = RHO_CU * (1.0 + ALPHA_CU * ((reference_C + dt) - 20.0))
+        nxt = _fin((amps ** 2) * rho / a_cu, g, axial, run_length_mm, boundary)
+        if abs(nxt - dt) < 1e-10:
+            dt = nxt
+            break
+        dt = nxt
+    return dt
+
+
+def accepted_run_thermal(stack, layer, width_mm, run_length_mm, amps,
+                         endpoint_rise_K=0.0, under_pouch=False):
+    """The 2 x 3 model matrix, the acceptance cell, and the ABSOLUTE peak."""
+    if not stack.get(layer):
+        return None
+    matrix = {}
+    for spread in SPREAD_CASES:
+        for case in BOUNDARY_CASES:
+            r = conduction_bounded_rise(
+                stack, layer, width_mm, run_length_mm, amps, boundary=case,
+                endpoint_rise_K=endpoint_rise_K,
+                spreading=(spread == "with_dielectric_spreading"))
+            matrix["%s__%s_rise_K" % (spread, case)] = (
+                round(r, 2) if r is not None else None)
+    # THE ACCEPTANCE CELL.  Axial boundary: the WORST of the three, because
+    # neither end's thermal impedance is proven -- that was Round-7's objection
+    # and it is conceded rather than argued with.  Lateral path: WITH
+    # spreading, because a 0.200 mm strip 0.2104 mm over a solid plane does
+    # spread, and combining "no axial sink at all" with "no lateral spreading
+    # either" is two independent pessimisms multiplied, not a bound.  The
+    # trace-width-only column is reported beside it so the size of that choice
+    # is visible instead of hidden.
+    accept_key = max(
+        ("with_dielectric_spreading__%s_rise_K" % c for c in BOUNDARY_CASES),
+        key=lambda k: matrix[k] if matrix[k] is not None else -1)
+    worst = matrix[accept_key]
+    if worst is None:
+        return None
+    peak = (AMBIENT_DESIGN_MAX_C + BOARD_RISE_ALLOWANCE_K + endpoint_rise_K
+            + worst)
+    limit = POUCH_ADJACENT_LIMIT_C if under_pouch else ABSOLUTE_PEAK_LIMIT_C
+    out = dict(matrix)
+    out.update(
+        acceptance_cell=accept_key,
+        acceptance_cell_reason=(
+            "worst of the three axial boundary conditions, with the dielectric "
+            "spreading a 0.200 mm strip over a 0.2104 mm dielectric actually "
+            "has; the trace-width-only column is the D-787 treatment and is "
+            "reported, not used"),
+        worst_case_rise_K=round(worst, 2),
+        relative_limit_K=ACCEPTED_RUN_DT_LIMIT_K,
+        relative_ok=worst <= ACCEPTED_RUN_DT_LIMIT_K,
+        ambient_design_max_C=AMBIENT_DESIGN_MAX_C,
+        board_rise_allowance_K=BOARD_RISE_ALLOWANCE_K,
+        endpoint_rise_K=round(endpoint_rise_K, 2),
+        predicted_peak_C=round(peak, 2),
+        under_pouch=under_pouch,
+        absolute_limit_C=limit,
+        absolute_limit_basis=(POUCH_ADJACENT_BASIS if under_pouch
+                              else ABSOLUTE_LIMIT_BASIS),
+        absolute_ok=peak <= limit,
+        copper_temperature_coefficient_is_solved=True,
+        ipc_coupon_is_not_a_board_temperature=(
+            "the IPC-2221B figure reported beside this run describes an "
+            "ISOLATED COUPON in still air and is a SCREENING number; it is "
+            "never quoted as a predicted board temperature"),
+        measurement_of_record=("first-article thermography, assembly plan "
+                               "C-THERM-01; this is a model and does not "
+                               "replace it"))
+    out["ok"] = bool(out["relative_ok"] and out["absolute_ok"])
+    return out
 
 
 def ampacity(area_mm2, dT, external):
@@ -882,13 +1082,22 @@ def main():
         for h in hot:
             if not h.get("accepted_by"):
                 continue
-            cb = conduction_bounded_rise(diel, h["layer"], h["width_mm"],
-                                         accepted_len, rail["amps"])
+            # D-788 / R7-D787-04.  Every boundary case, temperature-solved,
+            # with the endpoint the run is clamped to charged for its OWN
+            # dissipation, and an ABSOLUTE peak beside the relative rise.
+            endpoint = rail.get("accept_endpoint_rise_K", 0.0)
+            at = h.get("at") or [None, None]
+            th = accepted_run_thermal(
+                diel, h["layer"], h["width_mm"], accepted_len, rail["amps"],
+                endpoint_rise_K=endpoint,
+                under_pouch=inside_battery_shadow(at[0], at[1]))
             h["accepted_run_length_mm"] = accepted_len
-            h["conduction_bounded_rise_K"] = (round(cb, 1) if cb is not None
-                                              else None)
+            h["thermal"] = th
+            h["conduction_bounded_rise_K"] = (th["worst_case_rise_K"]
+                                              if th else None)
             h["conduction_bounded_limit_K"] = ACCEPTED_RUN_DT_LIMIT_K
-            if cb is None or cb > ACCEPTED_RUN_DT_LIMIT_K:
+            h["endpoint_rise_basis"] = rail.get("accept_endpoint_rise_basis")
+            if th is None or not th["ok"]:
                 over_conduction_limit.append(h)
         undeclared = undeclared + over_conduction_limit
         worst_pc = [x["plane_coupled_rise_K"] for x in segs

@@ -1,0 +1,155 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-20T20:14:13Z",
+ "keyword": "186K 0.1% 0603",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "186kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>186kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "300mW"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±2ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1491316",
+   "componentLibraryType": "expand",
+   "componentModelEn": "Y1184186K000B0L",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 28.4504,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 28.4504,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 28.4504,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 11.0107,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 10.6234,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 10.4329,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-Y1184186K000B0L_C1491316.pdf",
+   "describe": "-55℃~+125℃ 186kΩ 300mW ±0.1% ±2ppm/℃ 插件 Through Hole Resistors",
+   "erpComponentName": "186kΩ ±0.1% 300mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-y1184186k000b0l_C1491316.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "186kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>186kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C4157413",
+   "componentLibraryType": "expand",
+   "componentModelEn": "P0402H1863BNPT",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 6.9515,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 6.9515,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 6.9515,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 2.6905,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 2.5961,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 2.5489,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "-",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "",
+   "describe": "186kΩ ±0.1% ±50ppm/℃ - Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "186kΩ ±0.1%",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_vishay-intertech-p0402h1863bnpt_C4157413.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  }
+ ],
+ "returned": 2,
+ "schema": 1,
+ "total_matches": 2
+}

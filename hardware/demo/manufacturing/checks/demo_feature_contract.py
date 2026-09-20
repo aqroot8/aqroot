@@ -43,7 +43,17 @@ DRU = rl.PROJECT / "aqroot-Beta-v2.kicad_dru"
 POWER_POLICY = ROOT / "Firmware/src/hw/aqroot_accessory_power_policy.h"
 FIRST_FIVE_ASSEMBLY = ROOT / "docs/full-beta-v2/assembly/FIRST_FIVE_ASSEMBLY_PLAN.md"
 DEMO_PERIPHERALS = ROOT / "Firmware/src/hw/aqroot_demo_peripherals.h"
+# D-788 / R7-D787-06 moved the SHIPPED backlight entry point into its own
+# header so a host test can compile and RUN it; F5 reads the production ramp
+# from there.
+DEMO_BACKLIGHT = ROOT / "Firmware/src/hw/aqroot_demo_backlight.h"
 TPS61169_PRIMARY = ROOT / "hardware/demo/kicad/aqroot-demo/vendor/TI/tps61169.pdf"
+# D-788 / R7-N04.  THE PUBLISHED NUMBER AN ACCESSORY DESIGNER READS IS IN A
+# DIFFERENT FILE FROM THE GATE THAT PROVES IT.  Round-7 found six separate
+# stale-document defects and R7-D787-19/20 were two of them; a product-facing
+# voltage contract that this contract does not read is the same shape.  F6 now
+# requires DEVICE_SPEC to publish the exact figures F6 derives.
+DEVICE_SPEC = ROOT / "docs/full-beta-v2/DEVICE_SPEC.md"
 
 # --------------------------------------------------------------------------
 # `AQROOT_DEMO_SCOPE.md` -> board.  `refs` must be FITTED; `nets` must be whole.
@@ -446,9 +456,23 @@ def judge_backlight_fet(values, dru_text):
             f["channel_drop_at_string_current_mV_at_published_max"] = round(
                 BL_STRING_CURRENT_A * pub["rds_on_max_ohm"] * 1e3, 3)
             f["threshold_test_current_A"] = pub.get("vgs_th_test_A")
+            # D-788 / R7-D787-14.  THE SCOPE OF THE ROW IS A PROPERTY OF THE
+            # ROW, not of a reference name.  Vishay 75975 Rev B prints the
+            # 0.245 ohm VGS=1.5 V ID=2 A limit in the TC = 25 C table and
+            # publishes no low-gate row at any other temperature, so this
+            # clause is a 25 C guarantee and the 0/25/40 C endpoints stay a
+            # FIRST-ARTICLE measurement (Q11-TEMP-01), not an inference.
+            f["published_low_gate_rds_row_temperature_C"] = pub.get(
+                "rds_on_tc_C", 25.0)
             f["published_low_gate_rds_is_25C_only"] = (
-                part == "SQ2364EES-T1_BE3")
-            f["first_five_temperature_validation_required_C"] = [0, 40]
+                f["published_low_gate_rds_row_temperature_C"] == 25.0)
+            f["published_low_gate_rds_scope"] = (
+                "RDS(on) MAX %.3f ohm at VGS=%.1f V, ID=%.1f A, TC=%.0f C; no "
+                "low-gate row is published at any other temperature, so "
+                "0/25/40 C remains a first-article measurement"
+                % (pub["rds_on_max_ohm"], guaranteed_vgs, pub["rds_on_id_A"],
+                   f["published_low_gate_rds_row_temperature_C"]))
+            f["first_five_temperature_validation_required_C"] = [0, 25, 40]
     # the rectifier stands off the same ceiling in reverse
     rect_part = (values.get(BL_RECTIFIER) or "").strip()
     rp = RECTIFIER_PUBLISHED.get(rect_part)
@@ -579,6 +603,42 @@ UL2367_ILIM_RANGE = (0.066, 2.46)
 # must appear in accessory-facing documentation in these words."  A number the
 # product PUBLISHES is a number the hardware must GUARANTEE.
 PUBLISHED_RAIL_BUDGET_A = {"ACC_3V3": 0.400, "ACC_5V": 0.300}
+# --------------------------------------------------------------------------
+# D-788 / R7-D787-01 -- THE PUBLISHED COMMUNITY-PORT MINIMUM, RESTATED.
+#
+# D-787 published 3.135 V, which is 3.3 V -5 %.  D-788 proves from the fitted
+# panel's own datasheet that the rail this port is switched from may never
+# exceed 3.3 V -- the ILI9488's ABSOLUTE MAXIMUM on VCI and IOVCC -- so the
+# rail's nominal must sit BELOW 3.3 V and a 3.3 V -5 % connector minimum is
+# unreachable AT ANY CURRENT, including zero: the rail's own heavy-load
+# minimum is 3.0976 V before a single milliohm of delivery loss.
+#
+# OWNER-APPROVED D-788 OPTION A (2026-09-20).  The first-five product keeps
+# the full 400 mA Community-Port current capability and RESTATES the switched
+# rail's voltage contract to the corrected shared-rail envelope.  A dedicated
+# accessory regulator solely to preserve the former 3.135 V minimum is deferred
+# to REV-B.  The GATE is unchanged in strength: the board must still deliver at
+# or above the published minimum while the fitted display remains inside its
+# hard 3.3 V supply ceiling.
+#
+# R7-N01 MOVED IT ONCE MORE, 2.98 -> 2.95 V.  The owner's approval names
+# "approximately 3.2 V nominal" with working figures of ~3.097..3.252 V unloaded
+# and >= 2.98 V at 400 mA, and EXPLICITLY delegates the exact values to the
+# final candidate.  Centring the divider inside the 3.000..3.300 V window that
+# the ESP32-S3's floor and the panel's absolute maximum leave (R7-N02) moves
+# the whole band down by 29 mV, which buys 29 mV of headroom under a DAMAGE
+# limit and costs 28 mV of a published tolerance an accessory reads.  Every
+# Qwiic/STEMMA QT device this project has qualified operates to 2.7 V or below,
+# so no capability is lost; the PUBLISHED NUMBER changes and is stated here.
+PUBLISHED_CONNECTOR_MIN_V = 2.95
+PUBLISHED_CONNECTOR_MIN_AUTHORITY = (
+    "Owner-approved D-788 Option A, 2026-09-20: 3.2 V-class Community-Port "
+    "rail, full 400 mA capability retained; exact release envelope derived "
+    "from the final D-788 candidate. Dedicated accessory regulator deferred "
+    "to REV-B.  R7-N01 freezes that envelope at 3.069408 / 3.145503 / "
+    "3.223012 V unloaded and 2.954962 V delivered at the full 400 mA, against "
+    "a published 2.95 V minimum; the 400 mA and 300 mA current budgets are "
+    "unchanged.")
 # D-771.  THE PROTECTION CHAIN, OVER TOLERANCE, FROM EACH PART'S OWN TABLE.
 SENSE_R = "R75"                        # LTC4368 current-sense element
 BREAKER = "U18"
@@ -672,6 +732,46 @@ CU_HOT_RISE_K = 65.0
 # TPS22950-Q1 SLVSGP6A EC, ON-Resistance: the -40..+125 C rows, which is the
 # grade-1 part's own widest guaranteed band and the row audit_rail_ampacity
 # already quotes for U20.
+#
+# D-788 / R7-D787-02.  A GUARANTEED ROW IS GUARANTEED AT ITS OWN CONDITION.
+# D-787 used the 68 mOhm figure, which SLVSGP6A specifies at VIN = 3.3 V, for a
+# switch whose input is the +3V3 rail's HEAVY-LOAD MINIMUM -- below 3.3 V, where
+# the datasheet publishes a larger number.  Round-7 reproduced the sensitivity
+# (105/116 mOhm) and it consumed the whole delivery margin.
+#
+# The bound is now DERIVED, and it is an interpolation between two GUARANTEED
+# rows rather than an extrapolation beyond one.  SLVSGP6A gives RON max over
+# -40..+125 C at three input voltages:
+#
+#        VIN      1.8 V     3.3 V     5.0 V
+#        25 C      90        51        41     mOhm
+#        85 C     105        62        49     mOhm
+#       125 C     116        68        54     mOhm
+#
+# RON(VIN) is CONVEX-DECREASING in every one of those rows -- the 1.8->3.3 V
+# slope is -32.0/-28.7/-26.0 mOhm/V and the 3.3->5.0 V slope is
+# -8.2/-7.6/-5.9 mOhm/V, so the second difference is positive at every
+# temperature, and Figure 6-3 plots the same shape.  For a convex function the
+# CHORD between two points lies ABOVE the curve, so linear interpolation
+# between the 1.8 V and 3.3 V guaranteed maxima is an UPPER BOUND at every VIN
+# in between.  Outside that span the bound saturates at the nearer row.
+RON_TPS22950_MAX = {1.8: 0.116, 3.3: 0.068}
+
+
+def tps22950_ron_max(vin_V):
+    """Guaranteed -40..+125 C RON upper bound at an arbitrary input voltage."""
+    lo_v, hi_v = 1.8, 3.3
+    lo_r, hi_r = RON_TPS22950_MAX[lo_v], RON_TPS22950_MAX[hi_v]
+    if vin_V >= hi_v:
+        return hi_r
+    if vin_V <= lo_v:
+        return lo_r
+    return lo_r + (hi_r - lo_r) * (vin_V - lo_v) / (hi_v - lo_v)
+
+
+# ACC_5V's switch runs from ACC_5V_RAW, which never falls below the 3.3 V row's
+# condition, so the same bound applied at 3.3 V covers it; the 54 mOhm 5 V row
+# is reported beside it as the expected value rather than used as the bound.
 ACC_SWITCH_RON_OHM = {"ACC_3V3": 0.068, "ACC_5V": 0.054}
 # THE PATHS.  `bound_ohm` is a sanity ceiling on the LIVE measurement, not the
 # value the model runs at -- the model runs at the measured number, and a live
@@ -757,15 +857,421 @@ P3V3_FB = dict(
     top="R39", bottom="R40", vfb_V=(0.495, 0.500, 0.505),
     max_line_reg=0.005, max_load_reg=0.005, ps_high_relative_to_pwm=0.05,
     reference_temp_C=25.0, temp_min_C=-40.0, temp_max_C=85.0,
-    # Viking Tech ARG03B, 0603 thin film, 0.1 % / 25 ppm per C, -55..+155 C.
-    # Confirmed live per D-096: evidence/jlc-live/arg03btc1004-*.json (C335092,
-    # stock 54797) and evidence/jlc-live/arg03btc1783-*.json (C2441185,
-    # stock 3973).
-    tcr_ppm_per_C_by_mpn={"ARG03BTC1004": 25.0, "ARG03BTC1783": 25.0},
-    # The released selection, so `judge_accessory_envelope` stays a pure
-    # function of `values` for its own mutation controls.  main() ALWAYS passes
-    # the live schematic MPNs; `divider_mpns` in the report is what was read.
-    released_mpns={"R39": "ARG03BTC1004", "R40": "ARG03BTC1783"})
+    # D-788 / R7-D787-01.  PS/SYNC NO LONGER SITS ON GND.  TI SLVS916I 7.4.4:
+    # "To enable power save mode, PS/SYNC must be set low", and the EC table
+    # gives VFB_PS as 0.6 % .. 5 % ABOVE VFB_PWM.  U12.13 is now tied to the EN
+    # net, so the converter runs FORCED FIXED-FREQUENCY PWM whenever it is
+    # enabled and that excursion cannot occur.  The clause below REFUSES a
+    # board on which PS/SYNC is grounded again, so this flag cannot drift away
+    # from the copper.
+    power_save_disabled_by=("U12", "13"),
+    power_save_disabled_net="Net-(SW9-A)",
+    # Viking Tech ARG03B and YAGEO RT0603 thin film, both 0.1 % / 25 ppm per C,
+    # -55..+155 C.  Confirmed live per D-096: evidence/jlc-live/
+    # arg03btc1004-*.json (C335092, stock 54774) and
+    # rt0603brd07189kl-*.json (RT0603BRD07189KL, C861174, stock 339).
+    tcr_ppm_per_C_by_mpn={"ARG03BTC1004": 25.0, "ARG03BTC1783": 25.0,
+                          "RT0603BRD07187KL": 25.0,
+                          "RT0603BRD07189KL": 25.0},
+    released_mpns={"R39": "ARG03BTC1004", "R40": "RT0603BRD07189KL"})
+
+# D-788 / R7-D787-03 -- THE WHOLE LOOP, NOT THE HALF OF IT THAT IS COPPER.
+#
+# D-787's delivery proof summed U20's RON, the bounded U20->TP12 board copper
+# and the manual lead.  Round-7 found that it omitted the SOURCE side (U12's
+# output to U20's input, which is pour/plane-delivered and therefore invisible
+# to a track-graph measurement), the GROUND RETURN, and the MATING CONTACT
+# itself, and left the MEASUREMENT PLANE undefined -- about 28 mOhm of omitted
+# series resistance against an 11 mV margin.
+#
+# THE MEASUREMENT PLANE IS NOW STATED.  The guaranteed voltage is the potential
+# between the `ACC_3V3_SW` contact and the `GND` contacts AT THE J5 MATING
+# INTERFACE, with the accessory's own plug, cable and connector OUTSIDE the
+# guarantee.  Every term below is either measured off the live board, bounded
+# by a ceiling the live measurement must clear, or a DECLARED allowance with
+# its reason written down.
+P3V3_DELIVERY = dict(
+    # Pour-delivered, so no track graph reaches it.  The narrow elements are
+    # the only ones that matter and they are small: U12's two 0.240 mm DSJ
+    # output lands into 1.2 mm of 0.800 mm B.Cu (0.74 mOhm), three 0.600 mm
+    # branches to three 0.800 mm plane vias (about 0.9 mOhm in parallel), the
+    # In3/F.Cu plane spread over about 35 mm at tens of mm width (under
+    # 5 mOhm at the 0.5 oz inner and 1 oz outer sheet resistances this board's
+    # own stackup declares), and U20's 2.5 mm 0.400 mm B.Cu input stub
+    # (3.1 mOhm).  About 11 mOhm itemised; DECLARED at 25 mOhm, a 2.3x
+    # allowance, because a plane path is not track-measurable here.
+    source_bound_ohm=0.025,
+    source_is_a_declared_allowance=True,
+    source_basis="U12 VOUT lands -> B.Cu trunk -> three plane vias -> In3/F.Cu "
+                 "+3V3 plane -> U20.2 input stub; itemised at about 11 mOhm "
+                 "from the board's own declared copper weights and DECLARED at "
+                 "25 mOhm",
+    # J5 is Samtec SSQ-124-02-G-S-RA.  Samtec's published datasheet gives a
+    # 6.3 A per-pin current rating and NO contact-resistance row, so this is a
+    # DECLARED allowance and a first-article measurement, not a datasheet
+    # number.  25 mOhm is roughly 2x what a gold-on-phosphor-bronze 2.54 mm
+    # contact typically measures.
+    signal_contact_ohm=0.025,
+    gnd_contacts_in_parallel=4,
+    contact_is_a_declared_allowance=True,
+    contact_basis="Samtec SSQ series publishes a 6.3 A per-pin rating and no "
+                  "contact-resistance row; 25 mOhm per mated contact is a "
+                  "DECLARED allowance, measured at first article (C-ACC-01).  "
+                  "The signal side is charged for ONE contact because the "
+                  "clause qualifies each duplicated contact ALONE; the return "
+                  "side divides by the four GND contacts the same mated header "
+                  "always presents.",
+    # J5 GND contacts -> the +3V3 source's ground reference, through the In1
+    # and In4 solid GND planes in parallel plus their vias.  Two 0.5 oz planes
+    # in parallel are 0.566 mOhm per square and the route is a couple of
+    # squares wide, so this is 1-2 mOhm itemised; DECLARED at 10 mOhm.
+    gnd_return_bound_ohm=0.010,
+    gnd_return_is_a_declared_allowance=True,
+    process_ohm=0.010,
+    process_basis="solder joints at the two manual lead terminations and the "
+                  "board's own pad/plating tolerance; DECLARED",
+    # The two conductors this rail is actually delivered by.  Each is qualified
+    # ALONE: an accessory may use either duplicated contact by itself.
+    contacts={
+        "J5.3": dict(board_copper_src=("U20.5",), board_copper_snk=("TP12.1",),
+                     board_copper_bound_ohm=0.075,
+                     reinforced=True,
+                     what="U20 output -> TP12 reinforcement land, then the "
+                          "manual 28 AWG lead to J5.3"),
+        "J5.22": dict(board_copper_src=("U20.5",), board_copper_snk=("J5.22",),
+                      board_copper_bound_ohm=0.090,
+                      reinforced=False,
+                      what="U20 output -> J5.22 by routed copper alone; this "
+                           "contact needs no manual lead, which is what "
+                           "removes D-787's two-conductors-on-one-pad problem"),
+    })
+# --------------------------------------------------------------------------
+# D-788 / R7-D787-01 -- THE TIGHTEST CONSUMER ON THIS RAIL IS THE DISPLAY, AND
+# D-787's 3.600 V CEILING WAS NOT ITS NUMBER.
+#
+# D-787 judged the main rail's high side against a typed
+# `tightest_internal_consumer_max_V = 3.6`, which is the ESP32-S3's figure.  The
+# FITTED display is EastRising `ER-TFT035IPS-6`, an ILI9488 panel, and ILI
+# Technology's own datasheet -- archived at
+# `vendor/ILITEK/ilitek-ili9488-v100.pdf` and corroborated line-for-line against
+# a second independent mirror -- says:
+#
+#   Table 41, ABSOLUTE MAXIMUM RATINGS
+#       VCI ~ DGND     -0.3 .. +3.3 V
+#       IOVCC ~ DGND   -0.3 .. +3.3 V
+#       VIN (any logic input)  -0.3 .. IOVCC + 0.3 V
+#   Section 17.2, DC CHARACTERISTICS FOR PANEL DRIVING
+#       VCI    2.5 / 2.8 / 3.3 V
+#       IOVCC  1.65 / 1.8 / 3.3 V
+#       VIH    0.7 x IOVCC .. IOVCC
+#       Note 2: supply IOVCC equal to or less than VCI
+#
+# So 3.3 V is BOTH the operating maximum AND the absolute maximum, on BOTH
+# supplies.  D-787's derived power-save high side was 3.542487 V -- 242 mV over
+# an absolute maximum -- and its NOMINAL 3.308989 V was 9 mV over it.  The
+# module reseller's own abs-max row prints 4.6 V; where the two documents
+# disagree this clause takes the CONSERVATIVE one, because the silicon that
+# fails is the ILI9488's.
+#
+# SIX CLAUSES, each refused by a control below:
+#   1  the rail's worst-case maximum is at or under the panel's absolute max
+#   2  ...and under its DC operating maximum (the same 3.3 V here, kept
+#      separate so a datasheet revision that splits them still binds)
+#   3  the rail's heavy-load minimum is at or above the panel's VCI minimum
+#   4  the three supply pads are ONE net
+#   5  that net is the MCU's supply net, so VIH <= IOVCC holds by construction
+#      and no display input can be driven above its own supply -- which is what
+#      a separate display rail would have had to prove the hard way
+#   6  the interface-mode straps and RD sit on that same supply
+ILI9488 = dict(
+    part="ER-TFT035IPS-6 (ILI9488 controller)",
+    source="ILI Technology ILI9488 datasheet, version 100, archived at "
+           "hardware/demo/kicad/aqroot-demo/vendor/ILITEK/ilitek-ili9488-v100.pdf",
+    sha256="aeb23170f809610458e05ab514a5e3017344938ccdba1c2031acb453941df38b",
+    vci_abs_max_V=3.3, vci_op_min_V=2.5, vci_op_max_V=3.3,
+    iovcc_abs_max_V=3.3, iovcc_op_min_V=1.65, iovcc_op_max_V=3.3,
+    input_over_iovcc_abs_max_V=0.3,
+    supply_pads=("J1.40", "J1.41", "J1.42"),
+    strap_pads=("J1.7", "J1.8", "J1.9", "J1.35"),
+    mcu_supply_pads=("U1.2",))
+DISPLAY_PRIMARY = (ROOT /
+    "hardware/demo/kicad/aqroot-demo/vendor/ILITEK/ilitek-ili9488-v100.pdf")
+
+
+def judge_display_supply(rail_min_V, rail_max_V, nets_by_contact, spec=None,
+                         primary_sha=None):
+    """The fitted panel's own limits against the rail it is actually on."""
+    spec = ILI9488 if spec is None else spec
+    supply_nets = {c: nets_by_contact.get(c) for c in spec["supply_pads"]}
+    strap_nets = {c: nets_by_contact.get(c) for c in spec["strap_pads"]}
+    mcu_nets = {c: nets_by_contact.get(c) for c in spec["mcu_supply_pads"]}
+    one_net = (len(set(supply_nets.values())) == 1
+               and None not in supply_nets.values())
+    shared = one_net and set(supply_nets.values()) == set(mcu_nets.values())
+    abs_max = min(spec["vci_abs_max_V"], spec["iovcc_abs_max_V"])
+    d = dict(
+        part=spec["part"], source=spec["source"],
+        primary_sha256=primary_sha, expected_sha256=spec["sha256"],
+        primary_archived=(primary_sha == spec["sha256"]),
+        supply_nets=supply_nets, strap_nets=strap_nets,
+        mcu_supply_nets=mcu_nets,
+        rail_min_V=round(rail_min_V, 6), rail_max_V=round(rail_max_V, 6),
+        vci_abs_max_V=spec["vci_abs_max_V"], vci_op_max_V=spec["vci_op_max_V"],
+        vci_op_min_V=spec["vci_op_min_V"],
+        iovcc_abs_max_V=spec["iovcc_abs_max_V"],
+        iovcc_op_min_V=spec["iovcc_op_min_V"],
+        display_supply_is_one_net=one_net,
+        display_and_mcu_share_one_supply_net=shared,
+        rail_max_under_absolute_maximum=(rail_max_V <= abs_max),
+        rail_max_under_operating_maximum=(
+            rail_max_V <= min(spec["vci_op_max_V"], spec["iovcc_op_max_V"])),
+        rail_min_over_operating_minimum=(
+            rail_min_V >= max(spec["vci_op_min_V"], spec["iovcc_op_min_V"])),
+        absolute_margin_mV=round((abs_max - rail_max_V) * 1000, 4),
+        every_display_input_is_at_or_below_its_own_iovcc=shared,
+        input_overdrive_V=0.0 if shared else round(rail_max_V - rail_min_V, 6),
+        input_overdrive_absolute_limit_V=spec["input_over_iovcc_abs_max_V"],
+        strap_pads_are_on_the_display_supply=(
+            set(strap_nets.values()) == set(supply_nets.values())),
+        method="ILI9488 Table 41 (absolute maxima) and section 17.2 (DC "
+               "characteristics for panel driving), read from the archived "
+               "primary PDF rather than from the module reseller's summary.")
+    d["ok"] = bool(d["primary_archived"] and d["display_supply_is_one_net"]
+                   and d["display_and_mcu_share_one_supply_net"]
+                   and d["rail_max_under_absolute_maximum"]
+                   and d["rail_max_under_operating_maximum"]
+                   and d["rail_min_over_operating_minimum"]
+                   and d["every_display_input_is_at_or_below_its_own_iovcc"]
+                   and d["strap_pads_are_on_the_display_supply"])
+    return d["ok"], d
+
+
+# --------------------------------------------------------------------------
+# D-788 / R7-N02 -- A DC BOUND IS NOT THE WHOLE HIGH SIDE, AND THE LOW SIDE HAD
+# NO MCU CLAUSE AT ALL.
+#
+# TWO GAPS, found while closing R7-D787-01 and neither of them raised by
+# Round-7:
+#
+#  (a) THE HIGH SIDE.  `judge_display_supply` compares the rail's DC regulation
+#      envelope with an ABSOLUTE MAXIMUM.  Output ripple and load-transient
+#      overshoot ride ON TOP of that envelope, and the first D-788 draft left
+#      47.97 mV of DC headroom under a DAMAGE limit without pricing either.
+#
+#  (b) THE LOW SIDE.  The rail's minimum was checked against the panel's VCI
+#      2.5 V and against the Community Port's published connector minimum --
+#      and NEVER against the ESP32-S3-WROOM-1's own supply minimum, which is
+#      the tightest consumer on the whole low side.  Espressif's module
+#      datasheet Table (Recommended Operating Conditions), archived at
+#      vendor/Espressif/esp32-s3-wroom-1-datasheet.pdf, gives VDD33 as
+#      3.0 / 3.3 / 3.6 V.  A rail that had drifted below 3.0 V would have
+#      passed every clause in this file.
+#
+# WHAT IS PROVABLE AND WHAT IS NOT, STATED SEPARATELY.
+#
+# RIPPLE IS PROVABLE.  Forced PWM (PS/SYNC on EN, R7-D787-01) means continuous
+# conduction at the oscillator frequency, and SLVS916I's EC table publishes
+# that frequency as 2200 / 2400 / 2600 kHz.  With L at its own published
+# minimum and the local output capacitance at a declared effective value, the
+# buck-mode and boost-mode ripple expressions in SLVS916I 8.2.2 both evaluate
+# to single-digit millivolts, and the worse of the two is charged to BOTH
+# margins.
+#
+# LOAD-TRANSIENT OVERSHOOT IS NOT PROVABLE FROM ANYTHING THIS REPOSITORY CAN
+# READ.  TI publishes the TPS6302x load transient as PLOTS (SLVS916I Figures
+# 21/22, 50 mV/div, 500 mA -> 1500 mA on the fixed-output TPS63021 with 4 x
+# 22 uF) and no numeric overshoot row exists in the EC table.  Reading a bound
+# off a plot axis is not primary evidence, so this clause DOES NOT INVENT ONE.
+# It does three things instead:
+#
+#   1  it prices ripple, which it can, and requires the DC+ripple corner to sit
+#      inside the panel's absolute maximum AND above the module's own floor;
+#   2  it requires the fitted divider to MAXIMISE the smaller of the two
+#      remaining headrooms over the E192 0.1 % values that are actually
+#      purchasable for R40 -- so the headroom that absorbs the unprovable term
+#      is provably the largest this design can have, and the choice is
+#      machine-checked rather than argued;
+#   3  it requires a NAMED first-article acceptance to exist that measures the
+#      real excursion at the display's own supply pins.
+#
+# THE ASYMMETRY IS WHY (2) MATTERS.  3.3 V is an ABSOLUTE MAXIMUM -- exceeding
+# it damages the panel.  3.0 V is a RECOMMENDED MINIMUM -- dropping under it
+# browns the MCU out and it reboots.  With 187 kOhm fitted the split was
+# 47.97 mV under the damage limit against 96.99 mV over the recoverable one,
+# which is the wrong way round; 189 kOhm splits it 76.98 / 69.41 mV.
+ESP32S3_WROOM1 = dict(
+    part="ESP32-S3-WROOM-1-N16R8",
+    source="Espressif ESP32-S3-WROOM-1 datasheet, Recommended Operating "
+           "Conditions, archived at hardware/demo/kicad/aqroot-demo/vendor/"
+           "Espressif/esp32-s3-wroom-1-datasheet.pdf",
+    vdd33_min_V=3.0, vdd33_nom_V=3.3, vdd33_max_V=3.6,
+    supply_pads=("U1.2",))
+
+P3V3_AC = dict(
+    # SLVS916I EC: oscillator frequency 2200 / 2400 / 2600 kHz.  The MINIMUM is
+    # the ripple-worst corner.
+    f_switch_min_Hz=2.2e6,
+    # Coilcraft XFL4020-152MEC, LCSC C3033018: 1.5 uH +/-20 %, Isat 4.6 A.
+    l_nom_H=1.5e-6, l_tol=0.20,
+    # C31 + C32, the two 22 uF 1206 X7R parts D-719 brought to 1.58 mm and
+    # 3.52 mm of U12's VOUT lands.  The rest of the +3V3 net carries a further
+    # ~104 uF nominal, which HELPS and is not counted here.
+    local_c_refs=("C31", "C32"), local_c_nom_F=44.0e-6,
+    # DECLARED, not measured: X7R tolerance plus DC bias at this rail.  Half of
+    # nameplate is the conventional allowance for a 1206 X7R at ~20 % of its
+    # rated voltage and it is pessimistic for a 16 V part at 3.2 V.
+    local_c_effective_fraction=0.50,
+    # DECLARED: effective parallel ESR of two 1206 MLCCs at 2.4 MHz.
+    local_esr_ohm=0.002,
+    # The rail's own input window: BQ25185 SYS floor to its charge ceiling.
+    vin_min_V=3.0, vin_max_V=4.5,
+    # The +3V3 plane between U12's output and U1's supply pad: In3 is a filled
+    # +3V3 pour, so the delivery is a SHEET, not a track.  DECLARED at 10 mOhm,
+    # which is roughly four times the 0.5 oz sheet resistance of the widest
+    # plausible path and covers the local stubs and barrels.
+    distribution_to_mcu_bound_ohm=0.010,
+    # The E192 0.1 % values purchasable for R40 with R39 fixed at 1 MOhm.
+    # `stock` is the live D-096 record; None means "no 0.1 % part in the
+    # catalogue has any", which is itself a refusal under rule_open_sourcing.
+    r40_candidates_ohm={182000.0: 5, 186000.0: 0, 187000.0: 6884,
+                        189000.0: 339, 191000.0: 1282, 196000.0: 3},
+    first_article_item="C-PWR-TRANSIENT-01",
+)
+
+
+def p3v3_ac_envelope(rail_min_V, rail_max_V, internal_load_A, spec=None):
+    """Ripple, computed; transient, declared unprovable and deferred."""
+    spec = P3V3_AC if spec is None else spec
+    f = spec["f_switch_min_Hz"]
+    l_min = spec["l_nom_H"] * (1.0 - spec["l_tol"])
+    c_eff = spec["local_c_nom_F"] * spec["local_c_effective_fraction"]
+    # Buck mode, VIN at its ceiling: the largest inductor ripple current.
+    vin_hi = spec["vin_max_V"]
+    dil_buck = rail_max_V * (vin_hi - rail_max_V) / (vin_hi * l_min * f)
+    ripple_buck = dil_buck / (8.0 * f * c_eff) + dil_buck * spec["local_esr_ohm"]
+    # Boost mode, VIN at its floor: the output capacitor carries the whole load
+    # for the duty cycle.
+    duty = max(0.0, 1.0 - spec["vin_min_V"] / rail_max_V)
+    dil_boost = spec["vin_min_V"] * duty / (l_min * f)
+    ripple_boost = (internal_load_A * duty / (f * c_eff)
+                    + dil_boost * spec["local_esr_ohm"])
+    ripple_pp = max(ripple_buck, ripple_boost)
+    return dict(
+        f_switch_min_Hz=f, inductor_min_H=l_min,
+        local_output_c_refs=list(spec["local_c_refs"]),
+        local_output_c_nominal_F=spec["local_c_nom_F"],
+        local_output_c_effective_F=c_eff,
+        local_output_c_effective_fraction=spec["local_c_effective_fraction"],
+        inductor_ripple_buck_A=round(dil_buck, 6),
+        inductor_ripple_boost_A=round(dil_boost, 6),
+        ripple_buck_mV=round(ripple_buck * 1000, 4),
+        ripple_boost_mV=round(ripple_boost * 1000, 4),
+        ripple_pp_mV=round(ripple_pp * 1000, 4),
+        ripple_pp_V=ripple_pp,
+        method="SLVS916I 8.2.2 ripple expressions at the published minimum "
+               "oscillator frequency and the inductor's own minimum "
+               "inductance, over the declared effective local output "
+               "capacitance; the worse of the buck and boost corners is "
+               "charged to BOTH the high-side and low-side margins")
+
+
+def r40_headroom(r40_ohm, r39_ohm, fb, abs_max_V, mcu_min_V,
+                 distribution_drop_V):
+    """min(headroom under the panel's abs max, headroom over the MCU floor)."""
+    delta = max(abs(fb["reference_temp_C"] - fb["temp_min_C"]),
+                abs(fb["temp_max_C"] - fb["reference_temp_C"]))
+    err = 0.001 + 25.0e-6 * delta          # 0.1 % / 25 ppm on BOTH halves
+    lo = r39_ohm * (1 - err) / (r40_ohm * (1 + err))
+    hi = r39_ohm * (1 + err) / (r40_ohm * (1 - err))
+    raw_lo = fb["vfb_V"][0] * (1 + lo)
+    raw_hi = fb["vfb_V"][2] * (1 + hi)
+    v_lo = raw_lo * (1 - fb["max_line_reg"]) * (1 - fb["max_load_reg"])
+    v_hi = raw_hi * (1 + fb["max_line_reg"]) * (1 + fb["max_load_reg"])
+    return dict(r40_ohm=r40_ohm,
+                nominal_V=round(fb["vfb_V"][1] * (1 + r39_ohm / r40_ohm), 6),
+                rail_min_V=round(v_lo, 6), rail_max_V=round(v_hi, 6),
+                display_headroom_mV=round((abs_max_V - v_hi) * 1000, 3),
+                mcu_headroom_mV=round(
+                    (v_lo - distribution_drop_V - mcu_min_V) * 1000, 3),
+                worst_headroom_mV=round(min(abs_max_V - v_hi,
+                                            v_lo - distribution_drop_V
+                                            - mcu_min_V) * 1000, 3))
+
+
+def judge_p3v3_ac_and_centring(rail_min_V, rail_max_V, r39_ohm, r40_ohm,
+                               internal_load_A, first_article_text,
+                               spec=None, fb=None, panel=None, mcu=None):
+    spec = P3V3_AC if spec is None else spec
+    fb = P3V3_FB if fb is None else fb
+    panel = ILI9488 if panel is None else panel
+    mcu = ESP32S3_WROOM1 if mcu is None else mcu
+    abs_max = min(panel["vci_abs_max_V"], panel["iovcc_abs_max_V"])
+    mcu_min = mcu["vdd33_min_V"]
+    ac = p3v3_ac_envelope(rail_min_V, rail_max_V, internal_load_A, spec)
+    drop = spec["distribution_to_mcu_bound_ohm"] * internal_load_A
+
+    # (1) the DC + ripple corners, both ends.
+    high_corner = rail_max_V + ac["ripple_pp_V"]
+    low_corner = rail_min_V - ac["ripple_pp_V"] - drop
+
+    # (2) the centring proof: nothing purchasable does better.
+    cands = {}
+    for r, stock in sorted(spec["r40_candidates_ohm"].items()):
+        h = r40_headroom(r, r39_ohm, fb, abs_max, mcu_min, drop)
+        h["live_stock"] = stock
+        h["purchasable"] = bool(stock) and stock >= 5 * 10
+        cands["%g" % r] = h
+    fitted = cands.get("%g" % r40_ohm)
+    buyable = [h for h in cands.values() if h["purchasable"]]
+    best = max((h["worst_headroom_mV"] for h in buyable), default=None)
+
+    d = dict(
+        ripple=ac,
+        panel_absolute_max_V=abs_max,
+        mcu=dict(part=mcu["part"], source=mcu["source"],
+                 vdd33_min_V=mcu_min, supply_pads=list(mcu["supply_pads"])),
+        distribution_to_mcu_bound_ohm=spec["distribution_to_mcu_bound_ohm"],
+        internal_load_A=internal_load_A,
+        distribution_drop_to_mcu_mV=round(drop * 1000, 4),
+        dc_plus_ripple_high_V=round(high_corner, 6),
+        dc_plus_ripple_low_at_the_mcu_V=round(low_corner, 6),
+        high_corner_under_absolute_maximum=bool(high_corner <= abs_max),
+        low_corner_over_the_mcu_minimum=bool(low_corner >= mcu_min),
+        headroom_after_ripple_high_mV=round((abs_max - high_corner) * 1000, 4),
+        headroom_after_ripple_low_mV=round((low_corner - mcu_min) * 1000, 4),
+        r40_fitted_ohm=r40_ohm,
+        r40_candidates=cands,
+        best_purchasable_worst_headroom_mV=best,
+        fitted_is_the_best_purchasable_centring=bool(
+            fitted is not None and fitted["purchasable"] and best is not None
+            and fitted["worst_headroom_mV"] >= best - 1e-9),
+        load_transient_is_deferred_to_first_article=True,
+        load_transient_basis=(
+            "TI publishes the TPS6302x load transient only as SLVS916I "
+            "Figures 21/22 (50 mV/div, 500 mA -> 1500 mA, TPS63021, 4 x "
+            "22 uF); there is no numeric overshoot row in the EC table, so "
+            "NO analytic bound is claimed here.  The headroom that has to "
+            "absorb it is instead made as large as any purchasable E192 "
+            "0.1 % value allows, and the real excursion is MEASURED at first "
+            "article.  If that measurement eats the headroom the lever is "
+            "C29-C32 on their existing 1206 lands -- more output capacitance, "
+            "no PCB change -- because SLVS916I 8.2.2.3 sets no upper limit on "
+            "output capacitance"),
+        first_article_item=spec["first_article_item"],
+        first_article_named=bool(
+            spec["first_article_item"] in (first_article_text or "")),
+        method="ripple is COMPUTED and charged to both ends; load-transient "
+               "overshoot is DECLARED unprovable from published data and "
+               "deferred to a named first-article measurement; the divider is "
+               "proved to be the best-centred purchasable choice so the "
+               "deferred term has the largest headroom this design can give it")
+    d["ok"] = bool(d["high_corner_under_absolute_maximum"]
+                   and d["low_corner_over_the_mcu_minimum"]
+                   and d["fitted_is_the_best_purchasable_centring"]
+                   and d["first_article_named"])
+    return d["ok"], d
+
+
 ACC_3V3_REINFORCEMENT = ROOT / "docs/full-beta-v2/assembly/ACC_3V3_REINFORCEMENT.json"
 # --------------------------------------------------------------------------
 # D-773 -- AND THE 5 V RAIL'S OWN SETPOINT WAS A NUMBER, FROM A WRONG REFERENCE.
@@ -1366,8 +1872,85 @@ def purchased_capacitor_ratings(spec=None):
     return out
 
 
+# --------------------------------------------------------------------------
+# D-788 / R7-D787-07 -- THE DC BOUND IS BOUND TO THE FULL HIERARCHICAL NET.
+#
+# `screen_bom_sourcing.NET_MAX_DC` is keyed by LEAF name, because the screen it
+# was written for proposes parts for a net NAME.  F8 then looked a pad's node up
+# with `canonical if canonical in net_max_dc else leaf`, and that `else leaf`
+# is a wildcard over hierarchy: Round-7 put `C20` on `/ALIEN/USB_VBUS_RAW` and
+# `C33` on `/ALIEN/BQ25185_SYS` and both inherited the real rails' 5.25/5.5 V
+# and 4.5/5.5 V bounds, because the leaf still matched.  A capacitor on a net
+# this repository has never established a voltage for was proved safe against a
+# voltage established for a different net.
+#
+# THE MAP IS NOW EXPLICIT AND COMPLETE, keyed by the net name the BOARD carries,
+# valued by the `NET_MAX_DC` row it is proven to be.  There is no fallback.  An
+# unlisted net is UNKNOWN, and an unknown node has to carry a named non-DC proof
+# or the part is refused.  Three clauses keep the map honest: every key must be
+# a net that EXISTS on the board, every value must be a `NET_MAX_DC` row, and
+# the key's own leaf must EQUAL the row it names unless `PROVEN_DC_ALIASES`
+# carries an explicit reason -- so a cross-hierarchy alias can never be silent.
+CANONICAL_DC_NETS = {
+    "+3V3": "+3V3",
+    "GND": "GND",
+    "Net-(U1-EN)": "Net-(U1-EN)",
+    "/ACC_3V3_SW": "ACC_3V3_SW",
+    "/ACC_5V_SW": "ACC_5V_SW",
+    "/NFC_SUPPLY": "NFC_SUPPLY",
+    "/01_POWER_TREE/ACC_5V_RAW": "ACC_5V_RAW",
+    "/01_POWER_TREE/BAT_PROTECTED_P": "BAT_PROTECTED_P",
+    "/01_POWER_TREE/BAT_RAW": "BAT_RAW",
+    "/01_POWER_TREE/BQ25185_SYS": "BQ25185_SYS",
+    "/01_POWER_TREE/LTC_GATE_RC": "LTC_GATE_RC",
+    "/01_POWER_TREE/N_BATDIV": "N_BATDIV",
+    "/01_POWER_TREE/USB_VBUS_CHG": "USB_VBUS_CHG",
+    "/01_POWER_TREE/USB_VBUS_RAW": "USB_VBUS_RAW",
+    "/01_POWER_TREE/VBUS_PRESENT": "VBUS_PRESENT",
+    "/01_POWER_TREE/VREC_VCC": "VREC_VCC",
+    "/03_SPI_A_DISPLAY_SD/BL_DISC_G": "BL_DISC_G",
+    "/03_SPI_A_DISPLAY_SD/LED_BOOST": "LED_BOOST",
+    "/04_SPI_B_RADIOS_NFC/NFC_AGDC": "NFC_AGDC",
+    "/04_SPI_B_RADIOS_NFC/NFC_VDD_A": "NFC_VDD_A",
+    "/04_SPI_B_RADIOS_NFC/NFC_VDD_AM": "NFC_VDD_AM",
+    "/04_SPI_B_RADIOS_NFC/NFC_VDD_D": "NFC_VDD_D",
+    "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF": "NFC_VDD_RF",
+    "/07_IR/IR_RX_VS_LOCAL": "IR_RX_VS_LOCAL",
+}
+# A cross-hierarchy alias may exist only with a reason written down.  It is
+# EMPTY on this board and the clause below is what keeps it that way.
+PROVEN_DC_ALIASES = {}
+
+
+def judge_canonical_dc_map(board, net_max_dc, canonical=None, aliases=None):
+    """The hierarchical DC map, checked against the board and the DC table."""
+    canonical = CANONICAL_DC_NETS if canonical is None else canonical
+    aliases = PROVEN_DC_ALIASES if aliases is None else aliases
+    info = board.GetNetInfo()
+    board_nets = {info.GetNetItem(i).GetNetname()
+                  for i in range(info.GetNetCount())}
+    problems = []
+    for full, key in sorted(canonical.items()):
+        if full not in board_nets:
+            problems.append("canonical DC net %r is not a net on this board"
+                            % full)
+        if key not in net_max_dc:
+            problems.append("canonical DC net %r names %r, which is not a "
+                            "NET_MAX_DC row" % (full, key))
+            continue
+        if full.rsplit("/", 1)[-1] != key and full not in aliases:
+            problems.append("canonical DC net %r aliases the unrelated row %r "
+                            "with no entry in PROVEN_DC_ALIASES" % (full, key))
+    return (not problems), dict(
+        entries=len(canonical), aliases=dict(aliases), problems=problems,
+        method="every DC bound is keyed by the FULL hierarchical net the board "
+               "carries; there is no leaf fallback, so a net with a different "
+               "hierarchy is UNKNOWN and must carry a named non-DC proof")
+
+
 def judge_capacitor_derating(board, dnp_refs, net_max_dc, exceptions=None,
-                             purchased=None, non_dc_proofs=None):
+                             purchased=None, non_dc_proofs=None, canonical_dc=None,
+                             net_rewrite=None):
     """D-774, rebuilt at D-778.  The derating rule over the parts this board
     actually BUYS, and the specification a re-source would read.
 
@@ -1382,6 +1965,9 @@ def judge_capacitor_derating(board, dnp_refs, net_max_dc, exceptions=None,
     safe, and it may never state MORE than the BOM buys.
     """
     exceptions = CAP_DERATE_EXCEPTIONS if exceptions is None else exceptions
+    # D-788 / R7-D787-07.  The ONLY DC lookup.  No leaf fallback exists.
+    canonical_dc = (CANONICAL_DC_NETS if canonical_dc is None else canonical_dc)
+    net_rewrite = net_rewrite or {}
     purchased = purchased_capacitor_ratings() if purchased is None else purchased
     non_dc_proofs = CAP_NON_DC_PROOFS if non_dc_proofs is None else non_dc_proofs
     rows, no_record, identity_mismatch, understated = [], [], [], []
@@ -1429,17 +2015,19 @@ def judge_capacitor_derating(board, dnp_refs, net_max_dc, exceptions=None,
         op = ab = 0.0
         unknown, nonground = [], []
         for pad in fp.Pads():
-            net = pad.GetNetname()
+            net = net_rewrite.get(pad.GetNetname(), pad.GetNetname())
             leaf = net.rsplit("/", 1)[-1]
             if leaf == "GND" or not leaf:
                 continue
             # R6-E03: non-DC evidence is bound to the complete canonical net.
-            # Historical DC bounds are leaf-keyed, so use leaf only for that
-            # lookup; never erase hierarchy from proof identity.
+            # D-788 / R7-D787-07: SO IS THE DC EVIDENCE.  The bound is looked up
+            # by the FULL hierarchical name through the explicit canonical map;
+            # the `else leaf` fallback that let `/ALIEN/USB_VBUS_RAW` inherit
+            # `USB_VBUS_RAW`'s 5.25/5.5 V is gone.
             canonical = net or leaf
             nonground.append(canonical)
-            dc_key = canonical if canonical in net_max_dc else leaf
-            if dc_key in net_max_dc:
+            dc_key = canonical_dc.get(canonical)
+            if dc_key is not None and dc_key in net_max_dc:
                 op = max(op, net_max_dc[dc_key][0])
                 ab = max(ab, net_max_dc[dc_key][1])
             else:
@@ -1822,26 +2410,52 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
     if ACC_3V3_REINFORCEMENT.exists():
         reinforcement = json.loads(ACC_3V3_REINFORCEMENT.read_text())
     reinf_r = (float(reinforcement.get("electrical_acceptance", {})
-                     .get("each_TP12_to_J5_finished_path_max_milliohm_at_room_temperature", 1e9))
+                     .get("each_finished_lead_max_milliohm_at_room_temperature", 1e9))
                / 1000.0)
     reinforcement_identity_ok = bool(
         reinforcement.get("source", {}).get("reference") == "TP12.1"
         and reinforcement.get("source", {}).get("net") == "/ACC_3V3_SW"
         and {x.get("reference") for x in reinforcement.get("destinations", [])}
-            == {"J5.3", "J5.22"}
+            == {"J5.3"}
         and reinforcement.get("wire", {}).get("mpn") == "2842/19 RD005"
         and reinforcement.get("wire", {}).get("gauge_awg") == 28
-        and reinf_r <= 0.030 + 1e-12)
+        and reinf_r <= 0.025 + 1e-12)
 
-    # Use the path-bound U20->TP12 copper, heat BOTH that copper and the manual
-    # copper lead by the same conservative 65 K coefficient, then add U20's
-    # datasheet maximum RON. Either J5 contact must pass by itself.
-    p3_delivered_path_ohm = (
-        bound_ohms["acc_3v3_sw"] * (1 + CU_TC_PER_K * CU_HOT_RISE_K)
-        + reinf_r * (1 + CU_TC_PER_K * CU_HOT_RISE_K)
-        + ACC_SWITCH_RON_OHM["ACC_3V3"])
-    p3_delivered_min = p3_pwm_heavy_lo - (
-        PUBLISHED_RAIL_BUDGET_A["ACC_3V3"] * p3_delivered_path_ohm)
+    # ---- D-788 / R7-D787-02 + R7-D787-03: THE COMPLETE LOOP ---------------
+    # Every contact is priced ALONE, forward AND return, from U12's output to
+    # the J5 mating interface.  U20's RON is taken at the rail's own heavy-load
+    # MINIMUM rather than at the datasheet's 3.3 V condition.
+    k_hot = 1 + CU_TC_PER_K * CU_HOT_RISE_K
+    p3_ron = tps22950_ron_max(p3_pwm_heavy_lo)
+    # Everything in the loop that both duplicated contacts share.
+    shared_ohm = (P3V3_DELIVERY["source_bound_ohm"] * k_hot
+                  + P3V3_DELIVERY["signal_contact_ohm"]
+                  + P3V3_DELIVERY["signal_contact_ohm"]
+                  / P3V3_DELIVERY["gnd_contacts_in_parallel"]
+                  + P3V3_DELIVERY["gnd_return_bound_ohm"] * k_hot
+                  + P3V3_DELIVERY["process_ohm"])
+    p3_paths = {}
+    for contact, spec in sorted(P3V3_DELIVERY["contacts"].items()):
+        board = spec["board_copper_bound_ohm"] * k_hot
+        lead = reinf_r * k_hot if spec["reinforced"] else 0.0
+        total = p3_ron + shared_ohm + board + lead
+        delivered = p3_pwm_heavy_lo - (
+            PUBLISHED_RAIL_BUDGET_A["ACC_3V3"] * total)
+        p3_paths[contact] = dict(
+            what=spec["what"], reinforced=spec["reinforced"],
+            u20_ron_ohm=round(p3_ron, 6),
+            board_copper_bound_ohm=spec["board_copper_bound_ohm"],
+            board_copper_hot_ohm=round(board, 6),
+            manual_lead_hot_ohm=round(lead, 6),
+            shared_source_return_and_contact_ohm=round(shared_ohm, 6),
+            total_series_ohm=round(total, 6),
+            drop_at_published_budget_mV=round(
+                PUBLISHED_RAIL_BUDGET_A["ACC_3V3"] * total * 1000, 4),
+            delivered_at_400mA_min_V=round(delivered, 6))
+    worst_contact = min(p3_paths, key=lambda c: p3_paths[c]["delivered_at_400mA_min_V"])
+    p3_delivered_path_ohm = p3_paths[worst_contact]["total_series_ohm"]
+    p3_delivered_min = p3_paths[worst_contact]["delivered_at_400mA_min_V"]
+
     p3v3 = dict(
         top=P3V3_FB["top"], bottom=P3V3_FB["bottom"],
         top_ohms=p3_top, bottom_ohms=p3_bot,
@@ -1855,22 +2469,40 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
         raw_pwm_V=[round(p3_raw_lo, 6), round(p3_raw_nom, 6), round(p3_raw_hi, 6)],
         pwm_heavy_min_V=round(p3_pwm_heavy_lo, 6),
         pwm_heavy_max_V=round(p3_pwm_heavy_hi, 6),
-        power_save_high_V=round(p3_ps_hi, 6),
+        power_save_high_if_enabled_V=round(p3_ps_hi, 6),
+        power_save_is_disabled=True,
+        worst_case_rail_max_V=round(p3_pwm_heavy_hi, 6),
         reinforcement_file=str(ACC_3V3_REINFORCEMENT.relative_to(ROOT)),
         reinforcement_identity_ok=reinforcement_identity_ok,
         each_reinforcement_max_ohm=reinf_r,
+        measurement_plane=("the potential between the ACC_3V3_SW contact and "
+                           "the GND contacts AT THE J5 MATING INTERFACE; the "
+                           "accessory's own plug, cable and connector are "
+                           "outside the guarantee"),
+        delivery_paths=p3_paths,
+        worst_contact=worst_contact,
         delivered_path_bound_ohm=round(p3_delivered_path_ohm, 6),
         delivered_at_400mA_min_V=round(p3_delivered_min, 6),
-        published_connector_min_V=3.135,
-        tightest_internal_consumer_max_V=3.6,
-        delivered_min_ok=p3_delivered_min >= 3.135,
-        internal_high_ok=p3_ps_hi <= 3.6,
+        published_connector_min_V=PUBLISHED_CONNECTOR_MIN_V,
+        tightest_internal_consumer_max_V=ILI9488["vci_abs_max_V"],
+        tightest_internal_consumer="the fitted ILI9488 panel: VCI and IOVCC "
+                                   "absolute maximum -0.3..+3.3 V",
+        delivered_min_ok=p3_delivered_min >= PUBLISHED_CONNECTOR_MIN_V,
+        internal_high_ok=p3_pwm_heavy_hi <= ILI9488["vci_abs_max_V"],
         method="TPS63020 VFB_PWM 495/500/505 mV; exact R39/R40 value tolerance "
                "plus selected-part TCR over -40..85 C; TI 0.5% line and 0.5% "
-               "load regulation applied pessimistically; +5% power-save high "
-               "checked separately; delivered minimum uses the bounded hot "
-               "U20->TP12 prefix, measured <=30 mOhm manual lead, and U20 "
-               "68 mOhm maximum RON.")
+               "load regulation applied pessimistically in BOTH directions.  "
+               "D-788: PS/SYNC is tied to EN, so the +5% VFB_PS power-save "
+               "excursion cannot occur and the worst-case maximum is the PWM "
+               "corner; it is reported anyway so a board that re-grounds "
+               "PS/SYNC is visibly refused.  The delivered minimum prices the "
+               "COMPLETE loop -- U20's RON taken at the rail's own heavy-load "
+               "minimum rather than at the datasheet's 3.3 V condition, the "
+               "pour-delivered source side, the bounded hot board copper, the "
+               "manual lead at its acceptance, the mated signal contact, the "
+               "four parallel mated GND contacts, the ground-return copper and "
+               "a process allowance -- and qualifies EACH duplicated contact "
+               "alone.")
 
     # The PACK model must no longer run on a typed 3.3 V. Full normal load is
     # PWM, so use the HIGH PWM/regulation corner: it costs the most battery
@@ -2052,13 +2684,24 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
     r_batfet = RON_BAT_MAX_OHM * RON_BAT_VBAT_ALLOWANCE
     i3_pub, i5_pub = a3["published_budget_A"], a5["published_budget_A"]
 
+    # D-788 / R7-N03.  THIS MODEL STILL RAN AT THE 68 mOhm ROW R7-D787-02
+    # RETIRED.  The delivery proof above already takes U20's RON at the rail's
+    # own heavy-load minimum by interpolating between two GUARANTEED rows, and
+    # leaving the raw 3.3 V row in a SECOND place inside the same contract is
+    # how a corrected number comes back.  The pack model uses the same bound.
+    # It moves the battery current by microamps -- 6.5 mOhm at 0.4 A is 1 mW of
+    # 7.2 W -- and that is exactly why it must be the same number: a term this
+    # small can only be a consistency question, never a result.
+    ron_a3 = p3_ron
+    ron_a5 = ACC_SWITCH_RON_OHM["ACC_5V"]
+
     def _model(ohms):
         """The series terms, hot, from one set of path resistances."""
         return dict(
             bat=ohms["bat_protected_p"] * k_cu + r_batfet,
             trunk=ohms["sys_to_u21"] * k_cu,
-            a3=ohms["acc_3v3_sw"] * k_cu + ACC_SWITCH_RON_OHM["ACC_3V3"],
-            a5=ohms["acc_5v_sw"] * k_cu + ACC_SWITCH_RON_OHM["ACC_5V"])
+            a3=ohms["acc_3v3_sw"] * k_cu + ron_a3,
+            a5=ohms["acc_5v_sw"] * k_cu + ron_a5)
 
     def battery_current(m, vcell, i3, i5, r_bat=None, iint=None):
         """I_bat at the MAX17048 node, sag-aware and self-consistent.
@@ -2173,7 +2816,15 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
         batfet_max_ohm=RON_BAT_MAX_OHM,
         batfet_vbat_allowance=RON_BAT_VBAT_ALLOWANCE,
         batfet_modelled_ohm=round(r_batfet, 6),
-        accessory_switch_ron_ohm=dict(ACC_SWITCH_RON_OHM),
+        accessory_switch_ron_ohm=dict(ACC_3V3=round(ron_a3, 6),
+                                      ACC_5V=round(ron_a5, 6)),
+        accessory_switch_ron_basis=(
+            "ACC_3V3 is the TPS22950-Q1 bound INTERPOLATED between the 1.8 V "
+            "(116 mOhm) and 3.3 V (68 mOhm) guaranteed -40..+125 C rows at "
+            "this rail's own heavy-load minimum -- the same number the "
+            "delivery proof uses, not the raw 3.3 V row R7-D787-02 retired.  "
+            "ACC_5V's switch runs from ACC_5V_RAW, which never falls below "
+            "the 3.3 V condition, so its 54 mOhm row applies directly"),
         live_path_ohm={k: round(v, 6) for k, v in live_ohms.items()},
         path_bound_ohm={k: v["bound_ohm"] for k, v in NORMAL_PATHS.items()},
         every_live_path_inside_its_bound=all(
@@ -2492,8 +3143,8 @@ def main():
     q11_temp_acceptance_explicit = all(token in first_five_text for token in (
         "Q11-TEMP-01", "0 °C", "25 °C", "40 °C",
         "open-LED latch", "failure blocks that unit"))
-    periph_text = (DEMO_PERIPHERALS.read_text(encoding="utf-8", errors="replace")
-                   if DEMO_PERIPHERALS.exists() else "")
+    periph_text = (DEMO_BACKLIGHT.read_text(encoding="utf-8", errors="replace")
+                   if DEMO_BACKLIGHT.exists() else "")
 
     # D-787 / Round-6. F5 owns the hardware disconnect and the existence of
     # the shared executable timing seam. Executed startup ordering is proved by
@@ -2509,10 +3160,13 @@ def main():
     def _backlight_prime_ok(periph, seam):
         # THE ORDER, IN THE FILE THAT NOW OWNS IT.  D-785 read these markers out
         # of aqroot_demo_peripherals.h; D-787 moved the ordering into the shared
-        # seam, so this reads the seam and separately requires the production
-        # ramp to CALL it.  The behavioural half -- that the order executes and
-        # that six evasions are caught -- is firmware_hw_map_contract H6, and
-        # that the shipped firmware runs this seam at all is H8.
+        # seam; D-788 moved the PRODUCTION ramp that calls it into
+        # `aqroot_demo_backlight.h` so a host test can execute it.  This reads
+        # the seam and separately requires the production ramp to CALL it.  The
+        # behavioural half -- that the order executes, in the SHIPPED callbacks,
+        # and that fourteen evasions are caught -- is firmware_hw_map_contract
+        # H6 (`test_timing_policy.cpp` and `test_production_timing.cpp`), and
+        # that the shipped firmware runs the seam at all is H8.
         periph, seam = _code(periph), _code(seam)
         if "runBacklightRampPolicy(" not in periph:
             return False
@@ -2735,6 +3389,130 @@ def main():
     env["rail_ampacity_design_currents_cover_the_envelope"] = not ampacity_stale
     env_ok = env_ok and not ampacity_stale
 
+    # ---- D-788 / R7-D787-01: the fitted panel's own limits, on the live rail
+    # and the live nets.  This is the clause that refuses D-787's board.
+    display_sha = (hashlib.sha256(DISPLAY_PRIMARY.read_bytes()).hexdigest()
+                   if DISPLAY_PRIMARY.exists() else None)
+    disp_ok, disp = judge_display_supply(
+        env["p3v3_setpoint"]["pwm_heavy_min_V"],
+        env["p3v3_setpoint"]["worst_case_rail_max_V"],
+        nets_by_contact, primary_sha=display_sha)
+    # ...and the PS/SYNC tie the whole high-side bound rests on, read off the
+    # board rather than believed.  A board that re-grounds it is refused.
+    ps_ref, ps_pin = P3V3_FB["power_save_disabled_by"]
+    ps_net = nets_by_contact.get("%s.%s" % (ps_ref, ps_pin))
+    disp["power_save_pin"] = "%s.%s" % (ps_ref, ps_pin)
+    disp["power_save_pin_net"] = ps_net
+    disp["power_save_pin_is_not_grounded"] = (ps_net not in (None, "GND"))
+    disp["power_save_pin_matches_the_declared_tie"] = (
+        ps_net == P3V3_FB["power_save_disabled_net"])
+    disp["rail_max_if_power_save_were_enabled_V"] = \
+        env["p3v3_setpoint"]["power_save_high_if_enabled_V"]
+    disp["power_save_would_break_the_absolute_maximum"] = (
+        env["p3v3_setpoint"]["power_save_high_if_enabled_V"]
+        > ILI9488["vci_abs_max_V"])
+    disp_ok = bool(disp_ok and disp["power_save_pin_is_not_grounded"]
+                   and disp["power_save_pin_matches_the_declared_tie"])
+    disp["ok"] = disp_ok
+    # Three destructive controls, each restoring one exact D-787 state.
+    disp["controls_refused"] = {
+        "f6y_refuses_the_d787_power_save_high_side": not judge_display_supply(
+            env["p3v3_setpoint"]["pwm_heavy_min_V"], 3.542487,
+            nets_by_contact, primary_sha=display_sha)[0],
+        "f6z_refuses_the_d787_nominal_setpoint": not judge_display_supply(
+            env["p3v3_setpoint"]["pwm_heavy_min_V"], 3.308989,
+            nets_by_contact, primary_sha=display_sha)[0],
+        "f6aa_refuses_a_display_rail_split_from_the_mcu_rail":
+            not judge_display_supply(
+                env["p3v3_setpoint"]["pwm_heavy_min_V"],
+                env["p3v3_setpoint"]["worst_case_rail_max_V"],
+                dict(nets_by_contact, **{"J1.40": "+3V3D", "J1.41": "+3V3D",
+                                         "J1.42": "+3V3D"}),
+                primary_sha=display_sha)[0],
+        "f6ab_refuses_a_missing_or_altered_primary_datasheet":
+            not judge_display_supply(
+                env["p3v3_setpoint"]["pwm_heavy_min_V"],
+                env["p3v3_setpoint"]["worst_case_rail_max_V"],
+                nets_by_contact, primary_sha="0" * 64)[0],
+    }
+    env["display_supply"] = disp
+    env_ok = env_ok and disp_ok and all(disp["controls_refused"].values())
+
+    # ---- D-788 / R7-N02: ripple, the MCU's own floor, and the centring ----
+    # The clause above is DC.  This one charges the computable AC term to both
+    # ends, adds the ESP32-S3-WROOM-1 supply minimum that nothing in this file
+    # had ever checked, and PROVES the fitted divider is the best-centred value
+    # a purchasable E192 0.1 % part can give -- because the load-transient term
+    # is not provable from published data and the headroom that absorbs it must
+    # therefore be as large as the design allows.
+    fa_text = (FIRST_FIVE_ASSEMBLY.read_text(encoding="utf-8", errors="replace")
+               if FIRST_FIVE_ASSEMBLY.exists() else "")
+    ac_ok, ac = judge_p3v3_ac_and_centring(
+        env["p3v3_setpoint"]["pwm_heavy_min_V"],
+        env["p3v3_setpoint"]["worst_case_rail_max_V"],
+        env["p3v3_setpoint"]["top_ohms"], env["p3v3_setpoint"]["bottom_ohms"],
+        I_INTERNAL, fa_text)
+    # Four controls.  Each is a state this clause has to refuse, and the first
+    # two are the exact values the D-788 drafts and D-787 carried.
+    ac["controls_refused"] = {
+        # D-787's power-save corner: over the absolute maximum before ripple.
+        "f6ac_refuses_the_d787_power_save_corner": not
+        judge_p3v3_ac_and_centring(
+            env["p3v3_setpoint"]["pwm_heavy_min_V"], 3.542487,
+            env["p3v3_setpoint"]["top_ohms"],
+            env["p3v3_setpoint"]["bottom_ohms"], I_INTERNAL, fa_text)[1][
+                "high_corner_under_absolute_maximum"],
+        # The 187 kOhm first D-788 draft: legal on DC, NOT the best centring.
+        "f6ad_refuses_the_187k_draft_as_the_best_centring": not
+        judge_p3v3_ac_and_centring(
+            env["p3v3_setpoint"]["pwm_heavy_min_V"],
+            env["p3v3_setpoint"]["worst_case_rail_max_V"],
+            env["p3v3_setpoint"]["top_ohms"], 187000.0, I_INTERNAL, fa_text)[1][
+                "fitted_is_the_best_purchasable_centring"],
+        # A rail that clears the panel and the connector but not the MODULE.
+        "f6ae_refuses_a_rail_under_the_esp32s3_floor": not
+        judge_p3v3_ac_and_centring(
+            2.990, env["p3v3_setpoint"]["worst_case_rail_max_V"],
+            env["p3v3_setpoint"]["top_ohms"],
+            env["p3v3_setpoint"]["bottom_ohms"], I_INTERNAL, fa_text)[1][
+                "low_corner_over_the_mcu_minimum"],
+        # And the deferral is only acceptable while the measurement is NAMED.
+        "f6af_refuses_an_unnamed_first_article_transient_acceptance": not
+        judge_p3v3_ac_and_centring(
+            env["p3v3_setpoint"]["pwm_heavy_min_V"],
+            env["p3v3_setpoint"]["worst_case_rail_max_V"],
+            env["p3v3_setpoint"]["top_ohms"],
+            env["p3v3_setpoint"]["bottom_ohms"], I_INTERNAL, "")[0],
+    }
+    ac["ok"] = bool(ac_ok and all(ac["controls_refused"].values()))
+    env["p3v3_ac_envelope_and_centring"] = ac
+    env_ok = env_ok and ac["ok"]
+
+    # ---- D-788 / R7-N04: the PUBLISHED contract must be the DERIVED one ----
+    spec_text = (DEVICE_SPEC.read_text(encoding="utf-8", errors="replace")
+                 if DEVICE_SPEC.exists() else "")
+    published_tokens = {
+        "connector_minimum_V": "%.2f V" % PUBLISHED_CONNECTOR_MIN_V,
+        "unloaded_minimum_V": "%.6f V" % env["p3v3_setpoint"]["pwm_heavy_min_V"],
+        "worst_case_maximum_V": "%.6f V" % env["p3v3_setpoint"][
+            "worst_case_rail_max_V"],
+        "delivered_at_the_published_budget_V": "%.6f V" % env[
+            "p3v3_setpoint"]["delivered_at_400mA_min_V"],
+        "acc_3v3_budget": "400 mA",
+        "acc_5v_budget": "300 mA",
+    }
+    missing = sorted(k for k, t in published_tokens.items()
+                     if t not in spec_text)
+    env["published_contract_matches_device_spec"] = dict(
+        document=str(DEVICE_SPEC.relative_to(ROOT)),
+        required=published_tokens, missing=missing,
+        ok=not missing and bool(spec_text),
+        method="the product-facing document must print the SAME figures this "
+               "contract derives; a published tolerance that only lives in a "
+               "gate is not published, and one that only lives in a document "
+               "is not proven")
+    env_ok = env_ok and env["published_contract_matches_device_spec"]["ok"]
+
     env["p3v3_setpoint"]["reinforcement_contact_nets"] = reinf_contact_nets
     env["p3v3_reinforcement_contacts_are_on_the_rail"] = (
         reinforcement_contacts_are_on_the_rail)
@@ -2872,17 +3650,31 @@ def main():
         _env_policy_control(
             "f6v_refuses_the_old_single_3p50V_floor_for_both_D098_rails",
             dual_floor=3.50),
-        # f6w IS THE FIRST D-775 DRAFT'S ASSERTED 3.75 V.  It is refused by the
-        # SAME arithmetic that produced 3.80 -- the draft passed only because
-        # its round 0.250 ohm path and flat 60 mW allowance under-counted the
-        # accessory-rail copper, the two limiter RONs and the SYS->U21 trunk.
+        # f6w WAS "refuses the first D-775 draft's asserted 3.75 V", and D-788
+        # RE-AIMED IT TWICE -- which is itself the finding.  Capping the main
+        # rail at the display's 3.3 V absolute maximum LOWERED the rail, which
+        # lowered the pack current the published budgets cost, which lowered
+        # the DERIVED dual-rail requirement: 3.8094 V (D-787) -> 3.7142 V (the
+        # first D-788 draft) -> 3.6948 V (R7-N01's centred divider).  Each time,
+        # the hand-written control value stopped being a destructive value and
+        # BECAME the gridded requirement, so the control silently went vacuous
+        # while still reading PASS.
+        #
+        # A CONTROL AIMED BY HAND AT A DERIVED NUMBER IS A BUG WITH A SCHEDULE.
+        # Both are now aimed ONE GRID STEP BELOW whatever the derivation
+        # currently produces, so they cannot go vacuous again.  THE FIRMWARE
+        # FLOORS DO NOT MOVE: 3.85 V and 3.50 V are retained and are now MORE
+        # conservative than the derivation demands, which is the safe direction
+        # and the one that needs no firmware change.
         _env_policy_control(
-            "f6w_refuses_the_asserted_3p75V_floor_the_first_draft_carried",
-            dual_floor=3.75),
+            "f6w_refuses_a_dual_rail_floor_below_the_derived_requirement",
+            dual_floor=round(env["normal_operation"][
+                "required_dual_rail_floor_gridded_V"] - FLOOR_GRID_V, 4)),
         # and the single-rail floor is a clause too, not just the dual one
         _env_policy_control(
             "f6x_refuses_a_single_rail_floor_under_its_own_requirement",
-            single_floor=3.10),
+            single_floor=round(env["normal_operation"][
+                "required_single_rail_floor_gridded_V"] - FLOOR_GRID_V, 4)),
         # ---- the LIVE inputs.  A path that grows past its declared ceiling
         # must fail rather than be absorbed into the margin.
         _env_ohm_control(
@@ -3021,17 +3813,27 @@ def main():
                 "from it; the D-614 1 % / 100 ppm 0603WAF1004T5E cannot hold "
                 "the 3.135 V connector minimum at the published 400 mA"),
         "R40": dict(
-            locked="ARG03BTC1783",
+            locked="RT0603BRD07189KL",
             lib_id_contains=None,
             only_fields=("Value", "MPN", "LCSC"),
             retired=("0603WAF1803T5E", "C22827", "180K 1%",
-                     "RN73H1JTTD1763B10", "C4086101", "176K 0.1%"),
-            why="D-787 moved the TPS63020 feedback divider's low side to "
-                "178 kOhm 0.1 % / 25 ppm.  The D-614 180 kOhm 1 % part cannot "
-                "hold the envelope, and the first D-787 draft's 176 kOhm KOA "
-                "RN73H1JTTD1763B10 is UNSTOCKED (JLCPCB stock 0, as is every "
-                "other 176 kOhm 0603 part at 0.1 % or better), so it fails this "
-                "project's own rule_open_sourcing stock floor"),
+                     "RN73H1JTTD1763B10", "C4086101", "176K 0.1%",
+                     "ARG03BTC1783", "C2441185", "178K 0.1%",
+                     "RT0603BRD07187KL", "C861172", "187K 0.1%"),
+            why="D-788 moved the TPS63020 feedback divider's low side because "
+                "the rail now has a CEILING it did not have: the fitted "
+                "ILI9488 panel's VCI and IOVCC absolute maximum is 3.3 V "
+                "(Table 41 of the archived primary datasheet), and D-787's "
+                "178 kOhm put the nominal 9 mV and the power-save corner "
+                "242 mV above it.  R7-N01 then moved it again, 187 -> "
+                "189 kOhm, to CENTRE the band: a DC-only bound is not the "
+                "whole high side, ripple and load-transient overshoot ride on "
+                "top of it, and 187 kOhm left 47.97 mV under a DAMAGE limit "
+                "against 96.99 mV over the MCU's RECOVERABLE floor.  The "
+                "D-614 180 kOhm 1 % part cannot hold any envelope; the first "
+                "D-787 draft's 176 kOhm KOA RN73H1JTTD1763B10 and 186 kOhm "
+                "are both UNSTOCKED at 0.1 % and fail this project's own "
+                "rule_open_sourcing stock floor"),
         "R97": dict(
             locked="0603WAF1781T5E",
             lib_id_contains=None,
@@ -3297,11 +4099,45 @@ def main():
 
     # ---- F8: the derating rule, applied to the parts this board FITS -----
     import screen_bom_sourcing as sbs                              # noqa: E402
+    # D-788 / R7-D787-07: the hierarchical map F8 now looks every DC bound up
+    # in, checked against the board and against NET_MAX_DC before it is used.
+    dc_map_ok, dc_map = judge_canonical_dc_map(board, sbs.NET_MAX_DC)
+    # D-788 / R7-D787-16.  ONE CEILING, TWO FILES.  The sourcing screener
+    # proposes parts against `screen_bom_sourcing.LED_BOOST_OVP_MAX_V` and the
+    # board publishes its own figure in `.kicad_dru` section 5; Round-7 found
+    # them 1 V apart (38 vs 39), which lets the screener propose a part the
+    # board's own rules refuse.  They must be the same number.
+    dru_ceiling = led_boost_fault_ceiling_V(dru_text)
+    sourcing_ceiling = getattr(sbs, "LED_BOOST_OVP_MAX_V", None)
+    def _ceiling_agrees(published, constant, board_max, boost, k, a):
+        return (published is not None and constant == published
+                and board_max == published and boost == published
+                and k == published and a == published)
+
+    ceiling_agrees = _ceiling_agrees(
+        dru_ceiling, sourcing_ceiling, sbs.BOARD_MAX_DC,
+        sbs.NET_MAX_DC["LED_BOOST"][1], sbs.NET_MAX_DC["LED_K"][1],
+        sbs.NET_MAX_DC["LED_A"][1])
     cap_ok, caps = judge_capacitor_derating(board, sch_dnp, sbs.NET_MAX_DC)
+    caps["canonical_dc_map"] = dc_map
+    caps["led_boost_fault_ceiling_V"] = dict(
+        published_by_the_rules_file=dru_ceiling,
+        screen_bom_sourcing_constant=sourcing_ceiling,
+        board_max_dc=sbs.BOARD_MAX_DC,
+        led_boost_row=sbs.NET_MAX_DC["LED_BOOST"][1],
+        led_k_row=sbs.NET_MAX_DC["LED_K"][1],
+        led_a_row=sbs.NET_MAX_DC["LED_A"][1],
+        every_backlight_ceiling_agrees=ceiling_agrees)
+    cap_ok = cap_ok and dc_map_ok and ceiling_agrees
 
     def _cap_control(name, **kw):
+        # D-788: a control may mutate the canonical map itself, and the map's
+        # own three clauses are part of the verdict a control has to break.
+        cmap = kw.get("canonical_dc")
+        map_ok, _ = judge_canonical_dc_map(board, kw.get("net_max_dc")
+                                           or sbs.NET_MAX_DC, canonical=cmap)
         ok, _ = judge_capacitor_derating(board, sch_dnp, **kw)
-        return name, not ok
+        return name, not (ok and map_ok)
 
     cap_controls = dict(x for x in (
         # a node declared ABOVE what its capacitor can survive -- the leg no
@@ -3390,7 +4226,56 @@ def main():
         # itself fail instead of merely reporting the omission.
         _cap_control("f8j_refuses_unbounded_non_dc_capacitor_nodes",
                      net_max_dc=sbs.NET_MAX_DC,
-                     non_dc_proofs={})))
+                     non_dc_proofs={}),
+        # ---- D-788 / R7-D787-07.  THE EXACT ROUND-7 COUNTEREXAMPLES.  Each
+        # moves a fitted capacitor onto a net whose LEAF still matches a
+        # NET_MAX_DC row but whose hierarchy this repository has established
+        # nothing about.  Under D-787 both inherited the real rail's bound and
+        # F8 passed; both must be refused now.
+        _cap_control("f8n_refuses_c20_on_an_alien_hierarchy_usb_vbus_raw",
+                     net_max_dc=sbs.NET_MAX_DC,
+                     net_rewrite={"/01_POWER_TREE/USB_VBUS_RAW":
+                                  "/ALIEN/USB_VBUS_RAW"}),
+        _cap_control("f8o_refuses_c33_on_an_alien_hierarchy_bq25185_sys",
+                     net_max_dc=sbs.NET_MAX_DC,
+                     net_rewrite={"/01_POWER_TREE/BQ25185_SYS":
+                                  "/ALIEN/BQ25185_SYS"}),
+        # A canonical entry for a net that is NOT on this board is a stale
+        # declaration and must refuse rather than sit there.
+        _cap_control("f8p_refuses_a_canonical_dc_entry_for_an_absent_net",
+                     net_max_dc=sbs.NET_MAX_DC,
+                     canonical_dc=dict(CANONICAL_DC_NETS,
+                                       **{"/NO_SUCH/USB_VBUS_RAW":
+                                          "USB_VBUS_RAW"})),
+        # ...and an entry that maps a net onto an UNRELATED row is refused
+        # unless PROVEN_DC_ALIASES carries a written reason.
+        # D-788 / R7-D787-16: the exact stale 38 V ceiling, put back, in each
+        # of the four places that carried it.  The clause must refuse all four.
+        ("f8r_refuses_a_sourcing_constant_below_the_published_ceiling",
+         not _ceiling_agrees(dru_ceiling, 38.0, sbs.BOARD_MAX_DC,
+                             sbs.NET_MAX_DC["LED_BOOST"][1],
+                             sbs.NET_MAX_DC["LED_K"][1],
+                             sbs.NET_MAX_DC["LED_A"][1])),
+        ("f8s_refuses_a_stale_38V_board_wide_ceiling",
+         not _ceiling_agrees(dru_ceiling, sourcing_ceiling, 38.0,
+                             sbs.NET_MAX_DC["LED_BOOST"][1],
+                             sbs.NET_MAX_DC["LED_K"][1],
+                             sbs.NET_MAX_DC["LED_A"][1])),
+        ("f8t_refuses_a_stale_38V_backlight_anode_or_cathode_row",
+         not _ceiling_agrees(dru_ceiling, sourcing_ceiling, sbs.BOARD_MAX_DC,
+                             sbs.NET_MAX_DC["LED_BOOST"][1], 38.0,
+                             sbs.NET_MAX_DC["LED_A"][1])),
+        ("f8u_refuses_a_rules_file_that_publishes_no_ceiling_at_all",
+         not _ceiling_agrees(led_boost_fault_ceiling_V("no ceiling here"),
+                             sourcing_ceiling, sbs.BOARD_MAX_DC,
+                             sbs.NET_MAX_DC["LED_BOOST"][1],
+                             sbs.NET_MAX_DC["LED_K"][1],
+                             sbs.NET_MAX_DC["LED_A"][1])),
+        _cap_control("f8q_refuses_a_silent_cross_hierarchy_alias",
+                     net_max_dc=sbs.NET_MAX_DC,
+                     canonical_dc=dict(CANONICAL_DC_NETS,
+                                       **{"/04_SPI_B_RADIOS_NFC/NFC_ANT_A":
+                                          "LED_BOOST"}))))
 
     nc = ledger["approved_demo_nc"]
     checks = {
@@ -3433,11 +4318,28 @@ def main():
                    "protection follows the anode to the ceiling this board's "
                    "OWN .kicad_dru publishes for LED_BOOST -- parsed from that "
                    "file, not restated here -- so the fitted FET's PUBLISHED "
-                   "VDS rating must cover it, the held gate must enhance the "
-                   "FITTED part past its own worst-case VGS(th), and the gate "
-                   "may not decay below that threshold before the TPS61169 is "
-                   "guaranteed to be in shutdown.  Four more live controls, "
-                   "one of which is the 30 V AO3400A D-752 left fitted",
+                   "VDS rating must cover it.  "
+                   "D-788 / R7-D787-14 REWRITES THE CONDUCTION ARGUMENT AROUND "
+                   "THE ROW THAT ACTUALLY CARRIES IT.  The controlling clause "
+                   "is the CHARACTERIZED CONDUCTION POINT, not a threshold: "
+                   "Vishay 75975 Rev B publishes RDS(on) 0.245 ohm MAX at "
+                   "VGS = 1.5 V, ID = 2.0 A, and this circuit holds "
+                   "VGS = 2.396 V and asks for 0.109 A -- 0.896 V inside a "
+                   "region the vendor guarantees, at 18x less current than the "
+                   "row is taken at.  The ordering clause is measured against "
+                   "the SAME row: the RC envelope may not decay below "
+                   "VGS = 1.5 V until after the TPS61169's 2.5 ms guaranteed "
+                   "shutdown.  VGS(th) is retained only as a NECESSARY "
+                   "subordinate check and is no longer the argument -- D-779 "
+                   "showed a threshold row is an OFF-state boundary taken at "
+                   "250 uA and cannot license 109 mA.  THE SCOPE IS STATED: "
+                   "the 1.5 V row stands in the TC = 25 C table and Vishay "
+                   "publishes no low-gate row at any other temperature, so "
+                   "0/25/40 C backlight on/off remains a FIRST-ARTICLE "
+                   "measurement (Q11-TEMP-01) and is not inferred here.  "
+                   "Nine more live controls, one of which is the 30 V AO3400A "
+                   "D-752 left fitted and one the D-779 AO3422 whose only "
+                   "published low-gate row sits ABOVE the held gate",
             controls_refused=bl_controls,
             fet_controls_refused=fet_controls,
             temperature_acceptance_marker="Q11-TEMP-01",

@@ -1,10 +1,10 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-18T06:46:07Z",
+ "fetched_utc": "2026-09-20T19:33:46Z",
  "keyword": "SSQ-124-02-G-S-RA",
  "page_size": 25,
- "pages": 2,
+ "pages": 1,
  "records": [
   {
    "assemblyComponentFlag": false,
@@ -61,32 +61,32 @@
    "componentPrices": [
     {
      "endNumber": 9,
-     "productPrice": 5.6339,
+     "productPrice": 5.6332,
      "startNumber": 1
     },
     {
      "endNumber": 29,
-     "productPrice": 5.6339,
+     "productPrice": 5.6332,
      "startNumber": 10
     },
     {
      "endNumber": 199,
-     "productPrice": 5.6339,
+     "productPrice": 5.6332,
      "startNumber": 30
     },
     {
      "endNumber": 499,
-     "productPrice": 2.1813,
+     "productPrice": 2.181,
      "startNumber": 200
     },
     {
      "endNumber": 999,
-     "productPrice": 2.1032,
+     "productPrice": 2.1029,
      "startNumber": 500
     },
     {
      "endNumber": -1,
-     "productPrice": 2.0657,
+     "productPrice": 2.0655,
      "startNumber": 1000
     }
    ],

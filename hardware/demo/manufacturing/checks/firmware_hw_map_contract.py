@@ -37,7 +37,7 @@ WHAT IS PROVED
   H5  the firmware layer implements what it was given: every role the generator
       emits is referenced by the C++ under `Firmware/src/hw/`, and the C++
       names no `AQROOT_` symbol the generator did not emit.
-  H6  FOUR HOST TESTS compile under `-Wall -Wextra -Werror` and pass.  Each
+  H6  SIX HOST TESTS compile under `-Wall -Wextra -Werror` and pass.  Each
       carries load-bearing destructive controls that must make it FAIL.
         * the EXPANDER SAFE-ORDERING test.  The PCAL9535A resets to all-inputs
           with its output latches at 0xFF, and six of this board's expander
@@ -107,7 +107,16 @@ HOST_TESTS = [
     ROOT / "Firmware/test/test_accessory_power_policy.cpp",
     ROOT / "Firmware/test/test_fuel_gauge_safety.cpp",
     ROOT / "Firmware/test/test_timing_policy.cpp",
+    # D-788 / R7-D787-05 + R7-D787-06.  The one that compiles and RUNS the
+    # SHIPPED entry points -- `backlightRamp()` and
+    # `configureFuelGaugeActiveModeOnHardware()` -- against a recording
+    # Arduino HAL, so the production callbacks themselves are load-bearing.
+    ROOT / "Firmware/test/test_production_timing.cpp",
 ]
+# The recording Arduino core the production-entry-point test compiles against.
+# Copied beside `hw/` for EVERY host test so one compile command serves all of
+# them; the four seam tests do not include it and are unaffected.
+HOST_HARNESS = ROOT / "Firmware/test/harness"
 
 # Each control is (name, file under src/hw, exact text, replacement).  The
 # replacement must be a DEFENSIBLE-LOOKING mistake -- the kind a future edit
@@ -220,6 +229,52 @@ TIMING_CONTROLS = [
      "aqroot_demo_timing_policy.h",
      "constexpr uint32_t kBacklightStartupPrimeUs = 3000;",
      "constexpr uint32_t kBacklightStartupPrimeUs = 1500;"),
+]
+
+# D-788 / R7-D787-05 + R7-D787-06.  THE EXACT COUNTEREXAMPLES ROUND-7 RAN.
+# Every one of these mutates a PRODUCTION callback -- the code the assembled
+# board executes -- and every one of them passed the complete D-787 gate suite.
+# They are caught here because `test_production_timing.cpp` compiles and runs
+# those callbacks rather than a test's own fakes.
+PRODUCTION_TIMING_CONTROLS = [
+    ("the production gauge settle callback is halved",
+     "aqroot_demo_gauge_bringup.h",
+     "gauge, bus, [](uint32_t ms) { delay(ms); });",
+     "gauge, bus, [](uint32_t ms) { delay(ms / 2); });"),
+    ("the production gauge settle callback is a no-op",
+     "aqroot_demo_gauge_bringup.h",
+     "gauge, bus, [](uint32_t ms) { delay(ms); });",
+     "gauge, bus, [](uint32_t ms) { (void)ms; });"),
+    ("the production gauge caller waits before qualification",
+     "aqroot_demo_gauge_bringup.h",
+     """  return qualifyFuelGaugeActiveMode(
+      gauge, bus, [](uint32_t ms) { delay(ms); });""",
+     """  delay(kFuelGaugeActiveSettleMs);
+  return gauge.configureActiveMode(bus);"""),
+    ("the production backlight microsecond hold is halved",
+     "aqroot_demo_backlight.h",
+     "[](uint32_t us) { delayMicroseconds(us); },",
+     "[](uint32_t us) { delayMicroseconds(us / 2); },"),
+    ("the production backlight microsecond hold is a no-op",
+     "aqroot_demo_backlight.h",
+     "[](uint32_t us) { delayMicroseconds(us); },",
+     "[](uint32_t us) { (void)us; },"),
+    ("the production PWM duty writer is halved",
+     "aqroot_demo_backlight.h",
+     "[channel](uint8_t duty) { ledcWrite(channel, duty); },",
+     "[channel](uint8_t duty) { ledcWrite(channel, uint8_t(duty / 2)); },"),
+    ("the production backlight emits dim PWM before the seam",
+     "aqroot_demo_backlight.h",
+     "  runBacklightRampPolicy(",
+     "  ledcWrite(channel, 3);\n  delay(50);\n  runBacklightRampPolicy("),
+    ("the production backlight bypasses the seam entirely",
+     "aqroot_demo_backlight.h",
+     """  runBacklightRampPolicy(
+      [channel](uint8_t duty) { ledcWrite(channel, duty); },
+      [](uint32_t us) { delayMicroseconds(us); },
+      [](uint32_t ms) { delay(ms); });""",
+     """  ledcWrite(channel, 255);
+  ledcWrite(channel, 0);"""),
 ]
 
 BUS_CONTROLS = [
@@ -378,6 +433,8 @@ def run_host_test(test, mutation=None):
     with tempfile.TemporaryDirectory(prefix="aqroot-host-") as temporary:
         work = Path(temporary)
         shutil.copytree(HW_DIR, work / "hw")
+        if HOST_HARNESS.exists():
+            shutil.copytree(HOST_HARNESS, work / "harness")
         shutil.copy(test, work / test.name)
         if mutation is not None:
             _, filename, before, after = mutation
@@ -389,7 +446,9 @@ def run_host_test(test, mutation=None):
         binary = work / "host_test"
         build = subprocess.run(
             ["g++", "-std=c++17", "-Wall", "-Wextra", "-Werror",
-             "-I", str(work / "hw"), "-o", str(binary), str(work / test.name)],
+             "-I", str(work / "hw"), "-I", str(work),
+             "-I", str(work / "harness"),
+             "-o", str(binary), str(work / test.name)],
             capture_output=True, text=True)
         if build.returncode != 0:
             return (False, build.returncode, build.stderr[-2000:])
@@ -609,7 +668,8 @@ def main():
     for test, controls in zip(
             HOST_TESTS,
             (ORDER_CONTROLS, BUS_CONTROLS, POWER_POLICY_CONTROLS,
-             FUEL_GAUGE_CONTROLS, TIMING_CONTROLS)):
+             FUEL_GAUGE_CONTROLS, TIMING_CONTROLS,
+             PRODUCTION_TIMING_CONTROLS)):
         compiled, code, output = run_host_test(test)
         claims = [line for line in output.splitlines() if line.startswith("[")]
         entry = {
@@ -637,77 +697,150 @@ def main():
     report["H6_host_tests_prove_the_orderings"] = h6
 
     # ---- H8: THE RELEASED FIRMWARE MUST ACTUALLY RUN THE TESTED SEAM -----
-    # D-787 / R6-E01.  H6 proves that `aqroot_demo_timing_policy.h` orders the
-    # gauge settle and the backlight prime correctly and that six evasions are
-    # caught.  It proves NOTHING about whether the shipped firmware calls it.
-    # A template nobody invokes is the same defect one level up from the
-    # source-text gates Round-6 evaded, so the call sites are a clause: the
-    # production entry points must route through the seam, and must not carry a
-    # second, untested copy of the same ordering beside it.  Comments are
-    # stripped first -- a commented-out call is not a call.
-    def _seam_problems(main_text, periph_text):
+    # D-787 / R6-E01 wrote this clause as a SOURCE-TEXT check over the call
+    # sites, and D-788 / R7-D787-05+06 is what that cost: Round-7 halved the
+    # production `delay(ms)`, made the production `delayMicroseconds(us)` a
+    # no-op and halved the production `ledcWrite(channel, duty)`, and every
+    # clause of H1-H8 still passed -- because the ONLY executable proof drove
+    # `aqroot_demo_timing_policy.h` through a test's own fakes.
+    #
+    # H8 is now TWO claims:
+    #   (a) the shipped call sites route through the seam and own no second
+    #       untested copy of the ordering (the D-787 claim, kept), and
+    #   (b) `Firmware/test/test_production_timing.cpp` -- which compiles and
+    #       RUNS `backlightRamp()` and `configureFuelGaugeActiveModeOnHardware()`
+    #       against a recording Arduino HAL -- passed in H6 with every one of
+    #       its eight production mutations CAUGHT.
+    # Comments are stripped first: a commented-out call is not a call.
+    PRODUCTION_TEST = ROOT / "Firmware/test/test_production_timing.cpp"
+    GAUGE_BRINGUP = HW_DIR / "aqroot_demo_gauge_bringup.h"
+    BACKLIGHT = HW_DIR / "aqroot_demo_backlight.h"
+
+    def _seam_problems(main_text, periph_text, bringup_text, backlight_text):
         problems = []
         main_code = strip_comments(main_text)
         periph_code = strip_comments(periph_text)
-        if "qualifyFuelGaugeActiveMode(" not in main_code:
-            problems.append("demo/main.cpp does not call "
+        bringup_code = strip_comments(bringup_text)
+        backlight_code = strip_comments(backlight_text)
+        if "configureFuelGaugeActiveModeOnHardware(" not in main_code:
+            problems.append("demo/main.cpp does not call the production "
+                            "gauge entry point")
+        if "qualifyFuelGaugeActiveMode(" not in bringup_code:
+            problems.append("aqroot_demo_gauge_bringup.h does not call "
                             "qualifyFuelGaugeActiveMode()")
-        if "runBacklightRampPolicy(" not in periph_code:
-            problems.append("aqroot_demo_peripherals.h does not call "
+        if "runBacklightRampPolicy(" not in backlight_code:
+            problems.append("aqroot_demo_backlight.h does not call "
                             "runBacklightRampPolicy()")
         # A local re-implementation beside the seam is an untested second path.
         if re.search(r"delay\s*\(\s*kFuelGaugeActiveSettleMs\s*\)", main_code):
             problems.append("demo/main.cpp waits the settle itself instead of "
-                            "through the tested seam")
-        if re.search(r"ledcWrite\s*\([^)]*,\s*255\s*\)", periph_code):
-            problems.append("aqroot_demo_peripherals.h drives the full-duty "
-                            "prime itself instead of through the tested seam")
-        # A LITERAL microsecond hold is a re-implemented prime; the seam's own
-        # `[](uint32_t us) { delayMicroseconds(us); }` injector is not, and must
-        # not be mistaken for one.
-        if re.search(r"delayMicroseconds\s*\(\s*\d", periph_code):
-            problems.append("aqroot_demo_peripherals.h holds the prime itself "
-                            "instead of through the tested seam")
+                            "through the tested production entry point")
+        if "qualifyFuelGaugeActiveMode(" in main_code:
+            problems.append("demo/main.cpp carries a second copy of the gauge "
+                            "ordering beside the production entry point")
+        for name, code in (("aqroot_demo_peripherals.h", periph_code),
+                           ("aqroot_demo_backlight.h", backlight_code)):
+            if re.search(r"ledcWrite\s*\([^)]*,\s*255\s*\)", code):
+                problems.append("%s drives the full-duty prime itself instead "
+                                "of through the tested seam" % name)
+            # A LITERAL microsecond hold is a re-implemented prime; the seam's
+            # own `[](uint32_t us) { delayMicroseconds(us); }` injector is not.
+            if re.search(r"delayMicroseconds\s*\(\s*\d", code):
+                problems.append("%s holds the prime itself instead of through "
+                                "the tested seam" % name)
+        if "runBacklightRampPolicy(" in periph_code:
+            problems.append("aqroot_demo_peripherals.h carries a second copy "
+                            "of the backlight ordering")
         return problems
 
-    main_src = DEMO_MAIN.read_text(encoding="utf-8", errors="replace") \
-        if DEMO_MAIN.exists() else ""
-    periph_src = (HW_DIR / "aqroot_demo_peripherals.h").read_text(
-        encoding="utf-8", errors="replace") \
-        if (HW_DIR / "aqroot_demo_peripherals.h").exists() else ""
-    seam_problems = _seam_problems(main_src, periph_src)
+    def _read(path):
+        return path.read_text(encoding="utf-8", errors="replace") \
+            if path.exists() else ""
+
+    main_src = _read(DEMO_MAIN)
+    periph_src = _read(HW_DIR / "aqroot_demo_peripherals.h")
+    bringup_src = _read(GAUGE_BRINGUP)
+    backlight_src = _read(BACKLIGHT)
+    seam_problems = _seam_problems(main_src, periph_src, bringup_src,
+                                   backlight_src)
     h8_controls = []
-    for name, m_text, p_text in (
+    for name, m_text, p_text, g_text, b_text in (
             ("the gauge call site drops back to a local delay",
              main_src.replace(
-                 "return qualifyFuelGaugeActiveMode(",
+                 "return configureFuelGaugeActiveModeOnHardware(",
                  "if (!g_fuel_gauge.configureActiveMode(g_bus)) return false;\n"
                  "  delay(kFuelGaugeActiveSettleMs);\n  return true;\n  "
-                 "return qualifyFuelGaugeActiveMode(", 1), periph_src),
+                 "return configureFuelGaugeActiveModeOnHardware(", 1),
+             periph_src, bringup_src, backlight_src),
             ("the gauge call site is commented out",
-             main_src.replace("return qualifyFuelGaugeActiveMode(",
-                              "return false; // qualifyFuelGaugeActiveMode(", 1),
-             periph_src),
+             main_src.replace("return configureFuelGaugeActiveModeOnHardware(",
+                              "return false; "
+                              "// configureFuelGaugeActiveModeOnHardware(", 1),
+             periph_src, bringup_src, backlight_src),
+            ("the gauge bring-up header stops calling the seam",
+             main_src, periph_src,
+             bringup_src.replace("return qualifyFuelGaugeActiveMode(",
+                                 "return gauge.configureActiveMode(bus); "
+                                 "// qualifyFuelGaugeActiveMode(", 1),
+             backlight_src),
             ("the backlight call site re-implements the prime",
-             main_src,
-             periph_src.replace(
+             main_src, periph_src, bringup_src,
+             backlight_src.replace(
                  "  runBacklightRampPolicy(",
                  "  ledcWrite(channel, 255);\n  delayMicroseconds(3000);\n"
                  "  runBacklightRampPolicy(", 1)),
             ("the backlight call site is commented out",
+             main_src, periph_src, bringup_src,
+             backlight_src.replace("  runBacklightRampPolicy(",
+                                   "  // runBacklightRampPolicy(", 1)),
+            ("a second backlight ordering reappears in peripherals.h",
              main_src,
-             periph_src.replace("  runBacklightRampPolicy(",
-                                "  // runBacklightRampPolicy(", 1))):
-        p_list = _seam_problems(m_text, p_text)
+             periph_src + "\nnamespace aqroot { inline void backlightRamp2("
+                          "uint8_t c) { runBacklightRampPolicy("
+                          "[c](uint8_t d) { ledcWrite(c, d); },"
+                          "[](uint32_t u) { delayMicroseconds(u); },"
+                          "[](uint32_t m) { delay(m); }); } }\n",
+             bringup_src, backlight_src)):
+        p_list = _seam_problems(m_text, p_text, g_text, b_text)
         h8_controls.append(dict(control=name, refused=bool(p_list),
                                 first_reason=p_list[0] if p_list else None))
+
+    # (b) the EXECUTABLE half: the production-entry-point test must be one of
+    # the host tests H6 ran, must have passed, and every one of its production
+    # mutations must have been caught.
+    production_entry = next(
+        (entry for entry in h6["tests"]
+         if entry["test"].endswith("test_production_timing.cpp")), None)
+    production_ok = bool(
+        production_entry
+        and production_entry["compiled"]
+        and production_entry["exit_code"] == 0
+        and production_entry["claims"] >= 15
+        and not production_entry["failed_claims"]
+        and production_entry["controls"]
+        and all(c["caught"] for c in production_entry["controls"]))
+    if not PRODUCTION_TEST.exists():
+        seam_problems.append("Firmware/test/test_production_timing.cpp is absent")
+    if not production_ok:
+        seam_problems.append(
+            "the production-entry-point host test did not pass with every "
+            "production mutation caught")
+
     report["H8_released_firmware_runs_the_tested_timing_seam"] = {
         "call_sites": {
             "gauge": DEMO_MAIN.relative_to(ROOT).as_posix(),
-            "backlight": (HW_DIR / "aqroot_demo_peripherals.h")
-                         .relative_to(ROOT).as_posix(),
+            "gauge_production_entry": GAUGE_BRINGUP.relative_to(ROOT).as_posix(),
+            "backlight": BACKLIGHT.relative_to(ROOT).as_posix(),
             "seam": (HW_DIR / "aqroot_demo_timing_policy.h")
                     .relative_to(ROOT).as_posix(),
+        },
+        "executable_production_proof": {
+            "test": PRODUCTION_TEST.relative_to(ROOT).as_posix(),
+            "ran_in_H6": production_entry is not None,
+            "claims": (production_entry or {}).get("claims"),
+            "controls": [c["control"] for c in
+                         (production_entry or {}).get("controls", [])],
+            "every_production_mutation_caught": production_ok,
         },
         "problems": seam_problems,
         "controls": h8_controls,

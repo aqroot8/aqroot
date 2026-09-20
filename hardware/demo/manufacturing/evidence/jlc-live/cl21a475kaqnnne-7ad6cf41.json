@@ -1,0 +1,190 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-20T19:33:32Z",
+ "keyword": "CL21A475KAQNNNE",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+85℃"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "25V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "4.7uF"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X5R"
+    }
+   ],
+   "componentBrandEn": "FOJAN",
+   "componentCode": "C5137571",
+   "componentLibraryType": "expand",
+   "componentModelEn": "FCC0805X475K250FT",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0573,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 299,
+     "productPrice": 0.0489,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0445,
+     "startNumber": 300
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0404,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0378,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0367,
+     "startNumber": 9000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2208181800_FOJAN-FCC0805X475K250FT_C5137571.pdf",
+   "describe": "25V 4.7uF X5R ±10% 0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "4.7uF ±10% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_fojan-fcc0805x475k250ft_C5137571.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 42887
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "25V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "4.7uF"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X5R"
+    }
+   ],
+   "componentBrandEn": "Samsung Electro-Mechanics",
+   "componentCode": "C1779",
+   "componentLibraryType": "base",
+   "componentModelEn": "CL21A475KAQNNNE",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0346,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0266,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.0225,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.015,
+     "startNumber": 2000
+    },
+    {
+     "endNumber": 19999,
+     "productPrice": 0.0139,
+     "startNumber": 10000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0131,
+     "startNumber": 20000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL21A475KAQNNNE_C1779.pdf",
+   "describe": "25V 4.7uF X5R ±10% 0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "4.7uF ±10% 25V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_samsung-electro-mechanics-cl21a475kaqnnne_C1779.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2934005
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "JLCPCB Assembly",
+   "componentCode": "C9900146498",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CL21A475KAQNNNE",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0396,
+     "startNumber": 1
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0204,
+     "startNumber": 100
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "New Arrivals",
+   "dataManualUrl": null,
+   "describe": "0805 New Arrivals ROHS",
+   "erpComponentName": "CL21A475KAQNNNE",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 443,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  }
+ ],
+ "returned": 3,
+ "schema": 1,
+ "total_matches": 3
+}

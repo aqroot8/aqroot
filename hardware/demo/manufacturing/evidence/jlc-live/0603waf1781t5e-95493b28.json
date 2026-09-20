@@ -1,10 +1,10 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-18T23:42:38Z",
+ "fetched_utc": "2026-09-20T19:34:20Z",
  "keyword": "0603WAF1781T5E",
  "page_size": 25,
- "pages": 2,
+ "pages": 1,
  "records": [
   {
    "assemblyComponentFlag": false,

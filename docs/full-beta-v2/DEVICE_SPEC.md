@@ -109,7 +109,7 @@ GPIO19/20); there is **no USB-UART bridge IC** (by design). See §9, §16.
 
 | Item | Value | Label | Evidence |
 |---|---|---|---|
-| Panel (off-board) | EastRising **ER-TFT035IPS-6**, 3.5″ IPS TFT | LOCKED · FITTED · INTERNAL (off-board module) · MARKETING-SAFE (3.5″ display) | `assembly/OFF_BOARD_BOM.md`; ARCHITECTURE.md |
+| Panel (off-board) | EastRising **ER-TFT035IPS-6**, 3.5″ IPS TFT, **ILI9488** controller.  **SUPPLY LIMIT, D-788: `VCI` and `IOVCC` are −0.3 … +3.3 V ABSOLUTE MAXIMUM and 2.5 … 3.3 V / 1.65 … 3.3 V operating (ILI9488 Table 41 and §17.2, archived `vendor/ILITEK/`).  3.3 V is the ceiling on the whole `+3V3` rail and `demo_feature_contract` F6 enforces it.** | LOCKED · FITTED · INTERNAL (off-board module) · MARKETING-SAFE (3.5″ display) | `assembly/OFF_BOARD_BOM.md`; ARCHITECTURE.md; CTO_DECISIONS D-788 |
 | Resolution | **320 × 480** | LOCKED · MARKETING-SAFE | OFF_BOARD_BOM.md; ARCHITECTURE.md |
 | Display driver | **ILI9488** (COG) | LOCKED (per ARCH/BOM & D-074…D-078) | ARCHITECTURE.md; OFF_BOARD_BOM.md — see conflict note |
 | Interface | 4-wire **SPI** (SPI-A bus) | LOCKED | `03_spi_a_display_sd.kicad_sch` |
@@ -323,7 +323,85 @@ power/NFC review, and CTO decisions.
 > **This wording is D-098's own and is MANDATORY in accessory-facing
 > documentation.**
 >
-> **D-787 SUPERSEDES D-775 FOR THE CURRENT FIRST-FIVE ACCESSORY CONTRACT.**
+> ## **D-788 SUPERSEDES D-787 FOR THE CURRENT FIRST-FIVE ACCESSORY CONTRACT — OPTION A OWNER-APPROVED.**
+>
+> **THE FITTED DISPLAY'S ABSOLUTE MAXIMUM IS 3.3 V AND D-787's RAIL WAS ABOVE IT.**
+> The `ER-TFT035IPS-6` is an ILI9488 panel.  ILI Technology's own datasheet
+> (archived `vendor/ILITEK/ilitek-ili9488-v100.pdf`, sha256
+> `aeb2317…1df38b`, corroborated against a second independent mirror) gives, in
+> Table 41, an **ABSOLUTE MAXIMUM of −0.3 … +3.3 V** for BOTH `VCI` and
+> `IOVCC`, and in section 17.2 a DC operating range of `VCI` **2.5 / 2.8 /
+> 3.3 V** and `IOVCC` **1.65 / 1.8 / 3.3 V** with **`VIH` max = `IOVCC`**.
+> D-787's derived power-save corner was **3.542487 V** — 242 mV over an
+> absolute maximum — and its **nominal 3.308989 V was 9 mV over it**.
+>
+> **D-788 brings the rail inside that limit with no new component.**  `U12`'s
+> `PS/SYNC` moves from `GND` to the `EN` net, so the TPS63020 runs **forced
+> fixed-frequency PWM** and TI's `VFB_PS` **+5 %** power-save excursion cannot
+> occur; and `R40` moves **178 kΩ → 189 kΩ** (YAGEO `RT0603BRD07189KL`,
+> `C861174`, 0.1 % / 25 ppm).  `R39` is unchanged at **1.000 MΩ** Viking
+> `ARG03BTC1004`.  The rail is now **3.100334 / 3.145503 / 3.191022 V** raw
+> PWM, **3.069408 V** heavy-load minimum and **3.223012 V** worst case —
+> **76.99 mV inside the panel's absolute maximum** and **58.78 mV over the
+> ESP32-S3-WROOM-1's own 3.0 V `VDD33` minimum** after the `+3V3` plane's
+> bounded distribution drop.  Display `VCI`/`IOVCC` and the MCU supply are **the
+> same net**, so no display input is ever driven above its own supply.
+>
+> **THE SETPOINT IS CENTRED, AND THAT IS MACHINE-CHECKED (R7-N02).**  The window
+> between the MCU's 3.0 V floor and the panel's 3.3 V absolute maximum is 300 mV
+> and the rail's own tolerance band needs about 154 mV of it, so the setpoint
+> decides how the rest is split.  `demo_feature_contract` F6 enumerates every
+> purchasable E192 0.1 % value for `R40` with `R39` at 1 MΩ and requires the
+> fitted one to **maximise the smaller of the two headrooms**.  `189 kΩ` gives
+> **76.99 / 58.78 mV**; the first D-788 draft's `187 kΩ` gave **47.97 / 86.36 mV**
+> and `191 kΩ` gives **105.40 / 31.77 mV** — both refused, because 3.3 V is a
+> **damage** limit and 3.0 V is a **recoverable** one, so the larger share
+> belongs under the damage limit.  Computed output ripple (**1.68 mV** peak-to-peak,
+> from `SLVS916I`'s minimum oscillator frequency, `L1`'s minimum inductance and
+> the declared effective local output capacitance) is charged to BOTH ends.
+> **Load-transient overshoot is deliberately NOT given an analytic bound** — TI
+> publishes it only as plots — and is measured at first article as
+> `C-PWR-TRANSIENT-01`.
+>
+> ### **OWNER-APPROVED D-788 OPTION A — Community Port voltage/current contract**
+>
+> A rail whose maximum must stay under 3.3 V must sit nominally below 3.3 V, and
+> the Community Port is switched from that rail.  **The former 3.135 V
+> (3.3 V −5 %) connector minimum is unreachable at ANY current, including
+> zero**: the rail's own heavy-load minimum is 3.069408 V before a single
+> milliohm of delivery loss.  The port now guarantees:
+>
+> | condition | guaranteed voltage at the J5 mating interface |
+> |---|---|
+> | no load | **3.069408 V** |
+> | 100 mA | **3.0408 V** |
+> | 200 mA | **3.0122 V** |
+> | 400 mA (the published budget) | **2.954962 V** |
+>
+> The unloaded rail spans **3.069408 V** to **3.223012 V**.
+>
+> **`ACC_3V3_SW` = 400 mA TOTAL and `ACC_5V_SW` = 300 mA TOTAL are UNCHANGED.**
+> The owner approved **D-788 OPTION A** on 2026-09-20: the switched accessory
+> rail is published as a **3.15 V-class rail** using the derived D-788 envelope,
+> with **2.95 V minimum at the J5 mating interface at the full 400 mA budget**.
+> No promised current capability is removed. Every Qwiic/STEMMA QT device AQROOT
+> has qualified operates at or below 2.7 V. A dedicated accessory buck-boost
+> solely to restore the former 3.135 V minimum is deferred to **REV-B**.
+>
+> **MEASUREMENT PLANE.**  The guaranteed voltage is the potential between the
+> `ACC_3V3_SW` contact and the `GND` contacts **at the J5 mating interface**.
+> The accessory's own plug, cable and connector are outside the guarantee.
+>
+> **DELIVERY.**  `J5.22` is delivered by routed copper alone (79.0 mΩ measured).
+> `J5.3`, whose routed path is 224.4 mΩ, carries **ONE** manual 28-AWG
+> reinforcement lead from `TP12.1` — D-787's two-conductors-on-one-pad
+> arrangement is retired.  Each duplicated contact is qualified **alone**.
+>
+> ---
+>
+> **D-787 SUPERSEDES D-775 FOR THE CURRENT FIRST-FIVE ACCESSORY CONTRACT.**  *(HISTORICAL
+> from here to the end of this block — every D-787 number below is superseded by D-788
+> above.)*
 > The rail budgets themselves do **not** change: `ACC_3V3_SW` remains **400 mA
 > total** across J5 pins 3+22 and `ACC_5V_SW` remains **300 mA total** across
 > J5 pins 1+24. What changed is the proof that the board can actually deliver

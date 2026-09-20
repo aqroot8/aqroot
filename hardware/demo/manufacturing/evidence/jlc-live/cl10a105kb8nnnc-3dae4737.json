@@ -1,0 +1,162 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-20T19:33:21Z",
+ "keyword": "CL10A105KB8NNNC",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±10%"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "1uF"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X5R"
+    }
+   ],
+   "componentBrandEn": "Samsung Electro-Mechanics",
+   "componentCode": "C15849",
+   "componentLibraryType": "base",
+   "componentModelEn": "CL10A105KB8NNNC",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0152,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.0119,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0104,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0092,
+     "startNumber": 4000
+    },
+    {
+     "endNumber": 47999,
+     "productPrice": 0.0088,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0085,
+     "startNumber": 48000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL10A105KB8NNNC_C15849.pdf",
+   "describe": "1uF 50V X5R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "1uF ±10% 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_samsung-electro-mechanics-cl10a105kb8nnnc_C15849.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 7359749
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "1uF"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "X5R"
+    }
+   ],
+   "componentBrandEn": "Samsung Electro-Mechanics",
+   "componentCode": "C3040247",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CL10A105KB8NNNC-YJLTY",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.1596,
+     "startNumber": 1
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0376,
+     "startNumber": 100
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+   "dataManualUrl": null,
+   "describe": "1uF 50V X5R 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+   "erpComponentName": "1uF 50V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 57,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "JLCPCB Assembly",
+   "componentCode": "C9900188531",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CL10A105KB8NNNC-YJLTY",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0396,
+     "startNumber": 1
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0204,
+     "startNumber": 100
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "SMT",
+   "dataManualUrl": null,
+   "describe": "0603 SMT ROHS",
+   "erpComponentName": "【邮寄专用】CL10A105KB8NNNC-YJLTY",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 443,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  }
+ ],
+ "returned": 3,
+ "schema": 1,
+ "total_matches": 3
+}

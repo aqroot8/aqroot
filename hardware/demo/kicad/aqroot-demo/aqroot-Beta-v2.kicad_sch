@@ -5,12 +5,13 @@
 	(uuid "8a0ad1ee-a49e-4cff-9a78-44823e373405")
 	(paper "A3")
 	(title_block
-		(title "AQROOT Full Beta v2 Main Board")
-		(date "2026-07-27")
-		(rev "v2.0-S1-power-tree")
+		(title "AQROOT Demo Main Board")
+		(date "2026-09-20")
+		(rev "D-788")
 		(company "AQROOT Open Hardware")
-		(comment 1 "FULL BETA v2 - FBV2-S1 POWER TREE - DO NOT ROUTE")
-		(comment 2 "PCB FREEZE BLOCKED UNTIL ERC, FOOTPRINT, RF AND DFM REVIEW")
+		(comment 1 "AQROOT DEMO - EXTERNAL REVIEW TARGET D-788 - ROUTED, DRC-CLEAN, NOT AUTHORIZED FOR FABRICATION")
+		(comment 2 "Manufacturer CAM acceptance and first-article acceptance remain outstanding; see docs/full-beta-v2/AQROOT_DEMO_FAB_HANDOFF.md")
+		(comment 3 "D-787 title block read \"Full Beta v2 ... v2.0-S1-power-tree ... 2026-07-27 ... DO NOT ROUTE\" and was corrected at D-788 / R7-D787-17")
 	)
 	(lib_symbols)
 	(wire

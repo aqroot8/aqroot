@@ -275,7 +275,33 @@ CONTRACTS = (
     ("battery_pack", "checks/battery_pack_contract.py", (),
      "battery-pack-contract", "all_pass"),
 )
-BY_BASENAME = ("board", "schematic", "guard", "pre_board")
+BY_BASENAME = ("board", "schematic", "guard", "pre_board", "dru")
+
+# D-788 / R7-D787-18.  THE WRAPPER FAILED ON WHERE THE FILE WAS, NOT ON WHAT IT
+# SAID.  Round-7 reproduced all 19 contracts PASSING while this wrapper exited
+# 1, because `pour_partition_contract` records its netclass and published-width
+# provenance as `$.results.PP2.netclass_source.source` and
+# `$.results.PP2.published_table_source.source` -- ABSOLUTE paths -- and
+# `trunk_floor_contract` records `$.dru` the same way.  Run from a scratch
+# workspace those strings name `.../w13/aqroot-Beta-v2.kicad_dru`; run against
+# the authority they name `.../hardware/demo/kicad/...`.  Same bytes, same
+# rules, different string.
+#
+# The normalisation is deliberately NARROW: only a value that is an absolute
+# path whose BASENAME is one of THIS PROJECT's own files is reduced, at any key
+# and any depth.  Nothing about an engineering result can hide behind it --
+# a moved number, a moved count, a moved verdict all still DIFFER.
+PROJECT_FILES = (
+    "aqroot-Beta-v2.kicad_pcb",
+    "aqroot-Beta-v2.kicad_pro",
+    "aqroot-Beta-v2.kicad_dru",
+    "aqroot-Beta-v2.kicad_sch",
+)
+
+
+def _is_project_path(value):
+    return (isinstance(value, str) and value.startswith("/")
+            and Path(value).name in PROJECT_FILES)
 
 # D-676.  A CONTRACT WHOSE INPUT MOVED DID NOT REGRESS -- IT WAS ASKED ANOTHER
 # QUESTION.  `pour_partition_contract.py` takes its PRE board from a git
@@ -304,11 +330,14 @@ INPUT_KEYS = ("ref_commit", "board_sha256")
 def norm(doc, path=()):
     """The document with path-typed fields reduced to their basenames."""
     if isinstance(doc, dict):
-        return {k: (Path(str(v)).name if k in BY_BASENAME and
-                    isinstance(v, str) else norm(v, path + (k,)))
+        return {k: (Path(str(v)).name
+                    if (k in BY_BASENAME and isinstance(v, str))
+                    or _is_project_path(v)
+                    else norm(v, path + (k,)))
                 for k, v in doc.items()}
     if isinstance(doc, list):
-        return [norm(v, path + (i,)) for i, v in enumerate(doc)]
+        return [Path(v).name if _is_project_path(v) else norm(v, path + (i,))
+                for i, v in enumerate(doc)]
     return doc
 
 
@@ -393,6 +422,11 @@ def main():
                          "placement:U12:3000000:-3800000 or --claim "
                          "pour_partition:--moved --claim pour_partition:U12. "
                          "Repeatable; order is preserved")
+    ap.add_argument("--strict", action="store_true",
+                    help="exit non-zero unless every report is byte-identical, "
+                         "including the declared input identifiers "
+                         "(ref_commit, board_sha256).  The default exits on "
+                         "SUBSTANTIVE difference only -- D-788 / R7-D787-18.")
     ap.add_argument("-o", "--out", type=Path)
     a = ap.parse_args()
     claims = {}
@@ -461,25 +495,45 @@ def main():
         moved = [k for k in INPUT_KEYS
                  if _find(cur, k) or _find(old, k)
                  if _find(cur, k) != _find(old, k)]
+        # D-788 / R7-D787-18, second half.  A FIELD THAT HOLDS THE BOARD DIGEST
+        # IS THE BOARD DIGEST, WHATEVER IT IS CALLED.  `fab_package_contract`
+        # publishes it as `authoritative_board_sha256` and
+        # `firmware_hw_map_contract` as `published_in_header`, so stripping the
+        # key name `board_sha256` left two reports "DIFFERING" at a value that
+        # IS the declared input.  Any string equal to either run's board digest
+        # is normalised to the same token -- which cannot hide anything else,
+        # because a digest is not an engineering result.
+        digests = {x for x in (_find(cur, "board_sha256")
+                               + _find(old, "board_sha256")) if x}
         # AND SAY WHAT ELSE MOVED.  An INCOMPARABLE row whose only report is
         # the input key would hide the substantive difference behind it, so
         # the same diff is taken again with the input keys removed from both.
-        rest = None
-        if moved:
-            def strip(doc):
-                if isinstance(doc, dict):
-                    return {k: strip(v) for k, v in doc.items()
-                            if k not in INPUT_KEYS}
-                if isinstance(doc, list):
-                    return [strip(v) for v in doc]
-                return doc
-            rest = first_diff(norm(strip(cur)), norm(strip(old)))
+        def strip(doc):
+            if isinstance(doc, dict):
+                return {k: strip(v) for k, v in doc.items()
+                        if k not in INPUT_KEYS}
+            if isinstance(doc, list):
+                return [strip(v) for v in doc]
+            if isinstance(doc, str) and doc in digests:
+                return "<BOARD_SHA256>"
+            return doc
+        # The SUBSTANTIVE answer is always the diff with the declared input
+        # identifiers removed -- the key names in INPUT_KEYS at any depth, and
+        # any value that IS one of the two board digests.  Nothing else is
+        # stripped, so every engineering result still differs when it moves.
+        rest = first_diff(norm(strip(cur)), norm(strip(old)))
         row.update(baseline=ref.name, identical=(d is None), difference=d,
                    baseline_verdict=old.get(field),
                    comparable=not (moved and d is not None),
                    difference_excluding_inputs=rest,
                    inputs_moved={k: [_find(old, k), _find(cur, k)]
                                  for k in moved} or None)
+        # D-788 / R7-D787-18.  THE SUBSTANTIVE ANSWER, per row: what differs
+        # once the declared INPUT identifiers are removed.  A row whose only
+        # difference is `ref_commit` or `board_sha256` has no substantive
+        # difference and must not fail the wrapper; a row that differs in an
+        # engineering result still does.
+        row["substantive_difference"] = rest
         rows.append(row)
         if d is None:
             verdict_text = "IDENTICAL to %s" % a.baseline
@@ -531,14 +585,34 @@ def main():
                # D-663 without ever saying so in one word.
                vacuous=bool(rows and not any(r.get("identical") is not None
                                              for r in rows)),
+               # D-788 / R7-D787-18.  The wrapper's EXIT CODE reads this, not
+               # `all_identical`: byte-identity of an input identifier is not
+               # an engineering result, and failing on it made a green suite
+               # look red.  Strictness is UNCHANGED for everything else -- any
+               # difference that survives stripping the declared input keys is
+               # still a failure, and `--strict` restores byte-identity.
+               no_substantive_difference=all(
+                   r.get("substantive_difference") is None
+                   for r in rows if r.get("identical") is not None),
+               contracts_with_substantive_difference=[
+                   r["contract"] for r in rows
+                   if r.get("substantive_difference") is not None],
                contracts=rows)
     text = json.dumps(doc, indent=1, sort_keys=True)
     if a.out:
         a.out.write_text(text + "\n", encoding="utf-8")
-    print("\n contracts %d   all_ran %s   all_identical %s"
-          % (len(rows), doc["all_ran"], doc["all_identical"]),
+    print("\n contracts %d   all_ran %s   all_identical %s   "
+          "no_substantive_difference %s"
+          % (len(rows), doc["all_ran"], doc["all_identical"],
+             doc["no_substantive_difference"]),
           file=sys.stderr)
-    return 0 if (doc["all_ran"] and doc["all_identical"]) else 1
+    if doc["contracts_with_substantive_difference"]:
+        print(" substantive: %s"
+              % ", ".join(doc["contracts_with_substantive_difference"]),
+              file=sys.stderr)
+    ok = doc["all_ran"] and (doc["all_identical"] if a.strict
+                             else doc["no_substantive_difference"])
+    return 0 if ok else 1
 
 
 if __name__ == "__main__":

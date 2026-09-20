@@ -1,10 +1,10 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-18T01:23:35Z",
+ "fetched_utc": "2026-09-20T19:34:09Z",
  "keyword": "0603WAF3900T5E",
  "page_size": 25,
- "pages": 2,
+ "pages": 1,
  "records": [
   {
    "assemblyComponentFlag": false,
@@ -86,7 +86,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 353079
+   "stockCount": 324835
   },
   {
    "assemblyComponentFlag": false,
@@ -116,7 +116,7 @@
    "lcscGoodsUrl": null,
    "leastPatchNumber": 5,
    "lossNumber": 4,
-   "minPurchaseNum": 439,
+   "minPurchaseNum": 443,
    "noBuyReason": "This product is no longer manufactured.",
    "rohsFlag": 1,
    "stockCount": 0

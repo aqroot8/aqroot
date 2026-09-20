@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-05T01:00:41Z",
+ "fetched_utc": "2026-09-20T19:34:15Z",
  "keyword": "0603WAF2202T5E",
  "page_size": 25,
  "pages": 1,
@@ -45,32 +45,32 @@
    "componentPrices": [
     {
      "endNumber": 999,
-     "productPrice": 0.0045,
+     "productPrice": 0.0041,
      "startNumber": 1
     },
     {
      "endNumber": 4999,
-     "productPrice": 0.0035,
+     "productPrice": 0.0031,
      "startNumber": 1000
     },
     {
      "endNumber": 9999,
-     "productPrice": 0.003,
+     "productPrice": 0.0026,
      "startNumber": 5000
     },
     {
      "endNumber": 49999,
-     "productPrice": 0.0026,
+     "productPrice": 0.0023,
      "startNumber": 10000
     },
     {
      "endNumber": 50199,
-     "productPrice": 0.0023,
+     "productPrice": 0.002,
      "startNumber": 50000
     },
     {
      "endNumber": -1,
-     "productPrice": 0.0023,
+     "productPrice": 0.002,
      "startNumber": 50200
     }
    ],
@@ -86,7 +86,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 4428542
+   "stockCount": 3803397
   },
   {
    "assemblyComponentFlag": false,
@@ -98,7 +98,7 @@
    "componentPrices": [
     {
      "endNumber": 99,
-     "productPrice": 0.0395,
+     "productPrice": 0.0396,
      "startNumber": 1
     },
     {
@@ -116,7 +116,7 @@
    "lcscGoodsUrl": null,
    "leastPatchNumber": 5,
    "lossNumber": 4,
-   "minPurchaseNum": 439,
+   "minPurchaseNum": 443,
    "noBuyReason": "This product is no longer manufactured.",
    "rohsFlag": 1,
    "stockCount": 0

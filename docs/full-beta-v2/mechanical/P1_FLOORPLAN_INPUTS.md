@@ -102,10 +102,10 @@ Authority: [`MECHANICAL_INTERFACE_SPEC.md`](MECHANICAL_INTERFACE_SPEC.md) and
 | B-1 | USB-C receptacle | GCT **`USB4105-GF-A-120`**, ~**9.2 × 7.35 × 3.26 mm**, top-mount horizontal | **LOCKED (part)**, dims **CAD-TO-VERIFY** |
 | B-2 | USB-C position | bottom edge, **centred ± 5 mm** | **TARGET** |
 | B-3 | USB-C aperture | must clear the **receptacle mouth**, not just the body | **TARGET** |
-| B-4 | microSD socket | Molex **`5025700893`**, ~**14.0 × 14.5 × 1.85 mm**, push-pull | **LOCKED (part)**, dims **CAD-TO-VERIFY** |
+| B-4 | microSD socket | Molex **`5025700893`**, ~**14.0 × 14.5 × 1.85 mm**, **PUSH-PUSH** (*this row read "push-pull" until D-788 / R7-D787-12; the part is a spring-latched push-push socket with a card-detect switch*) | **LOCKED (part)**, dims **CAD-TO-VERIFY** |
 | B-5 | microSD position | bottom edge, **left of USB-C** | **TARGET** |
 | B-6 | **microSD ↔ USB-C separation** | **UNDER REVIEW — see §9 O-4.** The recorded "≥ 8 mm centre-to-centre" is **smaller than the two bodies allow** | **OPEN** |
-| B-7 | **Card insertion path** | the card **protrudes during insertion** — reserve **+18 mm of travel OUTSIDE the shell**, clear of the USB-C aperture and any grip feature | **TARGET** |
+| B-7 | **Card insertion path** | **REWRITTEN D-788 / R7-D787-12 for the ACTUAL push-push mechanism.**  The card latches **flush** and does not stand proud in service, so the old "+18 mm of card outside the shell" is not a requirement of this socket.  Reserve instead: a clean through-aperture, **finger/nail access at the aperture** in both directions (push to latch, push to release), and clearance for the socket's **eject stroke** so the released card presents far enough to grip — all clear of the USB-C aperture and any grip feature | **TARGET** |
 
 ---
 

@@ -1,0 +1,161 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-20T19:33:50Z",
+ "keyword": "74438357010",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Current - Saturation(Isat)",
+     "attribute_value_name": "7.4A"
+    },
+    {
+     "attribute_name_en": "Inductance",
+     "attribute_value_name": "1uH"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Current Rating",
+     "attribute_value_name": "7A"
+    },
+    {
+     "attribute_name_en": "DC Resistance(DCR)",
+     "attribute_value_name": "12mΩ"
+    }
+   ],
+   "componentBrandEn": "KOHERelec",
+   "componentCode": "C2761910",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SPM4030-1R0M",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.7178,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.7032,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.6918,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 101,
+     "productPrice": 0.682,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 103,
+     "productPrice": 0.682,
+     "startNumber": 102
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.682,
+     "startNumber": 104
+    }
+   ],
+   "componentSpecificationEn": "SMD,4.1x4.1mm",
+   "componentTypeEn": "Power Inductors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2202131830_KOHERelec-SPM4030-1R0M_C2761910.pdf",
+   "describe": "12mΩ 1uH 7.4A 7A ±20% SMD,4.1x4.1mm Power Inductors ROHS",
+   "erpComponentName": "1uH ±20% 7.4A 停产",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/power-inductors_koherelec-spm4030-1r0m_C2761910.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 13,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Inductance",
+     "attribute_value_name": "1uH"
+    },
+    {
+     "attribute_name_en": "Current - Saturation(Isat)",
+     "attribute_value_name": "9.6A"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Current Rating",
+     "attribute_value_name": "7.4A"
+    },
+    {
+     "attribute_name_en": "DC Resistance(DCR)",
+     "attribute_value_name": "13.5mΩ"
+    }
+   ],
+   "componentBrandEn": "Wurth Elektronik",
+   "componentCode": "C5542269",
+   "componentLibraryType": "expand",
+   "componentModelEn": "74438357010",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 1.9743,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 1.932,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 1.9027,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 101,
+     "productPrice": 1.875,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 103,
+     "productPrice": 1.875,
+     "startNumber": 102
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 1.875,
+     "startNumber": 104
+    }
+   ],
+   "componentSpecificationEn": "SMD,4.1x4.1mm",
+   "componentTypeEn": "Power Inductors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2311290212_Wurth-Elektronik-74438357010_C5542269.pdf",
+   "describe": "13.5mΩ 1uH 7.4A 9.6A ±20% SMD,4.1x4.1mm Power Inductors ROHS",
+   "erpComponentName": "1uH ±20% 9.6A",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/power-inductors_wurth-elektronik-74438357010_C5542269.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 5,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  }
+ ],
+ "returned": 2,
+ "schema": 1,
+ "total_matches": 2
+}

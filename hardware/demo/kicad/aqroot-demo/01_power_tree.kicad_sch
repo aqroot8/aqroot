@@ -8893,7 +8893,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "178K 0.1%"
+		(property "Value" "189K 0.1%"
 			(at 220.98 100.3299 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8926,7 +8926,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" "Viking Tech"
+		(property "Manufacturer" "YAGEO"
 			(at 218.44 99.06 0)
 			(hide yes)
 			(show_name no)
@@ -8937,7 +8937,7 @@
 				)
 			)
 		)
-		(property "MPN" "ARG03BTC1783"
+		(property "MPN" "RT0603BRD07189KL"
 			(at 218.44 99.06 0)
 			(hide yes)
 			(show_name no)
@@ -8948,7 +8948,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C2441185"
+		(property "LCSC" "C861174"
 			(at 218.44 99.06 0)
 			(hide yes)
 			(show_name no)
@@ -8959,7 +8959,7 @@
 				)
 			)
 		)
-		(property "Note_Sourcing" "SOURCING D-787 2026-09-20, verified live per D-096 through the JLCPCB parts API.  LCSC C2441185, Viking Tech ARG03BTC1783, 178 kOhm +/-0.1 pct, 0603, 100 mW thin film, +/-25 ppm/C, -55..+155 C, componentLibraryType = expand, stock 3973 (evidence/jlc-live/arg03btc1783-*.json).  SAME Viking ARG03B SERIES AND SAME 0.1 pct / 25 ppm GRADE as R39, so the divider's two halves track.  This REPLACES the D-614 line 'EXACT_PRIOR from the beta-dm audit line 180K 1 pct', which sourced UNI-ROYAL 0603WAF1803T5E C22827.  176 kOhm WAS THE FIRST D-787 CANDIDATE AND IS REFUSED ON AVAILABILITY, not on electricals: every 176 kOhm 0603 part at 0.1 pct or better in the JLCPCB catalogue reads stock 0 -- including the KOA RN73H1JTTD1763B10 C4086101 that draft named (evidence/jlc-live/176k-0603-0-1-*.json) -- so it fails this project's own rule_open_sourcing stock floor of 5 boards x 10 liquidity.  178 kOhm is the nearest STOCKED 0.1 pct value that keeps the derived envelope inside BOTH the 3.135 V Community Port minimum and the 3.600 V internal consumer maximum, and it is also the low-side magnitude TI's own SLVS916I Table 3 prints for a 3.3 V output.  Same 0603 land: no footprint, no copper and no assembly step change."
+		(property "Note_Sourcing" "SOURCING D-788 2026-09-20, verified live per D-096 through the JLCPCB parts API.  LCSC C861174, YAGEO RT0603BRD07189KL, 189 kOhm +/-0.1 pct, 0603, thin film, +/-25 ppm/C, -55..+155 C, componentLibraryType = expand, stock 339 (evidence/jlc-live/rt0603brd07189kl-*.json and 189k-0-1-0603-*.json).  339 is 68x the five-board need of 5 and clears this repository's hard liquidity gate (5 parts x 5 boards x 10 = 50); it is BELOW the 500-piece comfort floor, so rule_open_sourcing carries it as a THIN line and the pre-PCBA stock re-check owns it.  SAME 0.1 pct / 25 ppm GRADE, same YAGEO RT0603 family and the same 0603 land as the 187 kOhm RT0603BRD07187KL C861172 it replaces, so the divider's two halves still track and F6's MPN-keyed temperature-coefficient table needs only the new row.  WAS 187 kOhm RT0603BRD07187KL C861172 (D-788 first draft); WAS 178 kOhm Viking ARG03BTC1783 C2441185 (D-787).  189 kOhm is the E192 value that CENTRES the rail's own tolerance band inside the 3.000..3.300 V window the ESP32-S3 floor and the ILI9488 absolute maximum leave; 191 kOhm overshoots (42.5 mV to the MCU floor) and 188 kOhm is not an E192 value."
 			(at 218.44 99.06 0)
 			(hide yes)
 			(show_name no)
@@ -8970,7 +8970,7 @@
 				)
 			)
 		)
-		(property "Note" "D-787 / R6-A01 THE MAIN 3.3 V RAIL IS ADJUSTABLE AND ITS SETPOINT WAS NEVER A PROOF TERM.  Every accessory clause before D-787 ran on a TYPED 3.3 V constant, so the released 1 MOhm / 180 kOhm 1 pct divider could sit anywhere in a band the contract could not see, and F6 stayed green while the Community Port's PUBLISHED 3.135 V minimum was not guaranteed at the PUBLISHED 400 mA.  F6 now DERIVES the whole envelope: TI SLVS916I VFB_PWM 495 / 500 / 505 mV, the fitted value tolerance, the SELECTED PART's temperature coefficient over -40..+85 C, TI's 0.5 pct maximum line and 0.5 pct maximum load regulation applied together, and the +5 pct power-save high side checked separately.  At R39 = 1 MOhm and R40 = 178 kOhm, both Viking ARG03B 0.1 pct / 25 ppm, the raw PWM band is 3.261337 / 3.308989 / 3.357013 V, the heavy-load minimum is 3.228806 V and the power-save high side is 3.542487 V against the 3.600 V tightest internal consumer maximum.  DELIVERY IS A SEPARATE CLAUSE: the bounded hot U20->TP12 prefix, the manual first-five reinforcement lead at its <=30 mOhm acceptance and U20's 68 mOhm maximum RON cost 82.4 mV at 400 mA, leaving 3.146366 V at either duplicated 3.3 V contact.  THE WINDOW IS NARROW IN BOTH DIRECTIONS -- 180 kOhm falls below the connector minimum and 174 kOhm exceeds the internal consumer maximum -- which is why the divider's tolerance grade and temperature coefficient are locked by F7 and why F6 refuses an MPN whose coefficient this repository has not read.  WAS 180 kOhm 1 pct (D-614).  Pinned by checks/demo_feature_contract.py F6 and F7."
+		(property "Note" "D-788 / R7-D787-01 + R7-N01.  THE RAIL HAD NO CEILING AND THE DISPLAY'S ABSOLUTE MAXIMUM IS 3.3 V.  D-787 judged the rail's high side against a 3.600 V 'tightest internal consumer' that was FALSE.  The fitted ER-TFT035IPS-6 is an ILI9488 panel, and ILI Technology's own datasheet -- archived at vendor/ILITEK/ilitek-ili9488-v100.pdf, sha256 aeb23170f809610458e05ab514a5e3017344938ccdba1c2031acb453941df38b, corroborated against a second independent mirror -- gives in Table 41 an ABSOLUTE MAXIMUM of -0.3 .. +3.3 V for BOTH VCI ~ DGND and IOVCC ~ DGND, and in section 17.2 a DC operating range of VCI 2.5 / 2.8 / 3.3 V and IOVCC 1.65 / 1.8 / 3.3 V with VIH max = IOVCC.  D-787's derived power-save high side was 3.542487 V -- 242 mV over an ABSOLUTE MAXIMUM -- and even its NOMINAL 3.308989 V stood 9 mV above it.  D-788 closes it with TWO changes and NO new component: U12's PS/SYNC moves from GND to the EN net so the converter runs FORCED FIXED-FREQUENCY PWM and TI's VFB_PS +5 pct power-save excursion cannot occur, and this divider moves the whole band down.  R7-N01 THEN CENTRES IT: a DC-only bound is not the whole high side, because ripple and load-transient overshoot ride on top of it and TI plots this converter's own load transient at 50 mV/div for a 1 A step (SLVS916I Figures 21/22).  187 kOhm left only 47.97 mV of DC headroom under a DAMAGE limit while leaving 96.99 mV over the ESP32-S3's RECOVERABLE 3.0 V floor; 189 kOhm splits that 76.98 / 69.41 mV, which is where the window centres once the +3V3 plane's own few millivolts of distribution drop are counted on the MCU side.  Raw PWM band 3.100334 / 3.145503 / 3.191022 V, heavy-load minimum 3.069405 V, worst case 3.223016 V.  Display VCI/IOVCC and the MCU remain the SAME net, so VIH <= IOVCC holds by construction and no display input is ever driven above its own supply.  THE COST IS THE COMMUNITY PORT: a rail whose maximum must stay under 3.3 V cannot also guarantee 3.3 V -5 pct at the connector at ANY current.  The owner approved OPTION A on 2026-09-20 and delegated the exact values to the final candidate; this one delivers 2.954958 V at the published 400 mA.  Pinned by checks/demo_feature_contract.py F6 and F7."
 			(at 218.44 99.06 0)
 			(hide yes)
 			(show_name no)
@@ -13048,84 +13048,6 @@
 			(project "aqroot-Beta-v2"
 				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/83b1880a-0a3b-496a-bce6-0dc4c72d8ece"
 					(reference "R31")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 223.52 72.39 270)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "844a3e66-ae27-4ea0-b4e4-77198f6fb3b4")
-		(property "Reference" "#PWR0146"
-			(at 217.17 72.39 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 222.25 70.612 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" ""
-			(at 223.52 72.39 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 223.52 72.39 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 223.52 72.39 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "ba3b0848-f552-4bcc-b97e-d19247954bc1")
-		)
-		(instances
-			(project "aqroot-Beta-v2"
-				(path "/8a0ad1ee-a49e-4cff-9a78-44823e373405/83b1880a-0a3b-496a-bce6-0dc4c72d8ece"
-					(reference "#PWR0146")
 					(unit 1)
 				)
 			)
@@ -36306,5 +36228,41 @@
 				)
 			)
 		)
+	)
+	(wire
+		(pts
+			(xy 223.52 72.39) (xy 223.52 69.85)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d7881000-0000-4000-8000-000000000001")
+	)
+	(junction
+		(at 223.52 69.85)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "d7881000-0000-4000-8000-000000000002")
+	)
+	(text_box "D-788 / R7-D787-01: PS/SYNC IS TIED TO EN, NOT TO GND.\nTI SLVS916I 7.4.4 -- PS/SYNC low ENABLES power save, and the EC table\n gives VFB_PS as 0.6 % .. 5 % ABOVE VFB_PWM. On this board that put the\n+3V3 rail as high as 3.542 V, against the ILI9488 panel's ABSOLUTE\nMAXIMUM of 3.3 V on VCI and IOVCC (vendor/ILITEK, Table 41). Tied to EN\nthe converter runs FORCED FIXED-FREQUENCY PWM whenever it is enabled and\nthe power-save excursion cannot occur. The cost is light-load efficiency;\nsee CTO_DECISIONS D-788."
+		(exclude_from_sim no)
+		(at 236.22 74.93 0)
+		(size 76.2 22.86)
+		(margins 0.9525 0.9525 0.9525 0.9525)
+		(stroke
+			(width 0)
+			(type solid)
+		)
+		(fill
+			(type none)
+		)
+		(effects
+			(font
+				(size 1.0 1.0)
+			)
+			(justify left top)
+		)
+		(uuid "d7881000-0000-4000-8000-000000000003")
 	)
 )

@@ -78,7 +78,7 @@
 "R37","390R 1%","Resistor_SMD:R_0603_1608Metric","UNI-ROYAL(Uniroyal Elec)","0603WAF3900T5E","C23151","Resistor","1",""
 "R38,R46,R63","10k 1%","Resistor_SMD:R_0603_1608Metric","UNI-ROYAL(Uniroyal Elec)","0603WAF1002T5E","C25804","Resistor","3",""
 "R39","1M 0.1%","Resistor_SMD:R_0603_1608Metric","Viking Tech","ARG03BTC1004","C335092","Resistor","1",""
-"R40","178K 0.1%","Resistor_SMD:R_0603_1608Metric","Viking Tech","ARG03BTC1783","C2441185","Resistor","1",""
+"R40","189K 0.1%","Resistor_SMD:R_0603_1608Metric","YAGEO","RT0603BRD07189KL","C861174","Resistor","1",""
 "R41,R80,R82,R94,R96","1M","Resistor_SMD:R_0603_1608Metric","UNI-ROYAL(Uniroyal Elec)","0603WAF1004T5E","C22935","Resistor","5",""
 "R47,R48","22R 1%","Resistor_SMD:R_0603_1608Metric","UNI-ROYAL(Uniroyal Elec)","0603WAF220JT5E","C23345","","2",""
 "R49,R50","1.5k 1%","Resistor_SMD:R_0603_1608Metric","UNI-ROYAL(Uniroyal Elec)","0603WAF1501T5E","C22843","","2",""

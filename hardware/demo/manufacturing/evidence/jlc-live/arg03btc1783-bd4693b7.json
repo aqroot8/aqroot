@@ -1,10 +1,10 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-20T10:27:35Z",
+ "fetched_utc": "2026-09-20T19:34:10Z",
  "keyword": "ARG03BTC1783",
  "page_size": 25,
- "pages": 4,
+ "pages": 1,
  "records": [
   {
    "assemblyComponentFlag": false,

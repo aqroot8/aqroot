@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-05T01:00:42Z",
+ "fetched_utc": "2026-09-20T19:34:17Z",
  "keyword": "0603WAF5103T5E",
  "page_size": 25,
  "pages": 1,
@@ -86,7 +86,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 933135
+   "stockCount": 758229
   }
  ],
  "returned": 1,

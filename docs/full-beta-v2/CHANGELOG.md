@@ -1,3 +1,79 @@
+## D-788 — 2026-09-20 — ROUND-7 CORRECTION: THE DISPLAY'S ABSOLUTE MAXIMUM IS 3.3 V
+
+Round-7 external review REJECTED D-787.  Astra reproduced **20 observed release
+defects**; Fable reproduced a subset plus a sourcing concern.  **All twenty are
+closed**, plus **six more this closeout found itself** (`R7-N01`…`R7-N06`).  The one
+product decision the display fix forced is **CLOSED**: the owner approved **OPTION A** on
+2026-09-20.
+
+**Board authority `57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b`.**
+
+- **R7-D787-01** — the fitted `ER-TFT035IPS-6` is an ILI9488 whose **ABSOLUTE
+  MAXIMUM** on `VCI` and `IOVCC` is **3.3 V** (Table 41 of the now-archived
+  primary datasheet, corroborated against a second mirror).  D-787's power-save
+  corner was 3.542487 V and its NOMINAL was 9 mV over it.  Fixed with two
+  objects and no new component: `U12`'s `PS/SYNC` moves `GND` → `EN` (forced
+  PWM, no `VFB_PS` excursion) and `R40` moves **178 kΩ → 189 kΩ**.  Rail is now
+  3.100334 / 3.145503 / 3.191022 V raw, 3.069408 V heavy-load minimum,
+  **3.223012 V worst case — 76.99 mV inside the absolute maximum** and 58.78 mV
+  over the ESP32-S3-WROOM-1's own 3.0 V `VDD33` floor.
+- **OWNER DECISION CLOSED — OPTION A APPROVED 2026-09-20** — a rail capped under
+  3.3 V cannot also guarantee 3.3 V −5 % at the Community Port at any current.
+  Port now delivers **3.069408 V unloaded / 2.954962 V at 400 mA** against a
+  published **2.95 V** minimum; the 400 mA / 300 mA budgets are unchanged and no
+  capability is removed.  The owner's text delegated the exact values to the
+  final candidate, and `R7-N01`'s centred divider moved them 28 mV below the
+  working figures the decision quoted.  A dedicated accessory regulator is REV-B.
+- **R7-D787-02/03** — `U20` RON bounded by interpolation between two guaranteed
+  rows at the rail's own minimum (75.379 mΩ); the delivery proof prices the
+  COMPLETE loop (286.115 mΩ) and states its measurement plane.
+- **R7-D787-04** — the `U11.2` thermal model becomes a 2 × 3 boundary × lateral
+  matrix, temperature-solved, with a 25 K endpoint charge and an ABSOLUTE
+  acceptance (94.84 °C predicted peak vs 105 °C); fab notes now require FR4
+  Tg ≥ 150 °C.
+- **R7-D787-05/06** — `test_production_timing.cpp` compiles and RUNS the shipped
+  backlight and gauge entry points against a recording Arduino HAL; 8
+  production mutations, all caught.
+- **R7-N01/R7-N02 (FOUND HERE)** — the display proof was **DC-only**: ripple and
+  load-transient overshoot ride on top of it, and the low side had **no MCU
+  clause at all**.  F6 now computes the ripple (**1.68 mV** pp from `SLVS916I`'s
+  minimum oscillator frequency and `L1`'s minimum inductance) and charges it to
+  both ends, adds the ESP32-S3-WROOM-1 `VDD33` 3.0 V floor and the `+3V3`
+  plane's bounded distribution drop, and **enumerates every purchasable E192
+  0.1 % `R40` value**, requiring the fitted one to maximise the smaller of the
+  two headrooms — which is why `R40` moved **187 kΩ → 189 kΩ** (76.99 / 58.78 mV,
+  against 47.97 / 86.36 for 187 kΩ).  Load-transient overshoot is deliberately
+  given **no analytic bound** (TI publishes it only as 50 mV/div plots) and is
+  measured at first article as **`C-PWR-TRANSIENT-01`**; the lever if it fails is
+  `C29`–`C32` on existing lands, no PCB change.  F6's two derived-floor controls
+  are also no longer hand-aimed — they had gone vacuous twice as the derivation
+  moved.
+- **R7-N03/R7-N04/R7-N05/R7-N06 (FOUND HERE)** — the retired 68 mΩ `U20` RON row
+  survived in the pack model; the published Community-Port contract was not
+  cross-checked against the gate that derives it (F6 now requires `DEVICE_SPEC`
+  to print the exact figures, and that caught a "26 AWG" reinforcement string
+  where the wire is 28 AWG); `SOURCING_LEDGER` §3 still carried the retired
+  `LTC4368IDD-1#PBF` DFN code and a `PCAL9535APW,118 ×3` count; and forced PWM's
+  loss of the TPS63020's 25 µA light-load quiescent current was unrecorded —
+  `SW9` OFF is still a hard off at 0.1 µA, firmware `PS/SYNC` control is REV-B.
+- **R7-D787-07..20** — F8 binds DC bounds to full hierarchical nets; the
+  reset-release diagnostic reports CONFIRMED/FAILED/UNKNOWN; the accessory
+  command message separates request / acknowledgement / reconciled state; the
+  reinforcement instruction is dimensioned, single-conductor, and in both the
+  off-board BOM and the master assembly plan; microSD is push-push; the retained
+  corner fillet is bounded at 1.00 mm with a required CAM preview; F5's prose is
+  rebuilt on the 1.5 V RDS(on) row; the PCAL comment's four false claims are
+  corrected; one 39 V ceiling feeds sourcing and the verifier; the root title
+  block is current; the regression wrapper exits on SUBSTANTIVE difference only;
+  the `U18` consignment row is the MSOP-10; the RF mating chain names the part
+  the purchasing table has carried since D-223.
+- **Sourcing** — all 124 assembly lines re-swept live; ten consignment lines.
+
+Connectivity unchanged (174/173/1/0).  No protected copper moved.
+`hardware/beta-v2` untouched.  **Not authorized for fabrication.**
+
+---
+
 ## 2026-09-19 - AQROOT Demo: D-776 — the as-built limits named a signal that does not exist, and the list of missing signals is now computed off the copper
 
 `authority 8c548ece, PCB UNCHANGED`. The generated firmware map's `AQROOT_CHARGER_STAT2_UNCONNECTED` limit — in a block headed "facts firmware cannot discover and must not get wrong" — told firmware to infer charging state "from **VBUS presence** plus the MAX17048 trend". **There is no VBUS-presence signal on this board**: `R104` 150k / `R105` 220k divide `USB_VBUS_CHG` to 2.973 V, `C68` filters it, all three are FITTED, and `/01_POWER_TREE/VBUS_PRESENT` reaches `TP31` and nothing else — no MCU pin, no expander bit. The same sentence stood in `01_power_tree.kicad_sch`, `08_buttons_expanders.kicad_sch` and `Firmware/README.md`, and the sheet-01 note additionally said "raw VBUS never reaches the expander", which reads as though the divided level does. Two more of the same shape were undeclared beside it: the **LTC4368's latching FAULT output** (`R81`/`R82`/`TP18` and `Q9`'s gate, drain into the autonomous recovery chain — firmware cannot observe that the battery breaker tripped) and the **TPS63020's POWER GOOD** (`R41`/`TP8`). The real defect was that the list was CURATED: `limits` already carried two entries of exactly that pattern, added by hand. It is now **DERIVED** — a net is firmware-reachable iff it touches a pad of `U1`/`U2`/`U3`, bench-probed iff it touches a `TP` pad, and `gen_firmware_hw_map.py` **refuses to emit** if a probed-and-unreachable net is undeclared **or** if a declaration names a net that has since been wired (both directions, the D-768/D-769 lesson). 28 such nets: 7 signals reach the header with a `#define`, 21 rails/analog are listed so the computed set is fully accounted for. The gate refused its own author three times on its first run. **The board fix is measured and deferred:** `VBUS_PRESENT` → a spare `U3` input is electrically sound (2.973 V against a 2.31 V PCAL9535A `VIH`, 89.2 kΩ source, four free channels) but does not route from where the divider sits — 0.00 mm widest corridor on all four candidate layers with a different named blocker each, and `NO_PATH` at 0.200 mm from the all-layer maze router at both 0.10 and 0.05 mm lattices with both ends launching (44/7 escapes). `USB_VBUS_CHG` runs within ~3 mm of `U3`'s west column, so the fix is to MOVE `R104`/`R105`/`C68`/`TP31` beside `U3` with zero BOM change — a **REV-B** item, because DEVICE_SPEC §15 promises fuel-gauge telemetry (fitted, routed, working) and **no promised capability is missing**. Firmware must not display a charging state on this revision; it must display state-of-charge. Two schematic sheets were edited so FAB1 failed naming exactly those two and the package was re-exported: every copper Gerber, both drill files and `Edge_Cuts` are byte-identical apart from timestamps and BOM/CPL are untouched. Fresh DRC 199 library warnings / zero other classes, parity 246 warnings / zero errors; FAB1–FAB15 PASS; H1–H6 PASS with **15 generator controls all refusing**; F1–F8 PASS with 26 F6 controls; 19 standing contracts re-run; all four PlatformIO environments SUCCESS; `hardware/beta-v2` untouched. No copper, BOM, CPL or drill change.

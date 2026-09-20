@@ -1,0 +1,226 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-20T19:33:40Z",
+ "keyword": "BAT54WS-7-F",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1V@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "600mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-40℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "200mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA"
+    }
+   ],
+   "componentBrandEn": "FUXINSEMI",
+   "componentCode": "C3040452",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0127,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0102,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0085,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0077,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.007,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0066,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323(SC-90)",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2206271801_FUXINSEMI-BAT54WS_C3040452.pdf",
+   "describe": "-40℃~+125℃ 1 Independent 1V@100mA 200mA 2uA 30V 600mA SOD-323(SC-90) Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/schottky-diodes_fuxinsemi-bat54ws_C3040452.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 122825
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1V@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "600mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "100mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA@25V"
+    }
+   ],
+   "componentBrandEn": "Diodes Incorporated",
+   "componentCode": "C124205",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS-7-F",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0627,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 299,
+     "productPrice": 0.0521,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0468,
+     "startNumber": 300
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0393,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.036,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0344,
+     "startNumber": 9000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1806121749_Diodes-Incorporated-BAT54WS-7-F_C124205.pdf",
+   "describe": "1 Independent 100mA 1V@100mA 2uA@25V 30V 600mA SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS-7-F",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/schottky-diodes_diodes-incorporated-bat54ws-7-f_C124205.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 82787
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "ChipNobo",
+   "componentCode": "C42419960",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS-7-F-CN",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0072,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0056,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0046,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0041,
+     "startNumber": 9000
+    },
+    {
+     "endNumber": 98999,
+     "productPrice": 0.0039,
+     "startNumber": 51000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0036,
+     "startNumber": 99000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": null,
+   "describe": "SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS-7-F-CN",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 3514
+  }
+ ],
+ "returned": 3,
+ "schema": 1,
+ "total_matches": 3
+}

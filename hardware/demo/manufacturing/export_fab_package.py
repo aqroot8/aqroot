@@ -448,6 +448,15 @@ def stackup_process_notes(board):
         % (finish or "AS DECLARED IN THE BOARD STACKUP"),
         "- **Solder-mask expansion is 0.000 mm board-wide** -- a pad's mask "
         "aperture IS its copper.  Do not apply a house expansion.",
+        "- **LAMINATE: FR4 with Tg >= 150 C -- D-788 / R7-D787-04.**  The "
+        "board file declares FR4 and nothing more, and a house TG130 default "
+        "would be a different thermal design: `audit_rail_ampacity`'s ABSOLUTE "
+        "acceptance for the one named narrow-run exception on this board -- "
+        "the 0.200 mm `U11.2` package-land neck -- is a 105 C predicted peak, "
+        "and 105 C is chosen as the laminate's maximum continuous operating "
+        "temperature with 45 K of margin below a 150 C Tg.  A TG130 build "
+        "leaves 25 K and the acceptance must be re-derived before the order.  "
+        "State the laminate and its Tg on the acknowledgement.",
         "- **100% BARE-BOARD ELECTRICAL TEST (flying probe or fixture) IS "
         "REQUIRED ON EVERY DELIVERED PCB CIRCUIT, against the final accepted "
         "netlist; panel-level sampling is not sufficient.**  This is a 6-layer "
@@ -570,22 +579,49 @@ def battery_harness_notes():
 
 
 def acc_3v3_reinforcement_notes():
-    """D-787 manual first-five ACC_3V3 delivery reinforcement."""
+    """D-788 manual first-five ACC_3V3 delivery reinforcement -- ONE conductor."""
     h = json.loads(ACC_3V3_REINFORCEMENT.read_text(encoding="utf-8"))
-    wire = h["wire"]; acc = h["electrical_acceptance"]
+    wire = h["wire"]; acc = h["electrical_acceptance"]; ret = h["retention"]
     dest = ", ".join(x["reference"] for x in h["destinations"])
+    not_reinforced = ", ".join("%s (routed copper alone, %.1f mOhm measured)"
+                               % (x["reference"], x["routed_copper_measured_mohm"])
+                               for x in h.get("not_reinforced", ()))
+    anchors = ", ".join("%s at (%.1f, %.1f)" % (a["name"], a["at"][0], a["at"][1])
+                        for a in ret["anchor_locations_mm"])
     return [
         "## ACC_3V3 Community-Port reinforcement -- MANUAL FIRST-FIVE OPERATION", "",
-        "The authoritative work instruction is `%s` in this package." % ACC_3V3_REINFORCEMENT_PACKAGE,
+        "The authoritative work instruction is `%s` in this package, and it is "
+        "DIMENSIONED: corridor, waypoints, bend radius, anchor positions, bead "
+        "size, cure time, joint profile, sequence and inspection are all in it."
+        % ACC_3V3_REINFORCEMENT_PACKAGE,
         "",
-        "- Source: **TP12.1**, downstream of U20; this does **not** bypass the TPS22950-Q1 current limiter or OFF disconnect.",
-        "- Destinations: **%s**. Each duplicate 3.3 V contact must independently carry the full published 400 mA rail budget." % dest,
-        "- Wire: **%s %s, AWG%d, %s, nominal OD %.2f mm**." %
-        (wire["manufacturer"], wire["mpn"], wire["gauge_awg"], wire["insulation"], wire["nominal_od_mm"]),
-        "- Electrical acceptance: each finished TP12-to-J5 path **<=%d mOhm at room temperature**; Kelvin/4-wire preferred." %
-        acc["each_TP12_to_J5_finished_path_max_milliohm_at_room_temperature"],
-        "- Route/strain-relieve exactly as the packaged traveler requires; keep clear of battery, NFC/RF, display/FPC, button mechanics and enclosure load paths.",
-        "- Inspect continuity, adjacent-pin shorts, solder fillets, insulation, strain relief, connector insertion and enclosure closure before power.",
+        "- **ONE conductor per board (D-788 / R7-D787-10).**  D-787 ran TWO "
+        "conductors onto the single 1.00 mm `TP12` pad; that is retired.  No "
+        "pad carries two conductors.",
+        "- Source: **TP12.1**, downstream of U20; this does **not** bypass the "
+        "TPS22950-Q1 current limiter or OFF disconnect.",
+        "- Destination: **%s**." % dest,
+        "- NOT reinforced: **%s** -- better than any manual lead could be, so "
+        "it gets none." % (not_reinforced or "none"),
+        "- Wire: **%s %s, AWG%d, %s, nominal OD %.3f mm**; minimum bend radius "
+        "**%.1f mm** (10 x OD) at EVERY bend."
+        % (wire["manufacturer"], wire["mpn"], wire["gauge_awg"],
+           wire["insulation"], wire["nominal_od_mm"],
+           wire["minimum_bend_radius_mm"]),
+        "- Electrical acceptance: finished lead **<=%d mOhm at room "
+        "temperature**, Kelvin/4-wire preferred, **value recorded per board**."
+        % acc["each_finished_lead_max_milliohm_at_room_temperature"],
+        "- Retention: **%s**, three beads %.1f x %.1f x <=%.1f mm at %s."
+        % (ret["material"], ret["bead_size_mm"]["length"],
+           ret["bead_size_mm"]["width"], ret["bead_size_mm"]["height_max"],
+           anchors),
+        "- Cure: %s" % ret["cure"],
+        "- Route in the corridor the traveler dimensions; keep clear of "
+        "battery, NFC/RF, display/FPC, button mechanics and enclosure load "
+        "paths to the clearances it states.",
+        "- Inspect continuity, adjacent-pin shorts, the TP12 fillet BEFORE any "
+        "adhesive, both faces of the J5.3 barrel, every bend radius, all three "
+        "cured beads, and enclosure closure -- before power.",
         "",
     ]
 
@@ -752,13 +788,35 @@ def outline_notes(board):
                   "router cannot cut a sharp inside corner: it leaves a fillet "
                   "of its own tool radius, which means **MATERIAL REMAINS** "
                   "and the board is very slightly LARGER there than drawn.  "
-                  "**That is the correct and accepted treatment -- any tool "
-                  "radius is fine and the enclosure clears it.**  What is NOT "
+                  "A retained fillet is the CORRECT treatment.  What is NOT "
                   "accepted is squaring the corner by plunging, drilling a "
                   "relief or otherwise OVER-CUTTING, because that removes "
-                  "material toward the copper.  The number below bounds such a "
-                  "relief if one is ever cut:"
+                  "material toward the copper."
                   % (len(reflex), "" if len(reflex) == 1 else "s"),
+                  "",
+                  "**D-788 / R7-D787-13 BOUNDS THE RETAINED FILLET.**  This "
+                  "note previously said *\"any tool radius is fine and the "
+                  "enclosure clears it\"*, which is an unbounded permission: "
+                  "material left by a large tool grows the board OUTWARD at "
+                  "the step, and the enclosure recess it has to sit in has "
+                  "**%.3f mm** of inside radius at that step.  The bound is "
+                  "therefore stated in both directions, and CAM must show it "
+                  "before the profile is cut:" % ENCLOSURE_STEP_RECESS_MM,
+                  "",
+                  "- **MAXIMUM RETAINED FILLET / TOOL RADIUS: %.2f mm.**  A "
+                  "larger tool leaves material that the enclosure recess does "
+                  "not clear.  A %.2f mm or smaller routing tool satisfies it; "
+                  "so does any larger tool that finishes the corner with a "
+                  "%.2f mm or smaller radius." % (RETAINED_FILLET_MAX_MM,
+                                                  RETAINED_FILLET_MAX_MM,
+                                                  RETAINED_FILLET_MAX_MM),
+                  "- **NO OVER-CUT.**  Any corner relief must stay under the "
+                  "per-corner copper distance listed below.",
+                  "- **CAM PROFILE PREVIEW IS REQUIRED.**  The fabricator "
+                  "must return a profile/rout preview showing the ACTUAL "
+                  "retained corner geometry and the tool radius used, and it "
+                  "must be accepted in writing before the profile is cut.  "
+                  "Silent over-cut and silent over-size are both refusals.",
                   ""]
         for (px, py) in reflex:
             d, kind, net = nearest(px, py)
@@ -782,6 +840,15 @@ def outline_notes(board):
               ""]
     return lines
 
+
+# D-788 / R7-D787-13.  The stepped profile's retained inside-corner fillet is
+# bounded in BOTH directions.  1.00 mm is the largest radius the enclosure's
+# own step recess clears: MECHANICAL_INTERFACE_SPEC gives the recess a
+# 1.50 mm inside radius at the step, and the board may not grow into more than
+# two thirds of it without the shell fouling.  The per-corner copper distances
+# printed below bound the OTHER direction -- an over-cut relief.
+RETAINED_FILLET_MAX_MM = 1.00
+ENCLOSURE_STEP_RECESS_MM = 1.50
 
 # D-738.  THE PACKAGE NEVER TOLD THE FABRICATOR THE BOARD USES VIA-IN-PAD.
 #

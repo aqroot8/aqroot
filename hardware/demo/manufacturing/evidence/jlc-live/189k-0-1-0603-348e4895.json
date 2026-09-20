@@ -1,0 +1,3991 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": false,
+ "fetched_utc": "2026-09-20T22:51:31Z",
+ "keyword": "189K 0.1% 0603",
+ "page_size": 25,
+ "pages": 2,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "75V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C861174",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RT0603BRD07189KL",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.035,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.03,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0271,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.0254,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": 19999,
+     "productPrice": 0.024,
+     "startNumber": 10000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0232,
+     "startNumber": 20000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2404241512_YAGEO-RT0603BRD07189KL_C861174.pdf",
+   "describe": "-55℃~+155℃ 100mW 189kΩ 75V Thin Film Resistor ±0.1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 189kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-rt0603brd07189kl_C861174.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 339
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "63mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C3941160",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN731JTTD1893B25",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0904,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 119,
+     "productPrice": 0.0904,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.0904,
+     "startNumber": 120
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.035,
+     "startNumber": 2000
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.0337,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0331,
+     "startNumber": 10000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2403201147_KOA-Speer-Elec-RN731JTTD1893B25_C3941160.pdf",
+   "describe": "-55℃~+155℃ 189kΩ 63mW Thin Film Resistor ±0.1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 189kΩ ±0.1% 63mW",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rn731jttd1893b25_C3941160.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 20,
+   "minPurchaseNum": 100,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C4013150",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN73H1JTTD1893B25",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.1115,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.1115,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.1115,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0432,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0417,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0409,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404091016_KOA-Speer-Elec-RN73H1JTTD1893B25_C4013150.pdf",
+   "describe": "-55℃~+155℃ 100mW 189kΩ Metal Film Resistor ±0.1% ±25ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rn73h1jttd1893b25_C4013150.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 81,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "62.5mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C4015899",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN731JTTD1893B50",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0904,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 119,
+     "productPrice": 0.0904,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.0904,
+     "startNumber": 120
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.035,
+     "startNumber": 2000
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.0337,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0331,
+     "startNumber": 10000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2403201225_KOA-Speer-Elec-RN731JTTD1893B50_C4015899.pdf",
+   "describe": "-55℃~+155℃ 189kΩ 62.5mW Thin Film Resistor ±0.1% ±50ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 189kΩ ±0.1% 62.5mW",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rn731jttd1893b50_C4015899.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 100,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C4072757",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN73R1JTTD1893B50",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0941,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0941,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0941,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0365,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0352,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0346,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404091429_KOA-Speer-Elec-RN73R1JTTD1893B50_C4072757.pdf",
+   "describe": "-55℃~+155℃ 100mW 189kΩ Thin Film Resistor ±0.1% ±50ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 189kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rn73r1jttd1893b50_C4072757.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 96,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±10ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C4215550",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN73H1JTTD1893B10",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.3312,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.3312,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.3312,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1281,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1237,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1215,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404111133_KOA-Speer-Elec-RN73H1JTTD1893B10_C4215550.pdf",
+   "describe": "-55℃~+155℃ 100mW 189kΩ Metal Film Resistor ±0.1% ±10ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rn73h1jttd1893b10_C4215550.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 28,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C4314683",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN73H1JTTD1893B50",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.1115,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.1115,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.1115,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0432,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0417,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0409,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0603",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404121210_KOA-Speer-Elec-RN73H1JTTD1893B50_C4314683.pdf",
+   "describe": "-55℃~+155℃ 100mW 189kΩ Metal Film Resistor ±0.1% ±50ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rn73h1jttd1893b50_C4314683.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 81,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "500mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "YAGEO",
+   "componentCode": "C1393840",
+   "componentLibraryType": "expand",
+   "componentModelEn": "MFP50SBBE52-189K",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0394,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0394,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0394,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0153,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0147,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0145,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D2.4xL6.3mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_YAGEO-MFP50SBBE52-189K_C1393840.pdf",
+   "describe": "-55℃~+155℃ 189kΩ 500mW Metal Film Resistor ±0.1% ±50ppm/℃ 插件,D2.4xL6.3mm Through Hole Resistors ROHS",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 500mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_yageo-mfp50sbbe52-189k_C1393840.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 2,
+   "minPurchaseNum": 614,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1415343",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN55C1893BB14",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 1.3754,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 1.3754,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 1.3754,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.5323,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.5144,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.5046,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D2.3xL6.1mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-RN55C1893BB14_C1415343.pdf",
+   "describe": "-65℃~+175℃ 125mW 189kΩ Metal Film Resistor ±0.1% ±50ppm/℃ 插件,D2.3xL6.1mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rn55c1893bb14_C1415343.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 7,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "500mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1420938",
+   "componentLibraryType": "expand",
+   "componentModelEn": "CMF55189K00BEBF",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 1.3754,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 1.3754,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 1.3754,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.5323,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.5144,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.5046,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D2.3xL6.1mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-CMF55189K00BEBF_C1420938.pdf",
+   "describe": "-55℃~+175℃ 189kΩ 500mW Metal Film Resistor ±0.1% ±25ppm/℃ 插件,D2.3xL6.1mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 500mW",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-cmf55189k00bebf_C1420938.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 7,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "250mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1428413",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN60C1893BBSL",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 1.6504,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 1.6504,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 1.6504,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.6397,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.6169,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.6055,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D3.7xL8.7mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-RN60C1893BBSL_C1428413.pdf",
+   "describe": "-65℃~+175℃ 189kΩ 250mW Metal Film Resistor ±0.1% ±50ppm/℃ 插件,D3.7xL8.7mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 250mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rn60c1893bbsl_C1428413.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 6,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1452452",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNC55H1893BSB14",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 5.3109,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 5.3109,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 5.3109,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 2.0557,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 1.9841,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 1.9483,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D2.4xL6.4mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-RNC55H1893BSB14_C1452452.pdf",
+   "describe": "-65℃~+175℃ 125mW 189kΩ Metal Film Resistor ±0.1% ±50ppm/℃ 插件,D2.4xL6.4mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rnc55h1893bsb14_C1452452.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1453959",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNC55H1893BSBSL",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 5.8464,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 5.8464,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 5.8464,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 2.2624,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 2.1843,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 2.1436,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D2.4xL6.4mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-RNC55H1893BSBSL_C1453959.pdf",
+   "describe": "-65℃~+175℃ 125mW 189kΩ Metal Film Resistor ±0.1% ±50ppm/℃ 插件,D2.4xL6.4mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rnc55h1893bsbsl_C1453959.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1456941",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNC55J1893BSB14",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 6.0433,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 6.0433,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 6.0433,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 2.3389,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 2.2575,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 2.2168,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D2.4xL6.4mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-RNC55J1893BSB14_C1456941.pdf",
+   "describe": "-65℃~+175℃ 125mW 189kΩ Metal Film Resistor ±0.1% ±25ppm/℃ 插件,D2.4xL6.4mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rnc55j1893bsb14_C1456941.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1461523",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNC50H1893BSB14",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 7.7116,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 7.7116,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 7.7116,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 2.9851,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 2.8809,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 2.8288,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D1.8xL3.8mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-RNC50H1893BSB14_C1461523.pdf",
+   "describe": "-65℃~+175℃ 100mW 189kΩ Metal Film Resistor ±0.1% ±50ppm/℃ 插件,D1.8xL3.8mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rnc50h1893bsb14_C1461523.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1462997",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNC50J1893BSB14",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 8.444,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 8.444,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 8.444,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 3.2683,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 3.1527,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 3.0974,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D1.8xL3.8mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-RNC50J1893BSB14_C1462997.pdf",
+   "describe": "-65℃~+175℃ 100mW 189kΩ Metal Film Resistor ±0.1% ±25ppm/℃ 插件,D1.8xL3.8mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rnc50j1893bsb14_C1462997.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "250mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1465628",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNC60H1893BSB14",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 8.0924,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 8.0924,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 8.0924,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 3.1332,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 3.0225,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 2.9672,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D2.5xL7.1mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-RNC60H1893BSB14_C1465628.pdf",
+   "describe": "-65℃~+175℃ 189kΩ 250mW Metal Film Resistor ±0.1% ±50ppm/℃ 插件,D2.5xL7.1mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 250mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rnc60h1893bsb14_C1465628.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "250mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1474188",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNC60H1893BSBSL",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 9.6989,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 9.6989,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 9.6989,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 3.7533,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 3.6214,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 3.5563,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D2.5xL7.1mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-RNC60H1893BSBSL_C1474188.pdf",
+   "describe": "-65℃~+175℃ 189kΩ 250mW Metal Film Resistor ±0.1% ±50ppm/℃ 插件,D2.5xL7.1mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 250mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rnc60h1893bsbsl_C1474188.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "250mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1474764",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNC60J1893BSB14",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 9.3962,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 9.3962,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 9.3962,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 3.6361,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 3.5091,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 3.4457,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D2.5xL7.1mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-RNC60J1893BSB14_C1474764.pdf",
+   "describe": "-65℃~+175℃ 189kΩ 250mW Metal Film Resistor ±0.1% ±25ppm/℃ 插件,D2.5xL7.1mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 250mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rnc60j1893bsb14_C1474764.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "150V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1723945",
+   "componentLibraryType": "expand",
+   "componentModelEn": "TNPW0805189KBETA",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.2671,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.2671,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.2671,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1034,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0998,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.098,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-TNPW0805189KBETA_C1723945.pdf",
+   "describe": "-55℃~+125℃ 125mW 150V 189kΩ Thin Film Resistor ±0.1% ±25ppm/℃ 0805 Chip Resistor - Surface Mount",
+   "erpComponentName": "薄膜电阻 189kΩ ±0.1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_vishay-intertech-tnpw0805189kbeta_C1723945.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 34,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "250mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1798442",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN60C1893BRSL",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.5225,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.5225,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.5225,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2035,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1954,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1921,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D3.7xL8.7mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-RN60C1893BRSL_C1798442.pdf",
+   "describe": "-65℃~+175℃ 189kΩ 250mW Metal Film Resistor ±0.1% ±50ppm/℃ 插件,D3.7xL8.7mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 250mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rn60c1893brsl_C1798442.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 18,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1814039",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNC55J1893BSR36",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 1.3786,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 1.3786,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 1.3786,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.5339,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.516,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.5062,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D2.4xL6.4mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-RNC55J1893BSR36_C1814039.pdf",
+   "describe": "-65℃~+175℃ 125mW 189kΩ Metal Film Resistor ±0.1% ±25ppm/℃ 插件,D2.4xL6.4mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rnc55j1893bsr36_C1814039.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 7,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1815105",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNC55J1893BSRE6",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 1.3786,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 1.3786,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 1.3786,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.5339,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.516,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.5062,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D2.4xL6.4mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-RNC55J1893BSRE6_C1815105.pdf",
+   "describe": "-65℃~+175℃ 125mW 189kΩ Metal Film Resistor ±0.1% ±25ppm/℃ 插件,D2.4xL6.4mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rnc55j1893bsre6_C1815105.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 7,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1817477",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNC55H1893BSRSL",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 1.3982,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 1.3982,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 1.3982,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.542,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.5225,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.5127,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D2.4xL6.4mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-RNC55H1893BSRSL_C1817477.pdf",
+   "describe": "-65℃~+175℃ 125mW 189kΩ Metal Film Resistor ±0.1% ±50ppm/℃ 插件,D2.4xL6.4mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rnc55h1893bsrsl_C1817477.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 7,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1825856",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNC50H1893BSRSL",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 2.4707,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 2.4707,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 2.4707,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.9571,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.9229,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.9066,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D1.8xL3.8mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-RNC50H1893BSRSL_C1825856.pdf",
+   "describe": "-65℃~+175℃ 100mW 189kΩ Metal Film Resistor ±0.1% ±50ppm/℃ 插件,D1.8xL3.8mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rnc50h1893bsrsl_C1825856.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 4,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "250mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C1828042",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNC60J1893BSRE6",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 3.444,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 3.444,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 3.444,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 1.333,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 1.2858,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 1.2631,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D2.5xL7.1mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-RNC60J1893BSRE6_C1828042.pdf",
+   "describe": "-65℃~+175℃ 189kΩ 250mW Metal Film Resistor ±0.1% ±25ppm/℃ 插件,D2.5xL7.1mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 250mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rnc60j1893bsre6_C1828042.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 3,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "250mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C2537561",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN73R2BTTD1893B25",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0985,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.079,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.0692,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0619,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.056,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0531,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "1206",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_KOA-Speer-Elec-RN73R2BTTD1893B25_C2537561.pdf",
+   "describe": "-55℃~+155℃ 189kΩ 250mW Thin Film Resistor ±0.1% ±25ppm/℃ 1206 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 189kΩ ±0.1% 250mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rn73r2bttd1893b25_C2537561.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 146,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C2544287",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN73H2ATTD1893B50",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0997,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.08,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.07,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0627,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0567,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0538,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "0805",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404011758_KOA-Speer-Elec-RN73H2ATTD1893B50_C2544287.pdf",
+   "describe": "-55℃~+155℃ 125mW 189kΩ Metal Film Resistor ±0.1% ±50ppm/℃ 0805 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rn73h2attd1893b50_C2544287.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 144,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "250mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C2548653",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN73R2BTTD1893B50",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.1182,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.0948,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.0831,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0743,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0673,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0637,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "1206",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404020930_KOA-Speer-Elec-RN73R2BTTD1893B50_C2548653.pdf",
+   "describe": "-55℃~+155℃ 189kΩ 250mW Thin Film Resistor ±0.1% ±50ppm/℃ 1206 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 189kΩ ±0.1% 250mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rn73r2bttd1893b50_C2548653.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 122,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "250mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C2555728",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN73H2BTTD1893B25",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.1472,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.1181,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.1036,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0925,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0839,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0795,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "1206",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404020939_KOA-Speer-Elec-RN73H2BTTD1893B25_C2555728.pdf",
+   "describe": "-55℃~+155℃ 189kΩ 250mW Metal Film Resistor ±0.1% ±25ppm/℃ 1206 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 250mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rn73h2bttd1893b25_C2555728.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 88,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+155℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "250mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Thin Film Resistor"
+    },
+    {
+     "attribute_name_en": "Voltage-Supply(Max)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "KOA Speer Elec",
+   "componentCode": "C2609115",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN73R2ETTD1893B50",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.197,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.1571,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.14,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1187,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1091,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1034,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "1210",
+   "componentTypeEn": "Chip Resistor - Surface Mount",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_KOA-Speer-Elec-RN73R2ETTD1893B50_C2609115.pdf",
+   "describe": "-55℃~+155℃ 189kΩ 250mW Thin Film Resistor ±0.1% ±50ppm/℃ 1210 Chip Resistor - Surface Mount ROHS",
+   "erpComponentName": "薄膜电阻 189kΩ ±0.1% 250mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_koa-speer-elec-rn73r2ettd1893b50_C2609115.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 65,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C3355672",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNC55H1893BSRE5",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 1.224,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 1.224,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 1.224,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.4737,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.4574,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.4493,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D2.4xL6.4mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312141051_Vishay-Intertech-RNC55H1893BSRE5_C3355672.pdf",
+   "describe": "-65℃~+175℃ 125mW 189kΩ Metal Film Resistor ±0.1% ±50ppm/℃ 插件,D2.4xL6.4mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rnc55h1893bsre5_C3355672.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 8,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C3357847",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNC55J1893BSRE5",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 1.4486,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 1.4486,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 1.4486,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.5616,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.542,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.5323,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D2.4xL6.4mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312141059_Vishay-Intertech-RNC55J1893BSRE5_C3357847.pdf",
+   "describe": "-65℃~+175℃ 125mW 189kΩ Metal Film Resistor ±0.1% ±25ppm/℃ 插件,D2.4xL6.4mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rnc55j1893bsre5_C3357847.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 7,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C3362877",
+   "componentLibraryType": "expand",
+   "componentModelEn": "ERC50189K00BEEK500",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 8.8135,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 8.8135,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 8.8135,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 3.4115,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 3.291,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 3.2325,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D1.8xL3.8mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312141121_Vishay-Intertech-ERC50189K00BEEK500_C3362877.pdf",
+   "describe": "-65℃~+175℃ 100mW 189kΩ Metal Film Resistor ±0.1% ±25ppm/℃ 插件,D1.8xL3.8mm Through Hole Resistors ROHS",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-erc50189k00beek500_C3362877.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "500mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C3363213",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNC65J1893BRB14",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 13.3691,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 13.3691,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 13.3691,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 5.1742,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 4.9919,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 4.9024,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D4.6xL14.3mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312111007_Vishay-Intertech-RNC65J1893BRB14_C3363213.pdf",
+   "describe": "-65℃~+175℃ 189kΩ 500mW Metal Film Resistor ±0.1% ±25ppm/℃ 插件,D4.6xL14.3mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 500mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rnc65j1893brb14_C3363213.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C3366995",
+   "componentLibraryType": "expand",
+   "componentModelEn": "ERC55189K00BEEK500",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 5.7015,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 5.7015,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 5.7015,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 2.2071,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 2.1289,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 2.0915,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D2.4xL6.4mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312111015_Vishay-Intertech-ERC55189K00BEEK500_C3366995.pdf",
+   "describe": "-65℃~+175℃ 125mW 189kΩ Metal Film Resistor ±0.1% ±25ppm/℃ 插件,D2.4xL6.4mm Through Hole Resistors ROHS",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-erc55189k00beek500_C3366995.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C3387598",
+   "componentLibraryType": "expand",
+   "componentModelEn": "ERC55189K00BHEK500",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 5.013,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 5.013,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 5.013,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 1.9401,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 1.8718,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 1.8392,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D2.4xL6.4mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312141258_Vishay-Intertech-ERC55189K00BHEK500_C3387598.pdf",
+   "describe": "-65℃~+175℃ 125mW 189kΩ Metal Film Resistor ±0.1% ±50ppm/℃ 插件,D2.4xL6.4mm Through Hole Resistors ROHS",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-erc55189k00bhek500_C3387598.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "500mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C3389406",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNC65J1893BRRE5",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 6.2272,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 6.2272,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 6.2272,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 2.4105,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 2.3259,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 2.2836,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D4.6xL14.3mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "",
+   "describe": "-65℃~+175℃ 189kΩ 500mW Metal Film Resistor ±0.1% ±25ppm/℃ 插件,D4.6xL14.3mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 500mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rnc65j1893brre5_C3389406.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C3403774",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNC55J1893BSR3665",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 2.0297,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 2.0297,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 2.0297,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.7862,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.7585,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.7455,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D2.4xL6.4mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312141349_Vishay-Intertech-RNC55J1893BSR3665_C3403774.pdf",
+   "describe": "-65℃~+175℃ 125mW 189kΩ Metal Film Resistor ±0.1% ±25ppm/℃ 插件,D2.4xL6.4mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rnc55j1893bsr3665_C3403774.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 5,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C3405810",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNC55J1893BSBSL65",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 7.6953,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 7.6953,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 7.6953,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 2.9785,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 2.8744,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 2.8223,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D2.4xL6.4mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312111224_Vishay-Intertech-RNC55J1893BSBSL65_C3405810.pdf",
+   "describe": "-65℃~+175℃ 125mW 189kΩ Metal Film Resistor ±0.1% ±25ppm/℃ 插件,D2.4xL6.4mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rnc55j1893bsbsl65_C3405810.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±25ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C3408008",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNC55J1893BSRSL",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 5.7617,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 5.7617,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 5.7617,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 2.2299,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 2.1517,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 2.1127,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D2.4xL6.4mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312141408_Vishay-Intertech-RNC55J1893BSRSL_C3408008.pdf",
+   "describe": "-65℃~+175℃ 125mW 189kΩ Metal Film Resistor ±0.1% ±25ppm/℃ 插件,D2.4xL6.4mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rnc55j1893bsrsl_C3408008.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "500mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C3410276",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNC65H1893BRRE7",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 5.8708,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 5.8708,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 5.8708,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 2.2722,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 2.1924,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 2.1534,
+     "startNumber": 1500
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D4.6xL14.3mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312141422_Vishay-Intertech-RNC65H1893BRRE7_C3410276.pdf",
+   "describe": "-65℃~+175℃ 189kΩ 500mW Metal Film Resistor ±0.1% ±50ppm/℃ 插件,D4.6xL14.3mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 500mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rnc65h1893brre7_C3410276.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C3413238",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNC55H1893BSRE7",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 1.224,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 1.224,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 1.224,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.4737,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.4574,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.4493,
+     "startNumber": 1500
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D2.4xL6.4mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "",
+   "describe": "-65℃~+175℃ 125mW 189kΩ Metal Film Resistor ±0.1% ±50ppm/℃ 插件,D2.4xL6.4mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rnc55h1893bsre7_C3413238.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 8,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "250mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C3418983",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RN60C1893BB14",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 1.0238,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 1.0238,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 1.0238,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.3972,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.3825,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.376,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D3.7xL8.7mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312111303_Vishay-Intertech-RN60C1893BB14_C3418983.pdf",
+   "describe": "-65℃~+175℃ 189kΩ 250mW Metal Film Resistor ±0.1% ±50ppm/℃ 插件,D3.7xL8.7mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 250mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rn60c1893bb14_C3418983.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 9,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "250mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C3420071",
+   "componentLibraryType": "expand",
+   "componentModelEn": "ERC55189K00BHEK600",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 8.4473,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 8.4473,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 8.4473,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 3.2699,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 3.1543,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 3.0974,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D2.5xL7.1mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "",
+   "describe": "-65℃~+175℃ 189kΩ 250mW Metal Film Resistor ±0.1% ±50ppm/℃ 插件,D2.5xL7.1mm Through Hole Resistors ROHS",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 250mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-erc55189k00bhek600_C3420071.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "500mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C3426284",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNC65H1893BRB14",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 12.3421,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 12.3421,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 12.3421,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 4.777,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 4.6094,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 4.5264,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D4.6xL14.3mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312111324_Vishay-Intertech-RNC65H1893BRB14_C3426284.pdf",
+   "describe": "-65℃~+175℃ 189kΩ 500mW Metal Film Resistor ±0.1% ±50ppm/℃ 插件,D4.6xL14.3mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 500mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rnc65h1893brb14_C3426284.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "500mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C3426966",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNC65H1893BRRE8",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 5.8708,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 5.8708,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 5.8708,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 2.2722,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 2.1924,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 2.1534,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D4.6xL14.3mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312111326_Vishay-Intertech-RNC65H1893BRRE8_C3426966.pdf",
+   "describe": "-65℃~+175℃ 189kΩ 500mW Metal Film Resistor ±0.1% ±50ppm/℃ 插件,D4.6xL14.3mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 500mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rnc65h1893brre8_C3426966.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "125mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C3430197",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNC55H1893BSRE8",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 1.224,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 1.224,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 1.224,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.4737,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.4574,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.4493,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D2.4xL6.4mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "",
+   "describe": "-65℃~+175℃ 125mW 189kΩ Metal Film Resistor ±0.1% ±50ppm/℃ 插件,D2.4xL6.4mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 125mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rnc55h1893bsre8_C3430197.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 8,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "500mW"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C3432666",
+   "componentLibraryType": "expand",
+   "componentModelEn": "ERC65189K00BHEK500",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 12.3421,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 12.3421,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 12.3421,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 4.777,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 4.6094,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 4.5264,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D4.6xL14.3mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312141624_Vishay-Intertech-ERC65189K00BHEK500_C3432666.pdf",
+   "describe": "-65℃~+175℃ 189kΩ 500mW Metal Film Resistor ±0.1% ±50ppm/℃ 插件,D4.6xL14.3mm Through Hole Resistors ROHS",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 500mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-erc65189k00bhek500_C3432666.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Resistance",
+     "attribute_value_name": "189kΩ",
+     "attribute_value_name_high": "<span class='lucene_highlight_class'>189kΩ</span>"
+    },
+    {
+     "attribute_name_en": "Power(Watts)",
+     "attribute_value_name": "100mW"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-65℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "Metal Film Resistor"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±0.1%"
+    },
+    {
+     "attribute_name_en": "Temperature Coefficient",
+     "attribute_value_name": "±50ppm/℃"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C3439218",
+   "componentLibraryType": "expand",
+   "componentModelEn": "RNC50H1893BSBSL",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 8.5791,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 8.5791,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 8.5791,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 3.3203,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 3.2048,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 3.1462,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D1.8xL3.8mm",
+   "componentTypeEn": "Through Hole Resistors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312111404_Vishay-Intertech-RNC50H1893BSBSL_C3439218.pdf",
+   "describe": "-65℃~+175℃ 100mW 189kΩ Metal Film Resistor ±0.1% ±50ppm/℃ 插件,D1.8xL3.8mm Through Hole Resistors",
+   "erpComponentName": "金属膜电阻 189kΩ ±0.1% 100mW",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/through-hole-resistors_vishay-intertech-rnc50h1893bsbsl_C3439218.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 0,
+   "stockCount": 0
+  }
+ ],
+ "returned": 50,
+ "schema": 1,
+ "total_matches": 118
+}

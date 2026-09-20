@@ -1,3 +1,455 @@
+## D-788 — **ROUND-7 CORRECTION: DISPLAY SUPPLY CLOSED; ALL TWENTY OBSERVED DEFECTS CLOSED; OWNER APPROVED OPTION A FOR THE COMMUNITY PORT**
+
+    authority  board 57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b
+    parent     a5c74da51cf70a5fbbdfee75628fd651a9b1ebb9 (D-787, REJECTED by Round-7)
+    scope      R7-D787-01..20, the Astra Appendix-C sourcing sweep, and the Fable deltas
+    order      HOLD.  External-review target.  Manufacturer CAM and first-article
+               acceptance remain outstanding.  NO OWNER DECISION IS OPEN.
+
+Round-7 rejected D-787.  Astra reproduced **20 observed release defects** and Fable
+independently reproduced a subset plus a sourcing concern.  All twenty are closed here.
+The one product-facing tradeoff raised during closure has now been decided by the owner:
+**OPTION A is approved** for the first-five Demo.
+
+---
+
+### 0. OWNER DECISION CLOSED — OPTION A: RESTATE THE COMMUNITY PORT VOLTAGE CONTRACT
+
+**THE PROBLEM.**  `R7-D787-01` is real and it is worse than Round-7 measured.  Astra found
+that the fitted `ER-TFT035IPS-6` panel's DC operating range tops out at **3.3 V** on both
+`VCI` and `VDDI` while D-787's rail reached **3.542487 V** in power save.  Going to the
+controller's own datasheet -- ILI Technology `ILI9488`, version 100, now archived at
+`vendor/ILITEK/ilitek-ili9488-v100.pdf`, sha256
+`aeb23170f809610458e05ab514a5e3017344938ccdba1c2031acb453941df38b`, corroborated
+line-for-line against a second independent mirror -- **Table 41 makes 3.3 V the ABSOLUTE
+MAXIMUM, not merely the operating maximum**, for `VCI ~ DGND` and `IOVCC ~ DGND` alike.
+D-787's power-save corner therefore stood **242 mV over an absolute maximum**, and its
+**NOMINAL 3.308989 V stood 9 mV over it**.  The module reseller's own summary prints a
+4.6 V abs-max row; where the two disagree the controller's number governs, because the
+ILI9488 is the silicon that fails.
+
+**WHAT D-788 FIXES WITHOUT ASKING.**  The rail is brought inside that limit, with no new
+component and no new net:
+
+* `U12`'s `PS/SYNC` moves from `GND` to the `EN` net.  TI `SLVS916I` 7.4.4 -- *"To enable
+  power save mode, PS/SYNC must be set low"* -- and the EC table gives `VFB_PS` as
+  **0.6 % .. 5 % ABOVE** `VFB_PWM`.  Tied to `EN` the converter runs **forced
+  fixed-frequency PWM whenever it is enabled** and that excursion cannot occur.
+* `R40` moves **178 kOhm -> 189 kOhm** (YAGEO `RT0603BRD07189KL`, `C861174`, 0.1 % /
+  25 ppm, live stock 339).  `R39` is unchanged.  **The first D-788 draft fitted 187 kOhm;
+  `R7-N01` below is why it moved again.**
+
+The rail is now **3.100334 / 3.145503 / 3.191022 V** raw PWM, **3.069408 V** heavy-load
+minimum and **3.223012 V** worst case -- **76.99 mV inside the panel's absolute maximum**
+and **58.78 mV over the ESP32-S3-WROOM-1's own 3.0 V `VDD33` minimum** after the `+3V3`
+plane's bounded distribution drop.  Display `VCI`/`IOVCC` and the MCU supply remain **THE
+SAME NET**, so ILI9488's `VIH <= IOVCC` row is satisfied by construction and no display
+input is ever driven above its own supply.
+
+**WHAT IT COSTS, AND THE OWNER DECISION.**  A rail whose maximum must stay under
+3.3 V has to sit nominally below 3.3 V, and the Community Port is switched from that rail.
+**The published 3.135 V (3.3 V -5 %) connector minimum is then unreachable AT ANY CURRENT,
+including zero**: the rail's own heavy-load minimum is 3.069408 V before a single milliohm
+of delivery loss.  With the complete loop priced (below), the port delivers **2.954962 V at
+the full 400 mA** and **3.069408 V at no load**.
+
+    OPTION A -- RESTATE THE PUBLISHED PORT TOLERANCE.   cost: zero.  schedule: zero.
+      The port becomes "3.15 V nominal rail, 3.0694 .. 3.2230 V unloaded, >= 2.95 V at
+      the published 400 mA".  Every Qwiic/STEMMA QT device AQROOT has qualified operates to
+      2.7 V or below, so no promised capability is lost -- but the PUBLISHED NUMBER an
+      accessory designer reads does change, and that is not mine to change.
+
+    OPTION B -- GIVE THE PORT ITS OWN REGULATOR.   cost: one buck-boost block
+      (converter + inductor + input/output capacitance), roughly 1.50 - 2.50 USD/board,
+      plus an accessory-area re-floorplan.  schedule: days-to-weeks, and it reopens
+      placement, routing, pour partition, ampacity, DRC, parity and the whole fab package.
+      It restores 3.135 V and needs no spec change.  The board has NO clear site for the
+      block within 17 mm of where it is needed -- the nearest clear 3.6 x 3.4 mm B.Cu
+      site south of `J1` is 17.3 mm away -- so this is a floorplan transaction, not an
+      insertion.
+
+    NOT VIABLE, AND MEASURED RATHER THAN ASSUMED:
+      * a divider-only fix.  The rail's own band is 1.0501 max/min from TI's +/-1 % VFB,
+        +/-0.5 % line and +/-0.5 % load; pinning the maximum at 3.300 V pins the minimum
+        at 3.1426 V, leaving 7.6 mV for a delivery path whose switch alone is 74.5 mOhm.
+      * a dedicated DISPLAY rail.  It restores the port but drives the panel's inputs
+        above its own `IOVCC`, which ILI9488 section 17.2 caps at `IOVCC` and Table 41
+        caps at `IOVCC + 0.3 V`.  Best achievable margin to an ABSOLUTE MAXIMUM was
+        ~30 mV.  Refused.
+      * a part swap for `U12`.  `TPS63021` fixed-3.3 V is 3.267/3.300/3.333 V before line
+        and load regulation; 3.3664 V worst case, still over.
+
+    OWNER DECISION, 2026-09-20: **OPTION A APPROVED.**  The capability the Kickstarter promises -- 400 mA on
+    the Community Port's 3.3 V rail -- is retained in full; what changes is the tolerance
+    band published against it, from -5 % to -9.7 % at full load.  Option B buys 150 mV of
+    published tolerance for a power-architecture change on a board that is otherwise
+    finished, and it should be a REV-B item, not a first-five one.
+
+**THE DECISION IS TAKEN.** `demo_feature_contract` F6 publishes **2.95 V** as the
+owner-approved first-five minimum at the J5 mating interface while retaining the full
+**400 mA** current capability. The accessory-facing rail is now a **3.15 V-class** rail
+whose exact unloaded/full-load envelope is derived from the final D-788 candidate. The
+dedicated-regulator alternative is deferred to **REV-B**. The gate is not weakened: it
+still proves delivery against the published minimum and independently refuses any rail
+that violates the fitted display's 3.3 V ceiling.
+
+**THE OWNER'S OWN TEXT DELEGATED THE EXACT VALUES, AND THEY MOVED ONCE MORE.**  The
+approval names "approximately 3.2 V nominal" with working figures of ~3.097 .. 3.252 V
+unloaded and >= 2.98 V at 400 mA, and says in its own words *"derive/freeze exact final
+values from the final candidate"*.  `R7-N01` did, and the centred divider moved the whole
+band down 28 mV: the released contract is **3.069408 .. 3.223012 V unloaded and >= 2.95 V
+at the full 400 mA**.  **28 mV of published tolerance bought 29 mV of headroom under a
+DAMAGE limit.**  Nothing else about the port changes -- 400 mA total, 300 mA on 5 V, every
+Kickstarter-visible function -- and every Qwiic/STEMMA QT device this project has qualified
+operates at or below 2.7 V.  This is inside the approved decision, not a new escalation,
+and it is stated here plainly because the number an accessory designer reads did change
+twice inside one milestone.
+
+---
+
+### 1. R7-D787-01 — display operating range  ·  CLOSED; §0 OPTION A OWNER-APPROVED
+
+Covered above.  `F6` gains `judge_display_supply`, which reads the panel's limits from the
+archived primary datasheet and the rail from the live divider, and checks six things: the
+rail maximum against the absolute maximum AND against the DC operating maximum, the rail
+minimum against `VCI`'s 2.5 V, that the three supply pads are one net, that the net is the
+MCU's, and that the interface-mode straps sit on it too.  Four destructive controls: the
+D-787 power-save high side, the D-787 nominal, a split display rail, and a missing or
+altered primary PDF.  The `PS/SYNC` tie the whole high-side bound rests on is read off the
+board, not believed.
+
+### 2. R7-D787-02 — U20 RON guarantee condition  ·  CLOSED
+
+D-787 used TI `SLVSGP6A`'s **68 mOhm**, which is specified at `VIN = 3.3 V`, for a switch
+whose input is the rail's heavy-load MINIMUM -- below 3.3 V, where the datasheet publishes
+a larger number.  `tps22950_ron_max()` now **interpolates between two GUARANTEED rows**
+(1.8 V -> 116 mOhm, 3.3 V -> 68 mOhm, both -40..+125 C) instead of extrapolating past one.
+That is an UPPER bound because `RON(VIN)` is convex-decreasing in every one of the four
+temperature rows -- the 1.8->3.3 V slopes are -32.0/-28.7/-26.0 mOhm/V against
+-8.2/-7.6/-5.9 mOhm/V for 3.3->5.0 V -- so the chord lies above the curve.  At this rail's
+3.069408 V minimum the bound is **75.379 mOhm**.
+
+**AND IT WAS ONLY HALF-CLOSED.**  `R7-N03`: the pack-current model in the SAME contract
+still ran at the raw **68 mOhm** row this item retired, because the correction was applied
+to the delivery proof and not to `ACC_SWITCH_RON_OHM`.  Both now read the interpolated
+bound.  It moves the battery current by microamps -- 6.5 mOhm at 0.4 A is 1 mW of 7.2 W --
+and that is exactly why it had to move: a term this small can only ever be a consistency
+question, so leaving the retired number in a second place is pure re-finding risk.
+
+### 3. R7-D787-03 — incomplete 3V3 delivery path  ·  CLOSED
+
+The delivery proof now prices the **COMPLETE LOOP** and states its **MEASUREMENT PLANE**:
+the potential between the `ACC_3V3_SW` contact and the `GND` contacts **at the J5 mating
+interface**, with the accessory's own plug and cable outside the guarantee.  Terms, each
+measured, bounded or DECLARED with its reason:
+
+| term | mOhm | basis |
+|---|---|---|
+| `U20` RON at the rail minimum | 75.379 | interpolated between two guaranteed rows |
+| `+3V3` source, `U12` VOUT -> `U20.2` | 31.386 | pour-delivered; itemised at ~11, DECLARED at 25, hot |
+| board copper `U20.5` -> `TP12.1` | 94.159 | measured 64.1, BOUNDED at 75, hot |
+| manual 28 AWG lead `TP12` -> `J5.3` | 31.386 | acceptance <= 25 mOhm, hot |
+| `J5` mated signal contact | 25.000 | DECLARED; Samtec publishes no contact-resistance row |
+| `J5` mated GND contacts, four in parallel | 6.250 | DECLARED, same allowance / 4 |
+| GND return copper | 12.554 | DECLARED 10, hot |
+| solder / process | 10.000 | DECLARED |
+| **total, worst contact (`J5.3`)** | **286.115** | **114.4 mV at 400 mA** |
+
+`J5.22` is priced separately at **273.560 mOhm** on routed copper alone.  **Each duplicated
+contact is qualified ALONE**, because either may carry the whole published budget.
+
+### 4. R7-D787-04 — U11.2 thermal model  ·  CLOSED
+
+D-787 solved ONE boundary condition and reported 14.3 K.  The model now solves a **2 x 3
+matrix** -- three axial boundary conditions (both ends clamped, one end insulated, no axial
+sink) crossed with two lateral treatments (trace-width-only, and with the dielectric
+spreading a 0.200 mm strip over a 0.2104 mm dielectric actually has) -- **solves copper's
+0.393 %/K coefficient self-consistently**, and **charges the clamped end for U11's own
+dissipation**: the BQ25185's BATFET puts `2.35^2 x 0.140 = 0.773 W` into the package this
+land belongs to, so a **25 K DECLARED endpoint rise** is added rather than assumed away.
+
+    trace width only:   both ends clamped 18.49 K | one end insulated 44.88 K | no axial sink 71.18 K
+    with spreading:     both ends clamped 11.73 K | one end insulated 18.07 K | no axial sink 19.84 K
+
+The ACCEPTANCE takes the **worst axial boundary** -- Round-7's objection is conceded, not
+argued with -- **with** spreading, because combining "no axial sink at all" with "no
+lateral spreading either" is two independent pessimisms multiplied, not a bound.  Result
+**19.84 K** against the 40 K relative limit.
+
+**AND THE ACCEPTANCE IS NOW ABSOLUTE AS WELL AS RELATIVE**, which it never was: predicted
+peak `40 C ambient + 10 K board + 25 K endpoint + 19.84 K neck = 94.84 C` against a
+**105 C** declared limit, which is the tighter of the laminate's (the fab notes now require
+**FR4 Tg >= 150 C**, and 105 C leaves 45 K) and the surrounding silicon's (TJ 125 C, 20 K
+left for its own dissipation).  A run inside `BATTERY_SHADOW` is judged at **60 C** instead,
+from the pouch cell's published discharge range; this run is at x 65.5..66.4 and is
+**outside** it.  **The IPC-2221B 137.6 K coupon figure is retained as a SCREENING number
+and is explicitly never quoted as a board temperature.**  First-article thermography
+remains the measurement of record.
+
+### 5. R7-D787-05 / R7-D787-06 — gauge and backlight timing false-greens  ·  CLOSED
+
+Round-7 passed the complete H1-H8 suite with the production gauge wait removed, halved or
+made unreachable, and with the production microsecond callback and the actual PWM duty
+writer halved.  It could, because the only executable proof drove
+`aqroot_demo_timing_policy.h` through a **test's own fakes**.
+
+`Firmware/test/test_production_timing.cpp` now compiles and **RUNS THE SHIPPED ENTRY
+POINTS** -- `backlightRamp()` and `configureFuelGaugeActiveModeOnHardware()` -- against
+`Firmware/test/harness/Arduino.h`, a recording Arduino core whose `delay`,
+`delayMicroseconds` and `ledcWrite` timestamp every call.  The backlight block moved into
+`aqroot_demo_backlight.h` and the gauge wrapper into `aqroot_demo_gauge_bringup.h` so both
+are compilable outside the Arduino build; `demo/main.cpp` keeps no second copy.  **17
+claims, 8 production mutations, every one caught**: settle halved, settle no-op, settle
+before qualification, microsecond hold halved, microsecond hold no-op, duty writer halved,
+dim PWM before the seam, seam bypassed entirely.  `H8` now requires that test to have
+passed **with every mutation caught**, on top of the source-level call-site clause.
+
+### 6. R7-D787-07 — F8 DC hierarchy alias  ·  CLOSED
+
+`dc_key = canonical if canonical in net_max_dc else leaf` was a wildcard over hierarchy.
+`CANONICAL_DC_NETS` now maps **full hierarchical net -> NET_MAX_DC row**, explicitly, with
+no fallback; `PROVEN_DC_ALIASES` is empty and a cross-hierarchy alias without a written
+reason is refused.  Round-7's own counterexamples are the controls: `C20` on
+`/ALIEN/USB_VBUS_RAW` and `C33` on `/ALIEN/BQ25185_SYS` are both refused, as is a canonical
+entry for a net not on the board and a silent alias onto an unrelated row.
+
+### 7. R7-D787-08 — false reset-release success  ·  CLOSED
+
+`releaseExpanderResetLines()` discarded seven return values and printed `PASS ... released`
+unconditionally.  It now aggregates every write AND reads `U2`'s output-latch shadow, and
+reports **CONFIRMED / FAILED / UNKNOWN** -- unknown when a write failed and the shadow is
+invalid, which is the case where the resets may still be asserted.
+
+### 8. R7-D787-09 — accessory command message  ·  CLOSED
+
+`ok` was captured before `settledAccessoryRecheck`, which may shed the rail it just
+enabled.  `reportAccessoryCommand()` now prints the **request**, the **acknowledgement**
+and the **state after reconciliation** as three separate facts, and prints UNKNOWN while a
+safe-state reconciliation is pending.
+
+### 9. R7-D787-10 / R7-D787-11 — the reinforcement instruction and its BOM  ·  CLOSED
+
+D-787 ran TWO 28 AWG conductors (0.686 mm OD each) onto ONE 1.00 mm pad, with no route, no
+anchors, no retention material, no cure and no bend-radius rule -- and neither the master
+assembly plan nor the off-board BOM knew the operation existed.
+
+**D-788 removes the problem rather than documenting it.**  `J5.22`'s ROUTED copper is
+**79.0 mOhm** measured, better than any manual lead could be, so **J5.22 is not reinforced
+at all** and **no pad carries two conductors**.  `J5.3` alone is reinforced, by ONE
+conductor of the SAME already-sourced Alpha `2842/19 RD005`, with a dimensioned corridor
+and five waypoints, three named DOWSIL 3145 anchor positions with bead size and a 72 h full
+cure, a 6.9 mm minimum bend radius (10 x OD), a stated joint profile at both ends, a nine-
+step sequence and eight inspection criteria.  Acceptance tightens **30 -> 25 mOhm**, derived
+from the wire's own published 58 Ohm/1000 ft over the 78 mm nominal length.  The wire and
+the adhesive are now in `OFF_BOARD_BOM` §7a and the operation is a Class-E row in
+`FIRST_FIVE_ASSEMBLY_PLAN`.
+
+### 10. R7-D787-12 — microSD mechanism  ·  CLOSED
+
+Molex `5025700893` is **push-push**.  `MECHANICAL_INTERFACE_SPEC` and
+`P1_FLOORPLAN_INPUTS` B-4 said push-pull, and B-7 therefore reserved **+18 mm of card
+outside the shell** -- a requirement of a mechanism this board does not have.  Corrected to
+the real requirement: a clean through-aperture, finger/nail access in both directions, and
+clearance for the socket's own eject stroke, with first-article `C-SD-01` exercising it
+through the CLOSED enclosure.
+
+### 11. R7-D787-13 — unbounded internal corner tool radius  ·  CLOSED
+
+The fab notes said *"any tool radius is fine and the enclosure clears it"*, which permits
+unbounded outward growth at the step.  Bounded in both directions: **maximum retained
+fillet / tool radius 1.00 mm** against the enclosure's 1.50 mm step recess, no over-cut
+beyond the per-corner copper distances already printed, and **a CAM profile preview showing
+the actual retained geometry and tool radius must be accepted in writing before the profile
+is cut**.
+
+### 12. R7-D787-14 — F5 method text  ·  CLOSED
+
+`F5`'s prose still led with `VGS(th)`, the argument D-779 retired.  Rewritten around the
+row that actually carries it: Vishay 75975 Rev B's **RDS(on) 0.245 Ohm MAX at VGS = 1.5 V,
+ID = 2.0 A**, against a held `VGS = 2.396 V` and a 0.109 A string -- 0.896 V inside a
+characterized region at 18x less current than the row is taken at.  `VGS(th)` is retained
+only as a necessary subordinate check.  **The scope is stated**: that row stands in the
+TC = 25 C table and Vishay publishes no low-gate row at any other temperature, so 0/25/40 C
+remains a first-article measurement (`Q11-TEMP-01`), and the 25 C scope is now a property of
+the row rather than a test on a reference name.
+
+### 13. R7-D787-15 — PCAL init comment  ·  CLOSED
+
+The comment claimed `U3` owns `NFC_5V_EN`, "the SX1262 and CC1101 resets" and "both radio
+transmit enables", and that the PCAL9535A leaves outputs "at a 00h latch".  **Not one of
+those four claims was true.**  Corrected to the generated map's actual ownership, and to
+the part's real POR semantics: Configuration = FFh (every pin an INPUT, nothing driven) with
+the Output Port registers ALSO at FFh -- ones, not zeros -- which is precisely why the
+complete safe word is written BEFORE direction, and why a warm MCU reset (where the latch is
+whatever the previous instance left) makes that write unconditional.
+
+### 14. R7-D787-16 — sourcing screener ceiling  ·  CLOSED
+
+`LED_K`, `LED_A` and `BOARD_MAX_DC` carried **38 V** while the board publishes **39 V**.
+One constant, `LED_BOOST_OVP_MAX_V = 39.0`, now feeds all four rows, and F8 cross-checks it
+against the figure PARSED out of `.kicad_dru`.  Four controls put each stale 38 V back.
+
+### 15. R7-D787-17 — root schematic title block  ·  CLOSED
+
+Was `AQROOT Full Beta v2 Main Board` / `v2.0-S1-power-tree` / `2026-07-27` /
+`DO NOT ROUTE`.  Now `AQROOT Demo Main Board` / `D-788` / `2026-09-20` / external-review
+target, not authorized for fabrication.  No electrical content changed.
+
+### 16. R7-D787-18 — regression wrapper false failure  ·  CLOSED
+
+All 19 contracts passed and the wrapper exited 1, because `pour_partition_contract` records
+its netclass and published-width provenance as ABSOLUTE paths and `trunk_floor_contract`
+records `$.dru` the same way -- so a scratch-workspace run and an authority run differ in a
+string, not in a rule.  The normalisation is deliberately NARROW: a value is reduced to its
+basename only when it is an absolute path whose basename is one of THIS PROJECT's own four
+files.  The exit code now reads **substantive** difference -- any difference that survives
+stripping the declared input identifiers still fails -- and `--strict` restores byte
+identity.
+
+### 17. R7-D787-19 / R7-D787-20 — consignment and RF narrative  ·  CLOSED
+
+`FIRST_FIVE_ASSEMBLY_PLAN` named `LTC4368IDD-1#PBF` / `C688397`, the **DFN**, while the
+schematic, BOM and footprint all carry `LTC4368IMS-1#TRPBF` / `C688401`, the **MSOP-10**.
+The DFN row is retired and the whole table replaced by a **fresh live sweep of all 124
+assembly lines** (§18).  `OFF_BOARD_BOM`'s mating-chain prose named an Amphenol AMC plug and
+a 150 mm cable that D-223 superseded in the purchasing row on 2026-08-24; rewritten around
+the RF Solutions `CBA-UFLSMA20IP` 200 mm assembly, with the old text kept only as marked
+history.
+
+### 18. Sourcing — Astra Appendix C, re-swept live
+
+All **124** assembly lines were re-queried through the D-096 JLCPCB API on 2026-09-20 and
+archived at `evidence/d788-sourcing-sweep.json`.  **AND THE ARCHIVE IS NOW GENERATED FROM
+THE RELEASED BOM RATHER THAN BESIDE IT** (`evidence/d788-sweep-sourcing.py`): the first
+version of it carried `R40 = ARG03BTC1783`, the D-787 part, after the divider had already
+moved -- an archive hand-built next to a BOM drifts from it, and this one replays instead.  **Ten do not cover a five-board build**
+and are consignment lines: `J5`, `L4`, `L5`/`L6`, `MK1`, `Q11`, `Q2`/`Q3`, `U18`, `U19`,
+`U2`/`U3`, `U9`.  `D8` `NSR0240HT1G`, which the old table listed, re-swept at 5 280 and is
+off the list.  **The three "no longer manufactured" flags are JLCPCB CATALOGUE flags, not
+manufacturer EOL** -- each must be confirmed ACTIVE against the manufacturer's own
+lifecycle page and ordered from a franchised distributor **before PCBA payment**.  Fable's
+transient `R39` stock=0 observation is dispositioned the same way: `ARG03BTC1004` re-swept
+at 54 774, and stock is a time-sensitive procurement risk that the pre-order re-check owns,
+not a permanent fact.
+
+**`R40` IS A THIN LINE AND IS FLAGGED AS ONE.**  `RT0603BRD07189KL` / `C861174` reads
+**339**, which is **68x** the five-board need of 5 and clears this repository's HARD
+liquidity gate (`1 part x 5 boards x 10 = 50`), but it is under `rule_open_sourcing`'s
+**500-piece comfort floor**, so the rule carries it as THIN rather than refusing it.  The
+187 kOhm part it replaces read 6 884.  That is the price of `R7-N01`'s centring and it is
+stated here rather than buried: **buy `R40` with the consignment batch.**
+
+### 18a. SIX DEFECTS ROUND-7 DID NOT RAISE  ·  `R7-N01` .. `R7-N06`  ·  ALL CLOSED
+
+Round-7's instruction says *"Do not assume the Round-6 list is exhaustive."*  Auditing the
+D-788 candidate against its own primary sources found six more, and the first two moved the
+BOARD.
+
+**`R7-N01` / `R7-N02` -- THE DISPLAY PROOF WAS DC-ONLY, AND THE LOW SIDE HAD NO MCU CLAUSE.**
+`judge_display_supply` compares a **DC regulation envelope** with an **ABSOLUTE MAXIMUM**.
+Output ripple and load-transient overshoot ride on top of that envelope, and the first
+D-788 draft left **47.97 mV** of DC headroom under a limit whose consequence is a **damaged
+panel**, while leaving **86.36 mV** over the ESP32-S3's **recoverable** brown-out floor.
+That split is the wrong way round.  And the low side was never checked against the MCU at
+all: the rail minimum was compared with the panel's `VCI` 2.5 V and with the Community
+Port's published minimum, and **never** with the ESP32-S3-WROOM-1's own `VDD33` **3.0 /
+3.3 / 3.6 V** row.  A rail that had drifted to 2.99 V would have passed every clause in
+the file.
+
+    F6 now, in three parts:
+
+    (a) RIPPLE IS COMPUTED, and charged to BOTH ends.  Forced PWM means continuous
+        conduction at the oscillator frequency, which SLVS916I publishes as
+        2200/2400/2600 kHz; at the MINIMUM frequency, L1's own MINIMUM inductance
+        (1.2 uH, Coilcraft XFL4020-152MEC +/-20 %) and a DECLARED 50 % effective
+        local output capacitance (C31+C32, 44 uF nominal), SLVS916I 8.2.2's buck and
+        boost expressions give 1.59 and 1.68 mV peak-to-peak.  1.68 mV is charged.
+
+    (b) THE MCU'S OWN FLOOR IS A CLAUSE, with the +3V3 plane's delivery bounded at
+        10 mOhm (In3 is a filled +3V3 pour, so this is a SHEET, ~4x the widest
+        plausible path's 0.5 oz sheet resistance) -- 10.6 mV at the 1.0632 A
+        internal budget.
+
+    (c) THE DIVIDER IS PROVED CENTRED, by ENUMERATION rather than by argument.  F6
+        walks every E192 0.1 % value purchasable for R40 with R39 at 1 MOhm and
+        requires the fitted one to MAXIMISE THE SMALLER of the two headrooms:
+
+            R40      rail min   rail max   under abs max   over MCU floor   stock
+            182 k    3.168613   3.327357     -27.36 mV       +157.98 mV         5
+            186 k    3.111010   3.266770     +33.23 mV       +100.38 mV         0
+            187 k    3.096994   3.252028     +47.97 mV        +86.36 mV      6884
+            189 k    3.069408   3.223012     +76.99 mV        +58.78 mV       339   <- fitted
+            191 k    3.042399   3.194605    +105.40 mV        +31.77 mV      1282
+            196 k    2.977288   3.126121    +173.88 mV        -33.34 mV         3
+
+        189 kOhm wins at 58.78 mV of worst-case headroom.  188 kOhm is not an E192
+        value -- no 0.1 % part of that value exists in the catalogue at all -- so
+        189 kOhm is the closest purchasable approach to the 188.7 kOhm optimum.
+
+**LOAD-TRANSIENT OVERSHOOT IS DELIBERATELY NOT GIVEN AN ANALYTIC BOUND.**  TI publishes
+the TPS6302x load transient ONLY as `SLVS916I` Figures 21/22 -- **50 mV/div**, 500 mA ->
+1500 mA, on the fixed-output TPS63021 with 4 x 22 uF -- and there is no numeric overshoot
+row in the EC table.  Scaling an unread plot axis is not primary evidence and this
+repository does not treat it as any.  So the term is **MEASURED**: new first-article item
+**`C-PWR-TRANSIENT-01`** scopes `+3V3` **at the display's own supply pins** `J1.40`/`J1.41`/
+`J1.42` through an accessory hot-disconnect at 400 mA, backlight on/off/on, Wi-Fi and
+sub-GHz TX bursts, and `SW9` enable from a discharged rail, at pack voltages spanning buck,
+buck-boost and boost.  Acceptance: peak **below 3.300 V**, trough at `U1.2` **above
+3.000 V**.  **The lever if it fails is `C29`-`C32`**, which are 22 uF 1206 X7R parts on
+existing lands -- `SLVS916I` 8.2.2.3 sets **no upper limit** on output capacitance, so more
+capacitance is a BOM value change with **no PCB change**.  Widening the acceptance is not
+an option the traveler offers.
+
+**`R7-N03` -- THE RETIRED 68 mOhm RON ROW SURVIVED IN A SECOND PLACE.**  Covered in
+section 2.
+
+**`R7-N04` -- THE PUBLISHED CONTRACT WAS NOT CROSS-CHECKED AGAINST THE GATE.**  Six of
+Round-7's twenty findings were stale documents, two of them (`R7-D787-19`/`20`) exactly
+"the released BOM says one thing and the assembly plan says another".  The Community Port's
+**product-facing voltage contract** had the same shape: `DEVICE_SPEC` printed it and
+nothing compared it with the contract that derives it.  F6 now requires `DEVICE_SPEC` to
+contain the exact connector minimum, unloaded minimum, worst-case maximum, delivered
+figure at the published budget, and both current budgets.  A published tolerance that only
+lives in a gate is not published; one that only lives in a document is not proven.  It
+also caught this milestone's own `R7-N05`-class slip: F6's delivery text called the
+reinforcement lead **26 AWG** while the traveler, the off-board BOM and the wire's own
+record all say **28 AWG**.
+
+**`R7-N05` -- `SOURCING_LEDGER` STILL CARRIED THE RETIRED `U18` DFN ORDER CODE.**
+`R7-D787-19` retired `LTC4368IDD-1#PBF` / `C688397` from `FIRST_FIVE_ASSEMBLY_PLAN`, and
+`SOURCING_LEDGER` section 3 still listed it as a CARRIED current row, beside a
+`PCAL9535APW,118 (x3)` count the board no longer has.  Section 3 is now explicitly
+superseded by the D-788 124-line live sweep and its `U18` row corrected.
+
+**`R7-N06` -- FORCED PWM'S PRICE WAS UNRECORDED.**  Grounding `PS/SYNC` is what bought the
+TPS63020's **25 uA** light-load quiescent current (`SLVS916I` EC, `Iq`, `IOUT = 0 mA`), and
+`R7-D787-01` gave that up to kill the `VFB_PS` excursion.  The converter now switches
+continuously whenever it is enabled, so **light-load and MCU-sleep pack drain on this
+revision is set by continuous conduction, not by the datasheet's 25 uA row**.  `SW9` OFF
+still disables `U12` entirely -- `IS` **0.1 uA** max -- so "off" is a hard off, and **no
+published AQROOT figure depends on the light-load number**: `DEVICE_SPEC` makes no standby
+or battery-life claim.  The measurement is folded into `C-PWR-TRANSIENT-01`'s
+instrumentation.  Giving firmware control of `PS/SYNC` is a **REV-B** item and not a
+first-five one, because power save may only be re-enabled on a rail the panel is not on --
+which is the dedicated display/accessory rail REV-B already owns.
+
+---
+
+### 19. What did NOT change
+
+No protected copper moved.  Connectivity is unchanged at **174 retained / 173 connected /
+one owner-approved `U11.3` open / zero unapproved**.  The published **400 mA / 300 mA**
+rail budgets are unchanged.  Every retained Kickstarter feature is unchanged.
+`hardware/beta-v2` is untouched.  The firmware VCELL floors stay at **3.85 V / 3.50 V** --
+the corrected envelope now DERIVES **3.6948 V** and **3.0860 V** (gridded 3.70 / 3.10), so
+the retained floors are more conservative than required, which is the safe direction and
+needs no firmware change.  **THAT IS THE SECOND TIME THE DERIVED REQUIREMENT FELL UNDER A
+HAND-AIMED CONTROL**, so F6's two floor controls are no longer hand-aimed: they now sit one
+grid step below whatever the derivation currently produces and cannot go vacuous again
+(`R7-N02`).
+
+---
+
 ## D-787 — **ROUND-6 ACCESSORY-VOLTAGE CONTRACT AND RELEASE-PROOF CORRECTION; NO PROTECTED-COPPER REROUTE**
 
     authority  board 8a22e8d914a78e6903f6368006d070e492f6cf6ddcf4c62a96133c9a080ef411

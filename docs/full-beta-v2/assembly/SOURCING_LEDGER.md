@@ -75,12 +75,24 @@ exact MPN — 0 missing** (six were added at FBV2-S2-001, see §4).
 
 ## 3. CARRIED — exact MPN present, live listing NOT re-confirmed in this task
 
+> **SUPERSEDED AS A CURRENT SOURCING STATEMENT — D-788 / `R7-N05` (2026-09-20).**  This
+> section records the state of an FBV2-S2-001-era task and is retained as HISTORY.  The
+> authoritative current sourcing position is the **D-788 live sweep of all 124 assembly
+> lines** (`evidence/d788-sourcing-sweep.json`, 2026-09-20) and the consignment table in
+> [`FIRST_FIVE_ASSEMBLY_PLAN.md`](FIRST_FIVE_ASSEMBLY_PLAN.md) §18.  Two rows below were
+> carried here after they had already been retired elsewhere, which is exactly the defect
+> class `R7-D787-19`/`R7-D787-20` named: **`U18` is `LTC4368IMS-1#TRPBF` / `C688401`,
+> MSOP-10 — the `LTC4368IDD-1#PBF` / `C688397` DFN code is RETIRED (D-615)** — and the
+> board fits **TWO** `PCAL9535APW,118` (`U2`, `U3`), not three.  Read the released BOM
+> `hardware/demo/fab/aqroot-Demo-BOM-full.csv` for part identity, never this list.
+
 These are not speculative part numbers; each is an exact, well-known order code already recorded
 in the schematic. **They must each be confirmed against a live listing at BOM lock (D-096) and
 each needs an LCSC code or an explicit external-purchase decision.**
 
-`ESP32-S3-WROOM-1-N16R8` · `PCAL9535APW,118` (×3) · `BQ25185DLHR` · `TPS63020DSJR` ·
-`TPS61023DRLR` (×2) · `MAX17048G+T10` · `LTC4368IDD-1#PBF` · `TLV7032DDFR` · `TPS61169DCKR` ·
+`ESP32-S3-WROOM-1-N16R8` · `PCAL9535APW,118` (×2, `U2`/`U3`) · `BQ25185DLHR` · `TPS63020DSJR` ·
+`TPS61023DRLR` (×2) · `MAX17048G+T10` · `LTC4368IMS-1#TRPBF` (`C688401`, MSOP-10 — *the
+`LTC4368IDD-1#PBF` DFN code this row carried until D-788 is RETIRED*) · `TLV7032DDFR` · `TPS61169DCKR` ·
 `MAX98357AETE+T` · `BMI270` · `USBLC6-2SC6` · `TPD4E1B06DRLR` (×4) · `NTMD4820NR2G` (×2) ·
 `AO3400A` (now `Q1` only — `Q11` moved through `AO3422` at D-766 and to `SQ2364EES-T1_BE3` at D-780) · `AO3401A` · `2N7002` · `BSS138LT1G` (×5) · `PMEG2010AEH,115` ·
 `NSR0240HT1G` · `TSAL6100` · `USB4105-GF-A-120` · `B2B-PH-K-S(LF)(SN)` ·

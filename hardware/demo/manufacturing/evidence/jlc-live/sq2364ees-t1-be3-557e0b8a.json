@@ -1,10 +1,10 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-19T09:22:42Z",
+ "fetched_utc": "2026-09-20T19:33:54Z",
  "keyword": "SQ2364EES-T1_BE3",
  "page_size": 25,
- "pages": 3,
+ "pages": 1,
  "records": [
   {
    "assemblyComponentFlag": false,

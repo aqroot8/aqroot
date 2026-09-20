@@ -1,0 +1,1612 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-20T19:33:55Z",
+ "keyword": "BSS138LT1G",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Vgs",
+     "attribute_value_name": "±20V"
+    },
+    {
+     "attribute_name_en": "Configuration",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "5pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "200mA"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "12pF"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "3.5Ω@5V"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "50pF"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "500mV"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "1 N-channel"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "225mW"
+    }
+   ],
+   "componentBrandEn": "LRC",
+   "componentCode": "C8490",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LBSS138LT1G",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0199,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0157,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0129,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0115,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0103,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0096,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOT-23",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1811131821_LRC-LBSS138LT1G_C8490.pdf",
+   "describe": "-55℃~+150℃ 1 N-channel 200mA 225mW 3.5Ω@5V 500mV 50V 50pF 5pF SOT-23 MOSFETs ROHS",
+   "erpComponentName": "LBSS138LT1G",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_lrc-lbss138lt1g_C8490.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 121198
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Vgs",
+     "attribute_value_name": "±20V"
+    },
+    {
+     "attribute_name_en": "Configuration",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "5pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "200mA"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "12pF"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "5.6Ω@2.75V"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "50pF"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "500mV"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "1 N-channel"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "225mW"
+    }
+   ],
+   "componentBrandEn": "onsemi",
+   "componentCode": "C82045",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BSS138LT1G",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.044,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 299,
+     "productPrice": 0.0352,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0308,
+     "startNumber": 300
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0253,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.024,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0232,
+     "startNumber": 9000
+    }
+   ],
+   "componentSpecificationEn": "SOT-23",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1811032002_onsemi-BSS138LT1G_C82045.pdf",
+   "describe": "-55℃~+150℃ 1 N-channel 200mA 225mW 5.6Ω@2.75V 500mV 50V 50pF 5pF SOT-23 MOSFETs ROHS",
+   "erpComponentName": "BSS138LT1G",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_onsemi-bss138lt1g_C82045.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 639968
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "27pF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "1 N-channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1.6V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "2.4nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "6pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "220mA"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "13pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "360mW"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "6Ω@4.5V"
+    }
+   ],
+   "componentBrandEn": "JSMSEMI",
+   "componentCode": "C2874697",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BSS138",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0158,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0127,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0101,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0091,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 44999,
+     "productPrice": 0.0082,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0077,
+     "startNumber": 45000
+    }
+   ],
+   "componentSpecificationEn": "SOT-23",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2111031130_JSMSEMI-BSS138_C2874697.pdf",
+   "describe": "-55℃~+150℃ 1 N-channel 1.6V 13pF 2.4nC@10V 220mA 27pF 360mW 50V 6pF 6Ω@4.5V N-Channel SOT-23 MOSFETs ROHS",
+   "erpComponentName": "BSS138",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_jsmsemi-bss138_C2874697.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 53955
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Vgs",
+     "attribute_value_name": "±20V"
+    },
+    {
+     "attribute_name_en": "Configuration",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "6pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "220mA"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "13pF"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "6Ω@4.5V"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "27pF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "1 N-channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1.5V"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "350mW"
+    }
+   ],
+   "componentBrandEn": "FUXINSEMI",
+   "componentCode": "C3040446",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BSS138",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0189,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0155,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0135,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0118,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 20999,
+     "productPrice": 0.0108,
+     "startNumber": 9000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0102,
+     "startNumber": 21000
+    }
+   ],
+   "componentSpecificationEn": "SOT-23",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2208221800_FUXINSEMI-BSS138_C3040446.pdf",
+   "describe": "-55℃~+150℃ 1 N-channel 1.5V 220mA 27pF 350mW 50V 6pF 6Ω@4.5V SOT-23 MOSFETs ROHS",
+   "erpComponentName": "BSS138",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_fuxinsemi-bss138_C3040446.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 5933
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "25pF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "1 N-channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "650pC@4.5V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "2.2pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "400mA"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "60V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "9.7pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "350mW"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "1.5Ω@10V"
+    }
+   ],
+   "componentBrandEn": "ElecSuper",
+   "componentCode": "C5224261",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BSS138LT1G-ES",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0147,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.012,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0106,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0097,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 20999,
+     "productPrice": 0.0089,
+     "startNumber": 9000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0085,
+     "startNumber": 21000
+    }
+   ],
+   "componentSpecificationEn": "SOT-23",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2301091730_ElecSuper-BSS138LT1G-ES_C5224261.pdf",
+   "describe": "-55℃~+150℃ 1 N-channel 1.5Ω@10V 1V 2.2pF 25pF 350mW 400mA 60V 650pC@4.5V 9.7pF N-Channel SOT-23 MOSFETs ROHS",
+   "erpComponentName": "BSS138LT1G-ES",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_elecsuper-bss138lt1g-es_C5224261.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 15171
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "27pF"
+    },
+    {
+     "attribute_name_en": "Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "1 N-channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1.5V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "6pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "220mA"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "13pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "350mW"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "1.1Ω@10V"
+    }
+   ],
+   "componentBrandEn": "HXY MOSFET",
+   "componentCode": "C5337205",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BSS138",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0201,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.016,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0137,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0125,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 20999,
+     "productPrice": 0.0113,
+     "startNumber": 9000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0106,
+     "startNumber": 21000
+    }
+   ],
+   "componentSpecificationEn": "SOT-23",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2303061200_HXY-MOSFET-BSS138_C5337205.pdf",
+   "describe": "-55℃~+150℃ 1 N-channel 1.5V 220mA 27pF 2Ω@10V 350mW 50V 6pF SOT-23 MOSFETs ROHS",
+   "erpComponentName": "BSS138",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_hxy-mosfet-bss138_C5337205.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1541
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "25.5pF"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Configuration",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "1 N-channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1.1V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "3.7nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "7.8pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "300mA"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "55V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "17pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "350mW"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "1.2Ω@10V"
+    }
+   ],
+   "componentBrandEn": "MSKSEMI",
+   "componentCode": "C5343308",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BSS138LT1G-MS",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0326,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0256,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0217,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0194,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 20999,
+     "productPrice": 0.0173,
+     "startNumber": 9000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0162,
+     "startNumber": 21000
+    }
+   ],
+   "componentSpecificationEn": "SOT-23",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2212290930_MSKSEMI-BSS138LT1G-MS_C5343308.pdf",
+   "describe": "-55℃~+150℃ 1 N-channel 1.1V 1.2Ω@10V 17pF 25.5pF 3.7nC@10V 300mA 350mW 55V 7.8pF N-Channel SOT-23 MOSFETs ROHS",
+   "erpComponentName": "BSS138LT1G-MS",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_msksemi-bss138lt1g-ms_C5343308.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 90
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Vgs",
+     "attribute_value_name": "±20V"
+    },
+    {
+     "attribute_name_en": "Configuration",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "3.7nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "7.8pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "300mA"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "55V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "17pF"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "1.2Ω@10V"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "25.5pF"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "800mV"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "1 N-channel"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "350mW"
+    }
+   ],
+   "componentBrandEn": "MSKSEMI",
+   "componentCode": "C6454464",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LBSS138LT1G-MS",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.025,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0196,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0167,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.014,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 20999,
+     "productPrice": 0.0124,
+     "startNumber": 9000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0116,
+     "startNumber": 21000
+    }
+   ],
+   "componentSpecificationEn": "SOT-23",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2305231112_MSKSEMI-LBSS138LT1G-MS_C6454464.pdf",
+   "describe": "-55℃~+150℃ 1 N-channel 1.2Ω@10V 17pF 25.5pF 3.7nC@10V 300mA 350mW 55V 7.8pF 800mV N-Channel ±20V SOT-23 MOSFETs ROHS",
+   "erpComponentName": "LBSS138LT1G-MS",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_msksemi-lbss138lt1g-ms_C6454464.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 4,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1760
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "25pF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "1 N-channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "2V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "400pC@4.5V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "2pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "250mA"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "60V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "5pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "300mW"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "2.8Ω@10V"
+    }
+   ],
+   "componentBrandEn": "VBsemi Elec",
+   "componentCode": "C7428943",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BSS138LT1G-VB",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0585,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 299,
+     "productPrice": 0.0468,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0409,
+     "startNumber": 300
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0365,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0329,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0311,
+     "startNumber": 9000
+    }
+   ],
+   "componentSpecificationEn": "SOT-23(TO-236)",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2306161646_VBsemi-Elec-BSS138LT1G-VB_C7428943.pdf",
+   "describe": "-55℃~+150℃ 1 N-channel 2.8Ω@10V 250mA 25pF 2V 2pF 300mW 400pC@4.5V 5pF 60V N-Channel SOT-23(TO-236) MOSFETs ROHS",
+   "erpComponentName": "BSS138LT1G-VB",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_vbsemi-elec-bss138lt1g-vb_C7428943.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 4,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 472
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "25pF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "1 N-channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "2V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "400pC@4.5V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "2pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "250mA"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "60V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "5pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "300mW"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "2.8Ω@10V"
+    }
+   ],
+   "componentBrandEn": "VBsemi Elec",
+   "componentCode": "C7429063",
+   "componentLibraryType": "expand",
+   "componentModelEn": "LBSS138LT1G-VB",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.042,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 299,
+     "productPrice": 0.0414,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0409,
+     "startNumber": 300
+    },
+    {
+     "endNumber": 1019,
+     "productPrice": 0.0404,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 1039,
+     "productPrice": 0.0404,
+     "startNumber": 1020
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0404,
+     "startNumber": 1040
+    }
+   ],
+   "componentSpecificationEn": "SOT-23(TO-236)",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2306151637_VBsemi-Elec-LBSS138LT1G-VB_C7429063.pdf",
+   "describe": "-55℃~+150℃ 1 N-channel 2.8Ω@10V 250mA 25pF 2V 2pF 300mW 400pC@4.5V 5pF 60V N-Channel SOT-23(TO-236) MOSFETs ROHS",
+   "erpComponentName": "LBSS138LT1G-VB",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_vbsemi-elec-lbss138lt1g-vb_C7429063.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 317
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "32pF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "1 N-channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1.5V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "4nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "3pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "360mA"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "6pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "350mW"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "4.5Ω@2.5V"
+    }
+   ],
+   "componentBrandEn": "TECH PUBLIC",
+   "componentCode": "C18212666",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BSS138LT1G",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.022,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0176,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0136,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0121,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0108,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0101,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOT-23",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2310241349_TECH-PUBLIC-BSS138LT1G_C18212666.pdf",
+   "describe": "-55℃~+150℃ 1 N-channel 1.5V 32pF 350mW 360mA 3pF 4.5Ω@2.5V 4nC@10V 50V 6pF N-Channel SOT-23 MOSFETs ROHS",
+   "erpComponentName": "BSS138LT1G",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_tech-public-bss138lt1g_C18212666.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 4,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 6433
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "28.5pF"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "1 N-channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1.2V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "1.7nC"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "1.8pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "340mA"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "2.7pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "350mW"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "1.1Ω@10V"
+    }
+   ],
+   "componentBrandEn": "FOSAN",
+   "componentCode": "C2926186",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BSS138",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0154,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0121,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0098,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0088,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0078,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0073,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOT-23",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2112031830_FOSAN-BSS138_C2926186.pdf",
+   "describe": "-55℃~+150℃ 1 N-channel 1.1Ω@10V 1.2V 1.7nC 1.8pF 2.7pF 28.5pF 340mA 350mW 50V N-Channel SOT-23 MOSFETs ROHS",
+   "erpComponentName": "BSS138",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_fosan-bss138_C2926186.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 746,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "25pF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "1 N-channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "650pC@4.5V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "2.2pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "400mA"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "60V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "9.7pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "417mW"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "1.5Ω@10V"
+    }
+   ],
+   "componentBrandEn": "ElecSuper",
+   "componentCode": "C5224262",
+   "componentLibraryType": "expand",
+   "componentModelEn": "ESBSS138LT1G",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0097,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 0.008,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 7499,
+     "productPrice": 0.0071,
+     "startNumber": 1500
+    },
+    {
+     "endNumber": 22499,
+     "productPrice": 0.0069,
+     "startNumber": 7500
+    },
+    {
+     "endNumber": 52499,
+     "productPrice": 0.0064,
+     "startNumber": 22500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0061,
+     "startNumber": 52500
+    }
+   ],
+   "componentSpecificationEn": "SOT-23",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2301091730_ElecSuper-LBSS138LT1G-ES_C5224262.pdf",
+   "describe": "-55℃~+150℃ 1 N-channel 1.5Ω@10V 1V 2.2pF 25pF 400mA 417mW 60V 650pC@4.5V 9.7pF N-Channel SOT-23 MOSFETs ROHS",
+   "erpComponentName": "ESBSS138LT1G",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_elecsuper-lbss138lt1g-es_C5224262.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 1128,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "27pF"
+    },
+    {
+     "attribute_name_en": "Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "1 N-channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1.5V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "6pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "220mA"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "13pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "350mW"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "1.1Ω@10V"
+    }
+   ],
+   "componentBrandEn": "HXY MOSFET",
+   "componentCode": "C6285755",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BSS138LT1G-HXY",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0167,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0131,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0105,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0093,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0083,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0078,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOT-23",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2305231114_HXY-MOSFET-BSS138LT1G-HXY_C6285755.pdf",
+   "describe": "-55℃~+150℃ 1 N-channel 1.1Ω@10V 1.5V 13pF 220mA 27pF 350mW 50V 6pF N-Channel Standalone SOT-23 MOSFETs ROHS",
+   "erpComponentName": "BSS138LT1G-HXY",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_hxy-mosfet-bss138lt1g-hxy_C6285755.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 689,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "27pF"
+    },
+    {
+     "attribute_name_en": "Configuration",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "2V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "6pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "220mA"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "50V"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "350mW"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "3Ω@4.5V"
+    }
+   ],
+   "componentBrandEn": "HXY MOSFET",
+   "componentCode": "C42401252",
+   "componentLibraryType": "expand",
+   "componentModelEn": "HLBSS138LT1G",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0308,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0308,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0308,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0123,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0119,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0117,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "SOT-23",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2412021740_HXY-MOSFET-HLBSS138LT1G_C42401252.pdf",
+   "describe": "-55℃~+150℃ 220mA 27pF 2V 350mW 3Ω@4.5V 50V 6pF N-Channel SOT-23 MOSFETs ROHS",
+   "erpComponentName": "HLBSS138LT1G",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_hxy-mosfet-hlbss138lt1g_C42401252.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 4,
+   "minPurchaseNum": 759,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "JLCPCB Assembly",
+   "componentCode": "C9900015762",
+   "componentLibraryType": "expand",
+   "componentModelEn": "MOSFETBSS138LT1G",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0396,
+     "startNumber": 1
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0204,
+     "startNumber": 100
+    }
+   ],
+   "componentSpecificationEn": "SOT-23-GSD",
+   "componentTypeEn": "SMT",
+   "dataManualUrl": null,
+   "describe": "SOT-23-GSD SMT ROHS",
+   "erpComponentName": "MOSFETBSS138LT1G",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 443,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  }
+ ],
+ "returned": 16,
+ "schema": 1,
+ "total_matches": 16
+}

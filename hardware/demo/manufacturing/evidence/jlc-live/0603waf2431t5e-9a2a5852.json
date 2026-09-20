@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-20T03:48:47Z",
+ "fetched_utc": "2026-09-20T19:33:58Z",
  "keyword": "0603WAF2431T5E",
  "page_size": 25,
  "pages": 1,

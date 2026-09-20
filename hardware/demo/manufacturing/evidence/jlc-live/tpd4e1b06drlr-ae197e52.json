@@ -1,0 +1,201 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-20T19:33:42Z",
+ "keyword": "TPD4E1B06DRLR",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "ESD"
+    },
+    {
+     "attribute_name_en": "Junction Capacitance",
+     "attribute_value_name": "0.7pF"
+    },
+    {
+     "attribute_name_en": "Number of Channels",
+     "attribute_value_name": "Four channels"
+    },
+    {
+     "attribute_name_en": "Peak Pulse Power Dissipation (Ppp)",
+     "attribute_value_name": "45W@8/20us"
+    },
+    {
+     "attribute_name_en": "level of protection",
+     "attribute_value_name": "IEC 61000-4-2、IEC 61000-4-5"
+    },
+    {
+     "attribute_name_en": "Clamping Voltage",
+     "attribute_value_name": "10.9V、14.5V"
+    },
+    {
+     "attribute_name_en": "Polarity",
+     "attribute_value_name": "Bidirectional"
+    },
+    {
+     "attribute_name_en": "Peak Pulse Current (Ipp)",
+     "attribute_value_name": "3A@8/20us"
+    },
+    {
+     "attribute_name_en": "Voltage - Breakdown",
+     "attribute_value_name": "7V"
+    },
+    {
+     "attribute_name_en": "Reverse Stand-Off Voltage (Vrwm)",
+     "attribute_value_name": "5.5V"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "500pA"
+    }
+   ],
+   "componentBrandEn": "Texas Instruments",
+   "componentCode": "C1972953",
+   "componentLibraryType": "expand",
+   "componentModelEn": "TPD4E1B06DRLR",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.2972,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.2352,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.205,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2499,
+     "productPrice": 0.178,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.1706,
+     "startNumber": 2500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1661,
+     "startNumber": 4000
+    }
+   ],
+   "componentSpecificationEn": "SOT(5x3)",
+   "componentTypeEn": "ESD and Surge Protection (TVS/ESD)",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2303020000_Texas-Instruments-TPD4E1B06DRLR_C1972953.pdf",
+   "describe": "-40℃~+125℃ 0.7pF 10.9V、14.5V 3A@8/20us 45W@8/20us 5.5V 500pA 7V Bidirectional ESD Four channels IEC 61000-4-2、IEC 61000-4-5 SOT(5x3) ESD and Surge Protection (TVS/ESD) ROHS",
+   "erpComponentName": "双向ESD 5.5V截止 峰值浪涌电流：3A@8/20us",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/esd-and-surge-protection-tvs-esd_texas-instruments-tpd4e1b06drlr_C1972953.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2100
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Junction Capacitance",
+     "attribute_value_name": "0.6pF"
+    },
+    {
+     "attribute_name_en": "Peak Pulse Power Dissipation (Ppp)",
+     "attribute_value_name": "30W"
+    },
+    {
+     "attribute_name_en": "Clamping Voltage",
+     "attribute_value_name": "15V"
+    },
+    {
+     "attribute_name_en": "Peak Pulse Current (Ipp)",
+     "attribute_value_name": "2A"
+    },
+    {
+     "attribute_name_en": "Voltage - Breakdown",
+     "attribute_value_name": "9V"
+    },
+    {
+     "attribute_name_en": "Reverse Stand-Off Voltage (Vrwm)",
+     "attribute_value_name": "5V"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "80nA"
+    }
+   ],
+   "componentBrandEn": "TECH PUBLIC",
+   "componentCode": "C2905651",
+   "componentLibraryType": "expand",
+   "componentModelEn": "TPD4E1B06DRLR-TP",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.2004,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.1597,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1423,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2499,
+     "productPrice": 0.1207,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.1109,
+     "startNumber": 2500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1052,
+     "startNumber": 4000
+    }
+   ],
+   "componentSpecificationEn": "SOT-563",
+   "componentTypeEn": "ESD and Surge Protection (TVS/ESD)",
+   "dataManualUrl": "",
+   "describe": "-55℃~+125℃ 0.6pF 15V 2A 30W 5V 80nA 9V SOT-563 ESD and Surge Protection (TVS/ESD) ROHS",
+   "erpComponentName": "4通道超低泄漏ESD保护器件",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/esd-and-surge-protection-tvs-esd_tech-public-tpd4e1b06drlr-tp_C2905651.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1397
+  }
+ ],
+ "returned": 2,
+ "schema": 1,
+ "total_matches": 2
+}

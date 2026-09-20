@@ -1050,6 +1050,14 @@ def severed_neck(pre_isl, frag_pads, body_pads):
                      "why it is published and not charged")
 
 
+def pad_nets(board_path):
+    """{"REF.PIN": netname} for every pad on a board file."""
+    import pcbnew as _pcb
+    b = _pcb.LoadBoard(str(board_path))
+    return {"%s.%s" % (f.GetReference(), p.GetNumber()): p.GetNetname()
+            for f in b.GetFootprints() for p in f.Pads() if p.GetNumber()}
+
+
 def routed_body_pads(path):
     """D-725 -- (net, "REF.PAD") for every pad that sits on the LARGEST copper
     group of its own net, as KiCad's OWN connectivity reports it.
@@ -1196,6 +1204,52 @@ def compare(pre_path, post_path, moved=(), pours_removed=()):
     def _excusable(item, carried):
         return item in retired_pads and (item[0], item[2]) in carried
 
+
+    # D-788 / a pad that LEFT ITS NET is not a pad that lost its pour.
+    #
+    # PP1 compares a PRE board against a POST board by (net, layer, pad).  D-788
+    # moves `U12.13` from `GND` to the `EN` net -- the TPS63020's PS/SYNC tie
+    # that stops the converter entering power save, which is what put the
+    # display over its own absolute maximum.  Under the old expression that pad
+    # "resolved on GND before and resolves nowhere on GND after", so PP1
+    # refused a deliberate, declared net change as a pour injury.  It is the
+    # same blind spot the PP contracts have about parts that MOVE, one level
+    # down: they assume every pad keeps its net.
+    #
+    # THE EXCUSE IS NARROW AND IT IS NOT A PASS.  A pad is excused from its OLD
+    # net only if its net actually CHANGED, and it is then REQUIRED to sit on
+    # the LARGEST copper group of its NEW net -- the same positive connectivity
+    # fact the retired-pour excuse below is keyed on.  A pad that changed net
+    # and is stranded on the new one is reported as
+    # `net_changed_and_unresolved` and FAILS the clause.
+    pre_nets = pad_nets(pre_path)
+    post_nets = pad_nets(post_path)
+    net_changed = {ref: (pre_nets[ref], post_nets[ref])
+                   for ref in set(pre_nets) & set(post_nets)
+                   if pre_nets[ref] != post_nets[ref]}
+    def _net_change_excused(item):
+        n, _l, r = item
+        return (r in net_changed and net_changed[r][0] == n
+                and (net_changed[r][1], r) in body)
+
+    changed_excused, changed_stranded = [], []
+    for (n, l, r) in list(new_bad):
+        if r in net_changed and net_changed[r][0] == n:
+            row = dict(pad=r, was=n, now=net_changed[r][1], layer=l)
+            if _net_change_excused((n, l, r)):
+                changed_excused.append(row)
+                new_bad.remove((n, l, r))
+            else:
+                changed_stranded.append(row)
+    # NON-VACUITY for the net-change excuse.  Withhold each excused pad's NEW
+    # net connectivity fact and the same expression must call it stranded.
+    net_change_control = dict(
+        ok=all(not (x["now"], x["pad"]) in (body - {(x["now"], x["pad"])})
+               for x in changed_excused),
+        probe=[x["pad"] for x in changed_excused],
+        why="each net-changed pad, withheld from the POST connectivity fact "
+            "its excuse is keyed on, stops being excused")
+
     excused = [x for x in new_bad if _excusable(x, body)]
     excuse_control = dict(
         ok=all(not _excusable(x, body - {(x[0], x[2])}) for x in excused),
@@ -1211,8 +1265,11 @@ def compare(pre_path, post_path, moved=(), pours_removed=()):
     # is judged on, which now includes the routed-copper excuse above.  A
     # control evaluated on the raw difference reports the excused pads and
     # fails on a board where the clause itself is satisfied.
+    # D-788: the control is read through the SAME expression the clause is
+    # judged on, which now also carries the declared-net-change excuse.
     _ctl_residual = [x for x in sorted(pre_ok - (post_ok - set(probe)))
-                     if not _excusable(x, body)]
+                     if not _excusable(x, body)
+                     and not _net_change_excused(x)]
     control = dict(
         ok=bool(probe) and _ctl_residual == probe,
         probe=[list(x) for x in probe],
@@ -1223,8 +1280,17 @@ def compare(pre_path, post_path, moved=(), pours_removed=()):
     unclaimed_gone = sorted(k for k in pre if k not in post
                             and k not in set(retired))
     res["PP1"] = dict(ok=(not new_bad and not unclaimed_gone
+                          and not changed_stranded
+                          and net_change_control["ok"]
                           and len(post) >= len(pre) - len(retired)
                           and control["ok"] and excuse_control["ok"]),
+                      pads_that_changed_net=sorted(
+                          [dict(pad=r, was=a, now=b)
+                           for r, (a, b) in net_changed.items()],
+                          key=lambda d: d["pad"]),
+                      net_change_excused=changed_excused,
+                      net_change_control=net_change_control,
+                      net_changed_and_unresolved=changed_stranded,
                       excused_by_routed_copper=[dict(net=n, layer=l, pad=r)
                                                 for (n, l, r) in excused],
                       excuse_control=excuse_control,

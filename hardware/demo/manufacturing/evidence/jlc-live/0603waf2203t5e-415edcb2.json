@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-05T01:00:41Z",
+ "fetched_utc": "2026-09-20T19:33:59Z",
  "keyword": "0603WAF2203T5E",
  "page_size": 25,
  "pages": 1,
@@ -86,7 +86,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 1692476
+   "stockCount": 1491904
   },
   {
    "assemblyComponentFlag": false,
@@ -98,7 +98,7 @@
    "componentPrices": [
     {
      "endNumber": 99,
-     "productPrice": 0.0395,
+     "productPrice": 0.0396,
      "startNumber": 1
     },
     {
@@ -116,7 +116,7 @@
    "lcscGoodsUrl": null,
    "leastPatchNumber": 5,
    "lossNumber": 4,
-   "minPurchaseNum": 439,
+   "minPurchaseNum": 443,
    "noBuyReason": "This product is no longer manufactured.",
    "rohsFlag": 1,
    "stockCount": 0

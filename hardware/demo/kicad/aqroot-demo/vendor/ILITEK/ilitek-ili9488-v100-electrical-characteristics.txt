@@ -1,0 +1,206 @@
+                                              a-Si TFT LCD Single Chip Driver
+                                          320RGB x 480 Resolution and 16.7M-color                      ILI9488
+
+17. Electrical Characteristics
+
+17.1.       Absolute Maximum Ratings
+The absolute maximum ratings are listed in Table 41. When the ILI9488 is used beyond the absolute maximum
+ratings, it may be permanently damaged. Using the ILI9488 within the following limits of electrical characteristics is
+strongly recommended for normal operation. If these electrical characteristic conditions are exceeded during
+normal operation, the ILI9488 will malfunction and cause poor reliability.
+
+
+                                      Table 41: Absolute maximum Ratings
+                       Item                       Symbol                     Unit                Value
+    Supply voltage(Analog)                      VCI ~ DGND                    V               -0.3 ~ +3.3
+    Supply voltage (I/O)                       IOVCC ~ DGND                   V               -0.3 ~ +3.3
+    OTP Supply voltage                        DDVDH ~ DGND                    V               -0.3 ~ +7.0
+    Supply voltage                            DDVDH ~ DGND                    V               -0.3 ~ +6.0
+    Supply voltage                            DDVDL ~ DGND                    V                0.3 ~ -6.0
+    Supply voltage                              VGH ~ DGND                    V                -0.3 ~ +25
+    Supply voltage                              VGL ~ DGND                    V                0.3 ~ -16
+    Driver supply voltage                        VCI - VCL                    V                ≦ 6.0V
+    Driver supply voltage                        VGH-VGL                      V                ≦ 32.0V
+    Input voltage                                   VIN                       V            -0.3 ~ IOVCC + 0.3
+    HS Input voltage                               VHSIN                      V               -0.3 ~ + 1.65
+    Operating temperature                           Topr                     ℃                 -30 ~ +70
+
+    Storage temperature                             Tstg                     ℃                -55 ~ +110
+
+  Note: Even if the absolute maximum rating of one of the above parameters is exceeded only for a short while,
+          the quality of the product may be degraded. Therefore, be sure to use the product within the range of the
+          absolute maximum ratings.
+
+
+
+
+The information contained herein is the exclusive property of ILI Technology Corp. and shall not be distributed,
+reproduced, or disclosed in whole or in part without prior written permission of ILI Technology Corp.
+Page 322 of 343                                                                                               Version: 100
+                                                         a-Si TFT LCD Single Chip Driver
+                                                     320RGB x 480 Resolution and 16.7M-color                         ILI9488
+
+17.2.        DC Characteristics for Panel Driving
+                Item                         Symbol             Condition             Min.      Typ.        Max.      Unit     Note
+                                                          Power & Operation Voltage
+      Analog operating voltage                 VCI                  -                  2.5      2.8          3.3       V
+       Logic operating voltage               IOVCC                  -                 1.65      1.8          3.3       V     Note 1, 2
+         OTP Supply voltage                  DDVDH                  -                   -        7            -        V      Note 1
+    Logic High level input voltage             VIH                  -               0.7*IOVCC               IOVCC      V      Note 1
+    Logic Low level input voltage              VIL                  -                 -0.3              0.3*IOVCC      V      Note 1
+   Logic High level output voltage
+                                               VOH             IOH = -1.0mA         0.8*IOVCC               IOVCC      V      Note 1
+   TE, SDO (SDA) , CABC_PWM
+   Logic Low level output voltage
+                                               VOL             IOL = +1.0mA             0               0.2*IOVCC      V      Note 1
+   TE, SDO (SDA) , CABC_PWM
+      Gate Driver High Voltage                VGH                   -                 10.0       -           20        V
+      Gate Driver Low Voltage                  VGL                  -                 -15.0      -           -6.0      V
+        Driver Supply Voltage                   -               |VGH-VGL|              16        -           32        V
+                                                                 Input and Output
+Logic High Level Input Voltage                 VIH        -                         0.7*IOVCC    -          IOVCC      V
+Logic Low Level Input Voltage                  VIL        -                          DGND        -      0.3*IOVCC      V
+                                                                 VCOM Operation
+    DC VCOM Amplitude Voltage                 VCOM                  -                 -2.0       -          -0.06      V      Note 3
+                                                                   Source Driver
+        Source Output Range                   VSOUT                 -                  0.1       -     VREG1OUT-0.1    V      Note 4
+ Positive Gamma Reference Voltage          VREG1OUT                 -                 3.625      -           5.5       V
+Negative Gamma Reference Voltage           VREG2OUT                 -                 -5.5       -          -3.625     V
+                                                              Below with 99%
+     Source Output Setting Time                 Tr                                      -       10            -       uS     Note 3. 4
+                                                                 precision
+                                                               Sout>=4.2V
+      Output Deviation Voltage                                                          -        -           20       mV      Note 3
+                                              Vdev             Sout<=0.8V
+      (Source Output channel)
+                                                              4.2V>Sout>0.8V            -        -           15       mV         -
+        Output Offset Voltage                VOFFSET                -                   -        -           35       mV      Note 3
+                                                                 Booster Operation
+      Booster (VCIx2) Voltage                DDVDH                  -                                         6        V
+      Booster (VCIx2) Voltage                DDVDL                  -                  -6                              V
+    Booster (VCIx2 Drop Voltage)           VCI1x2 drop         loading=1mA              -        -            5        %
+      Gate Driver High Voltage                VGH                   -                 10.0       -           20        V
+      Gate Driver Low Voltage                  VGL                  -                 -15.0      -           -6.0      V
+                                     Standby mode current consumption (Ta = 25°C, Interface: DBI and DPI)
+           Sleep in mode                       VCI               VCI=2.8V               -       100           -       uA
+         Deep Standby mode                     VCI             IOVCC=1.8V               -        1            -       uA
+
+Notes:
+1. Ta = -30 to 70 °C (no damage up to 85              ℃ (at maximum)), IOVCC=1.65V to 3.3V, VCI=2.5V to 3.3V, DGND=0V.
+2. Supply the digital IOVCC voltage equal to or less than the analog VCI voltage.
+                              Ω,30pF/channel
+3. Source channel loading = 10K
+4. The maximum value is between 10KΩ,30pF/channel and Gamma setting value.
+
+
+
+
+The information contained herein is the exclusive property of ILI Technology Corp. and shall not be distributed,
+reproduced, or disclosed in whole or in part without prior written permission of ILI Technology Corp.
+Page 323 of 343                                                                                                       Version: 100
+                                                      a-Si TFT LCD Single Chip Driver
+                                                  320RGB x 480 Resolution and 16.7M-color                               ILI9488
+
+17.3.         DSI DC Characteristics
+The DSI uses different state codes which depend on DC voltage levels of the clock and data lanes. The meaning of
+the state codes is defined in the following table.
+                                                                  Line DC Voltage Levels
+                                     State Code
+                                                    CLOCK_P or DATA_P           CLOCK_N or DATA_N
+                                          HS-0               Low (HS)                  High (HS)
+                                          HS-1               High (HS)                 Low (HS)
+                                          LP-00              Low (LP)                  Low (LP)
+                                          LP-01              Low (LP)                  High (LP)
+                                          LP-10              High (LP)                 Low (LP)
+                                          LP-11              High (LP)                 Low (LP)
+                                     Note: Ta = -30    ℃ to 70℃ (no damage up to 85℃ (at maximum))
+
+17.3.1. DC Characteristics for Power Lines
+                                                                                                             Specification
+                  Parameter                          Symbol                      Condition                                          Unit
+                                                                                                      Min.       Typ.        Max.
+         Analog power supply voltage                   VCI                   Operating voltage        2.5         2.8        3.3     V
+          Digital power supply voltage                VIOVCC                 I/O supply voltage       1.65        1.8        3.3     V
+                                                                       Noise Range, 0 to 100MHz,
+                                                                                                       -           -         100    mV
+                                                                     Sinusoidal Wave (peak-to-peak)
+      Analog power supply voltage noise             VVCI_NOISE            Noise Range, 0 to 30kHz,
+
+                                                                         Pulse Wave with Duty Cycle    -           -         500    mV
+                                                                                (50%/50%)
+                                                                         Noise Range, 0 to 100MHz,
+         I/O power supply voltage noise            VIOVCC_NOISE                                        -           -         100    mV
+                                                                     Sinusoidal Wave (peak-to-peak)
+Notes:
+1. Ta = -30 ℃ to 70℃ (no damage up to 85℃ (at maximum))
+2. These values are not symmetric amplitude, which center points are IOVCC or VCI. See examples, when
+   VVCI_NOISE and VIOVCC_NOISE are maximums, below for reference purpose.
+
+
+
+
+                                           Figure 142: Noise on Power Supply Lines
+
+
+
+
+The information contained herein is the exclusive property of ILI Technology Corp. and shall not be distributed,
+reproduced, or disclosed in whole or in part without prior written permission of ILI Technology Corp.
+Page 324 of 343                                                                                                              Version: 100
+                                                      a-Si TFT LCD Single Chip Driver
+                                                  320RGB x 480 Resolution and 16.7M-color                                   ILI9488
+
+17.3.2. DC Characteristics for DSI LP Mode
+DC levels of the LP-00, LP-01, LP-10, and LP-11 are defined in the table below: DC Characteristics for DSI LP
+mode when LP-RX, LP-CD, or LP-TX is mentioned in the condition column. Other logical levels in the table are for
+the MCU interface.
+              Parameter              Symbol                    Condition                                   Specification                  Unit
+                                                                         Note 2
+   Logic High level output voltage      VOH                  IOUT=-1mA                        0.8 VIOVCC          -          VIOVCC           V
+                                                                         Note 2
+   Logic Low level output voltage       VOL                  IOUT=-1mA                            0.0             -         0.2VIOVCC         V
+    Logic High level input voltage    VIHLPCD                  LP-CDNote 3                        450             -           1350            mV
+    Logic Low level input voltage     VILLPCD                  LP-CDNote 3                        0.0             -           200             mV
+                                                                                     Note 3
+    Logic High level input voltage    VIHLPRX          LP-RX (CLOCK, DATA)                        880             -           1350            mV
+                                                                                     Note 3
+    Logic Low level input voltage     VILLPRX          LP-RX (CLOCK, DATA)                        0.0             -           550             mV
+    Logic Low level input voltage    VILLPRXULP       LP-RX (CLOCK ULP mode)Note 3                0.0             -           300             mV
+   Logic high level output voltage    VOHLPTX              LP-TX (DATA)Note 3                     1.1             -           1.3             V
+                                                                            Note 3
+   Logic Low level output voltage     VOLLPTX              LP-TX (DATA)                           -50             -            50             mV
+                                                                            Note 3
+    Logic High level input current      IIH                LP-CD, LP-RX                            -              -            10             uA
+    Logic Low level input current        IIL               LP-CD, LP-RXNote 3                     -10             -             -             uA
+
+Notes:
+1. Ta = -30   ℃ to 70℃ (no damage up to 85℃ (at maximum))
+2. PWM_OUT, TE signals
+3. DSI High Speed mode is Off.
+
+
+
+
+17.3.3. Spike/Glitch Rejection
+
+
+
+
+                                               Figure 143: Spike/Glitch Rejection
+Note: A spike/glitch can be rejected when the Peak Interference Amplitude is 200mV (at maximum) and the
+      Interference Frequency is 450 MHz (at the very least).
+
+
+                                                Table 42: Spike/Glitch Rejection
+                                                     Spike/Glitch Rejection – DSI
+                   Signal               Symbol                               Parameter                                Min   Max       Unit
+              MIPI_DATA_P/N,               SGD                    Input pulse rejection for DSI                        -    300         Vps
+              MIPI_CLOCK_P/N
+
+
+
+
+The information contained herein is the exclusive property of ILI Technology Corp. and shall not be distributed,
+reproduced, or disclosed in whole or in part without prior written permission of ILI Technology Corp.
+Page 325 of 343                                                                                                                   Version: 100
+

@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-20T10:36:33Z",
+ "fetched_utc": "2026-09-20T19:34:10Z",
  "keyword": "ARG03BTC1004",
  "page_size": 25,
  "pages": 1,
@@ -168,7 +168,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 54797
+   "stockCount": 54774
   }
  ],
  "returned": 2,

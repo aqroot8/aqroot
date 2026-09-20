@@ -169,15 +169,36 @@ class DemoExpanders {
     // with their board-safe words.  These two independent writes are attempted
     // unconditionally so one NACK cannot leave the other expander driving stale
     // enables from the previous firmware instance.
+    //
+    // D-788 / R7-D787-15 CORRECTS THE FACTS THIS COMMENT USED TO STATE.  The
+    // PCAL9535A's POR state is Configuration = FFh (EVERY pin an INPUT, so no
+    // pin is driven) with the Output Port registers ALSO at FFh -- the latch
+    // holds ONES, not zeros.  That is precisely why the complete safe word is
+    // written BEFORE direction: on this board six outputs are safe at 0
+    // (kU2SafeLatch = 0x0000, and U3's three accessory enables) and three are
+    // safe at 1 (the RGB cathodes), so a direction write made first would put
+    // the POR ones onto ACC_3V3_EN, ACC_5V_BOOST_EN and ACC_5V_SW_EN.  And
+    // after a warm MCU reset the latch is not the POR word at all -- it is
+    // whatever the previous firmware instance left there -- which is why
+    // `shadow_valid_` starts false and this write is unconditional.
     const bool u2_safe = u2_.writeOutputs(bus, kU2SafeLatch);
     const bool u3_safe = u3_.writeOutputs(bus, kU3SafeLatch);
     // D-750.  THESE TWO DEVICES ARE INDEPENDENT AND `||` IS NOT.  The old line
     // short-circuited: if U2's configuration NACKed, U3 was never driven into
-    // its safe state at all -- and U3 owns NFC_5V_EN, the SX1262 and CC1101
-    // resets and both radio transmit enables, every one of which the PCAL9535A
-    // leaves at a 00h latch that its fitted pull-down already holds.  A bus
-    // fault on ONE device must not leave the OTHER unconfigured.  Both are
-    // attempted, in order, and the verdict is taken afterwards.
+    // its safe state at all.  THE OWNERSHIP, AS THE GENERATED MAP ACTUALLY HAS
+    // IT (D-788 / R7-D787-15 -- the previous sentence here named U3 as the
+    // owner of NFC_5V_EN, of "the SX1262 and CC1101 resets" and of "both radio
+    // transmit enables", and not one of those four claims was true):
+    //   U2 outputs  DISP_RST_N, TOUCH_RST_N, SX1262_RST_N, NFC_5V_EN,
+    //               AMP_SD_MODE, ACC_PWR_EN          -- all safe at 0
+    //   U3 outputs  ACC_3V3_EN, ACC_5V_BOOST_EN, ACC_5V_SW_EN (safe at 0),
+    //               SX1262_RXEN (safe at 0), and FRONT_RGB_R/G/B_N (safe at 1)
+    // There is NO CC1101 reset bit on either expander, and the SX1262's
+    // transmit enable is not ours at all -- U8.7/U8.8 are driven by the radio's
+    // own DIO2.  So the device a U2 failure used to strand is the one that owns
+    // the WHOLE ACCESSORY POWER TREE.  A bus fault on ONE device must not leave
+    // the OTHER unconfigured.  Both are attempted, in order, and the verdict is
+    // taken afterwards.
     const bool u2_ok = u2_.apply(bus, u2);
     const bool u3_ok = u3_.apply(bus, u3);
     if (!u2_safe || !u3_safe || !u2_ok || !u3_ok) {
