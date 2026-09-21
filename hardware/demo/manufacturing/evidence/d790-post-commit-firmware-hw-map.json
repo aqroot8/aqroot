@@ -1,0 +1,916 @@
+{
+  "contract": "firmware_hw_map",
+  "board": "aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "9606ecfc0bd5844cb6fa965692c406a3d7cd43ad613d827132da18a82ef60f26",
+  "H3_policy_corroborated": {
+    "problems": [],
+    "mcu_pins_mapped": 30,
+    "expander_bits_mapped": 32,
+    "verdict": "PASS"
+  },
+  "H1_generated_tree_is_fresh": {
+    "files": [
+      "Firmware/src/hw/aqroot_demo_board.h",
+      "Firmware/src/hw/aqroot_demo_board.json"
+    ],
+    "stale": [],
+    "verdict": "PASS"
+  },
+  "H2_board_digest": {
+    "board_sha256": "9606ecfc0bd5844cb6fa965692c406a3d7cd43ad613d827132da18a82ef60f26",
+    "published_in_header": "9606ecfc0bd5844cb6fa965692c406a3d7cd43ad613d827132da18a82ef60f26",
+    "verdict": "PASS"
+  },
+  "H4_owner_decisions_are_machine_checked": {
+    "approved_unrouted": [
+      {
+        "contact": "U11.3",
+        "net": "/BQ25185_STAT2",
+        "expander_bits": [
+          "U2.P16"
+        ],
+        "masked": true
+      }
+    ],
+    "approved_nc_absent": true,
+    "problems": [],
+    "approved_nc_contacts": [
+      "J5.10",
+      "J5.11",
+      "J5.12",
+      "J5.15",
+      "J5.16",
+      "J5.17",
+      "J5.18",
+      "J5.9"
+    ],
+    "approved_nc_nets_on_board": [
+      "unconnected-(J5-Pin_10-Pad10)",
+      "unconnected-(J5-Pin_11-Pad11)",
+      "unconnected-(J5-Pin_12-Pad12)",
+      "unconnected-(J5-Pin_15-Pad15)",
+      "unconnected-(J5-Pin_16-Pad16)",
+      "unconnected-(J5-Pin_17-Pad17)",
+      "unconnected-(J5-Pin_18-Pad18)",
+      "unconnected-(J5-Pin_9-Pad9)"
+    ],
+    "leaked_into_firmware_map": [],
+    "verdict": "PASS"
+  },
+  "H5_firmware_layer_uses_the_map": {
+    "sources": [
+      "Firmware/src/hw/aqroot_accessory_power_policy.h",
+      "Firmware/src/hw/aqroot_demo_backlight.h",
+      "Firmware/src/hw/aqroot_demo_bringup_app.h",
+      "Firmware/src/hw/aqroot_demo_display.h",
+      "Firmware/src/hw/aqroot_demo_expanders.h",
+      "Firmware/src/hw/aqroot_demo_gauge_bringup.h",
+      "Firmware/src/hw/aqroot_demo_peripherals.h",
+      "Firmware/src/hw/aqroot_demo_pins.h",
+      "Firmware/src/hw/aqroot_demo_radios.h",
+      "Firmware/src/hw/aqroot_demo_timing_policy.h",
+      "Firmware/src/hw/aqroot_i2c.h",
+      "Firmware/src/hw/aqroot_i2c_arduino.h",
+      "Firmware/src/hw/aqroot_spi_bus_b.h",
+      "Firmware/src/hw/max17048_guard.h",
+      "Firmware/src/hw/pcal9535a.h"
+    ],
+    "symbols_emitted": 91,
+    "roles_unreferenced_by_the_layer": [],
+    "symbols_the_generator_never_emitted": [],
+    "verdict": "PASS"
+  },
+  "H6_host_tests_prove_the_orderings": {
+    "tests": [
+      {
+        "test": "Firmware/test/test_expander_order.cpp",
+        "compiled": true,
+        "exit_code": 0,
+        "claims": 123,
+        "failed_claims": [],
+        "controls": [
+          {
+            "control": "UNKNOWN accessory latch state is falsely reported OFF to the caller",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] UNKNOWN caller state is pessimistically ACTIVE, never falsely OFF"
+          },
+          {
+            "control": "runtime accessory fail-safe blanket-writes U2's full boot-safe latch",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] runtime accessory fail-safe preserves released reset lines"
+          },
+          {
+            "control": "direction is written before the output latch",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] 0x20: output configuration is PUSH-PULL before direction"
+          },
+          {
+            "control": "a fresh MCU invents a valid zero output shadow after warm reset",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] fresh PCAL software shadow is explicitly INVALID"
+          },
+          {
+            "control": "Output Port Configuration is changed to open-drain before outputs",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] 0x20: output configuration is PUSH-PULL before direction"
+          },
+          {
+            "control": "warm reset skips the immediate U3 complete safe-latch write",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] warm reset: second bus write forces U3 safe latch before policy traffic"
+          },
+          {
+            "control": "the RGB cathodes boot at 0, lighting the LED at power-on",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the RGB cathodes are HIGH (dark) at boot -- D13's anode is +3V3"
+          },
+          {
+            "control": "the 5 V load switch is closed before the boost is enabled",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] 5 V up: the BOOST enable leads the LOAD SWITCH (D-186)"
+          },
+          {
+            "control": "a U2 configuration failure short-circuits the independent U3 configuration",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] begin(): U3's direction is written ANYWAY after U2 fails"
+          },
+          {
+            "control": "a U2 read error stops U3 being serviced (service short-circuits)",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] service(): U3's input port is read ANYWAY after U2 fails"
+          },
+          {
+            "control": "a failed output write leaves the shadow trusted",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] a single-bit write is REFUSED after a NACK invalidated the shadow"
+          },
+          {
+            "control": "partial 5 V enable failure no longer enters safety recovery",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] partial 5 V enable is physically repaired to a known safe state"
+          },
+          {
+            "control": "lost-ACK 3.3 V enable failure no longer enters safety recovery",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] lost-ACK 3.3 V enable is repaired before state is trusted"
+          },
+          {
+            "control": "failed boot-safe latch write is forgotten instead of staying pending",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] warm-reset failed safe write remains pending"
+          },
+          {
+            "control": "uncertain I2C-buffer OFF write is allowed to poison U2 state without safety recovery",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] uncertain I2C-buffer OFF converges immediately to known accessory-safe state"
+          },
+          {
+            "control": "generic invalid output shadow is never scheduled for accessory-safe reconciliation",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] generic shadow repair leaves accessory state known and safe"
+          }
+        ],
+        "verdict": "PASS"
+      },
+      {
+        "test": "Firmware/test/test_spi_bus_b.cpp",
+        "compiled": true,
+        "exit_code": 0,
+        "claims": 22,
+        "failed_claims": [],
+        "controls": [
+          {
+            "control": "the bus accepts a second concurrent chip select",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] re-selecting the SAME device while held is REFUSED"
+          },
+          {
+            "control": "a second radio may key while the first is transmitting",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] re-keying the SAME transmitter is REFUSED -- same re-entrancy rule"
+          },
+          {
+            "control": "Hold stops releasing the bus when it leaves scope",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the outer Hold still owned the bus when the inner scopes ended"
+          }
+        ],
+        "verdict": "PASS"
+      },
+      {
+        "test": "Firmware/test/test_accessory_power_policy.cpp",
+        "compiled": true,
+        "exit_code": 0,
+        "claims": 45,
+        "failed_claims": [],
+        "controls": [
+          {
+            "control": "dual-rail floor collapses onto the single-rail floor",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] dual floor is D-787's re-derived 3.85 V"
+          },
+          {
+            "control": "unreadable VCELL fails open instead of shedding active rails",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] unreadable VCELL sheds a single active rail"
+          },
+          {
+            "control": "a dual-rail load below the dual floor sheds everything instead of the 5 V rail alone",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] dual rails at 3.75 V shed the 5 V rail first"
+          },
+          {
+            "control": "the VCELL plausibility band stops excluding the all-ones code",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the all-ones VCELL code is OUTSIDE the plausible band"
+          }
+        ],
+        "verdict": "PASS"
+      },
+      {
+        "test": "Firmware/test/test_fuel_gauge_safety.cpp",
+        "compiled": true,
+        "exit_code": 0,
+        "claims": 37,
+        "failed_claims": [],
+        "controls": [
+          {
+            "control": "HIBRT=0 readback is trusted while MODE.HibStat still reports hibernate",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] HIBRT=0 is not sufficient while MODE.HibStat still reports hibernate"
+          },
+          {
+            "control": "later MODE.HibStat assertion is ignored before a safety VCELL read",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] later MODE.HibStat assertion invalidates readiness before VCELL is trusted"
+          },
+          {
+            "control": "VCELL bus failure leaves gauge readiness trusted",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] VCELL read failure invalidates readiness"
+          },
+          {
+            "control": "implausible VCELL does not invalidate gauge readiness",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] all-ones VCELL fails closed and invalidates readiness"
+          }
+        ],
+        "verdict": "PASS"
+      },
+      {
+        "test": "Firmware/test/test_timing_policy.cpp",
+        "compiled": true,
+        "exit_code": 0,
+        "claims": 10,
+        "failed_claims": [],
+        "controls": [
+          {
+            "control": "gauge settle is shortened to 5 ms",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] executed post-qualification settle is at least 300 ms"
+          },
+          {
+            "control": "gauge settle is moved before qualification",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] gauge is qualified before the settle wait starts"
+          },
+          {
+            "control": "gauge settle is hidden in dead code",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] executed post-qualification settle is at least 300 ms"
+          },
+          {
+            "control": "backlight full-duty prime is dead code",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] first backlight command is full duty"
+          },
+          {
+            "control": "backlight emits dim PWM before the prime",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] first backlight command is full duty"
+          },
+          {
+            "control": "backlight prime is shortened below 2 ms",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] no dim PWM command occurs before 3000 us"
+          }
+        ],
+        "verdict": "PASS"
+      },
+      {
+        "test": "Firmware/test/test_production_timing.cpp",
+        "compiled": true,
+        "exit_code": 0,
+        "claims": 17,
+        "failed_claims": [],
+        "controls": [
+          {
+            "control": "the production gauge settle callback is halved",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the production settle wait is at least 300 ms of real delay"
+          },
+          {
+            "control": "the production gauge settle callback is a no-op",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the production settle wait is at least 300 ms of real delay"
+          },
+          {
+            "control": "the production gauge caller waits before qualification",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] production qualification happens before any settle wait"
+          },
+          {
+            "control": "the production backlight microsecond hold is halved",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] no production dim PWM command before the full prime interval"
+          },
+          {
+            "control": "the production backlight microsecond hold is a no-op",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] no production dim PWM command before the full prime interval"
+          },
+          {
+            "control": "the production PWM duty writer is halved",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] first production PWM command is full duty at t=0"
+          },
+          {
+            "control": "the production backlight emits dim PWM before the seam",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] first production PWM command is full duty at t=0"
+          },
+          {
+            "control": "the production backlight bypasses the seam entirely",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the production duty writer passes the policy's duties unmodified"
+          }
+        ],
+        "verdict": "PASS"
+      },
+      {
+        "test": "Firmware/test/test_production_callers.cpp",
+        "compiled": true,
+        "exit_code": 0,
+        "claims": 55,
+        "failed_claims": [],
+        "controls": [
+          {
+            "control": "the outer gauge caller early-returns and leaves the tested helper dead",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the production permission path spends the full gauge settle"
+          },
+          {
+            "control": "the outer gauge caller reports success without qualifying at all",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the production permission path spends the full gauge settle"
+          },
+          {
+            "control": "the accessory permission skips the qualification when the gauge is cold",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] a first accessory request on a 4.000 V pack is permitted"
+          },
+          {
+            "control": "a rail already being on stops being fail-closed on lost readiness",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] with a rail already on, lost gauge readiness is fail-closed"
+          },
+          {
+            "control": "the serial dispatch carries a duplicate backlight ramp with a no-op hold",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the dispatch's first PWM command is full duty at t=0"
+          },
+          {
+            "control": "the serial dispatch emits a dim PWM command before the tested ramp",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the dispatch's first PWM command is full duty at t=0"
+          },
+          {
+            "control": "the backlight key stops being gated on a confirmed safe accessory state",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...but issues no PWM at all"
+          },
+          {
+            "control": "the warm-reset retry drops the complete expander initialisation",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the retry actually wrote the complete U3 safe latch"
+          },
+          {
+            "control": "the warm-reset retry gives up after its first attempt",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the retry recovers once the bus returns"
+          },
+          {
+            "control": "the reset-release diagnostic forces a CONFIRMED verdict",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] a NACKed reset release is NOT reported as confirmed"
+          },
+          {
+            "control": "the reset-release diagnostic trusts a shadow it has not proved valid",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and is reported as UNKNOWN rather than as a pass"
+          },
+          {
+            "control": "the accessory command line reports the WANTED state, not the reconciled one",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and its state is never printed as ON"
+          },
+          {
+            "control": "the fail-closed shutdown claims the rails are off while the state is unknown",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] a fail-closed shutdown whose writes NACKed does not claim success"
+          }
+        ],
+        "verdict": "PASS"
+      },
+      {
+        "test": "Firmware/test/test_production_image.cpp",
+        "compiled": true,
+        "exit_code": 0,
+        "claims": 50,
+        "failed_claims": [],
+        "controls": [
+          {
+            "control": "main's periodic battery guard is made unreachable",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] forced sleep asserted at runtime sheds the accessory rail"
+          },
+          {
+            "control": "main's cold boot bypasses the qualified settle with a direct configureActiveMode",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] cold boot spends the full qualified gauge settle"
+          },
+          {
+            "control": "main enables an accessory rail directly and leaves the dispatch dead",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and no accessory rail may be enabled on its reading"
+          },
+          {
+            "control": "the settled post-enable retention recheck is removed",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the enable spent the settled post-enable recheck"
+          },
+          {
+            "control": "settledAccessoryRecheck early-returns before its wait",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the enable spent the settled post-enable recheck"
+          },
+          {
+            "control": "main's reset-release diagnostic is forced to report success",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] a NACKed reset release is never reported CONFIRMED"
+          },
+          {
+            "control": "main's background gauge requalification is disabled",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the loop requalifies the gauge with no console input at all"
+          },
+          {
+            "control": "backgroundGaugeRequalification is made a no-op",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the loop requalifies the gauge with no console input at all"
+          },
+          {
+            "control": "main discards the amplifier shutdown result again",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and reports the reconciled state, not the request"
+          },
+          {
+            "control": "the amplifier intent stops being retried from the loop",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the loop retries the amplifier-off intent until it lands"
+          },
+          {
+            "control": "main claims the display is up without a confirmed reset release",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] a NACKed DISP_RST_N release aborts the display test"
+          },
+          {
+            "control": "the display-up report stops depending on the pending release",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] a later unconfirmed release takes the display back down"
+          },
+          {
+            "control": "the gauge qualification stops clearing forced sleep",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] a retained forced sleep is cleared, not accepted"
+          },
+          {
+            "control": "clearForcedSleep stops verifying that CONFIG.SLEEP really cleared",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] a CONFIG.SLEEP that will not clear is refused at boot"
+          },
+          {
+            "control": "the qualification stops re-checking MODE.EnSleep after the HIBRT write",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] a gauge that sleeps mid-qualification is refused"
+          },
+          {
+            "control": "forced sleep asserted at runtime stops invalidating the reading",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] forced sleep asserted at runtime sheds the accessory rail"
+          },
+          {
+            "control": "clearForcedSleep stops preserving the rest of CONFIG",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and the gauge is reported ready afterwards"
+          },
+          {
+            "control": "an unreadable CONFIG is assumed awake instead of failing closed",
+            "compiled": true,
+            "exit_code": 1,
+            "caught": true,
+            "first_failed_claim": "[FAIL] an unreadable CONFIG fails the qualification closed"
+          }
+        ],
+        "verdict": "PASS"
+      }
+    ],
+    "verdict": "PASS"
+  },
+  "H8_released_firmware_runs_the_tested_timing_seam": {
+    "call_sites": {
+      "gauge": "Firmware/src/demo/main.cpp",
+      "gauge_production_entry": "Firmware/src/hw/aqroot_demo_gauge_bringup.h",
+      "backlight": "Firmware/src/hw/aqroot_demo_backlight.h",
+      "seam": "Firmware/src/hw/aqroot_demo_timing_policy.h"
+    },
+    "executable_production_proof": {
+      "test": "Firmware/test/test_production_timing.cpp",
+      "ran_in_H6": true,
+      "claims": 17,
+      "controls": [
+        "the production gauge settle callback is halved",
+        "the production gauge settle callback is a no-op",
+        "the production gauge caller waits before qualification",
+        "the production backlight microsecond hold is halved",
+        "the production backlight microsecond hold is a no-op",
+        "the production PWM duty writer is halved",
+        "the production backlight emits dim PWM before the seam",
+        "the production backlight bypasses the seam entirely"
+      ],
+      "every_production_mutation_caught": true
+    },
+    "executable_call_site_proof": {
+      "test": "Firmware/test/test_production_callers.cpp",
+      "app": "Firmware/src/hw/aqroot_demo_bringup_app.h",
+      "ran_in_H6": true,
+      "claims": 55,
+      "controls": [
+        "the outer gauge caller early-returns and leaves the tested helper dead",
+        "the outer gauge caller reports success without qualifying at all",
+        "the accessory permission skips the qualification when the gauge is cold",
+        "a rail already being on stops being fail-closed on lost readiness",
+        "the serial dispatch carries a duplicate backlight ramp with a no-op hold",
+        "the serial dispatch emits a dim PWM command before the tested ramp",
+        "the backlight key stops being gated on a confirmed safe accessory state",
+        "the warm-reset retry drops the complete expander initialisation",
+        "the warm-reset retry gives up after its first attempt",
+        "the reset-release diagnostic forces a CONFIRMED verdict",
+        "the reset-release diagnostic trusts a shadow it has not proved valid",
+        "the accessory command line reports the WANTED state, not the reconciled one",
+        "the fail-closed shutdown claims the rails are off while the state is unknown"
+      ],
+      "every_call_site_mutation_caught": true,
+      "why": "D788-04/05/06: making the leaf entry points executable left their CALLERS in demo/main.cpp, which no host test compiles.  The call sites now live in DemoBringupApp and are driven over a physical-latch expander model."
+    },
+    "problems": [],
+    "controls": [
+      {
+        "control": "the gauge call site drops back to a local delay",
+        "refused": true,
+        "first_reason": "aqroot_demo_bringup_app.h does not call the production gauge entry point"
+      },
+      {
+        "control": "the gauge call site is commented out",
+        "refused": true,
+        "first_reason": "aqroot_demo_bringup_app.h does not call the production gauge entry point"
+      },
+      {
+        "control": "the gauge bring-up header stops calling the seam",
+        "refused": true,
+        "first_reason": "aqroot_demo_gauge_bringup.h does not call qualifyFuelGaugeActiveMode()"
+      },
+      {
+        "control": "the backlight call site re-implements the prime",
+        "refused": true,
+        "first_reason": "aqroot_demo_backlight.h drives the full-duty prime itself instead of through the tested seam"
+      },
+      {
+        "control": "the backlight call site is commented out",
+        "refused": true,
+        "first_reason": "aqroot_demo_backlight.h does not call runBacklightRampPolicy()"
+      },
+      {
+        "control": "a second backlight ordering reappears in peripherals.h",
+        "refused": true,
+        "first_reason": "aqroot_demo_peripherals.h carries a second copy of the backlight ordering"
+      },
+      {
+        "control": "the console dispatch moves back into demo/main.cpp",
+        "refused": true,
+        "first_reason": "demo/main.cpp does not reach the accessory/backlight console dispatch through the host-tested production app"
+      },
+      {
+        "control": "the warm-reset retry moves back into demo/main.cpp",
+        "refused": true,
+        "first_reason": "demo/main.cpp does not reach the warm-reset expander recovery retry through the host-tested production app"
+      },
+      {
+        "control": "the reset-release diagnostic moves back into demo/main.cpp",
+        "refused": true,
+        "first_reason": "demo/main.cpp does not reach the reset-release diagnostic through the host-tested production app"
+      },
+      {
+        "control": "demo/main.cpp regains a private accessory permission rule",
+        "refused": true,
+        "first_reason": "demo/main.cpp carries the accessory enable rule outside the host-tested production app"
+      },
+      {
+        "control": "the app is not instantiated at all",
+        "refused": true,
+        "first_reason": "demo/main.cpp does not instantiate DemoBringupApp, so its call sites are compiled by no host test"
+      }
+    ],
+    "verdict": "PASS"
+  },
+  "H7_MAX17048_primary_source_is_pinned": {
+    "pdf": "hardware/demo/kicad/aqroot-demo/vendor/ADI/max17048-max17049-rev7.pdf",
+    "expected_pdf_sha256": "70dc8eef0e012276dcdc58b6dce64af08258304bcf865ceace64e856b8029330",
+    "actual_pdf_sha256": "70dc8eef0e012276dcdc58b6dce64af08258304bcf865ceace64e856b8029330",
+    "source_record": "hardware/demo/kicad/aqroot-demo/vendor/ADI/max17048-max17049-rev7-source.json",
+    "expected_facts": {
+      "vendor": "Analog Devices / Maxim Integrated",
+      "device": "MAX17048/MAX17049",
+      "document_number": "19-6171",
+      "revision": "7",
+      "official_url": "https://www.analog.com/media/en/technical-documentation/data-sheets/MAX17048-MAX17049.pdf",
+      "MODE_address": "0x06",
+      "HibStat_mask": "0x1000",
+      "HibStat_semantics": "read-only; set while the IC is in hibernate mode",
+      "HIBRT_address": "0x0A",
+      "HIBRT_zero_semantics": "disables hibernate mode",
+      "VCELL_active_update_ms_typ": 250,
+      "VCELL_hibernate_update_s_typ": 45,
+      "time_base_accuracy_pct_min": -3.5,
+      "time_base_accuracy_pct_max": 3.5
+    },
+    "active_settle_ms": 300,
+    "derived_active_sample_period_max_ms": 258.75,
+    "problems": [],
+    "controls": [
+      {
+        "control": "HibStat mask moves to the wrong MODE bit",
+        "refused": true,
+        "first_reason": "HibStat_mask expected '0x1000', got '0x0800'"
+      },
+      {
+        "control": "HIBRT=0 is misdescribed as forcing hibernate",
+        "refused": true,
+        "first_reason": "HIBRT_zero_semantics expected 'disables hibernate mode', got 'forces hibernate mode'"
+      },
+      {
+        "control": "active ADC period drifts to 450 ms",
+        "refused": true,
+        "first_reason": "VCELL_active_update_ms_typ expected 250, got 450"
+      },
+      {
+        "control": "time-base maximum is silently removed",
+        "refused": true,
+        "first_reason": "time_base_accuracy_pct_max expected 3.5, got None"
+      },
+      {
+        "control": "archived primary PDF bytes change",
+        "refused": true,
+        "first_reason": "primary PDF SHA256 expected 70dc8eef0e012276dcdc58b6dce64af08258304bcf865ceace64e856b8029330, got 0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      {
+        "control": "active-mode settle is shortened below the source-derived bound",
+        "refused": true,
+        "first_reason": "active settle 250 ms is below derived 258.750 ms timing bound"
+      }
+    ],
+    "controls_verdict": "PASS",
+    "verdict": "PASS"
+  },
+  "controls": [
+    {
+      "control": "D-732 swap: U2 P05 <-> P06",
+      "refused": true,
+      "first_reason": "U2 P05 (pad 9): policy says '/TOUCH_INT_N', board says '/SX1262_DIO1'"
+    },
+    {
+      "control": "D-733 swap: U2 P17 <-> U3 P17",
+      "refused": true,
+      "first_reason": "U2 P17 (pad 20): policy says '/BQ25185_STAT1', board says '/ACC_PWR_EN'"
+    },
+    {
+      "control": "ACC_5V_SW_EN safe latch flipped to 1 against R131",
+      "refused": true,
+      "first_reason": "U3 P03 ACC_5V_SW_EN safe latch is 1 but R131 ties the net to GND"
+    },
+    {
+      "control": "FRONT_RGB_R_N claims an external pull it does not have",
+      "refused": true,
+      "first_reason": "U3 P00 FRONT_RGB_R_N claims safe_basis=external_pull with no fitted external pull"
+    },
+    {
+      "control": "TOUCH_INT_N claims an external pull it does not have",
+      "refused": true,
+      "first_reason": "U2 P06 TOUCH_INT_N claims an external pull it does not have"
+    },
+    {
+      "control": "SX1262_DIO1 pulls against the module's push-pull driver",
+      "refused": true,
+      "first_reason": "U2 P05 SX1262_DIO1 must not pull against a push-pull driver"
+    },
+    {
+      "control": "an expander bit is dropped from the map",
+      "refused": true,
+      "first_reason": "U3 P11 (pad 14) has no policy row"
+    },
+    {
+      "control": "a U1 pad is re-pointed at the wrong net",
+      "refused": true,
+      "first_reason": "U1.9: policy says '/IR_RX_GPIO44', board says '/IR_TX_GPIO16'"
+    },
+    {
+      "control": "two firmware roles share one C identifier",
+      "refused": true,
+      "first_reason": "role NATIVE_B claimed by both U1.24 and U1.31"
+    },
+    {
+      "control": "an UNMASKED input is left with an undefined idle level",
+      "refused": true,
+      "first_reason": "U3 P14 is UNMASKED with an undefined idle level"
+    },
+    {
+      "control": "a strap loses the resistor that holds it",
+      "refused": true,
+      "first_reason": "U1.26 strap part is R111, policy names R999"
+    },
+    {
+      "control": "the VBUS_PRESENT declaration is dropped",
+      "refused": true,
+      "first_reason": "/01_POWER_TREE/VBUS_PRESENT is bench-probed (TP31.1) and reaches no U1/U2/U3 pad, and no BENCH_ONLY entry declares it"
+    },
+    {
+      "control": "the breaker-fault declaration is dropped",
+      "refused": true,
+      "first_reason": "/01_POWER_TREE/LTC4368_FAULT_N is bench-probed (TP18.1) and reaches no U1/U2/U3 pad, and no BENCH_ONLY entry declares it"
+    },
+    {
+      "control": "a net that IS readable is declared unreadable",
+      "refused": true,
+      "first_reason": "BENCH_ONLY declares /WAKE_INT_N unreadable, but the board does not put it in the probed-and-unreachable set -- a stale declaration"
+    },
+    {
+      "control": "a net that is not on the board at all is declared",
+      "refused": true,
+      "first_reason": "BENCH_ONLY declares /01_POWER_TREE/NO_SUCH_NET unreadable, but the board does not put it in the probed-and-unreachable set -- a stale declaration"
+    }
+  ],
+  "controls_verdict": "PASS",
+  "verdict": "PASS"
+}

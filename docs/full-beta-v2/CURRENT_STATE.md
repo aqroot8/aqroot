@@ -223,6 +223,10 @@
 >
 > PCB SHA-256 `9606ecfc0bd5844cb6fa965692c406a3d7cd43ad613d827132da18a82ef60f26`.
 > `MANIFEST` SHA-256 `5194f0c05e5ced895ceed5144c63eb8afe446772d1bea770f952080622be8599`.
+> D-790 content commit `c6b12272d54275ab3070c9d7b3eff4e0e4d996bc` on
+> `origin/aqroot-demo`; the identity record
+> `evidence/d790-review-target.json`, which also carries the post-commit
+> verification run against that exact tree, is one commit later.
 >
 > ---
 >

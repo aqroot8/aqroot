@@ -1,7 +1,7 @@
 {
     "$schema": "https://schemas.kicad.org/drc.v1.json",
     "coordinate_units": "mm",
-    "date": "2026-09-21T08:30:29",
+    "date": "2026-09-21T08:55:01",
     "ignored_checks": [
         {
             "description": "Footprint has no courtyard defined",
@@ -3758,12 +3758,12 @@
                     "uuid": "8838eb11-651c-4ce2-8566-26c93f35d5a6"
                 },
                 {
-                    "description": "Pad 21 [/SPI_A_MISO] of U1 on F.Cu",
+                    "description": "Track [/SPI_A_MISO] on F.Cu, length 1.2001 mm",
                     "pos": {
                         "x": 45.25,
                         "y": 128.635
                     },
-                    "uuid": "96c70a70-361e-40e4-adfa-2b11e2f7a24a"
+                    "uuid": "14e16a49-3e3e-45c7-809b-baab4571836a"
                 }
             ],
             "severity": "error",
@@ -3827,12 +3827,12 @@
                     "uuid": "bdc97945-d157-4f33-8a5f-721eb7f62f0e"
                 },
                 {
-                    "description": "Track [Net-(SW9-A)] on F.Cu, length 1.7678 mm",
+                    "description": "Track [Net-(SW9-A)] on In2.Cu, length 5.0478 mm",
                     "pos": {
-                        "x": 63.95,
-                        "y": 89.0
+                        "x": 65.5,
+                        "y": 91.95
                     },
-                    "uuid": "3fb6df57-85a5-4e21-840e-c5654b0f84fd"
+                    "uuid": "519966cb-5043-4b71-9bf2-d2eb0a0f00cb"
                 }
             ],
             "severity": "error",
@@ -3842,12 +3842,12 @@
             "description": "Missing connection between items",
             "items": [
                 {
-                    "description": "Track [/01_POWER_TREE/BQ25185_SYS] on B.Cu, length 3.6069 mm",
+                    "description": "Track [/01_POWER_TREE/BQ25185_SYS] on B.Cu, length 2.4148 mm",
                     "pos": {
-                        "x": 53.4,
-                        "y": 22.6
+                        "x": 57.715,
+                        "y": 18.4
                     },
-                    "uuid": "7f772321-e79b-42ee-b832-584889440d47"
+                    "uuid": "e9dd8991-b88a-41df-81d1-9b9436d263ce"
                 },
                 {
                     "description": "Pad 3 [/01_POWER_TREE/BQ25185_SYS] of U13 on B.Cu",

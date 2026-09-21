@@ -1,0 +1,149 @@
+{
+ "board": "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_changes": [
+  "Q2/Q3 onsemi NTMD4820NR2G -> Alpha & Omega AO4800 (LCSC C17098): same SOIC-8 land, same pin function map, no copper moved",
+  "C29-C32 value string 22uF 10V X7R -> 22uF 16V X7R, which is what the fitted CCTC TCC1206X7R226K160HT actually is"
+ ],
+ "board_sha256": "9606ecfc0bd5844cb6fa965692c406a3d7cd43ad613d827132da18a82ef60f26",
+ "branch": "aqroot-demo",
+ "content_commit": "c6b12272d54275ab3070c9d7b3eff4e0e4d996bc",
+ "decision": "D-790",
+ "manifest": "hardware/demo/fab/MANIFEST.json",
+ "manifest_sha256": "5194f0c05e5ced895ceed5144c63eb8afe446772d1bea770f952080622be8599",
+ "named_thin_margins": {
+  "j4_battery_harness": {
+   "basis": "the worst user-reachable accessory mode, 2.5546 A, against the Molex Micro-Lock Plus 2.6 A at AWG 26.  A connector rating is a temperature-rise rating, so the J4 first-article thermal acceptance is the measurement of record",
+   "margin_A": 0.0454,
+   "margin_pct": 1.78
+  },
+  "u12_output_capability": {
+   "basis": "I_INTERNAL 1.1438 A + U20's worst programmed limiter corner 0.8036 A = 1.9474 A against the TPS63020's guaranteed 2 A at VIN > 2.5 V, VOUT = 3.3 V",
+   "margin_A": 0.0526,
+   "margin_pct": 2.6
+  }
+ },
+ "parent_rejected_by_round_9": "782de47288236348df0e35d96c59b4ab09176a25",
+ "post_commit_verification": {
+  "battery_pack_contract": {
+   "verdict": "PASS"
+  },
+  "bom_sourcing": {
+   "assembly_lines": 123,
+   "unsourced_lines": 0
+  },
+  "contract_regression": {
+   "all_individually_passing": true,
+   "baseline": "d789",
+   "baseline_is_complete": true,
+   "comparison_is_answerable": true,
+   "contracts_compared": 19,
+   "contracts_run": 19,
+   "contracts_without_baseline": 0,
+   "emitted_baseline": "d790",
+   "expected_substantive_differences": [
+    "leaf_land -- C29-C32 value string, D-02",
+    "demo_feature -- F10 renamed to a proof and F11 added",
+    "firmware_hw_map -- 8 host tests vs 7, the new image-level one",
+    "battery_pack -- B10 harness current margin moved with the corrected display budget"
+   ],
+   "vacuous": false,
+   "why_the_wrapper_exits_nonzero": "this decision CHANGES four contract reports on purpose.  The wrapper's exit code reads no_substantive_difference, which is False whenever a decision moves an engineering result -- which is the point of the field.  Every one of the 19 contracts RAN and PASSED individually, all 19 were COMPARED against a complete d789 baseline, and the comparison was non-vacuous and answerable.  D789-A05 is what makes those last two facts checkable rather than assumed.",
+   "wrapper_exit_code": 1
+  },
+  "demo_feature_contract": {
+   "all_pass": true,
+   "clauses": "F1-F11"
+  },
+  "fab_package_contract": {
+   "clauses": "FAB1-FAB16",
+   "release_label": "D-790",
+   "verdict": "PASS"
+  },
+  "firmware_hw_map_contract": {
+   "all_mutations_caught": true,
+   "claims": 359,
+   "clauses": "H1-H8",
+   "host_tests": 8,
+   "mutations": 72,
+   "verdict": "PASS"
+  },
+  "kicad_drc": {
+   "errors": 0,
+   "schematic_parity_errors": 0,
+   "schematic_parity_issues": 246,
+   "severity": "warning",
+   "unconnected_items": 17,
+   "violation_types": [
+    "lib_footprint_issues"
+   ],
+   "violations": 199
+  },
+  "platformio": {
+   "environments": 4,
+   "names": [
+    "esp32-s3-aqroot",
+    "wokwi",
+    "esp32-s3-aqroot-dm",
+    "aqroot-demo"
+   ],
+   "result": "SUCCESS from clean"
+  },
+  "protected_copper": {
+   "identical": true,
+   "nets": 15,
+   "objects": 406
+  },
+  "rail_ampacity": {
+   "all_ok": true
+  },
+  "routing_ledger": {
+   "approved_unrouted_edges": 1,
+   "connected_retained_nets": 173,
+   "open_retained_nets": 1,
+   "retained_multi_pad_nets": 174,
+   "unapproved_open_edges": 0
+  },
+  "run_against": "c6b12272d54275ab3070c9d7b3eff4e0e4d996bc",
+  "worktree_clean_at_run": true
+ },
+ "remaining_before_any_order": [
+  "D789-S01: nine assembly lines are SHORT on the live sweep and need consignment, and Q2/Q3 is a tenth exact identity needing an authorised distributor allocation without being short.  Catalogue stock is not an allocation.",
+  "manufacturer CAM acceptance B01-B14",
+  "first-article acceptance C01-C24 plus C-PWR-TRANSIENT-01, C-BAT-GATE-01, C-SPK-01, C-ADH-01, C-ACC-01, C-ACC-02, C-THERM-01 and the new C-DISP-01",
+  "none of the above is claimed as validated; they are pre-build acceptance items"
+ ],
+ "remote": "origin/aqroot-demo",
+ "schema": 1,
+ "scope_closed": {
+  "astra": [
+   "D789-A01",
+   "D789-A02",
+   "D789-A03",
+   "D789-A04",
+   "D789-A05",
+   "D789-A06",
+   "D789-A07",
+   "D789-A08",
+   "D789-A09",
+   "D789-A10",
+   "D789-A11",
+   "D789-S01"
+  ],
+  "fable": [
+   "V-01",
+   "V-02",
+   "D-01",
+   "D-02"
+  ],
+  "fable_retained_acknowledged": [
+   "A-01",
+   "C-01",
+   "C-03"
+  ],
+  "found_in_this_closeout": [
+   "R9-N01"
+  ]
+ },
+ "what_did_not_change": "no copper, no nets, no footprints, no placement, no protected-copper object.  Connectivity 174 retained / 173 connected / one owner-approved U11.3 open / zero unapproved.  hardware/beta-v2 untouched.  Both published accessory budgets (400 mA / 300 mA) unchanged and no Kickstarter-visible capability removed.",
+ "what_this_is": "the exact identity of the D-790 Round-9 correction target, and the post-commit verification run AGAINST that committed tree.  REVIEW TARGET, NOT A FABRICATION AUTHORIZATION.  DO NOT ORDER."
+}
