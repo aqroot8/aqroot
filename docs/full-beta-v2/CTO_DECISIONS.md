@@ -544,7 +544,7 @@ value**, and it is a part this board already buys.
 ### 15. Release verification
 
     F1-F10                       PASS (F10 new)
-    H1-H8 + controls             PASS; 7 host tests, 297 claims, 46 mutations caught
+    H1-H8 + controls             PASS; 7 host tests, 297 claims, 54 mutations caught
     test_production_callers      NEW: 55 claims, 13 call-site mutations all caught
     19 standing contracts        all ran; wrapper clean and non-vacuous against d789
     FAB1-FAB16                   PASS; package regenerated from this candidate

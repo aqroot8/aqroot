@@ -1,0 +1,194 @@
+{
+ "beta_v2_untouched": true,
+ "branch": "aqroot-demo",
+ "connectivity": {
+  "approved_unrouted_edges": 1,
+  "connected_retained_nets": 173,
+  "retained_multi_pad_nets": 174,
+  "retained_open_edges": 1,
+  "unapproved_open_edges": 0
+ },
+ "content_commit": "013db4ea181ba0ac8404fe88d422fc7f5a63e9f8",
+ "decision": "D-789",
+ "fab_manifest_sha256": "d2abda1e384739ec8f13561dc78d10b080e70487b6f5b4b16feaaf28b12ce3b9",
+ "firmware_environments": [
+  "esp32-s3-aqroot",
+  "wokwi",
+  "esp32-s3-aqroot-dm",
+  "aqroot-demo"
+ ],
+ "order_authorization": "NONE.  This is an external-review target.  Manufacturer CAM acceptance (B01-B10) and first-article acceptance (C01-C18 plus C-PWR-TRANSIENT-01, C-BAT-GATE-01, C-SPK-01, C-ADH-01, C-ACC-01 and C-ACC-02) remain outstanding, and Q2/Q3 is a pre-PCBA block.  DO NOT ORDER.",
+ "parent_review_target": {
+  "content_commit": "243d8d82f5c1b586f3f8bac40813f2ba46c52318",
+  "decision": "D-788",
+  "disposition": "REJECTED by Round-8: Fable passed the design with two residuals; Astra blocked the order with 19 findings (0 critical, 5 high, 10 medium, 4 low).",
+  "identity_commit": "2344ebb2a8eac204e54af2cee6f1f0a1abdb38de"
+ },
+ "pcb_sha256": "40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf",
+ "post_commit_verification": {
+  "bq25185_junction_C_at_40C_ambient": 115.44,
+  "demo_feature_F1_F10": {
+   "F10_battery_pass_pair_gate_drive_is_computed_and_blocked": true,
+   "F1_every_scope_part_fitted": true,
+   "F2_every_scope_net_whole": true,
+   "F3_approved_nc_exactly_as_scoped": true,
+   "F4_every_exposed_signal_contact_has_esd": true,
+   "F5_backlight_disconnect_control_is_independent": true,
+   "F6_accessory_envelope_is_bounded_by_hardware": true,
+   "F7_no_retired_part_name_survives_on_the_part_that_replaced_it": true,
+   "F8_the_derating_rule_is_applied_to_the_parts_this_board_fits": true,
+   "F9_manual_battery_harness_metadata_matches_the_frozen_build": true
+  },
+  "demo_feature_all_pass": true,
+  "fab_package_contract_verdict": "PASS",
+  "firmware_hw_map_H1_H8": {
+   "H1_generated_tree_is_fresh": "PASS",
+   "H2_board_digest": "PASS",
+   "H3_policy_corroborated": "PASS",
+   "H4_owner_decisions_are_machine_checked": "PASS",
+   "H5_firmware_layer_uses_the_map": "PASS",
+   "H6_host_tests_prove_the_orderings": "PASS",
+   "H7_MAX17048_primary_source_is_pinned": "PASS",
+   "H8_released_firmware_runs_the_tested_timing_seam": "PASS"
+  },
+  "firmware_hw_map_controls_verdict": "PASS",
+  "firmware_hw_map_verdict": "PASS",
+  "host_tests": {
+   "claims": 297,
+   "files": 7,
+   "mutations": 54,
+   "mutations_caught": 54
+  },
+  "kicad_drc": {
+   "schematic_parity": {
+    "extra_footprint": 2,
+    "footprint_symbol_field_mismatch": 199,
+    "footprint_symbol_mismatch": 45
+   },
+   "unconnected_items": 17,
+   "violations": {
+    "lib_footprint_issues": 199
+   }
+  },
+  "production_call_site_mutations_all_caught": true,
+  "production_timing_mutations_all_caught": true,
+  "protected_copper_identical": true,
+  "protected_copper_nets": 15,
+  "protected_copper_objects": 406,
+  "protected_copper_ref": "HEAD",
+  "rail_ampacity_all_ok": true,
+  "u11_2_predicted_peak_C": 52.3
+ },
+ "remote": "origin/aqroot-demo",
+ "round8_closure": {
+  "astra_findings_closed": [
+   "D788-01",
+   "D788-02",
+   "D788-03",
+   "D788-04",
+   "D788-05",
+   "D788-06",
+   "D788-07",
+   "D788-08",
+   "D788-09",
+   "D788-10",
+   "D788-11",
+   "D788-12",
+   "D788-13",
+   "D788-14",
+   "D788-15",
+   "D788-16",
+   "D788-17",
+   "D788-18",
+   "D788-19"
+  ],
+  "fable_only_closed": [
+   "F-N01",
+   "F-N02"
+  ],
+  "found_during_this_closeout": [
+   "R8-N01",
+   "R8-N02",
+   "R8-N03",
+   "R8-N04",
+   "R8-N05",
+   "R8-N06"
+  ],
+  "unconditional_pcb_respin_established": false
+ },
+ "schema": 1,
+ "sourcing": {
+  "assembly_lines": 123,
+  "consignment_lines": [
+   "74438357010",
+   "DMM-4026-B-I2S-R",
+   "LQW18AN39NG80D",
+   "LTC4368IMS-1#TRPBF",
+   "NTMD4820NR2G",
+   "PCAL9535APW,118",
+   "SQ2364EES-T1_BE3",
+   "SSQ-124-02-G-S-RA",
+   "ST25R3916-AQET",
+   "TLV7032DDFR"
+  ],
+  "pre_pcba_block": "Q2/Q3 NTMD4820NR2G -- F-N01 (stock 0, flagged no longer manufactured, no verified authorised allocation) AND R8-N01 (the LTC4368's guaranteed 3.0 V gate drive sits AT the fitted FET's 3.0 V VGS(th) maximum, with no published RDS(on) row below VGS = 4.5 V).  Gated by demo_feature_contract F10.  DO NOT PAY FOR PCBA UNTIL RESOLVED."
+ },
+ "standing_contracts": {
+  "all_ran": true,
+  "failing": [],
+  "pre_dependent_normalisation_selftest_ok": true,
+  "run": 19,
+  "self_regression_all_identical_pre_commit": true,
+  "self_regression_no_substantive_difference": true,
+  "self_regression_post_commit_note": "pour_partition reports INCOMPARABLE (ref_commit moved) with 'rest: IDENTICAL' -- this IS D788-13's fix working: the PRE-dependent roster it declares normalises because HEAD advanced, and nothing substantive differs.  The PRE-commit run, at the same ref_commit, is all_identical TRUE."
+ },
+ "suite_evidence": [
+  "d789-battery-pack-contract.json",
+  "d789-bom-sourcing.json",
+  "d789-connection-width-contract.json",
+  "d789-contract-regression.json",
+  "d789-demo-feature-contract.json",
+  "d789-fab-package-contract.json",
+  "d789-fab-provenance-verify.json",
+  "d789-fab_provenance-contract.json",
+  "d789-firmware-builds.txt",
+  "d789-firmware-hw-map-contract.json",
+  "d789-keepout_stackup-contract.json",
+  "d789-kicad-drc.json",
+  "d789-land_parity-contract.json",
+  "d789-leaf-land-contract.json",
+  "d789-mechanical_keepout-contract.json",
+  "d789-neck-contract.json",
+  "d789-obstacle_model-contract.json",
+  "d789-placement-contract.json",
+  "d789-population-contract.json",
+  "d789-post-commit-self-regression.json",
+  "d789-pour_bond-contract.json",
+  "d789-pour_partition-contract.json",
+  "d789-protected-copper.json",
+  "d789-rail-ampacity.json",
+  "d789-rf_symmetry-contract.json",
+  "d789-routing-ledger.json",
+  "d789-self-regression.json",
+  "d789-sourcing-sweep.json",
+  "d789-sweep-sourcing.py",
+  "d789-tap-contract.json",
+  "d789-trunk_floor-contract.json"
+ ],
+ "the_only_hardware_change": {
+  "already_fitted_at": [
+   "D10",
+   "D11",
+   "D12"
+  ],
+  "assembly_bom_lines": "124 -> 123 (D14 joins an existing line)",
+  "copper_changed": false,
+  "gerbers_and_drills_byte_identical_apart_from_timestamps": true,
+  "now": "BAT54WS-7-F (Diodes Incorporated, C124205)",
+  "reference": "D14",
+  "same_land": "Diode_SMD:D_SOD-323",
+  "was": "1N4148WS (JSCJ, C2128)",
+  "why": "D788-11: at the D-788 rail the silicon diode's lowest published forward maximum (715 mV at IF = 1 mA) leaves Q11's VGS at 1.486526 V, 13.5 mV BELOW the SQ2364EES's only published low-gate conduction row, with no lower row to bound it."
+ },
+ "what_this_is": "The external-review identity of the D-789 target, plus the critical checks re-run AGAINST THE COMMITTED TREE after the milestone commit.  `content_commit` is the D-789 milestone; the HEAD that carries THIS file is one commit later, because a record cannot contain its own hash -- the same two-commit shape D-787 and D-788 used.  The full suite evidence listed below was produced on the identical tree; the worktree was clean at the milestone commit."
+}

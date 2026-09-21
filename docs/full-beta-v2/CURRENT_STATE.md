@@ -214,7 +214,7 @@
 >
 > PCB SHA-256 `40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf`.
 > `MANIFEST` SHA-256 `d2abda1e384739ec8f13561dc78d10b080e70487b6f5b4b16feaaf28b12ce3b9`.
-> D-789 content commit `recorded in the identity commit that follows` on `origin/aqroot-demo`;
+> D-789 content commit `013db4ea181ba0ac8404fe88d422fc7f5a63e9f8` on `origin/aqroot-demo`;
 > the identity record `evidence/d789-review-target.json` is one commit later.
 >
 > ---

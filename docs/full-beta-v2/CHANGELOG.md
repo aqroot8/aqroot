@@ -8,8 +8,8 @@ closeout found itself (`R8-N01`).**
 
 **Board authority `40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf`.**
 **`MANIFEST` `d2abda1e384739ec8f13561dc78d10b080e70487b6f5b4b16feaaf28b12ce3b9`.**
-**Content commit is recorded in the identity commit that follows this milestone, and in
-`hardware/demo/manufacturing/evidence/d789-review-target.json`.**
+**Content commit `013db4ea181ba0ac8404fe88d422fc7f5a63e9f8` on `origin/aqroot-demo`;** the identity record
+`hardware/demo/manufacturing/evidence/d789-review-target.json` is one commit later.
 
 - **D788-01 (HIGH) — `U20`'s `RON` was INTERPOLATED between two guaranteed rows
   and called a bound.**  It now is one: the maximum published at the nearest

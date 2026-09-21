@@ -169,7 +169,7 @@
 > | field | value |
 > |---|---|
 > | branch / remote | `aqroot-demo` / `origin/aqroot-demo` |
-> | content commit | `recorded in the identity commit that follows` |
+> | content commit | `013db4ea181ba0ac8404fe88d422fc7f5a63e9f8` |
 > | PCB `sha256` | `40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf` |
 > | `MANIFEST` `sha256` | `d2abda1e384739ec8f13561dc78d10b080e70487b6f5b4b16feaaf28b12ce3b9` |
 > | order authorization | **NONE — manufacturer CAM (B01–B10) and first-article (C01–C18 + `C-PWR-TRANSIENT-01`, `C-BAT-GATE-01`, `C-SPK-01`, `C-ADH-01`, `C-ACC-01`, `C-ACC-02`) outstanding, and `Q2`/`Q3` is a pre-PCBA block. DO NOT ORDER.** |
@@ -180,7 +180,7 @@
 >
 > ### Release verification on this candidate
 >
-> **F1–F10 PASS** (F10 new); **H1–H8 PASS** with 7 host tests, 297 claims and 46 mutations
+> **F1–F10 PASS** (F10 new); **H1–H8 PASS** with 7 host tests, 297 claims and 54 mutations
 > caught, including the 13 new call-site mutations; **FAB1–FAB16 PASS** on a package
 > regenerated from this candidate; **ampacity all_ok** (`U11.2` 52.3 °C peak, BQ25185 `TJ`
 > 115.44 °C); **19/19 standing contracts** individually with a clean, non-vacuous wrapper;
