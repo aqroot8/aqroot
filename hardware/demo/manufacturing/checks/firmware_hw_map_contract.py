@@ -119,7 +119,19 @@ HOST_TESTS = [
     # leaf entry points executable was not enough while their callers lived in
     # an uncompiled `demo/main.cpp`.
     ROOT / "Firmware/test/test_production_callers.cpp",
+    # D-790 / D789-A04 (+ Fable V-01/V-02, D789-A09, D789-A10).  The one that
+    # compiles and RUNS `src/demo/main.cpp` ITSELF -- `setup()`, `loop()` and
+    # the console dispatch -- over a host Arduino core and a PHYSICAL-LATCH
+    # board model.  Round-9 showed that making the CALL SITES executable was
+    # not enough while the IMAGE that reaches them was compiled by nothing:
+    # all five of Astra's counterexamples live in that file.
+    ROOT / "Firmware/test/test_production_image.cpp",
 ]
+# The tests that need the whole IMAGE -- `src/demo/` and the host Arduino core
+# under `test/image/` -- rather than the headers alone.
+IMAGE_TESTS = {"test_production_image.cpp"}
+IMAGE_HARNESS = ROOT / "Firmware/test/image"
+DEMO_DIR = ROOT / "Firmware/src/demo"
 # The recording Arduino core the production-entry-point test compiles against.
 # Copied beside `hw/` for EVERY host test so one compile command serves all of
 # them; the four seam tests do not include it and are unaffected.
@@ -163,22 +175,22 @@ POWER_POLICY_CONTROLS = [
 # Each mutation is realistic enough to compile and must be rejected by the
 # dedicated MAX17048 host test.
 FUEL_GAUGE_CONTROLS = [
+    # D-790 / D789-A10 moved both of these: the qualification now also
+    # clears and verifies FORCED SLEEP, so the exact lines they mutate are
+    # longer.  The mutants themselves are unchanged in intent.
     ("HIBRT=0 readback is trusted while MODE.HibStat still reports hibernate",
      "max17048_guard.h",
      """    active_ready_ = mode_read && verify[0] == 0x00 && verify[1] == 0x00 &&
-                    (mode & kModeHibStatMask) == 0;""",
+                    (mode & kModeHibStatMask) == 0 &&
+                    (mode & kModeEnSleepMask) == 0;""",
      """    active_ready_ = mode_read && verify[0] == 0x00 && verify[1] == 0x00 &&
-                    (mode & kModeHibStatMask) == kModeHibStatMask;"""),
+                    (mode & kModeEnSleepMask) == 0;"""),
     ("later MODE.HibStat assertion is ignored before a safety VCELL read",
      "max17048_guard.h",
-     """    if ((mode & kModeHibStatMask) != 0) {
-      active_ready_ = false;
-      return false;
-    }""",
-     """    if ((mode & kModeHibStatMask) != 0 && false) {
-      active_ready_ = false;
-      return false;
-    }"""),
+     """    if ((mode & kModeHibStatMask) != 0 || (mode & kModeEnSleepMask) != 0 ||
+        (config & kConfigSleepMask) != 0) {""",
+     """    if ((mode & kModeEnSleepMask) != 0 ||
+        (config & kConfigSleepMask) != 0) {"""),
     ("VCELL bus failure leaves gauge readiness trusted",
      "max17048_guard.h",
      """    if (!bus.readRegister(address_, kRegVcell, raw, sizeof(raw))) {
@@ -374,6 +386,141 @@ PRODUCTION_CALLER_CONTROLS = [
 ]
 
 
+# D-790 / D789-A04 + D789-A09 + D789-A10 + Fable V-01/V-02.  THE EXACT
+# COUNTEREXAMPLES ROUND-9 RAN, ONE LEVEL FURTHER OUT AGAIN.
+#
+# Every one of these mutates the SHIPPED IMAGE -- `src/demo/main.cpp` -- or the
+# app method its `loop()` reaches, and every one of them passed the complete
+# D-789 gate suite because nothing compiled that file.  They are caught here
+# because `test_production_image.cpp` compiles and RUNS `setup()`, `loop()`
+# and the console dispatch over a host Arduino core and a physical-latch board
+# model.
+PRODUCTION_IMAGE_CONTROLS = [
+    # --- Astra 1: the periodic battery guard is made unreachable in loop()
+    ("main's periodic battery guard is made unreachable",
+     "demo/main.cpp",
+     "  g_app.periodicBatteryGuard();",
+     "  if (false) g_app.periodicBatteryGuard();"),
+    # --- Astra 2: cold boot bypasses the qualified settle
+    ("main's cold boot bypasses the qualified settle with a direct "
+     "configureActiveMode",
+     "demo/main.cpp",
+     "    const bool active = g_app.configureFuelGaugeActiveMode();",
+     "    const bool active = g_fuel_gauge.configureActiveMode(g_bus);"),
+    # --- Astra 3: a direct accessory enable beside a dead dispatch
+    ("main enables an accessory rail directly and leaves the dispatch dead",
+     "demo/main.cpp",
+     """      case '3':
+      case '5':
+      case 'i':
+      case 'l':
+        (void)g_app.handleAccessoryConsole(key);
+        break;""",
+     """      case '3':
+        (void)g_expanders.setAccessory3v3(g_bus, true);
+        g_app.afterAccessoryChange();
+        break;
+      case '5':
+      case 'i':
+      case 'l':
+        (void)g_app.handleAccessoryConsole(key);
+        break;"""),
+    # --- Astra 4 + Fable V-01: the settled post-enable recheck is removed
+    ("the settled post-enable retention recheck is removed",
+     "aqroot_demo_bringup_app.h",
+     """  void settledAccessoryRecheck(const char *what) {
+    delay(kAccessorySettledRecheckMs);
+    applyAccessoryRetention(what);
+    last_battery_guard_ms_ = millis();
+  }""",
+     """  void settledAccessoryRecheck(const char *what) {
+    (void)what;
+    last_battery_guard_ms_ = millis();
+  }"""),
+    # --- Fable V-01, the exact mutant: an early return before the wait
+    ("settledAccessoryRecheck early-returns before its wait",
+     "aqroot_demo_bringup_app.h",
+     "    delay(kAccessorySettledRecheckMs);\n    applyAccessoryRetention(what);",
+     "    if (acc3v3_ || acc5v_) return;\n    delay(kAccessorySettledRecheckMs);\n"
+     "    applyAccessoryRetention(what);"),
+    # --- Astra 5: the reset diagnostic is forced true in main's wrapper
+    ("main's reset-release diagnostic is forced to report success",
+     "demo/main.cpp",
+     "  report(\"reset lines released (U2 P00/P01/P04)\", r.ok(), detail);",
+     "  report(\"reset lines released (U2 P00/P01/P04)\", true,\n"
+     "         \"CONFIRMED from U2 output latch 0xFFFF\");"),
+    # --- Fable V-02: background gauge requalification disabled / no-op
+    ("main's background gauge requalification is disabled",
+     "demo/main.cpp",
+     "  (void)g_app.backgroundGaugeRequalification();",
+     "  // (void)g_app.backgroundGaugeRequalification();"),
+    ("backgroundGaugeRequalification is made a no-op",
+     "aqroot_demo_bringup_app.h",
+     "    requal_started_ = true;\n    last_gauge_requal_ms_ = now;\n"
+     "    return configureFuelGaugeActiveMode();",
+     "    requal_started_ = true;\n    last_gauge_requal_ms_ = now;\n"
+     "    return false;"),
+    # --- D789-A09: the two non-accessory command intents
+    ("main discards the amplifier shutdown result again",
+     "demo/main.cpp",
+     """        if (!g_app.setAmplifierIntent(false)) {
+          Serial.println("audio: AMPLIFIER SHUTDOWN NOT CONFIRMED -- retry "
+                         "pending; do not assume the speaker is quiet");
+        }""",
+     "        (void)g_expanders.setAmplifier(g_bus, false);"),
+    ("the amplifier intent stops being retried from the loop",
+     "demo/main.cpp",
+     "  (void)g_app.serviceDeferredCommands();",
+     "  // (void)g_app.serviceDeferredCommands();"),
+    ("main claims the display is up without a confirmed reset release",
+     "demo/main.cpp",
+     """        if (!g_app.releaseDisplayResetIntent()) {
+          Serial.println("display: ABORTED -- DISP_RST_N release not confirmed; "
+                         "no SPI init attempted, retry pending");
+          break;
+        }""",
+     """        (void)g_app.releaseDisplayResetIntent();"""),
+    ("the display-up report stops depending on the pending release",
+     "aqroot_demo_bringup_app.h",
+     "  bool displayIsUp() const { return display_up_ && !disp_reset_intent_.pending; }",
+     "  bool displayIsUp() const { return display_up_; }"),
+    # --- D789-A10: the forced-sleep guard
+    ("the gauge qualification stops clearing forced sleep",
+     "max17048_guard.h",
+     "    if (!clearForcedSleep(bus)) return false;",
+     "    (void)0;"),
+    # BOTH EnSleep checks are load-bearing and each has its own control.
+    # `clearForcedSleep` proves the write landed; the re-read in
+    # `configureActiveMode` catches a part that fell asleep BETWEEN them,
+    # which ADI's own tSLEEP mechanism does with no register write at all.
+    ("clearForcedSleep stops verifying that CONFIG.SLEEP really cleared",
+     "max17048_guard.h",
+     "    return (after & kConfigSleepMask) == 0",
+     "    return (after & 0x0000u) == 0"),
+    ("the qualification stops re-checking MODE.EnSleep after the HIBRT write",
+     "max17048_guard.h",
+     "                    (mode & kModeHibStatMask) == 0 &&\n"
+     "                    (mode & kModeEnSleepMask) == 0;",
+     "                    (mode & kModeHibStatMask) == 0;"),
+    # Written so it still USES `config` -- a mutant that does not compile
+    # under -Wall -Wextra -Werror proves nothing.
+    ("forced sleep asserted at runtime stops invalidating the reading",
+     "max17048_guard.h",
+     "    if ((mode & kModeHibStatMask) != 0 || (mode & kModeEnSleepMask) != 0 ||\n"
+     "        (config & kConfigSleepMask) != 0) {",
+     "    if ((mode & kModeHibStatMask) != 0 || (config & 0x0000u) != 0) {"),
+    ("clearForcedSleep stops preserving the rest of CONFIG",
+     "max17048_guard.h",
+     "      const uint8_t frame[3] = {kRegConfig, uint8_t(wanted >> 8),\n"
+     "                                uint8_t(wanted & 0xFF)};",
+     "      const uint8_t frame[3] = {kRegConfig, 0x00, 0x00};"),
+    ("an unreadable CONFIG is assumed awake instead of failing closed",
+     "max17048_guard.h",
+     "    if (!bus.readRegister(address_, kRegConfig, cfg, sizeof(cfg))) return false;",
+     "    if (!bus.readRegister(address_, kRegConfig, cfg, sizeof(cfg))) return true;"),
+]
+
+
 BUS_CONTROLS = [
     ("the bus accepts a second concurrent chip select",
      "aqroot_spi_bus_b.h",
@@ -526,30 +673,50 @@ ORDER_CONTROLS = [
 
 def run_host_test(test, mutation=None):
     """Compile and run one host test, optionally against a mutated copy of the
-    layer.  Returns (compiled, exit_code, stdout)."""
+    layer.  Returns (compiled, exit_code, stdout).
+
+    D-790 / D789-A04: an IMAGE test additionally gets `src/demo/` and the host
+    Arduino core under `test/image/`, and its mutations may name
+    `demo/main.cpp` -- which is the point, because that is the file Round-9's
+    five counterexamples live in.
+    """
+    is_image = test.name in IMAGE_TESTS
     with tempfile.TemporaryDirectory(prefix="aqroot-host-") as temporary:
         work = Path(temporary)
         shutil.copytree(HW_DIR, work / "hw")
         if HOST_HARNESS.exists():
             shutil.copytree(HOST_HARNESS, work / "harness")
+        if is_image:
+            shutil.copytree(DEMO_DIR, work / "demo")
+            shutil.copytree(IMAGE_HARNESS, work / "image")
         shutil.copy(test, work / test.name)
         if mutation is not None:
             _, filename, before, after = mutation
-            target = work / "hw" / filename
+            target = (work / filename) if "/" in filename \
+                else (work / "hw" / filename)
+            if not target.exists():
+                return (False, -1, "control target %s is absent" % filename)
             body = target.read_text(encoding="utf-8")
             if before not in body:
                 return (False, -1, "control text not found in %s" % filename)
             target.write_text(body.replace(before, after, 1), encoding="utf-8")
         binary = work / "host_test"
+        sources = [str(work / test.name)]
+        flags = []
+        if is_image:
+            sources += [str(work / "demo" / "main.cpp"),
+                        str(work / "image" / "image_main.cpp")]
+            flags = ["-DARDUINO=200", "-I", str(work / "image")]
         build = subprocess.run(
-            ["g++", "-std=c++17", "-Wall", "-Wextra", "-Werror",
-             "-I", str(work / "hw"), "-I", str(work),
+            ["g++", "-std=c++17", "-Wall", "-Wextra", "-Werror"] + flags +
+            ["-I", str(work / "hw"), "-I", str(work),
              "-I", str(work / "harness"),
-             "-o", str(binary), str(work / test.name)],
+             "-o", str(binary)] + sources,
             capture_output=True, text=True)
         if build.returncode != 0:
             return (False, build.returncode, build.stderr[-2000:])
-        run = subprocess.run([str(binary)], capture_output=True, text=True)
+        run = subprocess.run([str(binary)], capture_output=True, text=True,
+                             timeout=300)
         return (True, run.returncode, run.stdout)
 
 
@@ -766,7 +933,8 @@ def main():
             HOST_TESTS,
             (ORDER_CONTROLS, BUS_CONTROLS, POWER_POLICY_CONTROLS,
              FUEL_GAUGE_CONTROLS, TIMING_CONTROLS,
-             PRODUCTION_TIMING_CONTROLS, PRODUCTION_CALLER_CONTROLS)):
+             PRODUCTION_TIMING_CONTROLS, PRODUCTION_CALLER_CONTROLS,
+             PRODUCTION_IMAGE_CONTROLS)):
         compiled, code, output = run_host_test(test)
         claims = [line for line in output.splitlines() if line.startswith("[")]
         entry = {
@@ -966,11 +1134,15 @@ def main():
              main_src.replace("(void)g_app.handleAccessoryConsole(key);",
                               "backlightRamp();", 1),
              periph_src, bringup_src, backlight_src, app_src),
+            # D-790 / D789-A09 removed `g_display_up` from `demo/main.cpp` --
+            # the display's up-ness is now an app fact that depends on a
+            # CONFIRMED reset release -- so the mutant is re-aimed at the call
+            # that is still there.
             ("the warm-reset retry moves back into demo/main.cpp",
              main_src.replace(
-                 "if (g_app.serviceExpanderRecovery()) g_display_up = false;",
-                 "if (g_bus.reopen(AQROOT_I2C_BRINGUP_HZ) && "
-                 "g_expanders.begin(g_bus)) g_display_up = false;", 1),
+                 "(void)g_app.serviceExpanderRecovery();",
+                 "(void)(g_bus.reopen(AQROOT_I2C_BRINGUP_HZ) && "
+                 "g_expanders.begin(g_bus));", 1),
              periph_src, bringup_src, backlight_src, app_src),
             ("the reset-release diagnostic moves back into demo/main.cpp",
              main_src.replace("g_app.releaseExpanderResetLines();",

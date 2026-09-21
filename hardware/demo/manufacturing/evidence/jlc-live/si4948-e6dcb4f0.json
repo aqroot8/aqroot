@@ -1,0 +1,535 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-21T07:35:53Z",
+ "keyword": "Si4948",
+ "page_size": 25,
+ "pages": 2,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Vgs",
+     "attribute_value_name": "±20V"
+    },
+    {
+     "attribute_name_en": "Configuration",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "24nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "30pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "3.8A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "60V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "70pF"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "90mΩ@10V、100mΩ@4.5V"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "P-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "976pF"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1.7V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 P-Channel"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "2.3W"
+    }
+   ],
+   "componentBrandEn": "TECH PUBLIC",
+   "componentCode": "C5197323",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SI4948BEY",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.4232,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.3337,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.2946,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2458,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.2149,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.2019,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "SOP-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2210131700_TECH-PUBLIC-SI4948BEY_C5197323.pdf",
+   "describe": "-55℃~+150℃ 1.7V 2 P-Channel 2.3W 24nC@10V 3.8A 30pF 60V 70pF 90mΩ@10V、100mΩ@4.5V 976pF SOP-8 MOSFETs ROHS",
+   "erpComponentName": "SI4948BEY",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_tech-public-si4948bey_C5197323.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 659
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "0.1pF"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "P-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "3V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 P-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "22nC@10V"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "3.1A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "60V"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "2.4W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "100mΩ@10V、126mΩ@4.5V"
+    }
+   ],
+   "componentBrandEn": "UMW(Youtai Semiconductor Co., Ltd.)",
+   "componentCode": "C5447654",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SI4948BEY",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.3025,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.2362,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2077,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.1722,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.1565,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.147,
+     "startNumber": 6000
+    }
+   ],
+   "componentSpecificationEn": "SOP-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2311091742_UMW-Youtai-Semiconductor-Co---Ltd--SI4948BEY_C5447654.pdf",
+   "describe": "-55℃~+175℃ 0.1pF 100mΩ@10V、126mΩ@4.5V 2 P-Channel 2.4W 22nC@10V 3.1A 3V 60V P-Channel SOP-8 MOSFETs ROHS",
+   "erpComponentName": "SI4948BEY",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_umw-youtai-semiconductor-co-ltd-si4948bey_C5447654.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 488
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "P-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Configuration",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "3V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 P-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "22nC@10V"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "3.1A"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "60V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "2.4W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "150mΩ@4.5V"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C143744",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SI4948BEY-T1-E3",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 1.0385,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.8627,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.7666,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.6576,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.6088,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.5876,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "SO-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1805251249_Vishay-Intertech-SI4948BEY-T1-E3_C143744.pdf",
+   "describe": "-55℃~+175℃ 150mΩ@4.5V 2 P-Channel 2.4W 22nC@10V 3.1A 3V 60V P-Channel SO-8 MOSFETs ROHS",
+   "erpComponentName": "SI4948BEY-T1-E3",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_vishay-intertech-si4948bey-t1-e3_C143744.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2489
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Vgs",
+     "attribute_value_name": "±20V"
+    },
+    {
+     "attribute_name_en": "Configuration",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "22nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "3.7pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "3.1A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "60V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "150mΩ@4.5V"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "P-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "3V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 P-Channel"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "2.4W"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C2903706",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SI4948BEY-T1-GE3",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.7943,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.6755,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.6169,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.5583,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.5225,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.5046,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "SOP-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2110081930_Vishay-Intertech-SI4948BEY-T1-GE3_C2903706.pdf",
+   "describe": "-55℃~+175℃ 150mΩ@4.5V 2 P-Channel 2.4W 22nC@10V 3.1A 3.7pF 3V 60V P-Channel SOP-8 MOSFETs ROHS",
+   "erpComponentName": "SI4948BEY-T1-GE3",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_vishay-intertech-si4948bey-t1-ge3_C2903706.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2077
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "P-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "1.345nF"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "3V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 P-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "15nC@4.5V、32nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "180pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "5.3A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "60V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "210pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "4W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "54mΩ@10V、60mΩ@4.5V"
+    }
+   ],
+   "componentBrandEn": "VBsemi Elec",
+   "componentCode": "C558271",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SI4948BEY-T1-E3-VB",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.7569,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.612,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.5404,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.4688,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.4249,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.4037,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "SO-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2408141044_VBsemi-Elec-SI4948BEY-T1-E3-VB_C558271.pdf",
+   "describe": "-55℃~+150℃ 1.345nF 15nC@4.5V、32nC@10V 180pF 2 P-Channel 210pF 3V 4W 5.3A 54mΩ@10V、60mΩ@4.5V 60V P-Channel SO-8 MOSFETs ROHS",
+   "erpComponentName": "SI4948BEY-T1-E3-VB",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_vbsemi-elec-si4948bey-t1-e3-vb_C558271.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 319
+  }
+ ],
+ "returned": 5,
+ "schema": 1,
+ "total_matches": 5
+}

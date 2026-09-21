@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""D-789 -- re-sweep every exact MPN on the RELEASED assembly BOM, live.
+"""D-790 -- re-sweep every exact MPN on the RELEASED assembly BOM, live.
 
 R7-N05 found the D-789 sweep carrying `R40 = ARG03BTC1783` -- the D-787 part --
 after the divider had already moved twice inside the same milestone.  An archive
 hand-built beside the BOM drifts from it; this script READS the released BOM, so
 it cannot.
 
-    python3 evidence/d789-sweep-sourcing.py [-o evidence/d789-sourcing-sweep.json]
+    python3 evidence/d790-sweep-sourcing.py [-o evidence/d790-sourcing-sweep.json]
 
 `need5` is the per-board quantity times the five-board build.  A line whose live
 stock is under `need5` is a CONSIGNMENT line: buy the exact part from a
@@ -24,7 +24,7 @@ sys.path.insert(0, str(ROOT / "hardware/demo/manufacturing"))
 import jlc_live                                                  # noqa: E402
 
 BOM = ROOT / "hardware/demo/fab/aqroot-Demo-BOM-assembly.csv"
-OUT = ROOT / "hardware/demo/manufacturing/evidence/d789-sourcing-sweep.json"
+OUT = ROOT / "hardware/demo/manufacturing/evidence/d790-sourcing-sweep.json"
 FIRST_FIVE = 5
 
 
@@ -72,7 +72,7 @@ def main():
             rows.append(row)
 
     report = dict(
-        schema=1, decision="D-789",
+        schema=1, decision="D-790",
         what_this_is=__doc__.strip().splitlines()[0],
         method="every exact MPN on hardware/demo/fab/aqroot-Demo-BOM-assembly.csv, "
                "queried through the D-096 JLCPCB parts API and archived so the "

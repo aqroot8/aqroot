@@ -563,6 +563,33 @@ def main():
                          "placement:U12:3000000:-3800000 or --claim "
                          "pour_partition:--moved --claim pour_partition:U12. "
                          "Repeatable; order is preserved")
+    # D-790 / D789-A05 -- A COMPARISON WITH NOTHING TO COMPARE AGAINST EXITED
+    # ZERO, AND SAID `vacuous: true` WHILE IT DID IT.
+    #
+    # D-664 built the two counts that make an empty comparison VISIBLE -- and
+    # then nothing read them.  `no_substantive_difference` is an `all()` over
+    # the rows that HAVE a baseline, so with none it is `all([])` = True, and
+    # the exit code is `all_ran and no_substantive_difference` = 0.  Round-9
+    # reproduced it exactly: `--baseline this-prefix-does-not-exist` returns
+    # success with `all_ran: true`, `no_substantive_difference: true` and
+    # `vacuous: true` in the same document.  A release gate that passes
+    # BECAUSE it asked nothing is the defect D-664 named, one level out.
+    #
+    # THE TWO ACTS ARE NOW SEPARATE.  `--create-baseline PREFIX` writes the
+    # artifacts a FUTURE decision will diff against and makes no comparison
+    # claim at all.  Everything else is a COMPARISON, and a comparison must
+    # have something to compare: every contract that ran must have found a
+    # baseline that exists, is non-empty and PARSES, and at least one must
+    # have been compared.  `--allow-missing-baseline` is the deliberate
+    # escape hatch and it is recorded in the document when it is used.
+    ap.add_argument("--create-baseline", default=None, metavar="PREFIX",
+                    help="D-790 / D789-A05: write evidence/PREFIX-<name>.json "
+                         "for a FUTURE comparison and make no comparison "
+                         "claim.  Cannot be combined with a comparison")
+    ap.add_argument("--allow-missing-baseline", action="store_true",
+                    help="D-790 / D789-A05: permit a comparison in which some "
+                         "contract has no baseline.  Recorded in the report; "
+                         "NOT for a release run")
     ap.add_argument("--strict", action="store_true",
                     help="exit non-zero unless every report is byte-identical, "
                          "including the declared input identifiers "
@@ -580,6 +607,10 @@ def main():
     for name in claims:
         if name not in known:
             ap.error("--claim names no contract in this suite: %r" % name)
+    if a.create_baseline:
+        if a.emit_baseline and a.emit_baseline != a.create_baseline:
+            ap.error("--create-baseline and --emit-baseline disagree")
+        a.emit_baseline = a.create_baseline
     if a.emit_baseline and a.emit_baseline == a.baseline:
         ap.error("--emit-baseline %s is also --baseline %s: a run that wrote "
                  "its own baseline and then diffed against it would prove "
@@ -610,15 +641,29 @@ def main():
             kept.write_text(out.read_text())
             row["emitted_baseline"] = kept.name
         ref = a.evidence / ("%s-%s.json" % (a.baseline, base))
+        # D-790 / D789-A05: absent, EMPTY and UNPARSABLE are the same fact --
+        # there is nothing to compare against -- and none of the three may be
+        # reported as a comparison.
+        old = None
+        why_no_baseline = None
         if not ref.exists():
+            why_no_baseline = "absent"
+        elif ref.stat().st_size == 0:
+            why_no_baseline = "empty"
+        else:
+            try:
+                old = json.loads(ref.read_text())
+            except (ValueError, UnicodeDecodeError) as exc:
+                why_no_baseline = "unparsable: %s" % str(exc)[:80]
+        if old is None:
             row["baseline"] = None
             row["identical"] = None
+            row["baseline_unusable"] = why_no_baseline
             rows.append(row)
-            print(" %-17s %-6s  NO BASELINE %s"
-                  % (name, str(row["verdict"]), ref.name),
+            print(" %-17s %-6s  NO BASELINE %s (%s)"
+                  % (name, str(row["verdict"]), ref.name, why_no_baseline),
                   file=sys.stderr, flush=True)
             continue
-        old = json.loads(ref.read_text())
         d = first_diff(norm(cur), norm(old))
         def _find(doc, key):
             """Every value of `key` at any depth, so a nested digest counts."""
@@ -759,6 +804,12 @@ def main():
                contracts_with_substantive_difference=[
                    r["contract"] for r in rows
                    if r.get("substantive_difference") is not None],
+               # D-790 / D789-A05.  The two facts the exit code now reads.
+               comparison_requested=not bool(a.create_baseline),
+               allow_missing_baseline=bool(a.allow_missing_baseline),
+               baselines_unusable={r["contract"]: r["baseline_unusable"]
+                                   for r in rows
+                                   if r.get("baseline_unusable")} or None,
                contracts=rows)
     text = json.dumps(doc, indent=1, sort_keys=True)
     if a.out:
@@ -772,9 +823,37 @@ def main():
         print(" substantive: %s"
               % ", ".join(doc["contracts_with_substantive_difference"]),
               file=sys.stderr)
-    ok = doc["pre_dependent_normalisation"]["ok"] \
-        and doc["all_ran"] and (doc["all_identical"] if a.strict
-                             else doc["no_substantive_difference"])
+    # D-790 / D789-A05.  A COMPARISON MUST HAVE COMPARED SOMETHING.
+    #
+    # `no_substantive_difference` is an `all()` over the rows that have a
+    # baseline; with none it is vacuously true, which is how a nonexistent
+    # baseline used to exit 0.  A comparison run now additionally requires
+    # that every contract that RAN found a usable baseline and that at least
+    # one comparison actually happened.  A `--create-baseline` run makes no
+    # comparison claim and is judged only on whether the contracts ran and
+    # passed.
+    baseline_complete = (doc["contracts_compared"] > 0
+                         and doc["contracts_without_baseline"] == 0
+                         and not doc["vacuous"])
+    doc["baseline_is_complete"] = baseline_complete
+    comparison_ok = (baseline_complete or a.allow_missing_baseline
+                     or not doc["comparison_requested"])
+    doc["comparison_is_answerable"] = comparison_ok
+    if a.out:
+        a.out.write_text(json.dumps(doc, indent=1, sort_keys=True) + "\n",
+                         encoding="utf-8")
+    if not comparison_ok:
+        print(" REFUSED: %d contract(s) ran with no usable baseline under "
+              "--baseline %s; a comparison that compared nothing is not a "
+              "pass.  Use --create-baseline to WRITE a baseline, or "
+              "--allow-missing-baseline to say so deliberately."
+              % (doc["contracts_without_baseline"], a.baseline),
+              file=sys.stderr)
+    ok = doc["pre_dependent_normalisation"]["ok"] and doc["all_ran"] \
+        and comparison_ok \
+        and (not doc["comparison_requested"]
+             or (doc["all_identical"] if a.strict
+                 else doc["no_substantive_difference"]))
     return 0 if ok else 1
 
 

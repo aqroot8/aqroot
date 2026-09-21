@@ -1,0 +1,405 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-21T07:35:55Z",
+ "keyword": "TPH1R204",
+ "page_size": 25,
+ "pages": 2,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "JLCPCB Assembly",
+   "componentCode": "C9900071148",
+   "componentLibraryType": "expand",
+   "componentModelEn": "TPH1R204PB",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0396,
+     "startNumber": 1
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0204,
+     "startNumber": 100
+    }
+   ],
+   "componentSpecificationEn": "8-PowerVDFN",
+   "componentTypeEn": "New Arrivals",
+   "dataManualUrl": null,
+   "describe": "8-PowerVDFN New Arrivals ROHS",
+   "erpComponentName": "TPH1R204PB",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 443,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "7.2nF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "1 N-channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "2.4V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "74nC@10V"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "150A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "40V"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "960mW、170W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "1.24mΩ@10V"
+    }
+   ],
+   "componentBrandEn": "TOSHIBA",
+   "componentCode": "C7401598",
+   "componentLibraryType": "expand",
+   "componentModelEn": "TPH1R204PL1,LQ",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 1.3819,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 1.1345,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.9994,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.8448,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.7764,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.7455,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "SOP-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404241353_TOSHIBA-TPH1R204PL1-LQ_C7401598.pdf",
+   "describe": "1 N-channel 1.24mΩ@10V 150A 2.4V 40V 7.2nF 74nC@10V 960mW、170W SOP-8 MOSFETs ROHS",
+   "erpComponentName": "TPH1R204PL1,LQ",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_toshiba-tph1r204pl1-lq_C7401598.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 67
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Vgs",
+     "attribute_value_name": "±20V"
+    },
+    {
+     "attribute_name_en": "Configuration",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "74nC"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "93pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "246A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "40V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "1.3nF"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "2.1mΩ@4.5V"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "7.2nF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "1 N-channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "2.4V"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "132W"
+    }
+   ],
+   "componentBrandEn": "TOSHIBA",
+   "componentCode": "C2798219",
+   "componentLibraryType": "expand",
+   "componentModelEn": "TPH1R204PL,L1Q",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.8806,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.8806,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.8806,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.3418,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.3288,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.3239,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "DSOP-8(5x5x1.27mm)",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "",
+   "describe": "132W 2.1mΩ@4.5V 2.4V 246A 40V 7.2nF N-Channel DSOP-8(5x5x1.27mm) MOSFETs ROHS",
+   "erpComponentName": "TPH1R204PL,L1Q",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_toshiba-tph1r204pl-l1q_C2798219.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 11,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "TOSHIBA",
+   "componentCode": "C4153792",
+   "componentLibraryType": "expand",
+   "componentModelEn": "TPH1R204PL,L1Q(M",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.9082,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.8952,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.8871,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 101,
+     "productPrice": 0.8773,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 103,
+     "productPrice": 0.8773,
+     "startNumber": 102
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.8773,
+     "startNumber": 104
+    }
+   ],
+   "componentSpecificationEn": "SOP-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": null,
+   "describe": "SOP-8 MOSFETs ROHS",
+   "erpComponentName": "TPH1R204PL,L1Q(M",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 83
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Vgs",
+     "attribute_value_name": "±20V"
+    },
+    {
+     "attribute_name_en": "Configuration",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "74nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "93pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "150A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "40V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "1.3nF"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "1mΩ@10V"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "5.5nF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "1 N-channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1.4V"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "132W"
+    }
+   ],
+   "componentBrandEn": "TOSHIBA",
+   "componentCode": "C6916290",
+   "componentLibraryType": "expand",
+   "componentModelEn": "TPH1R204PL,LQ(M1",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.9017,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.8855,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.8757,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 101,
+     "productPrice": 0.8659,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 103,
+     "productPrice": 0.8659,
+     "startNumber": 102
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.8659,
+     "startNumber": 104
+    }
+   ],
+   "componentSpecificationEn": "SOP-8Advance",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2305291714_TOSHIBA-TPH1R204PL-LQ-M1_C6916290.pdf",
+   "describe": "-55℃~+175℃ 1 N-channel 1.3nF 1.4V 150A 1mΩ@10V 40V 5.5nF 74nC@10V 93pF N-Channel SOP-8Advance MOSFETs ROHS",
+   "erpComponentName": "TPH1R204PL,LQ(M1",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_toshiba-tph1r204pl-lq-m1_C6916290.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 11,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  }
+ ],
+ "returned": 5,
+ "schema": 1,
+ "total_matches": 5
+}

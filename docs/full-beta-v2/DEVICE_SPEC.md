@@ -119,7 +119,7 @@ GPIO19/20); there is **no USB-UART bridge IC** (by design). See §9, §16.
 | Touch controller | **FocalTech FT6236** @ I²C **0x38** | LOCKED (interface); **silicon identity CAD-TO-VERIFY** | `architecture/I2C_ADDRESS_REGISTRY.md`; ARCHITECTURE.md |
 | Backlight driver | `U17` **TPS61169DCKR** (WLED boost) | FITTED | `03_spi_a_display_sd.kicad_sch:U17` |
 | Backlight **true-off disconnect** | `Q11` **Vishay SQ2364EES-T1_BE3** (LCSC C5758702, **60 V**) in the panel cathode return, gate on its OWN net `BL_DISC_G` | FITTED (added D-750, re-controlled D-752, **re-rated D-780**) | `03_spi_a_display_sd.kicad_sch:Q11`; D-750; D-752; D-780 |
-| Backlight disconnect **gate hold** | `D14` **1N4148WS** (LCSC C2128) + `C85` **1 µF** + `R132` 220 k — nominal RC 220 ms; release proof uses **147 ms** worst retained τ including tolerance/DC-bias allowance | FITTED (D-752, C85 resized D-779) | `03_spi_a_display_sd.kicad_sch:D14/R132/C85`; D-752; D-779; D-780 |
+| Backlight disconnect **gate hold** | `D14` **BAT54WS-7-F** (Diodes Incorporated, LCSC **C124205**) + `C85` **1 µF** + `R132` 220 k — nominal RC 220 ms; release proof uses **147 ms** worst retained τ including tolerance/DC-bias allowance. *(D-789 / D788-11 replaced the **RETIRED** `1N4148WS` / `C2128` this row used to name: at the D-788 rail its lowest published forward maximum lands `VGS` 13.5 mV BELOW the fitted FET's only published conduction row. D-790 / D789-A07 corrects the row itself, which still carried the retired identity.)* | FITTED (D-752, `C85` resized D-779, diode replaced D-789) | `03_spi_a_display_sd.kicad_sch:D14/R132/C85`; D-752; D-779; D-780; D-789 |
 | Display SDO isolation | `R112` 0 Ω = **DNP** | DNP | population matrix |
 
 > **WHY `Q11` EXISTS (D-750, external first-spin review item 7).**  TI states
@@ -207,8 +207,13 @@ GPIO19/20); there is **no USB-UART bridge IC** (by design). See §9, §16.
 > which is *below* the ~9 µA this node actually draws and rises monotonically with `IF`,
 > so it is a **guaranteed bound and not an extrapolation**.
 >
-> **AQROOT therefore holds `VGS = 1.961526 V`, 461.5 mV above** the characterized low-gate
-> point.  With `C85 = 1 µF` the worst retained envelope stays inside the published
+> **AQROOT therefore holds `VGS = 1.945526 V`, 445.5 mV above** the characterized low-gate
+> point.  *(D-790 / D789-A08 moved this 16 mV: `Q11`'s source sits at the
+> TPS61169's own feedback node, and the bound must be that reference's
+> published **MAXIMUM** of **220 mV**, not the 204 mV TYPICAL D-752 through
+> D-789 used.  A higher feedback voltage makes `VGS` smaller, so the typical
+> was being used as a limit in the one direction that flatters the answer —
+> the same defect D-779 and D-780 removed elsewhere on this transistor.)*  With `C85 = 1 µF` the worst retained envelope stays inside the published
 > conduction region for **20.74 ms** and the gate cannot open at all before **59.37 ms**,
 > against the TPS61169's **2.5 ms max** shutdown — an ordering margin of **23.7×**.
 > `BAT54WS-7-F` is the **same MPN, LCSC code and SOD-323 land this board already fits at
@@ -402,7 +407,7 @@ power/NFC review, and CTO decisions.
 > publishes it only as plots — and is measured at first article as
 > `C-PWR-TRANSIENT-01`.
 >
-> ### **OWNER-APPROVED D-788 OPTION A — Community Port voltage/current contract, FROZEN AT D-789**
+> ### **OWNER-APPROVED D-788 OPTION A — Community Port voltage/current contract, RE-DERIVED AND FROZEN AT D-790**
 
 > A rail whose maximum must stay under 3.3 V must sit nominally below 3.3 V, and
 > the Community Port is switched from that rail.  **The former 3.135 V
@@ -410,7 +415,36 @@ power/NFC review, and CTO decisions.
 > zero**: the rail's own heavy-load minimum is 3.069408 V before a single
 > milliohm of delivery loss.
 >
-> **D-789 RE-DERIVES THE DELIVERED NUMBERS AND SUPERSEDES D-788's 2.95 V.**
+> **D-790 RE-DERIVES THEM AGAIN AND SUPERSEDES D-789's 2.84 V, for two reasons
+> Round-9 found, both of which make the number WORSE and both of which are
+> corrections to the MODEL rather than to the board.**
+>
+> * **`D789-A03` — a shared impedance was being paid for twice, and halved.**
+>   The `U12`-output-to-`U20`-input plane is the MAIN `+3V3` plane: every
+>   internal consumer taps off it, so the current through it is the whole
+>   rail's, not the accessory's 400 mA.  D-789 charged it 400 mA.  It now
+>   carries **1.5438 A** — `I_INTERNAL` plus the accessory budget — and it is
+>   charged **once**, outside the per-contact branches, so the fully-mated
+>   contract can no longer parallel `U20`'s own channel resistance with itself.
+> * **`D789-A11` — the display line was an inherited subtotal, not a bound.**
+>   The `+3V3` budget carried one 181 mA line for "display logic + backlight",
+>   cited to a 2023 subtotal.  It is smaller than the BACKLIGHT ALONE.  The
+>   backlight converter's input is now SOLVED from published maxima —
+>   **211.58 mA** — and the panel's logic side is a separate, labelled
+>   **declared** 50 mA allowance.  The internal `+3V3` budget moves
+>   **1.0632 A → 1.1438 A**.
+>
+> **AND ONE CORRECTION GOES THE OTHER WAY (`R9-N01`, found in this closeout).**
+> `U20`'s current-limit accuracy was bounded by SLVSGP6A's **19.2 kΩ** row —
+> a 50 mA setting, and the outlier of the table's four rows.  `R97` is 1.78 kΩ,
+> bracketed by the **1.15 kΩ** and **2.21 kΩ** rows, which publish ±25 % rather
+> than ±32 %.  Read at the rows that actually bracket the design, the 3.3 V
+> rail's GUARANTEED minimum rises **0.4279 A → 0.4719 A** (17.98 % over the
+> published 400 mA, from 6.97 %) and its fault maximum falls **0.8486 A →
+> 0.8036 A`, which is what keeps `U12` inside its own 2 A rating after the
+> display correction.
+>
+> **D-789's own corrections stand.**
 > Round-8 reproduced two defects in the D-788 delivery model and both are real.
 > `U20`'s `RON` was **interpolated** between two datasheet rows and called a
 > bound, when nothing guarantees the curve's shape (D788-01); and the return
@@ -431,16 +465,20 @@ power/NFC review, and CTO decisions.
 > | condition, at the J5 mating interface | guaranteed voltage |
 > |---|---|
 > | no load | **3.069408 V** |
-> | 400 mA, worst permitted wiring, 5 V rail also at 300 mA | **2.849642 V** |
-> | 400 mA, worst permitted wiring, 3.3 V rail alone | **2.860909 V** |
-> | 400 mA, **header fully mated** (both 3.3 V contacts, all four grounds), 5 V rail also at 300 mA | **2.982890 V** |
+> | 400 mA, worst permitted wiring, 5 V rail also at 300 mA | **2.813742 V** |
+> | 400 mA, best permitted wiring (`J5.22`, four grounds, 3.3 V rail alone) | **2.907836 V** |
+> | 400 mA, **header fully mated** (both 3.3 V contacts, all four grounds), 5 V rail also at 300 mA | **2.918599 V** |
 >
-> **PUBLISHED MINIMUM: 2.84 V** — the worst mode, rounded DOWN onto a 10 mV
+> **PUBLISHED MINIMUM: 2.81 V** — the worst mode, rounded DOWN onto a 10 mV
 > grid.  It is **DERIVED**, not asserted: `demo_feature_contract` F6 computes it
 > from the live board on every run and refuses a document that prints a
 > different figure.  The **fully mated** number is published beside it as an
 > explicit connection contract, and it is *better* than the 2.95 V D-788
 > published with a hand-soldered conductor fitted.
+>
+> **HISTORICAL, SUPERSEDED:** D-788 published **2.95 V** and D-789 published
+> **2.84 V** with **2.849642 / 2.982890 V** in this table.  Both are retained
+> here only as the record of what moved and neither is a current figure.
 >
 > The unloaded rail spans **3.069408 V** to **3.223012 V**; raw PWM is
 > **3.100334 / 3.145503 / 3.191022 V**.
@@ -449,7 +487,7 @@ power/NFC review, and CTO decisions.
 > voltage among the parts the BOARD powers from `ACC_3V3_SW` is `U16`
 > `TCA4307DGKR` at **2.3 V** (TI `ZHCSLQ0` section 6.3, archived
 > `vendor/TI/ti-tca4307-zhcslq0-DGK0008A.pdf`).  The worst delivered mode clears
-> it by **549.6 mV**.
+> it by **513.7 mV**.
 >
 > **`ACC_3V3_SW` = 400 mA TOTAL and `ACC_5V_SW` = 300 mA TOTAL are UNCHANGED.**
 > The owner approved **D-788 OPTION A** on 2026-09-20: the switched accessory

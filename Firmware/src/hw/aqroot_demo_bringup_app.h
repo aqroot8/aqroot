@@ -297,6 +297,129 @@ class DemoBringupApp {
   }
 
   // -------------------------------------------------------------------------
+  // D-790 / D789-A09.  A NON-ACCESSORY COMMAND THAT NACKED USED TO BE FORGOTTEN.
+  //
+  // Round-9 found the hole the accessory reconciliation left open.  Two
+  // commands in the bring-up console are NOT accessory-power commands and had
+  // their return values DISCARDED by `demo/main.cpp`:
+  //
+  //   * the amplifier is taken OUT of shutdown to play a tone and put BACK in
+  //     afterwards.  If that second write NACKs, the amplifier is physically
+  //     still enabled, and nothing ever notices;
+  //   * the display test asserts and then RELEASES `DISP_RST_N`.  If the
+  //     release NACKs, the panel is held in reset while the console prints
+  //     that the display is up.
+  //
+  // The generic expander recovery cannot fix either one.  It restores the
+  // BOOT-SAFE latch, which is the right thing for safety and the wrong thing
+  // for INTENT: boot-safe leaves the amplifier off (which happens to match the
+  // amplifier intent) and the reset lines ASSERTED (which is the opposite of
+  // the display intent).  Recovery reconstructs a SAFE STATE, never a WANTED
+  // operation, and D789-A09 is right that the two are different questions.
+  //
+  // So the intent is TRACKED.  Each of these commands records what it wanted,
+  // writes it, and CONFIRMS it from the physical output shadow.  A write that
+  // did not land leaves a PENDING intent that `serviceDeferredCommands()`
+  // retries from the main loop until it is confirmed, and the caller is told
+  // -- `displayIsUp()` is false while a reset release is outstanding, so no
+  // console line may claim the panel is up.  Nothing unrelated is touched:
+  // each retry writes ONE bit, not a blanket latch.
+  struct CommandIntent {
+    bool pending = false;
+    bool want = false;
+    uint32_t attempts = 0;
+  };
+
+  // Take the amplifier out of shutdown, or put it back.  `on == false` is the
+  // safety-relevant direction and is the one that must never be lost.
+  bool setAmplifierIntent(bool on) {
+    amp_intent_.want = on;
+    const bool acked = expanders_.setAmplifier(bus_, on);
+    const bool confirmed = acked && amplifierConfirmed(on);
+    amp_intent_.pending = !confirmed;
+    ++amp_intent_.attempts;
+    char line[168];
+    snprintf(line, sizeof(line),
+             "AMP_SD_MODE requested %s, acknowledged %s, state after "
+             "reconciliation %s",
+             on ? "on" : "off", acked ? "yes" : "no",
+             confirmed ? (on ? "ON" : "OFF")
+                       : "UNKNOWN (retry pending; the amplifier may still be "
+                         "energised)");
+    log_(line);
+    return confirmed;
+  }
+
+  // Pulse DISP_RST_N and RELEASE it.  The release is the intent; an
+  // unconfirmed release leaves `displayIsUp()` false.
+  bool releaseDisplayResetIntent() {
+    disp_reset_intent_.want = true;
+    bool acked = expanders_.setDisplayReset(bus_, true);
+    delay(20);
+    acked = expanders_.setDisplayReset(bus_, false) && acked;
+    delay(20);
+    const bool confirmed = acked && displayResetReleased();
+    disp_reset_intent_.pending = !confirmed;
+    ++disp_reset_intent_.attempts;
+    if (!confirmed) {
+      log_("DISP_RST_N release NOT CONFIRMED: the panel may still be held in "
+           "reset; retry pending and the display is NOT reported up");
+    }
+    return confirmed;
+  }
+
+  // Retried from the main loop.  Writes ONE bit per outstanding intent and
+  // never touches anything else.  Returns true when an intent was confirmed
+  // by this call.
+  bool serviceDeferredCommands() {
+    if (!expanders_.ready()) return false;
+    if (!amp_intent_.pending && !disp_reset_intent_.pending) return false;
+    // A NACKed write INVALIDATES the output shadow -- `Pcal9535a::writeOutputs`
+    // does that deliberately, and `writeBit` then refuses rather than guessing
+    // the other fifteen bits.  So a retry has to re-establish the shadow from
+    // the part FIRST, or it can never land.  This reads; it writes nothing.
+    if (!expanders_.u2().outputShadowValid()
+        && !expanders_.u2().syncOutputShadow(bus_)) {
+      return false;
+    }
+    bool progressed = false;
+    if (amp_intent_.pending) {
+      ++amp_intent_.attempts;
+      if (expanders_.setAmplifier(bus_, amp_intent_.want)
+          && amplifierConfirmed(amp_intent_.want)) {
+        amp_intent_.pending = false;
+        progressed = true;
+        log_("AMP_SD_MODE intent CONFIRMED on retry");
+      }
+    }
+    if (disp_reset_intent_.pending) {
+      ++disp_reset_intent_.attempts;
+      if (expanders_.setDisplayReset(bus_, false) && displayResetReleased()) {
+        disp_reset_intent_.pending = false;
+        progressed = true;
+        log_("DISP_RST_N release CONFIRMED on retry");
+      }
+    }
+    return progressed;
+  }
+
+  bool amplifierIntentPending() const { return amp_intent_.pending; }
+  bool displayResetIntentPending() const { return disp_reset_intent_.pending; }
+  bool amplifierConfirmed(bool on) const {
+    return expanders_.u2().outputShadowValid()
+        && Pcal9535a::bitOf(expanders_.u2().outputShadow(),
+                            AQROOT_U2_AMP_SD_MODE) == on;
+  }
+  bool displayResetReleased() const {
+    return expanders_.u2().outputShadowValid()
+        && Pcal9535a::bitOf(expanders_.u2().outputShadow(),
+                            AQROOT_U2_DISP_RST_N);
+  }
+  // The ONE fact `demo/main.cpp` is allowed to print about the panel.
+  bool displayIsUp() const { return display_up_ && !disp_reset_intent_.pending; }
+  void noteDisplayInitialised(bool up) { display_up_ = up; }
+
+  // -------------------------------------------------------------------------
   // D788-06.  THE WARM-RESET RECOVERY RETRY, EXECUTED.
   //
   // Round-4 R4-03: an MCU reset must not turn one failed safe-latch write into
@@ -323,6 +446,17 @@ class DemoBringupApp {
     (void)releaseExpanderResetLines();
     bus_.setClock(AQROOT_I2C_RUN_HZ);
     (void)configureFuelGaugeActiveMode();
+    // D-790 / D789-A09.  Recovery rebuilt a SAFE state, not a WANTED one.  The
+    // boot-safe latch re-asserts DISP_RST_N and leaves the amplifier off, so
+    // any outstanding intent is now definitively unsatisfied and must be
+    // re-applied rather than assumed to have survived.  The display is no
+    // longer up, whatever the caller last thought.
+    display_up_ = false;
+    if (disp_reset_intent_.want) disp_reset_intent_.pending = true;
+    if (amp_intent_.pending || amp_intent_.want) {
+      amp_intent_.pending = !amplifierConfirmed(amp_intent_.want);
+    }
+    (void)serviceDeferredCommands();
     log_("I2C/expander safety state RECOVERED after incomplete boot");
     return true;
   }
@@ -431,6 +565,9 @@ class DemoBringupApp {
   bool acc3v3_ = false;
   bool acc5v_ = false;
   bool accessory_i2c_ = false;
+  CommandIntent amp_intent_;
+  CommandIntent disp_reset_intent_;
+  bool display_up_ = false;
   bool recovery_started_ = false;
   bool requal_started_ = false;
   bool guard_started_ = false;

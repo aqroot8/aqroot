@@ -1,0 +1,1083 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-21T07:35:54Z",
+ "keyword": "DMTH4008",
+ "page_size": 25,
+ "pages": 2,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "1.088nF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "1 N-channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1.6V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "7.4nC@4.5V、15.3nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "27pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "64.8A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "40V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "322pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "56.5W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "7.3mΩ@10V、10mΩ@5V"
+    }
+   ],
+   "componentBrandEn": "Diodes Incorporated",
+   "componentCode": "C461120",
+   "componentLibraryType": "expand",
+   "componentModelEn": "DMTH4008LPS-13",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.9278,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.765,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.6853,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.6039,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.5567,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.5323,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "PowerDI5060-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404121157_Diodes-Incorporated-DMTH4008LPS-13_C461120.pdf",
+   "describe": "-55℃~+175℃ 1 N-channel 1.088nF 1.6V 27pF 322pF 40V 56.5W 64.8A 7.3mΩ@10V、10mΩ@5V 7.4nC@4.5V、15.3nC@10V PowerDI5060-8 MOSFETs ROHS",
+   "erpComponentName": "DMTH4008LPS-13",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_diodes-incorporated-dmth4008lps-13_C461120.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2554
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "881pF"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "2.3V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "12.9nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "19.5pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "46.2A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "40V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "496pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "39.4W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "17.5mΩ@4.5V"
+    }
+   ],
+   "componentBrandEn": "Diodes Incorporated",
+   "componentCode": "C19950022",
+   "componentLibraryType": "expand",
+   "componentModelEn": "DMTH4008LPDWQ-13",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.8529,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.7341,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.6755,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.6153,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.5811,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.5616,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "PowerDI5060-8(TYPEUxD)",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2401221724_Diodes-Incorporated-DMTH4008LPDWQ-13_C19950022.pdf",
+   "describe": "-55℃~+175℃ 12.9nC@10V 17.5mΩ@4.5V 19.5pF 2 N-Channel 2.3V 39.4W 40V 46.2A 496pF 881pF PowerDI5060-8(TYPEUxD) MOSFETs ROHS",
+   "erpComponentName": "DMTH4008LPDWQ-13",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_diodes-incorporated-dmth4008lpdwq-13_C19950022.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2572
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "1.088nF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "1 N-channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1.6V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "15.3nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "27pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "64.8A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "40V"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "55.5W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "8.8mΩ@10V"
+    }
+   ],
+   "componentBrandEn": "Diodes Incorporated",
+   "componentCode": "C5221856",
+   "componentLibraryType": "expand",
+   "componentModelEn": "DMTH4008LPSQ-13",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.8057,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.6609,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.5892,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.5176,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.4737,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.4525,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "PowerDI-5060-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2210271630_Diodes-Incorporated-DMTH4008LPSQ-13_C5221856.pdf",
+   "describe": "-55℃~+175℃ 1 N-channel 1.088nF 1.6V 15.3nC@10V 27pF 40V 55.5W 64.8A 8.8mΩ@10V PowerDI-5060-8 MOSFETs ROHS",
+   "erpComponentName": "DMTH4008LPSQ-13",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_diodes-incorporated-dmth4008lpsq-13_C5221856.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 14,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "1.03nF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "1 N-channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "3V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "6.8nC"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "27pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "11.6A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "40V"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "2.35W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "11.5mΩ@10V"
+    }
+   ],
+   "componentBrandEn": "Diodes Incorporated",
+   "componentCode": "C6934932",
+   "componentLibraryType": "expand",
+   "componentModelEn": "DMTH4008LFDFW-7",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.7797,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.7699,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.7618,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 101,
+     "productPrice": 0.7536,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 103,
+     "productPrice": 0.7536,
+     "startNumber": 102
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.7536,
+     "startNumber": 104
+    }
+   ],
+   "componentSpecificationEn": "UDFN2020-6",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2308101722_Diodes-Incorporated-DMTH4008LFDFW-7_C6934932.pdf",
+   "describe": "-55℃~+175℃ 1 N-channel 1.03nF 11.5mΩ@10V 11.6A 2.35W 27pF 3V 40V 6.8nC UDFN2020-6 MOSFETs ROHS",
+   "erpComponentName": "DMTH4008LFDFW-7",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_diodes-incorporated-dmth4008lfdfw-7_C6934932.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 12,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "881pF"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "2.3V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "12.3nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "19.5pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "46.2A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "40V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "496pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "39.4W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "17.5mΩ@4.5V"
+    }
+   ],
+   "componentBrandEn": "Diodes Incorporated",
+   "componentCode": "C17504702",
+   "componentLibraryType": "expand",
+   "componentModelEn": "DMTH4008LPDW-13",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.7113,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.7113,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.7113,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2849,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.2751,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.2702,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "DFN-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "",
+   "describe": "-55℃~+175℃ 12.3nC@10V 17.5mΩ@4.5V 19.5pF 2 N-Channel 2.3V 39.4W 40V 46.2A 496pF 881pF DFN-8 MOSFETs ROHS",
+   "erpComponentName": "DMTH4008LPDW-13",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_diodes-incorporated-dmth4008lpdw-13_C17504702.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 13,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "1.03nF@20V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "1 N-channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "3V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "14.2nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "27pF@20V"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "11.6A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "40V"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "2.35W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "11.5mΩ@10V"
+    }
+   ],
+   "componentBrandEn": "Diodes Incorporated",
+   "componentCode": "C6225468",
+   "componentLibraryType": "expand",
+   "componentModelEn": "DMTH4008LFDFW-13",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.6088,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.6088,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.6088,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2442,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.2361,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.2312,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "UDFN2020-6",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2308101715_Diodes-Incorporated-DMTH4008LFDFW-13_C6225468.pdf",
+   "describe": "-55℃~+175℃ 1 N-channel 1.03nF@20V 11.5mΩ@10V 11.6A 14.2nC@10V 2.35W 27pF@20V 3V 40V UDFN2020-6 MOSFETs ROHS",
+   "erpComponentName": "DMTH4008LFDFW-13",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_diodes-incorporated-dmth4008lfdfw-13_C6225468.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 15,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "1.03nF"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "3V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "14.2nC@10V"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "11.6A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "40V"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "990mW"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "11.5mΩ@10V"
+    }
+   ],
+   "componentBrandEn": "Diodes Incorporated",
+   "componentCode": "C6540315",
+   "componentLibraryType": "expand",
+   "componentModelEn": "DMTH4008LFDFWQ-7",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.5762,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.5762,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.5762,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2312,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.223,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.2181,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "UDFN2020-6",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2308101624_Diodes-Incorporated-DMTH4008LFDFWQ-7_C6540315.pdf",
+   "describe": "-55℃~+175℃ 1.03nF 11.5mΩ@10V 11.6A 14.2nC@10V 3V 40V 990mW UDFN2020-6 MOSFETs ROHS",
+   "erpComponentName": "DMTH4008LFDFWQ-7",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_diodes-incorporated-dmth4008lfdfwq-7_C6540315.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 16,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "6nF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "1 N-channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1.8V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "19.7nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "129pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "55A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "40V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "1.509nF"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "6.5mΩ@10V、9mΩ@4.5V"
+    }
+   ],
+   "componentBrandEn": "HXY MOSFET",
+   "componentCode": "C49420433",
+   "componentLibraryType": "expand",
+   "componentModelEn": "DMTH4008LPS-13-HXY",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.4135,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.3305,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2963,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2499,
+     "productPrice": 0.2523,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.2328,
+     "startNumber": 2500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.2198,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "DFN-8L(5x6)",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": null,
+   "describe": "-55℃~+175℃ 1 N-channel 1.509nF 1.8V 129pF 19.7nC@10V 40V 55A 6.5mΩ@10V、9mΩ@4.5V 6nF N-Channel DFN-8L(5x6) MOSFETs ROHS",
+   "erpComponentName": "N沟道增强型MOSFET",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 179
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "1.03nF@20V"
+    },
+    {
+     "attribute_name_en": "Configuration",
+     "attribute_value_name": "-、-、-"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "1 N-channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "6.8nC@4.5V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "27pF@20V"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "11.6A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "40V"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "2.35W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "11.5mΩ@10V"
+    }
+   ],
+   "componentBrandEn": "Diodes Incorporated",
+   "componentCode": "C5711776",
+   "componentLibraryType": "expand",
+   "componentModelEn": "DMTH4008LFDFWQ-13",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 1.4454,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 1.2663,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 1.1784,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 1.0889,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 1.0368,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 1.0092,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "UDFN2020-6",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2308101708_Diodes-Incorporated-DMTH4008LFDFWQ-13_C5711776.pdf",
+   "describe": "-55℃~+175℃ -、-、- 1 N-channel 1.03nF@20V 11.5mΩ@10V 11.6A 1V 2.35W 27pF@20V 40V 6.8nC@4.5V UDFN2020-6 MOSFETs ROHS",
+   "erpComponentName": "DMTH4008LFDFWQ-13",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_diodes-incorporated-dmth4008lfdfwq-13_C5711776.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 7,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "690pF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "1 N-channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1.7V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "20nC@4.5V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "38pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "60A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "40V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "193pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "39W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "7mΩ@10V"
+    }
+   ],
+   "componentBrandEn": "XBLW",
+   "componentCode": "C52140576",
+   "componentLibraryType": "expand",
+   "componentModelEn": "DMTH4008LPS-13(XBLW)",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.3552,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.2815,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2497,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2499,
+     "productPrice": 0.2103,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.1928,
+     "startNumber": 2500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1822,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "DFN-8L(5x6)",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": null,
+   "describe": "-55℃~+150℃ 1 N-channel 1.7V 193pF 20nC@4.5V 38pF 39W 40V 60A 690pF 7mΩ@10V N-Channel DFN-8L(5x6) MOSFETs ROHS",
+   "erpComponentName": "DMTH4008LPS-13(XBLW)",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 5500
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "6nF"
+    },
+    {
+     "attribute_name_en": "Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "1 N-channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1.8V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "19.7nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "129pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "55A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "40V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "1.509nF"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "7.5mΩ@10V"
+    }
+   ],
+   "componentBrandEn": "HXY MOSFET",
+   "componentCode": "C49420434",
+   "componentLibraryType": "expand",
+   "componentModelEn": "DMTH4008LPSQ-13-HXY",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.5974,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.4851,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.4281,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.3728,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.3386,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.3223,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "DFN-8L(5x6)",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": null,
+   "describe": "-55℃~+175℃ 1 N-channel 1.509nF 1.8V 129pF 19.7nC@10V 40V 55A 6.5mΩ@10V 6nF N-Channel DFN-8L(5x6) MOSFETs ROHS",
+   "erpComponentName": "DMTH4008LPSQ-13-HXY",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 19,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  }
+ ],
+ "returned": 11,
+ "schema": 1,
+ "total_matches": 11
+}

@@ -5609,7 +5609,7 @@
 				)
 			)
 		)
-		(symbol "AQROOT_Beta:NTMD4820N"
+		(symbol "AQROOT_Beta:AO4800"
 			(pin_names
 				(offset 0.508)
 			)
@@ -5624,7 +5624,7 @@
 					)
 				)
 			)
-			(property "Value" "NTMD4820N"
+			(property "Value" "AO4800"
 				(at -15.24 -14.604999999999999 0)
 				(effects
 					(font
@@ -5650,7 +5650,7 @@
 					)
 				)
 			)
-			(property "Description" "onsemi NTMD4820N: DUAL N-channel power MOSFET, SOIC-8. VDSS 30 V, ID 8 A per channel, RDS(on) 20 mOhm max at VGS=10 V, VGS(max) +/-20 V. Two electrically independent FETs (G1/S1/D1 and G2/S2/D2) in one package; standard dual SO-8 MOSFET pinout. Used in AQROOT as ONE back-to-back reverse-isolation stage; two packages give two independent failure domains (D-068 / P2)."
+			(property "Description" "Alpha & Omega AO4800: DUAL N-channel MOSFET, SOIC-8. VDSS 30 V, ID 6.9 A per channel at 25 C, RDS(on) 27 mOhm max at VGS=10 V / 32 mOhm at 4.5 V / 50 mOhm AT VGS=2.5 V, VGS(th) 0.7/1.1/1.5 V max at 250 uA, VGS(max) +/-12 V. Two electrically independent FETs (G1/S1/D1 and G2/S2/D2) in one package; standard dual SO-8 MOSFET pinout, pins 1,3 = the two sources, 2,4 = the two gates, 5,6 and 7,8 = the two separate drains. Used in AQROOT as ONE back-to-back reverse-isolation stage; two packages give two independent failure domains (D-068 / P2). D-790 / D789-A01 SUPERSEDES the RETIRED onsemi NTMD4820N on this land: that part publishes no conduction row below VGS=4.5 V and a VGS(th) MAXIMUM of 3.0 V, which the LTC4368 gate drive available here (about 2.6 V at Q2) cannot clear, so a worst-corner part was never guaranteed to be enhanced. AOS Rev 6.1 archived at vendor/AOS/aos-ao4800-rev6p1-2023-08.pdf."
 				(at 0 0 0)
 				(hide yes)
 				(effects
@@ -5668,7 +5668,7 @@
 					)
 				)
 			)
-			(property "MPN" "NTMD4820NR2G"
+			(property "MPN" "AO4800"
 				(at 0 0 0)
 				(hide yes)
 				(effects
@@ -5695,7 +5695,7 @@
 					)
 				)
 			)
-			(symbol "NTMD4820N_0_1"
+			(symbol "AO4800_0_1"
 				(rectangle
 					(start -15.24 12.7)
 					(end 15.24 -12.7)
@@ -5708,7 +5708,7 @@
 					)
 				)
 			)
-			(symbol "NTMD4820N_1_1"
+			(symbol "AO4800_1_1"
 				(pin passive line
 					(at -15.24 7.62 0)
 					(length 5.08)
@@ -8767,7 +8767,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "22uF 10V X7R"
+		(property "Value" "22uF 16V X7R"
 			(at 223.52 25.3999 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14045,7 +14045,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "22uF 10V X7R"
+		(property "Value" "22uF 16V X7R"
 			(at 266.7 25.3999 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14509,7 +14509,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "22uF 10V X7R"
+		(property "Value" "22uF 16V X7R"
 			(at 245.11 25.3999 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17660,7 +17660,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "22uF 10V X7R"
+		(property "Value" "22uF 16V X7R"
 			(at 201.93 25.3999 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -21151,7 +21151,7 @@
 		)
 	)
 	(symbol
-		(lib_id "AQROOT_Beta:NTMD4820N")
+		(lib_id "AQROOT_Beta:AO4800")
 		(at 59.69 299.72 0)
 		(unit 1)
 		(body_style 1)
@@ -21172,7 +21172,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "NTMD4820N"
+		(property "Value" "AO4800"
 			(at 61.69 296.62 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -21219,7 +21219,7 @@
 				(justify left)
 			)
 		)
-		(property "Note2" "SOURCING 2026-08-23 (FBV2-S2-002) (B-71) - FIRST-BUILD BLOCKER. onsemi NTMD4820NR2G is LCSC C905372 with STOCK 0. A VBsemi clone (C7525084) exists - DO NOT USE IT: these are the back-to-back pass FETs of the LTC4368 reverse-polarity path and the CTO ruling forbids silent substitution of power-path parts. Consign the onsemi part. LCSC/JLC library state verified live on 2026-08-23 through the JLCPCB parts API (D-096). Stock is a snapshot, not a guarantee."
+		(property "Note2" "SOURCING, RESTATED AT D-790 / D789-A01. The locked part on this land is Alpha & Omega Semiconductor AO4800, LCSC C17098, genuine-manufacturer line, stock 5347 on the 2026-09-21 live JLCPCB record (D-096). SUPERSEDED: the onsemi NTMD4820NR2G that used to sit here is RETIRED from this design. The 2026-08-23 FBV2-S2-002 / B-71 note recorded it as a FIRST-BUILD BLOCKER because LCSC C905372 read STOCK 0; D-790 retires it for an ELECTRICAL reason that stands whatever its stock does - it publishes no RDS(on) row below VGS = 4.5 V and a VGS(th) MAXIMUM of 3.0 V, and the LTC4368 guarantees only 3.0 V of gate drive at its lowest published row, so after the three channel drops and R75 between Q2 s source and the LTC4368 s VOUT a worst-corner part was never guaranteed to conduct at all. NO CLONE OR RE-MARKED SUBSTITUTION: these are the back-to-back pass FETs of the LTC4368 reverse-polarity path and the CTO ruling forbids silent substitution of power-path parts. The VBsemi, HXY, UMW, JSMSEMI, MSKSEMI and TECH PUBLIC AO4800-marked lines in the same catalogue are NOT this part and are refused. Buy the AOS line, or an authorised-distributor allocation of it. Stock is a snapshot, not a guarantee."
 			(at 61.69 292.12 0)
 			(hide yes)
 			(show_name no)
@@ -21230,7 +21230,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C905372"
+		(property "LCSC" "C17098"
 			(at 61.69 292.12 0)
 			(hide yes)
 			(show_name no)
@@ -21241,7 +21241,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" "onsemi"
+		(property "Manufacturer" "Alpha & Omega Semiconductor"
 			(at 61.69 290.62 0)
 			(hide yes)
 			(show_name no)
@@ -21253,7 +21253,7 @@
 				(justify left)
 			)
 		)
-		(property "MPN" "NTMD4820NR2G"
+		(property "MPN" "AO4800"
 			(at 61.69 289.12 0)
 			(hide yes)
 			(show_name no)
@@ -21265,7 +21265,7 @@
 				(justify left)
 			)
 		)
-		(property "Note" "P2 stage 1 - back-to-back pair, independent failure domain"
+		(property "Note" "D-790 / D789-A01.  onsemi NTMD4820NR2G -> Alpha & Omega AO4800, SAME SOIC-8 land and SAME pin function map (1,3 = the two sources, 2,4 = the two gates, 5,6 and 7,8 = the two separate drains), so no copper moves.  WHY: the LTC4368 guarantees only dVGATE >= 3.0 V of gate drive at its lowest published row (VIN = 2.5 V, ADI Rev C), this board's BAT_RAW lives between that row and the 5 V one, and after the three channel drops and R75 that stand between Q2's common source and the LTC4368's VOUT the worst-case VGS is about 2.6 V.  The NTMD4820N's VGS(th) MAXIMUM is 3.0 V, so a worst-corner part was NEVER GUARANTEED TO BE ENHANCED AT ALL -- it would pass 250 uA where this path needs amps -- and its lowest published conduction row is VGS = 4.5 V, which this circuit cannot reach.  The AO4800 publishes VGS(th) 0.7/1.1/1.5 V MAX and an RDS(on) MAX of 50 mOhm AT VGS = 2.5 V (AOS Rev 6.1, archived vendor/AOS/aos-ao4800-rev6p1-2023-08.pdf), so both the enhancement and the conduction are GUARANTEED NUMBERS at the gate drive this circuit actually has.  The whole four-channel + R75 + upstream model is solved self-consistently in checks/demo_feature_contract.py F10.  WHAT IT COSTS, STATED: the pass pair is more resistive than the NTMD4820N's unguaranteed 4.5 V row, so it drops more and runs hotter, and D789-A02's enclosure-aware thermal envelope carries that cost explicitly. VGS abs max is +/-12 V against the LTC4368's 10.8 V maximum at its VIN = 5 V row, which is the row AT OR ABOVE this board's BAT_RAW maximum.  VDS 30 V, ID 6.9 A at 25 C.  P2 stage - back-to-back pair, independent failure domain."
 			(at 61.69 287.62 0)
 			(hide yes)
 			(show_name no)
@@ -21479,7 +21479,7 @@
 		(uuid "619ad60f-37dd-6c17-b64d-9c9ce542a4b1")
 	)
 	(symbol
-		(lib_id "AQROOT_Beta:NTMD4820N")
+		(lib_id "AQROOT_Beta:AO4800")
 		(at 129.54 299.72 0)
 		(unit 1)
 		(body_style 1)
@@ -21500,7 +21500,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "NTMD4820N"
+		(property "Value" "AO4800"
 			(at 131.54 296.62 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -21547,7 +21547,7 @@
 				(justify left)
 			)
 		)
-		(property "Note2" "SOURCING 2026-08-23 (FBV2-S2-002) (B-71) - FIRST-BUILD BLOCKER. onsemi NTMD4820NR2G is LCSC C905372 with STOCK 0. A VBsemi clone (C7525084) exists - DO NOT USE IT: these are the back-to-back pass FETs of the LTC4368 reverse-polarity path and the CTO ruling forbids silent substitution of power-path parts. Consign the onsemi part. LCSC/JLC library state verified live on 2026-08-23 through the JLCPCB parts API (D-096). Stock is a snapshot, not a guarantee."
+		(property "Note2" "SOURCING, RESTATED AT D-790 / D789-A01. The locked part on this land is Alpha & Omega Semiconductor AO4800, LCSC C17098, genuine-manufacturer line, stock 5347 on the 2026-09-21 live JLCPCB record (D-096). SUPERSEDED: the onsemi NTMD4820NR2G that used to sit here is RETIRED from this design. The 2026-08-23 FBV2-S2-002 / B-71 note recorded it as a FIRST-BUILD BLOCKER because LCSC C905372 read STOCK 0; D-790 retires it for an ELECTRICAL reason that stands whatever its stock does - it publishes no RDS(on) row below VGS = 4.5 V and a VGS(th) MAXIMUM of 3.0 V, and the LTC4368 guarantees only 3.0 V of gate drive at its lowest published row, so after the three channel drops and R75 between Q2 s source and the LTC4368 s VOUT a worst-corner part was never guaranteed to conduct at all. NO CLONE OR RE-MARKED SUBSTITUTION: these are the back-to-back pass FETs of the LTC4368 reverse-polarity path and the CTO ruling forbids silent substitution of power-path parts. The VBsemi, HXY, UMW, JSMSEMI, MSKSEMI and TECH PUBLIC AO4800-marked lines in the same catalogue are NOT this part and are refused. Buy the AOS line, or an authorised-distributor allocation of it. Stock is a snapshot, not a guarantee."
 			(at 131.54 292.12 0)
 			(hide yes)
 			(show_name no)
@@ -21558,7 +21558,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C905372"
+		(property "LCSC" "C17098"
 			(at 131.54 292.12 0)
 			(hide yes)
 			(show_name no)
@@ -21569,7 +21569,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" "onsemi"
+		(property "Manufacturer" "Alpha & Omega Semiconductor"
 			(at 131.54 290.62 0)
 			(hide yes)
 			(show_name no)
@@ -21581,7 +21581,7 @@
 				(justify left)
 			)
 		)
-		(property "MPN" "NTMD4820NR2G"
+		(property "MPN" "AO4800"
 			(at 131.54 289.12 0)
 			(hide yes)
 			(show_name no)
@@ -21593,7 +21593,7 @@
 				(justify left)
 			)
 		)
-		(property "Note" "P2 stage 2 - SECOND PACKAGE, second failure domain"
+		(property "Note" "D-790 / D789-A01.  onsemi NTMD4820NR2G -> Alpha & Omega AO4800, SAME SOIC-8 land and SAME pin function map (1,3 = the two sources, 2,4 = the two gates, 5,6 and 7,8 = the two separate drains), so no copper moves.  WHY: the LTC4368 guarantees only dVGATE >= 3.0 V of gate drive at its lowest published row (VIN = 2.5 V, ADI Rev C), this board's BAT_RAW lives between that row and the 5 V one, and after the three channel drops and R75 that stand between Q2's common source and the LTC4368's VOUT the worst-case VGS is about 2.6 V.  The NTMD4820N's VGS(th) MAXIMUM is 3.0 V, so a worst-corner part was NEVER GUARANTEED TO BE ENHANCED AT ALL -- it would pass 250 uA where this path needs amps -- and its lowest published conduction row is VGS = 4.5 V, which this circuit cannot reach.  The AO4800 publishes VGS(th) 0.7/1.1/1.5 V MAX and an RDS(on) MAX of 50 mOhm AT VGS = 2.5 V (AOS Rev 6.1, archived vendor/AOS/aos-ao4800-rev6p1-2023-08.pdf), so both the enhancement and the conduction are GUARANTEED NUMBERS at the gate drive this circuit actually has.  The whole four-channel + R75 + upstream model is solved self-consistently in checks/demo_feature_contract.py F10.  WHAT IT COSTS, STATED: the pass pair is more resistive than the NTMD4820N's unguaranteed 4.5 V row, so it drops more and runs hotter, and D789-A02's enclosure-aware thermal envelope carries that cost explicitly. VGS abs max is +/-12 V against the LTC4368's 10.8 V maximum at its VIN = 5 V row, which is the row AT OR ABOVE this board's BAT_RAW maximum.  VDS 30 V, ID 6.9 A at 25 C.  P2 stage - back-to-back pair, independent failure domain."
 			(at 131.54 287.62 0)
 			(hide yes)
 			(show_name no)
@@ -22354,7 +22354,7 @@
 				(justify left)
 			)
 		)
-		(property "Manufacturer" "onsemi"
+		(property "Manufacturer" "Alpha & Omega Semiconductor"
 			(at 0 0 0)
 			(hide yes)
 			(show_name no)
@@ -27273,7 +27273,7 @@
 				(justify left)
 			)
 		)
-		(property "Manufacturer" "onsemi"
+		(property "Manufacturer" "Alpha & Omega Semiconductor"
 			(at 0 0 0)
 			(hide yes)
 			(show_name no)
@@ -27479,7 +27479,7 @@
 				(justify left)
 			)
 		)
-		(property "Manufacturer" "onsemi"
+		(property "Manufacturer" "Alpha & Omega Semiconductor"
 			(at 0 0 0)
 			(hide yes)
 			(show_name no)
@@ -27685,7 +27685,7 @@
 				(justify left)
 			)
 		)
-		(property "Manufacturer" "onsemi"
+		(property "Manufacturer" "Alpha & Omega Semiconductor"
 			(at 0 0 0)
 			(hide yes)
 			(show_name no)
@@ -27961,7 +27961,7 @@
 				(justify left)
 			)
 		)
-		(property "Manufacturer" "onsemi"
+		(property "Manufacturer" "Alpha & Omega Semiconductor"
 			(at 0 0 0)
 			(hide yes)
 			(show_name no)

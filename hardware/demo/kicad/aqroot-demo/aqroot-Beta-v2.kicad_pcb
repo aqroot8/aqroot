@@ -20202,7 +20202,7 @@
 		(layer "B.Cu")
 		(uuid "02fb2596-fb8f-44b8-a60a-d75b7acb46c7")
 		(at 3.8 56.8 90)
-		(descr "onsemi NTMD4820N: DUAL N-channel power MOSFET, SOIC-8. VDSS 30 V, ID 8 A per channel, RDS(on) 20 mOhm max at VGS=10 V, VGS(max) +/-20 V. Two electrically independent FETs (G1/S1/D1 and G2/S2/D2) in one package; standard dual SO-8 MOSFET pinout. Used in AQROOT as ONE back-to-back reverse-isolation stage; two packages give two independent failure domains (D-068 / P2).")
+		(descr "Alpha & Omega AO4800: DUAL N-channel MOSFET, SOIC-8. VDSS 30 V, ID 6.9 A per channel at 25 C, RDS(on) 27 mOhm max at VGS=10 V / 32 mOhm at 4.5 V / 50 mOhm AT VGS=2.5 V, VGS(th) 1.5 V max at 250 uA, VGS(max) +/-12 V. Two electrically independent FETs (G1/S1/D1 and G2/S2/D2) in one package; standard dual SO-8 MOSFET pinout, pins 1,3 = the two sources, 2,4 = the two gates, 5,6 and 7,8 = the two separate drains. Used in AQROOT as ONE back-to-back reverse-isolation stage; two packages give two independent failure domains (D-068 / P2). D-790 / D789-A01 SUPERSEDES the RETIRED onsemi NTMD4820N on this land.")
 		(tags "SOIC SO")
 		(property "Reference" "Q3"
 			(at 0 3.4 270)
@@ -20217,7 +20217,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Value" "NTMD4820N"
+		(property "Value" "AO4800"
 			(at 0 -3.4 270)
 			(layer "B.Fab")
 			(hide yes)
@@ -27544,7 +27544,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Value" "22uF 10V X7R"
+		(property "Value" "22uF 16V X7R"
 			(at 0 -1.85 270)
 			(layer "B.Fab")
 			(hide yes)
@@ -30121,7 +30121,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Value" "22uF 10V X7R"
+		(property "Value" "22uF 16V X7R"
 			(at 0 -1.85 180)
 			(layer "B.Fab")
 			(hide yes)
@@ -33241,7 +33241,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Value" "22uF 10V X7R"
+		(property "Value" "22uF 16V X7R"
 			(at 0 -1.85 270)
 			(layer "B.Fab")
 			(hide yes)
@@ -33534,7 +33534,7 @@
 		(layer "B.Cu")
 		(uuid "5bc4ca80-c69f-4dcf-aade-6df606896c32")
 		(at 3.8 49 90)
-		(descr "onsemi NTMD4820N: DUAL N-channel power MOSFET, SOIC-8. VDSS 30 V, ID 8 A per channel, RDS(on) 20 mOhm max at VGS=10 V, VGS(max) +/-20 V. Two electrically independent FETs (G1/S1/D1 and G2/S2/D2) in one package; standard dual SO-8 MOSFET pinout. Used in AQROOT as ONE back-to-back reverse-isolation stage; two packages give two independent failure domains (D-068 / P2).")
+		(descr "Alpha & Omega AO4800: DUAL N-channel MOSFET, SOIC-8. VDSS 30 V, ID 6.9 A per channel at 25 C, RDS(on) 27 mOhm max at VGS=10 V / 32 mOhm at 4.5 V / 50 mOhm AT VGS=2.5 V, VGS(th) 1.5 V max at 250 uA, VGS(max) +/-12 V. Two electrically independent FETs (G1/S1/D1 and G2/S2/D2) in one package; standard dual SO-8 MOSFET pinout, pins 1,3 = the two sources, 2,4 = the two gates, 5,6 and 7,8 = the two separate drains. Used in AQROOT as ONE back-to-back reverse-isolation stage; two packages give two independent failure domains (D-068 / P2). D-790 / D789-A01 SUPERSEDES the RETIRED onsemi NTMD4820N on this land.")
 		(tags "SOIC SO")
 		(property "Reference" "Q2"
 			(at 0 3.4 270)
@@ -33549,7 +33549,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Value" "NTMD4820N"
+		(property "Value" "AO4800"
 			(at 0 -3.4 270)
 			(layer "B.Fab")
 			(hide yes)
@@ -54904,7 +54904,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Value" "22uF 10V X7R"
+		(property "Value" "22uF 16V X7R"
 			(at 0 -1.85 180)
 			(layer "B.Fab")
 			(hide yes)

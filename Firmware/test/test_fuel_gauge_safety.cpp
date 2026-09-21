@@ -16,6 +16,11 @@ class GaugeBus : public I2cBus {
   bool ignore_hibrt_write = false;
   uint16_t hibrt = 0x8030;
   uint16_t mode = 0x0000;
+  // D-790 / D789-A10: the CONFIG register is real state now.  POR is RCOMP
+  // 0x97 with ATHD 0x1C and SLEEP clear.
+  uint16_t config = 0x971C;
+  bool fail_config_read = false;
+  bool sticky_ensleep = false;     // a part that will not leave sleep
   uint16_t vcell = 0xC000;  // 3.840 V
   int hibrt_writes = 0;
   int hibrt_reads = 0;
@@ -29,6 +34,16 @@ class GaugeBus : public I2cBus {
       if (!ignore_hibrt_write) {
         hibrt = uint16_t(data[1]) << 8 | uint16_t(data[2]);
       }
+    }
+    if (length == 3 && data[0] == Max17048Guard::kRegConfig) {
+      config = uint16_t(data[1]) << 8 | uint16_t(data[2]);
+    }
+    if (length == 3 && data[0] == Max17048Guard::kRegMode) {
+      // HibStat is READ ONLY; a MODE write moves QuickStart and EnSleep.
+      const uint16_t v = uint16_t(data[1]) << 8 | uint16_t(data[2]);
+      mode = uint16_t((v & ~Max17048Guard::kModeHibStatMask)
+                      | (mode & Max17048Guard::kModeHibStatMask));
+      if (sticky_ensleep) mode |= Max17048Guard::kModeEnSleepMask;
     }
     return true;
   }
@@ -48,6 +63,12 @@ class GaugeBus : public I2cBus {
       if (fail_mode_read) return false;
       data[0] = uint8_t(mode >> 8);
       data[1] = uint8_t(mode);
+      return true;
+    }
+    if (reg == Max17048Guard::kRegConfig) {
+      if (fail_config_read) return false;
+      data[0] = uint8_t(config >> 8);
+      data[1] = uint8_t(config);
       return true;
     }
     if (reg == Max17048Guard::kRegVcell) {
@@ -182,6 +203,68 @@ int main() {
           gauge.configureActiveMode(bus));
     claim("VCELL works again only after requalification",
           gauge.readVcell(bus, &v));
+  }
+
+  // =========================================================================
+  // D-790 / D789-A10 -- FORCED SLEEP.
+  //
+  // ADI 19-6171 Rev.7: MODE.EnSleep + CONFIG.SLEEP stop conversions
+  // INDEPENDENTLY of hibernate.  HIBRT stays 0, MODE.HibStat stays 0, and the
+  // D-779/D-784 guard qualified the part anyway.
+  // =========================================================================
+  {
+    GaugeBus bus;
+    Max17048Guard gauge(0x36);
+    // A gauge left asleep before the MCU reset: HIBRT is 0 and HibStat is 0,
+    // so the OLD guard would have qualified it.
+    bus.hibrt = 0x0000;
+    bus.mode = Max17048Guard::kModeEnSleepMask;
+    bus.config = 0x9700 | Max17048Guard::kConfigSleepMask | 0x1C;
+    claim("a retained forced sleep is cleared and the gauge qualifies",
+          gauge.configureActiveMode(bus));
+    claim("...CONFIG.SLEEP is clear afterwards",
+          (bus.config & Max17048Guard::kConfigSleepMask) == 0);
+    claim("...MODE.EnSleep is clear afterwards",
+          (bus.mode & Max17048Guard::kModeEnSleepMask) == 0);
+    claim("...RCOMP and ATHD are PRESERVED, not rewritten",
+          (bus.config & 0xFF00) == 0x9700 && (bus.config & 0x001F) == 0x001C);
+    claim("...and no QuickStart was ever commanded",
+          (bus.mode & Max17048Guard::kModeQuickStartMask) == 0);
+  }
+  {
+    // A part that will not leave sleep may NOT be qualified.
+    GaugeBus bus;
+    Max17048Guard gauge(0x36);
+    bus.hibrt = 0x0000;
+    bus.sticky_ensleep = true;
+    bus.mode = Max17048Guard::kModeEnSleepMask;
+    claim("a gauge that will not leave sleep is refused",
+          !gauge.configureActiveMode(bus));
+    claim("...and is not ready", !gauge.activeReady());
+  }
+  {
+    // An unreadable CONFIG is FAIL-CLOSED, not assumed awake.
+    GaugeBus bus;
+    Max17048Guard gauge(0x36);
+    bus.hibrt = 0x0000;
+    bus.fail_config_read = true;
+    claim("an unreadable CONFIG refuses the qualification",
+          !gauge.configureActiveMode(bus));
+  }
+  {
+    // Sleep asserted at RUNTIME, after a clean qualification, must invalidate
+    // the very next safety reading.
+    GaugeBus bus;
+    Max17048Guard gauge(0x36);
+    bus.hibrt = 0x0000;
+    float v = 0.0f;
+    claim("a healthy gauge qualifies", gauge.configureActiveMode(bus));
+    claim("...and its VCELL is accepted", gauge.readVcell(bus, &v));
+    bus.mode |= Max17048Guard::kModeEnSleepMask;
+    bus.config |= Max17048Guard::kConfigSleepMask;
+    claim("sleep asserted at runtime invalidates the next reading",
+          !gauge.readVcell(bus, &v));
+    claim("...and readiness is dropped", !gauge.activeReady());
   }
 
   std::printf("\n%s -- %d failure(s)\n",

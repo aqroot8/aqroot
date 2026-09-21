@@ -1,3 +1,392 @@
+## D-790 — **ROUND-9 CORRECTION: FOUR NUMBERS READ AT THE WRONG CONDITION, AN IMAGE NO TEST HAD EVER COMPILED, AND A PASS PAIR THAT WAS NEVER GUARANTEED TO BE ON**
+
+    authority  board 9606ecfc0bd5844cb6fa965692c406a3d7cd43ad613d827132da18a82ef60f26
+               MANIFEST 5194f0c05e5ced895ceed5144c63eb8afe446772d1bea770f952080622be8599
+    parent     782de47288236348df0e35d96c59b4ab09176a25 (D-789, REJECTED by Round-9)
+    scope      D789-A01..A11, D789-S01, Fable V-01/V-02/D-01/D-02/A-01/C-01/C-03,
+               and R9-N01 found here
+    order      HOLD.  External-review target.  Manufacturer CAM and first-article
+               acceptance remain outstanding; nine lines are SHORT on the live
+               sweep and Q2/Q3 is a tenth exact identity needing an authorised
+               distributor allocation without being short (D789-S01).
+               NO OWNER DECISION IS OPEN.
+
+Round-9 rejected D-789.  **Fable** passed the design for CAM/order closure but kept
+`Q2`/`Q3` open and found two host-test escapes.  **Astra** blocked the order with **12
+findings** -- 0 critical, 3 high, 8 medium, 1 low -- plus a procurement item, and
+**established no unconditional PCB respin**.  All of `A01`..`A11` and `S01` are closed
+here, plus every Fable-specific residual, plus **one more this closeout found itself**,
+`R9-N01`.
+
+**THE ROUND HAS A THEME AND IT IS THE SAME ONE ROUND-8 HAD, ONE TURN TIGHTER.**  Round-8
+was *a proof stretched past its evidence*.  Round-9 is *a number read at the wrong
+condition*: a datasheet row the design does not sit at, a reference frame the product is
+not in, a network the copper does not form, and a subtotal inherited from a board that no
+longer exists.  Four findings, one mistake.
+
+### 1.  `D789-A11` -- THE DISPLAY LINE WAS AN INHERITED SUBTOTAL AND IT WAS SMALLER THAN THE BACKLIGHT ALONE
+
+The `+3V3` internal budget carried **one** line for "display logic + backlight at
+maximum", **181 mA**, cited to the 2023 `FBV2-COMM-001` subtotal.  D-772 itemised and
+summed every other line in that table and left this one retained.  Astra's own sensitivity
+put the backlight converter's **input** at about 191 mA before a milliamp of panel logic.
+
+The backlight is now **SOLVED**, from published maxima only, by
+`demo_feature_contract.backlight_converter_input()`:
+
+    I_LED(max)  = VREF(max) / R69(min) = 0.220 V / (1.87 x 0.99) = 118.8354 mA
+    V_LED_BOOST = I_LED x R_ballast(max) + VF_LED(max)
+                + I_LED x RDS(on)_Q11(max) + VREF(max)   = 4.439311 V
+    P_out       = 527.5 mW
+
+against the panel's own **120 mA** maximum, and the converter's input current is bounded
+**three ways, worst wins** -- a continuous-conduction treatment, a discontinuous-conduction
+treatment, and TI's own *"up to 90 % efficiency"* headline.  TI publishes no efficiency
+TABLE for this part, and a headline efficiency is a **CEILING on efficiency**, therefore a
+**FLOOR on input current**, which is the wrong direction for a budget; so the conduction
+losses are computed from the guaranteed maxima -- `RDS(on)` 0.7 ohm, `IQ` 0.45 mA, the
+fitted Coilcraft `XFL4020-472MEC`'s 52.2 mOhm DCR and the fitted onsemi `NSR0240HT1G`'s
+710 mV at 200 mA (a BOUND here, since this node runs at 119 mA and VF rises monotonically
+with IF), at the **MINIMUM** published switching frequency into the **MINIMUM** inductance,
+which is the worst RMS case.  The answer is **211.58 mA** at an implied **83.1 %**, which
+is **below** what the part is advertised to do -- the model may not claim more than the
+datasheet's own headline, and a clause checks that it does not.
+
+The panel's logic side becomes a **separate, labelled DECLARED 50 mA allowance**, because
+ILI Technology publishes Sleep-in (100 uA) and Deep Standby (1 uA) and **no active-mode
+supply current at all**, and the EastRising module specification is not obtainable from
+this environment.  Saying so is the honest form; `C-DISP-01` first-article measurement is
+what replaces the declaration.
+
+Internal `+3V3` moves **1.0632 A -> 1.1438 A**.  Every margin downstream narrows and each
+one is re-derived rather than re-asserted.
+
+### 2.  `D789-A03` -- A SHARED IMPEDANCE WAS INSIDE BOTH BRANCHES AND THEN PARALLELED
+
+`P3V3_DELIVERY.source_bound_ohm` is the `U12`-output-to-`U20`-input path: a **plane**, and
+the MAIN `+3V3` plane, from which every internal consumer draws.  D-789 charged it the
+accessory's **400 mA**.  It carries the whole rail, and it is now charged
+`I_INTERNAL + i3 = ` **1.5438 A**, for **48.45 mV** of drop.
+
+And it was charged **inside each contact's series resistance** and then the whole thing
+paralleled for the fully-mated contract -- which halves three impedances that are in
+series with **both** branches and carry their **sum**.  The network is now split the way
+the copper is: a COMMON edge (`U20`'s channel, the process allowance, the source plane) at
+the summed current, and per-contact BRANCHES that may be paralleled because they genuinely
+are in parallel.  Single-contact modes are arithmetically unchanged by the split; only the
+mated contract moves, and it moves the honest way.
+
+**Published Community-Port minimum: 2.849642 -> 2.813742 V, published as 2.81 V.**  Fully
+mated: 2.982890 -> **2.918599 V**.  Both DERIVED, both refused by `F6` if `DEVICE_SPEC`
+prints anything else.  The D-788 Option A approval delegated the exact figure to the final
+candidate; this is that figure.  **No published current capability is reduced.**
+
+### 3.  `R9-N01` -- AND ONE CORRECTION GOES THE OTHER WAY, FOUND HERE
+
+`ILIM_LO/HI = 0.68 / 1.32` is a real SLVSGP6A ratio and it belongs to the **19.2 kOhm**
+row -- a **50 mA** setting.  The EC table publishes four rows:
+
+    RILIM      MIN     TYP     MAX        lo/typ    hi/typ
+    610 R     1.54     2.00    2.46        0.770     1.230
+    1.15 k    0.75     1.00    1.25        0.750     1.250
+    2.21 k    0.38     0.50    0.62        0.760     1.240
+    19.2 k    0.034    0.050   0.066       0.680     1.320
+
+`R97` is **1.78 kOhm**, bracketed by the 1.15 k and 2.21 k rows, and it was being judged by
+a bound taken ten times away in resistance and twelve times away in current.  That is
+exactly what D-788 refused when `U20`'s `RON` was interpolated and what D-789 refused when
+the LTC4368 gate drive was read off the wrong row.
+
+**AND IT IS NOT AN INTERPOLATION, BECAUSE THE RATIO IS NOT MONOTONE IN `R`** -- the 1.15 k
+row is worse on the low side than the 2.21 k row.  No monotonicity argument is available
+and none is made: the bound is the **WORSE OF THE TWO PUBLISHED ROWS THAT BRACKET THE
+SETTING**, per side.  A setting outside the published rows falls back to the widest ratio.
+
+`ACC_3V3` guaranteed minimum **0.4279 -> 0.4719 A** (6.97 % -> **17.98 %** over the
+published 400 mA); fault maximum **0.8486 -> 0.8036 A**.  `ACC_5V`'s `R101` is 2.43 kOhm,
+bracketed by the 2.21 k and 19.2 k rows, so its bound is **UNCHANGED** -- the rule does not
+flatter a part it does not fit.  This is what keeps `U12` inside its own 2 A rating with
+**52.6 mA** where `D789-A11`'s corrected budget alone would have left **7.6 mA**.
+
+### 4.  `D789-A02` -- A JEDEC THERMAL RESISTANCE IS NOT A PRODUCT BOUND
+
+D-789 computed `TJ = TA + RthetaJA x PDISS` with TI's **68.3 C/W**, got **115.44 C** at the
+40 C top of the declared envelope, and called it a conservative ceiling with 9.56 K of
+margin.  The D-789 comment even states the objection and argues past it: a JEDEC
+`RthetaJA` is measured on a reference board **in open still air at `TA`**.  This product is
+a sealed **85 x 160 x 23 mm** handheld.  The "our copper is better than the coupon"
+argument is about the **wrong half of the path** -- what an enclosure changes is the AIR.
+
+    TJ = TA(external) + R_SYS x P_internal + thetaJA x P_U11
+
+`R_SYS` is the enclosure's own resistance, **DECLARED** at **3.2493 K/W** (0.03847 m^2
+surface at a declared 8.0 W/m^2K, which is 70 % of the itemised natural-convection +
+radiation sum) and **MEASURED at `C-THERM-01`**.  `P_internal` now also carries the
+**UPSTREAM** losses D-789 counted nowhere: the four pass-pair channels, `R75`, the `F1`
+element and the pack's own protection board and 26 AWG harness -- every one of them under
+the same lid as the charger and the pouch.  What LEAVES the case is subtracted and only
+what leaves by construction: the Community Port's published 400 mA and 300 mA go to an
+accessory on the **outside** of the right wall.  Radiated RF and emitted light are **not**
+subtracted.
+
+**AND THE ANSWER IS THAT THE PEAK ENVELOPE IS NOT A THERMAL ENVELOPE.**  At the 40 C top,
+held indefinitely, the peak electrical envelope puts the junction at **142.79 C** -- over
+TI's 125 C operating maximum, 7.2 K below its 150 C thermal shutdown.  No thermal metric
+was going to make ~8 W of continuous dissipation in that enclosure a steady state.  So the
+envelope **SPLITS**, which is the second option Round-9 itself offers:
+
+  * the **PEAK ELECTRICAL ENVELOPE** is unchanged and still rules conductor ampacity,
+    protection ordering and the J4 connector rating -- all short-time-constant or
+    instantaneous;
+  * a **SUSTAINED THERMAL ENVELOPE** is DERIVED and published: **1.9439 A** at 40 C,
+    bounded by the fitted pouch's own **60 C** published discharge window;
+  * and a **SUSTAINED REFERENCE STATE** is declared and gated -- both published accessory
+    budgets, the display at full brightness, **BOTH** radios transmitting and the audio
+    amplifier at its capped level, held indefinitely at 40 C.  **1.70 A**, junction
+    **95.99 C**, internal air **55.80 C**.  `F6` re-derives that current from the live
+    budget and refuses a disagreement.
+
+**THE CHARGE REGIME IS SEPARATED AND NEEDS NO BOUND, BY DESIGN.**  SLUSF65B 6.3.7.6: the
+device *"reduces the charge current when TJ reaches the thermal regulation threshold
+(TREG)"*, and `TREG` is **100 C**, 25 K under the operating maximum.  Its consequence in a
+warm enclosure is a **longer charge**, not an exceeded junction.  Only the
+battery-discharge BATFET regime has no equivalent regulation -- `TREG` reduces CHARGE
+current and there is none without an adapter -- and that is the regime bounded above.
+
+**NOTHING IS REMOVED.**  400 mA and 300 mA stand, no Kickstarter-visible capability is
+withdrawn, and the D-788 Option A contract is untouched.  What is ADDED is the ambient
+condition under which every published maximum may be taken AT ONCE, which was never stated
+and was silently assumed to be the whole 0..40 C range.  **There is no temperature sensor
+to enforce it with** -- `R38` is unfitted and there is no pack NTC -- so it is a DECLARED
+OPERATING CONDITION plus a first-article measurement, and it is written down as one.
+
+### 5.  `D789-A01` -- THE PASS PAIR WAS NEVER GUARANTEED TO BE ON, AND NOW IT IS
+
+The topology, exactly:
+
+    BAT_RAW -[Q2]- Q2_CS -[Q2]- BAT_MID -[Q3]- Q3_CS -[Q3]- BAT_SENSE -[R75]- BAT_PROTECTED_P
+
+with both gates of each package on `LTC_GATE`, both sources of each package tied, and
+`BAT_PROTECTED_P` being the LTC4368's own `VOUT`.  So each package has ONE `VGS`:
+
+    VGS(Q3) = dVGATE - I x (1 x RDS(on) + R75)
+    VGS(Q2) = dVGATE - I x (3 x RDS(on) + R75)
+
+`dVGATE` is **3.0 V**, the guaranteed minimum at the nearest published row at or below
+`BAT_RAW`, and it **cannot be improved**: the next guaranteed row is `VIN` = 5 V and this
+board's `BAT_RAW` never reaches it.  The retired onsemi `NTMD4820NR2G` publishes
+`VGS(th)` **MAXIMUM 3.0 V** at `ID` = 250 uA and **no `RDS(on)` row below `VGS` = 4.5 V**.
+**A worst-corner part was not guaranteed to be ENHANCED AT ALL** -- at its own threshold it
+passes the 250 uA of the threshold test where this path needs amps -- and that is a board
+that will not run from its battery.  It is FUNCTIONAL, not safety: the LTC4368's
+overcurrent, reverse and UV/OV protection sense across `R75` and pull the gate **down**,
+and none of them depends on how well the pair conducts.
+
+**THE SEARCH IS WRITTEN DOWN.**  Every Alpha & Omega SOIC-8 dual N-channel datasheet in
+the `AO4600`-`AO4898` range was fetched from the manufacturer and read -- 150 part numbers.
+**Exactly two** publish an `RDS(on)` row at `VGS <= 2.5 V`.  `AO4806`'s 22 mOhm row would
+be better, and it is **REJECTED**: stock 0, and its own manufacturer describes it as
+*common-drain*, which this common-SOURCE circuit cannot take on trust.
+
+**`AO4800` is the selection** -- Alpha & Omega, LCSC `C17098`, genuine line, live stock
+5 347, AOS Rev 6.1 archived at `vendor/AOS/`.  Same SOIC-8 land, same pin function map
+(1,3 = the two sources, 2,4 = the two gates, 5,6 and 7,8 = the two separate drains, which
+is what the board already wires), so **no copper moves**.  `VGS(th)` **1.5 V MAX** against
+the retired part's 3.0 V.  A guaranteed **50 mOhm at `VGS` = 2.5 V**, which is the row the
+retired part did not have.  `VGS` rating **+/-12 V** against the LTC4368's own guaranteed
+**10.8 V** maximum -- the row **at or ABOVE** this board's `BAT_RAW` maximum, which is the
+opposite direction and a different function from the minimum bound, and `F10` has both.
+
+**AND FABLE'S `AO4800` IS NOT APPROVED ON FABLE'S SAY-SO.**  Astra warned the four-channel
+path may eat too much single-cell headroom, and `F10` **reproduces that**.  Solved
+self-consistently -- channel resistance sets the source offsets, the offsets set `VGS`,
+`VGS` selects the conduction row, the dissipation sets the junction temperature, and the
+junction temperature moves the resistance again:
+
+    envelope             I         RDS(on) hot   VGS(Q2)     meets its own 2.5 V row?
+    PEAK electrical      2.35 A    68.7 mOhm     2.4921 V    NO -- 7.9 mV short
+    SUSTAINED thermal    1.9439 A  66.2 mOhm     2.5944 V    YES -- 94.4 mV
+
+**`F10` rules at the SUSTAINED envelope** -- a conduction row is a steady-state question
+and section 4 is what establishes that the peak is not a steady state -- and it **prints
+the peak beside it**.  Enhancement is cleared by **1.09 V** at both, and that is the half
+that decides whether this board runs from its battery.  The hot `RDS(on)` at `VGS` = 2.5 V
+is published by **no** candidate; it is carried as the datasheet's own 25 -> 125 C ratio at
+its `VGS` = 10 V row, DECLARED as such, and measured at `C-BAT-GATE-01`.
+
+`F10` stops being a HOLD and becomes a PROOF.  It refuses the retired part by running the
+same model on its own published numbers, refuses a part whose `VGS` rating the controller
+would over-stress, refuses one under its own current rating, and checks that the ampacity
+audit's pass-pair heating constant is not optimistic against what `F10` converges to.
+
+### 6.  `D789-A04` + FABLE `V-01`/`V-02` -- THE IMAGE ITSELF, COMPILED AND RUN
+
+D-789 moved every safety call site into `DemoBringupApp` so a host test could drive them.
+Round-9 showed that is **still one level in**: all five of Astra's counterexamples live in
+**`src/demo/main.cpp`** -- in `setup()`, in `loop()` and in the console `switch` -- which no
+host test had ever compiled.  A call site that nothing compiles is covered by nothing,
+however well covered the function it calls is.  That is the third time this programme has
+learned the same lesson and it is the last place it can hide.
+
+**`Firmware/test/image/`** is a host Arduino core -- `Serial`, `SPI`, `Wire`, `driver/i2s.h`,
+a recording clock, a PWM log, a pin log and an injectable console -- and
+**`test_production_image.cpp`** compiles and RUNS the shipped image over a board model with
+**PHYSICAL PCAL9535A output latches** and **real MAX17048 registers**, in which `HibStat` is
+read-only and a NACKed write really does leave the latch where it was.  **49 claims.**
+
+`firmware_hw_map_contract` `H6` gains **17 image-level mutation controls**, every one
+caught: an unreachable `periodicBatteryGuard()`; a cold boot that bypasses the qualified
+settle with a direct `configureActiveMode()`; a direct accessory enable in the `switch`
+with the proper dispatch left dead; a removed settled post-enable recheck; a forced-true
+reset diagnostic in `main`'s own wrapper; Fable's `V-01` early return inside
+`settledAccessoryRecheck`; and Fable's `V-02` disabled or no-op
+`backgroundGaugeRequalification` -- whose observable had to be a re-qualification the loop
+performs **with no console input at all**, because the '3' key requalifies on its own and
+would have made the control vacuous.
+
+One host-core detail is worth recording because it is a real property of the shipped
+firmware: the image contains hardware polls written as
+`while (digitalRead(...) == HIGH && millis() < deadline)`, and on a host the pin never
+moves.  Every `digitalRead` therefore advances the recording clock by one microsecond --
+polling costs time here exactly as it does on the board -- so no shipped poll can wedge the
+test whatever a future edit does to it.
+
+### 7.  `D789-A10` -- HIBERNATE IS NOT THE ONLY WAY THE GAUGE STOPS CONVERTING
+
+ADI 19-6171 Rev.7, Sleep Mode: *"To enter sleep mode, write MODE.EnSleep = 1 and either
+hold SDA and SCL logic-low for a period for tSLEEP ... or write CONFIG.SLEEP = 1.  To wake
+up the IC, write CONFIG.SLEEP = 0.  **Other communication does not wake up the IC.**"*
+Sleep is **independent of hibernate**: `MODE.HibStat` stays 0 through it, `HIBRT` stays 0
+through it, and the D-779/D-784 guard checked only those two.  A gauge put to sleep before
+an MCU reset was **still asleep afterwards**, qualified cleanly, and could authorise an
+accessory rail on an arbitrarily stale `VCELL`.
+
+The qualification now **CLEARS forced sleep and VERIFIES it BEFORE the settle is spent**:
+`CONFIG` is read, the `SLEEP` bit alone is masked out and the rest written back, so
+`RCOMP` (POR 0x97), `ALSC`, `ALRT` and `ATHD` are **preserved**; `MODE.EnSleep` is cleared
+with a MODE write of `0x0000`, which is also the only safe value because setting bit 14
+would command a **QuickStart** and throw the SOC estimate away.  Both are read back.  An
+unreadable `CONFIG` or `MODE` is **fail-closed**, not assumed awake.  `verifyActiveMode`
+re-checks all three on **every value the policy is about to act on**, because sleep can be
+asserted at runtime long after a clean qualification.
+
+Five controls, all load-bearing and each with its own scenario: a retained forced sleep; a
+part that will not leave sleep; a `CONFIG.SLEEP` that will not clear (which only
+`clearForcedSleep`'s own verification can catch, since `configureActiveMode` never re-reads
+`CONFIG`); a part that falls asleep **between** the two reads (which only the second MODE
+check can catch); and sleep asserted at runtime with a rail already live.
+
+### 8.  `D789-A09` -- A NON-ACCESSORY COMMAND THAT NACKED WAS FORGOTTEN
+
+Two console commands are not accessory-power commands and had their results **discarded**
+by `demo/main.cpp`: the amplifier is taken out of shutdown for a tone and put **back**, and
+the display test asserts and then **releases** `DISP_RST_N`.  A NACKed amplifier shutdown
+left the amplifier **physically energised** with nothing watching; a NACKed reset release
+left the panel **held in reset** while the console printed that the display was up.
+
+The generic expander recovery cannot fix either.  It restores the BOOT-SAFE latch, which
+is right for safety and wrong for INTENT: boot-safe leaves the amplifier off (which
+happens to match one intent) and the reset lines **asserted** (which is the opposite of the
+other).  Recovery reconstructs a SAFE STATE, never a WANTED OPERATION, and Round-9 is right
+that those are different questions.
+
+Both are now tracked **INTENTS**: recorded, written, and **CONFIRMED from the physical
+output shadow**; an unconfirmed one leaves a PENDING retry that `loop()` services, writing
+**one bit**, never a blanket latch.  `displayIsUp()` is false while a release is
+outstanding, so no console line may claim the panel is up.  The display test **ABORTS**
+rather than driving a panel that is still in reset.  And the retry had to re-sync the
+output shadow first, because `Pcal9535a::writeOutputs` deliberately invalidates it on a
+NACK and `writeBit` then refuses -- without that, a retry could never land.
+
+### 9.  `D789-A05` -- A RELEASE GATE THAT PASSED BECAUSE IT ASKED NOTHING
+
+`contract_regression --baseline this-does-not-exist` exited **0** with `all_ran: true`,
+`no_substantive_difference: true` and **`vacuous: true`** in the same document.
+`no_substantive_difference` is an `all()` over the rows that HAVE a baseline; with none it
+is `all([])`.  D-664 built the two counts that make an empty comparison visible and then
+nothing read them.
+
+Creating a baseline is now a **separate act** (`--create-baseline`), which makes no
+comparison claim.  Everything else is a comparison and must have compared something: every
+contract that ran must have found a baseline that **exists, is non-empty and PARSES** --
+absent, empty and unparsable are the same fact and all three refuse -- and at least one
+comparison must have happened.  `--allow-missing-baseline` is the deliberate escape hatch
+and is recorded in the report when used.
+
+### 10.  `D789-A06` -- THE TRANSIENT ACCEPTANCE HAD BOTH SIGNS INVERTED
+
+D-788 wrote the `C-PWR-TRANSIENT-01` acceptance as *"the measured value MINUS the stated
+measurement uncertainty on the high side and PLUS it on the low side"*.  That **relieves**
+the margin instead of charging it: a **3.310 V** peak with +/-0.020 V reads as 3.290 V and
+**passes** a 3.300 V ceiling it is 10 mV over, and a **2.990 V** trough reads as 3.010 V
+and passes a 3.000 V floor it is 10 mV under.  Two failing units per test, both accepted.
+
+    measured peak  + total uncertainty < 3.300 V
+    measured trough - total uncertainty > 3.000 V
+
+A sentence in a procedure is what drifted, so the RULE is now **executable** as `F11` and
+the procedure's own **six worked boundary examples are RE-DERIVED from it on every run** --
+and each judged value must be **PRINTED in the document**, so the table a human reads
+cannot drift from the arithmetic a gate performs.  Seven controls, including one that puts
+the retired inverted wording back and one that requires the accessory steps to stay at pack
+voltages a release image actually permits.
+
+### 11.  `D789-A07` + `A08` + FABLE `D-01`/`D-02` -- THE DOCUMENTS
+
+Corrected: the ESD array row grouped `D2`-`D5` and over-counted by five, because `D3` is
+DNP; the assembly reality check said **46 distinct MPNs (43 after merges)**, which was a
+sourcing shortlist and never the BOM's own count -- it is **105** on the assembly BOM and
+**106** across the full BOM, with **123** grouped lines and **251** fitted references, all
+counted from the released files themselves; "the only two substitutions" was written long
+after the programme had adopted **five**, which are now listed in order; `DEVICE_SPEC`
+still named `D14` as `1N4148WS` / `C2128`, which D-789 retired; the mechanical height
+census's PROSE still read **1.80 mm** on a **Murata** basis and still named `C26`, when
+`C29`-`C32` are **CCTC `TCC1206X7R226K160HT`** at **1.90 mm** and the gate itself has ruled
+at 1.90 mm since D-789; the `D14` source record's top-level `vendor` field said **JSCJ**,
+which is the maker of the part that LEFT; `F6`'s prose still called the `RON` bound an
+interpolation beside the paragraph that overturned it; Fable's `D-01`, the stale *"onsemi
+still catalogues `NTMD4820NR2G`"*; and Fable's `D-02`, `C29`-`C32`'s value string reading
+`22uF 10V` when the fitted CCTC part is **16 V**.
+
+And one of these is not cosmetic.  **`Q11`'s held `VGS` was bounded at the TPS61169's
+204 mV TYPICAL feedback reference, not its 220 mV MAXIMUM.**  `Q11`'s SOURCE *is* that
+node, so a higher feedback voltage makes `VGS` **smaller** -- the typical was being used as
+a limit in the one direction that flatters the answer, which is precisely what D-779 and
+D-780 removed elsewhere on this same transistor.  Held `VGS` **1.961526 -> 1.945526 V**,
+margin over the published conduction row **461.5 -> 445.5 mV**.  It still closes.
+
+### 12.  `D789-S01` -- WHAT IS LEFT, AND IT IS NOT AN ENGINEERING ITEM
+
+**NINE** lines are SHORT on the D-790 live sweep and need consignment: `J5`, `L4`,
+`L5`/`L6`, `MK1`, `Q11`, `U18`, `U19`, `U2`/`U3`, `U9`.  **`Q2`/`Q3` is a TENTH exact
+identity** that needs an authorised allocation *without* being short -- the AOS `AO4800`
+line re-swept at **5 347** against a need of 10 -- because catalogue stock is not an
+allocation and these are the battery path's pass FETs.  `NSR0240HT1G` (`D8`) is likewise
+covered by stock.  This repository can reach the JLCPCB catalogue and not an
+allocation system; confirming genuine traceable stock is a **purchasing action** and it is
+the remaining gate.  **No clone or re-marked substitution** is authorised anywhere on this
+list, and the six `AO4800`-marked marketplace lines are named and refused by reference.
+
+### What did NOT change
+
+No copper moved.  No net changed.  No footprint changed.  No placement moved.  No
+protected-copper object moved.  Connectivity is unchanged at **174 retained / 173 connected
+/ one owner-approved `U11.3` open / zero unapproved**.  `hardware/beta-v2` is untouched.
+Every Kickstarter-visible capability is retained and both published accessory budgets are
+unchanged.  D-789's display high-side correction, its retired reinforcement lead, its `D14`
+Schottky, its `F8` hierarchy closure, the QSTRT ground, the J4 Micro-Lock architecture and
+the owner-approved `U11.3` open all **stand**.
+
+### Fable's retained items
+
+`A-01` heavy speaker tooling is not a design blocker and the crimp/pull/serviceability
+requirements are unchanged.  `C-01` shed-both-rails-on-any-I2C-error remains a safe and
+deliberately disruptive limitation; a resync-first improvement is a REV-B question, not a
+first-five one.  `C-03` the NFC antenna-side shunt remains a hand-tack with its
+first-article tune/rework requirement intact.
+
+---
+
 ## D-789 — **ROUND-8 CORRECTION: THREE PROOFS THAT WERE STRETCHED PAST THEIR EVIDENCE, THREE UNTESTED PRODUCTION CALLERS, AND A MANUAL LEAD THAT COULD NOT BE BUILT**
 
     authority  board 40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf

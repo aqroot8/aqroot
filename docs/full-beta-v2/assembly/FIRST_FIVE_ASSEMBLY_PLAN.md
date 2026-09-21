@@ -70,7 +70,7 @@ thing, and that decision stands from FBV2-S2-001.
 | `TPS61169DCKR` | `U17` | `C71045` | 4,405 | 5 |
 | `TPS22950CQDDCRQ1` (TPS22950-Q1, **D-765**) | `U20`, `U22` | `C17349276` | 4,050 | 10 |
 | `BMI270` | `U4` | `C2836813` | 12,840 | 5 |
-| `TPD4E1B06DRLR` | `D2`–`D5` | `C1972953` | 2,176 | 20 |
+| `TPD4E1B06DRLR` | `D2`, `D4`, `D5` — **not `D3`, which is DNP** (D-790 / D789-A07 corrected this row: it read `D2`–`D5` and over-counted the need by five pieces) | `C1972953` | 2,176 | 15 |
 | `PMEG2010AEH,115` | `D9` | `C110921` | 32,772 | 5 |
 | `MHPA3528RGBCT` | `D13` | `C409779` | 70,369 | 5 |
 | `BSS138LT1G` | `Q4`, `Q6`–`Q9` | `C82045` | 762,522 | 25 |
@@ -125,7 +125,7 @@ broadline distributor and **consigned to JLC**, so it stays machine-placed.
 > stopper, and it had survived since the table was written.  **THE DFN ROW IS
 > RETIRED.**
 >
-> Every row below is a **fresh live sweep of all 124 assembly lines** taken on
+> Every row below is a **fresh live sweep of all 123 assembly lines** taken on
 > **2026-09-20** through the D-096 JLCPCB parts API and archived under
 > `hardware/demo/manufacturing/evidence/jlc-live/`.  Ten of the 124 lines do not
 > cover a five-board build; those ten are the table.  **Archived counts are not
@@ -137,7 +137,7 @@ broadline distributor and **consigned to JLC**, so it stays machine-placed.
 | **`LQW18AN39NG80D`** Murata Electronics | `L5,L6` | `C2042966` | **3** | 10 | **-7** | — |
 | **`DMM-4026-B-I2S-R`** JLCPCB Assembly | `MK1` | `C3171792` | **0** | 5 | **-5** | This product is no longer manufactured. |
 | **`SQ2364EES-T1_BE3`** Vishay Intertech | `Q11` | `C5758702` | **0** | 5 | **-5** | — |
-| **`NTMD4820NR2G`** onsemi | `Q2,Q3` | `C905372` | **0** | 10 | **-10** | This product is no longer manufactured. |
+| ~~**`NTMD4820NR2G`** onsemi~~ → **`AO4800`** Alpha & Omega Semiconductor | `Q2,Q3` | ~~`C905372`~~ → `C17098` | ~~**0**~~ → **5 347** | 10 | **+5 337** | **RETIRED at D-790 / D789-A01** for an electrical reason as well as a stock one; the AOS line covers the need |
 | **`LTC4368IMS-1#TRPBF`** Analog Devices | `U18` | `C688401` | **2** | 5 | **-3** | — |
 | **`TLV7032DDFR`** Texas Instruments | `U19` | `C2871498` | **0** | 5 | **-5** | — |
 | **`PCAL9535APW,118`** NXP Semicon | `U2,U3` | `C2669683` | **1** | 10 | **-9** | — |
@@ -220,12 +220,18 @@ REPLAYS rather than re-queries.  **It was 124 lines through D-788**; `D14`'s
 `D10`/`D11`/`D12` already carry (D788-11), so that line is now one row of
 quantity four.  The ten short lines are unchanged.
 
-> **`Q2`/`Q3` IS A PRE-PCBA BLOCK AND IT IS NOT MERELY A STOCK PROBLEM.**  The
-> locked `NTMD4820NR2G` reads stock 0 and is flagged no longer manufactured
-> (F-N01), **and** `R8-N01` found that the fitted part is not guaranteed to be
-> ENHANCED at this board's `BAT_RAW`: the `LTC4368` guarantees 3.0 V of gate
-> drive and the FET's `VGS(th)` MAXIMUM is 3.0 V, with no published `RDS(on)`
-> row below `VGS` = 4.5 V.  The eight selection requirements for the
+> **`Q2`/`Q3` WAS A PRE-PCBA BLOCK AND D-790 CLOSED IT.**  The RETIRED
+> `NTMD4820NR2G` read stock 0 and was flagged no longer manufactured (F-N01),
+> **and** `R8-N01` found that it was not guaranteed to be ENHANCED at this
+> board's `BAT_RAW`: the `LTC4368` guarantees 3.0 V of gate drive and that
+> FET's `VGS(th)` MAXIMUM is 3.0 V, with no published `RDS(on)` row below
+> `VGS` = 4.5 V.  **D-790 / D789-A01 re-selects the pair to Alpha & Omega
+> `AO4800` (`C17098`)** — same SOIC-8 land, same pin function map, `VGS(th)`
+> MAX **1.5 V** and a published `RDS(on)` MAX of **50 mΩ AT `VGS` = 2.5 V` —
+> and `demo_feature_contract` **F10** now PROVES the four-channel model
+> instead of holding it.  The paragraph below is the D-789 selection brief
+> that led to it and is retained as the record of how the part was chosen.
+> The eight selection requirements for the
 > replacement and first-article **`C-BAT-GATE-01`** are in
 > [`SOURCING_LEDGER.md`](SOURCING_LEDGER.md), and `demo_feature_contract` F10
 > refuses a ledger that drops them.  **Do not pay for PCBA until this line is
@@ -239,7 +245,7 @@ Nine of them are machine-placed and are in §4; `J5` is the tenth and is Class E
 | **`LQW18AN39NG80D`** Murata Electronics | `L5,L6` | `C2042966` | **3** | 10 | **-7** | — machine, consigned |
 | **`DMM-4026-B-I2S-R`** JLCPCB Assembly | `MK1` | `C3171792` | **0** | 5 | **-5** | This product is no longer manufactured. machine, consigned |
 | **`SQ2364EES-T1_BE3`** Vishay Intertech | `Q11` | `C5758702` | **0** | 5 | **-5** | — machine, consigned |
-| **`NTMD4820NR2G`** onsemi | `Q2,Q3` | `C905372` | **0** | 10 | **-10** | This product is no longer manufactured. machine, consigned |
+| **`AO4800`** Alpha & Omega Semiconductor | `Q2,Q3` | `C17098` | **5 347** | 10 | **+5 337** | **RE-SELECTED at D-790 / D789-A01**, superseding the RETIRED `NTMD4820NR2G` / `C905372` which read 0 stock AND published no conduction row at the gate drive this circuit has.  Stock covers the need, so this line is carried for **authorised-allocation** confirmation only.  machine |
 | **`LTC4368IMS-1#TRPBF`** Analog Devices | `U18` | `C688401` | **2** | 5 | **-3** | — machine, consigned |
 | **`TLV7032DDFR`** Texas Instruments | `U19` | `C2871498` | **0** | 5 | **-5** | — machine, consigned |
 | **`PCAL9535APW,118`** NXP Semicon | `U2,U3` | `C2669683` | **1** | 10 | **-9** | — machine, consigned |
@@ -248,19 +254,27 @@ Nine of them are machine-placed and are in §4; `J5` is the tenth and is Class E
 **`D8` `NSR0240HT1G` is no longer on this list** — it re-swept at **5 280** in
 stock against a need of 5.
 
-**THE THREE "NO LONGER MANUFACTURED" FLAGS ARE JLCPCB CATALOGUE FLAGS, NOT
-MANUFACTURER EOL.**  Samtec still catalogues `SSQ-124-02-G-S-RA`, PUI still
-catalogues `DMM-4026-B-I2S-R` and onsemi still catalogues `NTMD4820NR2G`.  What
-the flag means is that **JLCPCB will not source them for you**.  **Before PCBA
+**THE "NO LONGER MANUFACTURED" FLAGS ARE JLCPCB CATALOGUE FLAGS, NOT
+MANUFACTURER EOL — AND THERE ARE TWO OF THEM NOW, NOT THREE.**  Samtec still
+catalogues `SSQ-124-02-G-S-RA` and PUI still catalogues `DMM-4026-B-I2S-R`.
+*(D-790 / Fable `D-01`: this sentence also read "and onsemi still catalogues
+`NTMD4820NR2G`", which Fable reported as stale against onsemi's own page —
+Round-8 found it flagged **Obsolete** there.  The point is moot: D-790 /
+D789-A01 retired that part for an ELECTRICAL reason and the line is now
+`AO4800`.)*  What the flag means is that **JLCPCB will not source them for
+you**.  **Before PCBA
 payment** each must be confirmed ACTIVE against the MANUFACTURER's own lifecycle
 page and ordered from a franchised distributor.  A part that turns out to be
 genuinely EOL is an escalation, not a substitution.
 
 **NO SUBSTITUTION WITHOUT REQUALIFICATION.**  Each of these ten is a safety
 part, an RF part, or a part whose exact identity a gate in this repository
-binds — `F5` for `Q11`, `F8` for the capacitor population, `RF1`–`RF5` for
-`L5`/`L6`, `F6` for the limiter switches, `firmware_hw_map_contract` for
-`U2`/`U3`.  An electrically or mechanically different part invalidates the
+binds — `F5` for `Q11`, **`F10` for `Q2`/`Q3`**, `F8` for the capacitor
+population, `RF1`–`RF5` for `L5`/`L6`, `F6` for the limiter switches,
+`firmware_hw_map_contract` for `U2`/`U3`.  **The `AO4800` line in particular
+may NOT be filled from the VBsemi, HXY, UMW, JSMSEMI, MSKSEMI or TECH PUBLIC
+rows that carry the same marking**: those are re-marked second sources and
+these are the battery path's pass FETs.  An electrically or mechanically different part invalidates the
 clause that qualified it.
 
 **Archived counts are not purchasing authority.  Re-check immediately before the
@@ -270,9 +284,9 @@ order.**
 
 ## 7a. D-780 Q11 first-five temperature acceptance — `Q11-TEMP-01`
 
-`Q11` is now Vishay **SQ2364EES-T1_BE3**. Its 60 V rating covers the board's 39 V open-LED fault ceiling, and its published **0.245 Ω MAX at VGS = 1.5 V, ID = 2 A** gives a direct low-gate conduction point below AQROOT's held **VGS = 1.961526 V**.
+`Q11` is now Vishay **SQ2364EES-T1_BE3**. Its 60 V rating covers the board's 39 V open-LED fault ceiling, and its published **0.245 Ω MAX at VGS = 1.5 V, ID = 2 A** gives a direct low-gate conduction point below AQROOT's held **VGS = 1.945526 V**. *(D-790 / D789-A08: 1.945526 V / 445.5 mV at the TPS61169's 220 mV feedback MAXIMUM; 1.961526 V used its 204 mV typical.)*
 
-> **D-789 / D788-11 + `R8-N03` CORRECTED THE NUMBER IN THAT SENTENCE, AND THE PART THAT SETS IT.**  This section carried **2.396 V**, which was derived against the 3.3 V rail D-788 retired to keep the ILI9488 panel inside its own absolute maximum — the same hand-carried-constant failure Round-8 raised as D788-11, surviving in a second document.  The held gate is now **DERIVED** by `demo_feature_contract` F5 as `VOH(MIN) − VF(D14)` at the rail's own heavy-load minimum: `0.8 × 3.069408 V = 2.455526 V` less the diode's lowest published forward maximum plus a declared 2 mV/K cold-endpoint allowance.  **With the old `1N4148WS` that lands at `VGS` = 1.486526 V — 13.5 mV BELOW the 1.5 V conduction row above, with no lower row to bound it — so `D14` is now a `BAT54WS-7-F`** (`VF` ≤ 240 mV at `IF` = 0.1 mA, below the ~9 µA this node draws and monotone in `IF`, so it is a guaranteed bound), giving **1.961526 V — 461.5 mV inside** the published region.  It is the same MPN, LCSC code and SOD-323 land this board already fits at `D10`/`D11`/`D12`: **no new part, no new feeder, no copper, no assembly-step change.**  The acceptance below is unchanged and still runs at 0 / 25 / 40 °C. The vendor electrical-characteristics table states **TC = 25 °C unless otherwise noted**, so that 1.5 V row is not being misrepresented as an all-temperature guarantee. For these five Kickstarter prototypes this is a **reworkable first-article qualification item, not a production-temperature claim**.
+> **D-789 / D788-11 + `R8-N03` CORRECTED THE NUMBER IN THAT SENTENCE, AND THE PART THAT SETS IT.**  This section carried **2.396 V**, which was derived against the 3.3 V rail D-788 retired to keep the ILI9488 panel inside its own absolute maximum — the same hand-carried-constant failure Round-8 raised as D788-11, surviving in a second document.  The held gate is now **DERIVED** by `demo_feature_contract` F5 as `VOH(MIN) − VF(D14)` at the rail's own heavy-load minimum: `0.8 × 3.069408 V = 2.455526 V` less the diode's lowest published forward maximum plus a declared 2 mV/K cold-endpoint allowance.  **With the old `1N4148WS` that lands at `VGS` = 1.486526 V — 13.5 mV BELOW the 1.5 V conduction row above, with no lower row to bound it — so `D14` is now a `BAT54WS-7-F`** (`VF` ≤ 240 mV at `IF` = 0.1 mA, below the ~9 µA this node draws and monotone in `IF`, so it is a guaranteed bound), giving **1.945526 V — 445.5 mV inside** the published region.  *(D-790 / D789-A08 moved this 16 mV: `Q11`'s SOURCE is the TPS61169's own feedback node, so the bound is that reference's published **MAXIMUM** of 220 mV, not the 204 mV TYPICAL every derivation from D-752 to D-789 used.  A higher feedback voltage makes `VGS` smaller, so the typical was a limit in the direction that flattered the answer.  D-789 published 1.961526 V / 461.5 mV.)*  It is the same MPN, LCSC code and SOD-323 land this board already fits at `D10`/`D11`/`D12`: **no new part, no new feeder, no copper, no assembly-step change.**  The acceptance below is unchanged and still runs at 0 / 25 / 40 °C. The vendor electrical-characteristics table states **TC = 25 °C unless otherwise noted**, so that 1.5 V row is not being misrepresented as an all-temperature guarantee. For these five Kickstarter prototypes this is a **reworkable first-article qualification item, not a production-temperature claim**.
 
 Before a first-five unit is accepted for Demo use, validate the backlight at **0 °C, 25 °C and 40 °C** after thermal soak: full-on, the normal firmware PWM range, commanded OFF for at least 30 s, and repeated ON→OFF→ON transitions. **D-784 startup rule:** from a discharged `C85`, firmware must first drive `DISP_BL_CTL` at **100% duty for at least 2 ms** before entering low-duty PWM; the released bring-up firmware uses a **3.0 ms microsecond-timed prime** to guarantee margin rather than relying on an Arduino millisecond tick delay. Do not start directly at 1% duty. Scope `DISP_BL_CTL`, **Q11 VGS**, `LED_BOOST`, Q11 VDS and LED current during startup/OFF/restart. Acceptance: no visible dropout/flicker at full-on or normal PWM, no TPS61169 open-LED latch during normal operation, commanded OFF remains dark, and restart is repeatable. Record the unit ID and result. The TPS61169 primary datasheet is archived at `hardware/demo/kicad/aqroot-demo/vendor/TI/tps61169.pdf` (SHA-256 `7d0b8ace2459a9fd22fe7145086cbad4ccb3bb43219247459313fcba75230151`). A failure blocks that unit and requires `Q11`/gate-drive rework before Demo use; it does **not** authorize widening the temperature claim.
 
@@ -322,8 +336,30 @@ ground-spring probe at the connector and **≥ 20 MHz** bandwidth, using
   a second DC-coupled channel on the same trigger**, capture the excursion
   AC-coupled at high gain, and **add them**.
 
-**Either way the acceptance is judged against the measured value MINUS the
-stated measurement uncertainty on the high side and PLUS it on the low side.**
+**CHARGING THE UNCERTAINTY AGAINST THE MARGIN — D-790 / D789-A06 CORRECTS THE
+SIGN OF THIS SENTENCE, WHICH WAS BACKWARDS AND WOULD HAVE PASSED FAILING
+UNITS.**  D-788 wrote "the measured value MINUS the stated measurement
+uncertainty on the high side and PLUS it on the low side", which *relieves*
+the margin instead of charging it: a 3.310 V peak with ±0.020 V of uncertainty
+would have been read as 3.290 V and ACCEPTED, and a 2.990 V trough as
+3.010 V.  Both are over the limit.  The acceptance is:
+
+> **`measured peak + total uncertainty < 3.300 V`**
+> **`measured trough − total uncertainty > 3.000 V`**
+
+The uncertainty always makes the reading WORSE, never better.  Worked
+boundary examples, which `demo_feature_contract` `F11` re-derives from these
+numbers on every run so this table cannot drift from the rule above:
+
+| measured | total uncertainty | judged as | verdict |
+|---|---|---|---|
+| peak **3.310 V** | ±0.020 V | **3.330 V** | **REFUSED** — this is the D-788 example, and it used to pass |
+| peak **3.290 V** | ±0.020 V | **3.310 V** | **REFUSED** |
+| peak **3.275 V** | ±0.020 V | **3.295 V** | **ACCEPTED** |
+| trough **2.990 V** | ±0.020 V | **2.970 V** | **REFUSED** — the other D-788 example |
+| trough **3.010 V** | ±0.020 V | **2.990 V** | **REFUSED** |
+| trough **3.025 V** | ±0.020 V | **3.005 V** | **ACCEPTED** |
+
 Record the uncertainty budget — probe attenuation tolerance, vertical gain
 accuracy, offset accuracy, and for (B) the DMM accuracy and the trigger skew —
 with the reading.  A reading whose uncertainty is not recorded is not a result.
@@ -365,7 +401,8 @@ them.
 
 The absolute peak at `J1.40`/`J1.41`/`J1.42` must stay **below 3.300 V** and
 the absolute trough at `U1.2` **above 3.000 V**, both **after the measurement
-uncertainty is charged against the margin**.  Record the peak, the trough, the
+uncertainty is charged against the margin — peak PLUS uncertainty under the
+ceiling, trough MINUS uncertainty over the floor** (D-790 / D789-A06).  Record the peak, the trough, the
 uncertainty budget, the acquisition method (A or B) and the unit ID.  A failure
 blocks that unit; **the designed lever is `C29`–`C32`**, which are 22 µF 1206
 X7R parts on existing lands — `SLVS916I` 8.2.2.3 sets **no upper limit** on
@@ -396,8 +433,9 @@ text stays where it is.
 |---|---|---|---|
 | **`Q11-TEMP-01`** | backlight at 0 / 25 / 40 °C after soak, and the D-784 full-duty prime | §7a above | D-780 |
 | **`C-PWR-TRANSIENT-01`** | `+3V3` peak < 3.300 V at the panel pins and trough > 3.000 V at `U1.2`, DC-coupled or synchronised DC+AC, uncertainty charged against the margin | §7b below | D-788 / R7-N02, rewritten at D788-18 |
-| **`C-THERM-01`** | thermography at the 40 °C top of the declared ambient envelope with both accessory rails at their published budgets — the measurement of record for the **115.44 °C** BQ25185 junction and the `U11.2` narrow run | `audit_rail_ampacity.py`, `AQROOT_DEMO_FAB_HANDOFF.md` | D-788, re-based at D788-03 |
-| **`C-BAT-GATE-01`** | `ΔVGATE` and pass-pair drop at 2.35 A at `BAT_RAW` = 4.15 / 3.60 / 3.05 V — six numbers, whatever `Q2`/`Q3` ends up being | [`SOURCING_LEDGER.md`](SOURCING_LEDGER.md) | D-789 / `R8-N01` |
+| **`C-THERM-01`** | thermography at the 40 °C top of the declared ambient envelope, held at the **declared SUSTAINED REFERENCE STATE** — both published accessory budgets, the display at full brightness, **both** radios transmitting and the audio amplifier at its capped level — and MEASURED against the D-790 model: BQ25185 junction **95.99 °C**, enclosure internal air **55.80 °C**, and the enclosure's own **`R_SYS` = 3.2493 K/W**, which is a DECLARED allowance and is what this test exists to measure.  Also record the `U11.2` narrow run.  *(D-789 framed this item around a 115.44 °C junction computed with a JEDEC θJA referenced to the EXTERNAL ambient; `D789-A02` replaced the frame.)* | `audit_rail_ampacity.py`, `AQROOT_DEMO_FAB_HANDOFF.md` | D-788, re-based at D788-03, RE-BASED AGAIN at D-790 / D789-A02 |
+| **`C-BAT-GATE-01`** | `ΔVGATE` (GATE − `BAT_PROTECTED_P`) and pass-pair drop (`BAT_RAW` − `BAT_SENSE`) at 2.35 A at `BAT_RAW` = 4.15 / 3.60 / 3.05 V — six numbers, on the fitted **`AO4800`**.  This is what converts the one thing NO candidate publishes — hot `RDS(on)` at `VGS` = 2.5 V — from an extrapolation into a measured bound | [`SOURCING_LEDGER.md`](SOURCING_LEDGER.md) | D-789 / `R8-N01`, part fixed at D-790 / `D789-A01` |
+| **`C-DISP-01`** | the display module's own `+3V3` draw, split into **panel logic** (`J1` `VCI` + `IOVCC` + the FT6236 touch controller) and **backlight converter input** (`U17` `VIN`), at full brightness and at the rail's heavy-load minimum.  The backlight half is DERIVED — `demo_feature_contract` `F6` solves it at **211.58 mA** from published maxima only — and the panel half is a **DECLARED 50 mA allowance**, because ILI Technology publishes Sleep-in and Deep-Standby currents and **no active-mode supply current at all** and the EastRising module specification is not obtainable here.  This test is what replaces that declaration with a measurement | `checks/demo_feature_contract.py` F6 `p3v3_internal_budget`, `AQROOT_DEMO_FAB_HANDOFF.md` | D-790 / `D789-A11` |
 | **`C-SPK-01`** | delivered speaker-lead insulation OD, then two sacrificial crimps pulled to destruction | [`OFF_BOARD_BOM.md`](OFF_BOARD_BOM.md) §7 | D-789 / D788-10 |
 | **`C-ADH-01`** | DOWSIL 3145 adhesion on the actual soldermask and the actual lead insulation, per lot, after the full 72 h hold | [`BATTERY_HARNESS.json`](BATTERY_HARNESS.json) | D-789 / D788-17 |
 | **`C-ACC-01`** | delivered Community-Port potential at the J5 mating interface, each 3.3 V contact **alone** and with the header fully mated | [`ACC_3V3_REINFORCEMENT.json`](ACC_3V3_REINFORCEMENT.json) | D-789 / D788-02 |
@@ -422,7 +460,7 @@ returns nothing.** Every one of these would have shipped silently.
 | `D8` | onsemi `NSR0240HT1G` | FUXINSEMI **`SD103AWS`** `C915626` | **Different part number entirely** |
 | `Q4`, `Q6`–`Q9` | onsemi `BSS138LT1G` | LRC **`LBSS138LT1G`** `C8490` | Different manufacturer — **and the genuine onsemi part has 762,522 in stock**, so there is no reason to accept it |
 | `L2`, `L4` | Würth `74438357010` | KOHERelec **`SPM4030-1R0M`** `C2761910` | Different manufacturer's inductor in a switching regulator |
-| `Q2`, `Q3` | onsemi `NTMD4820NR2G` | VBsemi **`NTMD4820NR2G-VB`** `C7525084` | Clone in the **battery reverse-polarity pass path**. The CTO ruling forbids silent substitution of power-path parts |
+| `Q2`, `Q3` | Alpha & Omega **`AO4800`** `C17098` *(was onsemi `NTMD4820NR2G`, RETIRED at D-790)* | the VBsemi, HXY, UMW, JSMSEMI, MSKSEMI and TECH PUBLIC rows that carry the **same `AO4800` marking**, and the old VBsemi `NTMD4820NR2G-VB` `C7525084` | Clones and re-marks in the **battery reverse-polarity pass path**. The CTO ruling forbids silent substitution of power-path parts, and D-790 / D789-A01 lists the six refused marking-alikes by name |
 | `Q2`, `Q3` (again) | a genuine SOIC-8 dual N-FET replacement | JLC attribute table: **`YJQ3622A`** `C5440262` — advertised as *2 N-channel, 30 V, `VGS(th)` 1 V, 3112 in stock* | **D-789 / `R8-N01`. ITS DATASHEET SAYS SINGLE N-CHANNEL IN DFN3.3×3.3.** It would not have fitted the land, let alone the topology. The catalogue attribute row was simply wrong, which is why the `Q2`/`Q3` selection criteria put *read the datasheet, not the catalogue row* first |
 | `J6` speaker crimp | JST **`SPH-004T-P0.5S`** (AWG #32–#28) | JST **`SPH-002T-P0.5S`** — same series, same housing, same catalogue page, carried in this repository from D-148 to D-788 | **D-789 / D788-10 + `R8-N02`. NOT A SEARCH RESULT — A MISREAD OF THE SOURCE.** The `ePH` catalogue's series header says *#32 to #24*; the CONTACT table says `SPH-002T-P0.5S` is **#30 to #24, OD 0.8–1.5 mm** and `SPH-004T-P0.5S` is **#32 to #28, OD 0.5–0.9 mm**. The fitted AWG #32 lead was outside the fitted contact in **both** dimensions, and the two contacts take **different crimp tooling** |
 
@@ -452,13 +490,14 @@ the quote stage. **`L2`/`L4` also carried two spellings of "Würth"** and were n
 
 | question | answer |
 |---|---|
-| how many distinct MPNs? | **46** (43 after the two duplicate-string merges and one manufacturer-spelling merge) |
+| how many distinct MPNs? | **105** on the released assembly BOM and **106** across the full BOM including DNP, counted from `aqroot-Demo-BOM-full.csv` and `aqroot-Demo-BOM-assembly.csv` themselves. *(D-790 / D789-A07: this row read **46 (43 after merges)**, which was the FBV2-S2-002 sourcing sweep's shortlist and never the BOM's own line count.)* |
+| how many assembly lines / references? | **123 grouped lines** covering **251 fitted references**; the full BOM has **144 lines** of which **10** are DNP |
 | how many parts machine-placed? | **all fitted SMT parts; Class E covers five manual references (`J4`,`J5`,`J6`,`D1`,`U6`)** |
 | how many manual solder operations per board? | **5** — `J4`, `J5`, `J6`, `D1`, `U6`; J4 is a wire pigtail land, while the other four are fitted THT parts; `J4`/`D1`/`U6` also have normative trim/forming instructions |
 | how many fine-pitch/QFN parts hand-placed? | **zero** |
-| how many part identities need consignment? | **TEN, from the D-788 live sweep of all 124 assembly lines on 2026-09-20**: `SSQ-124-02-G-S-RA` (`J5`), `74438357010` (`L4`), `LQW18AN39NG80D` (`L5`/`L6`), `DMM-4026-B-I2S-R` (`MK1`), `SQ2364EES-T1_BE3` (`Q11`), `NTMD4820NR2G` (`Q2`/`Q3`), **`LTC4368IMS-1#TRPBF` MSOP-10 `C688401`** (`U18` — *the `LTC4368IDD-1#PBF` DFN row this line carried until D-788 was the WRONG PACKAGE and is RETIRED*), `TLV7032DDFR` (`U19`), `PCAL9535APW,118` (`U2`/`U3`), `ST25R3916-AQET` (`U9`) + 0 class D. **`NSR0240HT1G` (`D8`) is NO LONGER on this list** — it re-swept at 5 280 in stock against a need of 5. **Re-check all stock immediately before order; any additional exact-source item whose live stock no longer covers first-five need also moves to consignment. Archived counts are not purchasing authority.** |
+| how many part identities need consignment? | **NINE, from the live sweep of all 123 assembly lines re-run for D-790 on 2026-09-21** (`evidence/d790-sourcing-sweep.json`): `SSQ-124-02-G-S-RA` (`J5`), `74438357010` (`L4`), `LQW18AN39NG80D` (`L5`/`L6`), `DMM-4026-B-I2S-R` (`MK1`), `SQ2364EES-T1_BE3` (`Q11`), **`LTC4368IMS-1#TRPBF` MSOP-10 `C688401`** (`U18`), `TLV7032DDFR` (`U19`), `PCAL9535APW,118` (`U2`/`U3`), `ST25R3916-AQET` (`U9`) + 0 class D.  **`AO4800` (`Q2`/`Q3`) is NO LONGER on this list** — D-790 / D789-A01 re-selected the pass pair and the AOS line re-swept at **5 347** against a need of 10 — **but it is still one of the ten exact identities that `D789-S01` requires an AUTHORISED ALLOCATION for before money is spent**, because stock in a catalogue is not an allocation and these are the battery path's pass FETs.  `NSR0240HT1G` (`D8`) is also not on this list at 5 280 in stock. **Re-check all stock immediately before order; any additional exact-source item whose live stock no longer covers first-five need also moves to consignment. Archived counts are not purchasing authority.** |
 | DNP parts with no recorded reason | **zero** — eight were still undocumented at the start of FBV2-S2-002 and all eight now carry one |
-| does the build close today? | **Yes, via consignment.** It does **not** close as a pure LCSC turnkey order |
+| does the build close today? | **Yes, via consignment, and the D-789 PRE-PCBA BLOCK on `Q2`/`Q3` is CLOSED.** D-790 / D789-A01 re-selected the battery pass pair to Alpha & Omega **`AO4800`** (`C17098`, genuine AOS line, live stock 5 347) and `demo_feature_contract` **F10** now PROVES it rather than holding it. It does **not** close as a pure LCSC turnkey order. **Every consigned identity below still needs an authorised allocation before money is spent — that is a purchasing action this repository cannot take, and it is the remaining gate (`D789-S01`).** |
 
 **Do not optimise cents. Optimise first-build success.** Consignment cost is trivial against one failed board or one wrong-part respin; the exact count must be recomputed from live stock at order time rather than inherited from this archived snapshot.
 
@@ -467,9 +506,22 @@ the quote stage. **`L2`/`L4` also carried two spellings of "Würth"** and were n
 ## 11. What this plan does **not** claim
 
 - It does **not** claim any of these stock figures will still hold when the order is placed.
-- ~~It does **not** adopt a single substitute part.~~ **SUPERSEDED 2026-08-23 (FBV2-MECH-002).**
-  **`BAT54WS-7-F` (`C124205`) and `0466005.NRHF` (`C57525`) are now CTO-APPROVED, ELECTRICALLY
-  VERIFIED AND ADOPTED** — D-211 and D-210. They are the only two substitutions this programme has
-  adopted, and no other substitution is authorised.
+- ~~It does **not** adopt a single substitute part.~~ **SUPERSEDED 2026-08-23 (FBV2-MECH-002),
+  and the count RESTATED at D-790 / D789-A07 — it read "the only two substitutions" long after
+  the programme had adopted five.** Every part substitution this programme has
+  CTO-approved, in order:
+  1. **`BAT54WS-7-F`** (`C124205`) at `D10`–`D12` — D-211;
+  2. **`0466005.NRHF`** (`C57525`) at `F1` — D-210;
+  3. **`AO3422`** and then Vishay **`SQ2364EES-T1_BE3`** (`C5758702`) at `Q11` — D-766, D-780,
+     for `VDS` margin against the open-LED clamp and then for a published low-gate conduction row;
+  4. **`BAT54WS-7-F`** again at `D14` — D-789 / D788-11, because the `1N4148WS` gate hold no longer
+     qualified once the rail moved down to keep the panel inside its absolute maximum;
+  5. **`AO4800`** (`C17098`) at `Q2`/`Q3` — D-790 / D789-A01, because the retired
+     `NTMD4820NR2G` publishes no conduction row below `VGS` = 4.5 V and a `VGS(th)`
+     **MAXIMUM** of 3.0 V that the LTC4368's guaranteed gate drive cannot clear.
+
+  Divider and limiter VALUE changes (`R39`, `R40`, `R75`, `R97`, `R101`) are not counted here:
+  they are component values on the same part class, not substitutions. **No other substitution is
+  authorised**, and none may be made at the assembler's discretion.
 - It does **not** cover the anonymous passive values, which stay unconsolidated until the layout
   exists.

@@ -51,7 +51,6 @@ static uint16_t g_last_u3 = 0xFFFF;
 static BoardChipSelects g_selects;
 static SpiBusB g_spi_b(g_selects);
 static Ili9488 g_display;
-static bool g_display_up = false;
 static bool g_ok = true;
 static Max17048Guard g_fuel_gauge(AQROOT_I2C_ADDR_FUEL_GAUGE);
 
@@ -350,8 +349,14 @@ static void printStatus() {
                 g_expanders.accessoryPresent(), g_expanders.accessoryFault(),
                 g_expanders.xgpio4(), g_expanders.xgpio5());
   Serial.printf("  charger  %s\n", chargerText(g_expanders.charger()));
-  Serial.printf("  BOOT_N (SW1) = %d   display initialised = %d\n",
-                digitalRead(AQROOT_PIN_BOOT_N), g_display_up);
+  Serial.printf("  BOOT_N (SW1) = %d   display initialised = %d%s\n",
+                digitalRead(AQROOT_PIN_BOOT_N), g_app.displayIsUp(),
+                g_app.displayResetIntentPending()
+                    ? "  (DISP_RST_N release UNCONFIRMED)" : "");
+  if (g_app.amplifierIntentPending()) {
+    Serial.println("  WARNING: AMP_SD_MODE intent unconfirmed -- the "
+                   "amplifier may still be energised");
+  }
 }
 
 void loop() {
@@ -361,7 +366,7 @@ void loop() {
     // bus reopen, the COMPLETE `DemoExpanders::begin`, reset release, run-speed
     // raise and gauge requalification -- lives in `DemoBringupApp` so that
     // `test_production_callers.cpp` executes it against a physical-latch model.
-    if (g_app.serviceExpanderRecovery()) g_display_up = false;
+    (void)g_app.serviceExpanderRecovery();
     delay(10);
     return;
   }
@@ -407,6 +412,9 @@ void loop() {
   // condition AND the period live in `DemoBringupApp`, which a host test runs.
   (void)g_app.backgroundGaugeRequalification();
   g_app.periodicBatteryGuard();
+  // D-790 / D789-A09: any non-accessory command whose write did not land is
+  // retried here until the physical latch confirms it.
+  (void)g_app.serviceDeferredCommands();
 
   if (Serial.available()) {
     const char key = char(Serial.read());
@@ -458,15 +466,24 @@ void loop() {
         if (!g_app.blockingDemoTestAllowed("display test")) break;
         // RESET IS NOT AN MCU PIN.  U2.P04 owns it, so the pulse goes through
         // the expander before a single SPI byte is sent.
+        //
+        // D-790 / D789-A09.  THE RELEASE IS AN INTENT, NOT A FIRE-AND-FORGET.
+        // This file used to discard both `setDisplayReset` results and then
+        // set `g_display_up = true` unconditionally -- so a NACKed release
+        // left the panel held in reset while the console said the display was
+        // up.  The pulse-and-release now lives in `DemoBringupApp`, which
+        // CONFIRMS it from U2's physical output shadow and keeps retrying from
+        // `loop()` if it did not land.
         Serial.println("display: pulsing DISP_RST_N via U2.P04, then ILI9488 init");
-        g_expanders.setDisplayReset(g_bus, true);
-        delay(20);
-        g_expanders.setDisplayReset(g_bus, false);
-        delay(20);
+        if (!g_app.releaseDisplayResetIntent()) {
+          Serial.println("display: ABORTED -- DISP_RST_N release not confirmed; "
+                         "no SPI init attempted, retry pending");
+          break;
+        }
         g_display.begin();
         g_display.testPattern();
         g_display.end();
-        g_display_up = true;
+        g_app.noteDisplayInitialised(true);
         // The panel is WRITE-ONLY -- R112 is DNP -- so nothing here can confirm
         // the init took.  The backlight is raised so the operator can.
         pinMode(AQROOT_PIN_DISP_BL_PWM, OUTPUT);
@@ -488,11 +505,23 @@ void loop() {
       case 't':
         if (!g_app.blockingDemoTestAllowed("audio tone")) break;
         // Leaving shutdown is what makes AMP_SD_MODE observable at all.
+        //
+        // D-790 / D789-A09.  BOTH WRITES ARE INTENTS AND THE SECOND ONE IS THE
+        // SAFETY-RELEVANT ONE.  This file used to discard both results, so a
+        // NACKed shutdown left the amplifier physically ENERGISED with nothing
+        // watching.  `setAmplifierIntent` confirms from U2's output shadow and
+        // leaves a pending retry that `loop()` services.
         Serial.println("1 kHz tone -- amplifier leaving shutdown");
-        g_expanders.setAmplifier(g_bus, true);
+        if (!g_app.setAmplifierIntent(true)) {
+          Serial.println("audio: ABORTED -- AMP_SD_MODE enable not confirmed");
+          break;
+        }
         delay(5);
         Serial.printf("i2s tone %s\n", playTone(1000, 400) ? "played" : "FAILED");
-        g_expanders.setAmplifier(g_bus, false);
+        if (!g_app.setAmplifierIntent(false)) {
+          Serial.println("audio: AMPLIFIER SHUTDOWN NOT CONFIRMED -- retry "
+                         "pending; do not assume the speaker is quiet");
+        }
         break;
       default: break;
     }

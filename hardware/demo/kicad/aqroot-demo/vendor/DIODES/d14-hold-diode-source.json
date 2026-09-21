@@ -1,60 +1,61 @@
 {
-  "schema": 1,
-  "decision": "D-789",
-  "why": "D788-11 asked for Q11's held gate to be DERIVED from the rail, the GPIO VOH, D14's forward drop, C85/R132 and leakage rather than asserted at a constant 2.60 V left over from the 3.3 V rail. Deriving it showed the 1N4148WS no longer fits: at the D-788 rail the held VGS bounds to 1.4865 V against the SQ2364EES's only published low-gate conduction row of VGS = 1.5 V. D14 therefore changes from a silicon switching diode to a Schottky in the SAME SOD-323 land, from the SAME manufacturer already fitted on this reference. Both documents are archived: the part that leaves and the part that arrives.",
-  "vendor": "Jiangsu Changjing Electronics Technology Co., Ltd. (JSCJ)",
-  "reference": "D14",
-  "package": "SOD-323 (Diode_SMD:D_SOD-323)",
-  "fitted": {
-    "mpn": "BAT54WS-7-F",
-    "manufacturer": "Diodes Incorporated",
-    "lcsc": "C124205",
-    "document": "vendor/DIODES/diodes-bat54ws-7-f-ds30086.pdf",
-    "sha256": "a910241faa214991993fa171bd226bdbb8730c0f453c18993c738d96226f26d6",
-    "obtained_from": "https://datasheet.lcsc.com/datasheet/pdf/ae1de730e539e7c2ce35366c970d58e6.pdf",
-    "obtained_via": "the dataManualUrl of the live D-096 JLCPCB record evidence/jlc-live/bat54ws-7-f-00947faf.json (C124205, Diodes Incorporated, stock 82659)",
-    "already_on_this_board": "D10, D11 and D12 carry this exact MPN and LCSC code, procurement-locked at D-211. D14 therefore joins an existing BOM line: no new part, no new feeder, no new footprint.",
-    "facts": {
-      "table": "Electrical Characteristics (@TA = +25 C, unless otherwise specified)",
-      "VFM_max_mV_at_0p1mA": 240,
-      "VFM_max_mV_at_1mA": 320,
-      "VFM_max_mV_at_10mA": 400,
-      "VFM_max_mV_at_30mA": 500,
-      "VFM_max_mV_at_100mA": 1000,
-      "IRM_max_uA_at_VR_25V": 2.0,
-      "VBRR_min_V_at_IR_100uA": 30,
-      "CT_max_pF_at_VR_1V": 10,
-      "why_the_0p1mA_row_is_the_one_used": "the held gate draws about 9 uA through R132, which is BELOW the lowest published forward-current row; VF is monotonically increasing in IF, so VF(9 uA) <= VF(0.1 mA) = 240 mV is a GUARANTEED bound and needs no interpolation",
-      "why_the_25V_reverse_row_is_a_bound_here": "IR increases with VR, and this node never exceeds the held gate of about 2.17 V, so the 25 V row is an upper bound at 25 C. The 40 C top of the prototype envelope is carried by a DECLARED 3x factor, which is above the conventional doubling-per-10-K rule for a Schottky."
-    }
+ "decision": "D-789",
+ "fitted": {
+  "already_on_this_board": "D10, D11 and D12 carry this exact MPN and LCSC code, procurement-locked at D-211. D14 therefore joins an existing BOM line: no new part, no new feeder, no new footprint.",
+  "document": "vendor/DIODES/diodes-bat54ws-7-f-ds30086.pdf",
+  "facts": {
+   "CT_max_pF_at_VR_1V": 10,
+   "IRM_max_uA_at_VR_25V": 2.0,
+   "VBRR_min_V_at_IR_100uA": 30,
+   "VFM_max_mV_at_0p1mA": 240,
+   "VFM_max_mV_at_100mA": 1000,
+   "VFM_max_mV_at_10mA": 400,
+   "VFM_max_mV_at_1mA": 320,
+   "VFM_max_mV_at_30mA": 500,
+   "table": "Electrical Characteristics (@TA = +25 C, unless otherwise specified)",
+   "why_the_0p1mA_row_is_the_one_used": "the held gate draws about 9 uA through R132, which is BELOW the lowest published forward-current row; VF is monotonically increasing in IF, so VF(9 uA) <= VF(0.1 mA) = 240 mV is a GUARANTEED bound and needs no interpolation",
+   "why_the_25V_reverse_row_is_a_bound_here": "IR increases with VR, and this node never exceeds the held gate of about 2.17 V, so the 25 V row is an upper bound at 25 C. The 40 C top of the prototype envelope is carried by a DECLARED 3x factor, which is above the conventional doubling-per-10-K rule for a Schottky."
   },
-  "superseded": {
-    "mpn": "1N4148WS",
-    "lcsc": "C2128",
-    "document": "vendor/JSCJ/jscj-1n4148ws-sod323-2011-05.pdf",
-    "sha256": "59e951bd3155eb4a94e958d10edc3b7d17325f38cf06784cac07fbcc9fcabf2e",
-    "obtained_from": "https://datasheet.lcsc.com/datasheet/pdf/460cf88f750c4519b4ed435068ee729e.pdf",
-    "facts": {
-      "table": "Electrical Ratings @Ta=25 C",
-      "VF1_max_mV_at_1mA": 715,
-      "VF2_max_mV_at_10mA": 855,
-      "IR_max_nA_at_VR_20V": 25,
-      "lowest_published_forward_current_row_mA": 1.0,
-      "why_it_is_superseded": "715 mV is the LOWEST published forward-voltage maximum and the part publishes no row below 1 mA. Held gate = VOH(0.8 x 3.069408 V) - VF - a declared 2 mV/K allowance to the 0 C prototype endpoint = 1.690526 V, so VGS = 1.486526 V against the fitted SQ2364EES's only published low-gate RDS(on) condition of VGS = 1.5 V. It is short by 13.5 mV and there is no lower-current row to bound it with."
-    },
-    "manufacturer": "Jiangsu Changjing Electronics"
+  "lcsc": "C124205",
+  "manufacturer": "Diodes Incorporated",
+  "mpn": "BAT54WS-7-F",
+  "obtained_from": "https://datasheet.lcsc.com/datasheet/pdf/ae1de730e539e7c2ce35366c970d58e6.pdf",
+  "obtained_via": "the dataManualUrl of the live D-096 JLCPCB record evidence/jlc-live/bat54ws-7-f-00947faf.json (C124205, Diodes Incorporated, stock 82659)",
+  "sha256": "a910241faa214991993fa171bd226bdbb8730c0f453c18993c738d96226f26d6"
+ },
+ "package": "SOD-323 (Diode_SMD:D_SOD-323)",
+ "polarity_correction": {
+  "checked_by": "checks/demo_feature_contract.py F5, which computes the true-off floor and the leak-aware ordering and refuses the 1N4148WS at this rail by arithmetic",
+  "what_d752_said": "1N4148WS chosen over a Schottky BECAUSE OF ITS REVERSE LEAKAGE: ... A BAT54WS would have put that floor near or above threshold at temperature on an UNPUBLISHED number.",
+  "what_the_schottky_actually_costs": "ordering margin, not true-off. The larger reverse leakage discharges C85 in parallel with R132, so demo_feature_contract F5 solves the hold decay with a CONSTANT-CURRENT leak beside the exponential rather than with R132 alone.",
+  "why_it_is_superseded": "the sign is wrong. KiCad's Device:D has pin 1 = K and pin 2 = A, and the board wires D14 pin 1 to /03_SPI_A_DISPLAY_SD/BL_DISC_G (Q11's gate) and pin 2 to /DISP_BL_CTL. In the true-off state CTRL is driven LOW and the gate sits above it, so D14 is REVERSE biased and its leakage flows K->A, OUT of the gate. It can only pull the gate DOWN. The only current that can hold the gate up is Q11's own IGSS, <= 100 nA, which across R132's 222.2 kOhm worst case is 22.2 mV against the SQ2364EES's VGS(th) MINIMUM of 0.46 V."
+ },
+ "reference": "D14",
+ "schema": 1,
+ "superseded": {
+  "document": "vendor/JSCJ/jscj-1n4148ws-sod323-2011-05.pdf",
+  "facts": {
+   "IR_max_nA_at_VR_20V": 25,
+   "VF1_max_mV_at_1mA": 715,
+   "VF2_max_mV_at_10mA": 855,
+   "lowest_published_forward_current_row_mA": 1.0,
+   "table": "Electrical Ratings @Ta=25 C",
+   "why_it_is_superseded": "715 mV is the LOWEST published forward-voltage maximum and the part publishes no row below 1 mA. Held gate = VOH(0.8 x 3.069408 V) - VF - a declared 2 mV/K allowance to the 0 C prototype endpoint = 1.690526 V, so VGS = 1.486526 V against the fitted SQ2364EES's only published low-gate RDS(on) condition of VGS = 1.5 V. It is short by 13.5 mV and there is no lower-current row to bound it with."
   },
-  "temperature_allowance": {
-    "declared_dvf_dT_mV_per_K": -2.0,
-    "applied_to_C": 0.0,
-    "reference_C": 25.0,
-    "why": "both documents publish their forward-voltage tables at Ta = 25 C only. A silicon PN junction's VF rises about 2 mV/K as temperature falls and a Schottky's rises less; 2.0 mV/K is applied to BOTH so the comparison between them is like-for-like and the allowance is conservative for the Schottky. 0 C is the bottom of the declared 0..40 C prototype qualification envelope."
-  },
-  "unit_check": "the extracted .txt of both documents was checked against the PDF for the micro->m / Ohm->W substitution D-779 found in another vendor .txt; the quoted rows carry only mV, uA, nA and pF and are unaffected",
-  "polarity_correction": {
-    "what_d752_said": "1N4148WS chosen over a Schottky BECAUSE OF ITS REVERSE LEAKAGE: ... A BAT54WS would have put that floor near or above threshold at temperature on an UNPUBLISHED number.",
-    "why_it_is_superseded": "the sign is wrong. KiCad's Device:D has pin 1 = K and pin 2 = A, and the board wires D14 pin 1 to /03_SPI_A_DISPLAY_SD/BL_DISC_G (Q11's gate) and pin 2 to /DISP_BL_CTL. In the true-off state CTRL is driven LOW and the gate sits above it, so D14 is REVERSE biased and its leakage flows K->A, OUT of the gate. It can only pull the gate DOWN. The only current that can hold the gate up is Q11's own IGSS, <= 100 nA, which across R132's 222.2 kOhm worst case is 22.2 mV against the SQ2364EES's VGS(th) MINIMUM of 0.46 V.",
-    "what_the_schottky_actually_costs": "ordering margin, not true-off. The larger reverse leakage discharges C85 in parallel with R132, so demo_feature_contract F5 solves the hold decay with a CONSTANT-CURRENT leak beside the exponential rather than with R132 alone.",
-    "checked_by": "checks/demo_feature_contract.py F5, which computes the true-off floor and the leak-aware ordering and refuses the 1N4148WS at this rail by arithmetic"
-  }
+  "lcsc": "C2128",
+  "manufacturer": "Jiangsu Changjing Electronics",
+  "mpn": "1N4148WS",
+  "obtained_from": "https://datasheet.lcsc.com/datasheet/pdf/460cf88f750c4519b4ed435068ee729e.pdf",
+  "sha256": "59e951bd3155eb4a94e958d10edc3b7d17325f38cf06784cac07fbcc9fcabf2e"
+ },
+ "temperature_allowance": {
+  "applied_to_C": 0.0,
+  "declared_dvf_dT_mV_per_K": -2.0,
+  "reference_C": 25.0,
+  "why": "both documents publish their forward-voltage tables at Ta = 25 C only. A silicon PN junction's VF rises about 2 mV/K as temperature falls and a Schottky's rises less; 2.0 mV/K is applied to BOTH so the comparison between them is like-for-like and the allowance is conservative for the Schottky. 0 C is the bottom of the declared 0..40 C prototype qualification envelope."
+ },
+ "unit_check": "the extracted .txt of both documents was checked against the PDF for the micro->m / Ohm->W substitution D-779 found in another vendor .txt; the quoted rows carry only mV, uA, nA and pF and are unaffected",
+ "vendor": "Diodes Incorporated",
+ "vendor_correction": "D-790 / D789-A08.  This field read 'Jiangsu Changjing Electronics Technology Co., Ltd. (JSCJ)', which is the manufacturer of the SUPERSEDED 1N4148WS and never of the fitted part.  The record's own `fitted` block always said Diodes Incorporated BAT54WS-7-F; the top-level vendor field had not followed it.  The superseded part's manufacturer is recorded in `superseded.manufacturer`.",
+ "why": "D788-11 asked for Q11's held gate to be DERIVED from the rail, the GPIO VOH, D14's forward drop, C85/R132 and leakage rather than asserted at a constant 2.60 V left over from the 3.3 V rail. Deriving it showed the 1N4148WS no longer fits: at the D-788 rail the held VGS bounds to 1.4865 V against the SQ2364EES's only published low-gate conduction row of VGS = 1.5 V. D14 therefore changes from a silicon switching diode to a Schottky in the SAME SOD-323 land, from the SAME manufacturer already fitted on this reference. Both documents are archived: the part that leaves and the part that arrives."
 }

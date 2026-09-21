@@ -32,6 +32,9 @@ class GaugeBus : public aqroot::I2cBus {
   bool ignore_hibrt_write = false;
   uint16_t hibrt = 0x8030;
   uint16_t mode = 0x0000;
+  // D-790 / D789-A10.
+  uint16_t config = 0x971C;
+  bool config_read_ok = true;
   uint16_t vcell = 0xC000;
 
   bool write(uint8_t, const uint8_t *data, size_t length) override {
@@ -39,6 +42,13 @@ class GaugeBus : public aqroot::I2cBus {
     if (length == 3 && data[0] == aqroot::Max17048Guard::kRegHibrt &&
         !ignore_hibrt_write)
       hibrt = uint16_t(data[1]) << 8 | data[2];
+    if (length == 3 && data[0] == aqroot::Max17048Guard::kRegConfig)
+      config = uint16_t(data[1]) << 8 | data[2];
+    if (length == 3 && data[0] == aqroot::Max17048Guard::kRegMode) {
+      const uint16_t v = uint16_t(data[1]) << 8 | data[2];
+      mode = uint16_t((v & ~aqroot::Max17048Guard::kModeHibStatMask)
+                      | (mode & aqroot::Max17048Guard::kModeHibStatMask));
+    }
     return true;
   }
 
@@ -51,6 +61,10 @@ class GaugeBus : public aqroot::I2cBus {
     if (reg == aqroot::Max17048Guard::kRegMode) {
       if (!mode_read_ok) return false;
       data[0] = uint8_t(mode >> 8); data[1] = uint8_t(mode); return true;
+    }
+    if (reg == aqroot::Max17048Guard::kRegConfig) {
+      if (!config_read_ok) return false;
+      data[0] = uint8_t(config >> 8); data[1] = uint8_t(config); return true;
     }
     if (reg == aqroot::Max17048Guard::kRegVcell) {
       if (!vcell_read_ok) return false;

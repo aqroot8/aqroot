@@ -487,6 +487,10 @@ class DemoExpanders {
 
   Pcal9535a &u2() { return u2_; }
   Pcal9535a &u3() { return u3_; }
+  // D-790 / D789-A09: the intent tracker inspects the physical shadow from
+  // const context, so the accessors have const overloads.
+  const Pcal9535a &u2() const { return u2_; }
+  const Pcal9535a &u3() const { return u3_; }
 
  private:
   static uint8_t buttonBit(Button button) {

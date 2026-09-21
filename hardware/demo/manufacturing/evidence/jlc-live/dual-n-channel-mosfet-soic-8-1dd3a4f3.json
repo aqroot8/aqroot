@@ -1,0 +1,3113 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-21T07:31:45Z",
+ "keyword": "dual N-channel MOSFET SOIC-8",
+ "page_size": 25,
+ "pages": 2,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Vgs",
+     "attribute_value_name": "±8V"
+    },
+    {
+     "attribute_name_en": "Configuration",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "8.2nC@4.5V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "100pF、250pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "4.5A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "12V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "160pF、280pF"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "24mΩ@4.5V"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel + P-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "590pF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "1 N-Channel + 1 P-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1V"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "5W"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C469328",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SIA517DJ-T1-GE3",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.3809,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.2946,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.2588,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2133,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1921,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1807,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "PowerPAK-SC-70-6-Dual",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/1912202016_Vishay-Intertech-SIA517DJ-T1-GE3_C469328.pdf",
+   "describe": "-55℃~+150℃ 1 N-Channel + 1 P-Channel 12V 1V 4.5A 590pF 5W 8.2nC@4.5V PowerPAK-SC-70-6-Dual MOSFETs ROHS",
+   "erpComponentName": "SIA517DJ-T1-GE3",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_vishay-intertech-sia517dj-t1-ge3_C469328.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 16358
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Vgs",
+     "attribute_value_name": "±8V"
+    },
+    {
+     "attribute_name_en": "Configuration",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "7.8nC@4.5V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "175pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "4.5A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "12V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "100pF"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "59mΩ@4.5V"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel + P-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "545pF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "1 N-Channel + 1 P-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "400mV"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "1.9W"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C511004",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SIA533EDJ-T1-GE3",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.4037,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.3939,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.3874,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 101,
+     "productPrice": 0.3809,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 103,
+     "productPrice": 0.3809,
+     "startNumber": 102
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.3809,
+     "startNumber": 104
+    }
+   ],
+   "componentSpecificationEn": "PowerPAK-SC-70-6-Dual",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2004181732_Vishay-Intertech-SIA533EDJ-T1-GE3_C511004.pdf",
+   "describe": "-55℃~+150℃ 1 N-Channel + 1 P-Channel 1.9W 12V 175pF 4.5A 400mV 545pF 59mΩ@4.5V 7.8nC@4.5V N-Channel + P-Channel PowerPAK-SC-70-6-Dual MOSFETs ROHS",
+   "erpComponentName": "SIA533EDJ-T1-GE3",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_vishay-intertech-sia533edj-t1-ge3_C511004.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 349
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "1.015nF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "23.6nC"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "164pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "30A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "201pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "10.5W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "16mΩ@4.5V"
+    }
+   ],
+   "componentBrandEn": "Yangzhou Yangjie Elec Tech",
+   "componentCode": "C919566",
+   "componentLibraryType": "expand",
+   "componentModelEn": "YJQ3622A",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1769,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.1573,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1488,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2499,
+     "productPrice": 0.1382,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.1021,
+     "startNumber": 2500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0993,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "DFN3333-8L-Dual",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2201131330_Yangzhou-Yangjie-Elec-Tech-YJQ3622A_C919566.pdf",
+   "describe": "-55℃~+175℃ 1.015nF 10.5W 164pF 16mΩ@4.5V 1V 2 N-Channel 201pF 23.6nC 30A 30V N-Channel DFN3333-8L-Dual MOSFETs ROHS",
+   "erpComponentName": "YJQ3622A",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_yangzhou-yangjie-elec-tech-yjq3622a_C919566.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 3112
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Vgs",
+     "attribute_value_name": "±20V"
+    },
+    {
+     "attribute_name_en": "Configuration",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "16nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "18pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "20A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "399pF"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "17mΩ@10V、21mΩ@4.5V"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "1.051nF"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1.8V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "17W"
+    }
+   ],
+   "componentBrandEn": "Yangzhou Yangjie Elec Tech",
+   "componentCode": "C919609",
+   "componentLibraryType": "expand",
+   "componentModelEn": "YJGD20G10A",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.6267,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.5062,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.4541,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.3907,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.3402,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.3223,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "DFN5060-8L-DUal",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2201131330_Yangzhou-Yangjie-Elec-Tech-YJGD20G10A_C919609.pdf",
+   "describe": "-55℃~+150℃ 1.051nF 1.8V 100V 16nC@10V 17mΩ@10V、21mΩ@4.5V 18pF 2 N-Channel 20A 399pF N-Channel DFN5060-8L-DUal MOSFETs ROHS",
+   "erpComponentName": "YJGD20G10A",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_yangzhou-yangjie-elec-tech-yjgd20g10a_C919609.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 10
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "917pF"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1.5V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "23.6nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "108pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "25A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "40V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "128pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "21W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "14.5mΩ@10V、18mΩ@4.5V"
+    }
+   ],
+   "componentBrandEn": "Yangzhou Yangjie Elec Tech",
+   "componentCode": "C2942404",
+   "componentLibraryType": "expand",
+   "componentModelEn": "YJQD25N04A",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.2683,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.2141,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.191,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2499,
+     "productPrice": 0.162,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.1491,
+     "startNumber": 2500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1413,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "DFN3333-8L-DUal",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": null,
+   "describe": "1.5V 108pF 128pF 14.5mΩ@10V、18mΩ@4.5V 2 N-Channel 21W 23.6nC@10V 25A 40V 917pF N-Channel DFN3333-8L-DUal MOSFETs ROHS",
+   "erpComponentName": "YJQD25N04A",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1227
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel + P-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "590pF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "1 N-Channel + 1 P-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "12.5nC@4.5V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "250pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "4.5A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "12V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "280pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "6.5W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "170mΩ@1.5V"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C3279492",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SIA517DJ-T1-GE3",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 1.3819,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 1.1556,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 1.0303,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.8903,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.8269,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.7992,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "PowerPAK-SC-70-6-Dual",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404031054_Vishay-Intertech-SIA517DJ-T1-GE3_C3279492.pdf",
+   "describe": "-55℃~+150℃ 1 N-Channel + 1 P-Channel 12.5nC@4.5V 12V 170mΩ@1.5V 1V 250pF 280pF 4.5A 590pF 6.5W N-Channel + P-Channel PowerPAK-SC-70-6-Dual MOSFETs ROHS",
+   "erpComponentName": "SIA517DJ-T1-GE3",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_vishay-intertech-sia517dj-t1-ge3_C3279492.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 45
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "4V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "24nC@10V"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "5.9A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "3.5W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "60mΩ@6V"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C3279567",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SI7942DP-T1-GE3",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 3.8395,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 3.7744,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 3.7321,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 101,
+     "productPrice": 3.6898,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 103,
+     "productPrice": 3.6898,
+     "startNumber": 102
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 3.6898,
+     "startNumber": 104
+    }
+   ],
+   "componentSpecificationEn": "PowerPAK-SO-8-Dual",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404031055_Vishay-Intertech-SI7942DP-T1-GE3_C3279567.pdf",
+   "describe": "-55℃~+150℃ 100V 2 N-Channel 24nC@10V 3.5W 4V 5.9A 60mΩ@6V N-Channel PowerPAK-SO-8-Dual MOSFETs ROHS",
+   "erpComponentName": "SI7942DP-T1-GE3",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_vishay-intertech-si7942dp-t1-ge3_C3279567.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "1.1nF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "2.5V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "15.3nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "90pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "30A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "390pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "40W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "12.4mΩ@4.5V"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C3289527",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SI7998DP-T1-GE3",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 2.0883,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 1.823,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 1.6569,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 1.486,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 1.4079,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 1.3754,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "PowerPAK-SO-8-Dual",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404031242_Vishay-Intertech-SI7998DP-T1-GE3_C3289527.pdf",
+   "describe": "-55℃~+150℃ 1.1nF 12.4mΩ@4.5V 15.3nC@10V 2 N-Channel 2.5V 30A 30V 390pF 40W 90pF N-Channel PowerPAK-SO-8-Dual MOSFETs ROHS",
+   "erpComponentName": "SI7998DP-T1-GE3",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_vishay-intertech-si7998dp-t1-ge3_C3289527.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 5
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "1.843nF"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel + P-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "2.3V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "1 N-Channel + 1 P-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "38.3nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "193pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "30A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "40V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "278pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "48W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "9.2mΩ@10V"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C3289529",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SQJ500AEP-T1_GE3",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 1.5739,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 1.3607,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 1.2435,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 1.1117,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 1.0531,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 1.0254,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "PowerPAK-SO-8-Dual",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404031242_Vishay-Intertech-SQJ500AEP-T1-GE3_C3289529.pdf",
+   "describe": "-55℃~+175℃ 1 N-Channel + 1 P-Channel 1.843nF 193pF 2.3V 278pF 30A 38.3nC@10V 40V 48W 9.2mΩ@10V N-Channel + P-Channel PowerPAK-SO-8-Dual MOSFETs ROHS",
+   "erpComponentName": "SQJ500AEP-T1_GE3",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_vishay-intertech-sqj500aep-t1-ge3_C3289529.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 205
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "1.7nF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "2.2V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "32nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "35pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "30A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "40V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "400pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "27W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "10mΩ@4.5V"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C3289531",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SQJB02ELP-T1_GE3",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.7487,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.6071,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.5372,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.4672,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.4249,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.4037,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "PowerPAK-SO-8-Dual",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404031242_Vishay-Intertech-SQJB02ELP-T1-GE3_C3289531.pdf",
+   "describe": "-55℃~+175℃ 1.7nF 10mΩ@4.5V 2 N-Channel 2.2V 27W 30A 32nC@10V 35pF 400pF 40V N-Channel PowerPAK-SO-8-Dual MOSFETs ROHS",
+   "erpComponentName": "SQJB02ELP-T1_GE3",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_vishay-intertech-sqjb02elp-t1-ge3_C3289531.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 629
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "1.15nF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "2.5V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "20nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "8pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "20A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "430pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "69W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "19mΩ@10V"
+    }
+   ],
+   "componentBrandEn": "Yangzhou Yangjie Elec Tech",
+   "componentCode": "C20605824",
+   "componentLibraryType": "expand",
+   "componentModelEn": "YJGD20G10B",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.6234,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.5079,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.4493,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.3907,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.3565,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.3386,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "PDFN5060-8L-Dual",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2401111814_Yangzhou-Yangjie-Elec-Tech-YJGD20G10B_C20605824.pdf",
+   "describe": "1.15nF 100V 19mΩ@10V 2 N-Channel 2.5V 20A 20nC@10V 430pF 69W 8pF N-Channel PDFN5060-8L-Dual MOSFETs ROHS",
+   "erpComponentName": "YJGD20G10B",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_yangzhou-yangjie-elec-tech-yjgd20g10b_C20605824.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 3530
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel + P-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "380pF、1.22nF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "1 N-Channel + 1 P-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1.5V、1.5V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "12.5nC@10V、24nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "60pF、160pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "7A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "75pF、170pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "1.9W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "14mΩ@10V、15mΩ@10V"
+    }
+   ],
+   "componentBrandEn": "Yangzhou Yangjie Elec Tech",
+   "componentCode": "C20605945",
+   "componentLibraryType": "expand",
+   "componentModelEn": "YJS07NP03B",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1761,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.1609,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1543,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2499,
+     "productPrice": 0.1462,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.1426,
+     "startNumber": 2500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1405,
+     "startNumber": 4000
+    }
+   ],
+   "componentSpecificationEn": "SOP-8-Dual",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2401111816_Yangzhou-Yangjie-Elec-Tech-YJS07NP03B_C20605945.pdf",
+   "describe": "1 N-Channel + 1 P-Channel 1.5V、1.5V 1.9W 12.5nC@10V、24nC@10V 14mΩ@10V、15mΩ@10V 30V 380pF、1.22nF 60pF、160pF 75pF、170pF 7A N-Channel + P-Channel SOP-8-Dual MOSFETs ROHS",
+   "erpComponentName": "YJS07NP03B",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_yangzhou-yangjie-elec-tech-yjs07np03b_C20605945.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 3775
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "390pF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "2.2V@250uA"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "8.3nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "55pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "6.5A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "70pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "1.25W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "41mΩ@4.5V"
+    }
+   ],
+   "componentBrandEn": "Yangzhou Yangjie Elec Tech",
+   "componentCode": "C20605949",
+   "componentLibraryType": "expand",
+   "componentModelEn": "YJS3404B",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1233,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.114,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1093,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2499,
+     "productPrice": 0.1057,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.1029,
+     "startNumber": 2500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1014,
+     "startNumber": 4000
+    }
+   ],
+   "componentSpecificationEn": "SOP-8-Dual",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2401111816_Yangzhou-Yangjie-Elec-Tech-YJS3404B_C20605949.pdf",
+   "describe": "1.25W 2 N-Channel 2.2V@250uA 30V 390pF 41mΩ@4.5V 55pF 6.5A 70pF 8.3nC@10V N-Channel SOP-8-Dual MOSFETs ROHS",
+   "erpComponentName": "YJS3404B",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_yangzhou-yangjie-elec-tech-yjs3404b_C20605949.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 4000
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel + P-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "490pF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "1 N-Channel + 1 P-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "2.4V@250uA"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "12.5nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "60pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "7A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "75pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "2W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "43mΩ@10V"
+    }
+   ],
+   "componentBrandEn": "Yangzhou Yangjie Elec Tech",
+   "componentCode": "C20605953",
+   "componentLibraryType": "expand",
+   "componentModelEn": "YJS4606B",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1503,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.1236,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1102,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2499,
+     "productPrice": 0.1001,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0922,
+     "startNumber": 2500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0883,
+     "startNumber": 4000
+    }
+   ],
+   "componentSpecificationEn": "SOP-8-Dual",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2401111816_Yangzhou-Yangjie-Elec-Tech-YJS4606B_C20605953.pdf",
+   "describe": "1 N-Channel + 1 P-Channel 12.5nC@10V 2.4V@250uA 2W 30V 43mΩ@10V 490pF 60pF 75pF 7A N-Channel + P-Channel SOP-8-Dual MOSFETs ROHS",
+   "erpComponentName": "YJS4606B",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_yangzhou-yangjie-elec-tech-yjs4606b_C20605953.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 4000
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "425pF"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1.5V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "11.5nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "30pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "4.5A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "20V"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "1.9W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "24.5mΩ@4.5V"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C3279493",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SIA938DJT-T1-GE3",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.2787,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.2787,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.2787,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.108,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1041,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1023,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "PowerPAK-SC-70-6-Dual",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404031054_Vishay-Intertech-SIA938DJT-T1-GE3_C3279493.pdf",
+   "describe": "-55℃~+150℃ 1.5V 1.9W 11.5nC@10V 2 N-Channel 20V 24.5mΩ@4.5V 30pF 4.5A 425pF N-Channel PowerPAK-SC-70-6-Dual MOSFETs ROHS",
+   "erpComponentName": "SIA938DJT-T1-GE3",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_vishay-intertech-sia938djt-t1-ge3_C3279493.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 33,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "1.835nF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "2.5V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "38nC@10V"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "30A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "40V"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "9.3mΩ@10V"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C3279565",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SQJ912AEP-T2_BE3",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.6462,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.6462,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.6462,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2507,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.2426,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.2377,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "PowerPAK-SO-8-Dual",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "",
+   "describe": "-55℃~+175℃ 1.835nF 2 N-Channel 2.5V 30A 38nC@10V 40V 9.3mΩ@10V PowerPAK-SO-8-Dual MOSFETs ROHS",
+   "erpComponentName": "SQJ912AEP-T2_BE3",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_vishay-intertech-sqj912aep-t2-be3_C3279565.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 14,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "1.6nF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "1 N-channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "2.5V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "30nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "45pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "30A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "60V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "660pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "15W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "16mΩ@4.5V"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C3279568",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SQJA60EP-T1_BE3",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.6153,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.6153,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.6153,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2377,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.2295,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.2263,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "PowerPAK-SO-8-Dual",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404031055_Vishay-Intertech-SQJA60EP-T1-BE3_C3279568.pdf",
+   "describe": "-55℃~+175℃ 1 N-channel 1.6nF 15W 16mΩ@4.5V 2.5V 30A 30nC@10V 45pF 60V 660pF N-Channel PowerPAK-SO-8-Dual MOSFETs ROHS",
+   "erpComponentName": "SQJA60EP-T1_BE3",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_vishay-intertech-sqja60ep-t1-be3_C3279568.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 15,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "735pF"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "2.5V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "65nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "49pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "8A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "60V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "145pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "34W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "46mΩ@4.5V"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C3279569",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SQJ960EP-T1_GE3",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 1.3477,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 1.3477,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 1.3477,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.5225,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.503,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.4948,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "PowerPAK-SO-8-Dual",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404031055_Vishay-Intertech-SQJ960EP-T1-GE3_C3279569.pdf",
+   "describe": "-55℃~+175℃ 145pF 2 N-Channel 2.5V 34W 46mΩ@4.5V 49pF 60V 65nC@10V 735pF 8A N-Channel PowerPAK-SO-8-Dual MOSFETs ROHS",
+   "erpComponentName": "SQJ960EP-T1_GE3",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_vishay-intertech-sqj960ep-t1-ge3_C3279569.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 7,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "700pF"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1.5V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "50nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "400pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "60A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "12V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "1.7nF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "16W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "8.3mΩ@10V"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C3279570",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SQJ204EP-T1_GE3",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.8236,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.8236,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.8236,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.3191,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.3077,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.3028,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "PowerPAK-SO-8-Dual",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404031055_Vishay-Intertech-SQJ204EP-T1-GE3_C3279570.pdf",
+   "describe": "-55℃~+175℃ 1.5V 1.7nF 12V 16W 2 N-Channel 400pF 50nC@10V 60A 700pF 8.3mΩ@10V N-Channel PowerPAK-SO-8-Dual MOSFETs ROHS",
+   "erpComponentName": "SQJ204EP-T1_GE3",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_vishay-intertech-sqj204ep-t1-ge3_C3279570.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 11,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "525pF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "1 N-channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1.1V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "8nC@4.5V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "58pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "7.8A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "20V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "125pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "13.6W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "38mΩ@1.8V"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C3289456",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SQA410CEJW-T1_GE3",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.4265,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.42,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.4167,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 101,
+     "productPrice": 0.4118,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 103,
+     "productPrice": 0.4118,
+     "startNumber": 102
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.4118,
+     "startNumber": 104
+    }
+   ],
+   "componentSpecificationEn": "PowerPAK-SC-70-6-Dual",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404031240_Vishay-Intertech-SQA410CEJW-T1-GE3_C3289456.pdf",
+   "describe": "-55℃~+175℃ 1 N-channel 1.1V 125pF 13.6W 20V 38mΩ@1.8V 525pF 58pF 7.8A 8nC@4.5V N-Channel PowerPAK-SC-70-6-Dual MOSFETs ROHS",
+   "erpComponentName": "SQA410CEJW-T1_GE3",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_vishay-intertech-sqa410cejw-t1-ge3_C3289456.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 22,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "1.745nF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "2.5V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "36nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "44pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "30A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "40V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "483pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "27W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "10.2mΩ@4.5V"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C3289530",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SQJ912DEP-T1_GE3",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 1.2435,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 1.2435,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 1.2435,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.4818,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.4655,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.4558,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "PowerPAK-SO-8-Dual",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404031242_Vishay-Intertech-SQJ912DEP-T1-GE3_C3289530.pdf",
+   "describe": "-55℃~+175℃ 1.745nF 10.2mΩ@4.5V 2 N-Channel 2.5V 27W 30A 36nC@10V 40V 44pF 483pF N-Channel PowerPAK-SO-8-Dual MOSFETs ROHS",
+   "erpComponentName": "SQJ912DEP-T1_GE3",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_vishay-intertech-sqj912dep-t1-ge3_C3289530.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 8,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "2.8nF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "2.5V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "45nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "75pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "60A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "40V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "1.7nF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "48W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "15mΩ@4.5V"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C3289532",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SQJ244EP-T1_GE3",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 1.6683,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 1.6683,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 1.6683,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.6462,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.6234,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.612,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "PowerPAK-SO-8-Dual",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404031242_Vishay-Intertech-SQJ244EP-T1-GE3_C3289532.pdf",
+   "describe": "-55℃~+175℃ 1.7nF 15mΩ@4.5V 2 N-Channel 2.5V 2.8nF 40V 45nC@10V 48W 60A 75pF N-Channel PowerPAK-SO-8-Dual MOSFETs ROHS",
+   "erpComponentName": "SQJ244EP-T1_GE3",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_vishay-intertech-sqj244ep-t1-ge3_C3289532.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 6,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "2.1nF"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "3.5V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "32nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "30pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "54A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "60V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "1.1nF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "48W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "20mΩ@10V"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C3289533",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SQJ264EP-T1_GE3",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.9978,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.9978,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.9978,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.3874,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.3728,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.3663,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "PowerPAK-SO-8-Dual",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404031242_Vishay-Intertech-SQJ264EP-T1-GE3_C3289533.pdf",
+   "describe": "-55℃~+175℃ 1.1nF 2 N-Channel 2.1nF 20mΩ@10V 3.5V 30pF 32nC@10V 48W 54A 60V N-Channel PowerPAK-SO-8-Dual MOSFETs ROHS",
+   "erpComponentName": "SQJ264EP-T1_GE3",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_vishay-intertech-sqj264ep-t1-ge3_C3289533.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 10,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel + P-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "1.05nF"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "3V@250uA"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "20nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "30pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "18A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "120pF"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "110mΩ@10V"
+    }
+   ],
+   "componentBrandEn": "Yangzhou Yangjie Elec Tech",
+   "componentCode": "C20605744",
+   "componentLibraryType": "expand",
+   "componentModelEn": "YJG10NP10A",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0396,
+     "startNumber": 1
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0204,
+     "startNumber": 100
+    }
+   ],
+   "componentSpecificationEn": "DFN5060-8L-Dual",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": null,
+   "describe": "1.05nF 100V 110mΩ@10V 120pF 18A 20nC@10V 30pF 3V@250uA N-Channel + P-Channel DFN5060-8L-Dual MOSFETs ROHS",
+   "erpComponentName": "YJG10NP10A",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "2.5V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "22nC@10V"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "30A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "40V"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "35W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "20mΩ@4.5V"
+    }
+   ],
+   "componentBrandEn": "Yangzhou Yangjie Elec Tech",
+   "componentCode": "C20605829",
+   "componentLibraryType": "expand",
+   "componentModelEn": "YJGD30N04A",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0396,
+     "startNumber": 1
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0204,
+     "startNumber": 100
+    }
+   ],
+   "componentSpecificationEn": "PDFN5060-8L-Dual",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": null,
+   "describe": "2.5V 20mΩ@4.5V 22nC@10V 30A 35W 40V N-Channel PDFN5060-8L-Dual MOSFETs ROHS",
+   "erpComponentName": "YJGD30N04A",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "935pF"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "4V@250uA"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "12.5nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "15pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "50A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "40V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "283pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "60W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "8.5mΩ@10V"
+    }
+   ],
+   "componentBrandEn": "Yangzhou Yangjie Elec Tech",
+   "componentCode": "C20605835",
+   "componentLibraryType": "expand",
+   "componentModelEn": "YJGD50G04HHQ",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 1.9222,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 1.9222,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 1.9222,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.7683,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.7422,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.7292,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "PDFN5060-8L-Dual",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2401111814_Yangzhou-Yangjie-Elec-Tech-YJGD50G04HHQ_C20605835.pdf",
+   "describe": "12.5nC@10V 15pF 283pF 40V 4V@250uA 50A 60W 8.5mΩ@10V 935pF N-Channel PDFN5060-8L-Dual MOSFETs ROHS",
+   "erpComponentName": "YJGD50G04HHQ",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_yangzhou-yangjie-elec-tech-yjgd50g04hhq_C20605835.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 5,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "2.5V@250uA"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "50A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "60V"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "56W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "11mΩ@4.5V"
+    }
+   ],
+   "componentBrandEn": "Yangzhou Yangjie Elec Tech",
+   "componentCode": "C20605836",
+   "componentLibraryType": "expand",
+   "componentModelEn": "YJGD50G06A",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0396,
+     "startNumber": 1
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0204,
+     "startNumber": 100
+    }
+   ],
+   "componentSpecificationEn": "PDFN5060-8L-Dual",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": null,
+   "describe": "11mΩ@4.5V 2.5V@250uA 50A 56W 60V N-Channel PDFN5060-8L-Dual MOSFETs ROHS",
+   "erpComponentName": "YJGD50G06A",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel + P-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "1.3nF、1.39nF"
+    },
+    {
+     "attribute_name_en": "Vgs",
+     "attribute_value_name": "±20V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "1 N-Channel + 1 P-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1.5V、1.6V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "23nC、27nC"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "157pF、188pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "19A、65A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "165pF、230pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "40W、48W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "7mΩ@10V、18mΩ@10V"
+    }
+   ],
+   "componentBrandEn": "GOFORD",
+   "componentCode": "C49109593",
+   "componentLibraryType": "expand",
+   "componentModelEn": "G070C03D52",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.3325,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.2636,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2341,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2499,
+     "productPrice": 0.1972,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.1809,
+     "startNumber": 2500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1709,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "DFN-8-Dual(5x6)",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "",
+   "describe": "-55℃~+150℃ 1 N-Channel + 1 P-Channel 1.3nF、1.39nF 1.5V、1.6V 157pF、188pF 165pF、230pF 19A、65A 23nC、27nC 30V 40W、48W 7mΩ@10V、18mΩ@10V N-Channel + P-Channel ±20V DFN-8-Dual(5x6) MOSFETs ROHS",
+   "erpComponentName": "G070C03D52",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://lcsc.com/product-detail/mosfets_goford-g070c03d52_C49109593.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 28,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "990pF"
+    },
+    {
+     "attribute_name_en": "Vgs",
+     "attribute_value_name": "±20V"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1.5V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "20nC"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "130pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "13A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "150pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "2.23W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "9mΩ@10V"
+    }
+   ],
+   "componentBrandEn": "GOFORD",
+   "componentCode": "C49109598",
+   "componentLibraryType": "expand",
+   "componentModelEn": "G120N03S2",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.2138,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.1695,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1504,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2499,
+     "productPrice": 0.1268,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.1163,
+     "startNumber": 2500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1099,
+     "startNumber": 4000
+    }
+   ],
+   "componentSpecificationEn": "SOP-8-Dual",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "",
+   "describe": "-55℃~+150℃ 1.5V 130pF 13A 150pF 2 N-Channel 2.23W 20nC 30V 990pF 9mΩ@10V N-Channel ±20V SOP-8-Dual MOSFETs ROHS",
+   "erpComponentName": "G120N03S2",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://lcsc.com/product-detail/mosfets_goford-g120n03s2_C49109598.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 43,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "500pF"
+    },
+    {
+     "attribute_name_en": "Vgs",
+     "attribute_value_name": "±20V"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1.6V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "9.5nC"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "60pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "7A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "70pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "2W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "16mΩ@10V"
+    }
+   ],
+   "componentBrandEn": "GOFORD",
+   "componentCode": "C49109605",
+   "componentLibraryType": "expand",
+   "componentModelEn": "G200N03S2",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1348,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.1075,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0938,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2499,
+     "productPrice": 0.0835,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0754,
+     "startNumber": 2500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0713,
+     "startNumber": 4000
+    }
+   ],
+   "componentSpecificationEn": "SOP-8-Dual",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "",
+   "describe": "-55℃~+150℃ 1.6V 16mΩ@10V 2 N-Channel 2W 30V 500pF 60pF 70pF 7A 9.5nC N-Channel ±20V SOP-8-Dual MOSFETs ROHS",
+   "erpComponentName": "G200N03S2",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://lcsc.com/product-detail/mosfets_goford-g200n03s2_C49109605.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 84,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1V@250uA"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "Dual N-channel (common drain)"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "7A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "20V"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "1.5W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "20mΩ@4.5V,7A"
+    }
+   ],
+   "componentBrandEn": "Alpha & Omega Semicon",
+   "componentCode": "C16054",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AO8810",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.1735,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.128,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.1195,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1112,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1075,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 1999,
+     "productPrice": 0.1057,
+     "startNumber": 1000
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.1042,
+     "startNumber": 2000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1034,
+     "startNumber": 4000
+    }
+   ],
+   "componentSpecificationEn": "TSSOP-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": null,
+   "describe": "1.5W 1V@250uA 20V 20mΩ@4.5V,7A 7A Dual N-channel (common drain) TSSOP-8 MOSFETs ROHS",
+   "erpComponentName": "AO8810",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 76,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1V@250uA"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "Dual N-channel (common drain)"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "7A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "20V"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "22mΩ@4.5V,6A"
+    }
+   ],
+   "componentBrandEn": "PUOLOP",
+   "componentCode": "C479039",
+   "componentLibraryType": "expand",
+   "componentModelEn": "PT8810",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1299,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.1071,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0958,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2499,
+     "productPrice": 0.0873,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0805,
+     "startNumber": 2500
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.077,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": 19999,
+     "productPrice": 0.0761,
+     "startNumber": 10000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0756,
+     "startNumber": 20000
+    }
+   ],
+   "componentSpecificationEn": "TSSOP-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://datasheet.lcsc.com/lcsc/2001060933_PUOLOP-PT8810_C479039.pdf",
+   "describe": "1V@250uA 20V 22mΩ@4.5V,6A 7A Dual N-channel (common drain) TSSOP-8 MOSFETs ROHS",
+   "erpComponentName": "PT8810",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://lcsc.comhttps://lcsc.com/product-detail/MOSFETs_PUOLOP-PT8810_C479039.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 85,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  }
+ ],
+ "returned": 32,
+ "schema": 1,
+ "total_matches": 32
+}

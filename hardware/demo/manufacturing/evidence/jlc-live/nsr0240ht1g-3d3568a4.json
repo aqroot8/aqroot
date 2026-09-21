@@ -1,10 +1,10 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-20T19:33:43Z",
+ "fetched_utc": "2026-09-21T07:07:35Z",
  "keyword": "NSR0240HT1G",
  "page_size": 25,
- "pages": 1,
+ "pages": 2,
  "records": [
   {
    "assemblyComponentFlag": false,
@@ -164,7 +164,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 5280
+   "stockCount": 5210
   }
  ],
  "returned": 2,

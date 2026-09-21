@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-21T03:03:13Z",
+ "fetched_utc": "2026-09-21T07:33:11Z",
  "keyword": "FDS6990A",
  "page_size": 25,
  "pages": 2,

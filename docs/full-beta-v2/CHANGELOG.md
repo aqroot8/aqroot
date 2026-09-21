@@ -1,3 +1,101 @@
+## D-790 — 2026-09-21 — ROUND-9 CORRECTION: FOUR NUMBERS READ AT THE WRONG CONDITION, AN IMAGE NO TEST HAD EVER COMPILED, AND A PASS PAIR THAT WAS NEVER GUARANTEED TO BE ON
+
+Round-9 external review **REJECTED D-789**.  Fable passed the design for CAM/order
+closure but kept `Q2`/`Q3` open and found two host-test escapes; Astra **blocked the
+order** with **12 findings** (0 critical, 3 high, 8 medium, 1 low) plus a procurement
+item, and **no** unconditional PCB respin.  **All of `D789-A01`…`A11` and `S01` are
+closed, plus every Fable-specific residual, plus one more this closeout found itself
+(`R9-N01`).**
+
+**Board authority `9606ecfc0bd5844cb6fa965692c406a3d7cd43ad613d827132da18a82ef60f26`.**
+**`MANIFEST` `5194f0c05e5ced895ceed5144c63eb8afe446772d1bea770f952080622be8599`.**
+
+**THE THEME IS A NUMBER READ AT THE WRONG CONDITION** — a datasheet row the design does
+not sit at, a reference frame the product is not in, a network the copper does not form,
+and a subtotal inherited from a board that no longer exists.
+
+- **`D789-A11` — the display budget line was an inherited subtotal smaller than the
+  backlight alone.**  The `+3V3` table carried one **181 mA** line for "display logic +
+  backlight", cited to a 2023 subtotal.  The backlight converter's input is now **SOLVED**
+  from published maxima only — `VREF` 220 mV over `R69` at −1 %, the panel's 3.2 V `VF`
+  upper end, `Q11`'s only published conduction row, the TPS61169's 0.7 Ω switch and
+  0.45 mA `IQ`, the fitted inductor's 52.2 mΩ DCR and `D8`'s 710 mV bound, at the
+  **minimum** published switching frequency into the **minimum** inductance — and bounded
+  by the **worst of a CCM treatment, a DCM treatment and TI's own "up to 90 %" headline**:
+  **211.58 mA** at an implied 83.1 %, below what the part is advertised to do.  The panel's
+  logic side becomes a separate **labelled DECLARED 50 mA allowance**, because ILI
+  Technology publishes no active-mode supply current at all.  Internal `+3V3`
+  **1.0632 → 1.1438 A**; new first-article **`C-DISP-01`**.
+- **`D789-A03` — a shared impedance was inside both branches and then paralleled.**  The
+  `U12`→`U20` plane is the MAIN `+3V3` plane and is now charged
+  **`I_INTERNAL` + the accessory budget = 1.5438 A**, once, outside the per-contact
+  branches.  Published Community-Port minimum **2.849642 → 2.813742 V** (published
+  **≥ 2.81 V**); fully mated **2.982890 → 2.918599 V**.  No current capability reduced.
+- **`R9-N01`, found here — and this one goes the other way.**  The `ILIM` accuracy band
+  came off SLVSGP6A's **19.2 kΩ** row, a 50 mA setting and the outlier of four.  `R97` is
+  1.78 kΩ, bracketed by the **1.15 kΩ** and **2.21 kΩ** rows; the ratio is **not monotone
+  in `R`**, so the bound is the worse of the two rows that BRACKET the setting.
+  `ACC_3V3` guaranteed minimum **0.4279 → 0.4719 A**, fault maximum **0.8486 → 0.8036 A`,
+  which keeps `U12` inside its 2 A rating with **52.6 mA**.  `ACC_5V` is unchanged.
+- **`D789-A02` — a JEDEC θJA is not a product bound, and the peak envelope is not a
+  thermal envelope.**  `TJ = TA + R_SYS × P_internal + θJA × P_U11`, with `R_SYS` the
+  enclosure's **declared 3.2493 K/W** and `P_internal` now carrying the **upstream**
+  losses D-789 counted nowhere.  The envelope splits: a **PEAK ELECTRICAL** envelope for
+  ampacity, protection ordering and the connector; a **SUSTAINED THERMAL** envelope of
+  **1.9439 A** bounded by the pouch's own 60 °C window; and a gated **SUSTAINED REFERENCE
+  STATE** — both accessory budgets, full brightness, **both** radios, audio at cap, held
+  indefinitely at 40 °C — at **1.70 A**, junction **95.99 °C**, internal air **55.80 °C**.
+  The CHARGE regime is separated and self-limiting at TI's own `TREG` = 100 °C.
+- **`D789-A01` — `Q2`/`Q3` is re-selected and `F10` becomes a proof.**  Every AOS SOIC-8
+  dual N datasheet in the `AO4600`–`AO4898` range was read; exactly two publish a row at
+  `VGS ≤ 2.5 V`.  **`AO4800`** (`C17098`, genuine AOS, stock 5 347) — same land, same pin
+  map, **no copper moves**, `VGS(th)` **1.5 V MAX** against the retired `NTMD4820NR2G`'s
+  3.0 V, and a guaranteed **50 mΩ at `VGS` = 2.5 V**.  Astra's warning is **reproduced**:
+  `VGS(Q2)` is **2.4921 V** at the peak envelope, 7.9 mV short of its own row, and
+  **2.5944 V** at the sustained one, 94.4 mV inside.  Enhancement clears by **1.09 V** at
+  both.  `AO4806` rejected (stock 0, manufacturer-declared common-drain).
+- **`D789-A04` + Fable `V-01`/`V-02` — the image itself is compiled and run.**  All five
+  counterexamples lived in `src/demo/main.cpp`, which no host test compiled.
+  **`Firmware/test/image/`** is a host Arduino core and **`test_production_image.cpp`**
+  runs the shipped `setup()`/`loop()`/console over a physical-latch board model: **49
+  claims**, and **17 new image-level mutations all caught**.
+- **`D789-A10` — forced sleep.**  `MODE.EnSleep` + `CONFIG.SLEEP` stop conversions
+  independently of hibernate.  Both are now cleared and **verified before the settle is
+  spent**, `RCOMP`/`ATHD` preserved, no QuickStart ever commanded, unreadable `CONFIG`
+  fail-closed, and re-checked on every value the policy acts on.
+- **`D789-A09` — non-accessory command intent.**  A NACKed amplifier-OFF left the
+  amplifier energised and a NACKed `DISP_RST_N` release left the panel in reset while the
+  console said it was up.  Both are tracked intents now, confirmed from the physical
+  latch, retried one bit at a time from `loop()`, and reported honestly.
+- **`D789-A05` — the regression wrapper passed a missing baseline.**  Creating a baseline
+  is a separate act; a comparison must have compared something, and absent, **empty** and
+  **unparsable** baselines all refuse.
+- **`D789-A06` — the transient acceptance had both signs inverted.**  `peak + uncertainty
+  < 3.300 V`, `trough − uncertainty > 3.000 V`, executable as new **`F11`**, which
+  re-derives the procedure's six worked boundary examples every run.
+- **`D789-A07`/`A08` + Fable `D-01`/`D-02` — the documents.**  `D2`–`D5` grouped a DNP
+  part; **46/43 MPNs** was a sourcing shortlist, not the BOM's **105/106**; "only two
+  substitutions" was written after five; `DEVICE_SPEC` still named the retired `D14`
+  identity; the height census's prose still read Murata 1.80 mm where the fitted CCTC part
+  is **1.90 mm**; the `D14` source record's `vendor` field named the part that LEFT.  And
+  one that is not cosmetic: **`Q11`'s held `VGS` was bounded at the TPS61169's 204 mV
+  TYPICAL feedback reference, not its 220 mV MAXIMUM** — `1.961526 → 1.945526 V`, margin
+  `461.5 → 445.5 mV`.  It still closes.
+- **`D789-S01` — what is left is purchasing.**  **Nine** lines are SHORT on the live
+  sweep and need consignment; **`Q2`/`Q3` is a tenth exact identity** that needs an
+  authorised allocation without being short, because catalogue stock is not an allocation.
+
+**Board changes:** `Q2`/`Q3` `NTMD4820NR2G` → `AO4800`, and `C29`–`C32`'s value string
+`22uF 10V X7R` → `22uF 16V X7R` (what the fitted CCTC part is).  **No copper, no nets, no
+footprints, no placement.**  Connectivity **174 / 173 / 1 owner-approved `U11.3` / 0
+unapproved**; `hardware/beta-v2` untouched.
+
+**Verification:** F1–F11 PASS; H1–H8 PASS with **8** host tests; FAB1–FAB16 PASS on a
+package regenerated from this candidate; 19/19 standing contracts with a clean,
+non-vacuous wrapper; four PlatformIO environments SUCCESS.
+
+---
+
 ## D-789 — 2026-09-21 — ROUND-8 CORRECTION: THE PROOFS WERE INTERPOLATED, THE CALLERS WERE UNTESTED, AND THE MANUAL LEAD COULD NOT BE BUILT
 
 Round-8 external review **REJECTED D-788**.  Fable passed the design and kept two
@@ -234,7 +332,7 @@ product decision the display fix forced is **CLOSED**: the owner approved **OPTI
   block is current; the regression wrapper exits on SUBSTANTIVE difference only;
   the `U18` consignment row is the MSOP-10; the RF mating chain names the part
   the purchasing table has carried since D-223.
-- **Sourcing** — all 124 assembly lines re-swept live; ten consignment lines.
+- **Sourcing** — all 123 assembly lines re-swept live; ten consignment lines.
 
 Connectivity unchanged (174/173/1/0).  No protected copper moved.
 `hardware/beta-v2` untouched.  **Not authorized for fabrication.**
