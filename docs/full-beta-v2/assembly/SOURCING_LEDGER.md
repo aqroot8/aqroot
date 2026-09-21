@@ -53,9 +53,10 @@ exact MPN — 0 missing** (six were added at FBV2-S2-001, see §4).
 | ~~**CRA2512-FZ-R015ELF**~~ | ~~`R75`~~ | **B** | **SUPERSEDED BY D-771.** LCSC `C2073490`, 15 mΩ. At 15 mΩ the LTC4368's forward breaker sat at **2.640–4.040 A** over ADI's guaranteed 40/50/60 mV threshold band, which OVERLAPPED the `BQ25185`'s recoverable `IBAT_OCP` band of 2.5625–3.6875 A; `RETRY` is grounded here, so the LATCHING protection could fire before the auto-retrying one. |
 | **CRA2512-FZ-R010ELF** | `R75` | **B** | **D-771.** LCSC `C840621`, BOURNS, verified live 2026-09-18 per D-096 through the JLCPCB parts API (`evidence/jlc-live/cra2512-fz-r010elf-dbf2172c.json`): **10 mΩ ±1 %**, 2512, **3 W**, **±50 ppm/°C**, −55…+170 °C, `componentLibraryType` **expand**, **10 613 in stock**. SAME Bourns `CRA2512-FZ` **current-sense** series, SAME 2512 land and SAME 3 W rating as the `-R015ELF` it replaces — **only the resistance moves**, so no footprint, no copper and no assembly step changes. Breaker band becomes **3.960 / 5.000 / 6.061 A**, entirely above `IBAT_OCP`'s 3.6875 A maximum. *Catalogue `Type` is blank on this member where it reads `Current Sense Resistor` on the 15 mΩ one; `rule_open_sourcing.py` accepts an ABSENT type against the named `CRA2512-FZ` series prefix and against the stated ±50 ppm/°C, and still refuses a stated type outside the class.* |
 | ~~**0603WAF2701T5E**~~ | ~~`R97`, `R101`~~ | **A** | **SUPERSEDED BY D-771.** LCSC `C13167`, 2.7 kΩ, JLCPCB **BASIC**. It programmed 0.407 A typ, which GUARANTEES only **0.277 A** against the **400 mA / 300 mA** D-098 publishes for these two rails — a budget the board's own limiter could refuse to deliver. |
-| **0603WAF1781T5E** | `R97` | **B** | **D-771.** LCSC `C22849`, UNI-ROYAL(Uniroyal Elec), verified live 2026-09-18 per D-096 (`evidence/jlc-live/0603waf1781t5e-95493b28.json`): **1.78 kΩ ±1 %**, 0603, 100 mW, ±100 ppm/°C, −55…+155 °C, `componentLibraryType` **expand**, **19 278 in stock**. SAME `0603WAF` series and SAME manufacturer as the `2701T5E` it replaces and as most of this board's 1 % resistors; same 0603 land. Programs **0.636 A typ → 0.428 A GUARANTEED**, 7.0 % over the published 400 mA. 1.78 kΩ is an **E96** value and JLCPCB lists no BASIC part at it; the extended-part fee is accepted because the E24 alternatives either fail the published-budget clause or spend the pack margin. |
+| ~~**0603WAF1781T5E**~~ | ~~`R97`~~ | **B** | **SUPERSEDED BY D-791 / `D790-A12`.** LCSC `C22849`, 1.78 kΩ. It was correct against the BRACKETED `ILIM` accuracy band D-790 / `R9-N01` introduced. Round-10 refused that band as an ESTIMATE — TI publishes four accuracy rows and states nothing about the accuracy BETWEEN them — and at the WIDEST published ratio, with `D790-A04`'s corrected backlight budget, 1.78 kΩ puts the limiter's worst corner plus the internal envelope at **2.0139 A** against the TPS63020's published **2 A**, which is negative margin. |
+| **0603WAF1871T5E** | `R97` | **B** | **D-791 / `D790-A12`.** LCSC `C22850`, UNI-ROYAL(Uniroyal Elec), verified live 2026-09-21 per D-096 (`evidence/jlc-live/0603waf1871t5e-c7079069.json`): **1.87 kΩ ±1 %**, 0603, `componentLibraryType` **expand**, **323 in stock** against the first-five floor of 50. SAME `0603WAF` series, SAME manufacturer and SAME 0603 land as the `1781T5E` it replaces — **only the resistance moves**, so no footprint, no copper and no assembly step changes. Programs **0.6032 A typ → 0.4058 A GUARANTEED at the WIDEST published accuracy ratio**, **+1.46 %** over the published 400 mA and therefore a guarantee that needs no assumption about the shape of TI's accuracy curve; worst fault corner **0.8049 A**, which leaves `U12` **29.8 mA** of margin on its 2 A rating. 1.87 kΩ is an **E96** value and JLCPCB lists no BASIC part at it; the extended-part fee is accepted for the same reason it was at D-771. |
 | ~~**0603WAF2321T5E**~~ | ~~`R101`~~ | **B** | **SUPERSEDED BY D-773.** LCSC `C22905`, 2.32 kΩ. Chosen at D-771 against a 4.95 V boost-output *constant*; at the setpoint D-773 DERIVES from `R99`/`R100` and the `TPS61023`'s own published 580/595/610 mV `VREF` band — **4.742 / 4.950 / 5.165 V** — the limiter's worst case leaves only **0.52 %** of margin to the pack's minimum trip. |
-| **0603WAF2371T5E** | `R101` | **B** | **D-773.** LCSC `C25964`, UNI-ROYAL(Uniroyal Elec), verified live 2026-09-19 per D-096 through the JLCPCB parts API (`evidence/jlc-live/0603waf2371t5e-757eecf8.json`): **2.37 kΩ ±1 %**, 0603, 100 mW, ±100 ppm/°C, −55…+155 °C, `componentLibraryType` **expand**, **11 268 in stock**. Same `0603WAF` series, same manufacturer, same 0603 land — only the resistance. Programs **0.468 A typ → 0.315 A GUARANTEED** (+4.9 % on the published 300 mA) while holding **+1.6 %** to the pack's minimum trip; it is the **E96 value nearest the centre of its legal window, 2.298–2.478 kΩ**. |
+| ~~**0603WAF2371T5E**~~ | ~~`R101`~~ | **B** | **SUPERSEDED BY D-787**, which fits `0603WAF2431T5E` (2.43 kΩ); retained as the record of what moved. **D-773.** LCSC `C25964`, UNI-ROYAL(Uniroyal Elec), verified live 2026-09-19 per D-096 through the JLCPCB parts API (`evidence/jlc-live/0603waf2371t5e-757eecf8.json`): **2.37 kΩ ±1 %**, 0603, 100 mW, ±100 ppm/°C, −55…+155 °C, `componentLibraryType` **expand**, **11 268 in stock**. Same `0603WAF` series, same manufacturer, same 0603 land — only the resistance. Programs **0.468 A typ → 0.315 A GUARANTEED** (+4.9 % on the published 300 mA) while holding **+1.6 %** to the pack's minimum trip; it is the **E96 value nearest the centre of its legal window, 2.298–2.478 kΩ**. |
 | **0603WAF2321T5E** | *(superseded)* | **B** | **D-771.** LCSC `C22905`, UNI-ROYAL(Uniroyal Elec), verified live 2026-09-18 per D-096 (`evidence/jlc-live/0603waf2321t5e-fa18111f.json`): **2.32 kΩ ±1 %**, 0603, 100 mW, ±100 ppm/°C, −55…+155 °C, `componentLibraryType` **expand**, **6 268 in stock**. Same series, same manufacturer, same 0603 land. Programs **0.479 A typ → 0.322 A GUARANTEED**, 7.4 % over the published 300 mA; it cannot go lower because the 5 V rail's worst case already sits 5.6 % under `IBAT_OCP`'s minimum. |
 | ~~**AO3422**~~ | ~~`Q11`~~ | **B/D** | **SUPERSEDED D-780.** D-779 proved its 2.5 V guaranteed `RDS(on)` point sat above AQROOT's 2.396 V held `VGS`; typical `gFS` could not close that production guarantee. |
 | **SQ2364EES-T1_BE3** | `Q11` | **C** | **D-780.** Vishay, LCSC `C5758702`, JLC stock **0** at the 2026-09-19 check; **buy broadline and consign**. Same SOT-23 1=G/2=S/3=D, `VDS` 60 V, `RDS(on)` ≤0.245 Ω at `VGS` 1.5 V / `ID` 2 A, `IGSS` ±100 nA. Low-gate row is a 25 °C EC point; first-five acceptance `Q11-TEMP-01` covers 0/25/40 °C and is intentionally not an all-temperature production claim. |
@@ -73,14 +74,78 @@ exact MPN — 0 missing** (six were added at FBV2-S2-001, see §4).
 
 ---
 
+
+## 4a. **D-791 PROCUREMENT PLAN — `D790-S01`, AND IT IS THE ONLY GATE LEFT THAT IS NOT ENGINEERING**
+
+> **THE `AO4800` ENGINEERING HOLD IS RELEASED BY D-791.**  `D790-S01` asked that
+> `Q2`/`Q3` stay on engineering hold until `D790-A01` and `D790-A03` closed.  They
+> close on this candidate — `F10` proves the four-channel gate/conduction model and
+> `F12` closes the cell side around it — so what remains on that line is **purchasing,
+> not engineering**.
+
+**AUTHORITATIVE SWEEP:** `evidence/d791-sourcing-sweep.json`, re-run against the
+REGENERATED assembly BOM (123 lines, 9 short/unknown).  Archived counts are **not
+purchasing authority**; re-check immediately before the order.
+
+| MPN | LCSC | refs | need (5 boards) | live stock | action |
+|---|---|---|---:|---:|---|
+| `74438357010` | `C5542269` | L4 | 5 | 0 | **consign: buy the exact MPN from a franchised distributor and ship to the assembler** |
+| `DMM-4026-B-I2S-R` | `C3171792` | MK1 | 5 | 0 | **no longer manufactured — buy broadline and consign** |
+| `LQW18AN39NG80D` | `C2042966` | L5,L6 | 10 | 3 | **consign: buy the exact MPN from a franchised distributor and ship to the assembler** |
+| `LTC4368IMS-1#TRPBF` | `C688401` | U18 | 5 | 2 | **consign: buy the exact MPN from a franchised distributor and ship to the assembler** |
+| `PCAL9535APW,118` | `C2669683` | U2,U3 | 10 | 1 | **consign: buy the exact MPN from a franchised distributor and ship to the assembler** |
+| `SQ2364EES-T1_BE3` | `C5758702` | Q11 | 5 | 0 | **consign: buy the exact MPN from a franchised distributor and ship to the assembler** |
+| `SSQ-124-02-G-S-RA` | `C3323671` | J5 | 5 | 0 | **no longer manufactured — buy broadline and consign** |
+| `ST25R3916-AQET` | `C5267441` | U9 | 5 | 0 | **consign: buy the exact MPN from a franchised distributor and ship to the assembler** |
+| `TLV7032DDFR` | `C2871498` | U19 | 5 | 0 | **consign: buy the exact MPN from a franchised distributor and ship to the assembler** |
+| `AO4800` | `C17098` | `Q2`, `Q3` | 10 | covered by catalogue stock | **ALLOCATE.** Catalogue availability is not an allocated traceable lot and this is the battery path's pass pair |
+| `NSR0240HT1G` | `C152519` | `D8` | 5 | covered by catalogue stock | **ALLOCATE** alongside `AO4800` for the same reason |
+
+**ATTRITION.**  Every line above is ordered at **quantity × 5 boards × 1.5, rounded up
+to the reel/packaging minimum, with a floor of +10 pieces** for anything in a package
+smaller than 0805 or with fewer than 8 terminals.  Small passives and SOT/SOIC actives
+are lost to placement, rework and inspection at a rate that a bare 5-board count does
+not survive; a second order for one missing resistor costs more than the attrition.
+
+**WRITTEN NO-SUBSTITUTION ACCEPTANCE.**  The purchase order and the assembler's work
+order must both carry, in these words:
+
+> *"No substitutions.  Every line is specified by EXACT manufacturer part number and
+> the manufacturer is part of the specification.  Alternates, equivalents, 'compatible'
+> parts, re-marked parts and marketplace listings of the same MPN under a different
+> brand are REJECTED.  Where a line is consigned, the assembler must confirm receipt of
+> the exact MPN and retain the reel label and the distributor packing list with the
+> build record.  If a line cannot be supplied as specified, STOP and refer back — do
+> not substitute."*
+
+**CONSIGNMENT ACCEPTANCE.**  For every consigned line the assembler returns, before
+placement: a photograph of the reel label showing manufacturer, MPN, date code and
+quantity; the franchised distributor's packing list; and a moisture-sensitivity
+statement for any MSL-rated active.  These are retained with the build record and are
+the traceability `D790-S01` asks for.
+
+**OFF-BOARD ALLOCATION — EXACT OPTION, TOOL AND MATERIAL.**  `D790-S01` asks for this
+too, and it is completed in [`OFF_BOARD_BOM.md`](OFF_BOARD_BOM.md): every off-board line
+carries an exact option (pack, harness housings/terminals/wire, barrier sheet, adhesive,
+lead-forming and trim aids), and the tools that are not consumables — the Molex
+Micro-Lock hand crimp tool and its positioner, the polyimide tape, the ESD-safe forming
+fixtures — are named there with the operation they belong to in
+[`FIRST_FIVE_ASSEMBLY_PLAN.md`](FIRST_FIVE_ASSEMBLY_PLAN.md).
+
+**WHAT THIS REPOSITORY CANNOT DO.**  It can reach the JLCPCB catalogue and it cannot
+reach an allocation system.  Confirming genuine traceable stock against a franchised
+distributor is a purchasing action performed by a person, and it is the remaining gate
+before any order.  **DO NOT ORDER** on the strength of the table above.
+
+
 ## 3. CARRIED — exact MPN present, live listing NOT re-confirmed in this task
 
 > **SUPERSEDED AS A CURRENT SOURCING STATEMENT — D-788 / `R7-N05` (2026-09-20).**  This
 > section records the state of an FBV2-S2-001-era task and is retained as HISTORY.  The
-> authoritative current sourcing position is the **D-790 live sweep of all 123 assembly
-> lines** (`evidence/d790-sourcing-sweep.json`, 2026-09-21 — **nine** short/consignment
+> authoritative current sourcing position is the **D-791 live sweep of all 123 assembly
+> lines** (`evidence/d791-sourcing-sweep.json`, 2026-09-21 — **nine** short/consignment
 > lines, and `Q2`/`Q3` a tenth exact identity needing an authorised allocation without
-> being short) and the consignment table in
+> being short), §4a above, and the consignment table in
 > [`FIRST_FIVE_ASSEMBLY_PLAN.md`](FIRST_FIVE_ASSEMBLY_PLAN.md) §18.  Two rows below were
 > carried here after they had already been retired elsewhere, which is exactly the defect
 > class `R7-D787-19`/`R7-D787-20` named: **`U18` is `LTC4368IMS-1#TRPBF` / `C688401`,
@@ -218,12 +283,12 @@ away** (see §4).
 |---|---|---|---|
 | 1 | **dual N-channel in the SOIC-8 dual-MOSFET pinout** — 1,3 = sources, 2,4 = gates, 5,6 and 7,8 = the two separate drains | 1 = S2, 2 = G2, 3 = S1, 4 = G1, 5/6 = D1, 7/8 = D2 | **MET** — the board ties 1+3 and 2+4, so which channel is which is immaterial; **no PCB change** |
 | 2 | `V(BR)DSS` ≥ **30 V** | 30 V | MET |
-| 3 | continuous `ID` ≥ the envelope | 6.9 A at 25 °C, 5.8 A at 70 °C vs 2.35 A | MET |
+| 3 | continuous `ID` ≥ the envelope | 6.9 A at 25 °C, 5.8 A at 70 °C vs **2.60 A** (D-791 re-based the peak envelope at the derived retention floor) | MET |
 | 4 | **`VGS(th)` MAXIMUM ≤ 2.5 V** | **1.5 V** (0.7 min, 1.1 typ) at `ID = 250 µA` | **MET with over a volt of margin** |
 | 5 | a **published `RDS(on)` MAXIMUM row at `VGS ≤ 2.8 V`** | **50 mΩ at `VGS = 2.5 V`, `ID = 5 A`** | **MET** — this is the row the retired part did not have |
 | 6 | the four series channels' drop is bounded and carried into the thermal model | ≈ 534 mV and ≈ 1.00 W at the sustained envelope; see §4 | MET, and **named as a cost** |
 | 7 | `VGS` rating ≥ the controller's own guaranteed gate-drive maximum | **±12 V** vs 10.8 V | MET, 1.2 V |
-| 8 | live authorised stock ≥ **100** (5 boards × 2 parts × 10 liquidity) and a traceable lifecycle status | **5347**, Alpha & Omega genuine line, LCSC **`C17098`** | MET |
+| 8 | live authorised stock ≥ **100** (5 boards × 2 parts × 10 liquidity) and a traceable lifecycle status | Alpha & Omega genuine line, LCSC **`C17098`**; re-swept at D-791 and still above the floor | MET — **but catalogue stock is not an ALLOCATION; see §4a** |
 
 | locked identity | value |
 |---|---|
@@ -248,21 +313,48 @@ envelopes:
 
 | envelope | `I` | hot channel `RDS(on)` | `VGS(Q2)` | meets the 2.5 V row? |
 |---|---|---|---|---|
-| **PEAK electrical** | 2.35 A | ≈ 68.7 mΩ | **2.4921 V** | **NO — 7.9 mV short** |
-| **SUSTAINED thermal** (`D789-A02`) | 1.9439 A | ≈ 66.2 mΩ | **2.5944 V** | **YES — 94.4 mV** |
+| **GUARANTEED-CONDUCTION CEILING** (D-791 / `D790-A01`, DERIVED) | **2.2845 A** | — | **2.5000 V** | **the boundary itself** |
+| **PEAK electrical** | 2.60 A | ≈ 72.0 mΩ | **2.4124 V** | **NO — 87.6 mV short** |
+| **SUSTAINED thermal** | 1.9328 A | ≈ 67.5 mΩ | **2.5894 V** | **YES — 89.4 mV** |
 
 Astra was right that the peak does not close, and F10 says so in its own
 report.  **The clause rules at the SUSTAINED envelope** because a conduction
 row is a steady-state question and the peak envelope — every subsystem at its
-published maximum, concurrently, forever — is not a steady state; see
-`D789-A02` in `CTO_DECISIONS`.  `VGS(th)` is cleared by **1.09 V** at both.
-The extra dissipation is carried explicitly into the enclosure thermal model
-rather than absorbed.
+published maximum, concurrently, forever — is not a steady state.
+
+**D-791 / `D790-A01` ADDS THE THING D-790 LEFT UNSAID.**  Round-10 is right
+that ruling at the sustained envelope while the peak sits under the row, and
+saying nothing about what that means, is not an answer.  F10 now DERIVES the
+**guaranteed-conduction ceiling** above and states what lies above it: the part
+is still ENHANCED — `VGS(th)` is cleared by more than a volt at every current in
+this envelope — but its `RDS(on)` is no longer a published number, so the
+consequence of an unpublished higher resistance is more drop and more heat,
+**both self-limiting and both inside a protection chain that does not depend on
+how well the pair conducts**.  That region is a PROTECTION-DOMAIN excursion and
+this contract does not rule there; a bounded-duration treatment is available
+from the only transient thermal number AOS states numerically, **62.5 °C/W MAX
+for `t ≤ 10 s`** against 90 °C/W steady state.  The DECLARED 25 → 125 °C ratio
+now carries a **sensitivity the ruling case must survive at 2×**, and the
+LTC4368 gate drive is swept across the whole attainable `BAT_RAW` range.
+
+**AND `AO4806` IS RE-EXAMINED.**  D-790 rejected it partly because *"its own
+manufacturer describes it as common-drain, which this common-SOURCE circuit
+cannot take on trust"*.  AOS does use that phrase and it describes an
+APPLICATION — *"suitable for use as a uni-directional or bi-directional load
+switch, facilitated by its common-drain configuration"*.  The PIN MAP it
+publishes is **1 = S2, 2 = G2, 3 = S1, 4 = G1, 5/6 = D1, 7/8 = D2**, identical
+to the `AO4800`'s with the two drains on SEPARATE pin pairs, so the package is
+not the obstacle the rejection said it was.  Its **22 mΩ MAX (16.5 typ) at `VGS` = 2.5 V**
+row would be materially better than the `AO4800`'s 50 mΩ, and it publishes a
+**30 mΩ row at `VGS` = 1.8 V** the `AO4800` does not have at all.  **It is rejected on
+STOCK**: the genuine AOS line (`C39406`) reads **0**, and the lines that do
+carry stock are marketplace re-marks this programme refuses on the battery
+path.  The rejection stands; the reason is now recorded correctly.
 
 ### 5. First article — **`C-BAT-GATE-01`**
 
 On the first assembled board **measure `ΔVGATE` (GATE − `BAT_PROTECTED_P`) and
-the pass-pair drop (`BAT_RAW` − `BAT_SENSE`) at 2.35 A, at `BAT_RAW` = 4.15 V,
+the pass-pair drop (`BAT_RAW` − `BAT_SENSE`) at 2.60 A, at `BAT_RAW` = 4.15 V,
 3.60 V and 3.05 V**, and record all six numbers.  This is the measurement that
 converts the unpublished hot `RDS(on)` at `VGS = 2.5 V` — which **no** candidate
 publishes — from an extrapolation into a measured bound.

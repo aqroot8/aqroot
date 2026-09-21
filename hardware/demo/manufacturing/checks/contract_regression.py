@@ -510,10 +510,30 @@ def _find_key(doc, key):
     return out
 
 
+def _verdict_is_pass(value):
+    """D-791 / D790-A09.  The nineteen contracts answer in three shapes.
+
+    `all_pass`/`ok`/`identical` are booleans and `verdict` is the string
+    `PASS`/`FAIL`.  Anything this function does not RECOGNISE as a pass is a
+    failure -- an unreadable or renamed verdict field must refuse, not default.
+    """
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, str):
+        return value.strip().upper() == "PASS"
+    return False
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--baseline", default="d633",
-                    help="decision prefix of the evidence to diff against")
+    # D-791 / D790-A09: the DEFAULT is applied after parsing so that an
+    # EXPLICIT `--baseline` is distinguishable from the fallback.  A run that
+    # names a baseline is asking for a COMPARISON, and a comparison may not
+    # silently become a generation.
+    ap.add_argument("--baseline", default=None,
+                    help="decision prefix of the evidence to diff against "
+                         "(default d633).  Mutually exclusive with "
+                         "--create-baseline")
     ap.add_argument("--only", action="append", default=[],
                     help="run only these contracts (repeatable)")
     ap.add_argument("--evidence", type=Path, default=EVIDENCE)
@@ -590,6 +610,15 @@ def main():
                     help="D-790 / D789-A05: permit a comparison in which some "
                          "contract has no baseline.  Recorded in the report; "
                          "NOT for a release run")
+    # D-791 / D790-A09.  A LABELLED DIAGNOSTIC MODE, WHICH CANNOT PASS.
+    # Reading the field-by-field diff of a suite that is known to be red is a
+    # legitimate thing to want; being able to do it without the run looking
+    # like a release pass is the requirement.  This flag only LABELS the run
+    # in the report -- it relaxes nothing at all.
+    ap.add_argument("--red-report-diagnostic", action="store_true",
+                    help="D-791 / D790-A09: label this run as a diagnostic "
+                         "read of a known-red suite.  Relaxes NOTHING; the "
+                         "exit code still refuses a failing child")
     ap.add_argument("--strict", action="store_true",
                     help="exit non-zero unless every report is byte-identical, "
                          "including the declared input identifiers "
@@ -607,6 +636,26 @@ def main():
     for name in claims:
         if name not in known:
             ap.error("--claim names no contract in this suite: %r" % name)
+    # D-791 / D790-A09.  GENERATION AND COMPARISON ARE MUTUALLY EXCLUSIVE.
+    #
+    # D-790 made creating a baseline a separate act, and then left the two
+    # options combinable: `--baseline dNNN --create-baseline dMMM` set
+    # `comparison_requested = False`, so a run that NAMED a baseline silently
+    # stopped comparing against it and was judged only on whether the
+    # contracts ran.  A release invocation that meant to compare could
+    # therefore pass without comparing anything, which is D789-A05 in a new
+    # place.  The combination is now REFUSED rather than resolved.
+    baseline_was_explicit = a.baseline is not None
+    if a.create_baseline and baseline_was_explicit:
+        ap.error("--create-baseline writes a baseline for a FUTURE comparison "
+                 "and makes no comparison claim; --baseline %s asks for a "
+                 "comparison NOW.  They are mutually exclusive: run the "
+                 "comparison, then create the next baseline." % a.baseline)
+    if a.create_baseline and a.allow_missing_baseline:
+        ap.error("--allow-missing-baseline relaxes a COMPARISON; "
+                 "--create-baseline makes none.  Pick one.")
+    if a.baseline is None:
+        a.baseline = "d633"
     if a.create_baseline:
         if a.emit_baseline and a.emit_baseline != a.create_baseline:
             ap.error("--create-baseline and --emit-baseline disagree")
@@ -635,6 +684,18 @@ def main():
             continue
         cur = json.loads(out.read_text())
         row["verdict"] = cur.get(field)
+        # D-791 / D790-A09.  A RED CHILD IS A RED SUITE.
+        #
+        # This wrapper captured each contract's verdict and then never read it:
+        # `ok` was `all_ran and no_substantive_difference`, where `all_ran`
+        # means only that the report FILE exists.  Nineteen FAILING contracts
+        # compared against an equally failing baseline are byte-identical, so
+        # the wrapper exited 0 on a board every one of its contracts had
+        # refused.  `verdict_field`/`verdict_is_pass` make the child's own
+        # answer a first-class fact and the exit code now reads it.
+        row["verdict_field"] = field
+        row["verdict_is_pass"] = _verdict_is_pass(cur.get(field))
+        row["child_exit_code_is_zero"] = (p.returncode == 0)
         row["board_sha256"] = cur.get("board_sha256")
         if a.emit_baseline:
             kept = a.evidence / ("%s-%s.json" % (a.emit_baseline, base))
@@ -807,6 +868,20 @@ def main():
                # D-790 / D789-A05.  The two facts the exit code now reads.
                comparison_requested=not bool(a.create_baseline),
                allow_missing_baseline=bool(a.allow_missing_baseline),
+               # D-791 / D790-A09.  THE FACT A RELEASE RUN ACTUALLY NEEDS.
+               all_contracts_pass=all(r.get("verdict_is_pass") is True
+                                      for r in rows),
+               all_children_exited_zero=all(
+                   r.get("child_exit_code_is_zero") is True for r in rows),
+               contracts_failing=[r["contract"] for r in rows
+                                  if r.get("verdict_is_pass") is not True],
+               red_report_diagnostic=bool(a.red_report_diagnostic),
+               red_report_diagnostic_cannot_satisfy_release=(
+                   "--red-report-diagnostic is a DIAGNOSTIC mode for reading "
+                   "the diff of a suite that is known to be failing.  It "
+                   "suppresses nothing and it cannot make this run exit zero: "
+                   "`all_contracts_pass` is still reported and the exit code "
+                   "still refuses a red child."),
                baselines_unusable={r["contract"]: r["baseline_unusable"]
                                    for r in rows
                                    if r.get("baseline_unusable")} or None,
@@ -849,7 +924,18 @@ def main():
               "--allow-missing-baseline to say so deliberately."
               % (doc["contracts_without_baseline"], a.baseline),
               file=sys.stderr)
+    if not doc["all_contracts_pass"]:
+        print(" REFUSED: %d contract(s) did not PASS: %s.  A comparison "
+              "against an equally red baseline is byte-identical and is NOT "
+              "a release pass -- D-791 / D790-A09."
+              % (len(doc["contracts_failing"]),
+                 ", ".join(doc["contracts_failing"])), file=sys.stderr)
+    # D-791 / D790-A09.  `all_contracts_pass` is a HARD term of the exit code
+    # in every mode, including `--create-baseline`: a baseline written from a
+    # failing suite is a failing baseline, and the next decision would compare
+    # against it and call the result clean.
     ok = doc["pre_dependent_normalisation"]["ok"] and doc["all_ran"] \
+        and doc["all_contracts_pass"] and doc["all_children_exited_zero"] \
         and comparison_ok \
         and (not doc["comparison_requested"]
              or (doc["all_identical"] if a.strict

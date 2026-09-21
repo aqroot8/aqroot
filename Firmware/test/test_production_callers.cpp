@@ -404,7 +404,7 @@ int main() {
     r.app.periodicBatteryGuard();
     claim("a 3.20 V pack sheds the accessory rail", !r.app.acc3v3());
     claim("...and says which floor it failed",
-          logHas("below 3.50 V single-rail floor"));
+          logHas("below 3.20 V retention floor"));
     g_log.clear();
     // Ask for it again at the same voltage: refused, and the line says so.
     r.app.handleAccessoryConsole('3');

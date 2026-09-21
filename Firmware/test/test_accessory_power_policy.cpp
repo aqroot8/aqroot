@@ -11,6 +11,7 @@ using aqroot::accessoryEnableAllowed;
 using aqroot::accessoryEnableFloor;
 using aqroot::accessoryRetentionAction;
 using aqroot::kAccessoryDualRailFloorV;
+using aqroot::kAccessoryRetentionFloorV;
 using aqroot::kAccessorySingleRailFloorV;
 using aqroot::kVcellAllOnesV;
 using aqroot::kVcellPlausibleMaxV;
@@ -77,32 +78,48 @@ class GaugeBus : public aqroot::I2cBus {
 };
 
 int main() {
-  claim("single floor is D-766's retained 3.50 V",
-        kAccessorySingleRailFloorV == 3.50f);
-  claim("dual floor is D-787's re-derived 3.85 V",
-        kAccessoryDualRailFloorV == 3.85f);
-  claim("the dual floor is strictly above the single floor",
+  // D-791 / D790-A03 + D790-A14.  THE THREE DERIVED FLOORS.
+  //
+  // D-790 had two constants that were BOTH enable floors AND retention floors
+  // and were derived from a model that started at BAT_PROTECTED_P without ever
+  // asking whether the node could be there.  F12 now derives three, and the
+  // boundary claims below are the values it publishes.
+  claim("the retention floor is the derived 3.20 V",
+        kAccessoryRetentionFloorV == 3.20f);
+  claim("the first-rail ENABLE floor is the derived 3.55 V",
+        kAccessorySingleRailFloorV == 3.55f);
+  claim("the second-rail ENABLE floor is the derived 3.65 V",
+        kAccessoryDualRailFloorV == 3.65f);
+  claim("the dual enable floor is strictly above the single one",
         kAccessoryDualRailFloorV > kAccessorySingleRailFloorV);
-  claim("first rail uses the single floor", accessoryEnableFloor(false) == 3.50f);
-  claim("second rail uses the dual floor", accessoryEnableFloor(true) == 3.85f);
+  claim("every enable floor is strictly ABOVE the retention floor, because an "
+        "enable has to anticipate a load step a retention does not",
+        kAccessorySingleRailFloorV > kAccessoryRetentionFloorV
+        && kAccessoryDualRailFloorV > kAccessoryRetentionFloorV);
+  claim("first rail uses the single floor", accessoryEnableFloor(false) == 3.55f);
+  claim("second rail uses the dual floor", accessoryEnableFloor(true) == 3.65f);
 
   // ---- enable permission -------------------------------------------------
   claim("unreadable VCELL refuses a first enable",
         !accessoryEnableAllowed(false, 4.2f, false));
   claim("unreadable VCELL refuses a second enable",
         !accessoryEnableAllowed(false, 4.2f, true));
-  claim("first rail accepted exactly at 3.50 V",
-        accessoryEnableAllowed(true, 3.50f, false));
-  claim("first rail refused just below 3.50 V",
-        !accessoryEnableAllowed(true, 3.49f, false));
-  claim("second rail refused at 3.75 V, below the derived dual floor",
-        !accessoryEnableAllowed(true, 3.75f, true));
-  claim("second rail refused just below 3.85 V",
-        !accessoryEnableAllowed(true, 3.84f, true));
-  claim("second rail accepted exactly at 3.85 V",
-        accessoryEnableAllowed(true, 3.85f, true));
-  claim("a single rail is still allowed at 3.60 V, between the floors",
+  claim("first rail accepted exactly at 3.55 V",
+        accessoryEnableAllowed(true, 3.55f, false));
+  claim("first rail refused just below 3.55 V",
+        !accessoryEnableAllowed(true, 3.54f, false));
+  claim("second rail refused at 3.60 V, below the derived dual enable floor",
+        !accessoryEnableAllowed(true, 3.60f, true));
+  claim("second rail refused just below 3.65 V",
+        !accessoryEnableAllowed(true, 3.64f, true));
+  claim("second rail accepted exactly at 3.65 V",
+        accessoryEnableAllowed(true, 3.65f, true));
+  claim("a single rail is still allowed at 3.60 V, between the enable floors",
         accessoryEnableAllowed(true, 3.60f, false));
+  claim("NO rail may be ENABLED at the retention floor itself -- the step the "
+        "enable has to anticipate has not happened yet",
+        !accessoryEnableAllowed(true, kAccessoryRetentionFloorV, false)
+        && !accessoryEnableAllowed(true, kAccessoryRetentionFloorV, true));
 
   // ---- retention ---------------------------------------------------------
   claim("no rail on and no reading is not an action",
@@ -114,27 +131,40 @@ int main() {
   claim("unreadable VCELL sheds both active rails",
         accessoryRetentionAction(false, 4.2f, true, true)
             == AccessoryBatteryAction::ShedAll);
-  claim("dual rails at 3.75 V shed the 5 V rail first",
-        accessoryRetentionAction(true, 3.75f, true, true)
-            == AccessoryBatteryAction::Shed5v);
-  claim("dual rails at 3.60 V shed the 5 V rail first",
-        accessoryRetentionAction(true, 3.60f, true, true)
-            == AccessoryBatteryAction::Shed5v);
-  claim("dual rails below the single floor shed everything",
-        accessoryRetentionAction(true, 3.49f, true, true)
-            == AccessoryBatteryAction::ShedAll);
-  claim("dual rails at 3.85 V are retained",
-        accessoryRetentionAction(true, 3.85f, true, true)
+  // THE REGRESSION D-791 EXISTS TO STOP.  With D-790's constants a rail
+  // authorised at the dual ENABLE floor was shed by the very next settled
+  // recheck, because the load step it had just caused took the node below the
+  // number that authorised it.  Retention is judged at the RETENTION floor.
+  claim("a pair authorised at the dual enable floor survives the load step it "
+        "causes",
+        accessoryRetentionAction(true, kAccessoryDualRailFloorV - 0.40f,
+                                 true, true)
             == AccessoryBatteryAction::Keep);
+  claim("dual rails just above the retention floor are retained",
+        accessoryRetentionAction(true, 3.21f, true, true)
+            == AccessoryBatteryAction::Keep);
+  claim("dual rails just below the retention floor shed the 5 V rail first",
+        accessoryRetentionAction(true, 3.19f, true, true)
+            == AccessoryBatteryAction::Shed5v);
+  claim("dual rails far below the retention floor STILL shed the 5 V rail "
+        "first, because shedding it is what restores the node",
+        accessoryRetentionAction(true, 2.90f, true, true)
+            == AccessoryBatteryAction::Shed5v);
+  claim("the 3.3 V rail alone below the retention floor sheds everything",
+        accessoryRetentionAction(true, 3.19f, true, false)
+            == AccessoryBatteryAction::ShedAll);
+  claim("the 5 V rail alone below the retention floor sheds everything",
+        accessoryRetentionAction(true, 3.19f, false, true)
+            == AccessoryBatteryAction::ShedAll);
   claim("the 3.3 V rail alone is retained at 3.60 V",
         accessoryRetentionAction(true, 3.60f, true, false)
             == AccessoryBatteryAction::Keep);
   claim("the 5 V rail alone is retained at 3.60 V",
         accessoryRetentionAction(true, 3.60f, false, true)
             == AccessoryBatteryAction::Keep);
-  claim("a single active rail below 3.50 V sheds",
-        accessoryRetentionAction(true, 3.49f, true, false)
-            == AccessoryBatteryAction::ShedAll);
+  claim("dual rails at 3.85 V are retained",
+        accessoryRetentionAction(true, 3.85f, true, true)
+            == AccessoryBatteryAction::Keep);
 
   // ---- D-779: an I2C read that succeeded is not a measurement ------------
   claim("the all-ones VCELL code is OUTSIDE the plausible band",
@@ -160,7 +190,7 @@ int main() {
   claim("a zero reading sheds rather than being read as a flat pack",
         accessoryRetentionAction(true, 0.0f, true, true)
             == AccessoryBatteryAction::ShedAll);
-  claim("a plausible reading at the dual floor is still retained",
+  claim("a plausible reading above the retention floor is still retained",
         accessoryRetentionAction(true, 3.85f, true, true)
             == AccessoryBatteryAction::Keep);
 

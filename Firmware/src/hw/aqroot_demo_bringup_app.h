@@ -181,9 +181,12 @@ class DemoBringupApp {
                  ctx, double(vcell), double(kVcellPlausibleMinV),
                  double(kVcellPlausibleMaxV));
       } else {
+        // D-791 / D790-A03: RETENTION is judged at the retention floor.  The
+        // single/dual constants are ENABLE floors and anticipate a load step
+        // that, for a rail already on, has already happened.
         snprintf(why, sizeof(why),
-                 "%s: VCELL %.3f V below %.2f V single-rail floor",
-                 ctx, double(vcell), double(kAccessorySingleRailFloorV));
+                 "%s: VCELL %.3f V below %.2f V retention floor",
+                 ctx, double(vcell), double(kAccessoryRetentionFloorV));
       }
       forceAccessoriesOff(why);
     } else if (action == AccessoryBatteryAction::Shed5v) {
@@ -193,9 +196,10 @@ class DemoBringupApp {
       if (off5) {
         char line[160];
         snprintf(line, sizeof(line),
-                 "ACC_5V_SW SHED (%s): VCELL %.3f V below %.2f V dual-rail "
-                 "floor", ctx, double(vcell),
-                 double(kAccessoryDualRailFloorV));
+                 "ACC_5V_SW SHED (%s): VCELL %.3f V below %.2f V retention "
+                 "floor; the 3.3 V rail keeps its full published budget",
+                 ctx, double(vcell),
+                 double(kAccessoryRetentionFloorV));
         log_(line);
       } else {
         forceAccessoriesOff("5 V dual-rail battery shed failed");
@@ -347,13 +351,55 @@ class DemoBringupApp {
                        : "UNKNOWN (retry pending; the amplifier may still be "
                          "energised)");
     log_(line);
+    // D-791 / D790-A06.  AN ABORTED ENABLE MAY NOT LEAVE AN "ON" INTENT
+    // BEHIND.  Round-10 reproduced it: the console tone command aborts when
+    // this returns false, but the intent recorded here was still `want = on`,
+    // so `serviceDeferredCommands()` would later drive AMP_SD_MODE HIGH from
+    // the main loop -- energising the amplifier with no tone playing, no
+    // operator action and no matching OFF anywhere.  A deferred retry is only
+    // ever legitimate for the SAFE direction.  An unconfirmed ENABLE is
+    // therefore CANCELLED here and REPLACED by an OFF intent, which is
+    // attempted immediately and left pending if it too does not land.  This
+    // covers every error exit of every caller, because no caller can observe
+    // a false return without this having already run.
+    if (on && !confirmed) {
+      cancelAmplifierEnable();
+    }
     return confirmed;
+  }
+
+  // Replace an unconfirmed ON intent with a CONFIRMED-or-PENDING OFF intent.
+  // Writes one bit and never touches anything else.  Returns true when the
+  // amplifier is confirmed OFF from U2's physical output shadow.
+  bool cancelAmplifierEnable() {
+    amp_intent_.want = false;
+    const bool acked = expanders_.setAmplifier(bus_, false);
+    const bool off = acked && amplifierConfirmed(false);
+    amp_intent_.pending = !off;
+    ++amp_intent_.attempts;
+    log_(off ? "AMP_SD_MODE enable ABORTED: ON intent CANCELLED and the "
+               "amplifier is CONFIRMED OFF"
+             : "AMP_SD_MODE enable ABORTED: ON intent CANCELLED; the OFF "
+               "write did not land, OFF retry pending and the amplifier may "
+               "still be energised");
+    return off;
   }
 
   // Pulse DISP_RST_N and RELEASE it.  The release is the intent; an
   // unconfirmed release leaves `displayIsUp()` false.
   bool releaseDisplayResetIntent() {
     disp_reset_intent_.want = true;
+    // D-791 / D790-A07.  A NEW RESET INVALIDATES THE PREVIOUS INITIALISATION.
+    //
+    // Round-10 reproduced it: `display_up_` survived a later DISP_RST_N pulse,
+    // so a success -> reset -> NACKed release -> deferred release sequence
+    // ended with `displayIsUp()` true again the instant the retry landed --
+    // with no SPI init in between and a panel sitting in its power-on state.
+    // A CONFIRMED RESET RELEASE IS NOT A CONFIRMED PANEL INITIALISATION.  The
+    // moment this method asserts the reset the panel is definitively down, and
+    // only `noteDisplayInitialised(true)` -- which the caller may only reach
+    // after re-running the SPI init -- may put it back up.
+    display_up_ = false;
     bool acked = expanders_.setDisplayReset(bus_, true);
     delay(20);
     acked = expanders_.setDisplayReset(bus_, false) && acked;
@@ -366,6 +412,18 @@ class DemoBringupApp {
            "reset; retry pending and the display is NOT reported up");
     }
     return confirmed;
+  }
+
+  // D-791 / D790-A07.  A CONFIRMED RELEASE WITH NO INITIALISATION BEHIND IT.
+  //
+  // True when a display reset was asked for, the release is now confirmed, and
+  // no SPI/display initialisation has run since that reset.  `demo/main.cpp`'s
+  // `loop()` reads this and completes the bring-up the operator asked for --
+  // which is the only way a DEFERRED release can ever reach a panel that is
+  // actually initialised, and the only way the flag may go back up.
+  bool displayInitOwed() const {
+    return disp_reset_intent_.want && !disp_reset_intent_.pending
+        && !display_up_ && expanders_.ready();
   }
 
   // Retried from the main loop.  Writes ONE bit per outstanding intent and
@@ -416,6 +474,14 @@ class DemoBringupApp {
                             AQROOT_U2_DISP_RST_N);
   }
   // The ONE fact `demo/main.cpp` is allowed to print about the panel.
+  //
+  // D-791 / D790-A07: the `!pending` term is now DEFENCE IN DEPTH rather than
+  // the load-bearing guard it was at D-790.  `display_up_` is cleared the
+  // moment `releaseDisplayResetIntent()` asserts the reset and again by
+  // `serviceExpanderRecovery()`, so no reachable state has `display_up_` true
+  // with a release outstanding.  The term is kept because a future edit could
+  // reintroduce one; `firmware_hw_map_contract` records that mutating it alone
+  // is now an EQUIVALENT mutant rather than leaving a vacuous control passing.
   bool displayIsUp() const { return display_up_ && !disp_reset_intent_.pending; }
   void noteDisplayInitialised(bool up) { display_up_ = up; }
 

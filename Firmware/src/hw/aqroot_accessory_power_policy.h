@@ -3,66 +3,95 @@
 namespace aqroot {
 
 // ===========================================================================
-// D-775.  THE ACCESSORY VCELL FLOORS, AND WHERE THE NUMBERS COME FROM.
+// D-791 / D790-A03 + D790-A14.  THE ACCESSORY VCELL FLOORS, RE-DERIVED FROM
+// THE COMPLETE CELL-TO-LOAD NETWORK AND FROM THE GAUGE'S OWN ERROR.
 //
 // Hardware current limiting (U20/U22 TPS22950-Q1, sized by D-753/D-765/D-771)
 // remains the ABSOLUTE safety boundary and this file never weakens it.  What
-// these two constants enforce is the NORMAL D-098 load contract: the board
-// publishes ACC_3V3_SW = 400 mA TOTAL and ACC_5V_SW = 300 mA TOTAL, and at the
-// bottom of the pack's discharge those two budgets DELIVERED AT THE SAME TIME,
-// on top of every internal subsystem running at once, pull the BQ25185 past its
-// own IBAT_OCP minimum and hiccup the charger.  That is not a fault the user
-// caused; it is the published budget being honoured on a low battery.
+// these constants enforce is the NORMAL D-098 load contract: the board
+// publishes ACC_3V3_SW = 400 mA TOTAL and ACC_5V_SW = 300 mA TOTAL, and those
+// budgets have to be honoured from a 1S pouch through a battery path whose
+// series resistance is not small.
 //
-// NEITHER FLOOR IS A CHOSEN NUMBER.  Both are DERIVED, by
-// `hardware/demo/manufacturing/checks/demo_feature_contract.py` F6, from
+// WHAT ROUND-10 FOUND, AND IT IS THE REASON EVERY NUMBER BELOW MOVED.
+// D-775 through D-790 derived these floors from a model that STARTED at
+// `BAT_PROTECTED_P` -- the node the MAX17048 reads -- and said so: it
+// deliberately did "not double-count Q2/Q3, R75 or the pack's own internal
+// resistance, all of which are UPSTREAM of what the gauge reads".  That is the
+// right thing to do for the SAG BELOW the node and the wrong thing to do for
+// the question nobody asked: CAN THE NODE BE THERE AT ALL?  It cannot.
+// Sustaining 3.85 V at `BAT_PROTECTED_P` while the published load draws needs
+// more than 4.3 V upstream through four AO4800 channels and R75 alone, and the
+// charger's own regulation maximum on the pack is 4.221 V.  The 3.85 V dual
+// floor and the 3.50 V single floor were node voltages THE NODE NEVER REACHES
+// UNDER LOAD, so the rails this board publishes would be authorised and then
+// shed by the very next settled recheck -- on a FULL pack.
 //
-//   * the MAX17048 measurement point -- VCELL is BAT_PROTECTED_P (U14.2/U14.3,
-//     the same node as BQ25185 U11.2), so the sag model starts THERE and does
-//     not double-count Q2/Q3, R75 or the pack's own internal resistance, all of
-//     which are UPSTREAM of what the gauge reads;
-//   * the LIVE BAT_PROTECTED_P copper resistance, measured off the board on
-//     every contract run (R75.2 -> U11.2), at its hot resistivity;
-//   * the BQ25185 BATFET maximum -- SLUSF65B RON_BAT = 140 mOhm max over
-//     -40..+125 C, with a declared allowance for the 3.5 V / 2.3 A corner TI
-//     does not publish;
-//   * D-098's published 400 mA / 300 mA budgets, the live SYS->U21 trunk and
-//     accessory-rail copper, and each load switch's own RON maximum.
+// NONE OF THE THREE CONSTANTS BELOW IS A CHOSEN NUMBER.  All are DERIVED by
+// `hardware/demo/manufacturing/checks/demo_feature_contract.py` **F12**, which
+// solves the whole network as one self-consistent fixed point --
 //
-// The derived requirements, at F6's 10 % margin to the IBAT_OCP minimum:
+//   CELL(OCV) -> pack DC resistance -> 26 AWG harness -> J4 -> F1
+//             -> Q2 ch1 -> Q2 ch2 -> Q3 ch1 -> Q3 ch2 -> R75
+//             -> BAT_PROTECTED_P -> BQ25185 BATFET -> SYS
+//             -> U12 -> +3V3 -> internal load and U20 -> ACC_3V3_SW
+//             -> SYS->L4 trunk -> U21 -> U22 -> ACC_5V_SW
 //
-// D-787 re-derived these after R6-A01 made the TPS63020 setpoint a real
-// tolerance envelope and the first-five ACC_3V3 reinforcement path explicit:
+// -- against every limit at once: a stable operating point existing at all,
+// the BQ25185's own VBUVLO, U12's published VIN floor for its 2 A row, the
+// IBAT_OCP margin at a DECLARED WIDER accuracy band than TI states at its
+// single condition, the AO4800's lowest published conduction row, TI's
+// junction maximum referenced to THIS enclosure's internal air, and the fitted
+// pouch's published discharge window.
 //
-//     single rail    3.1671 V  -> existing 3.50 V policy remains conservative
-//     both rails      3.8094 V  -> 3.85 V on the 0.05 V grid
+//   kAccessoryRetentionFloorV   the HARD node floor.  It is the BQ25185's own
+//                               VBUVLO bound -- below it the BATFET
+//                               disconnects and the product powers down --
+//                               plus the MAX17048's POSITIVE voltage error and
+//                               one quantisation step, because the firmware
+//                               compares a REPORTED value and ADI publishes
+//                               +/-20 mV/cell (D790-A14).  A reported 3.20 V
+//                               can be an actual 3.180 V.
 //
-// so kAccessoryDualRailFloorV IS the derived requirement and
-// kAccessorySingleRailFloorV is D-766's existing 3.50 V policy floor, which
-// sits well above its own requirement and is retained.  F6 FAILS if either
-// constant here drops below what it derives, and the arithmetic is re-derived
-// from the live board on every run -- so a wider +3V3 budget, a different boost
-// setpoint, a re-routed BAT_PROTECTED_P or a new limiter setting moves the
-// requirement and this file has to follow it.
+//   kAccessorySingleRailFloorV  the floor to ENABLE the first accessory rail,
+//   kAccessoryDualRailFloorV    and to enable the SECOND one.  Each is the
+//                               retention floor PLUS THE NODE STEP THAT RAIL
+//                               WILL CAUSE, worst case over every declared
+//                               state and every cell voltage.  D-779 named
+//                               this exactly -- "the permission was taken
+//                               before the load existed" -- and D-790 never
+//                               quantified it, so its floors both failed to
+//                               anticipate the step and sat above the node's
+//                               attainable range at the same time.
 //
-// SHED ORDER AND WHAT THE USER STILL GETS.  Below the dual-rail floor the 5 V
-// rail sheds FIRST: it is the expensive one (boost, so pack current scales with
-// 5.1654 V / 0.88), and shedding it leaves the 3.3 V rail delivering its full
-// published 400 mA.  Each rail on its own remains available down to 3.50 V.
-// Only the SIMULTANEOUS full-budget case is restricted, and it is restricted
-// rather than allowed to hiccup the charger.
+// F12 FAILS if any constant here is below what it derives, if a floor is not
+// ATTAINABLE by the node in the state it governs, or if D-790's own declared
+// reference state ever starts passing.  The arithmetic re-runs from the live
+// board on every contract run, so a wider +3V3 budget, a different boost
+// setpoint, a re-routed BAT_PROTECTED_P, a new limiter setting or a different
+// pass pair all move the requirement and this file has to follow it.
+//
+// SHED ORDER AND WHAT THE USER STILL GETS, UNCHANGED.  Below the retention
+// floor with both rails live the 5 V rail sheds FIRST: it is the expensive one
+// (a boost, so pack current scales with 5.1654 V / 0.88), and shedding it
+// RESTORES the node by the second-rail step -- which is why the 3.3 V rail
+// then keeps delivering its full published 400 mA instead of going down with
+// it.  Both published budgets are UNCHANGED; what D-791 corrects is which
+// internal subsystems may be at maximum AT THE SAME TIME, which F12 derives
+// and DEVICE_SPEC publishes as observable modes.
 //
 // UNREADABLE VCELL IS ALWAYS FAIL-CLOSED: no measurement means no permission,
 // and any rail already on is shed.
 // ===========================================================================
-constexpr float kAccessorySingleRailFloorV = 3.50f;
-constexpr float kAccessoryDualRailFloorV = 3.85f;
+constexpr float kAccessoryRetentionFloorV = 3.20f;
+constexpr float kAccessorySingleRailFloorV = 3.55f;
+constexpr float kAccessoryDualRailFloorV = 3.65f;
 
 // ===========================================================================
 // D-779.  AN I2C READ THAT SUCCEEDED IS NOT A MEASUREMENT.
 //
 // `readFuelCellVoltage` returned true for ANY sixteen bits the MAX17048 put on
-// the bus, and 0xFFFF decodes to 5.1199 V -- above BOTH floors, so a stuck-high
+// the bus, and 0xFFFF decodes to 5.1199 V -- above EVERY floor, so a stuck-high
 // bus, a gauge that never came out of reset, or a bus fault that reads all-ones
 // AUTHORISED the second accessory rail.  Fail-closed on a failed read was
 // already right; this is the other half of it.
@@ -95,6 +124,15 @@ inline bool accessoryEnableAllowed(bool vcell_valid, float vcell,
          && vcell >= accessoryEnableFloor(other_rail_on);
 }
 
+// D-791 / D790-A03.  RETENTION IS JUDGED AT THE RETENTION FLOOR, NOT AT THE
+// ENABLE FLOORS.
+//
+// The enable floors anticipate a load STEP that has not happened yet; once the
+// rail is on, that step HAS happened and the node is legitimately lower.
+// Judging retention at an enable floor is what would shed a rail 400 ms after
+// authorising it, every time.  The graduated response lives in the ACTION --
+// 5 V first, then everything -- rather than in a second threshold, so the two
+// numbers cannot drift into an order that makes the graduation unreachable.
 inline AccessoryBatteryAction accessoryRetentionAction(bool vcell_valid,
                                                        float vcell,
                                                        bool rail3v3_on,
@@ -102,12 +140,10 @@ inline AccessoryBatteryAction accessoryRetentionAction(bool vcell_valid,
   if (!rail3v3_on && !rail5v_on) return AccessoryBatteryAction::Keep;
   if (!vcell_valid || !vcellIsPlausible(vcell))
     return AccessoryBatteryAction::ShedAll;
-  if (rail3v3_on && rail5v_on && vcell < kAccessoryDualRailFloorV) {
-    return vcell >= kAccessorySingleRailFloorV
-               ? AccessoryBatteryAction::Shed5v
-               : AccessoryBatteryAction::ShedAll;
+  if (vcell < kAccessoryRetentionFloorV) {
+    return (rail3v3_on && rail5v_on) ? AccessoryBatteryAction::Shed5v
+                                     : AccessoryBatteryAction::ShedAll;
   }
-  if (vcell < kAccessorySingleRailFloorV) return AccessoryBatteryAction::ShedAll;
   return AccessoryBatteryAction::Keep;
 }
 

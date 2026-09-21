@@ -1,0 +1,23 @@
+{
+ "schema": 1,
+ "decision": "D-791",
+ "item": "Fable F-N04 / D790-A04 -- obtain the EastRising ER-TFT035IPS-6 (and ER-TPC035-6 / FT6236) primary specification",
+ "verdict": "NOT OBTAINABLE FROM THIS ENVIRONMENT",
+ "why_it_matters": "the +3V3 budget carries a DECLARED 50 mA allowance for the display module's panel-logic and touch side, because ILI Technology's ILI9488 datasheet publishes Sleep-in (100 uA) and Deep Standby (1 uA) and NO active-mode supply current at all.  An exact module figure would replace a declaration with a source.",
+ "attempts": [
+  {"url": "https://www.buydisplay.com/download/manual/ER-TFT035IPS-6_Datasheet.pdf", "result": "HTTP 403"},
+  {"url": "https://www.buydisplay.com/download/manual/ER-TFT035-6_Datasheet.pdf", "result": "HTTP 403"},
+  {"url": "https://www.buydisplay.com/download/interfacing/ER-TFT035IPS-6_Interfacing.pdf", "result": "HTTP 403"},
+  {"url": "https://www.buydisplay.com/3-5-inch-ips-tft-display-320x480-with-mcu-spi-rgb-interface", "result": "HTTP 403, with a browser User-Agent, Accept-Language and Referer set"},
+  {"url": "https://www.displayfuture.com/Display/datasheet/controller/FT6236.pdf", "result": "HTTP 200 but text/html, not a PDF"},
+  {"url": "https://focuslcds.com/wp-content/uploads/Drivers/FT6236.pdf", "result": "HTTP 403"},
+  {"url": "https://cdn-shop.adafruit.com/product-files/5206/5206_FT6236.pdf", "result": "HTTP 404"}
+ ],
+ "note": "this is recorded rather than left implied.  D-791 / a-403-is-not-an-unobtainable-datasheet: a 403 means THIS environment cannot fetch it, not that the document does not exist.  A human with a browser can obtain it, and doing so is a cheap improvement to the +3V3 budget that would replace the declared allowance with a published figure.",
+ "what_stands_in_for_it": [
+  "a DECLARED 50 mA panel-logic + touch allowance, labelled as declared, roughly 2x what a 3.5 in ILI9488 module of this class draws",
+  "a reported SENSITIVITY of the derived envelope at 1.5x and 2x that allowance",
+  "C-DISP-01 first-article measurement, which is the measurement of record and splits the module's draw into panel logic and backlight-converter input"
+ ],
+ "first_article": "C-DISP-01"
+}

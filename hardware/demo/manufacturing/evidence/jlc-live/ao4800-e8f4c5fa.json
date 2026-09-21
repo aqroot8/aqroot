@@ -1,10 +1,10 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-21T07:31:46Z",
+ "fetched_utc": "2026-09-21T15:04:56Z",
  "keyword": "AO4800",
  "page_size": 25,
- "pages": 2,
+ "pages": 3,
  "records": [
   {
    "assemblyComponentFlag": false,

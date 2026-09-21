@@ -1,7 +1,78 @@
 # AQROOT Demo — FABRICATION HANDOFF
 
 
-> # **STATUS: D-790 ROUND-9 CORRECTION — EXTERNAL-REVIEW TARGET, BOARD AUTHORITY `9606ecfc` (2026-09-21).**
+
+> # **STATUS: D-791 ROUND-10 CORRECTION — EXTERNAL-REVIEW TARGET, BOARD AUTHORITY `c8eabd43` (2026-09-21).**
+>
+> **D-791 supersedes D-790, which Round-10 external review REJECTED.  THIS IS A
+> REVIEW TARGET, NOT A FABRICATION AUTHORIZATION — DO NOT ORDER.  NO OWNER
+> DECISION IS OPEN: the owner's D-788 OPTION A approval of 2026-09-20 stands and
+> D-791 stays inside it.  Both published accessory budgets — 400 mA on the
+> switched 3.3 V rail and 300 mA on the 5 V rail — are UNCHANGED.**
+>
+> Fable passed the design for CAM/order closure with 3 medium / 16 low plus
+> verifier and sourcing residuals.  **Astra blocked the order with 15 findings**
+> (0 critical, 4 high, 8 medium, 3 low) plus a procurement item, and established
+> **no unconditional PCB respin**.  All of `D790-A01`…`A14` and `S01` are closed
+> here, plus every Fable complementary item, plus **five found here** (`R10-N01`,
+> `R10-N02`, `R10-N03`, and at the verification pass `R10-N04` and `R10-N05`).
+>
+> ### The one finding a fabricator should read first
+>
+> **`D790-A03`: the firmware's VCELL floors were node voltages the node cannot
+> reach.**  `BAT_PROTECTED_P` cannot be held at 3.85 V while the published load
+> draws — it needs more than 4.3 V upstream and the charger's regulation
+> maximum on the pack is 4.221 V — so the accessory rails this product
+> publishes would have been authorised and shed again 400 ms later, **on a full
+> pack**.  New `demo_feature_contract` **`F12`** solves the complete
+> cell-to-load network as one fixed point and DERIVES three floors —
+> **retention 3.20 V**, **first-rail enable 3.55 V**, **second-rail enable
+> 3.65 V** — and makes their ATTAINABILITY a clause.  Nothing on the copper
+> changes; the firmware constants do.
+>
+> ### What actually changed on the board
+>
+> **ONE part VALUE: `R97` 1.78 kΩ → 1.87 kΩ** (`0603WAF1781T5E` →
+> `0603WAF1871T5E`, LCSC `C22849` → `C22850`, same UNI-ROYAL `0603WAF` series,
+> same 0603 land).  **FIVE manufacturer FIELDS** corrected — `Q4`/`Q6`/`Q7`/
+> `Q8`/`Q9`'s `BSS138LT1G` is **onsemi**, not Alpha & Omega, and `Q10`'s
+> `2N7002` is **Jiangsu Changjing**, not onsemi — and the `AO4800` symbol's
+> channel pin NAMES corrected to the AOS map.  **NO copper, NO net, NO
+> footprint, NO placement and NO protected-copper object moved.**  Connectivity
+> is unchanged at **174 retained / 173 connected / one owner-approved `U11.3`
+> open / zero unapproved**.
+>
+> ### What a fabricator and an assembler must still do
+>
+> **PURCHASING IS THE ONLY GATE LEFT THAT IS NOT ENGINEERING.**  Nine lines are
+> SHORT on the D-791 live sweep and need consignment — `J5`, `L2`/`L4`,
+> `L5`/`L6`, `MK1`, `Q11`, `U18`, `U19`, `U2`/`U3`, `U9` — and `Q2`/`Q3` is a
+> tenth exact identity needing an authorised allocation without being short.
+> The **D-791 PROCUREMENT PLAN** in
+> [`assembly/SOURCING_LEDGER.md`](assembly/SOURCING_LEDGER.md) §4a carries the
+> attrition rule, the written no-substitution wording and the consignment
+> acceptance evidence each line must return.  **Confirm all ten before PCBA
+> payment.**
+>
+> **THE FIRST-ARTICLE ACCESSORY STEP MOVED, AND AN ASSEMBLER MUST USE THE NEW
+> POINTS.**  `R10-N04`: `FIRST_FIVE_ASSEMBLY_PLAN` §7b chose its bench voltages
+> from the retired 3.50/3.85 V floors and quoted ONE node voltage per point,
+> where the release image judges ENABLE on the pre-load gauge reading and
+> RETENTION on the loaded node.  The `C-PWR-TRANSIENT-01` accessory step now
+> reads **`≈4.15 V` and `≈3.75 V`** pre-enable for the dual case, **`≈3.60 V`**
+> for the single case, with the LOADED node required to stay above **3.20 V**
+> at every point.  **Do not run the older points; they no longer correspond to
+> a permission the firmware grants.**
+>
+> **CHARGING IS A SUPERVISED OPERATION AND NOW HAS A NUMBER.**  The fitted pouch
+> publishes **0…40 °C for CHARGE** against 0…60 °C for discharge, and the cell
+> sits in the internal air.  At the sustained reference state the derived
+> external-ambient ceiling for charging is **30.0 °C**.  `battery_pack_contract`
+> **B8** already required supervised first-five charging; D-791 puts the number
+> on it.
+>
+
+> # **D-790 ROUND-9 CORRECTION — HISTORICAL, SUPERSEDED BY THE D-791 BLOCK ABOVE.  Its `AO4800` pass pair, its common-impedance closure and its image-level host test STAND; its 3.50 V / 3.85 V VCELL floors, its 211.58 mA backlight line, its 1.70 A sustained reference current and its 1.78 kΩ `R97` do NOT.  Board authority `9606ecfc` is the PREVIOUS target.**
 >
 > **D-790 supersedes D-789, which Round-9 external review REJECTED. THIS IS A
 > REVIEW TARGET, NOT A FABRICATION AUTHORIZATION — DO NOT ORDER. NO OWNER
@@ -111,9 +182,18 @@
 >
 > | envelope | `IBAT` | internal air | BQ25185 `TJ` |
 > |---|---|---|---|
-> | **SUSTAINED REFERENCE STATE** — both published accessory budgets, display at full brightness, **both** radios transmitting, audio at its capped level, held indefinitely at 40 °C ambient | **1.70 A** | **55.80 °C** | **95.99 °C** |
-> | **SUSTAINED THERMAL ENVELOPE** — the most the enclosure supports at 40 °C, bounded by the pouch's own 60 °C discharge window | **1.9439 A** | 60.00 °C | 112.8 °C |
-> | **PEAK ELECTRICAL ENVELOPE** — every subsystem at its published maximum, concurrently | 2.35 A | 67.35 °C | **142.79 °C** |
+> | **SUSTAINED REFERENCE STATE** — both published accessory budgets, display at full brightness, **ONE** sub-GHz radio transmitting, at a FULL cell and 40 °C ambient | **1.6520 A** | **53.43 °C** | **89.97 °C** |
+> | ...the same state at the lowest cell voltage it is supported at (**3.978 V** OCV) | **1.9487 A** | **55.96 °C** | **106.80 °C** |
+> | **SUSTAINED THERMAL ENVELOPE** — the most the enclosure supports at 40 °C, bounded by the pouch's own 60 °C discharge window | **1.9328 A** | 60.00 °C | — |
+> | **GUARANTEED-CONDUCTION CEILING** — the current at which `Q2`'s `VGS` leaves the `AO4800`'s lowest published `RDS(on)` row | **2.2845 A** | — | — |
+> | **PEAK ELECTRICAL ENVELOPE** — every subsystem at its published maximum, concurrently | 2.60 A | 72.44 °C | **116.38 °C** |
+>
+> *(D-791 / `D790-A02` + `D790-A03`: D-790 declared a sustained reference state with
+> BOTH radios transmitting and the audio amplifier driving, and computed **1.70 A** for
+> it from an ideal-source formula.  Solved through the real cell-to-load network that
+> state has **no stable operating point at any attainable cell voltage**.  Every figure
+> in this table is now DERIVED by `demo_feature_contract` **F12**, and the supported
+> concurrency for every other state is the table in `DEVICE_SPEC`.)*
 >
 > The peak envelope is the right basis for **conductor ampacity, protection
 > ordering and the J4 connector rating** — all short-time-constant or
@@ -123,12 +203,19 @@
 > simultaneous concurrency is qualified to 22.21 °C ambient**, a DERIVED figure,
 > and the declared product envelope remains 0–40 °C for every other state.
 >
-> **THE CHARGE REGIME NEEDS NO BOUND, BY DESIGN.** SLUSF65B 6.3.7.6: the device
-> *"reduces the charge current when TJ reaches the thermal regulation threshold
-> (TREG)"*, and `TREG` is **100 °C** — 25 K below the operating maximum. Its
-> consequence in a warm enclosure is a **longer charge**, not an exceeded
-> junction. Only the battery-discharge BATFET regime has no equivalent
-> regulation, and that is the one bounded above.
+> **THE CHARGE REGIME IS SPLIT INTO THE HALF `TREG` REGULATES AND THE HALF IT
+> DOES NOT.** *(D-791 / `D790-A02` corrects D-790's "needs no bound, by design".)*
+> SLUSF65B 6.3.7.6 folds back the CHARGE current at `TREG` = **100 °C**, 25 K
+> below the operating maximum.  It cannot reduce the SYSTEM load, which crosses
+> the same package through the **INPUT FET** while an adapter is attached — and
+> once the system asks for more than `ILIM` can supply, the battery
+> **SUPPLEMENTS** through the BATFET as well (§6.3.3).  With the charge current
+> folded **all the way to zero**, which is the most `TREG` can ever do, the
+> junction is **89.1 °C**.  And the fitted pouch's own **0…40 °C CHARGE**
+> window — tighter than its 0…60 °C discharge window — gives a DERIVED
+> external-ambient ceiling for charging of **30.0 °C** at the sustained
+> reference state.  `battery_pack_contract` **B8** already required supervised
+> first-five charging; this is the number.
 >
 > That, and not a copper temperature, is why the fab notes require **FR4 with
 > Tg ≥ 150 °C**. The 105 °C figure elsewhere in this package is a **declared
@@ -147,8 +234,8 @@
 >
 > | margin | before | now | basis |
 > |---|---|---|---|
-> | `U12` TPS63020 output capability | 88 mA (4.4 %) | **52.6 mA (2.6 %)** | `I_INTERNAL` 1.1438 A **plus `U20`'s worst programmed limiter corner** 0.8036 A = 1.9474 A against TI's guaranteed 2 A at `VIN` > 2.5 V, `VOUT` = 3.3 V. That is a compounded case: an overloaded accessory on the unluckiest limiter part, with every internal subsystem at maximum. **`R9-N01` is what kept it positive** — read at the SLVSGP6A rows that actually bracket `R97`, the fault maximum falls 0.8486 → 0.8036 A; without that correction it would have been **7.6 mA**. |
-> | `J4` battery harness | 141.6 mA (5.5 %) | **45.4 mA (1.78 %)** | the worst USER-REACHABLE accessory mode — the 5 V rail alone at its own limiter maximum, plus full internal concurrency — is **2.5546 A** against the Molex Micro-Lock Plus **2.6 A at AWG 26**. `battery_pack_contract` `B10` computes both ends and refuses a negative margin. |
+> | `U12` TPS63020 output capability | 52.6 mA (2.6 %) at D-790 | **29.8 mA (1.5 %)** | `I_INTERNAL` **1.1653 A** *(D790-A04's corrected backlight)* **plus `U20`'s worst programmed limiter corner** **0.8049 A** = **1.9702 A** against TI's guaranteed 2 A at `VIN` > 2.5 V, `VOUT` = 3.3 V. A compounded case: an overloaded accessory on the unluckiest limiter part with every internal subsystem at maximum. **`R97` 1.78 → 1.87 kΩ is what kept it positive** — `D790-A12` put the ruling `ILIM` band back to the WIDEST published ratio, where 1.78 kΩ gives 2.0139 A and NEGATIVE margin. |
+> | `J4` battery harness | 45.4 mA (1.78 %) at D-790 | **19.7 mA (0.76 %)** | `battery_pack_contract` **B10** rules at the worst state the connector can be asked to carry at all, which INCLUDES an accessory overcurrent: the 5 V rail at its own limiter maximum plus full internal concurrency, **2.5803 A** against the Molex Micro-Lock Plus **2.6 A at AWG 26**.  With both accessories CONFORMING — each rail at the budget the product publishes — the same model gives **2.4902 A** and **109.8 mA (4.22 %)**.  Both are reported; B10 refuses a negative margin on the first.  **This is a connector TEMPERATURE-RISE rating, so the J4 first-article fit/pull/thermal acceptance is the measurement of record for it** — and at 0.76 % it is the thinnest margin on this candidate.  *(D-791 / `D790-A04`: the corrected backlight budget is what moved it from 1.78 %.)* |
 >
 > The `J4` figure is a **connector temperature-rise rating**, so the J4 first-article
 > fit/pull/**thermal** acceptance is the measurement of record for it, exactly as
@@ -487,7 +574,7 @@
 > are caught; and a new `H8` clause proves the shipped firmware actually calls that
 > seam and keeps no untested second copy. `F8` uses complete canonical hierarchical
 > net identities and states the bounds of its package-alias rule. Ampacity is rerun
-> at **2.35 A** on BAT/SYS, **1.912 A** on main +3V3 and **0.608 A** on ACC_5V, and
+> at **2.60 A** on BAT/SYS, **2.00 A** on main +3V3 and **0.608 A** on ACC_5V, and
 > `F6` machine-checks that those design currents still cover the envelope. The
 > `U11.2` package-land neck is justified by a conduction-bounded **14.3 K** peak
 > over the copper it terminates on against a stated 40 K limit; the **137.6 K**

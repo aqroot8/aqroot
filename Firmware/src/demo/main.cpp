@@ -70,12 +70,15 @@ static Max17048Guard g_fuel_gauge(AQROOT_I2C_ADDR_FUEL_GAUGE);
 // MAY NOT REIMPLEMENT ANY OF THEM; `H8_production_callers` refuses a
 // `demo/main.cpp` that reaches those behaviours any other way.
 //
-// D-775 FIRMWARE POLICY, unchanged and still enforced inside the app: hardware
-// current limiting remains the absolute safety boundary, and this separate
-// VCELL policy enforces the NORMAL D-098 load contract -- one accessory rail
-// uses D-766's retained 3.50 V floor, and enabling or retaining BOTH published
-// rails requires the 3.85 V that `demo_feature_contract` F6 DERIVES.  The 5 V
-// rail sheds FIRST.  Unreadable VCELL is always fail-closed.
+// D-791 FIRMWARE POLICY, enforced inside the app: hardware current limiting
+// remains the absolute safety boundary, and this separate VCELL policy
+// enforces the NORMAL D-098 load contract.  D-790's 3.50/3.85 V floors were
+// node voltages the node never reaches under the published load (D790-A03);
+// `demo_feature_contract` F12 now DERIVES three -- a retention floor at the
+// BQ25185's own VBUVLO bound plus the MAX17048's positive voltage error, and
+// two ENABLE floors that each add the node step the rail being switched on
+// will cause.  The 5 V rail sheds FIRST and the 3.3 V rail keeps its full
+// published 400 mA.  Unreadable VCELL is always fail-closed.
 static void consoleLog(const char *line) { Serial.println(line); }
 
 using DemoApp = DemoBringupApp<ArduinoI2cBus, void (*)(const char *)>;
@@ -199,6 +202,32 @@ static const char *chargerText(ChargerState state) {
     default:
       return "unknown";
   }
+}
+
+// D-791 / D790-A07.  THE PANEL INITIALISATION, IN ONE PLACE, SO A DEFERRED
+// RESET RELEASE REACHES IT TOO.
+//
+// Round-10: `display_up_` used to survive a later DISP_RST_N pulse, so a
+// release that only landed on a `loop()` retry put the console line back to
+// "display initialised = 1" with no SPI init behind it and a panel sitting in
+// its power-on state.  `DemoBringupApp::releaseDisplayResetIntent()` now takes
+// the panel DOWN the moment it asserts the reset, and `displayInitOwed()` is
+// true exactly while a confirmed release has no initialisation behind it.
+// This function is the only thing in the image that calls
+// `noteDisplayInitialised(true)`, and both the console key and the loop's
+// deferred completion go through it.
+static void runDisplayInitialisation() {
+  g_display.begin();
+  g_display.testPattern();
+  g_display.end();
+  g_app.noteDisplayInitialised(true);
+  // The panel is WRITE-ONLY -- R112 is DNP -- so nothing here can confirm
+  // the init took.  The backlight is raised so the operator can.
+  pinMode(AQROOT_PIN_DISP_BL_PWM, OUTPUT);
+  digitalWrite(AQROOT_PIN_DISP_BL_PWM, HIGH);
+  Serial.println("display: four quadrants R/G/B/W, backlight ON.");
+  Serial.println("  expect 320 wide x 480 tall, portrait, red top-left.");
+  Serial.println("  R112 is DNP: there is NO read-back path -- confirm by eye.");
 }
 
 // ---------------------------------------------------------------------------
@@ -415,6 +444,15 @@ void loop() {
   // D-790 / D789-A09: any non-accessory command whose write did not land is
   // retried here until the physical latch confirms it.
   (void)g_app.serviceDeferredCommands();
+  // D-791 / D790-A07: and a release that only landed on that retry still owes
+  // the panel its initialisation.  A confirmed reset release is NOT a
+  // confirmed panel initialisation, so the operation the operator asked for is
+  // COMPLETED here rather than being reported as done.
+  if (g_app.displayInitOwed()) {
+    Serial.println("display: DISP_RST_N release landed on retry -- re-running "
+                   "the ILI9488 initialisation the reset invalidated");
+    runDisplayInitialisation();
+  }
 
   if (Serial.available()) {
     const char key = char(Serial.read());
@@ -480,17 +518,7 @@ void loop() {
                          "no SPI init attempted, retry pending");
           break;
         }
-        g_display.begin();
-        g_display.testPattern();
-        g_display.end();
-        g_app.noteDisplayInitialised(true);
-        // The panel is WRITE-ONLY -- R112 is DNP -- so nothing here can confirm
-        // the init took.  The backlight is raised so the operator can.
-        pinMode(AQROOT_PIN_DISP_BL_PWM, OUTPUT);
-        digitalWrite(AQROOT_PIN_DISP_BL_PWM, HIGH);
-        Serial.println("display: four quadrants R/G/B/W, backlight ON.");
-        Serial.println("  expect 320 wide x 480 tall, portrait, red top-left.");
-        Serial.println("  R112 is DNP: there is NO read-back path -- confirm by eye.");
+        runDisplayInitialisation();
         break;
       }
       case 'x': {

@@ -149,22 +149,38 @@ HOST_HARNESS = ROOT / "Firmware/test/harness"
 # 5 V-first shed order, which is what keeps the 3.3 V rail's published budget
 # available below the dual-rail floor.
 POWER_POLICY_CONTROLS = [
-    ("dual-rail floor collapses onto the single-rail floor",
+    # D-791 / D790-A03 re-aimed these at the THREE derived constants.  The
+    # first is unchanged in intent -- a dual ENABLE floor that collapses onto
+    # the single one stops anticipating the second rail's own load step.
+    ("dual-rail enable floor collapses onto the single-rail one",
      "aqroot_accessory_power_policy.h",
-     "constexpr float kAccessoryDualRailFloorV = 3.85f;",
-     "constexpr float kAccessoryDualRailFloorV = 3.50f;"),
+     "constexpr float kAccessoryDualRailFloorV = 3.65f;",
+     "constexpr float kAccessoryDualRailFloorV = 3.55f;"),
     ("unreadable VCELL fails open instead of shedding active rails",
      "aqroot_accessory_power_policy.h",
      """  if (!vcell_valid || !vcellIsPlausible(vcell))
     return AccessoryBatteryAction::ShedAll;""",
      """  if (!vcell_valid || !vcellIsPlausible(vcell))
     return AccessoryBatteryAction::Keep;"""),
-    ("a dual-rail load below the dual floor sheds everything instead of the 5 V rail alone",
+    ("a dual-rail load below the retention floor sheds everything instead of "
+     "the 5 V rail alone",
      "aqroot_accessory_power_policy.h",
-     """    return vcell >= kAccessorySingleRailFloorV
-               ? AccessoryBatteryAction::Shed5v
-               : AccessoryBatteryAction::ShedAll;""",
+     """    return (rail3v3_on && rail5v_on) ? AccessoryBatteryAction::Shed5v
+                                     : AccessoryBatteryAction::ShedAll;""",
      "    return AccessoryBatteryAction::ShedAll;"),
+    # D-791 / D790-A03.  THE REGRESSION THE THIRD CONSTANT EXISTS TO STOP.
+    # Judging RETENTION at an ENABLE floor sheds a rail 400 ms after
+    # authorising it, every time, because the enable floor anticipates a load
+    # step that has by then already happened.  That was D-790's behaviour and
+    # it is what made the published dual-rail capability unreachable.
+    ("retention is judged at the ENABLE floor instead of the retention floor",
+     "aqroot_accessory_power_policy.h",
+     "  if (vcell < kAccessoryRetentionFloorV) {",
+     "  if (vcell < accessoryEnableFloor(rail3v3_on && rail5v_on)) {"),
+    ("the retention floor is pushed under the BQ25185's own VBUVLO bound",
+     "aqroot_accessory_power_policy.h",
+     "constexpr float kAccessoryRetentionFloorV = 3.20f;",
+     "constexpr float kAccessoryRetentionFloorV = 3.00f;"),
     ("the VCELL plausibility band stops excluding the all-ones code",
      "aqroot_accessory_power_policy.h",
      "constexpr float kVcellPlausibleMaxV = 4.50f;",
@@ -480,10 +496,26 @@ PRODUCTION_IMAGE_CONTROLS = [
           break;
         }""",
      """        (void)g_app.releaseDisplayResetIntent();"""),
-    ("the display-up report stops depending on the pending release",
-     "aqroot_demo_bringup_app.h",
-     "  bool displayIsUp() const { return display_up_ && !disp_reset_intent_.pending; }",
-     "  bool displayIsUp() const { return display_up_; }"),
+    # D-791 / D790-A07 RETIRED D-790's `displayIsUp()` MUTANT AS AN EQUIVALENT
+    # ONE, AND SAYS SO RATHER THAN LEAVING IT PASSING VACUOUSLY.
+    #
+    # D-790's control was
+    #     displayIsUp() { return display_up_ && !disp_reset_intent_.pending; }
+    #  -> displayIsUp() { return display_up_; }
+    # and it was load-bearing THEN, because `display_up_` survived a new reset.
+    # D790-A07 is the fix for exactly that, and the fix makes the mutant
+    # EQUIVALENT: `releaseDisplayResetIntent()` now clears `display_up_` the
+    # moment it asserts the reset, and `serviceExpanderRecovery()` clears it
+    # too, so there is no reachable state in the shipped image in which
+    # `display_up_` is true while a release is pending.  The `!pending` term is
+    # retained as defence in depth and is documented in the header as such; a
+    # control that cannot fail is not kept as if it could.  What replaces it is
+    # the invariant the flag now stands for -- the flag may only go up behind a
+    # real initialisation -- which IS reachable and IS mutated below.
+    ("main sets the display up without re-running the initialisation",
+     "demo/main.cpp",
+     "        runDisplayInitialisation();\n        break;",
+     "        g_app.noteDisplayInitialised(true);\n        break;"),
     # --- D789-A10: the forced-sleep guard
     ("the gauge qualification stops clearing forced sleep",
      "max17048_guard.h",
@@ -518,6 +550,52 @@ PRODUCTION_IMAGE_CONTROLS = [
      "max17048_guard.h",
      "    if (!bus.readRegister(address_, kRegConfig, cfg, sizeof(cfg))) return false;",
      "    if (!bus.readRegister(address_, kRegConfig, cfg, sizeof(cfg))) return true;"),
+    # --- D-791 / D790-A05 + Fable V-04: THE WARM-RESET RECOVERY CALL SITE.
+    # Round-10's exact counterexample.  Deleting this ONE line from `loop()`'s
+    # not-ready branch passed the complete D-790 release gate, because
+    # `test_production_callers.cpp` drives `serviceExpanderRecovery()` as a
+    # METHOD and nothing compiled the branch that calls it.  It is caught
+    # BEHAVIOURALLY -- not by presence -- because `test_production_image.cpp`
+    # boots the image onto a wedged bus with the PHYSICAL accessory latches
+    # retained ON and requires the loop ALONE to turn them off once the bus
+    # returns.
+    ("main's warm-reset expander recovery is never called",
+     "demo/main.cpp",
+     "    (void)g_app.serviceExpanderRecovery();",
+     "    // (void)g_app.serviceExpanderRecovery();"),
+    ("main's warm-reset expander recovery is made unreachable",
+     "demo/main.cpp",
+     "    (void)g_app.serviceExpanderRecovery();",
+     "    if (false) (void)g_app.serviceExpanderRecovery();"),
+    ("the warm-reset recovery gives up before the bus returns",
+     "aqroot_demo_bringup_app.h",
+     "    const bool bus_open = bus_.reopen(AQROOT_I2C_BRINGUP_HZ);",
+     "    const bool bus_open = recovery_started_ ? false\n"
+     "        : bus_.reopen(AQROOT_I2C_BRINGUP_HZ);"),
+    # --- D-791 / D790-A06: an aborted tone enable that later turns the
+    # amplifier on.  Both halves of the cancellation are load-bearing.
+    ("an aborted amplifier enable stops cancelling its ON intent",
+     "aqroot_demo_bringup_app.h",
+     "    if (on && !confirmed) {\n      cancelAmplifierEnable();\n    }",
+     "    (void)confirmed;"),
+    ("the amplifier cancellation keeps wanting the amplifier ON",
+     "aqroot_demo_bringup_app.h",
+     "  bool cancelAmplifierEnable() {\n    amp_intent_.want = false;",
+     "  bool cancelAmplifierEnable() {\n    amp_intent_.want = true;"),
+    # --- D-791 / D790-A07: a display-up flag that survives a new reset.
+    ("a new display reset stops invalidating the previous initialisation",
+     "aqroot_demo_bringup_app.h",
+     "    display_up_ = false;\n    bool acked = expanders_.setDisplayReset(bus_, true);",
+     "    bool acked = expanders_.setDisplayReset(bus_, true);"),
+    ("a confirmed reset release is treated as a confirmed initialisation",
+     "aqroot_demo_bringup_app.h",
+     "    return disp_reset_intent_.want && !disp_reset_intent_.pending\n"
+     "        && !display_up_ && expanders_.ready();",
+     "    return false;"),
+    ("main never completes the initialisation a deferred release owes",
+     "demo/main.cpp",
+     "  if (g_app.displayInitOwed()) {",
+     "  if (false && g_app.displayInitOwed()) {"),
 ]
 
 

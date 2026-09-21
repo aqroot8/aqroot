@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": false,
- "fetched_utc": "2026-09-20T19:33:53Z",
+ "fetched_utc": "2026-09-21T15:57:46Z",
  "keyword": "2N7002",
  "page_size": 25,
  "pages": 1,
@@ -114,7 +114,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 1736715
+   "stockCount": 1711425
   },
   {
    "assemblyComponentFlag": false,
@@ -224,7 +224,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 46339
+   "stockCount": 16339
   },
   {
    "assemblyComponentFlag": false,
@@ -334,7 +334,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 1174516
+   "stockCount": 1168020
   },
   {
    "assemblyComponentFlag": false,
@@ -436,7 +436,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 258060
+   "stockCount": 258466
   },
   {
    "assemblyComponentFlag": false,
@@ -766,7 +766,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 522327
+   "stockCount": 510921
   },
   {
    "assemblyComponentFlag": false,
@@ -982,7 +982,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 99726
+   "stockCount": 99529
   },
   {
    "assemblyComponentFlag": false,
@@ -1051,7 +1051,7 @@
    "componentPrices": [
     {
      "endNumber": 199,
-     "productPrice": 0.0243,
+     "productPrice": 0.0241,
      "startNumber": 1
     },
     {
@@ -1061,7 +1061,7 @@
     },
     {
      "endNumber": 2999,
-     "productPrice": 0.0168,
+     "productPrice": 0.0167,
      "startNumber": 600
     },
     {
@@ -1076,7 +1076,7 @@
     },
     {
      "endNumber": -1,
-     "productPrice": 0.0117,
+     "productPrice": 0.0116,
      "startNumber": 21000
     }
    ],
@@ -1092,7 +1092,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 15065
+   "stockCount": 135065
   },
   {
    "assemblyComponentFlag": false,
@@ -1202,7 +1202,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 10130
+   "stockCount": 10120
   },
   {
    "assemblyComponentFlag": false,
@@ -1312,7 +1312,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 195901
+   "stockCount": 195851
   },
   {
    "assemblyComponentFlag": false,
@@ -1422,7 +1422,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 4670
+   "stockCount": 4650
   },
   {
    "assemblyComponentFlag": false,
@@ -1532,7 +1532,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 123104
+   "stockCount": 117911
   },
   {
    "assemblyComponentFlag": false,
@@ -1601,32 +1601,32 @@
    "componentPrices": [
     {
      "endNumber": 199,
-     "productPrice": 0.0277,
+     "productPrice": 0.0272,
      "startNumber": 1
     },
     {
      "endNumber": 599,
-     "productPrice": 0.0215,
+     "productPrice": 0.021,
      "startNumber": 200
     },
     {
      "endNumber": 2999,
-     "productPrice": 0.018,
+     "productPrice": 0.0176,
      "startNumber": 600
     },
     {
      "endNumber": 8999,
-     "productPrice": 0.0154,
+     "productPrice": 0.0151,
      "startNumber": 3000
     },
     {
      "endNumber": 20999,
-     "productPrice": 0.0136,
+     "productPrice": 0.0133,
      "startNumber": 9000
     },
     {
      "endNumber": -1,
-     "productPrice": 0.0126,
+     "productPrice": 0.0124,
      "startNumber": 21000
     }
    ],
@@ -1642,7 +1642,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 216721
+   "stockCount": 215961
   },
   {
    "assemblyComponentFlag": false,
@@ -1850,7 +1850,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 36592
+   "stockCount": 36560
   },
   {
    "assemblyComponentFlag": false,
@@ -1948,7 +1948,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 64429
+   "stockCount": 64355
   },
   {
    "assemblyComponentFlag": false,
@@ -2042,7 +2042,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 369995
+   "stockCount": 345969
   },
   {
    "assemblyComponentFlag": false,
@@ -2470,7 +2470,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 8046
+   "stockCount": 7890
   },
   {
    "assemblyComponentFlag": false,
@@ -2690,7 +2690,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 85502
+   "stockCount": 34234
   }
  ],
  "returned": 25,

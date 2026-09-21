@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": false,
- "fetched_utc": "2026-09-20T19:33:52Z",
+ "fetched_utc": "2026-09-21T15:57:46Z",
  "keyword": "AO3400A",
  "page_size": 25,
  "pages": 1,
@@ -114,7 +114,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 833393
+   "stockCount": 819108
   },
   {
    "assemblyComponentFlag": false,
@@ -224,7 +224,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 10241
+   "stockCount": 10197
   },
   {
    "assemblyComponentFlag": false,
@@ -444,7 +444,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 117331
+   "stockCount": 117287
   },
   {
    "assemblyComponentFlag": false,
@@ -542,7 +542,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 914633
+   "stockCount": 900802
   },
   {
    "assemblyComponentFlag": false,
@@ -652,7 +652,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 23927
+   "stockCount": 23808
   },
   {
    "assemblyComponentFlag": false,
@@ -762,7 +762,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 58025
+   "stockCount": 57965
   },
   {
    "assemblyComponentFlag": false,
@@ -959,108 +959,6 @@
    "noBuyReason": null,
    "rohsFlag": 1,
    "stockCount": 6012
-  },
-  {
-   "assemblyComponentFlag": false,
-   "attributes": [
-    {
-     "attribute_name_en": "Operating Temperature",
-     "attribute_value_name": "-55℃~+150℃"
-    },
-    {
-     "attribute_name_en": "Type",
-     "attribute_value_name": "N-Channel"
-    },
-    {
-     "attribute_name_en": "Input Capacitance(Ciss)",
-     "attribute_value_name": "630pF"
-    },
-    {
-     "attribute_name_en": "Number",
-     "attribute_value_name": "1 N-channel"
-    },
-    {
-     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
-     "attribute_value_name": "900mV"
-    },
-    {
-     "attribute_name_en": "Gate Charge(Qg)",
-     "attribute_value_name": "22nC@15V"
-    },
-    {
-     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
-     "attribute_value_name": "71pF"
-    },
-    {
-     "attribute_name_en": "Current - Continuous Drain(Id)",
-     "attribute_value_name": "5.8A"
-    },
-    {
-     "attribute_name_en": "Drain to Source Voltage",
-     "attribute_value_name": "30V"
-    },
-    {
-     "attribute_name_en": "Output Capacitance(Coss)",
-     "attribute_value_name": "55pF"
-    },
-    {
-     "attribute_name_en": "Pd - Power Dissipation",
-     "attribute_value_name": "1.3W"
-    },
-    {
-     "attribute_name_en": "RDS(on)",
-     "attribute_value_name": "25mΩ@4.5V"
-    }
-   ],
-   "componentBrandEn": "FOSAN",
-   "componentCode": "C5119712",
-   "componentLibraryType": "expand",
-   "componentModelEn": "FS3400MLT1 A09T",
-   "componentPrices": [
-    {
-     "endNumber": 199,
-     "productPrice": 0.022,
-     "startNumber": 1
-    },
-    {
-     "endNumber": 599,
-     "productPrice": 0.0171,
-     "startNumber": 200
-    },
-    {
-     "endNumber": 2999,
-     "productPrice": 0.0145,
-     "startNumber": 600
-    },
-    {
-     "endNumber": 8999,
-     "productPrice": 0.0125,
-     "startNumber": 3000
-    },
-    {
-     "endNumber": 20999,
-     "productPrice": 0.0111,
-     "startNumber": 9000
-    },
-    {
-     "endNumber": -1,
-     "productPrice": 0.0104,
-     "startNumber": 21000
-    }
-   ],
-   "componentSpecificationEn": "SOT-23",
-   "componentTypeEn": "MOSFETs",
-   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2207281800_FOSAN-FS3400MLT1-A09T_C5119712.pdf",
-   "describe": "-55℃~+150℃ 1 N-channel 1.3W 22nC@15V 25mΩ@4.5V 30V 5.8A 55pF 630pF 71pF 900mV N-Channel SOT-23 MOSFETs ROHS",
-   "erpComponentName": "FS3400MLT1 A09T",
-   "isBuyComponent": "1",
-   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_fosan-fs3400mlt1-a09t_C5119712.html",
-   "leastPatchNumber": 10,
-   "lossNumber": 5,
-   "minPurchaseNum": 1,
-   "noBuyReason": null,
-   "rohsFlag": 1,
-   "stockCount": 2
   },
   {
    "assemblyComponentFlag": false,
@@ -1382,7 +1280,7 @@
    "minPurchaseNum": 426,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 2598
+   "stockCount": 2494
   },
   {
    "assemblyComponentFlag": false,
@@ -1574,7 +1472,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 354624
+   "stockCount": 354604
   },
   {
    "assemblyComponentFlag": false,
@@ -1876,7 +1774,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 8986
+   "stockCount": 8966
   },
   {
    "assemblyComponentFlag": false,
@@ -2309,6 +2207,108 @@
     },
     {
      "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "630pF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "1 N-channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "900mV"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "22nC@15V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "71pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "5.8A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "55pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "1.3W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "25mΩ@4.5V"
+    }
+   ],
+   "componentBrandEn": "FOSAN",
+   "componentCode": "C5119712",
+   "componentLibraryType": "expand",
+   "componentModelEn": "FS3400MLT1 A09T",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.022,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0171,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0145,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0125,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 20999,
+     "productPrice": 0.0111,
+     "startNumber": 9000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0104,
+     "startNumber": 21000
+    }
+   ],
+   "componentSpecificationEn": "SOT-23",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2207281800_FOSAN-FS3400MLT1-A09T_C5119712.pdf",
+   "describe": "-55℃~+150℃ 1 N-channel 1.3W 22nC@15V 25mΩ@4.5V 30V 5.8A 55pF 630pF 71pF 900mV N-Channel SOT-23 MOSFETs ROHS",
+   "erpComponentName": "FS3400MLT1 A09T",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_fosan-fs3400mlt1-a09t_C5119712.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 528,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
      "attribute_value_name": "1.05nF"
     },
     {
@@ -2392,7 +2392,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 111990
+   "stockCount": 111720
   },
   {
    "assemblyComponentFlag": false,
@@ -2490,7 +2490,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 25757
+   "stockCount": 25717
   },
   {
    "assemblyComponentFlag": false,
@@ -2592,7 +2592,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 63750
+   "stockCount": 63720
   }
  ],
  "returned": 25,

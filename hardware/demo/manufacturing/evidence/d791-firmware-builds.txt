@@ -1,0 +1,28 @@
+=== CLEAN esp32-s3-aqroot ===
+========================= [SUCCESS] Took 32.79 seconds =========================
+
+Environment      Status    Duration
+---------------  --------  ------------
+esp32-s3-aqroot  SUCCESS   00:00:32.794
+========================= 1 succeeded in 00:00:32.794 =========================
+=== CLEAN wokwi ===
+========================= [SUCCESS] Took 32.58 seconds =========================
+
+Environment    Status    Duration
+-------------  --------  ------------
+wokwi          SUCCESS   00:00:32.577
+========================= 1 succeeded in 00:00:32.577 =========================
+=== CLEAN esp32-s3-aqroot-dm ===
+========================= [SUCCESS] Took 30.10 seconds =========================
+
+Environment         Status    Duration
+------------------  --------  ------------
+esp32-s3-aqroot-dm  SUCCESS   00:00:30.102
+========================= 1 succeeded in 00:00:30.102 =========================
+=== CLEAN aqroot-demo ===
+========================= [SUCCESS] Took 4.97 seconds =========================
+
+Environment    Status    Duration
+-------------  --------  ------------
+aqroot-demo    SUCCESS   00:00:04.966
+========================= 1 succeeded in 00:00:04.966 =========================

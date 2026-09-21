@@ -1,0 +1,323 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-21T15:06:42Z",
+ "keyword": "AO4838",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Vgs",
+     "attribute_value_name": "±20V"
+    },
+    {
+     "attribute_name_en": "Configuration",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "22nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "110pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "11A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "180pF"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "9.6mΩ@10V"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "1.3nF"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "2.6V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "2W"
+    }
+   ],
+   "componentBrandEn": "Alpha & Omega Semicon",
+   "componentCode": "C485695",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AO4838",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.3354,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.2637,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.233,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.1782,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.1612,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1509,
+     "startNumber": 6000
+    }
+   ],
+   "componentSpecificationEn": "SOIC-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Alpha---Omega-Semicon-AO4838_C485695.pdf",
+   "describe": "-55℃~+150℃ 1.3nF 11A 2 N-Channel 2.6V 22nC@10V 2W 30V 9.6mΩ@10V SOIC-8 MOSFETs ROHS",
+   "erpComponentName": "AO4838",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_alpha-omega-semicon-ao4838_C485695.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 3158
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "1.395nF"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1.7V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "20nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "74pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "10A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "135pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "1.31W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "7.5mΩ@10V、10.5mΩ@4.5V"
+    }
+   ],
+   "componentBrandEn": "JSMSEMI",
+   "componentCode": "C49011889",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AO4838",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.2751,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.2393,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.2247,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2068,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.1986,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1921,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "SOP-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": null,
+   "describe": "1.31W 1.395nF 1.7V 10A 135pF 2 N-Channel 20nC@10V 30V 7.5mΩ@10V、10.5mΩ@4.5V 74pF N-Channel SOP-8 MOSFETs ROHS",
+   "erpComponentName": "AO4838",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2624
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "641pF"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "2.5V@250uA"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "15nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "73pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "12A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "175pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "4.1W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "10mΩ@10V"
+    }
+   ],
+   "componentBrandEn": "VBsemi Elec",
+   "componentCode": "C22389121",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AO4838-VB",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.586,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.4655,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.4135,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.3484,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.3191,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.3028,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "SO-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2404251149_VBsemi-Elec-AO4838-VB_C22389121.pdf",
+   "describe": "-55℃~+150℃ 10mΩ@10V 12A 15nC@10V 175pF 2 N-Channel 2.5V@250uA 30V 4.1W 641pF 73pF N-Channel SO-8 MOSFETs ROHS",
+   "erpComponentName": "AO4838-VB",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_vbsemi-elec-ao4838-vb_C22389121.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 20
+  }
+ ],
+ "returned": 3,
+ "schema": 1,
+ "total_matches": 3
+}

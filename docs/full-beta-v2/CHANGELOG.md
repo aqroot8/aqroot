@@ -1,3 +1,119 @@
+## D-791 — 2026-09-21 — ROUND-10 CORRECTION: A FLOOR THE NODE COULD NEVER REACH, A LOSS MODEL THAT WAS ONLY A CONDUCTION MODEL, AND THREE CALL SITES THAT COULD STILL UNDO THEMSELVES
+
+Round-10 external review **REJECTED D-790**.  Fable passed the design for
+CAM/order closure with 3 medium / 16 low plus verifier and sourcing residuals;
+Astra **blocked the order** with **15 findings** (0 critical, 4 high, 8 medium,
+3 low) plus a procurement item, and **no unconditional PCB respin**.  **All of
+`D790-A01`…`A14` and `S01` are closed here, plus every Fable complementary item,
+plus **five this closeout found itself** — `R10-N01`, `R10-N02`, `R10-N03`, and at
+the verification pass `R10-N04` and `R10-N05`.**
+
+**THE THEME OF ROUND-10 IS A MODEL THAT NEVER ASKED WHETHER ITS OWN ANSWER WAS
+REACHABLE.**  Round-8 was a proof stretched past its evidence; Round-9 was a
+number read at the wrong condition; Round-10 is a number that is right about a
+state the board cannot occupy.
+
+- **`D790-A03` — the firmware's VCELL floors were node voltages the node cannot
+  reach.**  F6 modelled from `BAT_PROTECTED_P` downwards and said so; F10 priced
+  the pass pair separately.  Nothing asked whether an ATTAINABLE cell can hold
+  that node at that voltage while the published load draws.  It cannot:
+  sustaining 3.85 V there needs more than 4.3 V upstream through four `AO4800`
+  channels and `R75` alone, and the charger's regulation maximum on the pack is
+  **4.221 V**.  The consequence was not academic — the accessory rails this
+  product publishes would have been authorised and shed again by the next
+  settled recheck, **on a full pack**.  New **`F12`** solves the complete
+  cell-to-load network as one self-consistent fixed point and DERIVES three
+  floors: **retention 3.20 V** (the BQ25185's own `VBUVLO` bound plus the
+  MAX17048's +20 mV error, `D790-A14`), **first-rail enable 3.55 V** and
+  **second-rail enable 3.65 V**, each enable floor being the retention floor
+  plus the node step that rail will cause — which is D-779's "the permission was
+  taken before the load existed", finally quantified.  **ATTAINABILITY is now a
+  clause**, and D-790's own declared reference state is retained as the negative
+  control that must stay refused.
+- **`D790-A02` — one electrical network, and the bursty loads bounded rather
+  than deleted.**  D-790's sustained reference state was computed from an
+  ideal-source formula that disagreed with F6's own network by 0.25 A, and that
+  state has **no stable operating point at any attainable cell voltage**.  The
+  supported concurrency is now DERIVED per state and published as a table in
+  OBSERVABLE MODES; NFC, microSD and IR return as **bounded-duty allowances**
+  (25 % / 50 % / 10 % of any minute) instead of being removed as "bursty".  The
+  published sustained reference state is both Community-Port budgets at full,
+  the display at full brightness and **one sub-GHz radio transmitting**.
+- **`D790-A01` — the conduction row is a ceiling, and it is now printed.**  F10
+  derives the current at which `Q2`'s `VGS` leaves the `AO4800`'s lowest
+  published `RDS(on)` row, publishes it, and states what lies above it: the part
+  is still ENHANCED by more than a volt, but its resistance is no longer a
+  guaranteed number, so that region is a PROTECTION-DOMAIN excursion and this
+  contract does not rule there.  The declared 25→125 °C ratio now carries a
+  **sensitivity** the ruling case must survive at **2×**, the LTC4368 gate drive
+  is swept across the whole cell range, and the startup gate-charge trajectory
+  says plainly that ADI publishes `IGATE(UP)` **only at `VIN` = 12 V**, so it is
+  not bounded at 1S and is measured at `C-BAT-GATE-01`.  **`AO4806` is
+  re-examined and re-rejected on STOCK, not on pinout** — its pin map is
+  identical to the `AO4800`'s and D-790's "common-drain" reason was wrong.
+- **`D790-A04` — the backlight model was a conduction model wearing a loss
+  model's name.**  Four terms were missing and each is added with its own
+  declared basis: the diode's forward voltage at the inductor **PEAK** (onsemi
+  publishes one point, 710 mV at 200 mA; this converter peaks at ~430 mA),
+  switch transition and `Coss` loss at the **MAXIMUM** published switching
+  frequency, gate-drive loss, and the winding's core loss and **hot** DCR.
+  Conduction still runs at the MINIMUM frequency where the RMS is worst.
+  **211.58 → 233.13 mA** at an implied 75.4 %, still under TI's own headline;
+  internal `+3V3` **1.1438 → 1.1653 A**.
+- **`D790-A12` + `R97` 1.78 kΩ → 1.87 kΩ.**  The bracketed `ILIM` accuracy band
+  was an ESTIMATE: TI publishes four rows and states nothing between them.  The
+  ruling bound returns to the **widest published ratio**, which needs no
+  assumption — and because that plus `D790-A04` would leave `U12` at **2.0139 A**
+  against its published 2 A, `R97` moves to **1.87 kΩ** (`0603WAF1871T5E`, LCSC
+  `C22850`, same series/manufacturer/land).  `ACC_3V3` still GUARANTEES
+  **0.4058 A** against the published 400 mA; `U12`'s worst compound case is
+  **1.9702 A**.  **Both published budgets are unchanged.**
+- **`D790-A10` / `D790-A11` — two rows read at their own conditions.**  The
+  `BATOCP` ±18 % is stated at `IBAT` = 3.125 A and `TJ` = 27 °C only; the
+  sustained envelope now rules at a **DECLARED WIDER ±25 %** band with the
+  stated band reported beside it.  `U22`'s 54 mΩ belongs to `VIN` = 5 V and its
+  input is the boost's **low** corner, so its bound is the 3.3 V row's 68 mΩ.
+- **`D790-A05` / `A06` / `A07` — three call sites that could undo themselves.**
+  Deleting `serviceExpanderRecovery()` from `loop()`'s not-ready branch passed
+  the whole D-790 gate; an aborted tone left an ON intent the loop would later
+  honour with no tone and no matching OFF; and a confirmed reset release was
+  being treated as a confirmed panel initialisation.  All three are fixed and
+  all three are caught **behaviourally** by `test_production_image.cpp`, which
+  now boots the shipped image onto a wedged bus with the physical accessory
+  latches retained ON and requires the loop alone to turn them off.
+- **`D790-A09` — the release wrapper could pass a red child.**  `contract_regression`
+  read `all_ran` (the report FILE exists) and byte-identity, never the child's
+  own verdict, so nineteen failing contracts compared against an equally
+  failing baseline exited 0.  `all_contracts_pass` is now exposed and is a hard
+  term of the exit code in every mode, `--baseline` and `--create-baseline` are
+  mutually exclusive, and a labelled `--red-report-diagnostic` mode relaxes
+  nothing.
+- **`D790-A08` + `F-N01` + `R10-N03` — the documents, and a check so they cannot
+  drift again.**  `DEVICE_SPEC` still named `NTMD4820NR2G` FITTED and LOCKED in
+  a live table row; `OFF_BOARD_BOM` still carried 1.80 mm and D-789's delivery
+  figures.  Both corrected — and `F7` gains a CONTRADICTION check over table
+  rows, not prose.  New **`F13`** cross-checks every non-capacitor MPN against
+  its own archived distributor record: `Q4`/`Q6`/`Q7`/`Q8`/`Q9`'s onsemi
+  `BSS138LT1G` was labelled Alpha & Omega (Fable `F-N01`) and `Q10`'s Jiangsu
+  Changjing `2N7002` was labelled onsemi (`R10-N03`, found by the new clause).
+  The `AO4800` symbol's channel pin names are corrected to the AOS map
+  (`F-N03`).
+- **`R10-N02`, found here — one clause was answering two questions.**  The
+  "no reachable state trips the pack" set mixed CONFORMING accessories with
+  accessory OVERCURRENTS, and `D790-A04`'s corrected budget tipped
+  `acc5v_alone_at_its_limiter` from 2.5546 A to 2.5803 A against a 2.5625 A
+  `IBAT_OCP` minimum.  The clause SPLITS: every conforming state stays under
+  the first protection threshold any unit can trip, and every accessory
+  overcurrent must land in the RECOVERABLE protection, below the latching
+  LTC4368 breaker and the `F1` one-shot fuse.
+
+**What did NOT change.**  No copper moved.  No net changed.  No footprint
+changed.  No placement moved.  No protected-copper object moved.  Connectivity
+is unchanged at **174 retained / 173 connected / one owner-approved `U11.3`
+open / zero unapproved**.  `hardware/beta-v2` is untouched.  Every
+Kickstarter-visible capability is retained and **both published accessory
+budgets are unchanged**.
+
 ## D-790 — 2026-09-21 — ROUND-9 CORRECTION: FOUR NUMBERS READ AT THE WRONG CONDITION, AN IMAGE NO TEST HAD EVER COMPILED, AND A PASS PAIR THAT WAS NEVER GUARANTEED TO BE ON
 
 Round-9 external review **REJECTED D-789**.  Fable passed the design for CAM/order

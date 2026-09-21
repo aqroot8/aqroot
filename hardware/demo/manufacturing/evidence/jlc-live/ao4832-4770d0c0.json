@@ -1,0 +1,731 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-21T15:06:42Z",
+ "keyword": "AO4832",
+ "page_size": 25,
+ "pages": 1,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "910pF"
+    },
+    {
+     "attribute_name_en": "Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "2.5V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "17nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "100pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "10A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "160pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "2W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "12mΩ@10V"
+    }
+   ],
+   "componentBrandEn": "HXY MOSFET",
+   "componentCode": "C3033421",
+   "componentLibraryType": "expand",
+   "componentModelEn": "HXY4832S",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1459,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.1182,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1042,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.094,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0821,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.078,
+     "startNumber": 6000
+    }
+   ],
+   "componentSpecificationEn": "SOP-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2206222045_HXY-MOSFET-HXY4832S_C3033421.pdf",
+   "describe": "-55℃~+150℃ 100pF 10A 12mΩ@10V 160pF 17nC@10V 2 N-Channel 2.5V 2W 30V 910pF N-Channel SOP-8 MOSFETs ROHS",
+   "erpComponentName": "HXY4832S",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_hxy-mosfet-hxy4832s_C3033421.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 645
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "910pF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "2.5V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "17nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "100pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "10A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "160pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "2W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "17.5mΩ@4.5V"
+    }
+   ],
+   "componentBrandEn": "Alpha & Omega Semicon",
+   "componentCode": "C357833",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AO4832",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.3416,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.2678,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2361,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.1967,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.1791,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1685,
+     "startNumber": 6000
+    }
+   ],
+   "componentSpecificationEn": "SOIC-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2201242230_Alpha---Omega-Semicon-AO4832_C357833.pdf",
+   "describe": "-55℃~+150℃ 100pF 10A 160pF 17.5mΩ@4.5V 17nC@10V 2 N-Channel 2.5V 2W 30V 910pF SOIC-8 MOSFETs ROHS",
+   "erpComponentName": "AO4832",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_alpha-omega-semicon-ao4832_C357833.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 460
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "760pF"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1.9V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "14nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "70pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "10A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "125pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "2W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "10.8mΩ@10V"
+    }
+   ],
+   "componentBrandEn": "UMW(Youtai Semiconductor Co., Ltd.)",
+   "componentCode": "C5185741",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AO4832",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1226,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.0969,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.084,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0744,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0637,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0598,
+     "startNumber": 6000
+    }
+   ],
+   "componentSpecificationEn": "SOP-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2311091742_UMW-Youtai-Semiconductor-Co---Ltd--AO4832_C5185741.pdf",
+   "describe": "-55℃~+150℃ 1.9V 10.8mΩ@10V 10A 125pF 14nC@10V 2 N-Channel 2W 30V 70pF 760pF SOP-8 MOSFETs ROHS",
+   "erpComponentName": "AO4832",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_umw-youtai-semiconductor-co-ltd-ao4832_C5185741.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1615
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "750pF"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1.5V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "15nC@4.5V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "70pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "8.3A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "125pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "2W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "12mΩ@10V、15mΩ@4.5V"
+    }
+   ],
+   "componentBrandEn": "ElecSuper",
+   "componentCode": "C5224318",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AO4832",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.1343,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.1039,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.0888,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0772,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0681,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0635,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "SOP8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2210271700_ElecSuper-AO4832_C5224318.pdf",
+   "describe": "-55℃~+150℃ 1.5V 125pF 12mΩ@10V、15mΩ@4.5V 15nC@4.5V 2 N-Channel 2W 30V 70pF 750pF 8.3A N-Channel SOP8 MOSFETs ROHS",
+   "erpComponentName": "AO4832",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_elecsuper-ao4832_C5224318.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 728
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "620pF"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1.6V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "7.4nC@4.5V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "60pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "10A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "85pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "2W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "10mΩ@10V"
+    }
+   ],
+   "componentBrandEn": "MSKSEMI",
+   "componentCode": "C3008153",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AO4832-MS",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.3122,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.2483,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2208,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.1866,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.1578,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1486,
+     "startNumber": 6000
+    }
+   ],
+   "componentSpecificationEn": "SOP-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2204291645_MSKSEMI-AO4832-MS_C3008153.pdf",
+   "describe": "-55℃~+150℃ 1.6V 10A 10mΩ@10V 2 N-Channel 2W 30V 60pF 620pF 7.4nC@4.5V 85pF N-Channel SOP-8 MOSFETs ROHS",
+   "erpComponentName": "AO4832-MS",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_msksemi-ao4832-ms_C3008153.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 707
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "641pF"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "15nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "73pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "12A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "175pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "4.1W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "10mΩ@10V、12mΩ@4.5V"
+    }
+   ],
+   "componentBrandEn": "VBsemi Elec",
+   "componentCode": "C19626798",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AO4832-VB",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.586,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.4655,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.4135,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.3484,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.3191,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.3028,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "SO-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312081756_VBsemi-Elec-AO4832-VB_C19626798.pdf",
+   "describe": "-55℃~+150℃ 10mΩ@10V、12mΩ@4.5V 12A 15nC@10V 175pF 2 N-Channel 30V 4.1W 641pF 73pF N-Channel SO-8 MOSFETs ROHS",
+   "erpComponentName": "AO4832-VB",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_vbsemi-elec-ao4832-vb_C19626798.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 40
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Vgs",
+     "attribute_value_name": "±20V"
+    },
+    {
+     "attribute_name_en": "Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "15nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "99pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "11.5A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "120pF"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "10mΩ@10V"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "633pF"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1.5V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "3.2W"
+    }
+   ],
+   "componentBrandEn": "HXY MOSFET",
+   "componentCode": "C22367031",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AO4832-HXY",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1486,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.119,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1044,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0933,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0844,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.08,
+     "startNumber": 6000
+    }
+   ],
+   "componentSpecificationEn": "SOP-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2403261740_HXY-MOSFET-AO4832-HXY_C22367031.pdf",
+   "describe": "-55℃~+150℃ 1.5V 10mΩ@10V 11.5A 120pF 15nC@10V 2 N-Channel 3.2W 30V 633pF 99pF N-Channel Standalone ±20V SOP-8 MOSFETs ROHS",
+   "erpComponentName": "AO4832-HXY",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_hxy-mosfet-ao4832-hxy_C22367031.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 76,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  }
+ ],
+ "returned": 7,
+ "schema": 1,
+ "total_matches": 7
+}

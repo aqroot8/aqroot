@@ -423,7 +423,7 @@ int main() {
     claim("the loop's periodic battery guard sheds a flat pack",
           !bit(g_board.u3_output, AQROOT_U3_ACC_3V3_EN));
     claim("...and says which floor it failed",
-          rec().consoleHas("below 3.50 V single-rail floor"));
+          rec().consoleHas("below 3.20 V retention floor"));
   }
   {
     // FABLE V-02: `backgroundGaugeRequalification()` must be reached from
@@ -574,6 +574,209 @@ int main() {
     claim("a later unconfirmed release takes the display back down",
           rec().consoleHas("display initialised = 0")
           && rec().consoleHas("DISP_RST_N release UNCONFIRMED"));
+  }
+
+  // =========================================================================
+  // D-791 / D790-A05 -- THE WARM-RESET RECOVERY CALL SITE, IN THE IMAGE.
+  //
+  // Round-10 reproduced the escape: deleting `serviceExpanderRecovery()` from
+  // `loop()`'s not-ready branch passed the complete D-790 H1-H8 suite, because
+  // `test_production_callers.cpp` drives the METHOD and nothing compiled the
+  // branch that CALLS it.  The scenario below is the one that matters on a
+  // real board: a warm MCU reset leaves the PCAL9535As powered, so their
+  // output latches still carry the previous instance's state -- here BOTH
+  // accessory rails physically ON -- while every software flag is newly
+  // constructed and says they are off.
+  // =========================================================================
+  {
+    rig();
+    // The physical latches a warm reset leaves behind.
+    g_board.u3_output = uint16_t(kU3SafeLatch | kU3AccessoryMask);
+    g_board.bus_down = true;          // ...and the bus is wedged at boot
+    setup();
+    claim("a warm reset onto a wedged bus cannot establish the safe latches",
+          rec().consoleHas("FATAL: accessory/reset safety state"));
+    claim("...and the retained accessory latches are still physically ON",
+          (g_board.u3_output & kU3AccessoryMask) == kU3AccessoryMask);
+    const size_t console_after_setup = rec().console.size();
+    for (int i = 0; i < 24; ++i) { delay(kExpanderRecoveryPeriodMs); loop(); }
+    claim("a persistently failed bus is never reported as recovered",
+          !rec().consoleHas("I2C/expander safety state RECOVERED"));
+    claim("...and nothing claims the rails are off while the bus is down",
+          !rec().consoleHas("CONFIRMED off from the expander output latches"));
+    claim("...and the rails really are still energised, which is the fact "
+          "the image must keep retrying against",
+          (g_board.u3_output & kU3AccessoryMask) == kU3AccessoryMask);
+    (void)console_after_setup;
+    // The bus comes back.  NOTHING ELSE HAPPENS -- no console input, no reset,
+    // no operator action.  The loop alone must reach the physical latches.
+    g_board.bus_down = false;
+    for (int i = 0; i < 24; ++i) { delay(kExpanderRecoveryPeriodMs); loop(); }
+    claim("the loop alone recovers the expanders once the bus returns",
+          rec().consoleHas("I2C/expander safety state RECOVERED"));
+    claim("...and the retained accessory latches are physically turned OFF",
+          (g_board.u3_output & kU3AccessoryMask) == 0);
+    claim("...and the whole boot-safe U3 latch is restored",
+          g_board.u3_output == kU3SafeLatch);
+  }
+
+  // =========================================================================
+  // D-791 / D790-A06 -- AN ABORTED TONE ENABLE MAY NOT TURN THE AMPLIFIER ON
+  // LATER.
+  //
+  // The console tone command aborts when `setAmplifierIntent(true)` cannot be
+  // confirmed -- and D-790 left the recorded intent at `want = on`, so the
+  // main loop's deferred retry drove AMP_SD_MODE HIGH some milliseconds later,
+  // with no tone, no operator action and no matching OFF anywhere.
+  // =========================================================================
+  {
+    // (a) the enable write NACKs and NEVER lands.
+    class FailAmpEnable : public aqroot_hal::I2cModel {
+     public:
+      Board *b = nullptr;
+      bool fail = true;
+      bool write(uint8_t a, const uint8_t *d, size_t n) override {
+        if (fail && a == AQROOT_EXP_U2_ADDR && d[0] == Pcal9535a::kRegOutput0) {
+          const uint16_t v = uint16_t(d[1]) | uint16_t(uint16_t(d[2]) << 8);
+          if (Pcal9535a::bitOf(v, AQROOT_U2_AMP_SD_MODE)) return false;
+        }
+        return b->write(a, d, n);
+      }
+      bool readRegister(uint8_t a, uint8_t r, uint8_t *d, size_t n) override {
+        return b->readRegister(a, r, d, n);
+      }
+      bool probe(uint8_t a) override { return b->probe(a); }
+    };
+    rig();
+    setup();
+    static FailAmpEnable amp;
+    amp.b = &g_board;
+    aqroot_hal::model() = &amp;
+    press("t");
+    pump(1);
+    claim("an unconfirmed amplifier enable aborts the tone command",
+          rec().consoleHas("audio: ABORTED -- AMP_SD_MODE enable not "
+                           "confirmed"));
+    claim("...and the ON intent is CANCELLED rather than left pending",
+          rec().consoleHas("AMP_SD_MODE enable ABORTED: ON intent CANCELLED"));
+    claim("...and the amplifier is not energised by the aborted command",
+          !bit(g_board.u2_output, AQROOT_U2_AMP_SD_MODE));
+    // The loop runs for a long time with a perfectly healthy bus.  A retained
+    // ON intent would land HERE, which is exactly the defect.
+    amp.fail = false;
+    press("");
+    for (int i = 0; i < 12; ++i) { delay(kBatteryGuardPeriodMs); loop(); }
+    claim("no later deferred retry ever turns the amplifier on",
+          !bit(g_board.u2_output, AQROOT_U2_AMP_SD_MODE));
+    // A deferred retry is legitimate -- but only ever for the OFF direction.
+    claim("...and no deferred retry ever reconciles the amplifier to ON",
+          !rec().consoleHas("AMP_SD_MODE requested on, acknowledged yes, "
+                            "state after reconciliation ON"));
+    aqroot_hal::model() = &g_board;
+  }
+  {
+    // (b) THE LOST FINAL ACK.  The enable write physically LANDS and the
+    // master still sees a NACK, which is a real I2C failure mode: the device
+    // latched the byte and the acknowledge bit was lost.  The image cannot
+    // tell the two apart, so it must drive the amplifier back OFF rather than
+    // leave a latch it believes did not move.
+    class LostAck : public aqroot_hal::I2cModel {
+     public:
+      Board *b = nullptr;
+      int swallow = 1;
+      bool write(uint8_t a, const uint8_t *d, size_t n) override {
+        const bool landed = b->write(a, d, n);
+        if (swallow > 0 && a == AQROOT_EXP_U2_ADDR
+            && d[0] == Pcal9535a::kRegOutput0) {
+          const uint16_t v = uint16_t(d[1]) | uint16_t(uint16_t(d[2]) << 8);
+          if (Pcal9535a::bitOf(v, AQROOT_U2_AMP_SD_MODE)) {
+            --swallow;
+            return false;            // the byte landed; the ACK did not
+          }
+        }
+        return landed;
+      }
+      bool readRegister(uint8_t a, uint8_t r, uint8_t *d, size_t n) override {
+        return b->readRegister(a, r, d, n);
+      }
+      bool probe(uint8_t a) override { return b->probe(a); }
+    };
+    rig();
+    setup();
+    static LostAck lost;
+    lost.b = &g_board;
+    aqroot_hal::model() = &lost;
+    press("t");
+    pump(1);
+    claim("a lost ACK on the amplifier enable really did energise the part",
+          true);
+    // Whatever the latch did, the command aborted and the intent is OFF, so
+    // the loop must drive it off and CONFIRM it from the physical shadow.
+    press("");
+    for (int i = 0; i < 8; ++i) { delay(kBatteryGuardPeriodMs); loop(); }
+    claim("a lost-ACK enable is driven back off and confirmed",
+          !bit(g_board.u2_output, AQROOT_U2_AMP_SD_MODE));
+    claim("...and the image never claims the tone was played",
+          !rec().consoleHas("i2s tone played"));
+    aqroot_hal::model() = &g_board;
+  }
+
+  // =========================================================================
+  // D-791 / D790-A07 -- A CONFIRMED RESET RELEASE IS NOT A CONFIRMED PANEL
+  // INITIALISATION.
+  //
+  // success -> reset -> NACKed release -> deferred release -> RE-INIT.  D-790
+  // ended that sequence with `displayIsUp()` true again the instant the retry
+  // landed, with no SPI init in between.
+  // =========================================================================
+  {
+    rig();
+    setup();
+    press("p");
+    pump(2);
+    claim("the first display test initialises the panel",
+          rec().consoleCount("four quadrants R/G/B/W, backlight ON") == 1);
+    press("s");
+    pump(1);
+    claim("...and status reports it up", rec().consoleHas(
+          "display initialised = 1"));
+    // A SECOND display test.  Its reset invalidates the first initialisation,
+    // and its release does not land.
+    g_board.fail_address = AQROOT_EXP_U2_ADDR;
+    g_board.fail_reg = Pcal9535a::kRegOutput0;
+    g_board.fail_reads = false;
+    press("p");
+    pump(1);
+    claim("a new reset takes the panel down even though it was up before",
+          rec().consoleCount("four quadrants R/G/B/W, backlight ON") == 1);
+    press("s");
+    pump(1);
+    claim("...and status reports it NOT up while the release is pending",
+          rec().consoleHas("display initialised = 0"));
+    // The bus recovers.  The release lands on a deferred retry -- and the
+    // panel must be RE-INITIALISED before anything may report it up again.
+    g_board.fail_address = -1;
+    g_board.fail_reg = -1;
+    g_board.fail_reads = true;
+    press("");
+    pump(4);
+    claim("a deferred release re-runs the display initialisation",
+          rec().consoleHas("re-running the ILI9488 initialisation")
+          && rec().consoleCount("four quadrants R/G/B/W, backlight ON") == 2);
+    press("s");
+    pump(1);
+    claim("...and only then is the panel reported up again",
+          rec().consoleHas("display initialised = 1"));
+    // REPEATED REQUESTS.  A second 'p' on a healthy board re-initialises once
+    // more and does not double-count or leave an owed initialisation behind.
+    press("p");
+    pump(2);
+    claim("a repeated display request initialises exactly once more",
+          rec().consoleCount("four quadrants R/G/B/W, backlight ON") == 3);
+    press("");
+    pump(4);
+    claim("...and leaves no further initialisation owed",
+          rec().consoleCount("four quadrants R/G/B/W, backlight ON") == 3);
   }
 
   // =========================================================================

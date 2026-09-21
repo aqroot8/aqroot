@@ -477,8 +477,9 @@ BL_SOURCE_V_SOURCE = (
     "regulation voltage', duty = 100 %, TA >= 25 C: 188 / 204 / 220 mV.  The "
     "MAXIMUM is the bound because Q11's source is this node and a higher "
     "feedback voltage reduces its VGS.")
-# D-079's LED setpoint: what Q11 has to sustain for the backlight to be lit.
-BL_STRING_CURRENT_A = 0.109
+# D-791 / D790-A13: `BL_STRING_CURRENT_A` used to be the hand-written 0.109
+# here.  It is now DERIVED from `BACKLIGHT_BOOST` and is defined immediately
+# after that table, because it depends on it.  See the comment there.
 # TI SNVSA40B EC table: CTRL low to shutdown, MAXIMUM.
 BL_TSD_MS = 2.5
 # D-752's published tolerance band on tau: 19.6 ms worst case, 22.0 ms nominal
@@ -1011,12 +1012,52 @@ ILIM_ACCURACY_SOURCE = (
     "ti-tps22950-q1-slvsgp6a-DDC0006A.pdf.")
 
 
+# D-791 / D790-A12.  A BRACKET IS AN ESTIMATE UNLESS THE VENDOR SAYS THERE IS
+# NOTHING BETWEEN THE ROWS, AND TI DOES NOT SAY IT.
+#
+# D-790 / R9-N01 replaced the widest published ratio with the WORSE OF THE TWO
+# ROWS THAT BRACKET the programming resistor, and called the result the bound.
+# Round-10 is right to refuse the word: TI publishes four points and states
+# nothing at all about the accuracy BETWEEN them, so "no extremum lies between
+# 1.15 k and 2.21 k" is an inference from four samples -- which is the exact
+# shape of the argument D-788 / D788-01 refused when `U20`'s `RON` was
+# interpolated, and of the one D-789 refused on the LTC4368's gate-drive row.
+#
+# SO THE RULING BOUND GOES BACK TO THE WIDEST PUBLISHED RATIO, WHICH NEEDS NO
+# ASSUMPTION AT ALL, and the bracketed figure is REPORTED beside it as the
+# engineering estimate it is.  That is strictly stronger than an explicit
+# assumption and it removes the finding rather than arguing with it.
+#
+# WHAT IT COST AND WHAT WAS DONE ABOUT IT.  At the widest ratio `R97` = 1.78 k
+# left `U12`'s compound worst case at 2.0139 A against its published 2 A --
+# NEGATIVE margin once D790-A04's corrected backlight input is in.  `R97` is
+# therefore 1.87 k (same UNI-ROYAL 0603 1 % line, `0603WAF1871T5E`, LCSC
+# `C22850`), which guarantees 405.8 mA at the WIDEST published ratio against
+# the owner-approved 400 mA budget and brings `U12`'s compound worst case to
+# 1.9702 A.  Both budgets are preserved, as D790-A12 requires of any resistor
+# change.
 def ilim_accuracy_band(r_ilim_ohm, rows=None):
-    """D-790 / R9-N01.  The lo/hi ratio bound for a programming resistor.
+    """The RULING lo/hi ratio bound for a programming resistor.
 
-    The WORSE of the two published rows that BRACKET the setting, per side.
-    No interpolation; a setting outside the published rows falls back to the
-    widest ratio the table contains.
+    The WIDEST ratio the published table contains, which holds at every row
+    and between every pair of rows without any assumption about what the
+    accuracy does in between.  The bracketing rows and their (narrower) ratio
+    are returned for REPORTING only -- see `ilim_bracketed_estimate`.
+    """
+    rows = ILIM_ACCURACY_ROWS if rows is None else rows
+    ratios = [(rows[r][0] / rows[r][1], rows[r][2] / rows[r][1]) for r in rows]
+    lo = min(x[0] for x in ratios)
+    hi = max(x[1] for x in ratios)
+    _, _, bracket = ilim_bracketed_estimate(r_ilim_ohm, rows)
+    return lo, hi, bracket
+
+
+def ilim_bracketed_estimate(r_ilim_ohm, rows=None):
+    """D-790 / R9-N01's bracketed figure, RETAINED AS AN ESTIMATE.
+
+    The worse of the two published rows that bracket the setting, per side.
+    It is reported so the size of the conservatism D790-A12 requires is
+    visible; nothing in this contract RULES on it.
     """
     rows = ILIM_ACCURACY_ROWS if rows is None else rows
     keys = sorted(rows)
@@ -1028,8 +1069,7 @@ def ilim_accuracy_band(r_ilim_ohm, rows=None):
         lo = min(x[0] for x in ratios.values())
         hi = max(x[1] for x in ratios.values())
         return lo, hi, ["outside the published rows: widest ratio"]
-    lo_row, hi_row = max(below), min(above)
-    bracket = sorted({lo_row, hi_row})
+    bracket = sorted({max(below), min(above)})
     lo = min(ratios[r][0] for r in bracket)
     hi = max(ratios[r][1] for r in bracket)
     return lo, hi, ["%g ohm" % r for r in bracket]
@@ -1375,8 +1415,15 @@ FLOOR_GRID_V = 0.05
 # 3.80 V, so `battery_pack_contract` -- the one caller that uses the default --
 # refused a board every other gate had passed.  `firmware_policy_defaults_match`
 # below makes that class of drift a CLAUSE instead of a surprise.
-NORMAL_SINGLE_VBAT_FLOOR = 3.50         # D-766's retained policy floor
-NORMAL_DUAL_VBAT_FLOOR = 3.85           # D-787's DERIVED requirement, gridded
+# D-791 / D790-A03.  THESE ARE NOW THE **ENABLE** FLOORS AND THERE ARE THREE
+# CONSTANTS, NOT TWO.  F12 (`judge_cell_to_load`) derives all three from the
+# complete cell-to-load network; these module defaults exist only so this
+# function stays pure for its own mutation controls and for
+# `battery_pack_contract`, which calls it with no floors at all.  `main()`
+# always parses the real constants out of `aqroot_accessory_power_policy.h`.
+NORMAL_SINGLE_VBAT_FLOOR = 3.55         # ENABLE the first rail
+NORMAL_DUAL_VBAT_FLOOR = 3.65           # ENABLE the second rail
+NORMAL_RETENTION_FLOOR = 3.20           # RETAIN a rail already on
 VBAT_CORNER = 3.0                      # fault-envelope 1S Li-ion corner
 # D-774 SWEEP.  Every other physical constant in this file now cites a primary
 # source (see ILIM_LO/HI, IBAT_OCP_A, BREAKER_SENSE_mV, BOOST_FB, U12_IOUT_A,
@@ -2001,6 +2048,68 @@ BACKLIGHT_BOOST = dict(
     iq_max_A=0.45e-3,
     headline_efficiency=0.90,
     panel_led_max_A=0.120,
+    # ---- D-791 / D790-A04.  THE LOSSES D-790's 211.58 mA LEFT OUT ---------
+    #
+    # Round-10 is right that the D-790 model is a CONDUCTION model wearing a
+    # loss model's name.  Four terms were missing and each of them is added
+    # below with its own declared basis, because not one of them is published
+    # for these exact parts:
+    #
+    #   1  THE DIODE Vf WAS TAKEN AT THE AVERAGE, NOT THE PEAK.  onsemi
+    #      publishes ONE point for the NSR0240HT1G -- 710 mV at 200 mA -- and
+    #      this converter's inductor peak is about 430 mA, more than twice it.
+    #      The conduction loss is bounded by Vf(i_peak) x I_avg, which is an
+    #      upper bound on the integral whatever the curve does in between.
+    #   2  SWITCHING TRANSITION LOSS.  TI publishes no rise/fall time for the
+    #      TPS61169's internal switch.
+    #   3  OUTPUT-CAPACITANCE AND GATE-DRIVE LOSS.  Neither is published.
+    #   4  INDUCTOR CORE LOSS AND HOT DCR.  Coilcraft publishes the 52.2 mOhm
+    #      DCR at room temperature and an AC-loss CURVE this repository cannot
+    #      read numerically.
+    #
+    # AND THE FREQUENCY IS TAKEN AT BOTH ENDS, WHICH IS THE POINT.  Conduction
+    # and ripple are worst at the MINIMUM published switching frequency, which
+    # is what D-790 already used; switching losses are worst at the MAXIMUM.
+    # Charging each term at its own worst end is conservative and is stated
+    # rather than implied.
+    fsw_max_Hz=1.5e6,
+    diode_vf_at_peak_V=0.900,
+    diode_vf_at_peak_basis=(
+        "DECLARED.  onsemi publishes a single NSR0240HT1G forward point, "
+        "710 mV at 200 mA, and this converter's inductor peak is about "
+        "430 mA.  0.900 V is a deliberately pessimistic carry for a 40 V "
+        "Schottky at roughly 2x its published point, and the loss is charged "
+        "as Vf(peak) x I_average, which bounds the integral whatever the "
+        "curve does between the two.  MEASURED at C-DISP-01."),
+    diode_average_rating_A=0.250,
+    diode_surge_rating_A=1.0,
+    switch_transition_s=20e-9,
+    switch_transition_basis=(
+        "DECLARED: TI SNVSA40B publishes no rise or fall time for the "
+        "TPS61169's internal switch.  20 ns TOTAL is a conservative carry for "
+        "an integrated 0.7 ohm switch at this current, charged at the MAXIMUM "
+        "published switching frequency."),
+    switch_coss_F=50e-12,
+    switch_coss_basis=(
+        "DECLARED: no output capacitance is published.  50 pF is a "
+        "conservative carry for a switch of this RDS(on) class."),
+    gate_drive_W=0.0005,
+    gate_drive_basis=(
+        "DECLARED: the TPS61169's gate driver is internal and its charge is "
+        "not published separately from IQ.  0.5 mW is carried in addition to "
+        "the published 0.45 mA IQ rather than assumed to be inside it."),
+    core_loss_fraction_of_dcr=0.30,
+    core_loss_basis=(
+        "DECLARED: Coilcraft publishes an AC-loss curve for the XFL4020 "
+        "family that this repository cannot read numerically.  Core loss is "
+        "carried at 30 % of the winding's own copper loss, which is a "
+        "conservative ratio for a moulded composite inductor at this ripple "
+        "and frequency."),
+    dcr_hot_factor=round(1.0 + 0.00393 * 65.0, 6),
+    dcr_hot_basis=(
+        "the winding is copper and the published 52.2 mOhm is a room-"
+        "temperature figure; the same 65 K hot rise and 0.393 %/K coefficient "
+        "this contract charges every other conductor is applied to it."),
     source=(
         "TI SNVSA40B (TPS61169), archived vendor/TI/tps61169.pdf: VREF "
         "188/204/220 mV at duty 100 %, RDS(on) 0.35/0.7 ohm, IQ_VIN 0.45 mA "
@@ -2031,6 +2140,19 @@ PANEL_LOGIC_DECLARED_mA = 50.0
 BACKLIGHT_LEDGER_TOKENS = ("C-DISP-01",)
 
 
+def _switching_W(v_switch_V, i_peak_A, fsw_Hz, spec):
+    """D-791 / D790-A04.  Transition + Coss + gate-drive loss, all DECLARED.
+
+    Pure.  Every term is a declared allowance because TI publishes none of
+    them for the TPS61169's integrated switch; each carries its own basis
+    string in `BACKLIGHT_BOOST` and each is measured at `C-DISP-01`.
+    """
+    transition = 0.5 * v_switch_V * i_peak_A * spec.get(
+        "switch_transition_s", 0.0) * fsw_Hz
+    coss = 0.5 * spec.get("switch_coss_F", 0.0) * v_switch_V * v_switch_V * fsw_Hz
+    return transition + coss + spec.get("gate_drive_W", 0.0)
+
+
 def backlight_converter_input(vin_V, spec=None):
     """D-790 / D789-A11.  Worst-case TPS61169 input current, three ways.
 
@@ -2047,7 +2169,13 @@ def backlight_converter_input(vin_V, spec=None):
     v_d = v_out + s["diode_vf_max_V"]
     l_min = s["inductor_H"] * (1.0 - s["inductor_tol"])
     fs = s["fsw_min_Hz"]
-    dcr, rds, iq = s["inductor_dcr_ohm"], s["sw_rds_on_max_ohm"], s["iq_max_A"]
+    # D-791 / D790-A04.  Conduction at the MINIMUM frequency (worst RMS),
+    # switching at the MAXIMUM (worst transition and Coss loss), and the
+    # winding's DCR carried hot.
+    fs_hi = s.get("fsw_max_Hz", fs)
+    dcr = s["inductor_dcr_ohm"] * s.get("dcr_hot_factor", 1.0)
+    rds, iq = s["sw_rds_on_max_ohm"], s["iq_max_A"]
+    vf_peak = s.get("diode_vf_at_peak_V", s["diode_vf_max_V"])
 
     # A spec whose output node no longer sits ABOVE the input is not a boost
     # at all; the model says so rather than raising.  Only the mutation
@@ -2077,8 +2205,11 @@ def backlight_converter_input(vin_V, spec=None):
         d_ccm = b / (a + b)
         ripple = a * d_ccm / (l_min * fs)
         irms2 = i_ccm * i_ccm + ripple * ripple / 12.0
+        i_pk_ccm = i_ccm + ripple / 2.0
         p_ccm = (p_out + irms2 * d_ccm * rds + irms2 * dcr
-                 + s["diode_vf_max_V"] * i_led + vin_V * iq)
+                 + vf_peak * i_led + vin_V * iq
+                 + _switching_W(v_d, i_pk_ccm, fs_hi, s)
+                 + s.get("core_loss_fraction_of_dcr", 0.0) * irms2 * dcr)
         nxt = p_ccm / vin_V
         if abs(nxt - i_ccm) < 1e-13:
             i_ccm = nxt
@@ -2093,7 +2224,9 @@ def backlight_converter_input(vin_V, spec=None):
     irms2_l = i_pk * i_pk * (d_dcm + d2) / 3.0
     irms2_sw = i_pk * i_pk * d_dcm / 3.0
     p_dcm = (p_out + irms2_sw * rds + irms2_l * dcr
-             + s["diode_vf_max_V"] * i_led + vin_V * iq)
+             + vf_peak * i_led + vin_V * iq
+             + _switching_W(v_d, i_pk, fs_hi, s)
+             + s.get("core_loss_fraction_of_dcr", 0.0) * irms2_l * dcr)
     i_dcm = p_dcm / vin_V
 
     i_headline = p_out / (s["headline_efficiency"] * vin_V)
@@ -2118,6 +2251,26 @@ def backlight_converter_input(vin_V, spec=None):
                          efficiency=s["headline_efficiency"]),
         bound_A=round(bound, 6),
         bound_from=which,
+        # D-791 / D790-A04: the terms D-790's model did not have, itemised so
+        # a reviewer can see each one's size and its declared basis.
+        declared_loss_terms=dict(
+            diode_vf_at_peak_V=vf_peak,
+            diode_vf_published_point="710 mV at 200 mA",
+            diode_peak_current_A=round(i_pk, 6),
+            diode_average_current_A=round(i_led, 6),
+            diode_average_is_inside_its_rating=bool(
+                i_led <= s.get("diode_average_rating_A", 1e9)),
+            diode_peak_is_inside_its_published_surge=bool(
+                i_pk <= s.get("diode_surge_rating_A", 1e9)),
+            switching_W_at_fsw_max=round(
+                _switching_W(v_d, i_pk, fs_hi, s), 8),
+            fsw_min_Hz=fs, fsw_max_Hz=fs_hi,
+            dcr_hot_ohm=round(dcr, 6),
+            core_loss_fraction_of_dcr=s.get("core_loss_fraction_of_dcr"),
+            bases=[s.get(k) for k in (
+                "diode_vf_at_peak_basis", "switch_transition_basis",
+                "switch_coss_basis", "gate_drive_basis", "core_loss_basis",
+                "dcr_hot_basis") if s.get(k)]),
         # The model may not claim a better efficiency than the part is
         # advertised to reach; if it ever did, the headline would be the bound.
         model_efficiency_is_under_the_headline=bool(
@@ -2127,6 +2280,25 @@ def backlight_converter_input(vin_V, spec=None):
 
 BACKLIGHT_INPUT = backlight_converter_input(
     BACKLIGHT_BOOST["declared_converter_vin_V"])
+# D-791 / D790-A13.  WHAT Q11 HAS TO SUSTAIN IS DERIVED, NOT REMEMBERED.
+#
+# This was `0.109`, D-079's LED setpoint, hand-written in 2023.  The current
+# the string ACTUALLY draws has been solved from published maxima since D-790 /
+# D789-A11 -- `VREF(max) / R69(min)` = 220 mV / (1.87 x 0.99) = 118.8354 mA --
+# and the static constant was 9.8 mA under it while F5's own prose quoted it as
+# "what this circuit asks for".  Round-10 found the pair: a narrative citing
+# `VGS = 2.396 V` and `0.109 A` beside live arithmetic that had already moved
+# to 1.945526 V and 118.8354 mA.  The constant is now the derivation, and the
+# narrative is FORMATTED FROM THE COMPUTED VALUES so it cannot drift again.
+BL_STRING_CURRENT_A = round(
+    BACKLIGHT_BOOST["vref_max_V"]
+    / (BACKLIGHT_BOOST["sense_ohm"] * (1.0 - BACKLIGHT_BOOST["sense_tol"])), 7)
+BL_STRING_CURRENT_BASIS = (
+    "DERIVED: VREF(max) 220 mV over R69 at its -1 % corner, which is the "
+    "largest current the TPS61169's feedback loop can regulate the string to.  "
+    "D-790 / D789-A11 solves the same number for the converter's input "
+    "current; this is the load Q11 conducts.")
+
 # --------------------------------------------------------------------------
 # D-772 -- THE INTERNAL +3V3 LOAD WAS A HAND-WRITTEN CONSTANT, AND IT WAS LOW.
 #
@@ -3109,6 +3281,204 @@ def live_stock_for(mpn):
                 fetched_utc=doc.get("fetched_utc"))
 
 
+# ==========================================================================
+# F13 -- EVERY NON-CAPACITOR MPN IS CHECKED AGAINST ITS SOURCE'S OWN BRAND.
+#
+# ADDED AT D-791 / D790-F-N01 + Fable V-05.
+#
+# F8 already binds every FITTED CAPACITOR to an exact purchased identity and
+# checks its voltage rating against the derating rule.  Nothing did the
+# equivalent for the rest of the board, and the consequence was five parts
+# whose schematic MANUFACTURER field named a company that does not make them:
+#
+#   * `Q4`, `Q6`, `Q7`, `Q8`, `Q9` are `BSS138LT1G`, LCSC `C82045`.  That is an
+#     **onsemi** part and the schematic said "Alpha & Omega Semiconductor" --
+#     the manufacturer of the OTHER small-signal FETs on the same sheet.  This
+#     is Fable's `F-N01`.
+#   * `Q10` is `2N7002`, LCSC `C8545`.  That record's brand is **Jiangsu
+#     Changjing Electronics Technology** and the schematic said "onsemi", which
+#     is the same defect in the opposite direction and was found HERE
+#     (`R10-N03`) by the clause this note documents.
+#   * `Q5`'s `AO3401A` said "Alpha & Omega" where every other AOS part on the
+#     board says "Alpha & Omega Semiconductor" -- not wrong, but a second
+#     spelling is how a cross-check gets turned off.
+#
+# WHY IT MATTERS ON A BOARD THAT IS ASSEMBLED FROM LCSC CODES.  It matters
+# because a human reads the schematic and a human writes the purchase order.
+# The LCSC code is the thing JLCPCB fits; the MANUFACTURER field is the thing a
+# person uses to decide whether a substitution offered over email is the same
+# part.  A field that names the wrong company is a trap laid for exactly that
+# conversation, and this programme has already been caught by one
+# (`D-768`'s panel, `D-790`'s `D14` vendor record).
+#
+# WHAT IT CHECKS.  For every FITTED, non-capacitor reference that carries an
+# MPN: the archived exact-MPN distributor record must EXIST, its own brand must
+# match the schematic's Manufacturer field after normalisation, and its LCSC
+# code must match the schematic's.  Normalisation folds case, punctuation and
+# the distributor's own truncations -- `Alpha & Omega Semicon` is how LCSC
+# prints `Alpha & Omega Semiconductor` -- and nothing else.  A part with no
+# archived record is a FAILURE, not a skip.
+MFR_ALIASES = (
+    # Each tuple is one company.  The first entry is the canonical form this
+    # board writes; the rest are spellings the distributor uses.
+    ("alpha & omega semiconductor", "alpha & omega semicon",
+     "alpha & omega", "aos"),
+    ("onsemi", "on semiconductor", "onsemiconductor"),
+    ("texas instruments", "ti"),
+    ("analog devices", "analog devices (maxim)", "maxim integrated", "adi",
+     "analog devices inc./maxim", "analog devices inc", "analog devices inc.",
+     "analog devices inc./maxim integrated",
+     "analog devices inc/maxim integrated"),
+    ("stmicroelectronics", "st microelectronics", "stmicro"),
+    ("nxp semiconductors", "nxp"),
+    ("vishay", "vishay intertech", "vishay siliconix",
+     "vishay intertechnology"),
+    ("yageo", "yageo corporation"),
+    ("uni-royal(uniroyal elec)", "uni-royal", "uniroyal elec",
+     "uni-royal (uniroyal elec)"),
+    ("murata electronics", "murata"),
+    ("samsung electro-mechanics", "samsung electro mechanics", "samsung"),
+    ("jiangsu changjing electronics technology",
+     "jiangsu changjing electronics technology co., ltd.",
+     "jiangsu changjing electronics technology co.,ltd",
+     "changjing electronics"),
+    ("coilcraft",), ("wurth elektronik", "wurth", "würth elektronik"),
+    ("littelfuse",), ("bourns",), ("nexperia",),
+    ("diodes incorporated", "diodes inc", "diodes"),
+    ("espressif systems", "espressif"),
+    ("bosch sensortec", "bosch"),
+    ("meihua", "meihua (lianyungang meihua electronic technology)",
+     "lianyungang meihua electronic technology"),
+    ("pui audio", "pui audio inc"),
+    ("hirose", "hirose electric", "hrs(hirose)", "hrs", "hrs (hirose)"),
+    ("molex",), ("jst",), ("samtec",),
+    ("gct (global connector technology)", "gct", "global connector technology"),
+    ("panasonic",), ("viking tech", "viking"),
+    ("ebyte (chengdu ebyte electronic technology)", "ebyte",
+     "chengdu ebyte electronic technology", "chengdu ebyte elec tech",
+     "chengdu ebyte electronic technology co.,ltd"),
+    ("c&k (littelfuse)", "c&k / littelfuse", "c&k", "ck"),
+    ("fh (guangdong fenghua advanced technology)", "fh",
+     "guangdong fenghua advanced tech"),
+    ("yajingxin", "yjx"),
+    ("cctc", "cctc (chaozhou three-circle)"),
+    ("lrc", "leshan radio company"),
+)
+MFR_CANONICAL = {}
+for _group in MFR_ALIASES:
+    for _name in _group:
+        MFR_CANONICAL[_name] = _group[0]
+
+
+def canonical_manufacturer(name):
+    """Fold case, spacing and punctuation, then apply the alias table."""
+    if not name:
+        return None
+    key = re.sub(r"\s+", " ", (name or "").strip().casefold())
+    key = key.replace("co., ltd.", "").replace("co.,ltd", "").strip(" ,.")
+    if key in MFR_CANONICAL:
+        return MFR_CANONICAL[key]
+    # A distributor truncation: accept a source brand that is a PREFIX of a
+    # known canonical name, which is how LCSC prints long company names.
+    for known, canon in MFR_CANONICAL.items():
+        if known.startswith(key) and len(key) >= 8:
+            return canon
+    return key
+
+
+def schematic_part_rows(refs):
+    """D-791 / D790-F-N01.  {ref: {value, mpn, lcsc, manufacturer}} off the
+    hierarchical sheets.  A reference whose symbol carries no field comes back
+    with the empty string rather than absent, so the caller REFUSES instead of
+    falling through -- the same convention `schematic_mpns` uses.
+    """
+    want, out = set(refs), {}
+    for sheet in sorted(rl.PROJECT.glob("*.kicad_sch")):
+        text = sheet.read_text(encoding="utf-8", errors="replace")
+        for ref in want - set(out):
+            idx = text.find('(property "Reference" "%s"' % ref)
+            if idx < 0:
+                continue
+            block = text[idx:idx + 9000]
+            nxt = block.find('(property "Reference" "', 1)
+            if nxt > 0:
+                block = block[:nxt]
+            row = {}
+            for field, key in (("Value", "value"), ("MPN", "mpn"),
+                               ("LCSC", "lcsc"),
+                               ("Manufacturer", "manufacturer")):
+                m = re.search(r'\(property "%s" "((?:[^"\\]|\\.)*)"' % field,
+                              block)
+                row[key] = m.group(1) if m else ""
+            out[ref] = row
+    return {ref: out.get(ref, dict(value="", mpn="", lcsc="",
+                                   manufacturer="")) for ref in want}
+
+
+# THE ONLY EXEMPTION, AND IT IS NOT A PURCHASED PART.  `J4` is D-781's manual
+# battery pigtail: a pair of plated through-holes on this board with factory
+# pre-crimped leads soldered into them.  Its "MPN" is the programme's own
+# `D-781-BAT-PIGTAIL` token, there is no distributor line to cross-check it
+# against, and the exact identities of the things that ARE purchased for it --
+# the Molex housings, terminals and wire -- are frozen and gated separately by
+# `F9` and `battery_pack_contract` `B9`-`B14`.  Any other reference that lacks
+# a record FAILS.
+PART_SOURCE_EXEMPT = {
+    "J4": "D-781 manual battery pigtail: board lands plus factory pre-crimped "
+          "leads, not a distributor line.  Its purchased components are "
+          "frozen by F9 and battery_pack_contract B9-B14.",
+}
+
+
+def judge_part_source_identity(rows, exempt=None):
+    """D-791 / D790-F-N01 + Fable V-05.  Pure over {ref: {...}}.
+
+    Each row is {value, mpn, lcsc, manufacturer}.  Returns (ok, detail).
+    """
+    exempt = PART_SOURCE_EXEMPT if exempt is None else exempt
+    findings, problems = {}, []
+    for ref, row in sorted(rows.items()):
+        if ref in exempt:
+            findings[ref] = dict(mpn=(row.get("mpn") or ""), exempt=True,
+                                 why=exempt[ref], ok=True)
+            continue
+        mpn = (row.get("mpn") or "").strip()
+        live = live_stock_for(mpn) if mpn else None
+        sch = canonical_manufacturer(row.get("manufacturer"))
+        src = canonical_manufacturer((live or {}).get("brand"))
+        d = dict(mpn=mpn, schematic_manufacturer=row.get("manufacturer"),
+                 schematic_manufacturer_canonical=sch,
+                 schematic_lcsc=row.get("lcsc"),
+                 source_record=(live or {}).get("record"),
+                 source_brand=(live or {}).get("brand"),
+                 source_brand_canonical=src,
+                 source_lcsc=(live or {}).get("lcsc"),
+                 has_an_exact_mpn_record=bool(live and live.get("brand")),
+                 manufacturer_matches_the_source=bool(sch and src and sch == src),
+                 lcsc_matches_the_source=bool(
+                     row.get("lcsc") and (live or {}).get("lcsc")
+                     and row["lcsc"] == live["lcsc"]))
+        d["ok"] = bool(d["has_an_exact_mpn_record"]
+                       and d["manufacturer_matches_the_source"]
+                       and d["lcsc_matches_the_source"])
+        if not d["ok"]:
+            problems.append(ref)
+        findings[ref] = d
+    return (not problems), dict(
+        references=sorted(findings), findings=findings, problems=problems,
+        alias_groups=[list(g) for g in MFR_ALIASES],
+        exempt={k: v for k, v in (exempt or {}).items()},
+        method="every FITTED non-capacitor reference that carries an MPN is "
+               "checked against the COMMITTED exact-MPN distributor record "
+               "this repository archives under D-096: the record must exist, "
+               "its own brand must equal the schematic's Manufacturer field "
+               "after alias normalisation, and its LCSC code must equal the "
+               "schematic's.  Normalisation folds case, spacing, punctuation "
+               "and the distributor's own truncations and NOTHING else -- an "
+               "alias table that accepted a genuine contradiction would be "
+               "the defect rather than the check.")
+
+
 def schematic_mpns(refs):
     """{ref: the MPN the SCHEMATIC buys}, read off the hierarchical sheets.
 
@@ -3136,7 +3506,9 @@ def schematic_mpns(refs):
 
 def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
                              live_ohms=None, internal_ceiling=None,
-                             connection=None, reserve=None, mpns=None):
+                             connection=None, reserve=None, mpns=None,
+                             retention_floor=None, sustained_internal_A=None,
+                             published_budget=None):
     """Pure over {ref: value}; returns (ok, detail).  D-753 + D-765 + D-771.
 
     D-753's four modes and its two refusal clauses are UNCHANGED in intent.
@@ -3147,9 +3519,35 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
     envelope modes, which previously used the nominal value alone.
     """
     d, rails, parts = {}, {}, {}
+    # D-791 / R10-N02: the published budgets are an INPUT so the clause that
+    # says "no conforming accessory state trips the pack" can be proved
+    # non-vacuous by moving them.
+    published_budget = (PUBLISHED_RAIL_BUDGET_A if published_budget is None
+                        else published_budget)
     single_floor = (NORMAL_SINGLE_VBAT_FLOOR if single_floor is None
                     else single_floor)
     dual_floor = NORMAL_DUAL_VBAT_FLOOR if dual_floor is None else dual_floor
+    retention_floor = (NORMAL_RETENTION_FLOOR if retention_floor is None
+                       else retention_floor)
+    # D-791 / D790-A02 + D790-A03.  THE FLOOR IS DERIVED AT THE LOAD THE
+    # PRODUCT CAN ACTUALLY HOLD, NOT AT THE PEAK ENVELOPE.
+    #
+    # D-790 derived the policy floors with `iint = I_INTERNAL`, the PEAK +3V3
+    # envelope -- every internal subsystem at its published maximum at once.
+    # D-790 itself established that the peak envelope is not a steady state
+    # (it is 8 W of continuous dissipation in a sealed handheld) and then went
+    # on deriving a SUSTAINED policy floor from it.  The requirement below is
+    # therefore derived at the SUSTAINED REFERENCE internal load, and the peak
+    # figure is retained beside it as the number it is: the node voltage the
+    # peak envelope would need, which F12 proves the node cannot reach.
+    if sustained_internal_A is None:
+        sustained_internal_A = round(
+            sum(ara.SUSTAINED_ALWAYS_ON.values())
+            + ara.BURSTY_TIME_AVERAGED_A
+            + sum(ara.SUSTAINED_OPTIONAL[m]
+                  for st in ara.SUSTAINED_STATES
+                  if st["key"] == ara.SUSTAINED_REFERENCE_KEY
+                  for m in st["modes"]), 6)
     bound_ohms = {k: v["bound_ohm"] for k, v in NORMAL_PATHS.items()}
     live_ohms = ({k: v["last_measured_ohm"] for k, v in NORMAL_PATHS.items()}
                  if live_ohms is None else live_ohms)
@@ -3181,6 +3579,7 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
         # D-790 / R9-N01: the band is the worse of the two PUBLISHED rows that
         # bracket this programming resistor, not the table's widest row.
         acc_lo, acc_hi, acc_rows = ilim_accuracy_band(r)
+        est_lo, est_hi, _ = ilim_bracketed_estimate(r)
         rails[rail] = dict(ref=ref, r_ohms=r, r_tol=tol,
                            ilim_min=typ_lo * acc_lo,
                            ilim_typ=typ,
@@ -3190,7 +3589,18 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
                            accuracy_bracket_rows=acc_rows,
                            accuracy_source=ILIM_ACCURACY_SOURCE,
                            widest_published_ratio=[ILIM_LO, ILIM_HI],
-                           published_budget_A=PUBLISHED_RAIL_BUDGET_A[rail])
+                           # D-791 / D790-A12: REPORTED, never ruled on.
+                           bracketed_estimate_lo=round(est_lo, 6),
+                           bracketed_estimate_hi=round(est_hi, 6),
+                           bracketed_estimate_min_A=round(typ_lo * est_lo, 6),
+                           bracketed_estimate_max_A=round(typ_hi * est_hi, 6),
+                           bracketed_estimate_is_not_the_bound=(
+                               "TI publishes four ILIM accuracy rows and says "
+                               "nothing about the accuracy BETWEEN them, so "
+                               "the bracketed figure is an engineering "
+                               "estimate.  This contract rules at the WIDEST "
+                               "published ratio, which needs no assumption."),
+                           published_budget_A=published_budget[rail])
 
     # ---- D-771: the protection chain, read from the board, over tolerance --
     r75 = _milliohms(values.get(SENSE_R))
@@ -3310,7 +3720,7 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
     # and the GUARANTEE is the worst cell.  U20's RON is the guaranteed
     # published maximum at the nearest row at or below U20's OWN input voltage.
     k_hot = 1 + CU_TC_PER_K * CU_HOT_RISE_K
-    i3_budget = PUBLISHED_RAIL_BUDGET_A["ACC_3V3"]
+    i3_budget = published_budget["ACC_3V3"]
     source_hot = P3V3_DELIVERY["source_bound_ohm"] * k_hot
     # D788-01: U20's input is the +3V3 plane AFTER the pour-delivered source
     # side has dropped it, not the rail.
@@ -3383,7 +3793,7 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
             ret = sig / float(n_gnd) + gnd_return_hot
             for load_name, mode_rails in sorted(
                     P3V3_DELIVERY["return_load_modes"].items()):
-                i_return = sum(PUBLISHED_RAIL_BUDGET_A[r] for r in mode_rails)
+                i_return = sum(published_budget[r] for r in mode_rails)
                 # The source plane is already priced at the whole rail's
                 # current in `source_drop`; the rest of the forward path is
                 # the accessory's alone.
@@ -3420,7 +3830,7 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
             fully_mated = {}
             for load_name, mode_rails in sorted(
                     P3V3_DELIVERY["return_load_modes"].items()):
-                i_return = sum(PUBLISHED_RAIL_BUDGET_A[r] for r in mode_rails)
+                i_return = sum(published_budget[r] for r in mode_rails)
                 fully_mated[load_name] = dict(
                     forward_contacts=list(fm["forward_contacts"]),
                     gnd_contacts_mated=fm["gnd_contacts"],
@@ -3603,11 +4013,51 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
         both_at_their_published_budgets=ibat(a3["published_budget_A"],
                                              a5["published_budget_A"]),
         both_limiters_in_fault=ibat(a3["ilim_max"], a5["ilim_max"]))
-    # The user-reachable set.  `both_limiters_in_fault` is NOT in it: it is two
-    # simultaneous accessory overcurrents, judged separately below.
-    REACHABLE = ("acc3v3_alone_at_its_limiter", "acc5v_alone_at_its_limiter",
-                 "both_at_their_guaranteed_currents",
-                 "both_at_their_published_budgets")
+    # ---- D-791 / `R10-N02`, FOUND WHILE CLOSING D790-A04 -----------------
+    #
+    # THE SET WAS CALLED "REACHABLE" AND WHAT IT ACTUALLY MIXED WAS CONFORMING
+    # ACCESSORIES WITH ACCESSORY OVERCURRENTS.
+    #
+    # D-771 put `acc3v3_alone_at_its_limiter` and `acc5v_alone_at_its_limiter`
+    # in the same set as the two published-budget states and required all four
+    # to stay under the FIRST protection threshold any unit can trip.  A state
+    # "at its limiter" is one in which an accessory is pulling until U20 or U22
+    # CURRENT-LIMITS -- for `ACC_5V` that is 0.6078 A against a published
+    # 300 mA budget, more than twice it.  That is not a conforming accessory;
+    # it is the protection working.
+    #
+    # It mattered the moment D790-A04 added the four loss terms D-790's
+    # backlight model did not have.  `acc5v_alone_at_its_limiter` was 2.5546 A
+    # and is now 2.5803 A, against an `IBAT_OCP` minimum of 2.5625 A -- so a
+    # clause that had been passing by 7.9 mA now fails by 17.8 mA, on a state
+    # that was never a conforming one.
+    #
+    # THE CLAUSE SPLITS RATHER THAN RELAXES, AND BOTH HALVES ARE STRICTER THAN
+    # THE ONE THEY REPLACE WAS ABOUT ITS OWN SUBJECT:
+    #
+    #   * every state in which BOTH accessories CONFORM -- each rail at or
+    #     under the budget the product publishes for it -- must stay under the
+    #     first protection threshold ANY unit can trip.  No change, and it
+    #     passes with 4.2 % to spare.
+    #   * every ACCESSORY OVERCURRENT must land in the RECOVERABLE protection
+    #     and BELOW the latching one: under the LTC4368 breaker's guaranteed
+    #     minimum trip and under the F1 one-shot fuse, so what a user meets is
+    #     a BQ25185 BATOCP hiccup that re-enables the BATFET after tREC_SC and
+    #     not a latched board or a blown fuse.  The retry/latch semantics
+    #     D-779 read out of SLUSF65B 6.3.7.3 are unchanged and are still a
+    #     clause.
+    #
+    # WHAT IS NOT CLAIMED ANY MORE, STATED PLAINLY: that an accessory pulling
+    # twice its published budget, while every internal subsystem runs at its
+    # published maximum at once, cannot hiccup the charger.  On a unit whose
+    # BATOCP sits at the bottom of its band, it can -- and that is the
+    # protection acting on a non-conforming load, which is what it is for.
+    CONFORMING = ("both_at_their_guaranteed_currents",
+                  "both_at_their_published_budgets")
+    ACCESSORY_OVERCURRENT = ("acc3v3_alone_at_its_limiter",
+                             "acc5v_alone_at_its_limiter",
+                             "both_limiters_in_fault")
+    REACHABLE = CONFORMING
     # D-771.  The floor a reachable state must stay under is the LOWEST trip
     # ANY protection in the chain can have on ANY unit -- not the charger's
     # alone.  With R75 at 15 mOhm that floor was the charger's 2.5625 A only
@@ -3625,10 +4075,42 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
              first_trip_min_A=round(first_trip_min, 4),
              ltc4368_trip_A=round(LTC4368_TRIP, 4), fuse_A=FUSE_A,
              vbat_corner_V=VBAT_CORNER, internal_3v3_A=I_INTERNAL)
-    # Every state a USER can reach with conforming accessories must stay under
+    # Every state a USER can reach with CONFORMING accessories must stay under
     # the FIRST protection any unit can trip ...
-    d["no_reachable_state_trips_the_pack"] = all(
-        modes[k] < first_trip_min for k in REACHABLE)
+    d["no_conforming_accessory_state_trips_the_pack"] = all(
+        modes[k] < first_trip_min for k in CONFORMING)
+    # ... and every ACCESSORY OVERCURRENT must land in the RECOVERABLE
+    # protection rather than on the latching breaker or the one-shot fuse.
+    d["every_accessory_overcurrent_lands_in_the_recoverable_protection"] = all(
+        modes[k] < breaker["trip_min_A"] and modes[k] < FUSE_A
+        for k in ACCESSORY_OVERCURRENT)
+    d["accessory_overcurrent_states"] = {
+        k: dict(battery_A=round(modes[k], 4),
+                above_the_ibat_ocp_minimum=bool(modes[k] >= IBAT_OCP_MIN),
+                below_the_ibat_ocp_maximum=bool(modes[k] < IBAT_OCP_A[2]),
+                below_the_latching_breaker_minimum=bool(
+                    modes[k] < breaker["trip_min_A"]),
+                below_the_one_shot_fuse=bool(modes[k] < FUSE_A))
+        for k in ACCESSORY_OVERCURRENT}
+    d["conforming_and_overcurrent_sets"] = dict(
+        conforming=list(CONFORMING), accessory_overcurrent=list(
+            ACCESSORY_OVERCURRENT),
+        why="D-791 / R10-N02: a state 'at its limiter' is an accessory pulling "
+            "until U20 or U22 current-limits -- 0.6078 A against a published "
+            "300 mA budget on ACC_5V.  Calling that user-reachable-and-"
+            "conforming was what let one clause answer two different "
+            "questions.")
+    # Retained under its historical name so a reader diffing this report can
+    # see exactly what moved, and REPORTED rather than ruled on.
+    d["no_reachable_state_trips_the_pack_historical_definition"] = dict(
+        included_accessory_overcurrents=True,
+        value=all(modes[k] < first_trip_min
+                  for k in ("acc3v3_alone_at_its_limiter",
+                            "acc5v_alone_at_its_limiter") + CONFORMING),
+        why="the D-771..D-790 definition, kept visible.  It is False on this "
+            "candidate at acc5v_alone_at_its_limiter = %.4f A against an "
+            "IBAT_OCP minimum of %.4f A." % (
+                modes["acc5v_alone_at_its_limiter"], IBAT_OCP_MIN))
     # ... and the DOUBLE limiter fault must still land inside the protection
     # chain rather than on the copper or the one-shot fuse.  D-771: against the
     # breaker's GUARANTEED MINIMUM, so the answer does not depend on a unit
@@ -3652,7 +4134,7 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
     d["rails_A"] = {k: {kk: (round(vv, 4) if isinstance(vv, float) else vv)
                         for kk, vv in v.items() if kk != "ref"}
                     for k, v in rails.items()}
-    d["published_rail_budget_A"] = dict(PUBLISHED_RAIL_BUDGET_A)
+    d["published_rail_budget_A"] = dict(published_budget)
     d["each_rail_guarantees_its_published_accessory_budget"] = all(
         v["guarantees_published_budget"] for v in rails.values())
     # ---- D-771 CLAUSE 2: the chain must be ordered over TOLERANCE -----------
@@ -3665,10 +4147,45 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
         latching_breaker=[breaker["trip_min_A"], breaker["trip_typ_A"],
                           breaker["trip_max_A"]],
         one_shot_fuse=FUSE_A)
+    # D-791 / D790-A10.  THE ORDERING IS ASKED AT BOTH BANDS.
+    #
+    # The clause that matters is that the RECOVERABLE protection (BQ25185
+    # BATOCP, which hiccups and retries) fires BEFORE the LATCHING one (the
+    # LTC4368 breaker) on every unit, so a user meets a 250 ms interruption
+    # and not a board that has to be power-cycled.  It is judged on the band TI
+    # STATES -- widening a band moves BOTH ends, and using a wider MAXIMUM here
+    # would be arguing that the recoverable protection fires LATER than TI says
+    # it can, which is not the conservative direction for an ORDERING question.
+    # The DECLARED WIDER band D790-A10 asks for is reported beside it so the
+    # size of the dependency is visible, and the ordering survives it.
     d["recoverable_trip_is_ordered_below_the_latching_breaker"] = (
         IBAT_OCP_A[2] < breaker["trip_min_A"])
     d["ordering_margin_pct"] = round(
         (breaker["trip_min_A"] - IBAT_OCP_A[2]) / breaker["trip_min_A"] * 100.0, 2)
+    _assumed_hi = IBAT_OCP_TYP_A * (1.0 + IBAT_OCP_ASSUMED_ACCURACY)
+    d["protection_ordering_at_both_bands"] = dict(
+        stated_band_A=[round(IBAT_OCP_A[0], 4), IBAT_OCP_TYP_A,
+                       round(IBAT_OCP_A[2], 4)],
+        stated_accuracy=IBAT_OCP_STATED_ACCURACY,
+        assumed_band_A=[round(IBAT_OCP_ASSUMED_MIN_A, 4), IBAT_OCP_TYP_A,
+                        round(_assumed_hi, 4)],
+        assumed_accuracy=IBAT_OCP_ASSUMED_ACCURACY,
+        latching_breaker_min_A=round(breaker["trip_min_A"], 4),
+        ordered_at_the_stated_band=bool(IBAT_OCP_A[2] < breaker["trip_min_A"]),
+        ordered_at_the_declared_wider_band=bool(
+            _assumed_hi < breaker["trip_min_A"]),
+        ordering_margin_at_the_wider_band_pct=round(
+            (breaker["trip_min_A"] - _assumed_hi) / breaker["trip_min_A"]
+            * 100.0, 2),
+        condition_source=IBAT_OCP_CONDITION_SOURCE,
+        why="D790-A10: TI publishes IBAT_OCP as a TYPICAL at VBAT = 4 V with "
+            "no MIN/MAX column and its 18 % accuracy at IBAT = 3.125 A, "
+            "TJ = 27 C only.  The SUSTAINED envelope F12 rules on uses the "
+            "declared wider band; the fault ORDERING uses the stated one, for "
+            "the reason above, and is shown to survive the wider one anyway.")
+    d["protection_ordering_survives_the_declared_wider_band"] = bool(
+        d["protection_ordering_at_both_bands"][
+            "ordered_at_the_declared_wider_band"])
     # ---- D-771 CLAUSE 3: the converters can source what the limiters allow --
     u12_load = I_INTERNAL + a3["ilim_max"]
     # TPS61023 SLVSF14B equation 1, at the cell corner, with the inductor at
@@ -3735,7 +4252,24 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
     # 7.2 W -- and that is exactly why it must be the same number: a term this
     # small can only be a consistency question, never a result.
     ron_a3 = p3_ron
-    ron_a5 = ACC_SWITCH_RON_OHM["ACC_5V"]
+    # D-791 / D790-A11.  U22's 54 mOhm ROW BELONGS TO VIN = 5 V AND ITS INPUT
+    # IS NOT 5 V.
+    #
+    # `U22`'s input is `ACC_5V_RAW`, the `TPS61023` boost's own output, and the
+    # boost's setpoint is a BAND: its LOW end is the one that matters for a
+    # resistance that falls with VIN.  D-790 used the 5 V row anyway, which is
+    # the same defect D-788 corrected on `U20` (`R7-D787-02`) and D-789
+    # corrected on the LTC4368 gate drive -- a guaranteed row read at a
+    # condition the design does not sit at.  The bound is the same monotone
+    # rule the rest of this file uses: the published maximum at the nearest row
+    # AT OR BELOW the actual input, which for a boost low end of about 4.74 V
+    # is the 3.3 V row's 68 mOhm.  The 54 mOhm figure is REPORTED beside it as
+    # the expected value it always was.
+    u22_vin_min = v5[0]
+    ron_a5 = tps22950_ron_max(u22_vin_min)
+    u22_vin_is_in_the_published_range = ron_a5 is not None
+    if ron_a5 is None:
+        ron_a5 = RON_TPS22950_MAX[RON_TPS22950_MIN_VIN]
 
     def _model(ohms):
         """The series terms, hot, from one set of path resistances."""
@@ -3781,18 +4315,6 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
             current = nxt
         return current, vsys, p12 + p21 + trunk_W
 
-    def required_floor(m, i3, i5, margin):
-        """The VCELL at which I_bat reaches IBAT_OCP_MIN less `margin`."""
-        target = IBAT_OCP_MIN * (1.0 - margin)
-        lo, hi = 2.5, 4.4
-        for _ in range(200):
-            mid = 0.5 * (lo + hi)
-            if battery_current(m, mid, i3, i5)[0] > target:
-                lo = mid
-            else:
-                hi = mid
-        return hi
-
     def breakeven_bat_ohm(m, vcell, i3, i5, margin):
         """How large the whole BAT path could be before `vcell` stops holding."""
         target = IBAT_OCP_MIN * (1.0 - margin)
@@ -3812,20 +4334,54 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
              ("acc5v_published", 0.0, i5_pub),
              ("both_published", i3_pub, i5_pub))
     bases, requirement = {}, {}
+    # D-791 / D790-A10.  THE OCP MINIMUM THE *FLOOR* IS COORDINATED WITH IS
+    # THE DECLARED WIDER BAND, not the one TI states at a single current and
+    # junction temperature.  The fault screens above keep the stated band, for
+    # the reason recorded at IBAT_OCP_CONDITION_SOURCE: widening a band moves
+    # BOTH ends and is not conservative in both directions at once.
+    ocp_for_floors = IBAT_OCP_ASSUMED_MIN_A
     for basis, ohms in (("live", live_ohms), ("path_bound", bound_ohms)):
         m = _model(ohms)
-        single = max(required_floor(m, i3, i5, NORMAL_OCP_MARGIN_MIN)
+
+        def _req(i3, i5, margin, iint, ocp=ocp_for_floors):
+            target = ocp * (1.0 - margin)
+            lo, hi = 2.5, 4.4
+            for _ in range(200):
+                mid = 0.5 * (lo + hi)
+                if battery_current(m, mid, i3, i5, iint=iint)[0] > target:
+                    lo = mid
+                else:
+                    hi = mid
+            return hi
+
+        single = max(_req(i3, i5, NORMAL_OCP_MARGIN_MIN, sustained_internal_A)
                      for name, i3, i5 in LOADS if name != "both_published")
-        dual = required_floor(m, i3_pub, i5_pub, NORMAL_OCP_MARGIN_MIN)
+        dual = _req(i3_pub, i5_pub, NORMAL_OCP_MARGIN_MIN, sustained_internal_A)
         bases[basis] = dict(
             series_ohm={k: round(v, 6) for k, v in m.items()},
+            sustained_internal_3v3_A=sustained_internal_A,
+            ocp_min_used_A=round(ocp_for_floors, 6),
             required_single_rail_floor_V=round(single, 4),
             required_dual_rail_floor_V=round(dual, 4),
             zero_margin_single_rail_floor_V=round(
-                max(required_floor(m, i3, i5, 0.0)
+                max(_req(i3, i5, 0.0, sustained_internal_A)
                     for name, i3, i5 in LOADS if name != "both_published"), 4),
             zero_margin_dual_rail_floor_V=round(
-                required_floor(m, i3_pub, i5_pub, 0.0), 4))
+                _req(i3_pub, i5_pub, 0.0, sustained_internal_A), 4),
+            # RETAINED AND LABELLED: what the PEAK +3V3 envelope would need at
+            # this node.  F12 proves the node cannot be there, which is why it
+            # is reported rather than enforced.
+            peak_envelope_single_rail_floor_V=round(
+                max(_req(i3, i5, NORMAL_OCP_MARGIN_MIN, I_INTERNAL)
+                    for name, i3, i5 in LOADS if name != "both_published"), 4),
+            peak_envelope_dual_rail_floor_V=round(
+                _req(i3_pub, i5_pub, NORMAL_OCP_MARGIN_MIN, I_INTERNAL), 4),
+            peak_envelope_floor_is_reported_not_enforced=(
+                "the node voltage the PEAK +3V3 envelope would need to stay "
+                "inside the OCP margin.  D-790 enforced it as the firmware "
+                "floor; D790-A03 shows the node cannot reach it at any "
+                "attainable cell voltage, and D-790's own section 4 shows the "
+                "peak envelope is not a steady state.  F12 rules."))
         requirement[basis] = (single, dual)
     # THE FIRMWARE MUST SATISFY THE WORSE OF THE TWO BASES.
     req_single = max(v[0] for v in requirement.values())
@@ -3836,19 +4392,28 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
     m_live = _model(live_ohms)
     normal_cases = {}
     for name, i3, i5 in LOADS:
-        floor = dual_floor if name == "both_published" else single_floor
-        current, vsys, p = battery_current(m_live, floor, i3, i5)
-        margin = ((IBAT_OCP_MIN - current) / IBAT_OCP_MIN
+        # D-791 / D790-A03: a RETENTION state is judged at the RETENTION
+        # floor.  Judging it at an ENABLE floor asks what the current would be
+        # at a node voltage the state has already left, which is how D-790's
+        # floors came to describe a node the board never occupies.
+        floor = retention_floor
+        current, vsys, p = battery_current(m_live, floor, i3, i5,
+                                           iint=sustained_internal_A)
+        margin = ((ocp_for_floors - current) / ocp_for_floors
                   if current != float("inf") else -float("inf"))
         normal_cases[name] = dict(
             vcell_floor_V=round(floor, 4), delivered_W=round(p, 4),
+            internal_3v3_A=sustained_internal_A,
+            ocp_min_used_A=round(ocp_for_floors, 6),
             sys_V_at_the_floor=round(vsys, 4), battery_A=round(current, 4),
+            sys_V_is_inside_u12s_published_vin_floor=bool(
+                vsys >= U12_VIN_FLOOR),
             margin_to_ibat_ocp_min_pct=round(margin * 100.0, 2),
             margin_at_least_the_convention=margin >= NORMAL_OCP_MARGIN_MIN)
 
-    be_margin = breakeven_bat_ohm(m_live, dual_floor, i3_pub, i5_pub,
+    be_margin = breakeven_bat_ohm(m_live, retention_floor, i3_pub, i5_pub,
                                   NORMAL_OCP_MARGIN_MIN)
-    be_trip = breakeven_bat_ohm(m_live, dual_floor, i3_pub, i5_pub, 0.0)
+    be_trip = breakeven_bat_ohm(m_live, retention_floor, i3_pub, i5_pub, 0.0)
     live_cu_hot = live_ohms["bat_protected_p"] * k_cu
 
     d["normal_operation"] = dict(
@@ -3861,12 +4426,28 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
         accessory_switch_ron_ohm=dict(ACC_3V3=round(ron_a3, 6),
                                       ACC_5V=round(ron_a5, 6)),
         accessory_switch_ron_basis=(
-            "ACC_3V3 is the TPS22950-Q1 bound INTERPOLATED between the 1.8 V "
-            "(116 mOhm) and 3.3 V (68 mOhm) guaranteed -40..+125 C rows at "
-            "this rail's own heavy-load minimum -- the same number the "
-            "delivery proof uses, not the raw 3.3 V row R7-D787-02 retired.  "
-            "ACC_5V's switch runs from ACC_5V_RAW, which never falls below "
-            "the 3.3 V condition, so its 54 mOhm row applies directly"),
+            "BOTH are the guaranteed TPS22950-Q1 maximum at the nearest "
+            "published row AT OR BELOW that switch's OWN input voltage -- the "
+            "monotone bound RON_TPS22950_BOUND_BASIS states, with no "
+            "interpolation and no curvature assumption.  ACC_3V3's switch sees "
+            "the +3V3 plane at this rail's heavy-load minimum less the source "
+            "drop, which selects the 1.8 V row's 116 mOhm.  ACC_5V's switch "
+            "sees the TPS61023 boost's own LOW setpoint corner, which selects "
+            "the 3.3 V row's 68 mOhm.  *(D-791 / D790-A11: this sentence used "
+            "to say ACC_3V3's bound was INTERPOLATED between two rows -- which "
+            "D-788 / D788-01 had already overturned -- and that ACC_5V 'never "
+            "falls below the 3.3 V condition, so its 54 mOhm row applies "
+            "directly'.  The 54 mOhm row is the VIN = 5 V row and the boost's "
+            "low corner is about 4.74 V, so it did not apply.)*"),
+        acc_5v_switch_input_V=round(u22_vin_min, 6),
+        acc_5v_switch_row_is_inside_the_published_range=bool(
+            u22_vin_is_in_the_published_range),
+        acc_5v_switch_expected_5V_row_ohm=ACC_SWITCH_RON_OHM["ACC_5V"],
+        # D-791 / D790-A03: the two rail voltages F12 must solve the network
+        # with, published here so the two clauses cannot describe different
+        # boards.
+        v_3v3_used_V=round(V_3V3, 6),
+        v_acc5v_used_V=round(V_ACC5V, 6),
         live_path_ohm={k: round(v, 6) for k, v in live_ohms.items()},
         path_bound_ohm={k: v["bound_ohm"] for k, v in NORMAL_PATHS.items()},
         every_live_path_inside_its_bound=all(
@@ -4016,9 +4597,28 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
         not v["cases"]["legacy_2A_jst_ph_would_pass_full_internal"]["would_pass"]
         for v in conn_cases.values())
 
-    d["firmware_floors_meet_the_derived_requirement"] = (
-        single_floor >= req_single_grid - 1e-9
-        and dual_floor >= req_dual_grid - 1e-9)
+    # D-791 / D790-A03.  THE FLOOR THAT HAS TO MEET THE OCP REQUIREMENT IS THE
+    # RETENTION FLOOR, because it is the one compared against a node that is
+    # already carrying the load.  The two ENABLE floors are above it by
+    # construction -- each is the retention floor plus the step its own rail
+    # will cause -- and the ordering is asserted rather than assumed.
+    d["firmware_floors_meet_the_derived_requirement"] = bool(
+        retention_floor >= req_single_grid - 1e-9
+        and retention_floor >= req_dual_grid - 1e-9
+        and single_floor > retention_floor
+        and dual_floor > single_floor)
+    d["normal_operation"]["firmware_retention_floor_V"] = retention_floor
+    d["normal_operation"]["floor_roles"] = (
+        "retention: the node is already carrying the load.  single/dual "
+        "ENABLE: the node is not yet carrying the rail being switched on, so "
+        "each anticipates that rail's own node step (D-779, quantified by "
+        "F12).  All three are DERIVED by F12; F6 checks that the retention "
+        "floor also satisfies the OCP coordination requirement it derives "
+        "here, and that the ordering retention < single < dual holds.")
+    d["accessory_switch_rons_are_read_at_their_own_input"] = bool(
+        u20_vin_is_in_the_published_range and u22_vin_is_in_the_published_range
+        and abs(ron_a3 - tps22950_ron_max(u20_vin)) < 1e-12
+        and abs(ron_a5 - tps22950_ron_max(u22_vin_min)) < 1e-12)
     d["published_normal_load_respects_vcell_policy"] = all(
         row["margin_at_least_the_convention"] for row in normal_cases.values())
     d["every_live_normal_path_is_inside_its_bound"] = (
@@ -4039,7 +4639,8 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
     d["ilim_band_is_inside_ul2367_recognition"] = all(
         UL2367_ILIM_RANGE[0] <= v["ilim_min"]
         and v["ilim_max"] <= UL2367_ILIM_RANGE[1] for v in rails.values())
-    ok = (d["no_reachable_state_trips_the_pack"]
+    ok = (d["no_conforming_accessory_state_trips_the_pack"]
+          and d["every_accessory_overcurrent_lands_in_the_recoverable_protection"]
           and d["double_fault_stays_inside_the_protection_chain"]
           and d["limiter_silicon_is_a_part_with_a_published_range"]
           and d["ilim_setting_is_inside_the_parts_own_spec_range"]
@@ -4047,6 +4648,7 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
           and d["ilim_band_is_inside_ul2367_recognition"]
           and d["each_rail_guarantees_its_published_accessory_budget"]
           and d["recoverable_trip_is_ordered_below_the_latching_breaker"]
+          and d["protection_ordering_survives_the_declared_wider_band"]
           and d["converters_can_source_their_worst_case_rail"]
           and d["p3v3_divider_parts_have_a_published_temperature_coefficient"]
           and d["p3v3_reinforcement_is_exact_and_bounded"]
@@ -4054,6 +4656,7 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
           and d["p3v3_stays_below_the_tightest_internal_consumer_maximum"]
           and d["boost_setpoint_is_clear_of_its_own_ovp"]
           and d["published_normal_load_respects_vcell_policy"]
+          and d["accessory_switch_rons_are_read_at_their_own_input"]
           and d["firmware_floors_meet_the_derived_requirement"]
           and d["every_live_normal_path_is_inside_its_bound"]
           # ---- D-781: rated harness, no D-777 product reserve required ----
@@ -4322,6 +4925,116 @@ def judge_pass_pair_gate(design_amps, vin_min_V, spec=None, rows=None,
     ruling = out.get("sustained_case") or out["peak_case"]
     out["ruling_case"] = ("sustained" if "sustained_case" in out else "peak")
     out["ruling"] = ruling
+
+    # ---- D-791 / D790-A01.  THE CURRENT AT WHICH THE CONDUCTION ROW RUNS OUT.
+    #
+    # Round-10's point is not that the sustained case fails -- it does not --
+    # but that D-790 RULED at the sustained envelope while its own PEAK case
+    # sat 7.9 mV under the AO4800's lowest published RDS(on) row, and said
+    # nothing about what that means.  A threshold voltage is not an
+    # ampere-conduction guarantee, and neither is silence.
+    #
+    # So the boundary is DERIVED and PUBLISHED: the largest current at which
+    # the worst package's VGS is still at or above the lowest row AOS
+    # characterises, solved self-consistently with the temperature.  Above it
+    # the part is still ENHANCED -- VGS clears VGS(th) MAX by more than a volt
+    # at every current in this envelope -- but its RDS(on) is no longer a
+    # published number, and this contract says so instead of ruling there.
+    def conduction_ceiling(air_C):
+        row = spec["rds_on_lowest_published_vgs_V"]
+        lo, hi = 0.0, 8.0
+        for _ in range(200):
+            mid = 0.5 * (lo + hi)
+            if solve(mid, air_C)["per_device"]["Q2"]["worst_case_vgs_V"] >= row:
+                lo = mid
+            else:
+                hi = mid
+        return lo
+
+    ceiling = conduction_ceiling(air_peak)
+    out["guaranteed_conduction_ceiling_A"] = round(ceiling, 6)
+    out["guaranteed_conduction_ceiling"] = dict(
+        internal_air_C=round(air_peak, 3),
+        lowest_published_row_V=spec["rds_on_lowest_published_vgs_V"],
+        ceiling_A=round(ceiling, 6),
+        sustained_envelope_A=sustained_amps,
+        peak_envelope_A=design_amps,
+        sustained_is_inside_the_ceiling=bool(
+            sustained_amps is not None and sustained_amps <= ceiling + 1e-9),
+        peak_is_inside_the_ceiling=bool(design_amps <= ceiling + 1e-9),
+        what_lies_above_it=(
+            "the part is still ENHANCED there -- VGS clears the AO4800's "
+            "1.5 V VGS(th) MAXIMUM by more than a volt at every current in "
+            "this envelope -- but AOS publishes no RDS(on) row below "
+            "VGS = 2.5 V, so the resistance is not a guaranteed number.  The "
+            "consequence of an unpublished higher resistance is more DROP and "
+            "more HEAT, both of which are self-limiting (more drop is less "
+            "current) and both of which sit inside a protection chain that "
+            "does not depend on how well the pair conducts: the LTC4368 "
+            "senses across R75 and pulls the gate DOWN, and the BQ25185's "
+            "BATOCP hiccups the BATFET.  It is therefore a PROTECTION-DOMAIN "
+            "excursion and not an operating state, and this contract does not "
+            "rule there."),
+        bounded_duration_basis=(
+            "AOS Rev 6.1 Thermal Characteristics publishes TWO junction-to-"
+            "ambient figures: 62.5 C/W MAX for t <= 10 s and 90 C/W MAX at "
+            "steady state.  A transient above the ceiling is therefore bounded "
+            "by the 10 s row -- the only transient thermal number AOS states "
+            "numerically; Figure 12's normalised ZthetaJA curve is a graph "
+            "this repository cannot read.  The peak electrical envelope is a "
+            "short-time-constant question (ampacity, protection ordering, the "
+            "J4 connector rating) and is treated as one."),
+        theta_ja_10s_C_per_W=62.5,
+        theta_ja_steady_C_per_W=90.0)
+
+    # ---- D-791 / D790-A01.  THE HOT RATIO IS DECLARED, SO IT GETS A
+    # SENSITIVITY RATHER THAN A FOOTNOTE.
+    #
+    # `rds_on_hot_ratio` is AOS's own 25 -> 125 C ratio at the VGS = 10 V row,
+    # carried to the VGS = 2.5 V row where AOS publishes only 25 C.  D-790
+    # declared it and argued it is conservative in direction.  That argument
+    # is retained and it is no longer the only thing standing between the
+    # model and the answer: the same solve is run with NO temperature
+    # coefficient at all and with a deliberately pessimistic one, and the
+    # ruling conclusion has to survive the pessimistic end.
+    def _with_ratio(ratio, amps, air_C):
+        alt = dict(spec, rds_on_hot_ratio=ratio)
+        saved = spec["rds_on_hot_ratio"]
+        try:
+            spec["rds_on_hot_ratio"] = ratio
+            return solve(amps, air_C)
+        finally:
+            spec["rds_on_hot_ratio"] = saved
+
+    _rule_amps = sustained_amps if sustained_amps is not None else design_amps
+    out["hot_ratio_sensitivity"] = dict(
+        declared_ratio=round(spec["rds_on_hot_ratio"], 6),
+        basis=spec["rds_on_hot_ratio_basis"],
+        at_no_temperature_coefficient=_with_ratio(1.0, _rule_amps, air_peak),
+        at_the_declared_ratio=ruling,
+        at_a_pessimistic_2x_ratio=_with_ratio(2.0, _rule_amps, air_peak),
+        the_ruling_case_survives_a_pessimistic_ratio=bool(
+            _with_ratio(2.0, _rule_amps, air_peak)["per_device"]["Q2"][
+                "worst_case_vgs_V"]
+            >= spec["rds_on_lowest_published_vgs_V"]),
+        measurement_of_record="C-BAT-GATE-01",
+        why="a DECLARED coefficient that the verdict depends on is an "
+            "assumption wearing a datasheet's clothes.  The ruling conclusion "
+            "is required to hold at 2x the declared ratio, which is well "
+            "beyond anything a trench MOSFET shows between 25 and 125 C.")
+
+    # ---- D-791 / D790-A01.  THE GATE DRIVE OVER THE WHOLE CELL RANGE.
+    # BAT_RAW moves from the pack's discharge cut-off to the charger's own
+    # regulation maximum, and the guaranteed drive is the LTC4368 row at or
+    # below it at every point in that range.  Printed rather than asserted.
+    out["bat_raw_sweep"] = [
+        dict(bat_raw_V=round(v, 3),
+             guaranteed_gate_drive_V=ltc4368_gate_drive_min_V(v, rows),
+             row_used_V=max([r for r in sorted(rows or LTC4368_GATE_DRIVE_ROWS_V)
+                             if r <= v] or [None]))
+        for v in (2.75, 3.0, 3.3, 3.6, 3.85, 4.0, 4.221)]
+    out["gate_drive_is_the_same_row_across_the_whole_cell_range"] = bool(
+        len({r["guaranteed_gate_drive_V"] for r in out["bat_raw_sweep"]}) == 1)
     # The VGS the part actually has to survive is the gate drive's own
     # MAXIMUM at zero current, bounded by the row AT OR ABOVE BAT_RAW's max.
     out["vgs_maximum_bound_V"] = drive_max
@@ -4360,6 +5073,496 @@ def judge_pass_pair_gate(design_amps, vin_min_V, spec=None, rows=None,
         and ruling["every_device_meets_a_published_conduction_row"]
         and out["vgs_maximum_is_inside_the_parts_rating"]
         and out["current_is_inside_the_parts_rating"])
+    return out["ok"], out
+
+
+# ==========================================================================
+# F12 -- THE COMPLETE CELL-TO-LOAD NETWORK.
+#
+# ADDED AT D-791 / D790-A03, and it is the clause every other battery-side
+# number in this file now hangs off.
+#
+# WHAT ROUND-10 FOUND.  F6 starts its model AT `BAT_PROTECTED_P`, which is
+# where the MAX17048 measures and where the firmware floors are defined, and
+# says so explicitly -- it does not double-count `Q2`/`Q3`, `R75` or the pack,
+# "all of which are UPSTREAM of what the gauge reads".  F10 prices the pass
+# pair separately, for a different question.  NEITHER OF THEM EVER ASKED
+# WHETHER AN ATTAINABLE CELL CAN HOLD THAT NODE AT THAT VOLTAGE WHILE THE
+# LOAD IS DRAWING, and the answer is that it cannot: sustaining 3.85 V at
+# `BAT_PROTECTED_P` at the modelled current needs more than 4.3 V upstream
+# through four 50 mOhm channels and `R75` alone, and the pack's charge
+# cut-off is 4.2 V.
+#
+# The consequence is not a rounding error.  The D-790 firmware floors -- 3.50 V
+# single, 3.85 V dual -- are node voltages that the node NEVER REACHES under
+# the published load, so the accessory rails this board publishes could be
+# enabled and would then be shed by the next settled recheck, on a FULL pack.
+# A derivation whose answer is unreachable is not a conservative derivation;
+# it is a vacuous one, and `firmware_floors_are_attainable` below is the
+# clause that makes that impossible to repeat.
+#
+# WHAT THE NETWORK IS, END TO END AND IN ONE PLACE:
+#
+#     CELL(OCV) -[pack DC resistance: cell + PCM]- pack terminals
+#               -[26 AWG harness, both conductors]- J4
+#               -[F1 element]- BAT_RAW
+#               -[Q2 ch1]-[Q2 ch2]-[Q3 ch1]-[Q3 ch2]- BAT_SENSE
+#               -[R75]- BAT_PROTECTED_P          <- the MAX17048 node
+#               -[live copper + BQ25185 BATFET]- SYS
+#               -[U12]-> +3V3 -> internal load + [U20] -> ACC_3V3_SW
+#               -[live SYS->L4 trunk]-[U21]-> ACC_5V_RAW -[U22]-> ACC_5V_SW
+#
+# and it is solved as ONE self-consistent fixed point: the channel resistance
+# sets the drops, the drops set the node and `VSYS`, those set the currents,
+# the currents set the dissipation, the dissipation sets the internal air, the
+# air moves the channel resistance again -- and `VGS` is re-checked against the
+# `AO4800`'s own lowest published conduction row at the converged current.
+#
+# THE LIMITS EVERY DECLARED STATE MUST CLEAR AT ONCE.  Not one of them is new;
+# what is new is that they are asked TOGETHER, at an attainable cell voltage:
+#
+#   1  a stable operating point exists at all (a constant-power load into a
+#      resistive source has none below a critical voltage, and D-790's
+#      declared reference state has none at ANY cell voltage);
+#   2  `BAT_PROTECTED_P` stays above the BQ25185's own `VBUVLO`, below which
+#      the BATFET disconnects and the product powers down;
+#   3  `VSYS` stays at or above `U12_VIN_FLOOR`, the condition TI states its
+#      2 A output capability at;
+#   4  the battery current stays under the `IBAT_OCP` margin convention, taken
+#      at the DECLARED WIDER accuracy band (D790-A10), not the one TI states
+#      at a single current and junction temperature;
+#   5  `VGS` on the worst pass-pair package stays at or above the `AO4800`'s
+#      lowest published `RDS(on)` row, so the conduction the model uses is a
+#      guaranteed number (D790-A01);
+#   6  the BQ25185 junction stays inside TI's operating maximum, referenced to
+#      the internal air of this enclosure rather than to open still air;
+#   7  the internal air stays inside the fitted pouch's published discharge
+#      window.
+#
+# WHAT IT COSTS, STATED PLAINLY.  D-790 published a sustained reference state
+# with BOTH radios transmitting and the audio amplifier at its capped level
+# beside both full accessory budgets.  That state has no operating point.  The
+# published accessory budgets are UNCHANGED -- 400 mA and 300 mA, exactly as
+# the owner approved -- and what D-791 corrects is the SIMULTANEITY OF
+# INTERNAL MAXIMA, which was never an owner decision and was derived from an
+# ideal-source formula.  The supported concurrency is DERIVED below, per
+# state, as the lowest cell open-circuit voltage each one holds at, and it is
+# expressed in OBSERVABLE MODES -- which radio is transmitting, whether the
+# amplifier is driving -- because a restriction a user cannot observe is not a
+# restriction (D790-A02).
+# ==========================================================================
+# The fitted pack, from its own specification sheet (archived under
+# vendor/BATTERY/ and hashed by `battery_pack_contract` B2).
+CELL = dict(
+    model="785060 2500 mAh (Adafruit 328)",
+    charge_cutoff_V=4.2,
+    discharge_cutoff_V=2.75,
+    nominal_V=3.75,
+    published_impedance_ohm=0.035,
+    published_impedance_condition="AC 1 kHz after 50 % charge, 25 C, at the "
+                                  "PACK terminals -- so it contains the cell "
+                                  "AND the protection board",
+    dc_multiplier=2.5,
+    dc_multiplier_basis=(
+        "DECLARED.  A 1 kHz AC impedance omits the diffusion component that a "
+        "DC load sees; 2.5x is a deliberately pessimistic carry for a 2.5 Ah "
+        "pouch and it REPLACES D-790's invented 40 mOhm PCM allowance, which "
+        "cited nothing.  It is MEASURED at first article alongside the rest "
+        "of the battery path (C-THERM-01 and the battery-path resistance "
+        "measurement)"),
+    source="785060 2500 mAh specification sheet section 3: nominal capacity "
+           "2500 mAh, nominal voltage 3.75 V, charge cut-off 4.2 V, discharge "
+           "cut-off 2.75 V, impedance <= 35 mOhm (AC 1 kHz after 50 % charge, "
+           "25 C), discharge working temperature 0..60 C.")
+CELL_MAX_OCV_V = 4.221      # BQ25185 VBATREG 4.2 V at its +0.5 % accuracy
+CELL_MAX_OCV_BASIS = (
+    "the charger's own regulation maximum, not the cell's nameplate: BQ25185 "
+    "VBATREG programmed to 4.2 V with the published +/-0.5 % accuracy.  This "
+    "is the highest open-circuit voltage the product can put on the pack.")
+# BQ25185 SLUSF65B EC: VBUVLO "Battery UVLO, VBAT falling" 3 V, with NO MIN or
+# MAX column, and VBUVLO_HYS 110/150/190 mV rising.  A typical used as a limit
+# is what D-789 and D-790 both refused, so the bound is DECLARED wider.
+BUVLO_TYP_V = 3.0
+BUVLO_DECLARED_TOLERANCE = 0.05
+BUVLO_BOUND_V = round(BUVLO_TYP_V * (1.0 + BUVLO_DECLARED_TOLERANCE), 6)
+BUVLO_SOURCE = (
+    "TI SLUSF65B Electrical Characteristics: VBUVLO 'Battery UVLO, VBAT "
+    "falling' = 3 V with no MIN/MAX column published, VBUVLO_HYS 110/150/190 "
+    "mV rising.  Below VBUVLO the device DISCONNECTS BAT from SYS, so this is "
+    "the hard floor on BAT_PROTECTED_P: under it the product powers down.  "
+    "A DECLARED +5 % is carried because TI publishes no tolerance and this "
+    "programme does not use a typical as a limit.")
+# MAX17048 ADI 19-6171 Rev.7 EC: VERR +/-7.5 mV/cell at VCELL = 3.6 V and
+# TA = +25 C, and +/-20 mV/cell otherwise.  D-791 / D790-A14: the POSITIVE
+# error is the one that matters -- a reported 3.850 V can be an actual
+# 3.830 V -- so every floor the firmware compares a REPORTED value against is
+# raised by it, plus one quantisation step.
+GAUGE_VERR_V = 0.020
+GAUGE_LSB_V = 78.125e-6
+GAUGE_ERROR_SOURCE = (
+    "ADI 19-6171 Rev.7 Electrical Characteristics, Voltage Error VERR: "
+    "-7.5/+7.5 mV/cell at VCELL = 3.6 V, TA = +25 C (Note 4) and -20/+20 "
+    "mV/cell over the specified range; VCELL resolution 78.125 uV/cell.  The "
+    "+20 mV end is charged to every floor because the reported value may be "
+    "that much ABOVE the real one.")
+# D-791 / D790-A10.  THE BATOCP BAND IS CONDITIONED AND THE CONDITION IS NOT
+# THIS DESIGN'S.
+#
+# SLUSF65B publishes `IBAT_OCP` as a TYPICAL 3.13 A at VBAT = 4 V with no
+# MIN/MAX column, and `IBAT_OCPACC` as 18 % MAX at IBAT = 3.125 A, TJ = 27 C.
+# D-790 propagated 3.125 x (1 -/+ 0.18) = 2.5625..3.6875 A as if it were a
+# guaranteed all-temperature, all-cell-voltage band.  It is not, and Round-10
+# is right to refuse it.  TI publishes nothing wider, so the honest form is an
+# EXPLICIT ASSUMPTION with a stated sensitivity:
+#
+#   * the STATED band is retained and reported, and the fault screens that
+#     have always used it keep using it, because widening a FAULT threshold
+#     band is not conservative in that direction -- a wider band also raises
+#     the maximum, and the fault clauses ask whether the protection fires
+#     BELOW the fuse and the copper;
+#   * the SUSTAINED envelope F12 rules on uses a DECLARED WIDER band, so a
+#     state is only called supported if it survives an OCP minimum well below
+#     the one TI states at its own single condition.
+IBAT_OCP_TYP_A = 3.125
+IBAT_OCP_STATED_ACCURACY = 0.18
+IBAT_OCP_ASSUMED_ACCURACY = 0.25
+IBAT_OCP_ASSUMED_MIN_A = round(IBAT_OCP_TYP_A * (1.0 - IBAT_OCP_ASSUMED_ACCURACY), 6)
+IBAT_OCP_CONDITION_SOURCE = (
+    "TI SLUSF65B Electrical Characteristics: IBAT_OCP 'BATOCP' typical "
+    "3.13 A at VBAT = 4 V, no MIN/MAX column; IBAT_OCPACC 'BATOCP accuracy' "
+    "18 % MAX at IBAT = 3.125 A, TJ = 27 C.  Section 6.3.7.3: on a BATOCP "
+    "trip the battery discharge FET turns off and the device enters HICCUP "
+    "mode, re-enabling after tREC_SC = 250 ms, with a 2 s retry window -- so "
+    "a BATOCP event is a total system interruption, not a graceful limit, and "
+    "is not an operating state.  The 25 % band this contract rules the "
+    "SUSTAINED envelope at is a DECLARED ASSUMPTION beyond TI's stated "
+    "condition and is measured at first article (C-BAT-GATE-01).")
+
+
+def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
+                       budget=None, ambient_C=None, pass_pair=None,
+                       ocp_min_A=None, margin=None):
+    """D-791 / D790-A03.  The whole network, cell to load, every declared state.
+
+    Pure over its arguments.  `paths_ohm` is the LIVE measured set
+    `judge_accessory_envelope` uses; the rail voltages and switch RONs are the
+    ones F6 derives, so the two clauses cannot describe different boards.
+    """
+    spec = PASS_PAIR if pass_pair is None else pass_pair
+    budget = PUBLISHED_RAIL_BUDGET_A if budget is None else budget
+    ambient_C = ara.AMBIENT_DESIGN_MAX_C if ambient_C is None else ambient_C
+    ocp_min_A = IBAT_OCP_ASSUMED_MIN_A if ocp_min_A is None else ocp_min_A
+    margin = NORMAL_OCP_MARGIN_MIN if margin is None else margin
+    i_limit = ocp_min_A * (1.0 - margin)
+
+    k_cu = 1.0 + CU_TC_PER_K * CU_HOT_RISE_K
+    r_bat = paths_ohm["bat_protected_p"] * k_cu + RON_BAT_MAX_OHM * RON_BAT_VBAT_ALLOWANCE
+    r_trunk = paths_ohm["sys_to_u21"] * k_cu
+    r_a3 = paths_ohm["acc_3v3_sw"] * k_cu + ron_a3_ohm
+    r_a5 = paths_ohm["acc_5v_sw"] * k_cu + ron_a5_ohm
+    pack_dc = CELL["published_impedance_ohm"] * CELL["dc_multiplier"]
+    up_fixed = (pack_dc + ara.UPSTREAM_LOSS["harness_ohm"]
+                + ara.UPSTREAM_LOSS["fuse_ohm"] + spec["sense_resistor_ohm"])
+    r25 = spec["rds_on_max_at_that_row_ohm"]
+    alpha = (spec["rds_on_hot_ratio"] - 1.0) / 100.0
+    drive = ltc4368_gate_drive_min_V(VBAT_CORNER)
+    r_sys_K = ara.system_thermal_resistance_K_per_W()
+    theta_ja = ara.PACKAGE_JUNCTION["theta_ja_C_per_W"]
+    ron_bat = RON_BAT_MAX_OHM * RON_BAT_VBAT_ALLOWANCE
+
+    def solve(cell_V, i3, i5, i_int):
+        """One self-consistent operating point, or None if there is none."""
+        p12 = ((i_int + i3) * v_3v3_V + i3 * i3 * r_a3) / ETA_U12
+        p21 = ((i5 * v_acc5v_V + i5 * i5 * r_a5) / ETA_U21) if i5 else 0.0
+        amps = (p12 + p21) / cell_V
+        r_ch, air = r25, ambient_C + 10.0
+        for _ in range(3000):
+            r_up = up_fixed + spec["channels_in_series"] * r_ch
+            vsys = cell_V - amps * (r_up + r_bat)
+            if vsys <= 0.5:
+                return None
+            if p21:
+                i_u21 = p21 / vsys
+                for _ in range(80):
+                    v_in = vsys - i_u21 * r_trunk
+                    if v_in <= 0.4:
+                        return None
+                    i_u21 = p21 / v_in
+                trunk_W = i_u21 * i_u21 * r_trunk
+            else:
+                trunk_W = 0.0
+            nxt = (p12 + p21 + trunk_W) / vsys
+            node = cell_V - nxt * r_up
+            p_int = (node * nxt - (i3 * v_3v3_V + i5 * v_acc5v_V)
+                     + nxt * nxt * r_up)
+            air_next = ambient_C + r_sys_K * p_int
+            tj_pp = air_next + 5.0 + spec["theta_jl_max_C_per_W"] * (
+                2 * nxt * nxt * r_ch)
+            r_next = r25 * (1.0 + alpha * (tj_pp - 25.0))
+            if (abs(nxt - amps) < 1e-11 and abs(r_next - r_ch) < 1e-13
+                    and abs(air_next - air) < 1e-9):
+                amps, r_ch, air = nxt, r_next, air_next
+                break
+            amps = 0.7 * amps + 0.3 * nxt
+            r_ch = 0.7 * r_ch + 0.3 * r_next
+            air = 0.7 * air + 0.3 * air_next
+        r_up = up_fixed + spec["channels_in_series"] * r_ch
+        node = cell_V - amps * r_up
+        vsys = cell_V - amps * (r_up + r_bat)
+        p_int = (node * amps - (i3 * v_3v3_V + i5 * v_acc5v_V)
+                 + amps * amps * r_up)
+        air = ambient_C + r_sys_K * p_int
+        tj_bq = air + theta_ja * (amps * amps * ron_bat)
+        tj_pp = air + 5.0 + spec["theta_jl_max_C_per_W"] * (2 * amps * amps * r_ch)
+        # Q2 is the package with THREE channels plus R75 between its common
+        # source and the LTC4368's VOUT, so it has the smaller VGS.
+        vgs = drive - amps * ((spec["channels_in_series"] - 1) * r_ch
+                              + spec["sense_resistor_ohm"])
+        return dict(
+            cell_V=round(cell_V, 6), amps=round(amps, 6),
+            node_V=round(node, 6), vsys_V=round(vsys, 6),
+            channel_ohm_hot=round(r_ch, 6),
+            upstream_series_ohm=round(r_up, 6),
+            internal_W=round(p_int, 6), internal_air_C=round(air, 3),
+            bq25185_junction_C=round(tj_bq, 3),
+            pass_pair_junction_C=round(tj_pp, 3),
+            worst_vgs_V=round(vgs, 6))
+
+    def limits(s):
+        if s is None:
+            return dict(has_an_operating_point=False)
+        return dict(
+            has_an_operating_point=True,
+            node_above_buvlo=bool(s["node_V"] >= BUVLO_BOUND_V),
+            vsys_above_u12_floor=bool(s["vsys_V"] >= U12_VIN_FLOOR),
+            inside_the_ocp_margin=bool(s["amps"] <= i_limit),
+            pass_pair_meets_its_conduction_row=bool(
+                s["worst_vgs_V"] >= spec["rds_on_lowest_published_vgs_V"]),
+            junction_inside_the_operating_maximum=bool(
+                s["bq25185_junction_C"]
+                <= ara.PACKAGE_JUNCTION["tj_operating_max_C"]),
+            air_inside_the_pouch_window=bool(
+                s["internal_air_C"] <= ara.POUCH_ADJACENT_LIMIT_C))
+
+    def supported(s):
+        v = limits(s)
+        return all(v.values())
+
+    def lowest_cell(i3, i5, i_int):
+        top = solve(CELL_MAX_OCV_V, i3, i5, i_int)
+        if not supported(top):
+            return None
+        lo, hi = CELL["discharge_cutoff_V"], CELL_MAX_OCV_V
+        for _ in range(60):
+            mid = 0.5 * (lo + hi)
+            if supported(solve(mid, i3, i5, i_int)):
+                hi = mid
+            else:
+                lo = mid
+        return hi
+
+    always = sum(ara.SUSTAINED_ALWAYS_ON.values()) + ara.BURSTY_TIME_AVERAGED_A
+    i3b, i5b = budget["ACC_3V3"], budget["ACC_5V"]
+    LOADS = (("both_rails", i3b, i5b), ("acc_3v3_only", i3b, 0.0),
+             ("acc_5v_only", 0.0, i5b), ("no_accessory", 0.0, 0.0))
+    states, worst_sag_first, worst_sag_second = [], 0.0, 0.0
+    for st in ara.SUSTAINED_STATES:
+        i_int = always + sum(ara.SUSTAINED_OPTIONAL[m] for m in st["modes"])
+        row = dict(key=st["key"], modes=list(st["modes"]), what=st["what"],
+                   internal_3v3_A=round(i_int, 6), loads={})
+        for name, i3, i5 in LOADS:
+            floor_cell = lowest_cell(i3, i5, i_int)
+            at_top = solve(CELL_MAX_OCV_V, i3, i5, i_int)
+            at_floor = solve(floor_cell, i3, i5, i_int) if floor_cell else None
+            row["loads"][name] = dict(
+                supported=bool(floor_cell is not None),
+                lowest_supported_cell_ocv_V=(round(floor_cell, 4)
+                                             if floor_cell else None),
+                at_the_lowest_supported_cell=at_floor,
+                at_a_full_cell=at_top,
+                limits_at_the_lowest_supported_cell=limits(at_floor),
+                limits_at_a_full_cell=limits(at_top),
+                binding_limit_at_the_floor=sorted(
+                    k for k, v in limits(at_floor).items() if v is False)
+                or (["none -- the cell's own discharge cut-off"]
+                    if floor_cell and floor_cell
+                    <= CELL["discharge_cutoff_V"] + 1e-6 else []))
+        states.append(row)
+        # THE LOAD STEP, WHICH IS WHAT AN *ENABLE* PERMISSION HAS TO ANTICIPATE.
+        # D-779 made the point and D-790 never quantified it: the permission is
+        # taken BEFORE the rail's load exists, so a floor compared against the
+        # UNLOADED node authorises a state the LOADED node will not sustain.
+        cell = BUVLO_BOUND_V
+        while cell <= CELL_MAX_OCV_V + 1e-9:
+            none_s = solve(cell, 0.0, 0.0, i_int)
+            a3_s = solve(cell, i3b, 0.0, i_int)
+            both_s = solve(cell, i3b, i5b, i_int)
+            if none_s and a3_s and supported(a3_s):
+                worst_sag_first = max(worst_sag_first,
+                                      none_s["node_V"] - a3_s["node_V"])
+            if a3_s and both_s and supported(both_s):
+                worst_sag_second = max(worst_sag_second,
+                                       a3_s["node_V"] - both_s["node_V"])
+            cell += 0.02
+
+    def grid_up(v):
+        return math.ceil(v / FLOOR_GRID_V - 1e-9) * FLOOR_GRID_V
+
+    gauge = GAUGE_VERR_V + GAUGE_LSB_V
+    retention = BUVLO_BOUND_V + gauge
+    enable_first = BUVLO_BOUND_V + worst_sag_first + gauge
+    enable_second = BUVLO_BOUND_V + worst_sag_second + gauge
+    derived = dict(
+        retention_floor_V=round(retention, 6),
+        retention_floor_gridded_V=round(grid_up(retention), 4),
+        enable_first_rail_floor_V=round(enable_first, 6),
+        enable_first_rail_floor_gridded_V=round(grid_up(enable_first), 4),
+        enable_second_rail_floor_V=round(enable_second, 6),
+        enable_second_rail_floor_gridded_V=round(grid_up(enable_second), 4),
+        worst_first_rail_node_step_V=round(worst_sag_first, 6),
+        worst_second_rail_node_step_V=round(worst_sag_second, 6),
+        gauge_error_charged_V=round(gauge, 6),
+        gauge_error_source=GAUGE_ERROR_SOURCE,
+        method=(
+            "RETENTION is the hard node floor: the BQ25185's own VBUVLO bound, "
+            "below which the BATFET disconnects and the product powers down, "
+            "plus the MAX17048's positive voltage error and one quantisation "
+            "step, because the firmware compares a REPORTED value.  ENABLE is "
+            "that floor PLUS THE NODE STEP THE NEW LOAD WILL CAUSE, worst case "
+            "over every declared state and every cell voltage -- D-779 named "
+            "the problem ('the permission was taken before the load existed') "
+            "and D-790 never quantified it, so its 3.85 V dual floor both "
+            "failed to anticipate the step AND sat above the node's attainable "
+            "range.  The shed order is unchanged: the 5 V rail goes first, "
+            "which restores the node by the second-rail step."))
+
+    ref_key = ara.SUSTAINED_REFERENCE_KEY
+    ref = next((s for s in states if s["key"] == ref_key), None)
+    # ---- D-791 / D790-A02.  THE CHARGE REGIME, AT THIS STATE'S OWN POWER ----
+    # D-790 said the charge regime "needs no bound, by design".  TREG folds
+    # back the CHARGE current and nothing else; the SYSTEM load crosses the
+    # same package through the input FET, and once it exceeds the input limit
+    # the battery SUPPLEMENTS through the BATFET as well.  Evaluated at the
+    # reference state's own load power -- not at its discharge CURRENT, which
+    # would be the wrong frame because SYS is regulated near 4.5 V while an
+    # adapter is attached.
+    ref_i_int = (ref or {}).get("internal_3v3_A", 0.0)
+    charge_system_W = ((ref_i_int + i3b) * v_3v3_V / ETA_U12
+                       + i5b * v_acc5v_V / ETA_U21)
+    charge_split = ara.charge_regime_junction(
+        charge_system_W, ambient_C=ambient_C,
+        delivered_out_W=i3b * v_3v3_V + i5b * v_acc5v_V)
+    out = dict(
+        cell=dict(CELL), cell_max_ocv_V=CELL_MAX_OCV_V,
+        cell_max_ocv_basis=CELL_MAX_OCV_BASIS,
+        buvlo_bound_V=BUVLO_BOUND_V, buvlo_typ_V=BUVLO_TYP_V,
+        buvlo_declared_tolerance=BUVLO_DECLARED_TOLERANCE,
+        buvlo_source=BUVLO_SOURCE,
+        u12_vin_floor_V=U12_VIN_FLOOR,
+        ocp_stated_band_A=[round(IBAT_OCP_TYP_A * (1 - IBAT_OCP_STATED_ACCURACY), 6),
+                           IBAT_OCP_TYP_A,
+                           round(IBAT_OCP_TYP_A * (1 + IBAT_OCP_STATED_ACCURACY), 6)],
+        ocp_assumed_accuracy=IBAT_OCP_ASSUMED_ACCURACY,
+        ocp_assumed_min_A=ocp_min_A,
+        ocp_margin=margin, ocp_current_limit_A=round(i_limit, 6),
+        ocp_condition_source=IBAT_OCP_CONDITION_SOURCE,
+        upstream=dict(
+            pack_dc_ohm=round(pack_dc, 6),
+            harness_ohm=ara.UPSTREAM_LOSS["harness_ohm"],
+            fuse_ohm=ara.UPSTREAM_LOSS["fuse_ohm"],
+            sense_ohm=spec["sense_resistor_ohm"],
+            pass_pair_channels=spec["channels_in_series"],
+            fixed_series_ohm=round(up_fixed, 6),
+            what="everything between the cell's own electromotive force and "
+                 "BAT_PROTECTED_P; all of it dissipates INSIDE the enclosure"),
+        downstream=dict(
+            bat_protected_p_to_sys_ohm=round(r_bat, 6),
+            sys_to_u21_trunk_ohm=round(r_trunk, 6),
+            acc_3v3_series_ohm=round(r_a3, 6),
+            acc_5v_series_ohm=round(r_a5, 6),
+            v_3v3_V=round(v_3v3_V, 6), v_acc5v_V=round(v_acc5v_V, 6)),
+        ambient_C=ambient_C,
+        always_on_internal_A=round(always, 6),
+        bursty_allowances=[dict(b) for b in ara.BURSTY_ALLOWANCES],
+        bursty_time_averaged_A=ara.BURSTY_TIME_AVERAGED_A,
+        states=states,
+        derived_floors=derived,
+        reference_state_key=ref_key,
+        reference_state=ref,
+        charge_regime=charge_split)
+    # ---- the clauses ----------------------------------------------------
+    out["the_reference_state_is_supported_on_every_published_load"] = bool(
+        ref and all(ref["loads"][n]["supported"] for n, _, _ in LOADS))
+    out["published_accessory_budgets_are_unchanged"] = bool(
+        abs(i3b - 0.400) < 1e-12 and abs(i5b - 0.300) < 1e-12)
+    # THE ANTI-VACUITY CLAUSE.  A floor the node cannot reach authorises
+    # nothing and refuses everything, which is what D790-A03 found.
+    top_none = solve(CELL_MAX_OCV_V, 0.0, 0.0,
+                     always + sum(ara.SUSTAINED_OPTIONAL[m]
+                                  for m in (ref or {"modes": []})["modes"]))
+    top_a3 = solve(CELL_MAX_OCV_V, i3b, 0.0,
+                   always + sum(ara.SUSTAINED_OPTIONAL[m]
+                                for m in (ref or {"modes": []})["modes"]))
+    top_both = solve(CELL_MAX_OCV_V, i3b, i5b,
+                     always + sum(ara.SUSTAINED_OPTIONAL[m]
+                                  for m in (ref or {"modes": []})["modes"]))
+    out["firmware_floors_are_attainable"] = dict(
+        why="a floor above the node's own attainable range can never be "
+            "cleared, so it authorises nothing and sheds everything -- on a "
+            "FULL pack.  D-790's 3.85 V dual floor was such a number and no "
+            "clause could see it.  Each floor is compared with the node the "
+            "network actually produces in the state that floor governs, at "
+            "the highest open-circuit voltage the charger can put on the pack.",
+        reference_state=ref_key,
+        node_unloaded_at_a_full_cell_V=(top_none or {}).get("node_V"),
+        node_with_the_first_rail_at_a_full_cell_V=(top_a3 or {}).get("node_V"),
+        node_with_both_rails_at_a_full_cell_V=(top_both or {}).get("node_V"),
+        enable_first_rail_floor_V=derived["enable_first_rail_floor_gridded_V"],
+        enable_second_rail_floor_V=derived["enable_second_rail_floor_gridded_V"],
+        retention_floor_V=derived["retention_floor_gridded_V"],
+        ok=bool(top_none and top_a3 and top_both
+                and top_none["node_V"]
+                >= derived["enable_first_rail_floor_gridded_V"]
+                and top_a3["node_V"]
+                >= derived["enable_second_rail_floor_gridded_V"]
+                and top_both["node_V"]
+                >= derived["retention_floor_gridded_V"]))
+    out["firmware_floors_are_attainable_ok"] = bool(
+        out["firmware_floors_are_attainable"]["ok"])
+    # AND THE NEGATIVE CONTROL: D-790's own declared state must be REFUSED,
+    # so this clause cannot go quiet the way the one it replaces did.
+    d790 = next((s for s in states if s["key"] == "d790_declared"), None)
+    out["the_d790_declared_state_is_refused"] = dict(
+        state=(d790 or {}).get("what"),
+        internal_3v3_A=(d790 or {}).get("internal_3v3_A"),
+        both_rails_supported=bool(
+            d790 and d790["loads"]["both_rails"]["supported"]),
+        why="D-790 published this as the sustained reference state and "
+            "computed 1.70 A for it from an ideal-source formula.  Solved "
+            "through the real network it has no operating point with both "
+            "published accessory budgets at any attainable cell voltage.  If "
+            "a future change ever makes it supportable this clause will say "
+            "so rather than silently passing.",
+        ok=bool(d790 and not d790["loads"]["both_rails"]["supported"]))
+    out["the_d790_declared_state_is_refused_ok"] = bool(
+        out["the_d790_declared_state_is_refused"]["ok"])
+    # THE CHARGE REGIME IS A CLAUSE, NOT A PARAGRAPH.  What TREG cannot reduce
+    # must be inside TI's operating maximum, and the ambient at which the
+    # internal air reaches the pouch's own CHARGE window must be DERIVED and
+    # positive -- a supervised condition a human can observe, which is what
+    # D790-A02 asks a declared restriction to be.
+    out["the_charge_regime_is_bounded_in_the_half_treg_cannot_reach"] = dict(
+        charge_split,
+        ok=bool(charge_split["the_unregulated_half_is_inside_the_operating_maximum"]
+                and charge_split["charge_ambient_ceiling_C"] > 0.0))
+    out["the_charge_regime_is_bounded_in_the_half_treg_cannot_reach_ok"] = bool(
+        out["the_charge_regime_is_bounded_in_the_half_treg_cannot_reach"]["ok"])
+    out["ok"] = bool(
+        out["the_charge_regime_is_bounded_in_the_half_treg_cannot_reach_ok"]
+        and out["the_reference_state_is_supported_on_every_published_load"]
+        and out["published_accessory_budgets_are_unchanged"]
+        and out["firmware_floors_are_attainable_ok"]
+        and out["the_d790_declared_state_is_refused_ok"])
     return out["ok"], out
 
 
@@ -4413,9 +5616,34 @@ TRANSIENT_REQUIRED_TOKENS = (
     "The uncertainty always makes the reading WORSE, never better.",
     "DC-COUPLED, preferred",
     "SYNCHRONISED DC BASELINE + AC DETAIL",
-    "3.85 V** dual-rail floor",
-    "3.50 V** single-rail",
 )
+
+
+# R10-N05, FOUND AT THE D-791 CLOSEOUT -- AND IT IS WHY R10-N04 SURVIVED.
+#
+# This tuple used to end with two more entries, TYPED OUT AS LITERAL STRINGS:
+#
+#     "3.85 V** dual-rail floor",
+#     "3.50 V** single-rail",
+#
+# D-789 added them for a good reason -- `f11g` exists so the accessory step
+# cannot be rewritten to a pack voltage where the release image refuses the
+# rail -- and they were correct on the day they were written.  Then D-791 /
+# `D790-A03` moved the floors, and a control aimed by hand at a DERIVED number
+# turned into a gate that REQUIRED THE RETIRED NUMBER TO STAY IN THE DOCUMENT.
+# Correcting the procedure made F11 fail; leaving F11 alone made the procedure
+# wrong.  That is not a stale string, it is a gate holding a defect in place,
+# and it is the reason `R10-N04`'s text could not simply be fixed.
+#
+# The tokens are now FORMATTED FROM THE SAME DERIVATION F12 solves, so the
+# procedure and the gate move together and neither can pin the other.
+def transient_floor_tokens(floors):
+    """The three floor phrases the accessory step must carry, DERIVED."""
+    return (
+        "%.2f V** retention floor" % floors["retention"],
+        "%.2f V** single-rail floor" % floors["single"],
+        "%.2f V** dual-rail floor" % floors["dual"],
+    )
 TRANSIENT_REFUSED_TOKENS = (
     "measured value MINUS the\nstated measurement uncertainty on the high "
     "side and PLUS it on the low side",
@@ -4433,8 +5661,14 @@ def judge_transient(kind, measured_V, uncertainty_V, spec=None):
     return bool(judged > spec["floor_V"]), judged, spec["floor_V"]
 
 
-def judge_transient_procedure(text, spec=None):
-    """The document and the rule must agree, and the old sign must be gone."""
+def judge_transient_procedure(text, spec=None, floors=None):
+    """The document and the rule must agree, and the old sign must be gone.
+
+    `floors` carries the three DERIVED accessory floors (R10-N05).  It has no
+    default: a missing mapping REFUSES rather than silently dropping the floor
+    tokens, because a control that quietly checks less is the failure mode this
+    very clause was found in.
+    """
     spec = TRANSIENT if spec is None else spec
     rows, ok = [], True
     for ex in spec["examples"]:
@@ -4448,7 +5682,9 @@ def judge_transient_procedure(text, spec=None):
         rows.append(dict(ex, judged_V=round(judged, 6), limit_V=limit,
                          rule_says_ok=verdict, agrees_with_the_table=agrees,
                          judged_value_is_printed=printed))
-    missing = [x for x in TRANSIENT_REQUIRED_TOKENS if x not in text]
+    floor_tokens = transient_floor_tokens(floors) if floors else ()
+    required = tuple(TRANSIENT_REQUIRED_TOKENS) + floor_tokens
+    missing = [x for x in required if x not in text]
     survived = [x for x in TRANSIENT_REFUSED_TOKENS if x in text]
     return dict(
         document="docs/full-beta-v2/assembly/FIRST_FIVE_ASSEMBLY_PLAN.md",
@@ -4458,9 +5694,11 @@ def judge_transient_procedure(text, spec=None):
         rule=("peak + uncertainty < ceiling; trough - uncertainty > floor.  "
               "D-788's sentence had both signs inverted."),
         worked_examples=rows,
+        accessory_floor_tokens=list(floor_tokens),
+        accessory_floors_were_supplied=bool(floors),
         missing_required_tokens=missing,
         retired_wording_survived=survived,
-        ok=bool(ok and not missing and not survived and text))
+        ok=bool(ok and not missing and not survived and text and floors))
 
 
 def main():
@@ -4767,8 +6005,11 @@ def main():
     policy_text = POWER_POLICY.read_text(encoding="utf-8") if POWER_POLICY.exists() else ""
     sm = re.search(r"kAccessorySingleRailFloorV\s*=\s*([0-9.]+)f", policy_text)
     dm = re.search(r"kAccessoryDualRailFloorV\s*=\s*([0-9.]+)f", policy_text)
+    rm = re.search(r"kAccessoryRetentionFloorV\s*=\s*([0-9.]+)f", policy_text)
     policy_single = float(sm.group(1)) if sm else float("nan")
     policy_dual = float(dm.group(1)) if dm else float("nan")
+    # D-791 / D790-A03: the THIRD constant, and the one retention is judged at.
+    policy_retention = float(rm.group(1)) if rm else float("nan")
     # D-781: the rated battery harness removes the old internal-feature reserve.
     policy_ceiling = None
 
@@ -4817,17 +6058,262 @@ def main():
 
     env_ok, env = judge_accessory_envelope(
         values, single_floor=policy_single, dual_floor=policy_dual,
+        retention_floor=policy_retention,
         live_ohms=live_ohms, mpns=divider_mpns)
     env["normal_operation"]["firmware_policy_file"] = str(
         POWER_POLICY.relative_to(ROOT)) if POWER_POLICY.exists() else None
     env["normal_operation"]["measurement_contacts"] = measurement_nets
     env["normal_operation"]["measurement_point_is_bat_protected_p"] = measurement_ok
     env["normal_operation"]["firmware_policy_parsed"] = (
-        math.isfinite(policy_single) and math.isfinite(policy_dual))
+        math.isfinite(policy_single) and math.isfinite(policy_dual)
+        and math.isfinite(policy_retention))
     env["battery_connection"]["internal_feature_reserve"] = "not required by D-781 rated harness"
     env["normal_operation"]["live_paths_measured_off_the_board"] = True
     env_ok = (env_ok and measurement_ok
-              and math.isfinite(policy_single) and math.isfinite(policy_dual))
+              and math.isfinite(policy_single) and math.isfinite(policy_dual)
+              and math.isfinite(policy_retention))
+
+    # ---- F12: THE COMPLETE CELL-TO-LOAD NETWORK (D-791 / D790-A03) --------
+    # Solved with the SAME live path resistances, the SAME derived rail
+    # voltages and the SAME switch RONs F6 just used, so the two clauses
+    # cannot describe different boards.
+    _no = env["normal_operation"]
+    cell_net_ok, cell_net = judge_cell_to_load(
+        live_ohms, _no["v_3v3_used_V"], _no["v_acc5v_used_V"],
+        _no["accessory_switch_ron_ohm"]["ACC_3V3"],
+        _no["accessory_switch_ron_ohm"]["ACC_5V"])
+    cell_net["firmware_policy"] = dict(
+        file=str(POWER_POLICY.relative_to(ROOT)) if POWER_POLICY.exists() else None,
+        retention_floor_V=policy_retention,
+        enable_first_rail_floor_V=policy_single,
+        enable_second_rail_floor_V=policy_dual)
+    df = cell_net["derived_floors"]
+    cell_net["firmware_constants_equal_the_derivation"] = dict(
+        retention=dict(firmware=policy_retention,
+                       derived=df["retention_floor_gridded_V"]),
+        enable_first=dict(firmware=policy_single,
+                          derived=df["enable_first_rail_floor_gridded_V"]),
+        enable_second=dict(firmware=policy_dual,
+                           derived=df["enable_second_rail_floor_gridded_V"]),
+        why="EQUAL, not merely at-or-above.  A floor ABOVE the derivation is "
+            "not automatically safe here: D790-A03's whole finding is that an "
+            "unreachably high floor sheds a rail the product publishes, on a "
+            "full pack.  Too high and too low are both defects, so the gate "
+            "pins the constant to the number it derives.",
+        ok=bool(policy_retention == df["retention_floor_gridded_V"]
+                and policy_single == df["enable_first_rail_floor_gridded_V"]
+                and policy_dual == df["enable_second_rail_floor_gridded_V"]))
+    cell_net["firmware_constants_equal_the_derivation_ok"] = bool(
+        cell_net["firmware_constants_equal_the_derivation"]["ok"])
+    # ---- D-791 / D790-A08.  THE DERIVED POLICY MUST BE PRINTED WHERE A
+    # HUMAN READS IT, AND IT MUST BE THE SAME NUMBER.
+    #
+    # The rule R7-N04 applied to the Community-Port figures and D-789 / R8-N06
+    # applied to the backlight hold: a contract that only lives in a gate is
+    # not published, and one that only lives in a document is not proven.  The
+    # three floors, the reference state and every state's derived cell floor
+    # are FORMATTED FROM THE COMPUTED VALUES, so a derivation that moves drags
+    # the document with it.
+    _spec_txt = (DEVICE_SPEC.read_text(encoding="utf-8", errors="replace")
+                 if DEVICE_SPEC.exists() else "")
+    charge_split = cell_net["charge_regime"]
+    _need = {
+        "retention_floor": "**%.2f V**" % df["retention_floor_gridded_V"],
+        "enable_first_rail_floor": "**%.2f V**"
+                                   % df["enable_first_rail_floor_gridded_V"],
+        "enable_second_rail_floor": "**%.2f V**"
+                                    % df["enable_second_rail_floor_gridded_V"],
+        "first_rail_node_step": "**%.4f V**"
+                                % df["worst_first_rail_node_step_V"],
+        "second_rail_node_step": "**%.4f V**"
+                                 % df["worst_second_rail_node_step_V"],
+        "reference_state": "`%s`" % cell_net["reference_state_key"],
+    }
+    _need["charge_ambient_ceiling"] = "**%.1f \u00b0C**" % charge_split[
+        "charge_ambient_ceiling_C"]
+    _need["charge_junction_folded_back"] = "**%.1f \u00b0C**" % charge_split[
+        "junction_with_charge_folded_back_C"]
+    for _st in cell_net["states"]:
+        _b = _st["loads"]["both_rails"]
+        _need["cell_floor_" + _st["key"]] = (
+            "**%.3f V**" % _b["lowest_supported_cell_ocv_V"]
+            if _b["supported"] else "**not supported**")
+    _missing = sorted(k for k, t in _need.items() if t not in _spec_txt)
+    cell_net["published_policy_is_printed_in_device_spec"] = dict(
+        document=str(DEVICE_SPEC.relative_to(ROOT)),
+        required=_need, missing=_missing,
+        ok=bool(_spec_txt) and not _missing,
+        method="R7-N04's rule, applied to the VCELL policy and the supported "
+               "concurrency table: every floor, every node step, the reference "
+               "state's NAME and each state's derived cell floor must appear "
+               "in the product-facing document, formatted from the computed "
+               "values.  D-790's 3.50/3.85 V pair sat in this document while "
+               "the node could not reach it, and no clause could see that.")
+    cell_net["published_policy_is_printed_in_device_spec_ok"] = bool(
+        cell_net["published_policy_is_printed_in_device_spec"]["ok"])
+    cell_net_ok = cell_net_ok and cell_net[
+        "published_policy_is_printed_in_device_spec_ok"]
+    cell_net_ok = cell_net_ok and cell_net["firmware_constants_equal_the_derivation_ok"]
+
+    # ---- R10-N04, FOUND AT THE D-791 CLOSEOUT.  THE PROCEDURE A TECHNICIAN
+    # ACTUALLY EXECUTES QUOTES THESE FLOORS TOO, AND NOTHING READ IT.
+    #
+    # The clause above closed D790-A08's shape for DEVICE_SPEC: the floors are
+    # formatted from the computed values, so a derivation that moves drags the
+    # product-facing document with it.  It reaches exactly ONE file.  D-791
+    # moved the pair 3.50/3.85 V to the triple 3.20/3.55/3.65 V and
+    # `FIRST_FIVE_ASSEMBLY_PLAN` §7b -- the `C-PWR-TRANSIENT-01` accessory
+    # step, which CHOOSES ITS TEST VOLTAGES FROM THESE FLOORS -- still named
+    # the retired pair.  That is worse than a stale sentence: the bench points
+    # were selected to sit above floors that no longer exist, so the procedure
+    # sent a technician to take acceptance data at a pack voltage where the
+    # release image's permission is no longer what the text claims.  It is the
+    # SAME defect D-789/D788-18 already fixed once in this very section, and
+    # a floor change reintroduced it because no gate was reading the file.
+    #
+    # THE CHECK IS DERIVED IN BOTH DIRECTIONS, which is the only form that
+    # survives the next move of the derivation:
+    #   * PRESENCE -- all three gridded floors must appear, formatted from the
+    #     computed values;
+    #   * CONTRADICTION -- an UNFENCED line that talks about an ACCESSORY or
+    #     RAIL or RETENTION floor may not quote a `N.NN V` value that is not
+    #     one of the three.  A fenced line may: a procedure must be able to
+    #     record what the floor used to be and why the step moved;
+    #   * COMPLETENESS -- the paragraph that forbids relaxing the floors must
+    #     name ALL THREE constants.  It named two, and D-791 added the third,
+    #     so the constant that decides RETENTION -- the one R10-N01 is about --
+    #     was the one the prohibition did not cover.
+    _fa_txt = (FIRST_FIVE_ASSEMBLY.read_text(encoding="utf-8", errors="replace")
+               if FIRST_FIVE_ASSEMBLY.exists() else "")
+    _fa_floors = {
+        "retention_floor": df["retention_floor_gridded_V"],
+        "enable_first_rail_floor": df["enable_first_rail_floor_gridded_V"],
+        "enable_second_rail_floor": df["enable_second_rail_floor_gridded_V"],
+    }
+    _fa_allowed = {"%.2f" % v for v in _fa_floors.values()}
+    _fa_need = {k: "%.2f V" % v for k, v in _fa_floors.items()}
+    _fa_absent = sorted(k for k, t in _fa_need.items() if t not in _fa_txt)
+    # A DECISION NUMBER IS NOT A SUPERSESSION MARKER.  The first draft of this
+    # clause carried "D-788"/"D-789"/"D-790" as fences and they silently
+    # exempted the worst sentence in the file -- "the derived VCELL policy is
+    # 3.50 V single-rail and 3.85 V dual-rail", which states the CURRENT policy
+    # and states it wrongly, inside a paragraph that merely CITES D-788.  Only
+    # words that actually mark text as no-longer-true may fence it.
+    # ...AND NEITHER IS THE WORD "was".  The second draft fenced on "was " and
+    # that exempted the same sentence a second time, through "the accessory
+    # step WAS WRITTEN to run at..." -- ordinary narration, not a supersession
+    # marker.  The fence must be a word whose only job is to mark text as
+    # no-longer-true, so the prose that records history has to say so.
+    _FA_FENCE = ("SUPERSEDE", "supersede", "HISTORICAL", "historical",
+                 "RETIRED", "retired", "no longer", "formerly",
+                 "REPLACED", "replaced", "used to", "until D-", "before D-")
+    # THE NUMBER IS BOUND TO THE CLAIM, NOT TO THE LINE.  Two things make a
+    # line scan the wrong instrument here.  This document HARD-WRAPS, so "the
+    # **3.50 V** single-rail / floor" straddles two lines and a per-line scan
+    # reads neither half; and a legitimate step sentence quotes BENCH
+    # setpoints (4.15 V, 3.75 V, 3.60 V) beside the floors, so "every voltage
+    # in a floor sentence must be a floor" would refuse correct text.  What is
+    # policed is therefore the ASSERTION `<value> is the <which> floor`, in
+    # either word order, over whitespace-normalised SENTENCES.
+    _FA_WHICH = r"(?:single-rail|dual-rail|retention)"
+    _FA_CLAIMS = (
+        re.compile(r"(\d\.\d{2})\s*V\**[^.]{0,40}?" + _FA_WHICH
+                   + r"(?:-rail)?\s*floor", re.I),
+        re.compile(r"(\d\.\d{2})\s*V\**\s*(?:single-rail|dual-rail)\b", re.I),
+        re.compile(_FA_WHICH + r"(?:-rail)?\s*floor[^.]{0,40}?(\d\.\d{2})\s*V",
+                   re.I),
+    )
+    _fa_flat = re.sub(r"\s+", " ", _fa_txt)
+    _fa_contradictions = []
+    for _sent in re.split(r"(?<=[.;:])\s+", _fa_flat):
+        if any(f in _sent for f in _FA_FENCE):
+            continue
+        _hit = sorted({_tok for _rx in _FA_CLAIMS for _tok in _rx.findall(_sent)
+                       if _tok not in _fa_allowed})
+        for _tok in _hit:
+            _fa_contradictions.append(dict(
+                quoted="%s V" % _tok, sentence=_sent.strip()[:200]))
+    _FA_CONSTANTS = ("kAccessoryRetentionFloorV", "kAccessorySingleRailFloorV",
+                     "kAccessoryDualRailFloorV")
+    _fa_unnamed = [c for c in _FA_CONSTANTS if c not in _fa_txt]
+    cell_net["published_policy_is_consistent_in_the_first_article_procedure"] = dict(
+        document=str(FIRST_FIVE_ASSEMBLY.relative_to(ROOT)),
+        required=_fa_need, absent=_fa_absent,
+        contradictions=_fa_contradictions,
+        protected_constants=list(_FA_CONSTANTS), constants_not_named=_fa_unnamed,
+        fence_tokens=list(_FA_FENCE),
+        claim_patterns=[r.pattern for r in _FA_CLAIMS],
+        ok=bool(_fa_txt) and not _fa_absent and not _fa_contradictions
+           and not _fa_unnamed,
+        method="R10-N04.  The first-article procedure SELECTS ITS BENCH "
+               "VOLTAGES FROM THESE FLOORS, so a floor that moves without it "
+               "sends a technician to a pack voltage where the release image's "
+               "permission is not what the step claims.  All three gridded "
+               "floors must be PRESENT, formatted from the computed values; no "
+               "UNFENCED line about an accessory/rail/retention floor may "
+               "quote a different one; and the paragraph forbidding a relaxed "
+               "build must name all three constants, including the retention "
+               "constant D-791 added.")
+    cell_net["published_policy_is_consistent_in_the_first_article_procedure_ok"] = bool(
+        cell_net["published_policy_is_consistent_in_the_first_article_procedure"]["ok"])
+    cell_net_ok = cell_net_ok and cell_net[
+        "published_policy_is_consistent_in_the_first_article_procedure_ok"]
+
+    # ---- F12's own controls.  Every one of them has to REFUSE. -----------
+    def _cell(**over):
+        return judge_cell_to_load(
+            over.pop("paths", live_ohms),
+            over.pop("v3", _no["v_3v3_used_V"]),
+            over.pop("v5", _no["v_acc5v_used_V"]),
+            over.pop("ron3", _no["accessory_switch_ron_ohm"]["ACC_3V3"]),
+            over.pop("ron5", _no["accessory_switch_ron_ohm"]["ACC_5V"]),
+            **over)
+
+    _better_pair = dict(PASS_PAIR, rds_on_max_at_that_row_ohm=0.008,
+                        rds_on_lowest_published_vgs_V=1.8)
+    _worse_pair = dict(PASS_PAIR, rds_on_max_at_that_row_ohm=0.200)
+    cell_net_controls = dict(
+        # THE LOAD-BEARING ONE.  The refusal of D-790's declared state must be
+        # a property of the PHYSICS, not a hard-coded verdict: give the board a
+        # pass pair an order of magnitude better and the same state becomes
+        # supportable, which proves the clause is measuring something.
+        f12a_the_d790_refusal_is_physics_not_a_hard_coded_verdict=bool(
+            not _cell(pass_pair=_better_pair)[1][
+                "the_d790_declared_state_is_refused_ok"]),
+        # ...and a materially worse pass pair must take the REFERENCE state
+        # down with it.
+        f12b_refuses_a_pass_pair_that_cannot_carry_the_reference_state=bool(
+            not _cell(pass_pair=_worse_pair)[0]),
+        # ...and a BATOCP band at TI's stated 18 % rather than the declared
+        # wider one must CHANGE the answer somewhere, or the assumption is
+        # decorative.
+        f12c_the_declared_wider_ocp_band_is_load_bearing=bool(
+            _cell(ocp_min_A=IBAT_OCP_TYP_A * (1 - IBAT_OCP_STATED_ACCURACY))[1][
+                "states"] != cell_net["states"]),
+        # ...and a floor the node cannot reach must be caught.  Doubling the
+        # upstream copper drops the node without changing the floors' basis.
+        f12d_refuses_an_unattainable_floor=bool(
+            not _cell(paths=dict(live_ohms,
+                                 bat_protected_p=live_ohms[
+                                     "bat_protected_p"] * 8.0))[0]),
+        # ...and the firmware constants must be PINNED, not merely bounded.
+        f12e_refuses_a_firmware_floor_above_the_derivation=bool(
+            policy_dual + FLOOR_GRID_V != df["enable_second_rail_floor_gridded_V"]),
+        f12f_refuses_a_firmware_floor_below_the_derivation=bool(
+            policy_retention - FLOOR_GRID_V != df["retention_floor_gridded_V"]),
+        # ...and the gauge error must be CHARGED: a floor derived without it
+        # would sit exactly on the BUVLO bound.
+        f12g_the_gauge_error_is_charged_to_every_floor=bool(
+            df["retention_floor_V"] > BUVLO_BOUND_V
+            and abs(df["retention_floor_V"] - BUVLO_BOUND_V
+                    - GAUGE_VERR_V - GAUGE_LSB_V) < 1e-6),
+        # ...and each ENABLE floor must genuinely anticipate its own rail's
+        # node step rather than collapsing onto the retention floor.
+        f12h_each_enable_floor_anticipates_its_own_rail_step=bool(
+            df["worst_first_rail_node_step_V"] > 0.05
+            and df["worst_second_rail_node_step_V"]
+            > df["worst_first_rail_node_step_V"]))
+    cell_net_ok = cell_net_ok and all(cell_net_controls.values())
 
     # ---- D-787 / R6-E07: THE AMPACITY AUDIT'S DESIGN CURRENTS ARE A COPY --
     # `audit_rail_ampacity.RAILS` states a design current per rail with a cited
@@ -5107,13 +6593,27 @@ def main():
         rows={str(k): list(v) for k, v in sorted(ILIM_ACCURACY_ROWS.items())},
         per_rail={k: dict(r_ohms=v["r_ohms"],
                           bracket_rows=v["accuracy_bracket_rows"],
-                          lo=v["accuracy_lo"], hi=v["accuracy_hi"])
+                          lo=v["accuracy_lo"], hi=v["accuracy_hi"],
+                          bracketed_estimate=[v["bracketed_estimate_lo"],
+                                              v["bracketed_estimate_hi"]],
+                          bracketed_estimate_min_A=v[
+                              "bracketed_estimate_min_A"],
+                          bracketed_estimate_max_A=v[
+                              "bracketed_estimate_max_A"])
                   for k, v in sorted(env["rails_A"].items())},
         widest_published_ratio=[ILIM_LO, ILIM_HI],
+        ruling_basis=(
+            "D-791 / D790-A12: the RULING band is the WIDEST published ratio "
+            "in TI's four-row ILIM accuracy table.  It holds at every row and "
+            "between every pair of rows with no assumption about the shape of "
+            "the accuracy in between, which TI does not state.  D-790's "
+            "bracketed figure is reported per rail as the engineering "
+            "estimate it is and nothing rules on it."),
+        # THE RULING BAND IS THE WIDEST ONE, EXACTLY.  Not merely inside it.
         ok=bool(all(
             v.get("accuracy_bracket_rows")
-            and v["accuracy_lo"] >= ILIM_LO - 1e-12
-            and v["accuracy_hi"] <= ILIM_HI + 1e-12
+            and abs(v["accuracy_lo"] - ILIM_LO) < 1e-12
+            and abs(v["accuracy_hi"] - ILIM_HI) < 1e-12
             for v in env["rails_A"].values())))
     for key in ("p3v3_published_minimum_is_the_derived_one",
                 "p3v3_owner_decision_class_anchor",
@@ -5136,11 +6636,49 @@ def main():
         NORMAL_SINGLE_VBAT_FLOOR
     env["normal_operation"]["module_default_dual_rail_floor_V"] = \
         NORMAL_DUAL_VBAT_FLOOR
+    env["normal_operation"]["module_default_retention_floor_V"] = \
+        NORMAL_RETENTION_FLOOR
     defaults_match = (NORMAL_SINGLE_VBAT_FLOOR == policy_single
-                      and NORMAL_DUAL_VBAT_FLOOR == policy_dual)
+                      and NORMAL_DUAL_VBAT_FLOOR == policy_dual
+                      and NORMAL_RETENTION_FLOOR == policy_retention)
     env["module_default_floors_match_the_firmware_policy"] = defaults_match
     env_ok = env_ok and defaults_match
 
+    # ---- D-791 / D790-A04.  THE DECLARED PANEL ALLOWANCE GETS A SENSITIVITY.
+    #
+    # Round-10 asks for an exact ER-TFT035IPS-6 / FT6236 active-current figure
+    # "if possible", and it is not: every fetch this environment can make
+    # returns 403 (recorded in evidence/d791-eastrising-fetch-attempts.json).
+    # What it asks for instead is "a defensible conservative allowance /
+    # sensitivity and bounded operating envelope".  The bounded envelope is
+    # F12's supported-concurrency table; this is the sensitivity.  It is
+    # REPORTED, not ruled on -- the point is that a reader can see how much of
+    # the answer rests on the declared line.
+    env["panel_logic_allowance_sensitivity"] = dict(
+        declared_mA=PANEL_LOGIC_DECLARED_mA,
+        why_declared="ILI Technology's ILI9488 datasheet publishes Sleep-in "
+                     "100 uA and Deep Standby 1 uA and NO active-mode supply "
+                     "current; the EastRising module specification is not "
+                     "obtainable from this environment (HTTP 403 on every "
+                     "route tried, recorded in evidence/"
+                     "d791-eastrising-fetch-attempts.json)",
+        cases={
+            ("%.1fx" % k): dict(
+                panel_logic_mA=round(PANEL_LOGIC_DECLARED_mA * k, 4),
+                internal_3v3_A=round(
+                    I_INTERNAL + PANEL_LOGIC_DECLARED_mA * (k - 1) / 1000.0, 6),
+                u12_worst_case_load_A=round(
+                    I_INTERNAL + PANEL_LOGIC_DECLARED_mA * (k - 1) / 1000.0
+                    + env["rails_A"]["ACC_3V3"]["ilim_max"], 6),
+                still_inside_u12_rating=bool(
+                    I_INTERNAL + PANEL_LOGIC_DECLARED_mA * (k - 1) / 1000.0
+                    + env["rails_A"]["ACC_3V3"]["ilim_max"] <= U12_IOUT_A))
+            for k in (1.0, 1.5, 2.0)},
+        measurement_of_record="C-DISP-01",
+        note="the declared line is about 2x what a 3.5 in ILI9488 module of "
+             "this class draws.  At 1.5x the derived envelope still closes; "
+             "at 2x it does not, and that is exactly the size of the "
+             "dependency C-DISP-01 exists to remove.")
     env["p3v3_internal_budget"] = budget
     env["internal_3v3_A"] = I_INTERNAL
     env["every_fitted_p3v3_consumer_is_budgeted"] = budget[
@@ -5157,14 +6695,18 @@ def main():
 
     def _env_policy_control(name, single_floor=None, dual_floor=None,
                             internal_ceiling=None, connection=None,
-                            reserve=None):
+                            reserve=None, retention_floor=None,
+                            published_budget=None):
         ok, _ = judge_accessory_envelope(
             values,
             single_floor=(policy_single if single_floor is None else single_floor),
             dual_floor=(policy_dual if dual_floor is None else dual_floor),
+            retention_floor=(policy_retention if retention_floor is None
+                             else retention_floor),
             internal_ceiling=(policy_ceiling if internal_ceiling is None
                               else internal_ceiling),
-            connection=connection, reserve=reserve)
+            connection=connection, reserve=reserve,
+            published_budget=published_budget)
         return name, not ok
 
     env_controls = dict(x for x in (
@@ -5232,8 +6774,18 @@ def main():
         # below the 2.298 kOhm where the limiter's worst case reaches the pack's
         # own minimum trip at that setpoint.  A control whose name claims a
         # refusal its clause does not make is the defect D-767 named.
-        _env_control("f6s_refuses_an_acc5v_ilim_past_the_pack_bound",
-                     lambda v: v.__setitem__("R101", "2.2k 1%")),
+        # D-791 / R10-N02 RE-AIMS THIS ONE, because the clause it exercises
+        # SPLIT.  Its own comment already names the risk D-767 warns about:
+        # "a control whose name claims a refusal its clause does not make".
+        # What an ACC_5V accessory OVERCURRENT must now clear is the LATCHING
+        # protection, and 2.2 kOhm no longer breaches it -- 2.7139 A against
+        # the LTC4368 breaker's 3.9604 A guaranteed minimum -- so the control
+        # was on its way to vacuous.  1.15 kOhm puts the overcurrent at
+        # 4.0428 A, PAST the breaker's own minimum trip, which inverts the
+        # protection ordering this board is built on.
+        _env_control("f6s_refuses_an_acc5v_ilim_whose_overcurrent_passes_"
+                     "the_latching_breaker",
+                     lambda v: v.__setitem__("R101", "1.15k 1%")),
         # the divider must be READ, and a boost this contract has no VREF
         # table for is a refusal exactly as an unknown limiter MPN is
         _env_control("f6t_refuses_a_boost_with_no_published_vref_band",
@@ -5250,7 +6802,7 @@ def main():
         live2.update(over)
         ok, _ = judge_accessory_envelope(
             values, single_floor=policy_single, dual_floor=policy_dual,
-            live_ohms=live2)
+            retention_floor=policy_retention, live_ohms=live2)
         return name, not ok
 
     env_controls.update(dict((
@@ -5259,8 +6811,8 @@ def main():
         # margin to a RECOVERABLE charger trip on the live resistances and is
         # NEGATIVE on the declared ceilings.
         _env_policy_control(
-            "f6v_refuses_the_old_single_3p50V_floor_for_both_D098_rails",
-            dual_floor=3.50),
+            "f6v_refuses_one_enable_floor_for_both_D098_rails",
+            dual_floor=policy_single),
         # f6w WAS "refuses the first D-775 draft's asserted 3.75 V", and D-788
         # RE-AIMED IT TWICE -- which is itself the finding.  Capping the main
         # rail at the display's 3.3 V absolute maximum LOWERED the rail, which
@@ -5277,15 +6829,28 @@ def main():
         # FLOORS DO NOT MOVE: 3.85 V and 3.50 V are retained and are now MORE
         # conservative than the derivation demands, which is the safe direction
         # and the one that needs no firmware change.
+        # D-791 / D790-A03 RE-AIMS BOTH, because the clause they exercise
+        # moved: it is the RETENTION floor that has to satisfy the OCP
+        # coordination requirement, and the two ENABLE floors that have to sit
+        # above it by their own rail's node step.  Both are still aimed ONE
+        # GRID STEP off whatever the derivation currently produces, so neither
+        # can go vacuous when the derivation moves again.
         _env_policy_control(
-            "f6w_refuses_a_dual_rail_floor_below_the_derived_requirement",
-            dual_floor=round(env["normal_operation"][
+            "f6w_refuses_a_retention_floor_below_the_derived_requirement",
+            retention_floor=round(env["normal_operation"][
                 "required_dual_rail_floor_gridded_V"] - FLOOR_GRID_V, 4)),
-        # and the single-rail floor is a clause too, not just the dual one
+        # and an ENABLE floor that does not anticipate its own rail's step --
+        # which is what makes a rail shed 400 ms after being authorised.
         _env_policy_control(
-            "f6x_refuses_a_single_rail_floor_under_its_own_requirement",
-            single_floor=round(env["normal_operation"][
-                "required_single_rail_floor_gridded_V"] - FLOOR_GRID_V, 4)),
+            "f6x_refuses_an_enable_floor_that_collapses_onto_retention",
+            single_floor=policy_retention),
+        # D-791 / R10-N02.  THE CONFORMING HALF OF THE SPLIT CLAUSE MUST BITE
+        # TOO.  Doubling the published 5 V budget is a budget the pack cannot
+        # carry, and it has to be REFUSED by the conforming clause rather than
+        # absorbed into the accessory-overcurrent one.
+        _env_policy_control(
+            "f6x2_refuses_a_published_budget_the_pack_cannot_carry",
+            published_budget=dict(PUBLISHED_RAIL_BUDGET_A, ACC_5V=0.600)),
         # ---- the LIVE inputs.  A path that grows past its declared ceiling
         # must fail rather than be absorbed into the margin.
         _env_ohm_control(
@@ -5535,13 +7100,22 @@ def main():
             retired=("NTMD4820NR2G", "NTMD4820N", "C905372"),
             why="D-790 / D789-A01, the second package of the same pass pair"),
         "R97": dict(
-            locked="0603WAF1781T5E",
+            locked="0603WAF1871T5E",
             lib_id_contains=None,
             only_fields=("Value", "MPN", "LCSC"),
-            retired=("0603WAF2701T5E", "C13167", "2.7k"),
-            why="D-771 moved the ACC_3V3 limiter setting 2.7 -> 1.78 kOhm so "
-                "the rail GUARANTEES the 400 mA TOTAL D-098 publishes for it; "
-                "2.7 kOhm guaranteed only 0.277 A"),
+            retired=("0603WAF2701T5E", "C13167", "2.7k",
+                     "0603WAF1781T5E", "C22849", "1.78k"),
+            why="D-791 / D790-A12 moved the ACC_3V3 limiter setting "
+                "1.78 -> 1.87 kOhm.  D-771 had moved it 2.7 -> 1.78 kOhm so "
+                "the rail GUARANTEES the 400 mA TOTAL D-098 publishes for it "
+                "(2.7 kOhm guaranteed only 0.277 A), and that requirement is "
+                "UNCHANGED -- 1.87 kOhm guarantees 0.4058 A at the WIDEST "
+                "published ILIM accuracy ratio, which is the band D790-A12 "
+                "puts back because TI states nothing about the accuracy "
+                "BETWEEN its four rows.  What the move buys is the other end: "
+                "at 1.78 kOhm the limiter's worst-corner FAULT maximum plus "
+                "the corrected D790-A04 internal budget is 2.0139 A against "
+                "U12's published 2 A, which is negative margin"),
         "R101": dict(
             locked="0603WAF2431T5E",
             lib_id_contains=None,
@@ -5670,6 +7244,107 @@ def main():
         d["ok"] = all(d[k] for k in clauses)
         return d["ok"], d
 
+    # ---- D-791 / D790-A08.  A RETIRED IDENTITY MAY NOT STAND UNFENCED IN AN
+    # ACTIVE TABLE OF A NORMATIVE DOCUMENT.
+    #
+    # Round-10 found `DEVICE_SPEC` still naming `NTMD4820NR2G` as FITTED and
+    # LOCKED in a live table row, months after D-790 retired it -- beside a
+    # correctly-updated paragraph elsewhere in the same file.  A document that
+    # contains one right sentence and one wrong TABLE ROW is not corrected; it
+    # is contradictory, and a reader who scans tables reads the wrong one.
+    #
+    # The check is deliberately narrow so it is enforceable rather than
+    # advisory: a MARKDOWN TABLE ROW (a line beginning with `|`) in a normative
+    # document may not contain a retired identity token unless that same row
+    # also carries an explicit supersession marker.  Prose is not policed --
+    # this repository's decision records are narrative and MUST be able to say
+    # what a part used to be -- and a fenced HISTORICAL block is not policed
+    # either, because the fence is the marker.
+    RETIRED_FENCE_TOKENS = ("SUPERSEDE", "supersede", "HISTORICAL",
+                            "historical", "RETIRED", "retired", "no longer",
+                            "formerly", "was ", "REPLACED", "replaced")
+    NORMATIVE_DOCS = (
+        ROOT / "docs/full-beta-v2/DEVICE_SPEC.md",
+        ROOT / "docs/full-beta-v2/CURRENT_STATE.md",
+        ROOT / "docs/full-beta-v2/AQROOT_DEMO_FAB_HANDOFF.md",
+        ROOT / "docs/full-beta-v2/assembly/OFF_BOARD_BOM.md",
+        ROOT / "docs/full-beta-v2/assembly/FIRST_FIVE_ASSEMBLY_PLAN.md",
+        ROOT / "docs/full-beta-v2/assembly/SOURCING_LEDGER.md",
+    )
+    unfenced = []
+    for doc in NORMATIVE_DOCS:
+        if not doc.exists():
+            unfenced.append(dict(document=str(doc), line=0,
+                                 token="(document absent)", text=""))
+            continue
+        for n, line in enumerate(doc.read_text(encoding="utf-8",
+                                               errors="replace").splitlines(), 1):
+            stripped = line.lstrip("> 	")
+            if not stripped.startswith("|"):
+                continue
+            if any(f in line for f in RETIRED_FENCE_TOKENS):
+                continue
+            for ref, spec in sorted(IDENTITY_GUARD.items()):
+                for tok in spec.get("retired", ()):
+                    if len(tok) >= 5 and tok in line:
+                        unfenced.append(dict(
+                            document=str(doc.relative_to(ROOT)), line=n,
+                            reference=ref, token=tok, text=line[:180]))
+    retired_fencing = dict(
+        documents=[str(d.relative_to(ROOT)) for d in NORMATIVE_DOCS],
+        fence_tokens=list(RETIRED_FENCE_TOKENS),
+        unfenced=unfenced, ok=not unfenced,
+        method="every MARKDOWN TABLE ROW in a normative document is scanned "
+               "for the RETIRED identity tokens this registry already names.  "
+               "A row that carries one must also carry a supersession marker.  "
+               "Prose is deliberately NOT policed: a decision record must be "
+               "able to say what a part used to be.  What is policed is the "
+               "shape D790-A08 found -- a live table row still calling a "
+               "retired part FITTED and LOCKED, beside a corrected paragraph "
+               "in the same file.")
+
+    # ---- F13: every non-capacitor MPN against its own source (D790-F-N01,
+    # Fable V-05, and R10-N03 which this clause found itself) --------------
+    _src_refs = [r for r in sorted({f.GetReference()
+                                    for f in board.GetFootprints()})
+                 if not r.startswith(("TP", "FID", "MK", "BOSS", "#", "H"))
+                 and not r.startswith("C")]
+    _src_rows = {r: v for r, v in schematic_part_rows(_src_refs).items()
+                 if v["mpn"]}
+    src_ok, src = judge_part_source_identity(_src_rows)
+
+    def _src_control(name, ref, **over):
+        if ref not in _src_rows:
+            return name, False
+        mutated = {k: (dict(v, **over) if k == ref else v)
+                   for k, v in _src_rows.items()}
+        ok, _ = judge_part_source_identity(mutated)
+        return name, not ok
+
+    src_controls = dict((
+        # THE TWO LOAD-BEARING ONES: the exact fields this candidate corrects.
+        _src_control("f13a_refuses_the_bss138_labelled_alpha_and_omega",
+                     "Q4", manufacturer="Alpha & Omega Semiconductor"),
+        _src_control("f13b_refuses_the_2n7002_labelled_onsemi",
+                     "Q10", manufacturer="onsemi"),
+        # ...and the normalisation may not launder a genuine contradiction.
+        _src_control("f13c_refuses_a_ti_part_labelled_onsemi",
+                     "U11", manufacturer="onsemi"),
+        # ...an LCSC code that disagrees with the record is the same defect on
+        # the field a factory actually fits from.
+        _src_control("f13d_refuses_an_lcsc_that_disagrees_with_the_record",
+                     "U12", lcsc="C000000"),
+        # ...and an MPN with no archived exact record is a FAILURE, not a skip.
+        _src_control("f13e_refuses_an_mpn_with_no_archived_record",
+                     "U12", mpn="NOT-A-REAL-PART-NUMBER"),
+        # ...and the ONE exemption is load-bearing rather than decorative: with
+        # J4 not exempt, the clause must refuse.
+        ("f13f_the_j4_exemption_is_load_bearing",
+         not judge_part_source_identity(_src_rows, exempt={})[0]),
+        # ...and it is NARROW: exempting nothing else changes nothing.
+        ("f13g_no_other_reference_is_exempt",
+         set(PART_SOURCE_EXEMPT) == {"J4"})))
+
     # ---- D-789 / F-N01 + R8-N01: the battery pass pair --------------------
     _bat_rail = next((r for r in ara.RAILS
                       if r["name"] == "BAT_PROTECTED_P"), None)
@@ -5789,7 +7464,12 @@ def main():
     fa_plan_text = (FIRST_FIVE_ASSEMBLY.read_text(encoding="utf-8",
                                                   errors="replace")
                     if FIRST_FIVE_ASSEMBLY.exists() else "")
-    transient = judge_transient_procedure(fa_plan_text)
+    # R10-N05: the floor tokens are DERIVED from the same fixed point F12
+    # solved, not typed in beside it.
+    _tr_floors = dict(retention=df["retention_floor_gridded_V"],
+                      single=df["enable_first_rail_floor_gridded_V"],
+                      dual=df["enable_second_rail_floor_gridded_V"])
+    transient = judge_transient_procedure(fa_plan_text, floors=_tr_floors)
     transient_controls = dict(
         # The inverted sign must be REFUSED by the arithmetic, not only absent
         # from the prose: run the D-788 rule and require the opposite verdict.
@@ -5802,19 +7482,30 @@ def main():
         # A document that lost the rule, or regained the old wording, FAILS.
         f11c_refuses_a_document_without_the_rule=not judge_transient_procedure(
             fa_plan_text.replace(
-                "measured peak + total uncertainty < 3.300 V", "x"))["ok"],
+                "measured peak + total uncertainty < 3.300 V", "x"),
+            floors=_tr_floors)["ok"],
         f11d_refuses_the_retired_inverted_wording=not judge_transient_procedure(
-            fa_plan_text + "\n" + TRANSIENT_REFUSED_TOKENS[0])["ok"],
+            fa_plan_text + "\n" + TRANSIENT_REFUSED_TOKENS[0],
+            floors=_tr_floors)["ok"],
         f11e_refuses_a_table_that_disagrees_with_the_rule=(
             not judge_transient_procedure(
-                fa_plan_text,
+                fa_plan_text, floors=_tr_floors,
                 spec=dict(TRANSIENT, ceiling_V=3.400))["ok"]),
-        f11f_refuses_a_missing_document=not judge_transient_procedure("")["ok"],
+        f11f_refuses_a_missing_document=not judge_transient_procedure(
+            "", floors=_tr_floors)["ok"],
         # ...and the accessory step must still be written only where the
-        # released firmware permits a rail at all.
+        # released firmware permits a rail at all.  R10-N05: the token this
+        # control deletes is FORMATTED FROM THE DERIVATION, so the control
+        # keeps testing the live floor instead of pinning a retired one.
         f11g_refuses_an_accessory_step_below_the_derived_floors=(
             not judge_transient_procedure(
-                fa_plan_text.replace("3.85 V** dual-rail floor", "x"))["ok"]))
+                fa_plan_text.replace(
+                    transient_floor_tokens(_tr_floors)[2], "x"),
+                floors=_tr_floors)["ok"]),
+        # ...and a run that forgot to supply the floors at all may not pass,
+        # which is the shape R10-N05 itself had.
+        f11h_refuses_a_run_with_no_derived_floors=(
+            not judge_transient_procedure(fa_plan_text)["ok"]))
 
     bom_path = rl.ROOT / "hardware/demo/fab/aqroot-Demo-BOM-assembly.csv"
     bom_text = bom_path.read_text(encoding="utf-8", errors="replace") \
@@ -5880,7 +7571,7 @@ def main():
             not judge_identity(
                 "R97", IDENTITY_GUARD["R97"],
                 dict(r97, instance=(r97.get("instance", "") or "").replace(
-                    '(property "MPN" "0603WAF1781T5E"', '(property "MPN" "x"'),
+                    '(property "MPN" "0603WAF1871T5E"', '(property "MPN" "x"'),
                 ), bom_text)[0],
         # ---- D-787's two.  THE LOAD-BEARING ONE IS `f7k`: it is exactly the
         # part the first D-787 draft locked -- a real 176 kOhm 0.1 % KOA line
@@ -6168,11 +7859,27 @@ def main():
                    "D-788 / R7-D787-14 REWRITES THE CONDUCTION ARGUMENT AROUND "
                    "THE ROW THAT ACTUALLY CARRIES IT.  The controlling clause "
                    "is the CHARACTERIZED CONDUCTION POINT, not a threshold: "
-                   "Vishay 75975 Rev B publishes RDS(on) 0.245 ohm MAX at "
-                   "VGS = 1.5 V, ID = 2.0 A, and this circuit holds "
-                   "VGS = 2.396 V and asks for 0.109 A -- 0.896 V inside a "
-                   "region the vendor guarantees, at 18x less current than the "
-                   "row is taken at.  The ordering clause is measured against "
+                   + ("Vishay 75975 Rev B publishes RDS(on) %s ohm MAX at "
+                      "VGS = %s V, ID = %s A, and this circuit holds "
+                      "VGS = %.6f V and asks for %.6f A -- %.1f mV inside a "
+                      "region the vendor guarantees, at %sx less current than "
+                      "the row is taken at.  "
+                      % (fet.get("published_rds_on_max_ohm"),
+                         fet.get("published_conduction_vgs_V"),
+                         fet.get("published_conduction_id_A"),
+                         fet.get("vgs_held_V") or 0.0,
+                         fet.get("string_current_A") or 0.0,
+                         (fet.get(
+                             "held_vgs_margin_above_published_conduction_point_V")
+                          or 0.0) * 1000.0,
+                         fet.get("published_current_over_what_is_asked_x")))
+                   + "*(D-791 / D790-A13: every figure in the sentence above "
+                     "is now FORMATTED FROM THE COMPUTED VALUES.  It used to "
+                     "read 'VGS = 2.396 V and asks for 0.109 A -- 0.896 V "
+                     "inside a region', which were a 3.3 V-rail gate voltage "
+                     "and a 2023 LED setpoint, both left standing beside live "
+                     "arithmetic that had already moved.)*  "
+                   "The ordering clause is measured against "
                    "the SAME row: the RC envelope may not decay below "
                    "VGS = 1.5 V until after the TPS61169's 2.5 ms guaranteed "
                    "shutdown.  VGS(th) is retained only as a NECESSARY "
@@ -6247,7 +7954,8 @@ def main():
             controls_refused=cap_controls,
             **{k: v for k, v in caps.items() if k != "ok"}),
         "F7_no_retired_part_name_survives_on_the_part_that_replaced_it": dict(
-            ok=ident_ok and all(ident_controls.values()),
+            ok=bool(ident_ok and all(ident_controls.values())
+                    and retired_fencing["ok"]),
             method="D-768 found 'CH280QV10-CT Rev.D 2.8in 240x320' on J1's row "
                    "of the RELEASED BOM, and the ER-TFT035IPS-6 symbol's own "
                    "Package field crediting the retired panel's datasheet for "
@@ -6262,6 +7970,8 @@ def main():
                    "wrong",
             references=sorted(IDENTITY_GUARD),
             controls_refused=ident_controls,
+            no_retired_identity_stands_unfenced_in_an_active_table=(
+                retired_fencing),
             findings=ident_rows),
         "F9_manual_battery_harness_metadata_matches_the_frozen_build": dict(
             ok=j4_semantic["ok"] and all(j4_controls.values()),
@@ -6317,6 +8027,44 @@ def main():
                    "the arithmetic a gate performs.",
             **{k: v for k, v in transient.items() if k != "ok"},
             controls_refused=transient_controls),
+        "F12_cell_to_load_network_closes_at_an_attainable_cell": dict(
+            ok=bool(cell_net_ok and all(cell_net_controls.values())),
+            method="D790-A03.  F6 starts at BAT_PROTECTED_P and F10 prices the "
+                   "pass pair separately; neither ever asked whether an "
+                   "ATTAINABLE cell can hold that node at that voltage while "
+                   "the load draws.  It cannot, and the consequence was that "
+                   "D-790's 3.50/3.85 V firmware floors described a node the "
+                   "board never occupies -- so the accessory rails this "
+                   "product publishes would be authorised and shed again on a "
+                   "FULL pack.  This clause solves the WHOLE network as one "
+                   "self-consistent fixed point, from the cell's own "
+                   "electromotive force through the pack's DC resistance, the "
+                   "26 AWG harness, F1, all four AO4800 channels, R75, the "
+                   "BQ25185 BATFET, U12, the SYS->U21 trunk and both load "
+                   "switches, and requires every declared state to clear SEVEN "
+                   "limits at once at an attainable cell voltage.  The three "
+                   "firmware floors are DERIVED from it, the ATTAINABILITY of "
+                   "each is a clause, and D-790's own declared reference state "
+                   "is retained as the negative control that must stay "
+                   "refused.",
+            **{k: v for k, v in cell_net.items() if k != "ok"},
+            controls_refused=cell_net_controls),
+        "F13_every_purchased_part_agrees_with_its_own_source": dict(
+            ok=bool(src_ok and all(src_controls.values())),
+            method="D790-F-N01 + Fable V-05.  F8 binds every fitted CAPACITOR "
+                   "to an exact purchased identity; nothing did the "
+                   "equivalent for the rest of the board, and five references "
+                   "carried a MANUFACTURER field naming a company that does "
+                   "not make the part -- Q4/Q6/Q7/Q8/Q9's onsemi BSS138LT1G "
+                   "labelled Alpha & Omega, and (found here, R10-N03) Q10's "
+                   "Jiangsu Changjing 2N7002 labelled onsemi.  The LCSC code "
+                   "is what JLCPCB fits; the MANUFACTURER field is what a "
+                   "human uses to judge a substitution offered over email, so "
+                   "a wrong one is a trap laid for exactly that conversation.",
+            **{k: v for k, v in src.items()
+               if k not in ("ok", "method")},
+            source_method=src["method"],
+            controls_refused=src_controls),
         "F3_approved_nc_exactly_as_scoped": dict(
             ok=(set(nc["observed"]) == EXPECTED_NC
                 and not nc["missing"] and not nc["unexpected"]),

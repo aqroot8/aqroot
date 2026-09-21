@@ -28,7 +28,7 @@ not capture reliably, because they are not placed on the board. Authority:
 | **First-five LiPo pack** | **Adafruit Product 328 — 3.7 V / 2500 mAh**, genuine 2-pin JST-PH, protection circuitry | 1 | **SELECTED CTO-BAT-01.** Supplier page is the purchasing identity; its linked `785060` specification is archived at `hardware/demo/kicad/aqroot-demo/vendor/BATTERY/adafruit-328-785060-specification.pdf` (SHA-256 `826149da…ecd3`). Datasheet max pack is 7.9 × 50.5 × 60.5 mm, inside the **57 × 75 × 8.0 mm MAX** D-239/D-243 reservation, and permits discharge current ≤2C; supplier recommends ≤1.2 A charging. **Meter-verify polarity before cutting/reterminating the factory JST-PH lead into the D-781 Micro-Lock harness; do not substitute a generic LP785060 solely by family name.** |
 | **D-781 detachable battery harness** | Board side: Molex `2175012101` red + `2175011101` black 26-AWG pre-crimps in `5055700201`; battery side: factory Adafruit 26-AWG leads reterminated into `2137192021` with `2137201000` male terminals | 1 | **FROZEN FOR FIRST FIVE.** Full work instruction, polarity, crimp/tool range, pull/thermal acceptance and first-article checks are in `BATTERY_HARNESS.json`. `J4` is only the manual PCB wire land; **do not fit the retired JST-PH board header.** |
 | **Board-pigtail strain-relief adhesive** | **DOWSIL `3145 RTV MIL-A-46146` Adhesive/Sealant, gray** | as needed | **FROZEN D-782 PROCESS.** Non-flowing electronics RTV used to bond the insulated J4 pigtail to B.Cu after solder/profile inspection; preserve the relaxed service loop and ≥35 mm free wire from the Micro-Lock housing. Vendor TDS archived under `vendor/DOW/`; disconnect the harness by the housings, never the wires. |
-| **Pack barrier sheet — D-760** | **0.5 mm compliant insulating sheet** (polyester film + closed-cell PE foam, or 3M 9448A-backed PET), cut to the `BATTERY_SHADOW` footprint **57 × 75 mm**, adhesive side to the PCB | 1 | **REQUIRED.** The rear face inside `BATTERY_SHADOW` presents a **1.80 mm** maximum component profile against the retained 1.20 mm heuristic; three 1206 bulk capacitors are hard points against the pouch. The sheet spreads them and insulates the pack; it does not replace enclosure CAD clearance. Measured by `mechanical_keepout_contract` **MK8**. |
+| **Pack barrier sheet — D-760** | **0.5 mm compliant insulating sheet** (polyester film + closed-cell PE foam, or 3M 9448A-backed PET), cut to the `BATTERY_SHADOW` footprint **57 × 75 mm**, adhesive side to the PCB | 1 | **REQUIRED.** The rear face inside `BATTERY_SHADOW` presents a **1.90 mm** maximum component profile against the retained 1.20 mm heuristic; four 1206 bulk capacitors (`C29`-`C32`, CCTC `TCC1206X7R226K160HT`) are the hard points against the pouch.  *(D-791 / `D790-A08`: this line read **1.80 mm** on a Murata basis; the fitted parts are the CCTC 1206 at **1.90 mm** and `mechanical_keepout_contract` MK8 has ruled at 1.90 mm since D-789.)* The sheet spreads them and insulates the pack; it does not replace enclosure CAD clearance. Measured by `mechanical_keepout_contract` **MK8**. |
 
 ---
 
@@ -159,10 +159,14 @@ points for bring-up and for a future rework; **nothing is soldered to them.**
 
 **What is published instead**, derived by `demo_feature_contract` F6 from the
 live board and frozen in `DEVICE_SPEC`: the Community Port delivers
-**≥ 2.84 V unconditionally** at the full published 400 mA — either duplicated
+**≥ 2.81 V unconditionally** at the full published 400 mA — either duplicated
 3.3 V contact used alone, one mated ground contact, and the 5 V rail also at
-its 300 mA budget — and **2.982890 V with the header fully mated**, which is
+its 300 mA budget — and **2.917924 V with the header fully mated**, which is
 better than the 2.95 V D-788 published with a hand-soldered conductor fitted.
+*(D-791 / `D790-A08`: this paragraph read **2.84 V** and **2.982890 V**, which
+were D-789's figures.  D-790 corrected them to 2.81 V / 2.918599 V and D-791's
+corrected backlight budget moves the second to 2.917924 V.  The published
+minimum on the 10 mV grid is UNCHANGED at 2.81 V.)*
 The full record, including what it cost and what it bought back, is
 [`ACC_3V3_REINFORCEMENT.json`](ACC_3V3_REINFORCEMENT.json).
 

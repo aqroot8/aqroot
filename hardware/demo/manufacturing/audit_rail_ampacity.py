@@ -127,11 +127,17 @@ RAILS = (
          src=("J3.A4", "J3.B4", "J3.A9", "J3.B9"), snk=("R35.1",), amps=1.10,
          basis="same charger input current, upstream of the R35 0 R link"),
     dict(name="BAT_PROTECTED_P", net="/01_POWER_TREE/BAT_PROTECTED_P",
-         src=("R75.2", "R75.4"), snk=("U11.2",), amps=2.35,
-         basis="D-787 / R6-E07: corrected full-feature normal envelope is "
-               "about 2.29 A path-bound at the 3.85 V loaded VCELL floor; "
-               "2.35 A is the routing/thermal design current with explicit "
-               "margin. IBAT_OCP is a fault threshold, not a routing current.",
+         src=("R75.2", "R75.4"), snk=("U11.2",), amps=2.60,
+         basis="D-791 / D790-A03: the PEAK electrical envelope at the lowest "
+               "node voltage the firmware policy permits a rail to be RETAINED "
+               "at.  D-790 read 2.35 A off the 3.85 V dual floor; that floor "
+               "was a node voltage the node cannot reach, and the derived "
+               "retention floor is 3.20 V, where the same full-internal + "
+               "both-budgets envelope is 2.4902 A path-bound.  2.50 A is the "
+               "routing/thermal design current with explicit margin.  "
+               "IBAT_OCP remains a FAULT threshold, not a routing current, and "
+               "demo_feature_contract F6 refuses this number if the envelope "
+               "ever exceeds it.",
          # THE PACKAGE, NOT THE LAYOUT.  U11.2's land is 0.750 x 0.200 mm, so no
          # conductor wider than 0.200 mm can LAND on it, in any layout, with any
          # charger position.  The .kicad_dru pad-escape neck rule already
@@ -197,7 +203,7 @@ RAILS = (
                "entirely inside D-780's wider taper, and it described a neck "
                "the board does not have."),
     dict(name="BQ25185_SYS", net="/01_POWER_TREE/BQ25185_SYS",
-         src=("U11.1",), snk=("U12.1",), amps=2.35,
+         src=("U11.1",), snk=("U12.1",), amps=2.60,
          basis="D-787 / R6-E07: the pour feeding the full fitted system is "
                "qualified at the same 2.35 A corrected sustained normal "
                "envelope as BAT_PROTECTED_P; local boost ripple/inductor peak "
@@ -352,21 +358,28 @@ RAILS = (
     # package land nothing can be laid wider on -- the same class of residual
     # as U11.2 (see .kicad_dru section 5e).
     dict(name="P3V3_MAIN", net="+3V3",
-         src=("U12.4", "U12.5"), snk=("U20.2",), amps=1.95,
-         basis="D-790 / D789-A11 + R9-N01, re-based from D-787 / R6-E07. F6's "
-               "fitted internal +3V3 budget is 1.1438 A -- it rose from "
-               "1.0632 A when D789-A11 replaced the inherited 181 mA "
-               "display line with a DERIVED 211.58 mA backlight-converter "
-               "input and a declared 50 mA panel-logic allowance -- and "
-               "U20's worst programmed limiter corner is 0.8036 A, read off "
-               "the SLVSGP6A rows that bracket R97 rather than the table's "
-               "19.2 kOhm outlier. 1.9474 A total; the audit rounds upward "
-               "to 1.95 A and must not fall back to the historical 1.0 A "
-               "internal placeholder or to D-787's 1.849/1.912 A. This "
-               "remains below the TPS63020 2 A feature rating for VIN > "
-               "2.5 V near the 3.3 V output condition, with 52.6 mA of "
-               "margin where D789-A11's corrected budget alone would have "
-               "left 7.6 mA.",
+         src=("U12.4", "U12.5"), snk=("U20.2",), amps=2.00,
+         basis="D-791 / D790-A04 + D790-A12, re-based from D-790 / D789-A11. "
+               "F6's fitted internal +3V3 budget is 1.1653 A: D789-A11 "
+               "replaced the inherited 181 mA display line with a DERIVED "
+               "backlight-converter input, and D790-A04 then added the four "
+               "loss terms that model did not have -- the diode's forward "
+               "voltage at the inductor PEAK rather than at the average, "
+               "switch transition and Coss loss at the MAXIMUM published "
+               "switching frequency, gate-drive loss, and the winding's core "
+               "loss and hot DCR -- taking the converter input 211.58 -> "
+               "233.13 mA at an implied 75.4 % efficiency.  U20's worst "
+               "programmed limiter corner is 0.8049 A at the WIDEST published "
+               "SLVSGP6A accuracy ratio (D790-A12 refuses the bracketed one "
+               "as an estimate), with R97 moved 1.78 -> 1.87 kOhm so that the "
+               "rail still GUARANTEES the published 400 mA at that ratio.  "
+               "1.9702 A total; the audit rounds upward to 2.00 A and must "
+               "not fall back to the historical 1.0 A internal placeholder or "
+               "to D-787's 1.849/1.912 A.  This remains inside the TPS63020's "
+               "2 A feature rating for VIN > 2.5 V near the 3.3 V output "
+               "condition, with 29.8 mA of margin -- a NAMED THIN MARGIN, and "
+               "the reason R97 moved: at 1.78 kOhm the same corner is "
+               "2.0139 A, which is negative.",
          pour_delivered="delivered by the two F.Cu +3V3 pours and the In3.Cu "
                "plane, not by a trunk; a track-graph NO_PATH is the expected "
                "answer and is not a defect.  The four local conductors at "
@@ -715,6 +728,43 @@ SYSTEM_THERMAL = dict(
         "not an operating mode.  Above that ambient the sustained "
         "simultaneous total must come down; the SUSTAINED THERMAL ENVELOPE "
         "derived below is what it must come down to at the 40 C top."))
+# D-791 / D790-A02.  WHAT `TREG` ACTUALLY REGULATES, COMPUTED RATHER THAN
+# ASSERTED.
+#
+# D-790 said the charge regime "needs no bound, by design" because SLUSF65B
+# 6.3.7.6 reduces the CHARGE current at `TREG`.  Round-10 is right that this
+# does not universally cap SYS-load heat: with an adapter attached the BQ25185
+# dissipates in TWO places, and `TREG` only touches one of them.
+#
+#   * THE INPUT FET carries the whole SYSTEM current from `VIN` to `SYS`.
+#     SLUSF65B publishes `RON_IN` = 330 typ / 470 mOhm MAX at `VIN` = 5 V,
+#     `IIN` = 1 A, and `VSYS_REG` = 4.5 V with `VBATREG` <= 4.3 V.  `TREG` does
+#     NOT reduce the system load -- there is nothing in the device that can --
+#     so this term is unregulated.
+#   * THE CHARGE FET carries `ICHG` from `SYS` down to `VBAT`, and THAT is the
+#     term `TREG` folds back.
+#
+# Both are computed below at the worst published corners, the regulated and
+# unregulated halves are reported SEPARATELY, and the clause asks the honest
+# question: is the UNREGULATED half alone inside TI's operating maximum, given
+# that the regulated half can be driven to zero?
+CHARGE_REGIME_INPUT = dict(
+    vin_V=5.0,
+    ron_in_max_ohm=0.470,
+    ron_in_typ_ohm=0.330,
+    vsys_reg_V=4.5,
+    vsys_reg_accuracy=0.02,
+    vbat_low_V=3.2,
+    ichg_A=0.769,
+    ilim_min_A=0.995, ilim_max_A=1.100,
+    source="TI SLUSF65B Electrical Characteristics: RON_IN 330 typ / 470 mOhm "
+           "MAX at VIN = 5 V, IIN = 1 A; VSYS_REG 4.5 V at VBATREG <= 4.3 V "
+           "with -2/+2 % accuracy; VMINSYS 3.8 V in battery-tracking mode.  "
+           "ILIM 995 / 1050 / 1100 mA at the ILIM = 1050 mA row, which is "
+           "what R36 = 13 kOhm programs (Table 6-1).  ICHG 769 mA is this "
+           "board's own R37 = 390 ohm programming (D-743).  Section 6.3.3: "
+           "when the system load exceeds the input limit the battery "
+           "SUPPLEMENTS through the BATFET, and BATOCP stays active.")
 CHARGE_REGIME = dict(
     treg_C=100.0,
     tshut_rising_C=150.0,
@@ -725,10 +775,129 @@ CHARGE_REGIME = dict(
            "die and reduces the charge current when TJ reaches the thermal "
            "regulation threshold (TREG)'.",
     consequence="a longer charge in a warm enclosure, not an exceeded "
-                "junction.  The BATFET discharge regime has no equivalent "
-                "regulation -- TREG reduces CHARGE current and there is none "
-                "when no adapter is attached -- so that regime is the one "
-                "bounded below.")
+                "junction, FOR THE CHARGE CURRENT ALONE.  D-791 / D790-A02: "
+                "TREG does NOT regulate the SYSTEM load, which crosses the "
+                "same package through the INPUT FET while an adapter is "
+                "attached, so `charge_regime_junction` below separates the "
+                "two and asks whether the UNREGULATED half alone is inside "
+                "TI's operating maximum.  The BATFET discharge regime has no "
+                "equivalent regulation at all -- TREG reduces CHARGE current "
+                "and there is none when no adapter is attached -- so that "
+                "regime is the one bounded by the sustained envelope.")
+
+
+def charge_regime_junction(system_W, ambient_C=None, spec=None, system=None,
+                           charge=None, delivered_out_W=0.0):
+    """D-791 / D790-A02.  The adapter-attached regime, split into the half
+    `TREG` regulates and the half it does not.  Pure.
+
+    `system_A` is the current the SYS node has to supply.  THE INPUT IS
+    CURRENT-LIMITED: `ILIM` is programmed to 1100 mA on this board, so the
+    adapter can never deliver more than that however much the system asks for
+    -- and when the system asks for more, SLUSF65B 6.3.3 puts the BATTERY in
+    SUPPLEMENT MODE through the same package's BATFET.  Every one of those
+    three conduction paths is priced here.
+    """
+    spec = PACKAGE_JUNCTION if spec is None else spec
+    system = SYSTEM_THERMAL if system is None else system
+    charge = CHARGE_REGIME_INPUT if charge is None else charge
+    ambient_C = AMBIENT_DESIGN_MAX_C if ambient_C is None else ambient_C
+    r_sys = system_thermal_resistance_K_per_W(system)
+    v_sys = charge["vsys_reg_V"] * (1.0 - charge["vsys_reg_accuracy"])
+    ilim_hi, ilim_lo = charge["ilim_max_A"], charge["ilim_min_A"]
+    # THE SYSTEM DRAWS POWER, NOT CURRENT.  While an adapter is attached SYS is
+    # regulated near 4.5 V rather than sitting at the cell, so the same load
+    # costs LESS current here than it does on battery.  Taking the discharge
+    # current as the charge-mode current would overstate this regime by about
+    # 4.41/3.3 and is the kind of frame error D790-A02 is about.
+    system_A = system_W / v_sys
+
+    # The INPUT FET carries whatever the adapter supplies, capped by ILIM.  Its
+    # loss is worst at the HIGH end of the limit's own band.
+    i_in = min(ilim_hi, system_A + charge["ichg_A"])
+    p_input = i_in * i_in * charge["ron_in_max_ohm"]
+    # The CHARGE FET carries whatever is left over after the system is fed --
+    # this is the term TREG folds back, and DPPM already folds it back when the
+    # input limit binds.
+    i_chg = max(0.0, min(charge["ichg_A"], ilim_lo - system_A))
+    p_charge = (v_sys - charge["vbat_low_V"]) * i_chg
+    # SUPPLEMENT: if the system asks for more than the input's own MINIMUM
+    # limit can supply, the battery makes up the difference through the BATFET.
+    i_supp = max(0.0, system_A - ilim_lo)
+    p_batfet = i_supp * i_supp * RON_BAT_MAX_OHM * RON_BAT_VBAT_ALLOWANCE
+    p_u11 = p_input + p_charge + p_batfet
+    p_u11_unregulated = p_input + p_batfet
+
+    # What the ENCLOSURE has to lose: everything the adapter delivers, plus
+    # anything the pack supplements, less what the Community Port hands to an
+    # accessory outside the right wall and less the energy actually stored.
+    p_internal = (charge["vin_V"] * i_in
+                  + charge["vbat_low_V"] * i_supp
+                  - charge["vbat_low_V"] * i_chg
+                  - delivered_out_W)
+    air = ambient_C + r_sys * p_internal
+    return dict(
+        ambient_C=ambient_C, system_W=round(system_W, 6),
+        system_A=round(system_A, 6),
+        ilim_band_A=[ilim_lo, ilim_hi],
+        input_current_A=round(i_in, 6),
+        charge_current_A=round(i_chg, 6),
+        supplement_current_A=round(i_supp, 6),
+        vsys_V=round(v_sys, 4), vbat_low_V=charge["vbat_low_V"],
+        ron_in_max_ohm=charge["ron_in_max_ohm"],
+        unregulated_input_fet_W=round(p_input, 6),
+        unregulated_batfet_supplement_W=round(p_batfet, 6),
+        regulated_charge_fet_W=round(p_charge, 6),
+        package_dissipation_W=round(p_u11, 6),
+        package_dissipation_treg_cannot_reduce_W=round(p_u11_unregulated, 6),
+        internal_W=round(p_internal, 6),
+        internal_air_C=round(air, 3),
+        junction_with_charge_folded_back_C=round(
+            air + spec["theta_ja_C_per_W"] * p_u11_unregulated, 3),
+        junction_at_full_charge_current_C=round(
+            air + spec["theta_ja_C_per_W"] * p_u11, 3),
+        tj_operating_max_C=spec["tj_operating_max_C"],
+        treg_C=CHARGE_REGIME["treg_C"],
+        the_unregulated_half_is_inside_the_operating_maximum=bool(
+            air + spec["theta_ja_C_per_W"] * p_u11_unregulated
+            <= spec["tj_operating_max_C"]),
+        pouch_charge_limit_C=POUCH_CHARGE_LIMIT_C,
+        the_air_is_inside_the_pouch_charge_window=bool(
+            air <= POUCH_CHARGE_LIMIT_C),
+        # D-791 / D790-A02.  THE CHARGE AMBIENT IS DERIVED, NOT ASSUMED.
+        #
+        # The fitted pouch's published CHARGE working range tops out at 40 C
+        # and the cell sits in the internal air, so "charge at up to 40 C
+        # ambient" is not a statement this enclosure can make: at the
+        # reference load the air is already above the cell's own charge limit
+        # before the adapter is plugged in.  What IS derivable is the external
+        # ambient at which the internal air REACHES that limit, and that is a
+        # supervised operating condition a human can observe -- which is what
+        # D790-A02 asks a declared restriction to be.  `battery_pack_contract`
+        # B8 already requires supervised first-five charging and the pack has
+        # no thermistor; this puts a NUMBER on the supervision.
+        charge_ambient_ceiling_C=round(
+            POUCH_CHARGE_LIMIT_C - r_sys * p_internal, 2),
+        charge_ambient_basis=(
+            "the external ambient at which R_SYS x P_internal puts the "
+            "internal air exactly at the pouch's published 40 C charge limit, "
+            "at this system load.  A LIGHTER system load raises it; the "
+            "published figure is for the sustained reference state."),
+        what_treg_can_and_cannot_do=(
+            "TREG folds back the CHARGE current, which removes "
+            "`regulated_charge_fet_W` and nothing else.  It cannot reduce the "
+            "SYSTEM load, which crosses the same package through the input FET "
+            "and -- once the system asks for more than the input limit can "
+            "supply -- through the BATFET in supplement mode as well.  The "
+            "clause therefore asks whether the junction is inside TI's "
+            "operating maximum with the charge current folded ALL the way to "
+            "zero, which is the most TREG can ever do."),
+        why_the_input_is_the_cap=(
+            "ILIM is programmed to 1100 mA (R36 = 13 kOhm, SLUSF65B Table "
+            "6-1), so the adapter cannot deliver more than that whatever the "
+            "system asks for.  A model that let the input current follow the "
+            "system load would put 12 W into a 5 V port."),
+        source=charge["source"])
 
 
 # D-790 / D789-A01 + D789-A02.  THE PASS PAIR IS A HEAT SOURCE, AND ITS
@@ -741,7 +910,7 @@ CHARGE_REGIME = dict(
 # conservative at every lower current, and F10 machine-checks that the two
 # files agree.  A pass-pair part change that moved this and left this file
 # alone would be caught there rather than silently under-heating the model.
-PASS_PAIR_CHANNEL_OHM = 0.069
+PASS_PAIR_CHANNEL_OHM = 0.073
 PASS_PAIR_CHANNEL_SOURCE = (
     "AOS AO4800 Rev 6.1, archived vendor/AOS/aos-ao4800-rev6p1-2023-08.pdf: "
     "RDS(on) MAX 50 mOhm at VGS = 2.5 V, ID = 5 A, TJ = 25 C, carried to the "
@@ -749,40 +918,133 @@ PASS_PAIR_CHANNEL_SOURCE = (
     "125 C ratio at the VGS = 10 V row (27 -> 40 mOhm).  Four channels in "
     "series; see demo_feature_contract F10.")
 
-# D-790 / D789-A02.  THE SUSTAINED THERMAL ENVELOPE'S REFERENCE STATE.
+
+# D-791 / D790-A02 + D790-A03 REPLACED THE DECLARED REFERENCE STATE WITH A
+# DERIVED CONCURRENCY TABLE, BECAUSE THE D-790 ONE WAS NOT REACHABLE.
 #
-# The PEAK electrical envelope adds every published maximum together, which is
-# right for ampacity, protection ordering and the connector rating and wrong
-# for a steady-state junction temperature.  This is the state the product
-# actually CLAIMS it can hold indefinitely at the top of the declared ambient
-# range, and it is what the thermal verdict rules on.  It is deliberately
-# heavy: it keeps BOTH published accessory budgets, the display at FULL
-# brightness and BOTH radios transmitting, and drops only the three loads that
-# are physically bursty -- the NFC field, a microSD write and an IR burst.
+# D-790 declared a single sustained reference state -- both published accessory
+# budgets, the display at full brightness, BOTH radios transmitting and the
+# audio amplifier at its capped level -- and computed its battery current with
+# an IDEAL-SOURCE formula:
+#
+#     ((0.89378 + 0.400) x 3.223012 / 0.90 + 0.300 x 5.165 / 0.88) / 3.85
+#
+# which is 1.6608 A, rounded up to 1.70 A.  Round-10 is right on both counts.
+#
+#   * D790-A02: that formula is not the network the rest of this programme
+#     uses.  `demo_feature_contract` F6 solves the SAME state through the live
+#     copper, the BQ25185 BATFET and the SYS->U21 trunk and gets 1.9492 A on
+#     the live resistances and 1.9653 A at the declared path ceilings.  Two
+#     numbers for one state is one number too many.
+#   * D790-A03: and neither of them closes the CELL side.  F6 starts AT
+#     `BAT_PROTECTED_P`; F10 prices the pass pair separately; nothing asked
+#     whether an attainable cell can hold that node at that current.  It
+#     cannot: solved end to end from the cell through the PCM, the harness,
+#     `F1`, the four `AO4800` channels and `R75`, this state has NO STABLE
+#     OPERATING POINT at any cell voltage -- and at the ones nearest to
+#     feasible the current is above the BQ25185's own `IBAT_OCP` minimum.
+#
+# So the state is no longer DECLARED.  `demo_feature_contract` F12 solves the
+# complete cell-to-load network for each entry of `SUSTAINED_STATES` below and
+# DERIVES, per state, the lowest cell open-circuit voltage at which it holds
+# against every limit at once: the BQ25185's `IBAT_OCP` margin convention, the
+# pass pair's own guaranteed conduction row, the BQ25185 junction maximum, the
+# fitted pouch's published discharge window, and the existence of a stable
+# operating point at all.  Nothing here is asserted; this table only names the
+# MODES, which are observable and firmware-controllable, and itemises what each
+# one draws.  The budget lines themselves are `demo_feature_contract`'s
+# `P3V3_INTERNAL_BUDGET`, cited there.
+#
+# THE PUBLISHED ACCESSORY BUDGETS ARE UNCHANGED.  Every state below keeps
+# 400 mA on the switched 3.3 V rail and 300 mA on the 5 V rail; what D-791
+# corrects is the SIMULTANEITY OF INTERNAL MAXIMA, which was never an owner
+# decision and was derived wrongly.
+SUSTAINED_ALWAYS_ON = {
+    "display backlight converter input": 0.21158,
+    "display panel logic + touch": 0.050,
+    "touch + housekeeping": 0.013,
+    "front RGB at white": 0.0042,
+}
+SUSTAINED_OPTIONAL = {
+    "audio at the capped level": 0.120,
+    "sub-GHz TX": 0.140,
+    "Wi-Fi / BLE TX": 0.355,
+}
+# The states, in increasing order of internal load.  `modes` names what is ON
+# beyond the always-on set, so the restriction a user or firmware has to
+# observe is a MODE and not an unobservable current ceiling.
+SUSTAINED_STATES = (
+    dict(key="display_only", modes=(),
+         what="display at full brightness, panel logic, expanders/IMU and the "
+              "front RGB; no radio transmitting and the audio amplifier idle"),
+    dict(key="display_audio", modes=("audio at the capped level",),
+         what="the always-on set plus the audio amplifier at its capped level"),
+    dict(key="display_subghz", modes=("sub-GHz TX",),
+         what="the always-on set plus ONE sub-GHz radio transmitting"),
+    dict(key="display_subghz_audio",
+         modes=("sub-GHz TX", "audio at the capped level"),
+         what="the always-on set plus one sub-GHz radio transmitting AND the "
+              "audio amplifier at its capped level"),
+    dict(key="display_wifi", modes=("Wi-Fi / BLE TX",),
+         what="the always-on set plus the Wi-Fi/BLE radio transmitting"),
+    dict(key="display_wifi_subghz",
+         modes=("Wi-Fi / BLE TX", "sub-GHz TX"),
+         what="the always-on set plus BOTH radios transmitting"),
+    dict(key="d790_declared",
+         modes=("Wi-Fi / BLE TX", "sub-GHz TX", "audio at the capped level"),
+         what="D-790's declared reference state, retained as the NEGATIVE "
+              "control that D790-A03 found unreachable"),
+)
+# The state D-791 PUBLISHES as the sustained reference.  F12 refuses it if the
+# derivation does not support it, and refuses any state ABOVE it that the
+# documents publish as supported.  It is a NAME, not a number.
+SUSTAINED_REFERENCE_KEY = "display_subghz"
 SUSTAINED_REFERENCE_STATE = dict(
     what="both published Community-Port budgets (400 mA on the 3.3 V rail, "
          "300 mA on the 5 V rail), the display backlight at full brightness, "
-         "the panel logic, the expanders/IMU and the front RGB, with BOTH the "
-         "Wi-Fi and the sub-GHz radios transmitting and the audio amplifier "
-         "at its capped level -- held indefinitely",
-    excluded="the NFC field, a microSD write and an IR burst, all three of "
-             "which are bursty rather than continuous loads",
-    p3v3_internal_A=0.89378,
-    p3v3_itemised={
-        "display backlight converter input": 0.21158,
-        "display panel logic + touch": 0.050,
-        "Wi-Fi / BLE TX": 0.355,
-        "sub-GHz TX": 0.140,
-        "audio at the capped level": 0.120,
-        "touch + housekeeping": 0.013,
-        "front RGB at white": 0.0042,
-    },
+         "the panel logic, the expanders/IMU and the front RGB, and ONE "
+         "sub-GHz radio transmitting -- held indefinitely",
+    excluded="the NFC field, a microSD write and an IR burst are BURSTY and "
+             "are carried as bounded-duty allowances rather than removed "
+             "(D790-A02); a SECOND transmitting radio and the audio amplifier "
+             "at its capped level are NOT in the sustained reference state "
+             "and each raises the derived cell floor, which F12 prints",
+    reference_key=SUSTAINED_REFERENCE_KEY,
+    always_on_A=dict(SUSTAINED_ALWAYS_ON),
+    optional_A=dict(SUSTAINED_OPTIONAL),
     acc_3v3_A=0.400, acc_5v_A=0.300,
-    i_bat_A=1.70,
-    i_bat_basis="((0.89378 + 0.400) x 3.223012 / 0.90 + 0.300 x 5.165 / 0.88) "
-                "/ 3.85 = 1.6608 A, rounded UP to 1.70 A.  "
-                "demo_feature_contract F6 re-derives it from the live budget "
-                "and refuses a disagreement.")
+    i_bat_is_derived="demo_feature_contract F12 solves it from the complete "
+                     "cell-to-load network and this file asserts no value.  "
+                     "D-790's 1.70 A came from an ideal-source formula that "
+                     "disagreed with F6's own network by 0.25 A and did not "
+                     "close the cell side at all (D790-A02 / D790-A03).")
+# D-791 / D790-A02.  THE BURSTY LOADS ARE BOUNDED, NOT REMOVED.
+#
+# D-790 dropped the NFC field, a microSD write and an IR burst from the
+# sustained state on the grounds that they are "bursty rather than continuous".
+# Round-10 is right that a load is not gone because it is short: what makes it
+# safe to leave out of a STEADY-STATE model is a bounded duty against a thermal
+# time constant, and that bound has to be written down.  The enclosure's time
+# constant is minutes; the BQ25185 junction's is seconds.  Each allowance below
+# is therefore expressed as a DUTY over a stated window, its time-averaged
+# contribution is ADDED to every sustained state, and the PEAK is carried by
+# the peak electrical envelope which already sizes ampacity and protection.
+BURSTY_ALLOWANCES = (
+    dict(line="NFC field", peak_A=0.100, duty=0.25, window_s=60.0,
+         basis="a read/write transaction is 0.1-1 s and the Demo's NFC is "
+               "operator-initiated; 25 % of any minute is a deliberately "
+               "generous bound on a hand-held tap interaction"),
+    dict(line="microSD write", peak_A=0.100, duty=0.50, window_s=60.0,
+         basis="a logging write burst; 50 % of any minute bounds continuous "
+               "logging at this board's SPI-A rate"),
+    dict(line="IR transmitter burst average", peak_A=0.050, duty=0.10,
+         window_s=60.0,
+         basis="D-155: the 150 mA peaks are supplied by C12 and the rail sees "
+               "the burst average; a remote-control frame is tens of ms and "
+               "10 % of any minute bounds continuous key repeat"),
+)
+BURSTY_TIME_AVERAGED_A = round(
+    sum(b["peak_A"] * b["duty"] for b in BURSTY_ALLOWANCES), 6)
 
 
 def enclosure_surface_m2(mm=None):
@@ -832,11 +1094,19 @@ RON_BAT_VBAT_ALLOWANCE = 1.40
 # Community Port hands to an accessory on the outside of the right wall.
 DISCHARGE_SYSTEM = dict(
     vcell_V=3.85,
-    vcell_basis="the DERIVED dual-rail VCELL floor the firmware policy "
-                "enforces; a HIGHER cell voltage costs MORE pack power for "
-                "the same current and is the conservative direction for the "
-                "enclosure, so the floor is used, not the 3.5 V single-rail "
-                "one",
+    # D-791 / D790-A02.  THIS IS A FALLBACK, NOT THE MODEL'S ANSWER.  D-790
+    # ASSUMED the node sat at the firmware's dual-rail floor for every state;
+    # D790-A02/A03 overturn that -- the node voltage is an OUTPUT of the
+    # cell-to-load network and is 0.4 to 0.9 V below the cell, never 3.85 V
+    # under a published load.  Every caller that has a network answer now
+    # passes `v_node_V`; this constant is used only when one does not, where it
+    # is conservative because a higher node charges the enclosure more power
+    # for the same current.
+    vcell_basis="FALLBACK ONLY (D-791 / D790-A02): the firmware's former "
+                "dual-rail floor, used when a caller supplies no "
+                "network-solved node voltage.  A HIGHER node voltage costs "
+                "MORE pack power for the same current and is the conservative "
+                "direction for the enclosure",
     acc_3v3_A=0.400, acc_3v3_V=3.223012,
     acc_5v_A=0.300, acc_5v_V=5.165,
     delivered_basis="F6's published Community-Port budgets at the rail's own "
@@ -874,22 +1144,100 @@ UPSTREAM_LOSS = dict(
                   "conductors count because VCELL is differential",
     is_a_declared_allowance=True,
     measurement_of_record="C-THERM-01 and the first-article battery-path "
-                          "resistance measurement")
+                          "resistance measurement",
+    # D-791 / D790-A03.  A DECLARED ALLOWANCE HAS TWO ENDS AND WHICH ONE IS
+    # CONSERVATIVE DEPENDS ON THE QUESTION.  For DISSIPATION and for the node
+    # voltage under load the MAXIMUM is conservative and it is the one above.
+    # For bounding the CURRENT that flows when the node sags by a known amount
+    # -- I = (V_cell - V_node) / R_upstream -- the MINIMUM is, because a
+    # smaller resistance means more current for the same sag.  D-790 had only
+    # one end and therefore could not state the second bound at all.
+    r75_min_ohm=0.010 * 0.99,
+    fuse_min_ohm=0.010,
+    pcm_min_ohm=0.020,
+    harness_min_ohm=0.040,
+    min_basis="R75 at its 1 % low corner; the fuse, PCM and harness at HALF "
+              "their declared allowances, which is a deliberately pessimistic "
+              "floor for a current bound.  All three are MEASURED at first "
+              "article alongside the maxima")
+
+
+def upstream_series_ohm(pass_pair_ohm_per_channel=0.0, spec=None, channels=4,
+                        which="max"):
+    """D-791 / D790-A03.  Cell -> BAT_PROTECTED_P, at either declared end."""
+    spec = UPSTREAM_LOSS if spec is None else spec
+    if which == "min":
+        fixed = (spec["r75_min_ohm"] + spec["fuse_min_ohm"]
+                 + spec["pcm_min_ohm"] + spec["harness_min_ohm"])
+    else:
+        fixed = (spec["r75_ohm"] + spec["fuse_ohm"] + spec["pcm_ohm"]
+                 + spec["harness_ohm"])
+    return fixed + channels * pass_pair_ohm_per_channel
 
 
 def upstream_loss_W(amps, pass_pair_ohm_per_channel=0.0, spec=None,
                     channels=4):
     """Everything between the cell and BAT_PROTECTED_P, all of it inside."""
-    spec = UPSTREAM_LOSS if spec is None else spec
-    series = (spec["r75_ohm"] + spec["fuse_ohm"] + spec["pcm_ohm"]
-              + spec["harness_ohm"] + channels * pass_pair_ohm_per_channel)
+    series = upstream_series_ohm(pass_pair_ohm_per_channel, spec, channels)
     return amps * amps * series, series
 
 
+def thermal_state(amps, v_node_V, delivered_out_W, upstream_series_ohm_value,
+                  ambient_C=None, board_copper_W=0.0, ron_bat_ohm=None,
+                  spec=None, system=None):
+    """D-791 / D790-A02.  ONE THERMAL EVALUATION, FED BY THE REAL NETWORK.
+
+    `v_node_V` is the potential the cell-to-load network produces at
+    `BAT_PROTECTED_P`; `amps` is the battery current at that node;
+    `delivered_out_W` is the power that LEAVES the enclosure through the
+    Community Port, and `upstream_series_ohm_value` is the cell-to-node
+    resistance whose loss stays INSIDE.  Pure.
+    """
+    spec = PACKAGE_JUNCTION if spec is None else spec
+    system = SYSTEM_THERMAL if system is None else system
+    ambient_C = AMBIENT_DESIGN_MAX_C if ambient_C is None else ambient_C
+    ron = (RON_BAT_MAX_OHM * RON_BAT_VBAT_ALLOWANCE if ron_bat_ohm is None
+           else ron_bat_ohm)
+    r_sys = system_thermal_resistance_K_per_W(system)
+    pack_W = v_node_V * amps
+    upstream_W = amps * amps * upstream_series_ohm_value
+    internal_W = pack_W - delivered_out_W + upstream_W
+    air_C = ambient_C + r_sys * internal_W
+    p_bat_W = amps * amps * ron
+    tj_C = air_C + spec["theta_ja_C_per_W"] * (p_bat_W + board_copper_W)
+    return dict(
+        ambient_C=ambient_C, amps=round(amps, 6),
+        v_node_V=round(v_node_V, 6),
+        pack_W=round(pack_W, 6), delivered_out_W=round(delivered_out_W, 6),
+        upstream_series_ohm=round(upstream_series_ohm_value, 6),
+        upstream_loss_W=round(upstream_W, 6),
+        internal_W=round(internal_W, 6),
+        r_sys_K_per_W=round(r_sys, 4),
+        enclosure_rise_K=round(r_sys * internal_W, 3),
+        internal_air_C=round(air_C, 3),
+        ron_bat_ohm=round(ron, 6), p_bat_W=round(p_bat_W, 6),
+        tj_C=round(tj_C, 3),
+        tj_limit_C=spec["tj_operating_max_C"],
+        pouch_limit_C=POUCH_ADJACENT_LIMIT_C,
+        junction_is_inside_the_operating_maximum=bool(
+            tj_C <= spec["tj_operating_max_C"] + 1e-9),
+        internal_air_is_inside_the_pouch_window=bool(
+            air_C <= POUCH_ADJACENT_LIMIT_C + 1e-9),
+        method="TJ = TA(external) + R_SYS x P_internal + thetaJA x PBAT, with "
+               "P_internal = V_node x I - (what the Community Port hands to "
+               "an accessory outside the right wall) + the cell-to-node "
+               "upstream loss, which is under the same lid.  D-791 / "
+               "D790-A02: V_node and I both come from the cell-to-load "
+               "network rather than from an assumed node voltage.")
+
+
 def internal_dissipation_W(amps, spec=None, accessory=True,
-                           pass_pair_ohm_per_channel=0.0):
+                           pass_pair_ohm_per_channel=0.0, v_node_V=None):
     spec = DISCHARGE_SYSTEM if spec is None else spec
-    pack = spec["vcell_V"] * amps
+    # D-791 / D790-A02: the node voltage is an INPUT when a caller has solved
+    # the network, and the declared fallback only when it has not.
+    node = spec["vcell_V"] if v_node_V is None else v_node_V
+    pack = node * amps
     out = (spec["acc_3v3_A"] * spec["acc_3v3_V"]
            + spec["acc_5v_A"] * spec["acc_5v_V"]) if accessory else 0.0
     up, _ = upstream_loss_W(amps, pass_pair_ohm_per_channel)
@@ -898,7 +1246,7 @@ def internal_dissipation_W(amps, spec=None, accessory=True,
 
 def package_junction(amps, board_copper_W=0.0, ambient_C=None,
                      spec=None, ron_allowance=None, system=None,
-                     accessory=True):
+                     accessory=True, charge_system_W=None):
     """D-790 / D789-A02.  TI's junction equation, referenced to the INTERNAL
     air of this product's own enclosure rather than to open still air.
 
@@ -912,6 +1260,13 @@ def package_junction(amps, board_copper_W=0.0, ambient_C=None,
     ambient_C = AMBIENT_DESIGN_MAX_C if ambient_C is None else ambient_C
     allowance = (RON_BAT_VBAT_ALLOWANCE if ron_allowance is None
                  else ron_allowance)
+    # A DECLARED fallback for the charge-regime system power when no caller has
+    # solved it; `demo_feature_contract` F12 passes the reference state's own.
+    if charge_system_W is None:
+        charge_system_W = (DISCHARGE_SYSTEM["acc_3v3_A"]
+                           * DISCHARGE_SYSTEM["acc_3v3_V"]
+                           + DISCHARGE_SYSTEM["acc_5v_A"]
+                           * DISCHARGE_SYSTEM["acc_5v_V"]) + 3.0
     r_sys = system_thermal_resistance_K_per_W(system)
     ron_used = RON_BAT_MAX_OHM * allowance
 
@@ -988,13 +1343,27 @@ def package_junction(amps, board_copper_W=0.0, ambient_C=None,
         else:
             hi = mid
     sustained = solve(lo, ron_used, ambient_C)
-    ref = solve(SUSTAINED_REFERENCE_STATE["i_bat_A"], ron_used, ambient_C)
     out.update(
+        # D-791 / D790-A02 + D790-A03.  THE REFERENCE STATE IS NO LONGER A
+        # NUMBER THIS FILE ASSERTS.  D-790 declared `i_bat_A = 1.70` from an
+        # ideal-source formula and evaluated it here; `demo_feature_contract`
+        # F12 now solves the COMPLETE cell-to-load network for every state in
+        # `SUSTAINED_STATES` and derives the lowest cell voltage each one
+        # holds at.  This file publishes the MODES and the current CEILING the
+        # enclosure supports; F12 decides which states fit under it.
         sustained_reference_state=dict(
             SUSTAINED_REFERENCE_STATE,
-            result=ref,
-            is_inside_the_sustained_envelope=bool(
-                SUSTAINED_REFERENCE_STATE["i_bat_A"] <= lo + 1e-9)),
+            derived_by="demo_feature_contract F12 "
+                       "(judge_cell_to_load / F12_cell_to_load_network)",
+            bursty_allowances=[dict(b) for b in BURSTY_ALLOWANCES],
+            bursty_time_averaged_A=BURSTY_TIME_AVERAGED_A),
+        charge_regime_split=charge_regime_junction(
+            charge_system_W,
+            ambient_C=ambient_C,
+            delivered_out_W=(DISCHARGE_SYSTEM["acc_3v3_A"]
+                             * DISCHARGE_SYSTEM["acc_3v3_V"]
+                             + DISCHARGE_SYSTEM["acc_5v_A"]
+                             * DISCHARGE_SYSTEM["acc_5v_V"])),
         ruling_case="at_the_declared_vbat_allowance",
         predicted_tj_C=ruling["tj_C"],
         internal_air_C=ruling["internal_air_C"],
@@ -1050,17 +1419,30 @@ def package_junction(amps, board_copper_W=0.0, ambient_C=None,
         # that the charge regime is self-limiting.  The ambient up to which
         # the PEAK envelope could be held indefinitely is DERIVED and
         # REPORTED, not required.
+        # D-791 / D790-A02.  THE VERDICT IS ABOUT THE ENVELOPE THIS FILE CAN
+        # ANSWER FOR: the charge regime must be self-limiting in the half TREG
+        # can reach, and a SUSTAINED CURRENT CEILING must exist at all.
+        # Whether any given PRODUCT STATE fits under that ceiling is F12's
+        # question, because only F12 closes the cell side; asking it here from
+        # a declared current was exactly the D790-A02/A03 defect.
         ok=bool(out["charge_regime"]["is_self_limiting"]
-                and lo >= SUSTAINED_REFERENCE_STATE["i_bat_A"] - 1e-9
-                and ref["internal_air_C"] <= POUCH_ADJACENT_LIMIT_C + 1e-9
-                and ref["tj_C"] <= spec["tj_operating_max_C"] + 1e-9),
+                and lo > 0.0
+                and sustained["tj_C"] <= spec["tj_operating_max_C"] + 1e-6
+                and sustained["internal_air_C"]
+                <= POUCH_ADJACENT_LIMIT_C + 1e-6),
         at_25C_ambient_tj_C=solve(amps, ron_used, 25.0)["tj_C"],
         the_land_cannot_be_hotter_than_the_junction=(
             "U11.2 is a pin of this package, so the copper AT the land is "
             "bounded by TJ.  The conductor-sizing limit above rules on the "
             "copper's own rise; this clause rules on the package."))
     return out
+
+
 POUCH_ADJACENT_LIMIT_C = 60.0
+# The fitted pouch's published CHARGE working range tops out at 40 C, which is
+# a different and tighter limit from its 60 C discharge window -- D-791 /
+# D790-A02 separates them because the charge regime is a different state.
+POUCH_CHARGE_LIMIT_C = 40.0
 POUCH_ADJACENT_BASIS = (
     "the fitted 785060 pouch cell's published discharge working range tops out "
     "at 60 C; its charge range tops out at 40 C and firmware/charger "

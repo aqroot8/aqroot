@@ -316,9 +316,26 @@ Round-8 raised two defects in the D-788 procedure and both are real: an
 discards exactly the DC term the 3.300 V and 3.000 V thresholds are stated
 against; and the accessory step was written to run at **3.20 V and 3.05 V** of
 pack voltage, where a release image **refuses to enable an accessory rail at
-all** (the derived VCELL policy is 3.50 V single-rail and 3.85 V dual-rail).
+all** (the derived VCELL policy refuses a FIRST accessory rail below
+**3.55 V** and a SECOND below **3.65 V**).
 Half the matrix was therefore unexecutable and the other half could not
 support its own acceptance.
+
+> **D-791 / `R10-N04` RE-BASED THIS SECTION ONTO THE THIRD FLOOR, AND IT IS THE
+> SECOND TIME THIS PROCEDURE HAS GONE STALE THE SAME WAY.**  The sentence above
+> named the now-RETIRED **3.50 V single-rail / 3.85 V dual-rail** pair, and the
+> accessory step below chose its bench voltages from it.
+> D-791 / `D790-A03` retired that pair because:
+> the node could not hold 3.85 V at the published load, so the floors are now
+> DERIVED by `demo_feature_contract` **F12** as a **triple** —
+> **3.20 V retention**, **3.55 V** to enable a first rail and **3.65 V** to
+> enable a second — and D-790's pair is REPLACED.  A stale floor here is worse
+> than a stale sentence in a specification, because this text tells a technician
+> which pack voltage to set: the old points were chosen to sit above floors that
+> no longer exist.  **F12 now reads this file**, requires all three derived
+> floors to appear formatted from the computed values, and refuses any unfenced
+> sentence that calls some other voltage a single-rail, dual-rail or retention
+> floor — so the next move of the derivation cannot leave this procedure behind.
 
 ### How it is acquired
 
@@ -377,25 +394,43 @@ boost operation (`≈4.15 V`, `≈3.20 V`, `≈3.05 V` at `BAT_PROTECTED_P`):**
   start-up overshoot.
 
 **ACCESSORY STEP — run ONLY where the released firmware actually permits the
-rail**, because that is the only state a user can reach: `ACC_3V3_SW` enabled
-into a 400 mA load and then **hot disconnected** at the J5 mating interface,
-ten times, at
+rail**, because that is the only state a user can reach.  **THE PERMISSION AND
+THE RETENTION ARE JUDGED AT DIFFERENT NUMBERS, AND THE STEP HAS TO SET BOTH.**
+Firmware takes the ENABLE decision from what the gauge reads *before* the rail
+is switched on, and then HOLDS the rail only while the *loaded* node stays above
+the retention floor.  So bring the pack to a reading above the enable floor with
+the rail still OFF, then enable `ACC_3V3_SW` into a 400 mA load and **hot
+disconnect** it at the J5 mating interface, ten times, at
 
-- **`≈4.15 V`** and **`≈3.90 V`** at `BAT_PROTECTED_P` with the 5 V rail ALSO
-  at its published 300 mA — above the **3.85 V** dual-rail floor;
-- **`≈3.55 V`** with the 3.3 V rail alone — above the **3.50 V** single-rail
-  floor, and below the dual floor, so this point also confirms that the 5 V
-  rail is refused or shed there.
+- **`≈4.15 V`** and **`≈3.75 V`** at `BAT_PROTECTED_P` read with the accessory
+  rails OFF, the 5 V rail then ALSO brought up at its published 300 mA — both
+  above the **3.65 V** dual-rail floor;
+- **`≈3.60 V`** read with the accessory rails OFF, the 3.3 V rail alone — above
+  the **3.55 V** single-rail floor and below the dual floor, so this point also
+  confirms that the 5 V rail is refused there.
+
+At every point the LOADED node must stay above the **3.20 V** retention floor.
+A rail that is authorised and then sheds is a **FAILURE of this step**, not a
+property of it: each enable floor is derived to anticipate its own rail's node
+step — **0.3476 V** for the first rail and **0.4537 V** for the second — exactly
+so that the load a permission authorises cannot take the node below the number
+that authorised it.  *(That is `R10-N01`, and this step is where it would be
+seen on a bench.)*
 
 **THE FLOORS ARE NOT A TEST INCONVENIENCE AND MAY NOT BE OVERRIDDEN TO MAKE
-THIS TABLE SQUARE.**  If the worst-case accessory transient below 3.50 V is
-ever wanted as engineering data, it is taken with an **explicitly bounded bench
-image** that is built for that purpose, is labelled as such in the record, and
-**is not the release image and is never flashed to a shipped unit**.  No build
-that relaxes `kAccessorySingleRailFloorV` or `kAccessoryDualRailFloorV` may
-exist in the release tree; `demo_feature_contract` F6 refuses either constant
-below what it derives, and `firmware_hw_map_contract` H6 catches an edit to
-them.
+THIS TABLE SQUARE.**  If the worst-case accessory transient below the enable
+floors is ever wanted as engineering data, it is taken with an **explicitly
+bounded bench image** that is built for that purpose, is labelled as such in the
+record, and **is not the release image and is never flashed to a shipped unit**.
+No build that relaxes `kAccessoryRetentionFloorV`, `kAccessorySingleRailFloorV`
+or `kAccessoryDualRailFloorV` may exist in the release tree;
+`demo_feature_contract` **F12** refuses any of the three constants ABOVE or
+BELOW what it derives — too high is the `D790-A03` defect and too low is the
+obvious one — and `firmware_hw_map_contract` H6 catches an edit to them.
+*(D-791 / `R10-N04`: this paragraph named only the two ENABLE constants.
+`kAccessoryRetentionFloorV` is the one that decides whether an authorised rail
+STAYS up, which is precisely what `R10-N01` found being decided at the wrong
+number — and it was the constant the prohibition did not cover.)*
 
 ### Acceptance
 
@@ -433,13 +468,15 @@ text stays where it is.
 |---|---|---|---|
 | **`Q11-TEMP-01`** | backlight at 0 / 25 / 40 °C after soak, and the D-784 full-duty prime | §7a above | D-780 |
 | **`C-PWR-TRANSIENT-01`** | `+3V3` peak < 3.300 V at the panel pins and trough > 3.000 V at `U1.2`, DC-coupled or synchronised DC+AC, uncertainty charged against the margin | §7b below | D-788 / R7-N02, rewritten at D788-18 |
-| **`C-THERM-01`** | thermography at the 40 °C top of the declared ambient envelope, held at the **declared SUSTAINED REFERENCE STATE** — both published accessory budgets, the display at full brightness, **both** radios transmitting and the audio amplifier at its capped level — and MEASURED against the D-790 model: BQ25185 junction **95.99 °C**, enclosure internal air **55.80 °C**, and the enclosure's own **`R_SYS` = 3.2493 K/W**, which is a DECLARED allowance and is what this test exists to measure.  Also record the `U11.2` narrow run.  *(D-789 framed this item around a 115.44 °C junction computed with a JEDEC θJA referenced to the EXTERNAL ambient; `D789-A02` replaced the frame.)* | `audit_rail_ampacity.py`, `AQROOT_DEMO_FAB_HANDOFF.md` | D-788, re-based at D788-03, RE-BASED AGAIN at D-790 / D789-A02 |
-| **`C-BAT-GATE-01`** | `ΔVGATE` (GATE − `BAT_PROTECTED_P`) and pass-pair drop (`BAT_RAW` − `BAT_SENSE`) at 2.35 A at `BAT_RAW` = 4.15 / 3.60 / 3.05 V — six numbers, on the fitted **`AO4800`**.  This is what converts the one thing NO candidate publishes — hot `RDS(on)` at `VGS` = 2.5 V — from an extrapolation into a measured bound | [`SOURCING_LEDGER.md`](SOURCING_LEDGER.md) | D-789 / `R8-N01`, part fixed at D-790 / `D789-A01` |
-| **`C-DISP-01`** | the display module's own `+3V3` draw, split into **panel logic** (`J1` `VCI` + `IOVCC` + the FT6236 touch controller) and **backlight converter input** (`U17` `VIN`), at full brightness and at the rail's heavy-load minimum.  The backlight half is DERIVED — `demo_feature_contract` `F6` solves it at **211.58 mA** from published maxima only — and the panel half is a **DECLARED 50 mA allowance**, because ILI Technology publishes Sleep-in and Deep-Standby currents and **no active-mode supply current at all** and the EastRising module specification is not obtainable here.  This test is what replaces that declaration with a measurement | `checks/demo_feature_contract.py` F6 `p3v3_internal_budget`, `AQROOT_DEMO_FAB_HANDOFF.md` | D-790 / `D789-A11` |
+| **`C-THERM-01`** | thermography at the 40 °C top of the declared ambient envelope, held at the **D-791 SUSTAINED REFERENCE STATE** — both published accessory budgets, the display at full brightness and **ONE sub-GHz radio transmitting** — and MEASURED against the F12 model: battery current **1.6520 A**, BQ25185 junction **89.97 °C**, enclosure internal air **53.43 °C**, and the enclosure's own **`R_SYS` = 3.2493 K/W**, which is a DECLARED allowance and is what this test exists to measure.  **ALSO record the CHARGE regime**: with an adapter attached, the input FET, the charge FET and any BATFET supplement current, and the ambient at which the internal air reaches the pouch's own 40 °C charge window — DERIVED at **30.0 °C**.  Also record the `U11.2` narrow run.  *(D-789 framed this around a JEDEC θJA referenced to the EXTERNAL ambient; `D789-A02` replaced the frame.  D-790 then declared a reference state with BOTH radios transmitting that `D790-A02`/`D790-A03` show has no stable operating point at all; D-791 replaces the state.)* | `audit_rail_ampacity.py`, `checks/demo_feature_contract.py` F12, `AQROOT_DEMO_FAB_HANDOFF.md` | D-788, re-based at D788-03, at D-790 / D789-A02, and AGAIN at D-791 / D790-A02 |
+| **`C-BAT-GATE-01`** | `ΔVGATE` (GATE − `BAT_PROTECTED_P`) and pass-pair drop (`BAT_RAW` − `BAT_SENSE`) at **2.60 A** at `BAT_RAW` = 4.15 / 3.60 / 3.05 V — six numbers, on the fitted **`AO4800`**.  This is what converts the one thing NO candidate publishes — hot `RDS(on)` at `VGS` = 2.5 V — from an extrapolation into a measured bound.  **D-791 / `D790-A01` ADDS TWO MORE**: the TURN-ON TIME from `SHDN` release to full enhancement, because ADI specifies `IGATE(UP)` and `tD(ON)` only at `VIN` = 12 V and neither is a 1S condition so the datasheet does not bound it here; and the current at which `VGS(Q2)` falls to the `AO4800`'s 2.5 V row, against the DERIVED ceiling of **2.2845 A** | [`SOURCING_LEDGER.md`](SOURCING_LEDGER.md) | D-789 / `R8-N01`, part fixed at D-790 / `D789-A01` |
+| **`C-DISP-01`** | the display module's own `+3V3` draw, split into **panel logic** (`J1` `VCI` + `IOVCC` + the FT6236 touch controller) and **backlight converter input** (`U17` `VIN`), at full brightness and at the rail's heavy-load minimum.  The backlight half is DERIVED — `demo_feature_contract` `F6` solves it at **233.13 mA** from published maxima plus the four DECLARED loss allowances `D790-A04` requires (diode `Vf` at the inductor PEAK, switch transition and `Coss` at the MAXIMUM switching frequency, gate drive, and core loss + hot DCR) — and the panel half is a **DECLARED 50 mA allowance**, because ILI Technology publishes Sleep-in and Deep-Standby currents and **no active-mode supply current at all** and the EastRising module specification is not obtainable here.  This test is what replaces that declaration with a measurement | `checks/demo_feature_contract.py` F6 `p3v3_internal_budget`, `AQROOT_DEMO_FAB_HANDOFF.md` | D-790 / `D789-A11` |
 | **`C-SPK-01`** | delivered speaker-lead insulation OD, then two sacrificial crimps pulled to destruction | [`OFF_BOARD_BOM.md`](OFF_BOARD_BOM.md) §7 | D-789 / D788-10 |
 | **`C-ADH-01`** | DOWSIL 3145 adhesion on the actual soldermask and the actual lead insulation, per lot, after the full 72 h hold | [`BATTERY_HARNESS.json`](BATTERY_HARNESS.json) | D-789 / D788-17 |
 | **`C-ACC-01`** | delivered Community-Port potential at the J5 mating interface, each 3.3 V contact **alone** and with the header fully mated | [`ACC_3V3_REINFORCEMENT.json`](ACC_3V3_REINFORCEMENT.json) | D-789 / D788-02 |
 | **`C-ACC-02`** | the two routed `ACC_3V3_SW` contact resistances (79.0 / 224.4 mΩ expected) | [`ACC_3V3_REINFORCEMENT.json`](ACC_3V3_REINFORCEMENT.json) | D-789 / D788-16 |
+| **`C-FW-ABORT-01`** | on the assembled board, with the console: request the 1 kHz tone while `AMP_SD_MODE`'s write is made to NACK (pull the expander's I2C or hold `SDA` during the transaction), then **watch `U2.P05` and the speaker for 30 s**.  The amplifier must never energise after the aborted command — D-790 left an ON intent that the main loop's deferred retry would honour with no tone and no matching OFF.  Repeat with the display test: after a NACKed `DISP_RST_N` release, confirm the console does NOT report the panel up, and that when the release finally lands the image **re-runs the ILI9488 initialisation** before it does | `Firmware/test/test_production_image.cpp`, `checks/firmware_hw_map_contract.py` H6 | D-791 / `D790-A06` + `D790-A07` |
+| **`C-WARM-IMAGE-01`** | with both accessory rails ON, force a warm MCU reset (`EN` pulse, NOT a power cycle — the PCAL9535As must stay powered) while holding the internal I2C bus down; confirm the console reports the safety state as PENDING/UNKNOWN and **never** claims the rails are off, and that the accessory latches are still physically ON.  Release the bus and confirm the loop ALONE turns both rails off and reports recovery, with no console input | `Firmware/test/test_production_image.cpp` (the same scenario, on the host), `checks/firmware_hw_map_contract.py` H6 | D-791 / `D790-A05` + Fable `V-04` |
 | **J4 fit / pull / thermal** | battery pigtail hole fit, retention and thermal acceptance | [`BATTERY_HARNESS.json`](BATTERY_HARNESS.json), §6 | D-781 / D-782 |
 
 **None of these is optional and none of them is a PCB-fabrication item.**  They

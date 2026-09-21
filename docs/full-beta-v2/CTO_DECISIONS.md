@@ -1,3 +1,485 @@
+## D-791 — **ROUND-10 CORRECTION: A FLOOR THE NODE COULD NEVER REACH, A LOSS MODEL THAT WAS ONLY A CONDUCTION MODEL, AND THREE CALL SITES THAT COULD STILL UNDO THEMSELVES**
+
+    authority  board c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907
+               MANIFEST 6ebe4edcb81cdd00a00744c8d58acb4e7a505deebd8d23467ca1e98738f6988c
+    parent     58a4cc765d369429dd5d881b504a0b8bff0c7e2b (D-790, REJECTED by Round-10)
+    scope      D790-A01..A14, D790-S01, Fable F-N01/F-N02/F-N03/F-N04/F-V04/
+               F-V05/F-C01/F-C03, and R10-N01/R10-N02/R10-N03/R10-N04/
+               R10-N05 found here
+    order      HOLD.  External-review target.  Manufacturer CAM and first-article
+               acceptance remain outstanding; nine lines are SHORT on the live
+               sweep and Q2/Q3 is a tenth exact identity needing an authorised
+               distributor allocation (D790-S01).
+               NO OWNER DECISION IS OPEN.
+
+Round-10 rejected D-790.  **Fable** passed the design for CAM/order closure but kept
+3 medium / 16 low plus verifier and sourcing residuals.  **Astra** blocked the order
+with **15 findings** -- 0 critical, 4 high, 8 medium, 3 low -- plus a procurement item,
+and **established no unconditional PCB respin**.  All of `A01`..`A14` and `S01` are
+closed here, plus every Fable complementary item, plus **three more this closeout found
+itself**: `R10-N01`, `R10-N02`, `R10-N03`, and -- at the closeout's own
+verification pass, after every A-item was already green -- `R10-N04` and `R10-N05`.
+
+**THE ROUND HAS A THEME AND IT IS ONE TURN PAST ROUND-9's.**  Round-8 was *a proof
+stretched past its evidence*.  Round-9 was *a number read at the wrong condition*.
+Round-10 is *a number that is right about a state the board cannot occupy* -- a floor
+the node can never reach, a reference state with no operating point, and a loss model
+that solved only the losses it had thought of.
+
+---
+
+### 1.  `D790-A03` -- THE FIRMWARE'S VCELL FLOORS WERE NODE VOLTAGES THE NODE CANNOT REACH
+
+F6 has modelled from `BAT_PROTECTED_P` downwards since D-775 and has always said so in
+its own words: it deliberately does *"not double-count Q2/Q3, R75 or the pack's own
+internal resistance, all of which are UPSTREAM of what the gauge reads"*.  That is the
+right thing to do for the sag BELOW the node.  It is the wrong thing to do for the
+question nobody asked, which is **whether the node can BE there at all**.
+
+It cannot.  Sustaining **3.85 V** at `BAT_PROTECTED_P` while the published load draws
+needs more than **4.3 V** upstream through four `AO4800` channels and `R75` alone, and
+the charger's own regulation maximum on the pack is **4.221 V**.
+
+**AND THE CONSEQUENCE IS NOT ACADEMIC.**  The accessory rails this product publishes
+would have been authorised by the enable check and shed again by the settled recheck
+400 ms later -- **on a full pack** -- because the very load step the permission
+authorised takes the node below the number that authorised it.  A derivation whose
+answer is unreachable is not conservative; it is vacuous, and nothing in the D-790
+gate could see it.
+
+**`F12` IS THE WHOLE NETWORK, SOLVED AS ONE FIXED POINT.**
+
+    CELL(OCV) -[pack DC resistance: cell + PCM]- pack terminals
+              -[26 AWG harness, both conductors]- J4 -[F1]- BAT_RAW
+              -[Q2 ch1]-[Q2 ch2]-[Q3 ch1]-[Q3 ch2]- BAT_SENSE
+              -[R75]- BAT_PROTECTED_P        <- the MAX17048 node
+              -[live copper + BQ25185 BATFET]- SYS
+              -[U12]-> +3V3 -> internal load and [U20] -> ACC_3V3_SW
+              -[live SYS->L4 trunk]-[U21]-> ACC_5V_RAW -[U22]-> ACC_5V_SW
+
+The channel resistance sets the drops, the drops set the node and `VSYS`, those set the
+currents, the currents set the dissipation, the dissipation sets the internal air, and
+the air moves the channel resistance again.  Seven limits are asked **together** at an
+attainable cell voltage: a stable operating point existing at all, the BQ25185's own
+`VBUVLO`, `U12`'s published `VIN` floor, the `IBAT_OCP` margin at a declared wider
+accuracy band, the `AO4800`'s lowest published conduction row, TI's junction maximum
+referenced to this enclosure's internal air, and the fitted pouch's discharge window.
+
+**THE PACK'S OWN DC RESISTANCE REPLACES AN INVENTED ALLOWANCE.**  D-790 carried a
+declared 40 mOhm "PCM allowance" citing nothing.  The 785060 specification publishes
+**<= 35 mOhm at the PACK terminals** (AC 1 kHz, 50 % charge, 25 C), which contains the
+cell AND the protection board; a DECLARED **2.5x** multiplier carries it to DC.  It is
+worse than the number it replaces, which is the direction a real source should move an
+invented one.
+
+**THE THREE FLOORS ARE DERIVED AND THE FIRMWARE CARRIES EXACTLY THEM.**
+
+    kAccessoryRetentionFloorV    3.20 V   VBUVLO bound + gauge error
+    kAccessorySingleRailFloorV   3.55 V   retention + the first rail's node step
+    kAccessoryDualRailFloorV     3.65 V   retention + the second rail's node step
+
+An ENABLE floor is higher than a RETENTION floor because the permission is taken
+**before the load exists** -- D-779 named that and D-790 never quantified it.  Judging
+retention at an enable floor is precisely what sheds a rail 400 ms after authorising
+it.  `F12` refuses a constant that is not the number it derives **in either direction**:
+too high is the D790-A03 defect and too low is the obvious one.
+
+---
+
+### 2.  `D790-A02` -- ONE ELECTRICAL NETWORK, AND THE BURSTY LOADS BOUNDED RATHER THAN DELETED
+
+D-790 declared a sustained reference state and computed its battery current from
+
+    ((0.89378 + 0.400) x 3.223012 / 0.90 + 0.300 x 5.165 / 0.88) / 3.85 = 1.6608 A
+
+F6 solves the SAME state through the live copper, the BATFET and the `SYS`->`U21` trunk
+and gets **1.9492 A** live / **1.9653 A** path-bound.  Two numbers for one state is one
+number too many, and **neither of them closes the cell side**: solved end to end, that
+state has **NO STABLE OPERATING POINT AT ANY ATTAINABLE CELL VOLTAGE**.
+
+So the reference state stops being DECLARED.  `F12` derives, per state, the lowest cell
+open-circuit voltage at which it holds -- and the states are named in **OBSERVABLE
+MODES**, because a restriction a user cannot observe is not a restriction.  The
+published sustained reference state is both Community-Port budgets at full, the display
+at full brightness and **ONE sub-GHz radio transmitting**.  D-790's own declared state
+is retained as the **negative control** that must stay refused.
+
+**THE BURSTY LOADS COME BACK WITH A BOUND.**  D-790 removed the NFC field, a microSD
+write and an IR burst as "bursty rather than continuous".  A load is not gone because it
+is short; what makes it safe to leave out of a steady-state model is a bounded duty
+against a thermal time constant, and that bound has to be written down.  They are now
+**25 % / 50 % / 10 % of any minute**, time-averaged into every sustained state.
+
+**AND `TREG` DOES NOT CAP WHAT D-790 SAID IT CAPPED.**  SLUSF65B 6.3.7.6 folds back the
+CHARGE current.  It cannot reduce the SYSTEM load, which crosses the same package
+through the INPUT FET while an adapter is attached -- and once the system asks for more
+than `ILIM` can supply, the battery SUPPLEMENTS through the BATFET as well (6.3.3).
+All three conduction paths are now priced and the regulated and unregulated halves are
+reported separately.  The clause asks the honest question: with the charge current
+folded ALL the way to zero, is the junction still inside TI's operating maximum?  It is.
+And the pouch's own **40 C CHARGE** window -- a different and tighter limit than its
+60 C discharge window -- yields a DERIVED **charge-ambient ceiling**, which is a
+supervised condition a human can observe rather than an unobservable current rule.
+
+---
+
+### 3.  `D790-A01` -- THE CONDUCTION ROW IS A CEILING, AND IT IS NOW PRINTED
+
+D-790's F10 ruled at the sustained envelope while its own PEAK case sat **7.9 mV** under
+the `AO4800`'s lowest published `RDS(on)` row, and said nothing about what that means.
+A threshold voltage is not an ampere-conduction guarantee, and neither is silence.
+
+`F10` now DERIVES the current at which `Q2`'s `VGS` leaves that row, publishes it as a
+ceiling, and states what lies above it: the part is still ENHANCED -- `VGS` clears the
+1.5 V `VGS(th)` MAXIMUM by more than a volt at every current in this envelope -- but its
+resistance is no longer a published number, so the consequence of an unpublished higher
+resistance is more drop and more heat, **both self-limiting and both inside a protection
+chain that does not depend on how well the pair conducts**.  That is a PROTECTION-DOMAIN
+excursion and this contract does not rule there.  A bounded-duration treatment is
+available from the only transient thermal number AOS states numerically -- **62.5 C/W
+MAX for t <= 10 s** against 90 C/W steady state.
+
+**THE DECLARED HOT RATIO GETS A SENSITIVITY INSTEAD OF A FOOTNOTE.**  The 25 -> 125 C
+ratio is taken at the `VGS` = 10 V row and carried to the 2.5 V row where AOS publishes
+only 25 C.  D-790 declared it and argued it was conservative in direction.  The argument
+stands and it is no longer the only thing between the model and the answer: the ruling
+case is required to survive **2x** the declared ratio.
+
+**THE STARTUP TRAJECTORY SAYS WHAT IS NOT PUBLISHED.**  ADI specifies `IGATE(UP)` at
+**GATE = 15 V, VIN = 12 V** and `tD(ON)` at `VIN` = 12 V.  Neither is a 1S condition, so
+the turn-on time at this board's `BAT_RAW` is **NOT BOUNDED** by the datasheet.  Nothing
+depends on it being fast -- both body diodes of each common-source pair are anti-series,
+so nothing conducts until the gate rises and there is no inrush through a diode -- and
+it is measured at `C-BAT-GATE-01`.
+
+**AND `AO4806` IS RE-EXAMINED AND RE-REJECTED FOR THE RIGHT REASON.**  D-790 rejected it
+partly because *"its own manufacturer describes it as common-drain"*.  That was wrong:
+its published pin map is **1 = S2, 2 = G2, 3 = S1, 4 = G1, 5/6 = D1, 7/8 = D2** --
+IDENTICAL to the `AO4800`'s -- and "common-drain configuration" is AOS describing a
+typical application, not the package.  A fresh sweep of the AOS SOIC-8 dual N-channel
+range reproduces D-790's result: exactly two parts publish an `RDS(on)` row at
+`VGS <= 2.5 V`, and `AO4806`'s **22 mOhm MAX (16.5 typ)** row -- plus a 30 mOhm row at
+`VGS` = 1.8 V the `AO4800` does not have at all -- would be materially better.  **It is rejected
+on STOCK** -- the genuine AOS line reads 0 and the stocked lines are marketplace
+re-marks this programme refuses -- and the reason is now recorded correctly.
+
+---
+
+### 4.  `D790-A04` -- THE BACKLIGHT MODEL WAS A CONDUCTION MODEL WEARING A LOSS MODEL'S NAME
+
+D-790 solved **211.58 mA** from `RDS(on)`, `IQ`, DCR and the diode's forward drop **at
+the average current**.  Four terms were missing and every one of them is unpublished for
+these exact parts, so every one is a DECLARED allowance with its own stated basis:
+
+  * **the diode's forward voltage at the inductor PEAK.**  onsemi publishes ONE point
+    for the `NSR0240HT1G`, 710 mV at 200 mA, and this converter peaks at about 430 mA.
+    The loss is charged as `Vf(peak) x I_average`, which bounds the integral whatever
+    the curve does in between;
+  * **switch transition and `Coss` loss**, at the **MAXIMUM** published switching
+    frequency -- conduction still runs at the MINIMUM, where the RMS is worst, so each
+    term is charged at its own worst end and that is stated rather than implied;
+  * **gate-drive loss**, carried in addition to the published `IQ` rather than assumed
+    to be inside it;
+  * **the winding's core loss and hot DCR.**
+
+**211.58 -> 233.13 mA** at an implied **75.4 %** efficiency, still under TI's own
+"up to 90 %" headline.  Internal `+3V3` moves **1.1438 -> 1.1653 A**.  The panel/touch
+line remains a labelled DECLARED 50 mA allowance: the EastRising module specification is
+still not obtainable from this environment (the vendor returns 403 to every fetch this
+repository can make) and ILI Technology publishes no active-mode supply current at all.
+`C-DISP-01` is the measurement of record.
+
+---
+
+### 5.  `D790-A12` + `R97` 1.78 kOhm -> 1.87 kOhm
+
+D-790 / `R9-N01` replaced SLVSGP6A's widest `ILIM` accuracy row with the worse of the
+two rows that BRACKET `R97`.  Round-10 is right to refuse the word "bound": TI publishes
+four points and states nothing about the accuracy BETWEEN them, so "no extremum lies
+between 1.15 k and 2.21 k" is an inference from four samples -- the same shape of
+argument D-788 refused on `U20`'s `RON` and D-789 refused on the LTC4368's gate-drive
+row.
+
+**The ruling band returns to the WIDEST published ratio**, which needs no assumption at
+all, and the bracketed figure is reported beside it as the engineering estimate it is.
+That is strictly stronger than an explicit assumption and it removes the finding rather
+than arguing with it.
+
+**AND IT COSTS A PART VALUE.**  At the widest ratio, with `D790-A04`'s corrected
+backlight budget, `R97` = 1.78 kOhm puts the limiter's worst corner plus the internal
+envelope at **2.0139 A** against the TPS63020's published **2 A** -- negative margin.
+`R97` moves to **1.87 kOhm** (`0603WAF1871T5E`, LCSC `C22850`, same UNI-ROYAL `0603WAF`
+series, same manufacturer, same 0603 land, only the resistance).  `ACC_3V3` still
+GUARANTEES **0.4058 A** against the published 400 mA -- at the WIDEST ratio, so that
+guarantee needs no assumption -- and `U12`'s worst compound case is **1.9702 A**, a
+**named thin margin** of 29.8 mA.  **Both published budgets are unchanged**, which is
+what the owner decision requires of any part change.
+
+---
+
+### 6.  `D790-A10` / `D790-A11` -- TWO MORE ROWS READ AT THEIR OWN CONDITIONS
+
+`IBAT_OCP` is published as a TYPICAL 3.13 A at `VBAT` = 4 V with **no MIN/MAX column**,
+and `IBAT_OCPACC` as 18 % MAX at `IBAT` = 3.125 A, `TJ` = 27 C.  D-790 propagated
+2.5625..3.6875 A as a guaranteed all-temperature, all-cell band.  The stated band is
+RETAINED for the fault screens -- widening a band moves BOTH ends and is not
+conservative in both directions at once -- and the SUSTAINED envelope now rules at a
+**DECLARED WIDER +/-25 %** band, with the stated one reported beside it.
+
+`U22`'s 54 mOhm `RON` belongs to `VIN` = 5 V and its input is the `TPS61023` boost's own
+**low** setpoint corner, about 4.74 V.  Its bound is the 3.3 V row's **68 mOhm**, by the
+same monotone rule this file already uses for `U20`.
+
+---
+
+### 7.  `D790-A05` / `A06` / `A07` -- THREE CALL SITES THAT COULD STILL UNDO THEMSELVES
+
+  * **`A05`**: deleting `serviceExpanderRecovery()` from `loop()`'s not-ready branch
+    passed the complete D-790 gate, because `test_production_callers.cpp` drives the
+    METHOD and nothing compiled the branch that CALLS it.  The image test now boots the
+    shipped firmware onto a wedged bus with the PHYSICAL accessory latches retained ON
+    and requires the loop ALONE to turn them off once the bus returns.  Both the exact
+    Fable `V-04` mutant and a made-unreachable variant are caught BEHAVIOURALLY.
+  * **`A06`**: a failed `setAmplifierIntent(true)` aborted the console command and left
+    `want = on`, so the loop's deferred retry would drive `AMP_SD_MODE` HIGH some
+    milliseconds later -- amplifier energised, no tone, no matching OFF.  An unconfirmed
+    ENABLE is now CANCELLED and REPLACED by an OFF intent inside `setAmplifierIntent`
+    itself, which covers every error exit of every caller.  Tested against a persistent
+    NACK and against a LOST FINAL ACK, where the byte lands and the acknowledge does not.
+  * **`A07`**: `display_up_` survived a later `DISP_RST_N` pulse, so a success -> reset
+    -> NACKed release -> deferred release sequence ended with `displayIsUp()` true again
+    the instant the retry landed, with no SPI init in between.  A new reset now takes the
+    panel down the moment it is ASSERTED, and `displayInitOwed()` makes the loop RE-RUN
+    the initialisation the reset invalidated before anything may report the panel up.
+
+D-790's `displayIsUp()` mutant becomes an EQUIVALENT one under the A07 fix and is
+RETIRED with that reason recorded, replaced by the invariant the flag now stands for.
+
+---
+
+### 8.  `D790-A09` -- THE RELEASE WRAPPER COULD PASS A RED CHILD
+
+`contract_regression`'s exit code read `all_ran` -- which means only that the report FILE
+exists -- and byte-identity.  It captured each contract's verdict and **never read it**.
+Nineteen FAILING contracts compared against an equally failing baseline are
+byte-identical, so the wrapper exited 0 on a board every one of its contracts had
+refused.  `all_contracts_pass` is now exposed and is a **hard term of the exit code in
+every mode**, including `--create-baseline`: a baseline written from a failing suite is a
+failing baseline.  `--baseline` and `--create-baseline` are now **mutually exclusive**
+rather than silently resolved, and a labelled `--red-report-diagnostic` mode relaxes
+nothing at all.
+
+---
+
+### 9.  `D790-A08` + `F-N01` + `F-N03` -- THE DOCUMENTS, AND TWO CHECKS SO THEY CANNOT DRIFT AGAIN
+
+`DEVICE_SPEC` still named `NTMD4820NR2G` **FITTED and LOCKED** in a live table row, four
+months of decisions after it was retired, beside a correctly-updated paragraph in the
+same file.  `OFF_BOARD_BOM` still carried the 1.80 mm Murata hard point and D-789's
+delivery figures.  All corrected -- and `F7` gains a **CONTRADICTION check over table
+rows**: a markdown table row in a normative document may not carry a retired identity
+token unless that row also carries a supersession marker.  Prose is deliberately not
+policed; a decision record must be able to say what a part used to be.
+
+New **`F13`** cross-checks every FITTED non-capacitor MPN against its own archived
+distributor record -- the record must exist, its brand must match the schematic's
+Manufacturer field after alias normalisation, and its LCSC code must match.  It found
+what Fable's `F-N01` named and one more:
+
+  * `Q4`, `Q6`, `Q7`, `Q8`, `Q9` are **onsemi** `BSS138LT1G` (LCSC `C82045`) and the
+    schematic said Alpha & Omega Semiconductor -- the maker of the other small-signal
+    FETs on the same sheet;
+  * **`R10-N03`, found by the new clause**: `Q10` is `2N7002`, LCSC `C8545`, whose brand
+    is **Jiangsu Changjing Electronics Technology**, and the schematic said onsemi -- the
+    same defect in the opposite direction;
+  * `Q5`'s `AO3401A` said "Alpha & Omega" where every other AOS part says "Alpha & Omega
+    Semiconductor", which is how a cross-check gets turned off.
+
+The `AO4800` symbol's channel pin names are corrected to the AOS map (`F-N03`); they were
+inherited and reversed.  Electrically immaterial here, because both gates and both
+sources are tied -- and a trap for any future reuse, which is exactly why it is fixed.
+
+---
+
+### 10.  `R10-N02`, FOUND HERE -- ONE CLAUSE WAS ANSWERING TWO QUESTIONS
+
+`no_reachable_state_trips_the_pack` required four states to stay under the first
+protection threshold any unit can trip.  Two of them are states "at the limiter" -- an
+accessory pulling until `U20` or `U22` CURRENT-LIMITS, which for `ACC_5V` is **0.6078 A
+against a published 300 mA budget**.  That is not a conforming accessory; it is the
+protection working.
+
+`D790-A04`'s corrected backlight budget tipped `acc5v_alone_at_its_limiter` from
+**2.5546 A** to **2.5803 A** against an `IBAT_OCP` minimum of 2.5625 A -- a clause that
+had been passing by 7.9 mA now failing by 17.8 mA, on a state that was never a
+conforming one.  The clause SPLITS rather than relaxes:
+
+  * every state in which BOTH accessories CONFORM stays under the first protection
+    threshold any unit can trip -- unchanged, and it passes with room;
+  * every ACCESSORY OVERCURRENT must land in the RECOVERABLE protection and BELOW the
+    latching one: under the LTC4368 breaker's guaranteed minimum trip and under the `F1`
+    one-shot fuse, so what a user meets is a BQ25185 `BATOCP` hiccup that re-enables the
+    BATFET after `tREC_SC`, not a latched board.
+
+**WHAT IS NO LONGER CLAIMED, STATED PLAINLY:** that an accessory pulling twice its
+published budget, while every internal subsystem runs at its published maximum at once,
+cannot hiccup the charger.  On a unit whose `BATOCP` sits at the bottom of its band it
+can -- and that is the protection acting on a non-conforming load.  The historical
+definition is retained in the report, computed, so a reader can see exactly what moved.
+
+---
+
+### 11.  `R10-N01`, FOUND HERE -- THE ENABLE FLOOR AND THE RETENTION FLOOR WERE THE SAME TWO NUMBERS
+
+D-790 used `kAccessorySingleRailFloorV` and `kAccessoryDualRailFloorV` for BOTH the
+enable decision and the retention decision.  Because enabling a rail DROPS the node by
+0.35-0.45 V, a pair authorised at the dual floor was below that same floor by the time
+the settled recheck ran: **the 5 V rail would have been enabled and shed 400 ms later,
+every time, on any pack.**  The fix is the third constant, and the regression is now a
+host-test claim in its own right.
+
+---
+
+### 12.  `D790-A14` -- THE GAUGE'S OWN ERROR IS CHARGED TO EVERY FLOOR
+
+ADI 19-6171 Rev.7 publishes `VERR` as **+/-7.5 mV** at `VCELL` = 3.6 V and `TA` = 25 C
+and **+/-20 mV** otherwise, with a 78.125 uV resolution.  The firmware compares a
+REPORTED value, so a reported 3.200 V can be an actual 3.180 V.  Every derived floor now
+carries the **positive** error plus one quantisation step before it is gridded.
+
+---
+
+### 13.  `D790-S01` -- WHAT IS LEFT, AND IT IS STILL NOT AN ENGINEERING ITEM
+
+The live sweep re-run against the REGENERATED assembly BOM reports **nine** short lines:
+`J5`, `L2`/`L4`, `L5`/`L6`, `MK1`, `Q11`, `U18`, `U19`, `U2`/`U3`, `U9`.  `Q2`/`Q3` is a
+tenth exact identity needing an authorised allocation without being short.  The
+`A01`/`A03` engineering hold on the `AO4800` is RELEASED by this decision -- the
+four-channel model closes and the cell side closes with it -- so what remains on that
+line is purchasing, not engineering.  This repository can reach the JLCPCB catalogue and
+not an allocation system; confirming genuine traceable stock is a purchasing action and
+it is the remaining gate.  **No clone or re-marked substitution is authorised anywhere
+on this list.**
+
+---
+
+### 14.  Fable's complementary items
+
+`F-N02` (temperature-based accessory shedding from BMI270/ESP32 die temperature) is
+EVALUATED AND DECLINED, with the reason recorded: a die temperature is not the pouch's
+temperature and not the ambient, the relationship between them is exactly the thing
+`C-THERM-01` exists to measure and has not measured yet, and `D790-A02` warns against
+converting a thermal-model defect into a firmware temperature rule without proving the
+sensor relationship first.  What replaces it is better: the supported concurrency is now
+a table of OBSERVABLE MODES and the charge regime has a DERIVED ambient ceiling, both of
+which a human can act on without a sensor.  It is a REV-B candidate once `C-THERM-01`
+has measured the relationship.
+
+`F-N04`: the live sourcing records are refreshed against the regenerated BOM and the
+EastRising primary PDF remains unobtainable -- every fetch this environment can make
+returns 403 -- which is recorded rather than left implied.
+
+`F-C01` (shedding both rails on any I2C uncertainty) remains a safe and deliberately
+disruptive limitation; a resync-first improvement is a REV-B question.  `F-C03` (the NFC
+antenna-side shunt) remains a hand-tack with its first-article tune/rework requirement
+intact.
+
+### 15.  `R10-N04` + `R10-N05`, FOUND AT THE CLOSEOUT -- A PROCEDURE THE FLOORS LEFT BEHIND, AND THE GATE THAT WAS HOLDING IT THERE
+
+`D790-A08` is *"active normative docs still contradict D-790"*, and §9 closed it by
+correcting `DEVICE_SPEC` and `OFF_BOARD_BOM` and adding `F7`'s contradiction check over
+table rows.  The re-verification pass found the same defect one file further on, in the
+document where it does the most damage.
+
+**`R10-N04`.**  `FIRST_FIVE_ASSEMBLY_PLAN` §7b -- the `C-PWR-TRANSIENT-01` accessory
+step -- still named the **3.50 V single-rail / 3.85 V dual-rail** pair that §1 retired.
+This is not a stale sentence in a specification.  **That text CHOOSES THE BENCH VOLTAGES
+A TECHNICIAN SETS**, and it chose them *because* of those floors: `≈3.90 V` "above the
+3.85 V dual-rail floor", `≈3.55 V` "above the 3.50 V single-rail floor".  Against the
+derived triple, `≈3.55 V` sits EXACTLY ON the 3.55 V single-rail enable floor, so the
+release image's permission at the very point the step takes acceptance data is
+indeterminate -- which is precisely the *"half the matrix was unexecutable"* defect
+`D788-18` already fixed once in this same section, reintroduced by a floor change.
+
+**AND THE STEP WAS CONFLATING TWO DIFFERENT COMPARISONS.**  It quoted a single
+`BAT_PROTECTED_P` voltage per point.  Firmware takes the ENABLE decision from what the
+gauge reads *before* the rail is switched on and holds the rail only while the *loaded*
+node stays above the RETENTION floor -- `R10-N01`'s whole subject.  The step now sets the
+pre-enable reading and judges the loaded node separately: `≈4.15 V` and `≈3.75 V` for the
+dual case against the **3.65 V** floor, `≈3.60 V` for the single case against the
+**3.55 V** floor -- the only window in which one rail is permitted and the second refused
+-- with the loaded node required to stay above **3.20 V** at every point.  A rail that is
+authorised and then sheds is now a FAILURE of the step rather than a property of it.
+The paragraph forbidding a relaxed build also named only the two ENABLE constants;
+`kAccessoryRetentionFloorV` -- the one that decides whether an authorised rail STAYS up
+-- was the constant the prohibition did not cover.
+
+**`R10-N05`, AND IT IS WHY `R10-N04` SURVIVED AT ALL.**  Correcting §7b made `F11` FAIL.
+`F11`'s `TRANSIENT_REQUIRED_TOKENS` ended in two strings TYPED OUT BY HAND:
+
+    "3.85 V** dual-rail floor",
+    "3.50 V** single-rail",
+
+`D789` added them for a good reason -- `f11g` exists so the accessory step cannot be
+rewritten to a pack voltage where the release image refuses the rail -- and they were
+correct on the day they were written.  Then §1 moved the floors, and **a control aimed by
+hand at a DERIVED number became a gate REQUIRING THE RETIRED NUMBER TO STAY IN THE
+DOCUMENT.**  Fixing the procedure broke the gate; leaving the gate alone kept the
+procedure wrong.  That is not a stale string: it is a gate holding a defect in place, and
+it is the reason this text could not simply be corrected.
+
+Both are closed the same way, which is the only way that survives the next move of the
+derivation -- **the document and the gate now read the same fixed point**:
+
+  * `F11`'s floor tokens are FORMATTED FROM `F12`'s derived floors.  A run that supplies
+    no floors REFUSES (`f11h`), because silently checking less is the exact failure mode
+    `R10-N05` was; and `f11g` now deletes a token it FORMATTED, so the control keeps
+    testing the live floor instead of pinning a retired one.
+  * `F12` gains `published_policy_is_consistent_in_the_first_article_procedure`, the
+    `DEVICE_SPEC` clause's rule applied to the procedure: all three gridded floors must be
+    PRESENT formatted from the computed values; no UNFENCED sentence may call some other
+    voltage a single-rail, dual-rail or retention floor; and the prohibition paragraph
+    must name all three constants.
+
+**THE CONTRADICTION HALF IS BOUND TO THE CLAIM, NOT THE LINE, AND IT TOOK THREE DRAFTS TO
+GET HONEST.**  A per-line scan missed two of the four stale assertions because this
+document hard-wraps and `the **3.50 V** single-rail / floor` straddles a line break; the
+scan now runs over whitespace-normalised SENTENCES.  Then the fence list let the worst
+sentence in the file through TWICE: first because it carried `D-788` -- **a decision
+number is not a supersession marker**, it merely cites one -- and then because it carried
+`was ` in *"the accessory step **was written** to run at..."*, which is ordinary
+narration.  Both were removed.  A sentence is fenced only by a word whose job is to mark
+text as no-longer-true, which is why the supersession note added above had to be reworded
+to say `now-RETIRED` before `F12` would accept it -- **the clause refused this closeout's
+own prose first.**  Only the assertion `<value> is the <which> floor`, in either word
+order, is policed; the bench setpoints beside it are not, because they are not floors.
+
+**BOTH NEW CONTROLS FAIL ON THE UNCORRECTED DOCUMENT AND PASS ON THE CORRECTED ONE**, and
+the negative-control run is recorded at
+`evidence/d791-r10n04-r10n05-negative-control.json`: three sub-defects on the old text --
+the `3.65 V` floor ABSENT from the file entirely, `kAccessoryRetentionFloorV` unnamed, and
+four unfenced stale floor assertions -- and zero on the new.
+
+**WHAT THIS SAYS ABOUT THE ROUND.**  Round-10's theme is *a number that is right about a
+state the board cannot occupy*.  `R10-N05` is that theme turned on the verification
+itself: a control that was right about a document that no longer existed, and that was
+keeping the document from catching up.  No copper, no net, no part and no published
+budget moves for either finding.
+
+---
+
+### What did NOT change
+
+No copper moved.  No net changed.  No footprint changed.  No placement moved.  No
+protected-copper object moved.  Connectivity is unchanged at **174 retained / 173
+connected / one owner-approved `U11.3` open / zero unapproved**.  `hardware/beta-v2` is
+untouched.  Every Kickstarter-visible capability is retained and **both published
+accessory budgets are unchanged**.  Three things moved on the board and all three are
+value/identity, not geometry: `R97` 1.78 -> 1.87 kOhm, five FET manufacturer fields, and
+the `AO4800` symbol's channel pin names.
+
+---
+
 ## D-790 — **ROUND-9 CORRECTION: FOUR NUMBERS READ AT THE WRONG CONDITION, AN IMAGE NO TEST HAD EVER COMPILED, AND A PASS PAIR THAT WAS NEVER GUARANTEED TO BE ON**
 
     authority  board 9606ecfc0bd5844cb6fa965692c406a3d7cd43ad613d827132da18a82ef60f26

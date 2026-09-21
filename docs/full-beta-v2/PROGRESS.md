@@ -2,7 +2,42 @@
 
 **Status: LIVING DASHBOARD.**
 
-**D-789 (2026-09-21) — ROUND-8 CORRECTION; EXTERNAL-REVIEW TARGET; NO OPEN OWNER DECISION.**
+**D-791 (2026-09-21) — ROUND-10 CORRECTION; EXTERNAL-REVIEW TARGET; NO OPEN OWNER DECISION.**
+Round-10 rejected D-790: Fable passed the design for CAM/order closure with 3 medium / 16 low
+plus residuals, **Astra blocked the order with 15 findings** (0 critical, 4 high, 8 medium,
+3 low) plus a procurement item, and established **no unconditional PCB respin**.  All of
+`D790-A01`…`A14` and `S01` are closed, plus every Fable complementary item, plus three found
+here (`R10-N01`, `R10-N02`, `R10-N03`, plus `R10-N04`/`R10-N05` at the verification pass).  **The theme was a number that is right about a state
+the board cannot occupy.**  The firmware's VCELL floors were node voltages `BAT_PROTECTED_P`
+**cannot reach** — 3.85 V there needs more than 4.3 V upstream and the charger's regulation
+maximum on the pack is 4.221 V — so the accessory rails this product publishes would have been
+authorised and shed again 400 ms later, on a full pack.  New **`F12`** solves the complete
+cell-to-load network as one self-consistent fixed point and DERIVES three floors —
+**retention 3.20 V**, **first-rail enable 3.55 V**, **second-rail enable 3.65 V** — and makes
+their ATTAINABILITY a clause.  D-790's declared sustained reference state has **no stable
+operating point at any attainable cell voltage**; the supported concurrency is now derived per
+state and published in **observable modes**, and the charge regime is split into the half
+`TREG` regulates and the half it does not, with a derived **30.0 °C** charge-ambient ceiling.
+The backlight model gains the four loss terms it was missing (**211.58 → 233.13 mA**), the
+`ILIM` accuracy bound returns to the **widest published ratio** and `R97` moves
+**1.78 → 1.87 kΩ** so `U12` stays inside its 2 A rating.  Three firmware call sites that could
+still undo themselves are fixed and caught **behaviourally**; the release wrapper can no longer
+pass a red child; and two new clauses — a table-row CONTRADICTION check and **`F13`**, which
+cross-checks every non-capacitor MPN against its own archived distributor record — keep the
+documents and the part identities from drifting again.  **`R10-N04`/`R10-N05`, found at the
+verification pass:** the `C-PWR-TRANSIENT-01` accessory step — the text that CHOOSES a
+technician's bench voltages — still named the retired 3.50/3.85 V floors and conflated the
+enable and retention comparisons; correcting it made `F11` FAIL, because `F11` had those two
+retired floor phrases **typed in as required tokens** and so had become a gate requiring the
+retired number to stay in the document.  `F11`'s tokens are now formatted from `F12`'s derived
+floors and a new `F12` clause reads the procedure.  **Published port contract:**
+3.069408…3.223012 V unloaded, **≥ 2.81 V at the full 400 mA in the worst permitted mode** and
+**2.917924 V fully mated**.  **Both published accessory budgets are unchanged.**  Board
+authority `c8eabd43`.  **DO NOT ORDER.**
+
+---
+
+**D-789 (2026-09-21) — ROUND-8 CORRECTION.**  *(HISTORICAL — superseded by D-790 and D-791 above.  Its ≥ 2.84 V / 2.982890 V port figures, its 115.44 °C junction claim and its `NTMD4820NR2G` pass pair are all retired.)*
 Round-8 rejected D-788: Fable passed the design with two residuals, **Astra blocked the order
 with 19 findings** (0 critical, 5 high, 10 medium, 4 low) and established **no unconditional
 PCB respin**.  All 19 are closed, plus both Fable-only items, plus one more found here

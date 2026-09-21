@@ -327,8 +327,8 @@ sockets); the only on-board RF network is the 13.56 MHz NFC differential front e
 | Item | Value | Label | Evidence |
 |---|---|---|---|
 | Ideal-diode + OV/UV/reverse-current controller | `U18` **LTC4368IMS-1#TRPBF**, LCSC `C688401`, **MSOP-10** (the "-1", so it does NOT block forward charge). **D-615 corrected the order code: the schematic carried `LTC4368IDD-1#PBF`, and `DD` is DFN-10 against an MSOP-10 land — D-099 / FBV2-PWR-002 require this part to be leaded and inspectable.** | FITTED · LOCKED (safety) | `01_power_tree.kicad_sch:U18` |
-| Back-to-back reverse-protection FETs | `Q2`, `Q3` **NTMD4820NR2G** (anti-series pairs) | FITTED · LOCKED (safety) | `01_power_tree.kicad_sch:Q2,Q3` |
-| Current-sense resistor | `R75` **10 mΩ 1 % 3 W** (Kelvin pair to U18.8/U18.9) — Bourns **`CRA2512-FZ-R010ELF`**, LCSC `C840621`, a **CURRENT-SENSE class part at ±50 ppm/°C, 3 W** (a thick film at ±1500 ppm/°C would move the trip ~19 % over −40…+85 °C).  **D-771 MOVED IT FROM 15 mΩ** (`CRA2512-FZ-R015ELF`, `C2073490`, D-615): ADI guarantees the LTC4368 forward threshold only as **40 / 50 / 60 mV** over temperature, so 15 mΩ put the LATCHING breaker at **2.640–4.040 A**, overlapping the charger's own recoverable `IBAT_OCP` band of 2.5625–3.6875 A.  At 10 mΩ the breaker is **3.960–6.061 A**, entirely above it.  Same series, same 2512 land, same 3 W — only the resistance | FITTED | `01_power_tree.kicad_sch:R75`; CTO_DECISIONS D-771 |
+| Back-to-back reverse-protection FETs | `Q2`, `Q3` **AO4800** (Alpha & Omega, LCSC `C17098`), anti-series pairs, two packages = two independent failure domains.  **D-790 / `D789-A01` RETIRED the onsemi `NTMD4820NR2G` on this land** — it publishes no `RDS(on)` row below `VGS` = 4.5 V and a `VGS(th)` **MAXIMUM** of 3.0 V, which the LTC4368's guaranteed gate drive at this board's `BAT_RAW` cannot clear, so a worst-corner part was never guaranteed to be ENHANCED.  Same SOIC-8 land, same pin function map, no copper moved.  Guaranteed **50 mΩ at `VGS` = 2.5 V**; the whole four-channel model is solved in `demo_feature_contract` **F10** and the cell-to-load network it sits in is **F12** | FITTED · LOCKED (safety) | `01_power_tree.kicad_sch:Q2,Q3`; CTO_DECISIONS D-790 §5, D-791 |
+| Current-sense resistor | `R75` **10 mΩ 1 % 3 W** (Kelvin pair to U18.8/U18.9) — Bourns **`CRA2512-FZ-R010ELF`**, LCSC `C840621`, a **CURRENT-SENSE class part at ±50 ppm/°C, 3 W** (a thick film at ±1500 ppm/°C would move the trip ~19 % over −40…+85 °C).  **D-771 MOVED IT FROM 15 mΩ** (`CRA2512-FZ-R015ELF`, `C2073490`, D-615 — **RETIRED**): ADI guarantees the LTC4368 forward threshold only as **40 / 50 / 60 mV** over temperature, so 15 mΩ put the LATCHING breaker at **2.640–4.040 A**, overlapping the charger's own recoverable `IBAT_OCP` band of 2.5625–3.6875 A.  At 10 mΩ the breaker is **3.960–6.061 A**, entirely above it.  Same series, same 2512 land, same 3 W — only the resistance | FITTED | `01_power_tree.kicad_sch:R75`; CTO_DECISIONS D-771 |
 | Protected-node Schottky | `D9` **PMEG2010AEH,115** | FITTED | `01_power_tree.kicad_sch:D9` |
 | Recovery / dead-cell comparator | `U19` **TLV7032DDFR** (dual) | FITTED | `01_power_tree.kicad_sch:U19` |
 
@@ -407,7 +407,7 @@ power/NFC review, and CTO decisions.
 > publishes it only as plots — and is measured at first article as
 > `C-PWR-TRANSIENT-01`.
 >
-> ### **OWNER-APPROVED D-788 OPTION A — Community Port voltage/current contract, RE-DERIVED AND FROZEN AT D-790**
+> ### **OWNER-APPROVED D-788 OPTION A — Community Port voltage/current contract, RE-DERIVED AND FROZEN AT D-791**
 
 > A rail whose maximum must stay under 3.3 V must sit nominally below 3.3 V, and
 > the Community Port is switched from that rail.  **The former 3.135 V
@@ -423,26 +423,51 @@ power/NFC review, and CTO decisions.
 >   The `U12`-output-to-`U20`-input plane is the MAIN `+3V3` plane: every
 >   internal consumer taps off it, so the current through it is the whole
 >   rail's, not the accessory's 400 mA.  D-789 charged it 400 mA.  It now
->   carries **1.5438 A** — `I_INTERNAL` plus the accessory budget — and it is
+>   carries **1.5653 A** — `I_INTERNAL` plus the accessory budget — and it is
 >   charged **once**, outside the per-contact branches, so the fully-mated
 >   contract can no longer parallel `U20`'s own channel resistance with itself.
 > * **`D789-A11` — the display line was an inherited subtotal, not a bound.**
 >   The `+3V3` budget carried one 181 mA line for "display logic + backlight",
 >   cited to a 2023 subtotal.  It is smaller than the BACKLIGHT ALONE.  The
->   backlight converter's input is now SOLVED from published maxima —
->   **211.58 mA** — and the panel's logic side is a separate, labelled
->   **declared** 50 mA allowance.  The internal `+3V3` budget moves
->   **1.0632 A → 1.1438 A**.
+>   backlight converter's input is now SOLVED from published maxima — D-790
+>   solved **211.58 mA** and D-791 / `D790-A04` corrects it to **233.13 mA**
+>   with the four loss terms that model omitted — and the panel's logic side is
+>   a separate, labelled **declared** 50 mA allowance.  The internal `+3V3`
+>   budget moves **1.0632 A → 1.1653 A**.
 >
-> **AND ONE CORRECTION GOES THE OTHER WAY (`R9-N01`, found in this closeout).**
-> `U20`'s current-limit accuracy was bounded by SLVSGP6A's **19.2 kΩ** row —
-> a 50 mA setting, and the outlier of the table's four rows.  `R97` is 1.78 kΩ,
-> bracketed by the **1.15 kΩ** and **2.21 kΩ** rows, which publish ±25 % rather
-> than ±32 %.  Read at the rows that actually bracket the design, the 3.3 V
-> rail's GUARANTEED minimum rises **0.4279 A → 0.4719 A** (17.98 % over the
-> published 400 mA, from 6.97 %) and its fault maximum falls **0.8486 A →
-> 0.8036 A`, which is what keeps `U12` inside its own 2 A rating after the
-> display correction.
+> **D-791 CORRECTS TWO OF D-790's OWN NUMBERS AND ONE PART VALUE.**
+>
+> * **`D790-A04` — the backlight converter's input was a CONDUCTION model, not
+>   a loss model.**  D-790 solved 211.58 mA from `RDS(on)`, `IQ`, DCR and the
+>   diode's forward drop **at the average current**.  Four terms were missing:
+>   the diode's forward voltage at the inductor **PEAK** (onsemi publishes one
+>   point, 710 mV at 200 mA, and this converter peaks at about 430 mA); switch
+>   transition and `Coss` loss at the **MAXIMUM** published switching
+>   frequency; gate-drive loss; and the winding's core loss and **hot** DCR.
+>   Each is a DECLARED allowance with its own stated basis, and conduction is
+>   still taken at the MINIMUM frequency where the RMS is worst.  The bound
+>   moves **211.58 → 233.13 mA** at an implied **75.4 %** efficiency, which is
+>   still under TI's own "up to 90 %" headline.  Internal `+3V3` moves
+>   **1.1438 → 1.1653 A**.
+> * **`D790-A12` — the bracketed `ILIM` accuracy band was an ESTIMATE and was
+>   being called a bound.**  D-790 / `R9-N01` replaced SLVSGP6A's widest row
+>   with the worse of the two rows that BRACKET `R97`.  TI publishes four
+>   points and states nothing about the accuracy BETWEEN them, so "no extremum
+>   lies between 1.15 kΩ and 2.21 kΩ" is an inference from four samples — the
+>   same shape of argument D-788 refused on `U20`'s `RON` and D-789 refused on
+>   the LTC4368's gate-drive row.  **The ruling band goes back to the WIDEST
+>   published ratio**, which needs no assumption at all, and the bracketed
+>   figure is reported beside it as the engineering estimate it is.
+> * **`R97` MOVES 1.78 kΩ → 1.87 kΩ** (same UNI-ROYAL 0603 1 % line,
+>   `0603WAF1871T5E`, LCSC `C22850`) because those two corrections together
+>   would otherwise leave `U12` NEGATIVE: at 1.78 kΩ the limiter's worst
+>   corner plus the corrected internal budget is **2.0139 A** against the
+>   TPS63020's published 2 A.  At 1.87 kΩ the 3.3 V rail still GUARANTEES
+>   **0.4058 A** — **+1.46 %** over the published 400 mA, at the WIDEST
+>   published accuracy ratio and therefore without any assumption — and
+>   `U12`'s worst compound case is **1.9702 A**, a **NAMED THIN MARGIN** of
+>   29.8 mA.  The fault maximum is **0.8049 A**.  Both published budgets are
+>   unchanged, which is what the owner decision requires of any part change.
 >
 > **D-789's own corrections stand.**
 > Round-8 reproduced two defects in the D-788 delivery model and both are real.
@@ -465,9 +490,9 @@ power/NFC review, and CTO decisions.
 > | condition, at the J5 mating interface | guaranteed voltage |
 > |---|---|
 > | no load | **3.069408 V** |
-> | 400 mA, worst permitted wiring, 5 V rail also at 300 mA | **2.813742 V** |
-> | 400 mA, best permitted wiring (`J5.22`, four grounds, 3.3 V rail alone) | **2.907836 V** |
-> | 400 mA, **header fully mated** (both 3.3 V contacts, all four grounds), 5 V rail also at 300 mA | **2.918599 V** |
+> | 400 mA, worst permitted wiring, 5 V rail also at 300 mA | **2.813068 V** |
+> | 400 mA, best permitted wiring (`J5.22`, four grounds, 3.3 V rail alone) | **2.907161 V** |
+> | 400 mA, **header fully mated** (both 3.3 V contacts, all four grounds), 5 V rail also at 300 mA | **2.917924 V** |
 >
 > **PUBLISHED MINIMUM: 2.81 V** — the worst mode, rounded DOWN onto a 10 mV
 > grid.  It is **DERIVED**, not asserted: `demo_feature_contract` F6 computes it
@@ -476,9 +501,11 @@ power/NFC review, and CTO decisions.
 > explicit connection contract, and it is *better* than the 2.95 V D-788
 > published with a hand-soldered conductor fitted.
 >
-> **HISTORICAL, SUPERSEDED:** D-788 published **2.95 V** and D-789 published
-> **2.84 V** with **2.849642 / 2.982890 V** in this table.  Both are retained
-> here only as the record of what moved and neither is a current figure.
+> **HISTORICAL, SUPERSEDED:** D-788 published **2.95 V**, D-789 published
+> **2.84 V** with **2.849642 / 2.982890 V**, and D-790 published **2.81 V**
+> with **2.813742 / 2.918599 V**.  All three are retained here only as the
+> record of what moved and NONE of them is a current figure; the current table
+> is the one immediately above.
 >
 > The unloaded rail spans **3.069408 V** to **3.223012 V**; raw PWM is
 > **3.100334 / 3.145503 / 3.191022 V**.
@@ -496,6 +523,135 @@ power/NFC review, and CTO decisions.
 > is this one.  No promised current capability is removed. Every Qwiic/STEMMA QT
 > device AQROOT has qualified operates at or below 2.7 V. A dedicated accessory
 > buck-boost is deferred to **REV-B**.
+
+> ### **D-791 — ACCESSORY RETENTION AND ENABLE FLOORS, AND THE SUPPORTED CONCURRENCY THEY COME FROM**
+>
+> **THIS SUPERSEDES THE 3.50 V / 3.85 V PAIR EVERY EARLIER BLOCK IN THIS
+> DOCUMENT STATES.**  `D790-A03` found that those were node voltages
+> `BAT_PROTECTED_P` cannot reach: sustaining 3.85 V there while the published
+> load draws needs more than 4.3 V upstream through four `AO4800` channels and
+> `R75` alone, and the charger's own regulation maximum on the pack is
+> **4.221 V**.  A floor above the node's attainable range authorises nothing and
+> sheds everything — the accessory rails this product publishes would have been
+> enabled and shed again by the next settled recheck, on a FULL pack.
+>
+> `demo_feature_contract` **F12** now solves the COMPLETE network as one
+> self-consistent fixed point — cell EMF → pack DC resistance → 26 AWG harness →
+> `J4` → `F1` → four `AO4800` channels → `R75` → `BAT_PROTECTED_P` → BQ25185
+> BATFET → `SYS` → `U12` → `+3V3` and the two load switches — and every floor
+> below is DERIVED from it.  **F12 refuses a firmware constant that is not the
+> number it derives, in EITHER direction**, and refuses a floor the node cannot
+> attain.
+>
+> | firmware constant | value | what it is |
+> |---|---:|---|
+> | `kAccessoryRetentionFloorV` | **3.20 V** | the HARD node floor: the BQ25185's own `VBUVLO` bound (3.0 V typical, carried at a DECLARED +5 % because TI publishes no tolerance), plus the MAX17048's **+20 mV** voltage error and one 78.125 µV quantisation step, because firmware compares a REPORTED value (`D790-A14`) |
+> | `kAccessorySingleRailFloorV` | **3.55 V** | the floor to ENABLE the first rail: the retention floor plus the node step that rail will cause (**0.3476 V**, worst case over every declared state and cell voltage) |
+> | `kAccessoryDualRailFloorV` | **3.65 V** | the floor to ENABLE the second rail: the retention floor plus **0.4537 V**, the second rail's own step |
+>
+> **WHY AN ENABLE FLOOR IS HIGHER THAN A RETENTION FLOOR.**  D-779 named it and
+> D-790 never quantified it: *the permission is taken before the load exists*.
+> An enable decision reads a node that is not yet carrying the rail being
+> switched on, so it must anticipate the drop that rail will cause; a retention
+> decision reads a node that already is.  Judging retention at an enable floor
+> is what sheds a rail 400 ms after authorising it, every time.
+>
+> **ATTAINABILITY, WHICH IS THE CLAUSE THAT MAKES THIS NON-VACUOUS.**  At the
+> highest open-circuit voltage the charger can put on the pack, in the published
+> reference state, the node sits at **4.0401 V** unloaded, **3.8564 V** with the
+> first rail at its full budget and **3.5328 V** with both — each above the floor
+> that governs it.
+>
+> **SHED ORDER IS UNCHANGED.**  Below the retention floor with both rails live
+> the **5 V rail sheds FIRST**, which restores the node by its own step and
+> leaves the 3.3 V rail delivering its full published **400 mA**.  Unreadable or
+> implausible `VCELL` is always fail-closed.
+>
+> ### **SUPPORTED SUSTAINED CONCURRENCY — DERIVED, AND EXPRESSED IN OBSERVABLE MODES**
+>
+> **BOTH PUBLISHED BUDGETS ARE UNCHANGED: `ACC_3V3_SW` = 400 mA TOTAL and
+> `ACC_5V_SW` = 300 mA TOTAL.**  What D-791 corrects is the SIMULTANEITY OF
+> INTERNAL MAXIMA, which was never an owner decision.  D-790 declared a
+> sustained reference state with BOTH radios transmitting AND the audio
+> amplifier at its capped level beside both full accessory budgets, and computed
+> its battery current from an ideal-source formula.  Solved through the real
+> network that state has **NO STABLE OPERATING POINT at any attainable cell
+> voltage** (`D790-A02` / `D790-A03`).
+>
+> Every state below keeps the display backlight at FULL brightness, the panel
+> logic, both expanders, the IMU and the front RGB, plus **bounded-duty
+> allowances for the NFC field, a microSD write and an IR burst** (25 %, 50 %
+> and 10 % of any minute respectively — D-790 simply removed them as "bursty";
+> `D790-A02` requires a bound instead).  The column is the LOWEST cell
+> open-circuit voltage at which that state holds against all seven limits at
+> once: a stable operating point, `VBUVLO`, `U12`'s published `VIN` floor, the
+> `IBAT_OCP` margin at a DECLARED WIDER accuracy band than TI states, the
+> `AO4800`'s lowest published conduction row, TI's junction maximum referenced
+> to THIS enclosure's internal air, and the fitted pouch's published discharge
+> window.
+>
+> | state | modes ON beyond the always-on set | internal `+3V3` | both rails at full budget | `ACC_3V3` alone at 400 mA | `ACC_5V` alone at 300 mA |
+> |---|---|---:|---:|---:|---:|
+> | `display_only` | no radio transmitting, amplifier idle | **0.3588 A** | **3.867 V** | **3.534 V** | **3.595 V** |
+> | `display_audio` | audio at the capped level | **0.4788 A** | **3.961 V** | **3.604 V** | **3.668 V** |
+> | `display_subghz` | sub-GHz TX | **0.4988 A** | **3.978 V** | **3.616 V** | **3.681 V** |
+> | `display_subghz_audio` | sub-GHz TX, audio at the capped level | **0.6188 A** | **4.101 V** | **3.691 V** | **3.760 V** |
+> | `display_wifi` | Wi-Fi / BLE TX | **0.7138 A** | **not supported** | **3.753 V** | **3.827 V** |
+> | `display_wifi_subghz` | Wi-Fi / BLE TX, sub-GHz TX | **0.8538 A** | **not supported** | **3.851 V** | **3.933 V** |
+> | `d790_declared` | Wi-Fi / BLE TX, sub-GHz TX, audio at the capped level | **0.9738 A** | **not supported** | **3.943 V** | **4.146 V** |
+>
+> **THE PUBLISHED SUSTAINED REFERENCE STATE IS `display_subghz`** — both Community-Port
+> budgets at full, the display at full brightness, and **ONE sub-GHz radio
+> transmitting**.  Adding a second transmitting radio or the audio amplifier
+> raises the cell floor, and the table says by how much rather than leaving it
+> implied.  `d790_declared` is retained as the NEGATIVE CONTROL: F12 fails if it
+> ever starts passing without the physics changing.
+>
+> **WHAT IS NOT CLAIMED.**  That an accessory pulling twice its published budget,
+> while every internal subsystem runs at its published maximum at once, cannot
+> hiccup the charger.  On a unit whose `BATOCP` sits at the bottom of its band it
+> can — and that is the recoverable protection acting on a non-conforming load,
+> which is what it is for.  `F6` requires every CONFORMING state to stay under
+> the first protection threshold any unit can trip, and every accessory
+> OVERCURRENT to land below the LATCHING LTC4368 breaker and the `F1` one-shot
+> fuse (`R10-N02`).
+>
+>
+> ### **D-791 — THE CHARGE REGIME, SPLIT INTO THE HALF `TREG` REGULATES AND THE HALF IT DOES NOT**
+>
+> D-790 stated that the charge regime "needs no bound, by design", because
+> SLUSF65B 6.3.7.6 reduces the CHARGE current at `TREG` = 100 °C.  `D790-A02`
+> is right that this does not universally cap SYS-load heat.  While an adapter
+> is attached the BQ25185 conducts in **three** places and `TREG` reaches only
+> one of them:
+>
+> | path | carries | does `TREG` reduce it? | at the reference state |
+> |---|---|---|---:|
+> | INPUT FET (`RON_IN` **470 mΩ** MAX) | the whole system load plus the charge current, capped by `ILIM` | **no** | **0.569 W** |
+> | CHARGE FET | `ICHG` from `SYS` down to `VBAT` | **yes** | 0.000 W |
+> | BATFET, supplement mode (§6.3.3) | whatever the system asks for beyond the input limit | **no** | included above |
+>
+> **THE INPUT IS THE CAP.**  `ILIM` is programmed to **1100 mA** (`R36` 13 kΩ,
+> Table 6-1), so the adapter can never deliver more than that however much the
+> system asks for; at the reference state the input sits at its limit, the
+> charge current is folded to **0.000 A** by DPPM, and the battery SUPPLEMENTS
+> **0.134 A** through the BATFET.  A model that let the input current follow the
+> system load would put 12 W into a 5 V port.
+>
+> With the charge current folded **all the way to zero** — the most `TREG` can
+> ever do — the junction is **89.1 °C** against TI's 125 °C operating maximum.
+>
+> **AND THE POUCH'S CHARGE WINDOW IS A DIFFERENT, TIGHTER LIMIT.**  The fitted
+> 785060 publishes **0…40 °C for CHARGE** against 0…60 °C for discharge, and
+> the cell sits in the internal air.  "Charge at up to 40 °C ambient" is
+> therefore not a statement this enclosure can make.  What is derivable is the
+> external ambient at which the internal air REACHES that limit, and at the
+> sustained reference state that is **30.0 °C**.  A lighter system load raises
+> it.  This is a SUPERVISED operating condition a human can observe —
+> `battery_pack_contract` **B8** already requires supervised first-five
+> charging and the pack has no thermistor; D-791 puts a number on the
+> supervision.
+>
 >
 > **MEASUREMENT PLANE.**  The guaranteed voltage is the potential between the
 > `ACC_3V3_SW` contact and the `GND` contacts **at the J5 mating interface**.
@@ -521,7 +677,15 @@ power/NFC review, and CTO decisions.
 > **unreachable at any current** and is retired; the **3.146366 V** delivered figure is
 > retired; the **28-AWG TP12→J5 reinforcement leads are RETIRED** and no manual conductor
 > is fitted on this board; and U20's **68 mΩ** RON is retired for a guaranteed **116 mΩ**
-> at the nearest published row at or below its own input voltage.)*
+> at the nearest published row at or below its own input voltage.  **AND AT D-791:**
+> `R97` is **1.87 kΩ**, not 1.78 kΩ; the guaranteed `ACC_3V3` minimum is
+> **0.4058 A**, not 0.4279 A; and the VCELL policy is **THREE derived floors —
+> retention 3.20 V, first-rail enable 3.55 V, second-rail enable 3.65 V** — not
+> the 3.50 V / 3.85 V pair every sentence below states.  `D790-A03` found that
+> 3.85 V is a node voltage `BAT_PROTECTED_P` **cannot reach under the published
+> load at any attainable cell voltage**, so the pair below would have authorised
+> the second rail and shed it again 400 ms later, on a full pack.  The current
+> policy is the **D-791 ACCESSORY RETENTION AND ENABLE FLOORS** block above.)*
 > The rail budgets themselves do **not** change: `ACC_3V3_SW` remains **400 mA
 > total** across J5 pins 3+22 and `ACC_5V_SW` remains **300 mA total** across
 > J5 pins 1+24. What changed is the proof that the board can actually deliver

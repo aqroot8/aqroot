@@ -1,0 +1,80 @@
+{
+  "schema": 1,
+  "decision": "D-791",
+  "findings": [
+    "R10-N04",
+    "R10-N05"
+  ],
+  "what_this_is": "The non-vacuity record for the two clauses this closeout added at its own verification pass.  A control that cannot be shown to FAIL on the defect it names is not a control, so both are run against the UNCORRECTED document and against the corrected one.",
+  "document": "docs/full-beta-v2/assembly/FIRST_FIVE_ASSEMBLY_PLAN.md",
+  "derived_floors_V": {
+    "retention": 3.2,
+    "enable_first_rail": 3.55,
+    "enable_second_rail": 3.65
+  },
+  "R10_N04_clause": {
+    "name": "published_policy_is_consistent_in_the_first_article_procedure",
+    "host": "demo_feature_contract F12",
+    "on_the_uncorrected_document": {
+      "ok": false,
+      "absent": [
+        "enable_second_rail_floor"
+      ],
+      "constants_not_named": [
+        "kAccessoryRetentionFloorV"
+      ],
+      "contradictions": [
+        {
+          "quoted": "3.50 V",
+          "sentence": "and the accessory step was written to run at **3.20 V and 3.05 V** of pack voltage, where a release image **refuses to enable an accessory rail at all** (the derived VCELL policy is 3.50 V single-rail"
+        },
+        {
+          "quoted": "3.85 V",
+          "sentence": "and the accessory step was written to run at **3.20 V and 3.05 V** of pack voltage, where a release image **refuses to enable an accessory rail at all** (the derived VCELL policy is 3.50 V single-rail"
+        },
+        {
+          "quoted": "3.85 V",
+          "sentence": "`ACC_3V3_SW` enabled into a 400 mA load and then **hot disconnected** at the J5 mating interface, ten times, at - **`\u22484.15 V`** and **`\u22483.90 V`** at `BAT_PROTECTED_P` with the 5 V rail ALSO at its pub"
+        },
+        {
+          "quoted": "3.50 V",
+          "sentence": "- **`\u22483.55 V`** with the 3.3 V rail alone \u2014 above the **3.50 V** single-rail floor, and below the dual floor, so this point also confirms that the 5 V rail is refused or shed there."
+        }
+      ]
+    },
+    "on_the_corrected_document": {
+      "ok": true,
+      "absent": [],
+      "constants_not_named": [],
+      "contradictions": []
+    },
+    "method": "R10-N04.  The first-article procedure SELECTS ITS BENCH VOLTAGES FROM THESE FLOORS, so a floor that moves without it sends a technician to a pack voltage where the release image's permission is not what the step claims.  All three gridded floors must be PRESENT, formatted from the computed values; no UNFENCED line about an accessory/rail/retention floor may quote a different one; and the paragraph forbidding a relaxed build must name all three constants, including the retention constant D-791 added."
+  },
+  "R10_N05_clause": {
+    "name": "F11 accessory floor tokens are derived, not typed",
+    "host": "demo_feature_contract F11",
+    "retired_hand_typed_tokens": [
+      "3.85 V** dual-rail floor",
+      "3.50 V** single-rail"
+    ],
+    "derived_tokens_now_required": [
+      "3.20 V** retention floor",
+      "3.55 V** single-rail floor",
+      "3.65 V** dual-rail floor"
+    ],
+    "f11_ok_after": true,
+    "f11_missing_after": [],
+    "controls_refused": {
+      "f11a_the_inverted_sign_would_accept_a_failing_peak": true,
+      "f11b_the_inverted_sign_would_accept_a_failing_trough": true,
+      "f11c_refuses_a_document_without_the_rule": true,
+      "f11d_refuses_the_retired_inverted_wording": true,
+      "f11e_refuses_a_table_that_disagrees_with_the_rule": true,
+      "f11f_refuses_a_missing_document": true,
+      "f11g_refuses_an_accessory_step_below_the_derived_floors": true,
+      "f11h_refuses_a_run_with_no_derived_floors": true
+    },
+    "why": "D-789 typed the two floor phrases into TRANSIENT_REQUIRED_TOKENS.  When D-791/D790-A03 moved the floors, that control became a gate REQUIRING the retired numbers to stay in the document: correcting the procedure made F11 fail.  The tokens are now formatted from F12's derived floors, f11g deletes a token it formatted, and the new f11h refuses a run that supplies no floors at all -- the shape R10-N05 itself had."
+  },
+  "verdict": "BOTH CLAUSES FAIL ON THE DEFECT AND PASS ON THE FIX"
+}

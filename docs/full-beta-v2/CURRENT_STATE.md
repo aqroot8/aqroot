@@ -72,7 +72,78 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
-> # **D-790 ROUND-9 CORRECTION — CURRENT EXTERNAL-REVIEW TARGET**
+> # **D-791 ROUND-10 CORRECTION — CURRENT EXTERNAL-REVIEW TARGET**
+>
+> **THIS IS A REVIEW TARGET, NOT A FABRICATION AUTHORIZATION. DO NOT ORDER.**
+> **NO OWNER DECISION IS OPEN.** The D-788 Option A approval of 2026-09-20 stands and
+> D-791 stays inside it: the published **400 mA / 300 mA** budgets are unchanged and no
+> Kickstarter-visible capability is removed.  What moved is, again, a **derived** number
+> the owner's own text delegated to the final candidate — and this time it moved because
+> the number described a state the board cannot occupy.
+>
+> Round-10 external review REJECTED D-790.  Fable passed the design for CAM/order
+> closure with 3 medium / 16 low plus verifier and sourcing residuals; **Astra blocked
+> the order with 15 findings** (0 critical, 4 high, 8 medium, 3 low) plus a procurement
+> item.  **All of `D790-A01`…`A14` and `S01` are closed on this target, plus every Fable
+> complementary item, plus **five this closeout found itself** — `R10-N01`, `R10-N02`,
+> `R10-N03`, and at the verification pass `R10-N04` and `R10-N05`.**
+>
+> **THE THEME OF ROUND-10 IS A NUMBER THAT IS RIGHT ABOUT A STATE THE BOARD CANNOT
+> OCCUPY.**  Round-8 was a proof stretched past its evidence; Round-9 was a number read
+> at the wrong condition; Round-10 is a model that never asked whether its own answer
+> was reachable.
+>
+> * **`D790-A03` — THE FIRMWARE'S VCELL FLOORS WERE NODE VOLTAGES THE NODE CANNOT
+>   REACH.**  F6 modelled from `BAT_PROTECTED_P` downwards and said so; F10 priced the
+>   pass pair separately; nothing asked whether an attainable cell can hold that node
+>   there while the published load draws.  It cannot — 3.85 V at that node needs more
+>   than 4.3 V upstream and the charger's regulation maximum on the pack is 4.221 V —
+>   so the accessory rails this product publishes would have been authorised and shed
+>   again 400 ms later, **on a full pack**.  New **`F12`** solves the complete
+>   cell-to-load network as ONE self-consistent fixed point and DERIVES three floors:
+>   **retention 3.20 V**, **first-rail enable 3.55 V**, **second-rail enable 3.65 V**.
+>   ATTAINABILITY is a clause; D-790's own reference state is the negative control.
+> * **`D790-A02` — ONE NETWORK, AND THE BURSTY LOADS BOUNDED RATHER THAN DELETED.**
+>   D-790's declared reference state was computed from an ideal-source formula that
+>   disagreed with F6's own network by 0.25 A, and it has **no stable operating point at
+>   any attainable cell voltage**.  The supported concurrency is now DERIVED per state
+>   and published in OBSERVABLE MODES; NFC, microSD and IR return as bounded-duty
+>   allowances.  `TREG` is split into the half it regulates and the half it cannot, and
+>   the pouch's own **40 °C charge** window yields a derived **30.0 °C** charge-ambient
+>   ceiling.
+> * **`D790-A04` — THE BACKLIGHT MODEL WAS A CONDUCTION MODEL.**  Diode `Vf` at the
+>   inductor PEAK, switch transition and `Coss` at the MAXIMUM switching frequency,
+>   gate-drive loss, core loss and hot DCR: **211.58 → 233.13 mA**, internal `+3V3`
+>   **1.1438 → 1.1653 A**.
+> * **`D790-A12` + `R97` 1.78 → 1.87 kΩ.**  The bracketed `ILIM` band was an ESTIMATE;
+>   the ruling bound returns to the widest published ratio, and `R97` moves so `U12`
+>   stays inside its 2 A rating.  `ACC_3V3` still GUARANTEES 0.4058 A against the
+>   published 400 mA.
+> * **`D790-A05`/`A06`/`A07` — three call sites that could still undo themselves**, all
+>   three now caught BEHAVIOURALLY by the image test.
+> * **`D790-A09` — the release wrapper could pass a red child.**  `all_contracts_pass`
+>   is now a hard term of the exit code in every mode.
+> * **`D790-A08` + `F-N01` + `F-N03`** — the documents, plus a CONTRADICTION check over
+>   table rows and a new **`F13`** that cross-checks every non-capacitor MPN against its
+>   own archived distributor record.
+> * **`R10-N04`/`R10-N05` — THE PROCEDURE THE FLOORS LEFT BEHIND, AND THE GATE HOLDING IT
+>   THERE.**  `FIRST_FIVE_ASSEMBLY_PLAN` §7b — the `C-PWR-TRANSIENT-01` accessory step,
+>   which **chooses the bench voltages a technician sets** — still named the retired
+>   3.50/3.85 V pair, and it quoted ONE node voltage per point where enable and retention
+>   are judged at different numbers.  Correcting it made `F11` FAIL: `F11` had the two
+>   retired floor phrases TYPED IN as required tokens, so a control aimed by hand at a
+>   derived number had become a gate **requiring the retired number to stay in the
+>   document**.  `F11`'s tokens are now formatted from `F12`'s derived floors and a new
+>   `F12` clause reads the procedure; both fail on the old text and pass on the new.
+>
+> **Board authority `c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907`.**
+> **`MANIFEST` `6ebe4edcb81cdd00a00744c8d58acb4e7a505deebd8d23467ca1e98738f6988c`.**
+>
+> **What did NOT change:** no copper, no net, no footprint, no placement, no
+> protected-copper object.  Connectivity **174 retained / 173 connected / one
+> owner-approved `U11.3` open / zero unapproved**.  `hardware/beta-v2` untouched.
+
+> # **D-790 ROUND-9 CORRECTION**  *(HISTORICAL — superseded by the D-791 block above.  Its `AO4800` pass pair, its common-impedance closure, its forced-sleep closure, its `F8` hierarchy closure and its image-level host test all STAND; its **3.50 V / 3.85 V** VCELL floors, its **211.58 mA** backlight line, its **1.70 A** sustained reference current, its bracketed `ILIM` band and its **1.78 kΩ** `R97` do NOT.)*
 >
 > **THIS IS A REVIEW TARGET, NOT A FABRICATION AUTHORIZATION. DO NOT ORDER.**
 > **NO OWNER DECISION IS OPEN.** The D-788 Option A approval of 2026-09-20 stands and

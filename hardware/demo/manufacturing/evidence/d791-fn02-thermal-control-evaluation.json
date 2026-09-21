@@ -1,0 +1,33 @@
+{
+ "schema": 1,
+ "decision": "D-791",
+ "item": "Fable F-N02 -- temperature-based accessory shedding from BMI270 / ESP32-S3 die temperature",
+ "question": "should firmware shed accessory power on an on-die temperature reading, as a product-level thermal control?",
+ "verdict": "EVALUATED AND DECLINED FOR THE FIRST FIVE; REV-B CANDIDATE ONCE C-THERM-01 HAS MEASURED THE RELATIONSHIP",
+ "what_the_board_actually_has": {
+  "bmi270_u4": "an IMU die temperature register, on the internal I2C bus",
+  "esp32s3_u1": "an on-die temperature sensor inside the module's own shield can",
+  "pack_ntc": "NONE -- R38 is unfitted and the fitted 785060 pack has no thermistor",
+  "board_thermistor": "NONE"
+ },
+ "why_declined": [
+  "A DIE TEMPERATURE IS NOT THE THING THE LIMITS ARE ABOUT.  The two limits this product has to respect are the BQ25185 JUNCTION (TI 125 C operating maximum) and the POUCH (0..60 C discharge, 0..40 C charge).  Neither is measured by either sensor: the BMI270 sits on the opposite side of the board from U11 and the ESP32-S3 die sits inside its own module shield, self-heated by its own radio.  The transfer function from either die to the charger junction or to the cell is unknown.",
+  "D790-A02 WARNS AGAINST EXACTLY THIS MOVE.  Round-10's own words: do not silently convert a thermal-model defect into a firmware temperature rule without proving the sensor relationship and the failure policy.  The relationship is what C-THERM-01 exists to measure and it has not been measured yet.",
+  "A CONTROL BUILT ON AN UNCHARACTERISED SENSOR HAS TWO FAILURE MODES AND BOTH ARE WORSE THAN NO CONTROL.  Too sensitive, and the product sheds a published capability on a radio's own self-heating.  Too insensitive, and it provides false assurance that the thermal envelope is being policed when it is not.",
+  "AND THE DEFECT IT WAS PROPOSED TO COVER IS FIXED ANOTHER WAY.  D-791's supported concurrency is a table of OBSERVABLE MODES -- which radio is transmitting, whether the amplifier is driving -- and the charge regime has a DERIVED ambient ceiling.  Both are things a human can act on without a sensor, which is what D790-A02 asks a declared restriction to be."
+ ],
+ "what_would_make_it_defensible": [
+  "C-THERM-01 measures, at the declared sustained reference state and at the peak electrical envelope: external ambient, internal air, the BQ25185 land/package, the pouch surface, the BMI270 die register and the ESP32-S3 die register, simultaneously.",
+  "That yields a measured transfer function from each die reading to the two limits that matter, with a stated spread across the five first-article units.",
+  "Only then can a threshold be derived rather than chosen, and only then does a shedding rule have a failure policy that can be written down -- including what the firmware does when the sensor itself is unreadable, which must be fail-closed like every other measurement this board acts on."
+ ],
+ "retained_controls_that_do_not_need_a_sensor": [
+  "the F12 supported-concurrency table, expressed in observable modes",
+  "the derived charge-ambient ceiling, supervised per battery_pack_contract B8",
+  "the VCELL retention floor, which sheds the 5 V rail first on a node the gauge already measures",
+  "the BQ25185's own TREG, which folds back the charge current it can reach",
+  "the BQ25185's own TSHUT at 150 C, which is the hardware backstop"
+ ],
+ "first_article": "C-THERM-01",
+ "rev_b": "revisit with the measured transfer function in hand"
+}
