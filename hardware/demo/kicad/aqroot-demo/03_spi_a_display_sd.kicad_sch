@@ -10889,7 +10889,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "1N4148WS"
+		(property "Value" "BAT54WS"
 			(at 202.0 198.5 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10922,7 +10922,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C2128"
+		(property "LCSC" "C124205"
 			(at 198.12 200.66 0)
 			(hide yes)
 			(show_name no)
@@ -10933,7 +10933,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" "Jiangsu Changjing Electronics"
+		(property "Manufacturer" "Diodes Incorporated"
 			(at 198.12 200.66 0)
 			(hide yes)
 			(show_name no)
@@ -10944,7 +10944,7 @@
 				)
 			)
 		)
-		(property "MPN" "1N4148WS"
+		(property "MPN" "BAT54WS-7-F"
 			(at 198.12 200.66 0)
 			(hide yes)
 			(show_name no)
@@ -10966,7 +10966,7 @@
 				)
 			)
 		)
-		(property "Note" "D-752 BACKLIGHT-DISCONNECT GATE HOLD, AND WHY Q11 MAY NOT SHARE U17 CTRL.  D-750/D-751 tied Q11's gate to /DISP_BL_CTL, the same net as U17 CTRL, on the premise that PWM would shut the converter down and open Q11 together.  TI SNVSA40B section 6.3.5 says the opposite: the TPS61169 CHOPS ITS INTERNAL 204 mV REFERENCE at the CTRL duty cycle and filters it, so 'only the WLED DC current is modulated, which is often referred as analog dimming' -- THE CONVERTER KEEPS SWITCHING THROUGH EVERY PWM LOW PHASE.  Shutdown is entered only after CTRL is low for more than tSD (2.5 ms max, EC table).  With the gate shared, every PWM low phase therefore opened the LED string while U17 was actively regulating: FB collapses below 30 mV, SW ramps to VOVP_SW (36/37.5/39 V), open-LED protection (6.3.2) latches the device off after three switching cycles, and Q11's DRAIN -- the panel cathode -- follows the anode to about 36 V while R69 holds its SOURCE at 0 V.  THE AO3400A IS A 30 V PART (AOS Rev 3.1).  Firmware already drives ledcSetup(5000, 8) on GPIO46, so the board would have latched its backlight off and over-stressed Q11 on the first brightness ramp.  D-752 SEPARATES THE TWO FUNCTIONS IN HARDWARE RATHER THAN IN FIRMWARE.  D14 charges C85 from /DISP_BL_CTL through a silicon diode; R132 discharges it.  The gate therefore follows the ENVELOPE of CTRL, not its instantaneous level: it rises in microseconds (C85 charges through D14 from the GPIO against U17's 6.5 ms soft-start) and falls with tau = R132*C85 = 22 ms.  THE INVARIANT IS WAVEFORM-INDEPENDENT: Q11 cannot open until the gate has decayed below VGS(th), which takes at least 11.4 ms at worst-case tolerance, and U17 is guaranteed to be in SHUTDOWN after 2.5 ms.  U17 therefore stops switching FIRST, always, for any CTRL waveform whatsoever -- including an out-of-spec PWM frequency or a firmware crash.  Margin 4.6x.  1N4148WS chosen over a Schottky BECAUSE OF ITS REVERSE LEAKAGE: the true-off state is held by R132, and the worst PUBLISHED leakage of this part (1 uA at 75 V reverse; ours is 2.7 V) plus the AO3400A's 100 nA IGSS across 220 k is 0.242 V, against VGS(th) min 0.65 V.  A BAT54WS would have put that floor near or above threshold at temperature on an UNPUBLISHED number.  ||  D-766: the silicon-not-Schottky choice is RE-CONFIRMED against the AO3422 that now replaces Q11's AO3400A.  The AO3422's IGSS is the same +-100 nA, so the true-off floor is the same 1 uA + 100 nA across 220 k = 0.242 V, now against VGS(th) min 0.60 V instead of 0.65 V - 2.48x rather than 2.7x, still on two published numbers."
+		(property "Note" "D-752 BACKLIGHT-DISCONNECT GATE HOLD, AND WHY Q11 MAY NOT SHARE U17 CTRL.  D-750/D-751 tied Q11's gate to /DISP_BL_CTL, the same net as U17 CTRL, on the premise that PWM would shut the converter down and open Q11 together.  TI SNVSA40B section 6.3.5 says the opposite: the TPS61169 CHOPS ITS INTERNAL 204 mV REFERENCE at the CTRL duty cycle and filters it, so 'only the WLED DC current is modulated, which is often referred as analog dimming' -- THE CONVERTER KEEPS SWITCHING THROUGH EVERY PWM LOW PHASE.  Shutdown is entered only after CTRL is low for more than tSD (2.5 ms max, EC table).  With the gate shared, every PWM low phase therefore opened the LED string while U17 was actively regulating: FB collapses below 30 mV, SW ramps to VOVP_SW (36/37.5/39 V), open-LED protection (6.3.2) latches the device off after three switching cycles, and Q11's DRAIN -- the panel cathode -- follows the anode to about 36 V while R69 holds its SOURCE at 0 V.  THE AO3400A IS A 30 V PART (AOS Rev 3.1).  Firmware already drives ledcSetup(5000, 8) on GPIO46, so the board would have latched its backlight off and over-stressed Q11 on the first brightness ramp.  D-752 SEPARATES THE TWO FUNCTIONS IN HARDWARE RATHER THAN IN FIRMWARE.  D14 charges C85 from /DISP_BL_CTL through a silicon diode; R132 discharges it.  The gate therefore follows the ENVELOPE of CTRL, not its instantaneous level: it rises in microseconds (C85 charges through D14 from the GPIO against U17's 6.5 ms soft-start) and falls with tau = R132*C85 = 22 ms.  THE INVARIANT IS WAVEFORM-INDEPENDENT: Q11 cannot open until the gate has decayed below VGS(th), which takes at least 11.4 ms at worst-case tolerance, and U17 is guaranteed to be in SHUTDOWN after 2.5 ms.  U17 therefore stops switching FIRST, always, for any CTRL waveform whatsoever -- including an out-of-spec PWM frequency or a firmware crash.  Margin 4.6x.  1N4148WS chosen over a Schottky BECAUSE OF ITS REVERSE LEAKAGE: the true-off state is held by R132, and the worst PUBLISHED leakage of this part (1 uA at 75 V reverse; ours is 2.7 V) plus the AO3400A's 100 nA IGSS across 220 k is 0.242 V, against VGS(th) min 0.65 V.  A BAT54WS would have put that floor near or above threshold at temperature on an UNPUBLISHED number.  ||  D-766: the silicon-not-Schottky choice is RE-CONFIRMED against the AO3422 that now replaces Q11's AO3400A.  The AO3422's IGSS is the same +-100 nA, so the true-off floor is the same 1 uA + 100 nA across 220 k = 0.242 V, now against VGS(th) min 0.60 V instead of 0.65 V - 2.48x rather than 2.7x, still on two published numbers.  ||  D-789 / D788-11 CHANGES THIS PART TO A SCHOTTKY, AND CORRECTS THE SIGN OF THE SENTENCE ABOVE.  Round-8 required Q11's held gate to be DERIVED from the rail rather than asserted at D-752's 2.60 V constant, which was a 3.3 V-rail number.  D-788 moved the rail down to keep the ILI9488 panel inside its own 3.3 V absolute maximum, and the derivation at the new rail is: held gate = VOH(MIN) - VF(D14) = 0.8 x 3.069408 V - VF.  With the 1N4148WS, whose LOWEST published forward-voltage maximum is 715 mV at IF = 1 mA (JSCJ, archived vendor/JSCJ/jscj-1n4148ws-sod323-2011-05.pdf) plus a declared 2 mV/K allowance to the 0 C prototype endpoint, the held gate is 1.690526 V and Q11's VGS is 1.486526 V -- 13.5 mV BELOW the fitted SQ2364EES's ONLY published low-gate conduction row, RDS(on) 0.245 ohm MAX at VGS = 1.5 V.  There is no lower-current row to bound it with, so the part cannot be made to fit by arithmetic.  BAT54WS-7-F publishes VF <= 240 mV at IF = 0.1 mA (Diodes Incorporated DS30086, archived vendor/DIODES/diodes-bat54ws-7-f-ds30086.pdf) -- below the ~9 uA this node actually draws, and VF rises monotonically with IF, so it is a GUARANTEED bound -- giving a held gate of 2.165526 V and VGS of 1.961526 V, 461.5 mV inside the published conduction region.  SAME SOD-323 land and the SAME MPN this board already fits at D10/D11/D12, so D14 joins an existing BOM line: no new part, no new feeder, no copper and no assembly step change.  ||  THE D-752 LEAKAGE ARGUMENT ABOVE IS SUPERSEDED BECAUSE ITS SIGN IS WRONG.  Pin 1 of this symbol is K and pin 2 is A (KiCad Device:D), and the board wires pin 1 to /03_SPI_A_DISPLAY_SD/BL_DISC_G and pin 2 to /DISP_BL_CTL -- so the CATHODE is on Q11's gate.  In the true-off state CTRL is driven LOW and the gate sits above it, which REVERSE-biases D14: its leakage flows K->A, OUT of the gate and into CTRL, and can only pull the gate DOWN.  The only current that can hold the gate up is Q11's own IGSS, <= 100 nA, which across R132 is 22 mV against a VGS(th) MINIMUM of 0.46 V.  A Schottky's larger reverse leakage therefore IMPROVES true-off rather than threatening it, and what it costs is ordering margin: the published IR <= 2.0 uA at VR = 25 V (a bound here, since IR rises with VR and this node never exceeds ~2.2 V), carried to the 40 C endpoint by a declared 3x factor, is solved as a CONSTANT-CURRENT leak beside R132's exponential.  checks/demo_feature_contract.py F5 computes all of it and refuses the 1N4148WS at this rail by arithmetic."
 			(at 198.12 200.66 0)
 			(hide yes)
 			(show_name no)
@@ -10977,7 +10977,7 @@
 				)
 			)
 		)
-		(property "Note_Sourcing" "SOURCING D-752 2026-09-18, verified live per D-096 through the JLCPCB parts API; record at evidence/jlc-live/1n4148ws-*.json: LCSC C2128, Jiangsu Changjing Electronics, 1N4148WS, SOD-323, componentLibraryType = BASE (no extended-part fee, no feeder setup).  SOD-323 is the land pattern this board already carries for D8/D10/D11/D12, so D-752 adds no new footprint."
+		(property "Note_Sourcing" "SOURCING D-789 2026-09-21, verified live per D-096 through the JLCPCB parts API; record at evidence/jlc-live/bat54ws-7-f-*.json: LCSC C124205, Diodes Incorporated BAT54WS-7-F, SOD-323, stock 82659.  THIS IS THE LINE THE BOARD ALREADY BUYS: D10, D11 and D12 are the same MPN and the same LCSC code, procurement-locked at D-211, so D14 joins an existing BOM line and adds NO new part, NO new feeder and NO new footprint -- SOD-323 is the land this board already carries for D8/D10/D11/D12.  WAS 1N4148WS C2128 Jiangsu Changjing (D-752), refused at the D-788 rail by demo_feature_contract F5 on its 715 mV lowest published forward drop."
 			(at 198.12 200.66 0)
 			(hide yes)
 			(show_name no)
@@ -10988,7 +10988,7 @@
 				)
 			)
 		)
-		(property "Description" "Small-signal switching diode, 75 V, 4 ns"
+		(property "Description" "Schottky barrier diode, 30 V, 200 mA, SOD-323"
 			(at 198.12 200.66 0)
 			(hide yes)
 			(show_name no)

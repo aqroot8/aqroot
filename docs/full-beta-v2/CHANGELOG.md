@@ -1,3 +1,168 @@
+## D-789 — 2026-09-21 — ROUND-8 CORRECTION: THE PROOFS WERE INTERPOLATED, THE CALLERS WERE UNTESTED, AND THE MANUAL LEAD COULD NOT BE BUILT
+
+Round-8 external review **REJECTED D-788**.  Fable passed the design and kept two
+residuals; Astra **blocked the order** with **19 findings** (0 critical, 5 high,
+10 medium, 4 low), fourteen requiring pre-order correction and **no** unconditional
+PCB respin.  **All 19 are closed, plus both Fable-only items, plus one more this
+closeout found itself (`R8-N01`).**
+
+**Board authority `40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf`.**
+**`MANIFEST` `d2abda1e384739ec8f13561dc78d10b080e70487b6f5b4b16feaaf28b12ce3b9`.**
+**Content commit is recorded in the identity commit that follows this milestone, and in
+`hardware/demo/manufacturing/evidence/d789-review-target.json`.**
+
+- **D788-01 (HIGH) — `U20`'s `RON` was INTERPOLATED between two guaranteed rows
+  and called a bound.**  It now is one: the maximum published at the nearest
+  `SLVSGP6A` row **at or below `U20`'s own input voltage** — the 1.8 V row's
+  **116 mΩ**, not the 75.379 mΩ chord — which needs only that `RON` fall as
+  `VIN` rises, a property of the charge-pumped N-channel pass FET corroborated
+  by all three temperature rows.  And it is evaluated at `U20`'s ACTUAL input
+  (**3.056853 V** after the feed loss), not at the source rail.
+- **D788-02 (HIGH) — the return network was priced with four parallel ground
+  contacts carrying only the 3.3 V rail's current.**  The published usage
+  permits individual Dupont jumpers, and the 5 V rail's 300 mA comes home
+  through the same contacts.  `F6` now solves **every permitted wiring × load
+  mode** and publishes the worst: either duplicated 3.3 V contact **alone**,
+  **one** mated ground, and the 5 V rail **also** at its budget →
+  **2.849642 V** at the full 400 mA.  **PUBLISHED MINIMUM 2.84 V** (derived,
+  gridded down), with **2.982890 V** published beside it as an explicit
+  fully-mated connection contract.
+- **D788-03 (HIGH) — the `U11.2` thermal bound rested on a transverse-spreading
+  approximation Round-8 refused.**  It is gone.  The acceptance is now the
+  **MINIMUM of two independent RIGOROUS ceilings** — all the heat out one end
+  with no lateral help, and no axial sink with no transverse spreading — giving
+  a **52.3 °C** predicted peak.  The 105 °C limit stops claiming to be a
+  laminate MOT (nothing here publishes one) and is stated as what it is: a
+  declared conductor-sizing limit.  **The board's hottest point is the
+  BQ25185's own junction**, now COMPUTED from `SLUSF65B` 6.3.7.6 at the same
+  196 mΩ BATFET resistance the electrical model charges: **115.44 °C at the
+  40 °C top of the declared envelope**, against TI's own 125 °C.  IPC coupon
+  rise is never quoted as a board temperature; `C-THERM-01` remains the
+  measurement of record.
+- **D788-04/05/06 (HIGH/MED) — the production CALLERS could escape every gate.**
+  Making the leaf entry points executable at D-788 left their call sites in
+  `demo/main.cpp`, which no host test compiled.  The call sites now live in
+  **`DemoBringupApp`**, driven over a physical-latch expander model by the new
+  **`test_production_callers.cpp`** — 55 claims and **13 call-site mutations,
+  all caught**: outer-gauge early return, dead helper, unqualified success,
+  cold-gauge permission, lost-readiness fail-open, duplicate backlight ramp with
+  a no-op hold, early dim PWM, ungated backlight key, dropped warm-reset
+  re-initialisation, single-attempt retry, forced-CONFIRMED reset diagnostic,
+  unproved shadow, wanted-not-reconciled reporting, and a shutdown that claims
+  the rails are off while the state is unknown.  Ten further structural controls
+  refuse the code moving back.
+- **D788-07/08/09/16 — THE MANUAL REINFORCEMENT LEAD IS RETIRED.**  Four
+  independent findings, every one a property of the conductor rather than of its
+  description: 2.0 ± 0.5 mm of tinned tip could not fit a **1.00 mm** `TP12`
+  pad; `J5.3`'s **1.02 mm** drill is already filled by J5's **0.635 mm square**
+  tail (0.898 mm diagonal, 0.122 mm left, against a 0.32 mm bare conductor); the
+  route started **inside `BATTERY_SHADOW`** and crossed **`RIB_R3`** against its
+  own 1.0 mm clearances; and the ≤ 25 mΩ acceptance could not be measured with
+  the board's own copper in parallel.  **It bought 70 mV on ONE of two
+  duplicated contacts.**  Both contacts are now routed copper alone (79.0 /
+  224.4 mΩ), `TP12`/`TP25` stay as test points with nothing soldered to them,
+  the Alpha Wire reel leaves the off-board BOM, and the adhesive cure leaves the
+  critical path of every board.  **Manual post-reflow work is back to the five
+  through-hole references and nothing else.**
+- **D788-10 — the speaker crimp was the wrong contact for the wire.**
+  `AS02008MR-LW152-R` has **AWG #32** leads; `SPH-002T-P0.5S` is published for
+  **#30–#24, insulation OD 0.8–1.5 mm**.  Corrected to **`SPH-004T-P0.5S`**
+  (#32–#28, 0.5–0.9 mm, LCSC `C160351`, live stock 98 132) with its own
+  `MKS-L-10` / `APLMK SPH004-05S` tooling named, plus **`C-SPK-01`**: measure the
+  delivered insulation OD, pull-test two sacrificial crimps to destruction.
+  Same `PHR-2`, same `J6`, no board change.
+- **D788-11 — `Q11`'s held gate was a 3.3 V-rail constant on a rail that moved.**
+  Derived now from the rail's own heavy-load minimum: `VOH(MIN)` = 0.8 × 3.069408
+  V less the diode drop.  **At the D-788 rail the `1N4148WS` no longer works** —
+  its lowest published `VF` maximum is 715 mV at 1 mA, giving `VGS` = 1.486526 V,
+  **13.5 mV BELOW** the `SQ2364EES`'s only published low-gate conduction row
+  (0.245 Ω at `VGS` = 1.5 V), and there is no lower row to bound it with.  **`D14`
+  becomes `BAT54WS-7-F`** — `VF` ≤ 240 mV at 0.1 mA, below the ~9 µA this node
+  draws and monotonic, so a guaranteed bound — giving `VGS` **1.961526 V**,
+  **461.5 mV inside** the published region.  **Same SOD-323 land and the same MPN
+  this board already fits at `D10`/`D11`/`D12`**: no new part, no new feeder, no
+  copper.  **D-752's leakage argument is superseded because its SIGN was wrong** —
+  the cathode is on the gate, so the diode's reverse leakage flows OUT of it and
+  can only pull it down; a Schottky IMPROVES true-off.  0/25/40 °C waveform
+  acceptance is preserved.
+- **D788-12 — the ripple term ran on the internal load alone.**  In boost mode
+  the output capacitor carries the whole output current, and `U12`'s output is
+  the internal budget **plus** the Community Port's 400 mA through `U20` on the
+  same rail.  38 % larger, charged to both ends: **74.74 mV** under the panel's
+  absolute maximum and **52.53 mV** over the MCU floor.
+- **D788-13 — the wrapper failed its own frozen baseline on provenance.**  A
+  contract may now **declare** which of its own fields are a function of a
+  declared input (`pre_dependent_fields`); those pointers, **and only those**,
+  are normalised, **only** when `ref_commit` moved, with the two declarations
+  **intersected** so a report cannot widen its own, and never under `--strict`.
+  A constant five-claim self-test proves the normalisation narrow on every run.
+- **D788-14 — the pour changed-net negative control was tautological.**  It
+  removed an element and asked whether it was absent.  It now builds a **nonempty
+  changed-and-stranded pad fixture** and calls the **production predicate** with
+  connectivity withheld; the mutant that drops the connectivity requirement fails.
+- **D788-15 — the assembly PDFs printed `RELEASE D-787` on a D-788 board.**  The
+  label was a hand-typed constant.  It is **DERIVED** from the newest `## D-NNN`
+  heading in this CHANGELOG, and `FAB14` re-derives it with the exporter's own
+  function and refuses a mismatch.
+- **D788-17 — the adhesive cure contradicted its own source.**  The record said
+  tack-free 55 min at 50 % RH; the archived DOWSIL datasheet says **78 minutes at
+  25 °C** and contains neither 55 nor the reinforcement traveler's 30.  **One
+  condition-controlled hold** now: 25 ± 5 °C, 40–70 % RH, bead ≤ 1.0 mm, and
+  tack-free / handling / full-cure separated, with 72 h read as the **top** of
+  Dow's 24–72 h window.  **`C-ADH-01`** qualifies adhesion on the actual
+  soldermask and the actual insulation, per lot.
+- **D788-18 — the transient procedure could not prove its own acceptance.**  An
+  AC-coupled acquisition discards the DC term the 3.300 V / 3.000 V thresholds
+  are stated against.  Now **DC-coupled (preferred)** or a **synchronised DC
+  baseline + AC detail**, with a recorded uncertainty budget charged against the
+  margin.  And the accessory step's 3.20 / 3.05 V pack points were states a
+  release image **refuses to enter** — the accessory matrix moves to **4.15 /
+  3.90 V dual** and **3.55 V single**, above the 3.85 / 3.50 V floors; the
+  internal-only steps keep the full buck / buck-boost / boost span.  Any
+  below-floor bench data needs an explicitly bounded bench image that is never
+  the release image.
+- **D788-19 — the cap-height census cited the wrong MPN family.**  `C29`/`C30`
+  are **CCTC `TCC1206X7R226K160HT`**, not Murata `GRM31C`.  The census is bound
+  to the purchased MPN's own maximum dimensions and the `C14` stack is updated.
+- **F-N01 + `R8-N01` (FOUND HERE) — `Q2`/`Q3` are a PRE-PCBA BLOCK, and the
+  reason is now TWO reasons.**  The locked `NTMD4820NR2G` reads **stock 0** live
+  and is flagged no-longer-manufactured; the only same-MPN rows with stock are
+  re-marked second sources.  Applying D-780's own rule to the pass pair found
+  the second: the `LTC4368` guarantees **3.0 V** of gate drive at this board's
+  `VIN`, the fitted FET's `VGS(th)` **MAXIMUM is 3.0 V**, and its lowest
+  published `RDS(on)` row is at `VGS` = 4.5 V — so in the worst corner the
+  guaranteed drive is **below** the guaranteed threshold.  FUNCTIONAL, not
+  safety: the breaker senses across `R75` and pulls the gate DOWN.  New **`F10`**
+  computes the shortfall from primary sources every run and refuses a
+  `SOURCING_LEDGER` that drops the block, the eight selection criteria or
+  **`C-BAT-GATE-01`**.  **Do not pay for PCBA until this line is resolved.**
+- **F-N02 — `DEVICE_SPEC`'s stale D-787 text.**  Every current-facing voltage and
+  reinforcement statement is reconciled to D-789; the historical block is
+  explicitly fenced and the retired figures are named inside it.
+- **`R8-N02` … `R8-N06` (FOUND HERE)** — sweeping this milestone's own corrections for
+  second homes, the way Round-7's `R7-N03`/`R7-N05` taught: D788-10's speaker contact
+  survived in `MECHANICAL_INTERFACE_SPEC` and in `PROGRESS`'s **B-62** row, *with the
+  reason inverted* — #32–#24 is the PH **series** range across two contacts, and B-62 had
+  therefore recorded an out-of-spec lead as "inside spec" (`R8-N02`); D788-11's **2.396 V**
+  held gate survived in the master assembly plan (`R8-N03`); two sections were both
+  numbered `7b` and the sourcing sweep still said 124 lines (`R8-N04`); **eight**
+  first-article acceptance items were defined in five files with nothing gathering them,
+  and the substitution-trap table was two entries short (`R8-N05`); and the reason
+  `R8-N03` could exist at all is that **`F5` never required its own derived number to be
+  published**, though `F6` has required exactly that of the port contract since `R7-N04`
+  (`R8-N06`).  `F5` now cross-checks `DEVICE_SPEC` against the **derived** held `VGS`, its
+  margin and the hold diode's MPN.  **The first draft of that clause was vacuous** — it
+  returned a dict into a truthiness test — and was caught by running its negative control,
+  not by reading it.
+
+Connectivity unchanged (**174 / 173 / 1 owner-approved `U11.3` / 0 unapproved**).
+No protected copper moved.  Published **400 mA / 300 mA** budgets unchanged.  Every
+retained Kickstarter capability unchanged.  `hardware/beta-v2` untouched.
+**NOT AUTHORIZED FOR FABRICATION** — manufacturer CAM and first-article acceptance
+remain outstanding, and `Q2`/`Q3` is a pre-PCBA block.
+
+---
+
 ## D-788 — 2026-09-20 — ROUND-7 CORRECTION: THE DISPLAY'S ABSOLUTE MAXIMUM IS 3.3 V
 
 Round-7 external review REJECTED D-787.  Astra reproduced **20 observed release

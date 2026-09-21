@@ -1,0 +1,1154 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-21T03:03:14Z",
+ "keyword": "AO4828",
+ "page_size": 25,
+ "pages": 2,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "540pF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "3V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "10.5nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "25pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "4.5A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "60V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "540pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "2W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "56mΩ@10V"
+    }
+   ],
+   "componentBrandEn": "Alpha & Omega Semicon",
+   "componentCode": "C357835",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AO4828",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.5258,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.4102,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.3614,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2995,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.2719,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.2556,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "SOIC-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2403271726_Alpha---Omega-Semicon-AO4828_C357835.pdf",
+   "describe": "-55℃~+150℃ 10.5nC@10V 2 N-Channel 25pF 2W 3V 4.5A 540pF 540pF 56mΩ@10V 60V N-Channel SOIC-8 MOSFETs ROHS",
+   "erpComponentName": "AO4828",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_alpha-omega-semicon-ao4828_C357835.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2879
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "600pF"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "2V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "11.7nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "50pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "7A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "60V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "110pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "4W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "28mΩ@10V、30mΩ@4.5V"
+    }
+   ],
+   "componentBrandEn": "VBsemi Elec",
+   "componentCode": "C557959",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AO4828-VB",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.6104,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.4965,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.4395,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.3825,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.3174,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.2995,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "SO-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2212161908_VBsemi-Elec-AO4828-VB_C557959.pdf",
+   "describe": "-55℃~+175℃ 11.7nC@10V 110pF 2 N-Channel 28mΩ@10V、30mΩ@4.5V 2V 4W 50pF 600pF 60V 7A N-Channel SO-8 MOSFETs ROHS",
+   "erpComponentName": "AO4828-VB",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_vbsemi-elec-ao4828-vb_C557959.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 7
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "1.92nF"
+    },
+    {
+     "attribute_name_en": "Configuration",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1.4V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "50nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "116pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "6.5A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "60V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "155pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "2.1W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "30mΩ@10V、34mΩ@4.5V"
+    }
+   ],
+   "componentBrandEn": "MSKSEMI",
+   "componentCode": "C3008141",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AO4828-MS",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1526,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.1229,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.108,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0969,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0731,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0687,
+     "startNumber": 6000
+    }
+   ],
+   "componentSpecificationEn": "SOP-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2204291645_MSKSEMI-AO4828-MS_C3008141.pdf",
+   "describe": "-55℃~+150℃ 1.4V 1.92nF 116pF 155pF 2 N-Channel 2.1W 30mΩ@10V、34mΩ@4.5V 50nC@10V 6.5A 60V N-Channel SOP-8 MOSFETs ROHS",
+   "erpComponentName": "AO4828-MS",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_msksemi-ao4828-ms_C3008141.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 3863
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Vgs",
+     "attribute_value_name": "±20V"
+    },
+    {
+     "attribute_name_en": "Configuration",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "22nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "100pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "9A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "60V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "120pF"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "45mΩ@4.5V"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "979pF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "2.5V"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "2W"
+    }
+   ],
+   "componentBrandEn": "TECH PUBLIC",
+   "componentCode": "C3040597",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AO4828",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.3116,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.2461,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2181,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.1832,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.155,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1457,
+     "startNumber": 6000
+    }
+   ],
+   "componentSpecificationEn": "SOP-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2206241801_TECH-PUBLIC-AO4828_C3040597.pdf",
+   "describe": "-55℃~+150℃ 100pF 2 N-Channel 2.5V 22nC@10V 2W 45mΩ@4.5V 60V 979pF 9A SOP-8 MOSFETs ROHS",
+   "erpComponentName": "AO4828",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_tech-public-ao4828_C3040597.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1605
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "1.92nF"
+    },
+    {
+     "attribute_name_en": "Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1.4V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "50nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "116pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "6.5A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "60V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "155pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "2.1W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "32mΩ@10V"
+    }
+   ],
+   "componentBrandEn": "HXY MOSFET",
+   "componentCode": "C4748735",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AO4828-HXY",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1877,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.1539,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1394,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.1213,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.1093,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1044,
+     "startNumber": 6000
+    }
+   ],
+   "componentSpecificationEn": "SOP-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2212161130_HXY-MOSFET-AO4828-HXY_C4748735.pdf",
+   "describe": "-55℃~+150℃ 1.92nF 116pF 1V 2 N-Channel 2.1W 36mΩ@10V 50nC@30V 6.5A 60V SOP-8 MOSFETs ROHS",
+   "erpComponentName": "AO4828-HXY",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_hxy-mosfet-ao4828-hxy_C4748735.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 513
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "1.92nF"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1.5V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "50nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "116pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "6.5A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "60V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "155pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "2.1W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "30mΩ@10V"
+    }
+   ],
+   "componentBrandEn": "UMW(Youtai Semiconductor Co., Ltd.)",
+   "componentCode": "C5125954",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AO4828",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.146,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.113,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0964,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.084,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.071,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0661,
+     "startNumber": 6000
+    }
+   ],
+   "componentSpecificationEn": "SOP-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2311091742_UMW-Youtai-Semiconductor-Co---Ltd--AO4828_C5125954.pdf",
+   "describe": "-55℃~+150℃ 1.5V 1.92nF 116pF 155pF 2 N-Channel 2.1W 30mΩ@10V 50nC@10V 6.5A 60V SOP-8 MOSFETs ROHS",
+   "erpComponentName": "AO4828",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_umw-youtai-semiconductor-co-ltd-ao4828_C5125954.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 37545
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "520pF"
+    },
+    {
+     "attribute_name_en": "Vgs",
+     "attribute_value_name": "±20V"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1.8V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "16nC"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "60pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "5A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "60V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "105pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "2W"
+    }
+   ],
+   "componentBrandEn": "FOSAN",
+   "componentCode": "C5441158",
+   "componentLibraryType": "expand",
+   "componentModelEn": "FS4828",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1065,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.085,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0743,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0661,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0596,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0565,
+     "startNumber": 6000
+    }
+   ],
+   "componentSpecificationEn": "SOP-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304061000_FOSAN-FS4828_C5441158.pdf",
+   "describe": "-55℃~+150℃ 1.8V 105pF 16nC 2 N-Channel 2W 520pF 5A 60V 60pF N-Channel ±20V SOP-8 MOSFETs ROHS",
+   "erpComponentName": "FS4828",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_fosan-fs4828_C5441158.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2655
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "520pF"
+    },
+    {
+     "attribute_name_en": "Vgs",
+     "attribute_value_name": "±20V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "3V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "16nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "60pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "6.3A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "60V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "105pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "2W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "55mΩ@4.5V"
+    }
+   ],
+   "componentBrandEn": "JSMSEMI",
+   "componentCode": "C18189865",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AO4828-JSM",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.2273,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.178,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.157,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.1306,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.1218,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1148,
+     "startNumber": 6000
+    }
+   ],
+   "componentSpecificationEn": "SOP-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2403071641_JSMSEMI-AO4828-JSM_C18189865.pdf",
+   "describe": "105pF 16nC@10V 2 N-Channel 2W 3V 520pF 55mΩ@4.5V 6.3A 60V 60pF N-Channel ±20V SOP-8 MOSFETs ROHS",
+   "erpComponentName": "AO4828-JSM",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_jsmsemi-ao4828-jsm_C18189865.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 5904
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "1.92nF"
+    },
+    {
+     "attribute_name_en": "Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1.4V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "50nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "116pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "6.5A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "60V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "155pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "2.1W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "32mΩ@10V"
+    }
+   ],
+   "componentBrandEn": "HXY MOSFET",
+   "componentCode": "C3033410",
+   "componentLibraryType": "expand",
+   "componentModelEn": "HXY4828S",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.231,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.1819,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1607,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.1345,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.1184,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1112,
+     "startNumber": 6000
+    }
+   ],
+   "componentSpecificationEn": "SOP-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2212160808_HXY-MOSFET-HXY4828S_C3033410.pdf",
+   "describe": "-55℃~+150℃ 1.92nF 116pF 2 N-Channel 2.1W 2V 48mΩ@4.5V 50nC@10V 6.5A 60V N-Channel SOP-8 MOSFETs ROHS",
+   "erpComponentName": "HXY4828S",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_hxy-mosfet-hxy4828s_C3033410.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 40,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "3V@250uA"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "60V"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "2W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "56mΩ@10V,4.5A"
+    }
+   ],
+   "componentBrandEn": "Alpha & Omega Semicon",
+   "componentCode": "C15234",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AO4828",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.337,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.2621,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.2491,
+     "startNumber": 30
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.2344,
+     "startNumber": 100
+    }
+   ],
+   "componentSpecificationEn": "SOIC-8_3.9x4.9x1.27P",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "",
+   "describe": "2 N-Channel 2W 3V@250uA 56mΩ@10V,4.5A 60V SOIC-8 MOSFETs ROHS",
+   "erpComponentName": "AO4828",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_alpha-omega-semicon-ao4828_C15234.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 37,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "JLCPCB Assembly",
+   "componentCode": "C9900012964",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AO4828",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0007,
+     "startNumber": 1
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0003,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "SOP-8",
+   "componentTypeEn": "SMT",
+   "dataManualUrl": null,
+   "describe": "SOP-8 SMT ROHS",
+   "erpComponentName": "AO4828",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2500,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "1.148nF"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1.6V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "20.3nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "49.4pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "6A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "60V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "58.5pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "1.5W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "28mΩ@10V"
+    }
+   ],
+   "componentBrandEn": "GOODWORK",
+   "componentCode": "C47435900",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AO4828-GK",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.098,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.0857,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0795,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2499,
+     "productPrice": 0.0749,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 3999,
+     "productPrice": 0.0712,
+     "startNumber": 2500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0694,
+     "startNumber": 4000
+    }
+   ],
+   "componentSpecificationEn": "SOP-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2504161540_GOODWORK-AO4828-GK_C47435900.pdf",
+   "describe": "-55℃~+150℃ 1.148nF 1.5W 1.6V 2 N-Channel 20.3nC@10V 28mΩ@10V 49.4pF 58.5pF 60V 6A N-Channel SOP-8 MOSFETs ROHS",
+   "erpComponentName": "AO4828-GK",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_goodwork-ao4828-gk_C47435900.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 3350
+  }
+ ],
+ "returned": 12,
+ "schema": 1,
+ "total_matches": 12
+}

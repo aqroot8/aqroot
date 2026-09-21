@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "decision": "D-789",
+  "why": "D788-02 made the Community Port's published minimum a DERIVED number. A derived number still needs a floor that can REFUSE it, and the only floor that is a property of this board rather than of a wish is the tightest published minimum supply voltage among the parts the BOARD ITSELF powers from /ACC_3V3_SW. On this board that part is U16.",
+  "vendor": "Texas Instruments",
+  "device": "TCA4307",
+  "reference": "U16",
+  "package": "DGK0008A (VSSOP-8)",
+  "mpn": "TCA4307DGKR",
+  "document_number": "ZHCSLQ0",
+  "document_date": "AUGUST 2020",
+  "document_language": "zh-CN; TI's own cross-reference on page 1 names the English edition SCPS270. The Recommended Operating Conditions table is printed in English in this edition and is the row quoted below.",
+  "obtained_from": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2302221801_Texas-Instruments-TCA4307DGKR_C880333.pdf",
+  "obtained_via": "the dataManualUrl of the live D-096 JLCPCB record evidence/jlc-live/tca4307dgkr-801ff67b.json (C880333, Texas Instruments, stock 3478)",
+  "sha256": "5dce72e0601b336b8034682554ec1bbe7bf5edba62cf8656757f22fe881c3959",
+  "facts": {
+    "section": "6.3 Recommended Operating Conditions",
+    "VCC_supply_voltage_min_V": 2.3,
+    "VCC_supply_voltage_max_V": 5.5,
+    "row_text": "VCC  Supply voltage   MIN 2.3   MAX 5.5   V",
+    "uvlo_rising_V": 2.1,
+    "uvlo_falling_V": 2.0,
+    "corroboration": "the same live distributor record prints 'Voltage - Supply': '2.3V~5.5V' as a catalogue attribute, independently of this PDF"
+  },
+  "unit_check": "the extracted .txt of this document was checked against the PDF for the micro->m / Ohm->W substitution D-779 found in another vendor .txt; the quoted row carries only volts and is unaffected"
+}

@@ -112,6 +112,13 @@ HOST_TESTS = [
     # `configureFuelGaugeActiveModeOnHardware()` -- against a recording
     # Arduino HAL, so the production callbacks themselves are load-bearing.
     ROOT / "Firmware/test/test_production_timing.cpp",
+    # D-789 / D788-04 + D788-05 + D788-06.  The one that compiles and RUNS the
+    # PRODUCTION CALL SITES -- `DemoBringupApp`'s gauge permission path, its
+    # serial dispatch and its warm-reset/diagnostic methods -- over a recording
+    # bus with a PHYSICAL-LATCH expander model.  Round-8 showed that making the
+    # leaf entry points executable was not enough while their callers lived in
+    # an uncompiled `demo/main.cpp`.
+    ROOT / "Firmware/test/test_production_callers.cpp",
 ]
 # The recording Arduino core the production-entry-point test compiles against.
 # Copied beside `hw/` for EVERY host test so one compile command serves all of
@@ -276,6 +283,96 @@ PRODUCTION_TIMING_CONTROLS = [
      """  ledcWrite(channel, 255);
   ledcWrite(channel, 0);"""),
 ]
+
+
+# D-789 / D788-04 + D788-05 + D788-06.  THE EXACT COUNTEREXAMPLES ROUND-8 RAN,
+# one level out from D-788's.  Every one of these mutates a PRODUCTION CALL
+# SITE -- not the function it calls -- and every one of them passed the complete
+# D-788 gate suite because `demo/main.cpp` was compiled by no host test.  They
+# are caught here because `test_production_callers.cpp` constructs
+# `DemoBringupApp` over a recording bus with a physical output-latch model and
+# drives the real methods.
+PRODUCTION_CALLER_CONTROLS = [
+    # --- D788-04: the outer gauge caller -----------------------------------
+    ("the outer gauge caller early-returns and leaves the tested helper dead",
+     "aqroot_demo_bringup_app.h",
+     "    return configureFuelGaugeActiveModeOnHardware(gauge_, bus_);",
+     "    return gauge_.configureActiveMode(bus_);"),
+    ("the outer gauge caller reports success without qualifying at all",
+     "aqroot_demo_bringup_app.h",
+     "    return configureFuelGaugeActiveModeOnHardware(gauge_, bus_);",
+     "    (void)gauge_.configureActiveMode(bus_);\n    return true;"),
+    ("the accessory permission skips the qualification when the gauge is cold",
+     "aqroot_demo_bringup_app.h",
+     """    if (!gauge_.activeReady()) {
+      if (acc3v3_ || acc5v_ || expanders_.safeShutdownPending() ||
+          !configureFuelGaugeActiveMode()) {""",
+     """    if (false) {
+      if (acc3v3_ || acc5v_ || expanders_.safeShutdownPending() ||
+          !configureFuelGaugeActiveMode()) {"""),
+    ("a rail already being on stops being fail-closed on lost readiness",
+     "aqroot_demo_bringup_app.h",
+     "      if (acc3v3_ || acc5v_ || expanders_.safeShutdownPending() ||",
+     "      if (expanders_.safeShutdownPending() ||"),
+    # --- D788-05: the backlight serial caller ------------------------------
+    ("the serial dispatch carries a duplicate backlight ramp with a no-op hold",
+     "aqroot_demo_bringup_app.h",
+     "        backlightRamp();",
+     """        ledcSetup(0, kBacklightPwmHz, 8);
+        ledcAttachPin(AQROOT_PIN_DISP_BL_PWM, 0);
+        for (int duty = 5; duty <= 255; duty += 5) {
+          ledcWrite(0, uint8_t(duty));
+        }
+        ledcWrite(0, 0);
+        ledcDetachPin(AQROOT_PIN_DISP_BL_PWM);
+        pinMode(AQROOT_PIN_DISP_BL_PWM, OUTPUT);
+        digitalWrite(AQROOT_PIN_DISP_BL_PWM, LOW);"""),
+    ("the serial dispatch emits a dim PWM command before the tested ramp",
+     "aqroot_demo_bringup_app.h",
+     "        backlightRamp();",
+     "        ledcWrite(0, 3);\n        backlightRamp();"),
+    ("the backlight key stops being gated on a confirmed safe accessory state",
+     "aqroot_demo_bringup_app.h",
+     '        if (!blockingDemoTestAllowed("backlight ramp")) return true;',
+     '        (void)blockingDemoTestAllowed("backlight ramp");'),
+    # --- D788-06: warm reset, reset release, truthful reporting -------------
+    ("the warm-reset retry drops the complete expander initialisation",
+     "aqroot_demo_bringup_app.h",
+     "    const bool recovered = bus_open && expanders_.begin(bus_);",
+     "    const bool recovered = bus_open;"),
+    ("the warm-reset retry gives up after its first attempt",
+     "aqroot_demo_bringup_app.h",
+     "    if (expanders_.ready()) return false;",
+     "    if (expanders_.ready() || recovery_started_) return false;"),
+    # "force reset-release success" -- Astra's own words for D788-06.  Note
+    # that mutating `released` or `writes_ok` ALONE is an EQUIVALENT mutant on
+    # this device: `Pcal9535a::writeOutputs` invalidates the output shadow on
+    # any NACK and `writeBit` then refuses, so `writes_ok` and `shadow_known`
+    # cannot disagree.  The mutation that is NOT equivalent is the one that
+    # forces the VERDICT, and that is the one reproduced here.
+    ("the reset-release diagnostic forces a CONFIRMED verdict",
+     "aqroot_demo_bringup_app.h",
+     "    if (writes_ok && released) {\n      out.verdict = ResetRelease::Confirmed;",
+     "    (void)released;\n    if (true) {\n      out.verdict = ResetRelease::Confirmed;"),
+    ("the reset-release diagnostic trusts a shadow it has not proved valid",
+     "aqroot_demo_bringup_app.h",
+     "    const bool shadow_known = expanders_.u2().outputShadowValid();",
+     "    const bool shadow_known = true;"),
+    ("the accessory command line reports the WANTED state, not the reconciled one",
+     "aqroot_demo_bringup_app.h",
+     """    const char *state = uncertain ? "UNKNOWN (pending safe reconciliation)"
+                                  : (retained ? "ON" : "OFF");""",
+     """    (void)uncertain;
+    (void)retained;
+    const char *state = want ? "ON" : "OFF";"""),
+    ("the fail-closed shutdown claims the rails are off while the state is unknown",
+     "aqroot_demo_bringup_app.h",
+     """    const bool pending = expanders_.safeShutdownPending() ||
+                         !expanders_.u2().outputShadowValid() ||
+                         !expanders_.u3().outputShadowValid();""",
+     "    const bool pending = false;"),
+]
+
 
 BUS_CONTROLS = [
     ("the bus accepts a second concurrent chip select",
@@ -669,7 +766,7 @@ def main():
             HOST_TESTS,
             (ORDER_CONTROLS, BUS_CONTROLS, POWER_POLICY_CONTROLS,
              FUEL_GAUGE_CONTROLS, TIMING_CONTROLS,
-             PRODUCTION_TIMING_CONTROLS)):
+             PRODUCTION_TIMING_CONTROLS, PRODUCTION_CALLER_CONTROLS)):
         compiled, code, output = run_host_test(test)
         claims = [line for line in output.splitlines() if line.startswith("[")]
         entry = {
@@ -713,18 +810,30 @@ def main():
     #       its eight production mutations CAUGHT.
     # Comments are stripped first: a commented-out call is not a call.
     PRODUCTION_TEST = ROOT / "Firmware/test/test_production_timing.cpp"
+    CALLER_TEST = ROOT / "Firmware/test/test_production_callers.cpp"
+    APP_HEADER = HW_DIR / "aqroot_demo_bringup_app.h"
     GAUGE_BRINGUP = HW_DIR / "aqroot_demo_gauge_bringup.h"
     BACKLIGHT = HW_DIR / "aqroot_demo_backlight.h"
 
-    def _seam_problems(main_text, periph_text, bringup_text, backlight_text):
+    def _seam_problems(main_text, periph_text, bringup_text, backlight_text,
+                       app_text=None):
         problems = []
         main_code = strip_comments(main_text)
         periph_code = strip_comments(periph_text)
         bringup_code = strip_comments(bringup_text)
         backlight_code = strip_comments(backlight_text)
-        if "configureFuelGaugeActiveModeOnHardware(" not in main_code:
-            problems.append("demo/main.cpp does not call the production "
-                            "gauge entry point")
+        app_code = strip_comments(app_text if app_text is not None
+                                  else _read(APP_HEADER))
+        # D-789 / D788-04.  THE CALL MOVED, AND THAT IS THE FIX.  D-788 put
+        # this clause on `demo/main.cpp` because that is where the caller was;
+        # Round-8's counterexample was that nothing COMPILES `demo/main.cpp`.
+        # The production entry point is now reached from
+        # `aqroot_demo_bringup_app.h`, which `test_production_callers.cpp`
+        # builds and runs -- and the clause below still refuses a `main.cpp`
+        # that reimplements it.
+        if "configureFuelGaugeActiveModeOnHardware(" not in app_code:
+            problems.append("aqroot_demo_bringup_app.h does not call the "
+                            "production gauge entry point")
         if "qualifyFuelGaugeActiveMode(" not in bringup_code:
             problems.append("aqroot_demo_gauge_bringup.h does not call "
                             "qualifyFuelGaugeActiveMode()")
@@ -751,6 +860,53 @@ def main():
         if "runBacklightRampPolicy(" in periph_code:
             problems.append("aqroot_demo_peripherals.h carries a second copy "
                             "of the backlight ordering")
+        # D-789 / D788-04 + D788-05 + D788-06.  THE CALL SITES THEMSELVES MUST
+        # STAY WHERE A HOST TEST COMPILES THEM.  Round-8's three mutants all
+        # lived in `demo/main.cpp`, which no host test has ever built, so the
+        # only durable fix is that this file reaches each behaviour THROUGH
+        # `DemoBringupApp` and owns no second implementation of any of them.
+        if "DemoBringupApp<" not in main_code:
+            problems.append("demo/main.cpp does not instantiate "
+                            "DemoBringupApp, so its call sites are compiled "
+                            "by no host test")
+        for symbol, why in (
+                ("g_app.handleAccessoryConsole(",
+                 "the accessory/backlight console dispatch"),
+                ("g_app.serviceExpanderRecovery(",
+                 "the warm-reset expander recovery retry"),
+                ("g_app.releaseExpanderResetLines(",
+                 "the reset-release diagnostic"),
+                ("g_app.backgroundGaugeRequalification(",
+                 "the background gauge requalification"),
+                ("g_app.periodicBatteryGuard(",
+                 "the periodic accessory battery guard")):
+            if symbol not in main_code:
+                problems.append("demo/main.cpp does not reach %s through the "
+                                "host-tested production app" % why)
+        # ...and no second copy of any of them beside it.
+        for pattern, why in (
+                (r"\bbacklightRamp\s*\(", "a backlight ramp"),
+                (r"\bledcWrite\s*\(", "a raw PWM duty command"),
+                (r"\bconfigureFuelGaugeActiveModeOnHardware\s*\(",
+                 "the gauge production entry point"),
+                (r"\bqualifyFuelGaugeActiveMode\s*\(",
+                 "the gauge qualification seam"),
+                (r"\baccessoryRetentionAction\s*\(",
+                 "the accessory retention rule"),
+                (r"\baccessoryEnableAllowed\s*\(",
+                 "the accessory enable rule"),
+                (r"expanders?\.begin\s*\(|g_expanders\.begin\s*\(",
+                 "a second expander initialisation retry")):
+            for m in re.finditer(pattern, main_code):
+                # setup()'s ONE boot-time `g_expanders.begin` is the legitimate
+                # cold-start call; the retry is the app's.
+                line = main_code[max(0, m.start() - 200):m.start()]
+                if "g_expanders.begin" in m.group(0) and \
+                        "const bool i2c_open" in line:
+                    continue
+                problems.append("demo/main.cpp carries %s outside the "
+                                "host-tested production app" % why)
+                break
         return problems
 
     def _read(path):
@@ -762,37 +918,40 @@ def main():
     bringup_src = _read(GAUGE_BRINGUP)
     backlight_src = _read(BACKLIGHT)
     seam_problems = _seam_problems(main_src, periph_src, bringup_src,
-                                   backlight_src)
+                                   backlight_src, _read(APP_HEADER))
+    app_src = _read(APP_HEADER)
     h8_controls = []
-    for name, m_text, p_text, g_text, b_text in (
+    for name, m_text, p_text, g_text, b_text, a_text in (
+            # D-789 / D788-04: the gauge call site now lives in the app header
+            # -- which is the whole point -- so these two mutate it THERE.
             ("the gauge call site drops back to a local delay",
-             main_src.replace(
-                 "return configureFuelGaugeActiveModeOnHardware(",
-                 "if (!g_fuel_gauge.configureActiveMode(g_bus)) return false;\n"
-                 "  delay(kFuelGaugeActiveSettleMs);\n  return true;\n  "
-                 "return configureFuelGaugeActiveModeOnHardware(", 1),
-             periph_src, bringup_src, backlight_src),
+             main_src, periph_src, bringup_src, backlight_src,
+             app_src.replace(
+                 "    return configureFuelGaugeActiveModeOnHardware(gauge_, bus_);",
+                 "    if (!gauge_.configureActiveMode(bus_)) return false;\n"
+                 "    delay(kFuelGaugeActiveSettleMs);\n    return true;", 1)),
             ("the gauge call site is commented out",
-             main_src.replace("return configureFuelGaugeActiveModeOnHardware(",
-                              "return false; "
-                              "// configureFuelGaugeActiveModeOnHardware(", 1),
-             periph_src, bringup_src, backlight_src),
+             main_src, periph_src, bringup_src, backlight_src,
+             app_src.replace(
+                 "    return configureFuelGaugeActiveModeOnHardware(gauge_, bus_);",
+                 "    return false; "
+                 "// configureFuelGaugeActiveModeOnHardware(gauge_, bus_);", 1)),
             ("the gauge bring-up header stops calling the seam",
              main_src, periph_src,
              bringup_src.replace("return qualifyFuelGaugeActiveMode(",
                                  "return gauge.configureActiveMode(bus); "
                                  "// qualifyFuelGaugeActiveMode(", 1),
-             backlight_src),
+             backlight_src, app_src),
             ("the backlight call site re-implements the prime",
              main_src, periph_src, bringup_src,
              backlight_src.replace(
                  "  runBacklightRampPolicy(",
                  "  ledcWrite(channel, 255);\n  delayMicroseconds(3000);\n"
-                 "  runBacklightRampPolicy(", 1)),
+                 "  runBacklightRampPolicy(", 1), app_src),
             ("the backlight call site is commented out",
              main_src, periph_src, bringup_src,
              backlight_src.replace("  runBacklightRampPolicy(",
-                                   "  // runBacklightRampPolicy(", 1)),
+                                   "  // runBacklightRampPolicy(", 1), app_src),
             ("a second backlight ordering reappears in peripherals.h",
              main_src,
              periph_src + "\nnamespace aqroot { inline void backlightRamp2("
@@ -800,8 +959,32 @@ def main():
                           "[c](uint8_t d) { ledcWrite(c, d); },"
                           "[](uint32_t u) { delayMicroseconds(u); },"
                           "[](uint32_t m) { delay(m); }); } }\n",
-             bringup_src, backlight_src)):
-        p_list = _seam_problems(m_text, p_text, g_text, b_text)
+             bringup_src, backlight_src, app_src),
+            # D-789 / D788-04+05+06: the call sites move back out of the
+            # host-tested app, which is exactly what Round-8 exploited.
+            ("the console dispatch moves back into demo/main.cpp",
+             main_src.replace("(void)g_app.handleAccessoryConsole(key);",
+                              "backlightRamp();", 1),
+             periph_src, bringup_src, backlight_src, app_src),
+            ("the warm-reset retry moves back into demo/main.cpp",
+             main_src.replace(
+                 "if (g_app.serviceExpanderRecovery()) g_display_up = false;",
+                 "if (g_bus.reopen(AQROOT_I2C_BRINGUP_HZ) && "
+                 "g_expanders.begin(g_bus)) g_display_up = false;", 1),
+             periph_src, bringup_src, backlight_src, app_src),
+            ("the reset-release diagnostic moves back into demo/main.cpp",
+             main_src.replace("g_app.releaseExpanderResetLines();",
+                              "releaseResetsLocally();", 1),
+             periph_src, bringup_src, backlight_src, app_src),
+            ("demo/main.cpp regains a private accessory permission rule",
+             main_src + "\nstatic bool allowLocally(bool v, float x, bool o) "
+                        "{ return accessoryEnableAllowed(v, x, o); }\n",
+             periph_src, bringup_src, backlight_src, app_src),
+            ("the app is not instantiated at all",
+             main_src.replace("using DemoApp = DemoBringupApp<",
+                              "using DemoApp = int; // DemoBringupApp<", 1),
+             periph_src, bringup_src, backlight_src, app_src)):
+        p_list = _seam_problems(m_text, p_text, g_text, b_text, a_text)
         h8_controls.append(dict(control=name, refused=bool(p_list),
                                 first_reason=p_list[0] if p_list else None))
 
@@ -825,6 +1008,24 @@ def main():
         seam_problems.append(
             "the production-entry-point host test did not pass with every "
             "production mutation caught")
+    # D-789 / D788-04 + D788-05 + D788-06: and the CALL-SITE test beside it.
+    caller_entry = next(
+        (entry for entry in h6["tests"]
+         if entry["test"].endswith("test_production_callers.cpp")), None)
+    caller_ok = bool(
+        caller_entry
+        and caller_entry["compiled"]
+        and caller_entry["exit_code"] == 0
+        and caller_entry["claims"] >= 40
+        and not caller_entry["failed_claims"]
+        and len(caller_entry["controls"]) >= 12
+        and all(c["caught"] for c in caller_entry["controls"]))
+    if not CALLER_TEST.exists():
+        seam_problems.append("Firmware/test/test_production_callers.cpp is absent")
+    if not caller_ok:
+        seam_problems.append(
+            "the production-CALL-SITE host test did not pass with every "
+            "call-site mutation caught")
 
     report["H8_released_firmware_runs_the_tested_timing_seam"] = {
         "call_sites": {
@@ -841,6 +1042,20 @@ def main():
             "controls": [c["control"] for c in
                          (production_entry or {}).get("controls", [])],
             "every_production_mutation_caught": production_ok,
+        },
+        "executable_call_site_proof": {
+            "test": CALLER_TEST.relative_to(ROOT).as_posix(),
+            "app": (HW_DIR / "aqroot_demo_bringup_app.h")
+                   .relative_to(ROOT).as_posix(),
+            "ran_in_H6": caller_entry is not None,
+            "claims": (caller_entry or {}).get("claims"),
+            "controls": [c["control"] for c in
+                         (caller_entry or {}).get("controls", [])],
+            "every_call_site_mutation_caught": caller_ok,
+            "why": ("D788-04/05/06: making the leaf entry points executable "
+                    "left their CALLERS in demo/main.cpp, which no host test "
+                    "compiles.  The call sites now live in DemoBringupApp and "
+                    "are driven over a physical-latch expander model."),
         },
         "problems": seam_problems,
         "controls": h8_controls,

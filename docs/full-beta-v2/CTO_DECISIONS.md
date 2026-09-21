@@ -1,3 +1,570 @@
+## D-789 — **ROUND-8 CORRECTION: THREE PROOFS THAT WERE STRETCHED PAST THEIR EVIDENCE, THREE UNTESTED PRODUCTION CALLERS, AND A MANUAL LEAD THAT COULD NOT BE BUILT**
+
+    authority  board 40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf
+    parent     2344ebb2a8eac204e54af2cee6f1f0a1abdb38de (D-788, REJECTED by Round-8)
+    scope      D788-01..19, Fable-only F-N01/F-N02, and R8-N01 found here
+    order      HOLD.  External-review target.  Manufacturer CAM and first-article
+               acceptance remain outstanding, and Q2/Q3 is a PRE-PCBA BLOCK.
+               NO OWNER DECISION IS OPEN.
+
+Round-8 rejected D-788.  **Fable** passed the design review and kept two residuals.
+**Astra** blocked the order with **19 findings** -- 0 critical, 5 high, 10 medium, 4 low --
+fourteen requiring pre-order correction, and **established no unconditional PCB respin**.
+All 19 are closed here, plus both Fable-only items, plus **one more this closeout found
+itself**, `R8-N01`, which is the more serious of the two reasons `Q2`/`Q3` may not be paid
+for yet.
+
+**THE ROUND HAS A THEME AND IT IS WORTH NAMING.**  Three of the five highs are the same
+error in three unrelated domains: a **bound** that was really an **interpolation**, an
+**assumed parallel network** the published usage does not require, and an
+**approximation** standing in for a thermal model.  In each case the honest replacement is
+*worse* -- and that is the point.  A number that only holds because a curve was assumed
+smooth, a connector was assumed fully mated, or heat was assumed to spread sideways is not
+a guarantee; it is a hope with a decimal point.
+
+---
+
+### 1. D788-01 (HIGH) — `U20`'s maximum `RON` was interpolated  ·  CLOSED
+
+D-788 read TI `SLVSGP6A`'s ON-Resistance table -- **116 mΩ at `VIN` = 1.8 V, 68 at 3.3 V,
+54 at 5.0 V**, each a maximum over -40..+125 °C -- and **linearly interpolated** to the
+rail's own minimum, producing **75.379 mΩ**.  Astra is right that nothing guarantees the
+curve's shape between two published points: a maximum at 1.8 V and a maximum at 3.3 V
+bound the endpoints and say nothing about 3.06 V.  Interpolation between guaranteed rows
+is a *typical-shaped* argument wearing a maximum's clothes.
+
+**THE BOUND IS NOW THE NEAREST PUBLISHED ROW AT OR BELOW THE ACTUAL INPUT.**  `F6` takes
+the maximum published at the nearest row **at or below** `U20`'s `VIN` -- here the 1.8 V
+row's **116 mΩ**.  That needs only one property: **`RON` falls as `VIN` rises**.  It is a
+charge-pumped N-channel pass FET, so higher `VIN` means higher gate drive means lower
+`RON`; all three temperature rows agree, and `SLVSGP6A` Figure 6-3 shows it monotone.  No
+curvature is assumed and nothing is interpolated.
+
+**AND IT IS EVALUATED AT `U20`'s OWN INPUT, NOT THE SOURCE RAIL.**  Astra's second half:
+`U20` does not see the rail, it sees the rail **less the feed loss into its own input
+pin**.  `F6` now walks that copper and evaluates at **3.056853 V**.
+
+The same discipline now governs `D14`'s `VF` in `F5` (section 7) and the `LTC4368`'s gate
+drive in `F10` (section 12).  **Three clauses, one rule: a guaranteed row is guaranteed at
+its own condition; interpolate between two of them only when the direction of the error is
+itself guaranteed, and never extrapolate past one.**
+
+---
+
+### 2. D788-02 (HIGH) — the shared return network was priced wrong  ·  CLOSED
+
+D-788 priced the Community Port's ground return as **four contacts in parallel carrying
+0.4 A**.  Both halves are wrong against this repository's own published usage.  The port is
+documented as usable with **individual Dupont jumpers**, so a user may mate **one** ground.
+And `ACC_5V_SW` returns through **the same contacts**, so at both published budgets the
+return carries **0.7 A**, not 0.4 A.
+
+**THE GUARANTEE IS NOW THE WORST PERMITTED MODE, SOLVED RATHER THAN ASSUMED.**  `F6`
+enumerates every permitted wiring x load combination -- each duplicated 3.3 V contact used
+alone and both used together; one, two, three or four mated grounds; the 3.3 V rail alone
+and both rails at their published budgets -- and publishes the minimum:
+
+| condition at the J5 mating interface | delivered, guaranteed |
+|---|---|
+| no load | **3.069408 V** |
+| 400 mA, worst permitted wiring, 5 V rail also at 300 mA | **2.849642 V** |
+| 400 mA, worst permitted wiring, 3.3 V rail alone | **2.860909 V** |
+| 400 mA, header fully mated, 5 V rail also at 300 mA | **2.982890 V** |
+
+The worst mode is `J5.3` alone (**483.694 mΩ** forward, dominated by `U20`'s new 116 mΩ and
+that contact's 224.4 mΩ of routed copper) with **one** mated ground carrying 0.7 A through
+**37.555 mΩ** -- **219.77 mV** of total drop.
+
+**PUBLISHED MINIMUM: 2.84 V**, the worst mode rounded DOWN onto a 10 mV grid.  It is
+**DERIVED** -- `F6` computes it from the live board on every run and refuses a `DEVICE_SPEC`
+that prints anything else (the `R7-N04` clause, still in force).  **The fully-mated
+2.982890 V is published beside it as an explicit connection contract**, because an
+accessory designer who mates the whole header deserves to know what that buys.
+
+**WHAT THE PORT'S OWN SILICON NEEDS.**  The tightest published minimum supply among the
+parts the *board* powers from `ACC_3V3_SW` is `U16` `TCA4307DGKR` at **2.3 V** (TI
+`ZHCSLQ0` section 6.3, newly archived).  The worst delivered mode clears it by **549.6 mV**.
+Every Qwiic/STEMMA QT device this project has qualified operates at or below 2.7 V.
+
+**THIS STAYS INSIDE THE OWNER'S APPROVAL.**  Option A's text delegates the exact values to
+the final candidate in its own words.  400 mA and 300 mA are untouched; no capability is
+removed; the number an accessory designer reads moved from 2.95 V to 2.84 V because the
+proof got honest, and the *fully mated* number is **better** than what D-788 published with
+a hand-soldered wire fitted.
+
+---
+
+### 3. D788-03 (HIGH) — the `U11.2` thermal bound rested on an approximation  ·  CLOSED
+
+D-788's acceptance used a `w + 2d` transverse-spreading conductance.  Astra reproduced a
+sensitivity in which the same boundary gives **~109.7 °C**, which is the correct verdict on
+that model: if a plausible re-parameterisation moves the answer 15 K, the model was not
+bounding anything.
+
+**THE APPROXIMATION IS GONE.**  The acceptance is now the **minimum of two independent
+RIGOROUS ceilings**, each of which is a true upper bound on its own:
+
+* **all the heat out one end with no lateral help** -- 1-D conduction into the copper the
+  run terminates on, no dielectric path at all;
+* **no axial sink with no transverse spreading** -- the run insulated at both ends, losing
+  heat only straight down and up through the declared dielectric thicknesses.
+
+The real run has **both** escape paths, so it is cooler than either bound, and the smaller
+of two ceilings is a ceiling.  The `w + 2d` column is still reported and **is used by
+nothing**.  Result on the `U11.2` package-land neck: **2.30 K** rise, **52.3 °C** predicted
+peak at 40 °C ambient plus the declared 10 K bulk board rise.
+
+**THE EXCEPTION ITSELF ALSO SHRANK.**  D-788 licensed **6.0 mm** of 0.200 mm copper.  That
+was the *width attribute* of a track whose copper lies entirely inside D-780's wider taper
+-- it described a neck the board does not have.  The exception is now **1.2 mm of MEASURED
+0.200 mm copper plus 3.0 mm of the 0.600 mm taper out of it**, measured station by station.
+
+**THE 105 °C NUMBER STOPS CLAIMING TO BE SOMETHING IT IS NOT.**  D-788 called it "the
+laminate's maximum continuous operating temperature" and elsewhere "the tighter of the
+laminate's and the silicon's".  Neither is supportable: no source in this repository
+publishes an MOT for a Tg-150 FR4, and the silicon's limit is TI's own `TJ` maximum, which
+must be **computed**, not inferred from a copper temperature.  It is now stated as what it
+is -- **a declared conductor-sizing limit for copper heated by its own current**, chosen
+45 K below the required laminate Tg.
+
+**AND THE HOTTEST POINT ON THIS BOARD IS NOT COPPER.**  Astra's third half -- reconcile the
+196 mΩ BATFET the *electrical* model charges with the *thermal* heat basis -- is closed by
+computing the junction directly.  From `SLUSF65B` 6.3.7.6, `TJ = TA + θJA x PDISS`, with
+θJA **68.3 °C/W** for the DLH package and `PBAT = IBAT² x RON_BAT` at the **same 196 mΩ**
+(TI's 140 mΩ maximum times this repository's declared 1.40x low-`VBAT`/high-current
+allowance), plus the board copper entering the same pin:
+
+| case | `PDISS` | `TJ` at `TA` = 40 °C | margin to TI's 125 °C |
+|---|---|---|---|
+| datasheet `RON_BAT` max, 140 mΩ | 0.7952 W | **94.31 °C** | 30.69 K |
+| **declared `VBAT` allowance, 196 mΩ — RULING** | **1.1045 W** | **115.44 °C** | **9.56 K** |
+
+**9.56 K is the real thermal margin on this board** and it is on silicon, not on laminate.
+The fab notes' **Tg >= 150 °C** requirement is re-justified against *that* number: a TG130
+build leaves 14.6 K to the glass transition at the hottest point and is refused.
+`C-THERM-01` first-article thermography remains the measurement of record, and the
+IPC-2221B isolated-coupon figure reported beside the run is labelled a screening number and
+**is never quoted as a board temperature**.
+
+---
+
+### 4. D788-04 / D788-05 / D788-06 — the production CALLERS could escape every gate  ·  CLOSED
+
+D-788 answered Round-7 by making the leaf timing entry points **executable** -- and left
+their **call sites** in `demo/main.cpp`, which no host test compiles.  Astra reproduced the
+consequence exactly: an outer wrapper that early-returns keeps the tested helper dead,
+passes H1-H8, and authorises a VCELL read with a **0 ms** wait.  Same shape for a duplicate
+backlight implementation with a no-op hold (D788-05) and for the warm-reset retry and the
+diagnostic reporters (D788-06).
+
+**THE CALL SITES MOVED INTO A TESTABLE OBJECT.**  `DemoBringupApp`
+(`Firmware/src/hw/aqroot_demo_bringup_app.h`) now owns the gauge bring-up call site, the
+serial/console dispatch, the warm-reset expander recovery, the reset-release diagnostic and
+the fail-closed shutdown.  `demo/main.cpp` **delegates**.  The new
+`Firmware/test/test_production_callers.cpp` compiles and **runs** that object against a
+**physical-latch expander model** -- 55 claims -- and **13 call-site mutations are all
+caught**:
+
+    outer gauge caller early-returns, leaving the tested helper dead
+    outer gauge caller reports success without qualifying at all
+    accessory permission skips qualification when the gauge is cold
+    a rail already on stops being fail-closed on lost readiness
+    serial dispatch carries a duplicate backlight ramp with a no-op hold
+    serial dispatch emits a dim PWM command before the tested ramp
+    backlight key stops being gated on a confirmed safe accessory state
+    warm-reset retry drops the complete expander initialisation
+    warm-reset retry gives up after its first attempt
+    reset-release diagnostic forces a CONFIRMED verdict
+    reset-release diagnostic trusts a shadow it has not proved valid
+    accessory command line reports the WANTED state, not the reconciled one
+    fail-closed shutdown claims the rails are off while the state is UNKNOWN
+
+`H8` additionally carries **ten structural controls** that refuse the code moving back:
+a local delay at the gauge call site, a commented-out call, a bring-up header that stops
+calling the seam, a backlight caller that re-implements the prime, a second copy of the
+backlight ordering in `peripherals.h`, and the console dispatch / warm-reset retry /
+diagnostic returning to `main.cpp`.  `test_production_timing.cpp`'s eight leaf mutations
+are retained.  **The last of these is also the R6-E06 closure re-proved behaviourally:**
+a shutdown may not print "rails forced off" while the latch state is unknown.
+
+---
+
+### 5. D788-07 / D788-08 / D788-09 / D788-16 — the manual reinforcement lead is RETIRED  ·  CLOSED
+
+Four independent findings against one conductor, and **every one is a property of the
+conductor rather than of its description**:
+
+* **D788-07** -- the traveler required **2.0 +/- 0.5 mm of exposed tinned tip entirely
+  within** a **1.00 mm** round `TP12` land.  Literal compliance is impossible.
+* **D788-08** -- `J5.3`'s nominal **1.02 mm** drill is already occupied by J5's
+  **0.635 mm square** tail, whose diagonal is **0.898 mm**, leaving **0.122 mm** against a
+  28 AWG conductor that is **0.32 mm bare**.  It does not fit in ideal geometry.
+* **D788-09** -- the dimensioned route **starts inside `BATTERY_SHADOW`** and **crosses
+  `RIB_R3`**, while the record itself demands >= 1 mm to both.
+* **D788-16** -- the <= 25 mΩ acceptance **cannot be measured**: the board's own
+  `U20.5 -> J5.3` copper stays in parallel with the lead, so an endpoint Kelvin reading
+  passes with an over-limit lead.
+
+Each could be answered separately -- a redesigned joint, an external-tail termination, a
+rerouted corridor, a de-embedded measurement.  **Together they say the operation does not
+belong on this board.**  And the arithmetic settles it: the lead bought **70 mV** of
+published minimum on **one of two duplicated contacts**, on a rail whose consumers have
+**549.6 mV** of margin without it.
+
+**IT IS GONE.**  Both contacts are delivered by routed copper alone -- `J5.22` at
+**79.0 mΩ**, `J5.3` at **224.4 mΩ**, both measured and both bounded.  `TP12`/`TP25` remain
+as test points on `ACC_3V3_SW` downstream of `U20`, for bring-up and for a future rework,
+and **nothing is soldered to them**.  `U20`'s current limiting and OFF isolation are
+unchanged and remain in series with both contacts.
+
+**WHAT LEAVES WITH IT.**  The Alpha Wire `2842/19 RD005` reel leaves the off-board BOM; the
+three adhesive beads and their 72 h cure leave the critical path of every board;
+`ACC_3V3_REINFORCEMENT.json` becomes a **record of the decision** rather than a work
+instruction, and `export_fab_package` **refuses** a package whose record reintroduces a
+conductor without a qualified joint specification and an isolated acceptance.  **Manual
+post-reflow work is back to the five through-hole references -- `J4`, `J5`, `J6`, `D1`,
+`U6` -- and nothing else.**  First article `C-ACC-01` measures the delivered potential for
+each contact alone and fully mated; `C-ACC-02` records the two routed resistances.
+
+**A dedicated Community-Port regulator is the real fix and the owner has already approved
+deferring it to REV-B.**
+
+---
+
+### 6. D788-10 — the speaker crimp was the wrong contact for the wire  ·  CLOSED
+
+`AS02008MR-LW152-R` has **AWG #32** leads.  `SPH-002T-P0.5S`, carried since D-148, is
+published for **AWG #30-#24, insulation OD 0.8-1.5 mm**.  A #32 conductor in a #30-#24
+barrel is an under-filled crimp with no published pull strength, and the insulation crimp
+cannot close on a lead thinner than 0.8 mm.
+
+Corrected to **`SPH-004T-P0.5S`** -- the same PH-series contact for **#32-#28, OD
+0.5-0.9 mm**, LCSC `C160351`, live stock 98 132.  Same `PHR-2` housing, same `J6`, no board
+change, and D-148's point stands: the speaker still crimps straight in and is replaceable
+without soldering.  **The tool is named because it is part of the qualification** --
+JST's own table pairs this contact with `MKS-L-10` / `APLMK SPH004-05S`, not with the
+`AP-K2N` the `SPH-002T` uses.
+
+**AND THE PROCESS IS QUALIFIED, NOT ASSUMED.**  New first-article item **`C-SPK-01`**:
+measure the **actual delivered insulation OD** (PUI does not publish it; outside 0.5-0.9 mm
+is a STOP, not a force-fit), then crimp **two sacrificial contacts on scrap lead and pull
+them to destruction**, recording both forces.  The crimp is accepted only if the wire
+breaks before the crimp releases.  **No silent alternate contact.**
+
+---
+
+### 7. D788-11 — `Q11`'s held gate was a 3.3 V constant on a rail that moved  ·  CLOSED, AND IT COST A PART
+
+`F5` carried `BL_HELD_GATE_V = 2.60 V`, hand-aimed at D-752's 3.3 V rail.  D-788 moved the
+rail down to keep the panel inside its absolute maximum and the constant did not move --
+exactly the `a-hand-aimed-control-goes-vacuous` failure this repository has now hit three
+times.
+
+**DERIVED NOW:** `held gate = VOH(MIN) - VF(D14)`, with `VOH(MIN)` = 0.8 x `VDD` from
+Espressif's ratiometric DC table evaluated at **the rail's own heavy-load minimum**
+(3.069408 V -> **2.455526 V**), less the diode's **lowest published forward maximum** plus a
+declared **2 mV/K** allowance to the 0 °C prototype endpoint.
+
+**AND AT THE NEW RAIL THE FITTED DIODE NO LONGER WORKS.**  The `1N4148WS`'s lowest
+published `VF` maximum is **715 mV at `IF` = 1 mA**; carried cold that is 755 mV, giving a
+held gate of 1.690526 V and `Q11` `VGS` of **1.486526 V** -- **13.5 mV BELOW** the fitted
+`SQ2364EES`'s **only** published low-gate conduction row (`RDS(on)` <= 0.245 Ω at
+`VGS` = 1.5 V, `ID` = 2 A).  There is no lower-current row to bound it with, so **the part
+cannot be made to fit by arithmetic**.
+
+**`D14` BECOMES `BAT54WS-7-F`.**  Diodes Incorporated `DS30086` publishes
+**`VFM` <= 240 mV at `IF` = 0.1 mA** -- *below* the ~9 µA this node actually draws, and `VF`
+rises monotonically with `IF`, so it is a guaranteed bound, not an extrapolation (the
+section-1 rule again).  Held gate **2.165526 V**, `VGS` **1.961526 V**, **461.5 mV inside**
+the published conduction region, with an ordering margin of 23.7x between the hold time
+constant and `U17`'s 2.5 ms shutdown.
+
+**THE COST IS ZERO AND THAT IS NOT A COINCIDENCE.**  `BAT54WS-7-F` / `C124205` is **the
+same MPN and LCSC code this board already fits at `D10`, `D11` and `D12`**,
+procurement-locked at D-211, in the **same SOD-323 land** `D14` already has.  No new part,
+no new feeder, no new footprint, no copper change -- and the assembly BOM goes **124 -> 123
+lines** because `D14` joins an existing one.
+
+**D-752's LEAKAGE ARGUMENT IS SUPERSEDED BECAUSE ITS SIGN WAS WRONG.**  That note rejected a
+Schottky on the grounds that its reverse leakage would hold the gate up.  Pin 1 of the
+symbol is **K**, pin 2 is **A**, and the board wires pin 1 to `BL_DISC_G` -- **the cathode
+is on the gate**.  In the true-off state `CTRL` is driven low and the gate sits above it, so
+`D14` is **reverse** biased and its leakage flows **out of** the gate: it can only pull the
+gate **down**.  A Schottky therefore **improves** true-off.  The only current that can hold
+the gate up is `Q11`'s own `IGSS` <= 100 nA, which across `R132` is **22.2 mV** against a
+`VGS(th)` **minimum** of 0.46 V -- **20.7x**.  What the larger leakage actually costs is
+ordering margin, and `F5` solves it as a constant-current leak beside `R132`'s exponential.
+
+`F5`'s **1.5 V `RDS(on)` row is still scoped honestly** as a 25 °C-only row, and the
+**0/25/40 °C waveform acceptance is preserved** as a first-article measurement.  Four `F5`
+destructive controls are retained, including one that now **refuses a silicon diode in the
+charge path at this rail**.
+
+---
+
+### 8. D788-12 — the ripple helper omitted the accessory output  ·  CLOSED
+
+In boost mode `U12`'s output capacitor carries the whole output current for the duty cycle,
+and `U12`'s output current is **not** the internal budget -- it is the internal budget
+**plus** whatever the Community Port draws through `U20` from the same rail.  The term now
+uses the total, and `accessory_load_A` **defaults to the published `ACC_3V3` budget** so no
+caller can forget it.  At 400 mA the ripple is **38 % larger** than D-788 computed and is
+charged to both ends: **74.74 mV** of headroom under the panel's absolute maximum,
+**52.53 mV** over the MCU's 3.0 V floor.  A new control `f6ag` proves the ripple **grows**
+with the accessory load, so the term cannot go vacuous.
+
+---
+
+### 9. D788-13 — the regression wrapper failed its own frozen baseline  ·  CLOSED
+
+All 19 contracts passed individually while the wrapper exited 1 on
+`$.results.PP1.net_change_control.probe: 0 vs 1 entries`.  That field is the roster of pads
+whose net changed **between the PRE board and the working tree** -- provenance about the
+*pair of inputs*, exactly as `ref_commit` is, which this file has treated as an input
+identifier since D-676.
+
+**A CONTRACT MAY NOW DECLARE ITS OWN PRE-DEPENDENT FIELDS, AND NOTHING ELSE MAY BE ONE.**  A
+report may carry `pre_dependent_fields`, a list of JSON pointers, at any depth.  Those
+pointers **and only those** are normalised, and only under three conditions: **only** when
+`ref_commit` actually moved; the two declarations are **INTERSECTED**, so a report that
+widens its own cannot hide a field the baseline never declared; and `--strict` ignores the
+declaration entirely.  Every engineering verdict stays exact -- `PP1.ok`,
+`net_change_control.ok`, `net_changed_and_unresolved`, `newly_unresolved` and the constant
+`net_change_predicate_selftest` are none of them declarable.
+
+**AND THE NORMALISATION PROVES ITSELF NARROW ON EVERY RUN**, on a constant fixture that
+reads nothing from a contract or a board: five claims covering the Round-8 symptom, the
+same difference with the PRE unchanged, an undeclared verdict beside it, a widened
+declaration, and `--strict`.
+
+---
+
+### 10. D788-14 — the pour changed-net negative control was tautological  ·  CLOSED
+
+The control removed an element from a structure and then asked whether it was absent.  That
+proves the removal, not the predicate.  It now builds a **nonempty changed-and-stranded pad
+fixture** and calls **the production predicate** with connectivity withheld; the mutant that
+drops the connectivity requirement **fails**.
+
+---
+
+### 11. D788-15 / D788-17 / D788-18 / D788-19 — the four remaining process and document defects  ·  CLOSED
+
+**D788-15 -- the assembly PDFs printed `RELEASE D-787` on a D-788 board.**  `ASSEMBLY_RELEASE`
+was a hand-typed constant beside a comment explaining why a regenerated PDF must not "look
+current while carrying an older review authority".  It is **derived** now, from the newest
+`## D-NNN` heading in the release CHANGELOG -- the one document a release cannot forget --
+and `FAB14` re-derives it **with the exporter's own function** and refuses a mismatch.  Both
+drawings are regenerated and rehashed.
+
+**D788-17 -- the adhesive cure contradicted its own source.**  The harness record said
+"tack-free 55 min at 50 % RH" attributed to a Dow product page; the retired reinforcement
+traveler said 30 min / 4 h handling / 72 h full cure.  **The archived DOWSIL datasheet
+publishes 78 minutes at 25 °C and contains neither 55 nor 30.**  There is now **one
+condition-controlled hold**: apply and cure at **25 +/- 5 °C, 40-70 % RH** (inside Dow's own
+30-80 % window with margin), **bead <= 1.0 mm** (these cure from the surface inward at
+0.25 in/7 days, so a thicker bead never reaches its substrate), and **three distinct
+states** that are not interchangeable -- tack-free (gated by a passed check, not by the
+clock, since 78 min is a typical), handling (>= 4 h **and** after tack-free, enough to move
+the board but not to load the joint), and the full **>= 72 h** process hold before any pull,
+thermal test or shipment, 72 h read as the **top** of Dow's 24-72 h window.  New
+**`C-ADH-01`** qualifies adhesion **per lot** on the actual soldermask and the actual lead
+insulation, because Dow publishes substrate families and not these.
+
+**D788-18 -- the transient procedure could not prove its own acceptance, and half its matrix
+was unexecutable.**  An AC-coupled acquisition discards exactly the DC term that an
+*absolute* 3.300 V / 3.000 V threshold is stated against.  Acquisition is now **(A)
+DC-coupled, preferred**, or **(B) a synchronised DC baseline plus AC detail, added**, with
+the acceptance judged against the reading **minus** the stated uncertainty on the high side
+and **plus** it on the low side, and the uncertainty budget recorded -- *a reading whose
+uncertainty is not recorded is not a result*.  And the accessory step was written to run at
+**3.20 V and 3.05 V** of pack voltage, where a release image **refuses to enable an
+accessory rail at all** against the derived 3.50 V single / 3.85 V dual floors.  The
+accessory step moves to **4.15 V and 3.90 V dual** and **3.55 V single**; the internal-only
+steps keep the full buck / buck-boost / boost span.  **The floors are not a test
+inconvenience**: any below-floor data needs an explicitly bounded bench image that is
+labelled as such and is never the release image, and `F6` plus `H6` refuse a release tree
+that relaxes either constant.
+
+**D788-19 -- the cap-height census cited the wrong MPN family.**  `C29`/`C30` are CCTC
+`TCC1206X7R226K160HT`, not Murata `GRM31C`.  `MK8` is bound to the **purchased** MPN's own
+published maximum dimensions and the `C14` stack is updated.
+
+---
+
+### 12. F-N01 + `R8-N01` (FOUND HERE) — `Q2`/`Q3` is a PRE-PCBA BLOCK, for TWO reasons
+
+**F-N01, from Fable, corroborated by Astra:** the locked `NTMD4820NR2G` reads **stock 0** on
+the live record, onsemi's own page reports **Obsolete**, JLCPCB flags it no longer
+manufactured, and the only same-MPN rows with stock are **re-marked second sources**.  A
+viable ten-piece authorised allocation is **NOT VERIFIED**.  This repository can reach a
+catalogue and not a franchised distributor's allocation system, so confirming genuine
+traceable stock is a **purchasing action**.
+
+**`R8-N01`, found here, is the more serious half.**  Applying D-780's own rule -- *a
+threshold is an OFF-state boundary, not a load-current guarantee* -- to the pass pair
+instead of to `Q11`:
+
+| quantity | value | source |
+|---|---|---|
+| `LTC4368` gate drive `GATE - VOUT`, **guaranteed minimum** | **3.0 V** at `VIN` = 2.5 V | ADI Rev C EC table; next guaranteed row is 5 V -> 7.2 V, and `BAT_RAW` lives at 3.0-4.2 V.  Monotone in `VIN` across all three rows, so the nearest row **at or below** is the bound -- section 1's rule |
+| worst-case `VGS` | `Q3` **2.913 V**, `Q2` **2.786 V** | after one and three channel drops at 27 mΩ max plus `R75` at the 2.35 A design current |
+| `NTMD4820N` `VGS(th)`, **MAXIMUM** | **3.0 V** | onsemi datasheet |
+| lowest published `RDS(on)` row | **`VGS` = 4.5 V** | same -- nothing below it |
+
+**In the worst corner the guaranteed gate drive is BELOW the guaranteed threshold, and there
+is no published on-resistance anywhere near it.**  On typical parts the pair is comfortably
+on, which is why it has never been a symptom -- and a typical is not a release guarantee.
+
+**IT IS FUNCTIONAL, NOT SAFETY.**  The `LTC4368`'s overcurrent, reverse and UV/OV protection
+all sense across `R75` and act by pulling the gate **down**; neither depends on how well the
+pair conducts.  The consequence of the shortfall is a higher pass-pair resistance, a larger
+drop from the pack and more heat in two SOIC-8s; at the extreme, a board that will not run
+from the battery.
+
+**THE TWO CLOSE TOGETHER.**  The part has to be re-selected anyway, so `R8-N01` becomes a
+criterion of that selection rather than a separate change.  `SOURCING_LEDGER` carries the
+block, **eight** selection requirements -- SOIC-8 dual pinout (1,3 = sources, 2,4 = gates;
+**no PCB change is permitted**), >= 30 V, >= 6 A per channel, **`VGS(th)` MAXIMUM <= 2.5 V**,
+a published `RDS(on)` row at `VGS` <= 2.8 V *if the market has one* (standard SO-8 duals
+publish 4.5 V and 10 V only, so this may be unsatisfiable -- **say so rather than pretend**),
+four channels <= 120 mΩ at the 4.5 V maximum, live authorised stock >= 100, and a `Ciss` the
+`LTC4368`'s 30 mA fast pull-down can still meet its `tD(FAST)` into -- and first-article
+**`C-BAT-GATE-01`**, which measures `ΔVGATE` and the pass-pair drop at 2.35 A at three pack
+voltages.
+
+**A CANDIDATE MUST BE READ FROM ITS DATASHEET, NOT FROM A CATALOGUE ROW.**  While deriving
+this, the JLCPCB attribute table advertised `YJQ3622A` as a 2-N-channel 30 V part with
+`VGS(th)` 1 V and 3112 in stock; **its datasheet says single N-channel in DFN3.3x3.3**.  It
+would not have fitted the land.
+
+New **`F10`** computes the whole shortfall from primary sources on every run and **refuses**
+a `SOURCING_LEDGER` that drops the block, the criteria or the first-article item.  Four
+`F10` controls: a ledger that lost the block, a gate-drive bound taken from the wrong row, a
+`VIN` under the lowest published row, and a shortfall that stops being computed.
+
+**DO NOT PAY FOR PCBA UNTIL THIS LINE IS RESOLVED.**  No substitution without
+requalification.
+
+**REV-B.**  The architectural observation is that an `LTC4368` at a 3.0-4.2 V `VIN`
+guarantees only 3.0 V of gate drive while every standard SO-8 dual publishes its lowest
+on-resistance at 4.5 V.  **The classes do not meet.**  Raising the controller's supply or
+selecting a controller with higher guaranteed low-`VIN` drive removes the question instead
+of measuring it.
+
+---
+
+### 13. F-N02 — `DEVICE_SPEC`'s stale D-787 text  ·  CLOSED
+
+Every current-facing voltage and reinforcement statement is reconciled to D-789.  The
+historical block is explicitly fenced -- *"everything from here to the `D-787 SUPERSEDES
+D-775` heading is CURRENT; everything after it is HISTORICAL"* -- and the retired figures
+are **named inside the fence**: the 3.135 V connector minimum (unreachable at any current),
+the 3.146366 V delivered figure, the 28-AWG reinforcement leads, the 68 mΩ `RON` and the
+3.8094 V dual requirement.  `F6`'s `R7-N04` clause independently requires `DEVICE_SPEC` to
+print the exact seven figures it derives, so a document that drifts from the gate fails the
+gate.
+
+---
+
+### 13a. `R8-N02` … `R8-N06` — five more found by auditing this candidate against its own sources
+
+Round-7 taught that **a corrected number survives somewhere else** (`R7-N03`, `R7-N05`).
+Sweeping D-789's own corrections for second homes found five, and three of them are the
+same defect class Round-8 raised, living in a document no gate reads.
+
+**`R8-N02` — D788-10's speaker contact survived in two more documents, with the reason
+inverted.**  `MECHANICAL_INTERFACE_SPEC` section on the speaker and `PROGRESS`'s **B-62**
+risk row both named `SPH-002T-P0.5S` and both said AWG #32 is *"the small end of the
+#32-#24 applicable range"*.  **#32-#24 is the PH SERIES range across two different
+contacts**, which is the header line of JST's `ePH` page; the CONTACT table underneath it
+gives `SPH-002T-P0.5S` as **#30 to #24, OD 0.8-1.5 mm** and `SPH-004T-P0.5S` as **#32 to
+#28, OD 0.5-0.9 mm**.  So B-62 had recorded the fitted lead as *inside spec* when it was
+outside the fitted contact in **both** dimensions.  Both documents are corrected, B-62 is
+closed as a **spec defect** rather than deferred, and the pull test survives as
+**`C-SPK-01`** -- which also measures the delivered insulation OD, because PUI does not
+publish it.
+
+**`R8-N03` — D788-11's held-gate number survived in the master assembly plan.**
+`FIRST_FIVE_ASSEMBLY_PLAN` section 7a still said the 0.245 Ω row sits below *"AQROOT's
+held `VGS = 2.396 V`"*.  **2.396 V is a 3.3 V-rail number**; the derived value at the
+D-788 rail is **1.961526 V** -- and with the old `1N4148WS` it would have been
+**1.486526 V**, *below* the row that sentence was claiming margin against.  Corrected,
+with the diode change stated in the same paragraph.
+
+**`R8-N04` — two different sections were both numbered `7b`.**  The live sourcing sweep and
+the `+3V3` transient acceptance collided, and the sweep still carried D-788's label and
+its **124**-line count.  Renumbered `7c`, re-pointed at the D-789 **123**-line sweep, and
+the `Q2`/`Q3` pre-PCBA block is restated where an assembler will actually meet it.
+
+**`R8-N05` — eight first-article acceptance items, defined in five different files, and
+nothing gathered them.**  `Q11-TEMP-01`, `C-PWR-TRANSIENT-01`, `C-THERM-01`,
+`C-BAT-GATE-01`, `C-SPK-01`, `C-ADH-01`, `C-ACC-01`, `C-ACC-02` and the J4 fit/pull/thermal
+set each lived wherever it was raised.  `FIRST_FIVE_ASSEMBLY_PLAN` section 7d is now the
+index; the normative text stays where it is.  The substitution-trap table also grew from
+six entries to **eight** -- `YJQ3622A` (the catalogue row that advertised a single
+DFN N-FET as a SOIC-8 dual) and the `SPH-002T`/`SPH-004T` misread, which is the first
+entry in that table that was **not** a search result but a **misread of the primary
+source**.
+
+**`R8-N06` — and the reason `R8-N03` could exist is that F5 never required its own number
+to be published.**  `F6` has required `DEVICE_SPEC` to print the exact Community-Port
+figures it derives since D-788 / `R7-N04`, on the stated principle that *a published
+tolerance that only lives in a gate is not published, and one that only lives in a
+document is not proven*.  **That rule was never applied to the backlight hold**, so
+`DEVICE_SPEC` section 3 printed `VGS = 2.396 V` and an "approximately 62 ms" envelope --
+both stale the moment the rail moved, both invisible to every gate.  `F5` now requires the
+document to print the **derived** held `VGS`, its **derived** margin over the fitted FET's
+published conduction point, and the fitted hold diode's **MPN**, with the tokens
+**formatted from the computed values** so they move when the derivation moves.
+
+**AND THE FIRST DRAFT OF THAT CLAUSE WAS ITSELF VACUOUS.**  It returned a dict, and the
+verdict line it was added to tests truthiness -- a non-empty dict is always true, so the
+clause reported `ok: false` while `F5` still passed.  It was caught by running the negative
+control rather than by reading the code: with `2.396 V` put back into `DEVICE_SPEC`, `F5`
+must go **FAIL** and the contract must exit **1**.  It now does.  *(This repository has met
+`a-stated-rule-that-never-runs` before; the lesson is that a new clause is not closed until
+its control has been seen to bite.)*
+
+---
+
+### 14. What did NOT change
+
+No protected copper moved -- **15 nets / 406 objects, identical**.  Connectivity is
+unchanged at **174 retained / 173 connected / one owner-approved `U11.3` open / zero
+unapproved**.  The published **400 mA / 300 mA** budgets are unchanged.  The loaded VCELL
+policy stays **3.50 V single / 3.85 V dual** and is re-derived, not copied.  The exact
+`QSTRT`, the `J5` identity, the `J4` Micro-Lock architecture, the owner-approved STAT2 open,
+the 60 V `Q11`, protected copper and every retained Kickstarter feature are intact.
+`hardware/beta-v2` is untouched.  **The only hardware change in this milestone is `D14`'s
+value**, and it is a part this board already buys.
+
+---
+
+### 15. Release verification
+
+    F1-F10                       PASS (F10 new)
+    H1-H8 + controls             PASS; 7 host tests, 297 claims, 46 mutations caught
+    test_production_callers      NEW: 55 claims, 13 call-site mutations all caught
+    19 standing contracts        all ran; wrapper clean and non-vacuous against d789
+    FAB1-FAB16                   PASS; package regenerated from this candidate
+    rail ampacity                all_ok; U11.2 52.3 C peak, BQ25185 TJ 115.44 C
+    routing ledger               174 / 173 / 1 owner-approved / 0 unapproved
+    protected copper             IDENTICAL, 15 nets / 406 objects
+    KiCad DRC                    199 lib_footprint_issues warnings / 0 errors
+                                 17 declared unconnected items
+    schematic parity             246 warnings / 0 errors
+    sourcing                     123 assembly lines re-swept live; 10 consignment
+    PlatformIO                   4 / 4 SUCCESS
+    hardware/beta-v2             untouched
+
+**ORDER AUTHORIZATION: NONE.**  Manufacturer CAM acceptance (B01-B10) and first-article
+acceptance (C01-C18, plus `C-PWR-TRANSIENT-01`, `C-BAT-GATE-01`, `C-SPK-01`, `C-ADH-01`,
+`C-ACC-01`, `C-ACC-02`) remain outstanding, and **`Q2`/`Q3` is a pre-PCBA block**.
+**DO NOT ORDER.**
+
+---
+
 ## D-788 — **ROUND-7 CORRECTION: DISPLAY SUPPLY CLOSED; ALL TWENTY OBSERVED DEFECTS CLOSED; OWNER APPROVED OPTION A FOR THE COMMUNITY PORT**
 
     authority  board 57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b

@@ -326,6 +326,65 @@ def _is_project_path(value):
 # at `$.H2_board_digest.board_sha256` rather than at the top level.
 INPUT_KEYS = ("ref_commit", "board_sha256")
 
+# D-789 / D788-13.  A CONTRACT MAY DECLARE WHICH OF ITS OWN FIELDS ARE A
+# FUNCTION OF A DECLARED INPUT, AND NOTHING ELSE MAY BE.
+#
+# Round-8 reproduced all 19 contracts PASSING while this wrapper exited 1 on
+# `$.results.PP1.net_change_control.probe: 0 vs 1 entries`.  That field is the
+# roster of pads whose NET CHANGED between the PRE board and the working tree.
+# D-788's PRE was the pre-D-788 HEAD, where `U12.13` still sat on `GND`; once
+# D-788 was committed the same board against the new HEAD legitimately reports
+# none.  The field is provenance about the PAIR OF INPUTS, exactly as
+# `ref_commit` is -- which this file has treated as an input identifier since
+# D-676.
+#
+# THE NORMALISATION IS THE CONTRACT'S OWN DECLARATION, NOT THIS FILE'S GUESS.
+# A report may carry `pre_dependent_fields`, a list of JSON pointers, at any
+# depth.  Those pointers -- and ONLY those -- are replaced by a token when the
+# declared input they depend on has moved.  Three things keep it honest:
+#
+#   * it applies ONLY when `ref_commit` differs.  On a same-PRE comparison the
+#     rosters are compared exactly, as they always were;
+#   * the DECLARATION ITSELF is compared field by field like any other value,
+#     so an edit that widened it to cover a result shows up as a difference in
+#     `pre_dependent_fields`;
+#   * `--strict` ignores the declaration entirely.
+#
+# Every verdict stays exact: `PP1.ok`, `net_change_control.ok`,
+# `net_changed_and_unresolved`, `newly_unresolved` and the CONSTANT
+# `net_change_predicate_selftest` are none of them declared, so a moved
+# engineering result still DIFFERS.
+PRE_DEPENDENT_DECLARATION = "pre_dependent_fields"
+PRE_DEPENDENT_TOKEN = "<PRE_DEPENDENT>"
+
+
+def declared_pre_dependent(doc):
+    """Every JSON pointer any `pre_dependent_fields` list in `doc` names."""
+    out = set()
+    if isinstance(doc, dict):
+        if isinstance(doc.get(PRE_DEPENDENT_DECLARATION), list):
+            out |= {x for x in doc[PRE_DEPENDENT_DECLARATION]
+                    if isinstance(x, str) and x.startswith("$.")}
+        for v in doc.values():
+            out |= declared_pre_dependent(v)
+    elif isinstance(doc, list):
+        for v in doc:
+            out |= declared_pre_dependent(v)
+    return out
+
+
+def blank_pointers(doc, pointers, path="$"):
+    """`doc` with every value at a declared pointer replaced by a token."""
+    if path in pointers:
+        return PRE_DEPENDENT_TOKEN
+    if isinstance(doc, dict):
+        return {k: blank_pointers(v, pointers, "%s.%s" % (path, k))
+                for k, v in doc.items()}
+    if isinstance(doc, list):
+        return [blank_pointers(v, pointers, "%s[%d]" % (path, i))
+                for i, v in enumerate(doc)]
+    return doc
+
 
 def norm(doc, path=()):
     """The document with path-typed fields reduced to their basenames."""
@@ -367,6 +426,88 @@ def first_diff(a, b, path="$"):
     if a != b:
         return "%s: %r vs %r" % (path, a, b)
     return None
+
+
+
+def pre_dependent_selftest():
+    """A CONSTANT fixture proving the D-789 / D788-13 normalisation is narrow.
+
+    Nothing here is read from a contract or a board.  Four claims, each of
+    which the normalisation would break if it were wider than its declaration:
+
+      1  a DECLARED pointer that differs, with `ref_commit` moved, is NOT a
+         substantive difference -- that is the Round-8 symptom;
+      2  the same difference with `ref_commit` UNCHANGED still IS one;
+      3  an UNDECLARED difference beside it -- the clause's own verdict -- is
+         still reported even when `ref_commit` moved;
+      4  a report that WIDENS its own declaration cannot hide anything: the
+         two declarations are INTERSECTED, so a pointer the baseline never
+         declared is still compared.
+    """
+    def doc(commit, probe, ok, declaration):
+        return {"ref_commit": commit,
+                "results": {"PP1": {"ok": ok,
+                                    "net_change_control": {"probe": probe,
+                                                           "ok": True},
+                                    "pre_dependent_fields": declaration}}}
+
+    declared = ["$.results.PP1.net_change_control.probe"]
+    widened = declared + ["$.results.PP1.ok"]
+
+    def substantive(cur, old, strict=False):
+        moved = [k for k in INPUT_KEYS
+                 if _find_key(cur, k) != _find_key(old, k)]
+        d = (declared_pre_dependent(cur) & declared_pre_dependent(old)
+             if "ref_commit" in moved and not strict else set())
+        def strip(x):
+            if isinstance(x, dict):
+                return {k: strip(v) for k, v in x.items() if k not in INPUT_KEYS}
+            if isinstance(x, list):
+                return [strip(v) for v in x]
+            return x
+        cut = (lambda x: blank_pointers(x, d)) if d else (lambda x: x)
+        return first_diff(norm(cut(strip(cur))), norm(cut(strip(old))))
+
+    base = doc("aaaa", ["U12.13"], True, declared)
+    claims = [
+        dict(claim="a declared PRE-dependent roster with a moved PRE is not "
+                   "a substantive difference",
+             difference=substantive(doc("bbbb", [], True, declared), base),
+             must_be_none=True),
+        dict(claim="the same roster with the PRE UNCHANGED still is",
+             difference=substantive(doc("aaaa", [], True, declared), base),
+             must_be_none=False),
+        dict(claim="an undeclared verdict beside it is still reported",
+             difference=substantive(doc("bbbb", [], False, declared), base),
+             must_be_none=False),
+        # The declarations are INTERSECTED, so a report that widens its own
+        # cannot hide a field the baseline never declared.
+        dict(claim="a widened declaration cannot hide an undeclared verdict",
+             difference=substantive(doc("bbbb", [], False, widened), base),
+             must_be_none=False),
+        dict(claim="--strict ignores the declaration entirely",
+             difference=substantive(doc("bbbb", [], True, declared), base,
+                                    strict=True),
+             must_be_none=False),
+    ]
+    for c in claims:
+        c["ok"] = (c["difference"] is None) == c["must_be_none"]
+    return dict(claims=claims, fixture_is_constant=True,
+                ok=all(c["ok"] for c in claims))
+
+
+def _find_key(doc, key):
+    """Every value of `key` at any depth."""
+    out = []
+    if isinstance(doc, dict):
+        for k, v in doc.items():
+            if k == key:
+                out.append(v)
+            out += _find_key(v, key)
+    elif isinstance(doc, list):
+        for v in doc:
+            out += _find_key(v, key)
+    return out
 
 
 def main():
@@ -521,11 +662,27 @@ def main():
         # identifiers removed -- the key names in INPUT_KEYS at any depth, and
         # any value that IS one of the two board digests.  Nothing else is
         # stripped, so every engineering result still differs when it moves.
-        rest = first_diff(norm(strip(cur)), norm(strip(old)))
+        #
+        # D-789 / D788-13: and, ONLY when the PRE board commit itself moved,
+        # the pointers the contract DECLARES as functions of it.  The two
+        # declarations must agree -- a report that declared a pointer the
+        # baseline did not is a difference in `pre_dependent_fields` and is
+        # reported as one.
+        pre_moved = "ref_commit" in moved
+        declared = (declared_pre_dependent(cur) & declared_pre_dependent(old)
+                    if pre_moved and not a.strict else set())
+        row_pre_dependent = sorted(declared)
+
+        def strip_pre(doc):
+            return blank_pointers(doc, declared) if declared else doc
+
+        rest = first_diff(norm(strip_pre(strip(cur))),
+                          norm(strip_pre(strip(old))))
         row.update(baseline=ref.name, identical=(d is None), difference=d,
                    baseline_verdict=old.get(field),
                    comparable=not (moved and d is not None),
                    difference_excluding_inputs=rest,
+                   pre_dependent_fields_normalised=row_pre_dependent or None,
                    inputs_moved={k: [_find(old, k), _find(cur, k)]
                                  for k in moved} or None)
         # D-788 / R7-D787-18.  THE SUBSTANTIVE ANSWER, per row: what differs
@@ -547,8 +704,13 @@ def main():
         print(" %-17s %-6s  %s" % (name, str(row["verdict"]), verdict_text),
               file=sys.stderr, flush=True)
 
+    pre_dependent = pre_dependent_selftest()
     doc = dict(schema=1, baseline=a.baseline,
                emitted_baseline=a.emit_baseline,
+               # D-789 / D788-13: the normalisation this wrapper applies to a
+               # contract's DECLARED PRE-dependent fields, proved narrow on a
+               # constant fixture on every run.
+               pre_dependent_normalisation=pre_dependent,
                # D-664.  A SUMMARY THAT SAYS `all_identical` WITHOUT SAYING
                # WHETHER ANYTHING WAS COMPARED IS THE DEFECT ITSELF.  These two
                # counts separate "every contract matched its baseline" from
@@ -610,7 +772,8 @@ def main():
         print(" substantive: %s"
               % ", ".join(doc["contracts_with_substantive_difference"]),
               file=sys.stderr)
-    ok = doc["all_ran"] and (doc["all_identical"] if a.strict
+    ok = doc["pre_dependent_normalisation"]["ok"] \
+        and doc["all_ran"] and (doc["all_identical"] if a.strict
                              else doc["no_substantive_difference"])
     return 0 if ok else 1
 

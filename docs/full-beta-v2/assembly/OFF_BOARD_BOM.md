@@ -107,47 +107,67 @@ Mates `J7` **`BM02B-ACHSS-GAN-ETF`** on the board.
 |---|---|---|---|
 | **Speaker** | **PUI Audio `AS02008MR-LW152-R`** | 1 | Ø20 × 3 mm, 8 Ω, 0.5 W rated / 0.8 W max, **500–4000 Hz voice band**, **152 mm AWG#32 leads** |
 | Speaker mating housing | **JST `PHR-2`** | 1 | Mates `J6` |
-| Speaker crimp contacts | **JST `SPH-002T-P0.5S`** | 2 | **D-148: the speaker crimps straight in, so it is replaceable without soldering** |
+| Speaker crimp contacts | **JST `SPH-004T-P0.5S`** (LCSC `C160351`) | 2 | **D-789 / D788-10 CORRECTS THE PART.**  D-148 through D-788 listed `SPH-002T-P0.5S`, whose published applicable wire range is **AWG #30 to #24, insulation OD 0.8–1.5 mm** (JST `ePH` catalogue, archived `vendor/JST/jst-ph-connector-ePH.pdf`, contact table).  **The fitted speaker's leads are AWG #32**, which is outside it in both dimensions — a #32 conductor in a #30–#24 barrel is an under-filled crimp with no published pull strength, and the insulation crimp cannot close on a lead thinner than 0.8 mm.  `SPH-004T-P0.5S` is the SAME PH series contact for **AWG #32 to #28, insulation OD 0.5–0.9 mm**; live stock 98 132 (`evidence/jlc-live/sph-004t-p0-5s-*.json`, 2026-09-21).  Same `PHR-2` housing, same `J6`, no board change.  **D-148's point stands: the speaker still crimps straight in and is replaceable without soldering.** |
+| Speaker crimp tool | **JST `MKS-L-10`** with applicator **`APLMK SPH004-05S`**, or JST's hand tool for this contact | 1 | **D-789 / D788-10.**  The tool is part of the qualification, not an afterthought: JST's own crimping-machine table pairs `SPH-004T-P0.5S` with `MKS-L-10` / `APLMK SPH004-05S`, and pairs `AP-K2N` with the `SPH-002T` contacts instead.  A #32 lead crimped in a #30–#24 die is the exact failure this correction removes. |
 
 ---
 
 ## 7. Battery harness
 
+**SPEAKER TERMINATION ACCEPTANCE — D-789 / D788-10.**  Before the five
+speakers are crimped, **measure the insulation outer diameter of the actual
+delivered lead** and record it: `SPH-004T-P0.5S` is published for 0.5–0.9 mm
+and the PUI datasheet does not state the value.  A lead outside that band is a
+STOP — re-select the contact, do not force it.  Then **crimp two sacrificial
+contacts on a scrap length of the same lead and pull-test them to destruction**,
+recording the force; the crimp is accepted only if both exceed the force the
+lead's own conductor can carry, so the wire breaks before the crimp releases.
+Record the measured insulation OD, the tool and die used, and both pull forces
+in the first-five completion record as **`C-SPK-01`**.
+
 **D-781 RETIRED THE JST-PH BATTERY MATING HARDWARE.** Do not buy `PHR-2` or
-`SPH-002T-P0.5S` for the battery path. The exact first-five Micro-Lock Plus
+`SPH-004T-P0.5S` for the battery path. The exact first-five Micro-Lock Plus
 wire-to-wire parts and factory pre-crimped board leads are already listed in
 §2 and frozen by `BATTERY_HARNESS.json`. The JST parts in §6 are for the
 **speaker J6 only** and must not be reused for J4.
 
 ---
 
-## 7a. Accessory-voltage reinforcement lead — **D-788 / R7-D787-11**
+## 7a. Accessory-voltage reinforcement lead — **RETIRED, D-789 / D788-07 + D788-08 + D788-09 + D788-16**
 
-**THIS SECTION DID NOT EXIST UNTIL D-788.**  D-787 introduced a manual
-reinforcement conductor on `ACC_3V3_SW` and put its wire in neither this BOM
-nor the master assembly plan, so nobody was buying it.  Round-7 found the
-omission.  The operation itself is NORMATIVE in
-[`ACC_3V3_REINFORCEMENT.json`](ACC_3V3_REINFORCEMENT.json); this section is the
-purchasing half.
+**THERE IS NO MANUAL REINFORCEMENT CONDUCTOR ON `ACC_3V3_SW`, AND NO WIRE TO
+BUY FOR ONE.**  D-787 specified two 28 AWG leads onto one 1.00 mm pad; D-788
+reduced that to one dimensioned lead from `TP12.1` to `J5.3`.  Round-8 raised
+four independent findings against the remaining lead and every one of them is a
+property of the conductor rather than of its description:
 
-**ONE conductor per board, not two.**  D-788 removed the second lead: `J5.22`
-is delivered by routed copper alone at **79.0 mΩ** measured, which is better
-than any manual lead could be, so only `J5.3` is reinforced and no pad carries
-two conductors.
+- the `TP12.1` joint called for **2.0 ± 0.5 mm of exposed tinned tip inside a
+  1.00 mm round pad**, which cannot be built;
+- the `J5.3` termination called for **inserting the tip into a through-hole
+  already filled by J5's 0.635 mm square tail** — a 0.898 mm diagonal in a
+  nominal 1.02 mm drill leaves 0.122 mm, and a 28 AWG conductor is 0.32 mm bare;
+- the routed corridor **started inside `BATTERY_SHADOW` and crossed `RIB_R3`**
+  while the record itself demanded 1.0 mm of clearance to both;
+- the **≤ 25 mΩ acceptance could not be measured**, because the board's own
+  routed `U20.5 → J5.3` copper stays in parallel with the lead.
 
-| item | MPN | qty (five boards) | evidence |
-|---|---|---|---|
-| **Accessory-voltage reinforcement wire** | **Alpha Wire `2842/19 RD005`** | **1 reel** (≈ 0.5 m used: 5 × 78 mm nominal + waste) | 28 AWG, 19/40 silver-plated copper, **PTFE**, nominal OD **0.686 mm**, −60…+200 °C, 250 Vrms, **58 Ω/1000 ft** = 0.19029 Ω/m.  The published DCR is what the **≤ 25 mΩ** finished-lead acceptance is derived from: 78 mm of conductor is **14.8 mΩ**, leaving 10 mΩ for two hand joints and fixture.  Minimum bend radius **6.9 mm** (10 × OD) applies to every bend in the routed path |
-| **Anchor / strain-relief adhesive** | **DOWSIL `3145` RTV, grey, MIL-A-46146** | shared with the `J4` harness — **no separate purchase** | Already frozen for the `J4` battery-harness strain relief at D-782, so the first-five build carries **one** adhesive and **one** cure schedule.  Three 4 × 2 × ≤1 mm beads per board at A0/A1/A2; tack-free 30 min, handling 4 h, **full cure 72 h before any pull test, thermal test or shipment** |
+**The lead bought 70 mV of published minimum on ONE of two duplicated
+contacts.**  It is retired.  The Alpha Wire `2842/19 RD005` reel that existed
+only for it is removed from this BOM, and so is its adhesive cure from the
+critical path of every board.  `TP12` and `TP25` remain on the board as test
+points for bring-up and for a future rework; **nothing is soldered to them.**
 
-**Enclosure and drawing impact:** the lead runs in the east-side Community-Port
-service corridor at x = 68.5 ± 1.5 mm with a **1.6 mm** maximum profile above
-`B.Cu` and the clearances listed in the reinforcement record.  The rear-shell
-drawing must show the corridor, the three anchor positions and the 8 mm service
-loop; the completion record must carry the **measured lead resistance per
-board**.
+**What is published instead**, derived by `demo_feature_contract` F6 from the
+live board and frozen in `DEVICE_SPEC`: the Community Port delivers
+**≥ 2.84 V unconditionally** at the full published 400 mA — either duplicated
+3.3 V contact used alone, one mated ground contact, and the 5 V rail also at
+its 300 mA budget — and **2.982890 V with the header fully mated**, which is
+better than the 2.95 V D-788 published with a hand-soldered conductor fitted.
+The full record, including what it cost and what it bought back, is
+[`ACC_3V3_REINFORCEMENT.json`](ACC_3V3_REINFORCEMENT.json).
 
----
+**A dedicated Community-Port regulator is the real fix and the owner already
+deferred it to REV-B.**
 
 ## 8. Bring-up and validation aids — not shipped with the product
 

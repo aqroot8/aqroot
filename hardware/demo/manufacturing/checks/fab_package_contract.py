@@ -99,6 +99,10 @@ sys.path[:0] = [str(HERE.parent)]
 
 import routing_ledger as rl                                # noqa: E402
 import checks.mechanical_keepout_contract as mech          # noqa: E402
+# D-789 / D788-15: the release label the assembly drawings must carry is
+# DERIVED, and this clause re-derives it with the exporter's own function so
+# the two cannot drift.
+import export_fab_package as efp                           # noqa: E402
 import pcbnew                                              # noqa: E402
 
 PROJECT = ROOT / "hardware/demo/kicad/aqroot-demo"
@@ -1319,6 +1323,22 @@ def _fab14_survey(pkg, manifest, text_override=None):
         problems.append("manifest assembly board SHA does not match authority")
     if not release:
         problems.append("manifest assembly release is missing")
+    # D-789 / D788-15.  THE RELEASE LABEL MUST BE THE CURRENT RELEASE, AND
+    # "PRESENT" IS NOT "CURRENT".  D-788 regenerated and rehashed both assembly
+    # PDFs for a D-788 board and they printed `RELEASE D-787`, because the
+    # exporter's label was a hand-typed constant nobody bumped.  This clause
+    # re-derives it the way the exporter now does -- the newest `## D-NNN`
+    # heading in the release CHANGELOG -- so a stale label is a FAIL rather
+    # than a thing a reader has to notice.
+    try:
+        expected_release = efp.assembly_release()
+    except SystemExit as exc:
+        expected_release = None
+        problems.append(str(exc))
+    if expected_release and release != expected_release:
+        problems.append(
+            "assembly drawings carry release %r but the current release is %r "
+            "(newest CHANGELOG entry)" % (release, expected_release))
     if not block.get("pin1_polarity_note"):
         problems.append("manifest does not declare pin-1/polarity note")
     if not block.get("manual_assembly_note"):

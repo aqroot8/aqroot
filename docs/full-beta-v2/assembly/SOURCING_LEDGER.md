@@ -157,3 +157,97 @@ is a purchasing decision rather than a design change.
 | `L2` | 74438357010 | 1 µH | as `L4` | — | DNP | — | NFC fallback branch |
 | `L3` | XFL4020-472MEC | 4.7 µH | **not recorded** | not recorded | backlight boost, ≈ 1.2 A peak estimated | — | **S-3: record the ratings** |
 | `L5`, `L6` | **none** | 39 nH | — | — | NFC EMC filter | — | **S-2: no MPN** |
+
+---
+
+## Q2 / Q3 — **PRE-PCBA BLOCKING: the battery pass pair is unbuyable AND is not guaranteed to be ON**
+
+**D-789 / F-N01 + R8-N01.  DO NOT PAY FOR PCBA UNTIL THIS LINE IS RESOLVED.**
+
+`Q2` and `Q3` are the back-to-back pass pair of the `LTC4368-1` battery
+protection circuit: `BAT_RAW → Q2 → BAT_MID → Q3 → BAT_SENSE → R75 →
+BAT_PROTECTED_P`, with both devices' gates on `LTC_GATE` and each device's two
+internal channels tied source-to-source.  Four channels in series carry the
+whole pack current.
+
+### 1. The locked part is not buyable — **F-N01**
+
+| fact | value | evidence |
+|---|---|---|
+| locked MPN | onsemi **`NTMD4820NR2G`** | schematic `Q2`/`Q3`, BOM |
+| live JLCPCB stock | **0** | `evidence/jlc-live/ntmd4820nr2g-*.json`, 2026-09-21 |
+| catalogue lifecycle | flagged no longer manufactured; Fable reports onsemi's own page as **Obsolete** | Round-8 review |
+| the only same-MPN rows with stock | `-VB` (VBsemi, 45) and `-HXY` (HXY), both **re-marked second sources**, not authorised onsemi product | same record |
+| authorised ten-piece allocation | **NOT VERIFIED** | Astra, Round-8 |
+
+This repository can reach the JLCPCB catalogue and not an authorised
+distributor's allocation system, so confirming genuine traceable stock is a
+**purchasing action** and it is the gate.
+
+### 2. And the fitted part is not guaranteed to be enhanced — **R8-N01, found at D-789**
+
+This is a NEW finding, from applying D-780's own rule — *threshold is an
+OFF-state boundary, not a load-current guarantee* — to the pass pair instead of
+to `Q11`.
+
+| quantity | value | primary source |
+|---|---|---|
+| `LTC4368` gate drive `ΔVGATE = GATE − VOUT`, **guaranteed minimum** | **3.0 V** at `VIN = 2.5 V` (4 typ, 5.5 max) | ADI LTC4368 Rev C EC table, archived `vendor/ADI/adi-ltc4368-revC-farnell-2243878.pdf`.  The next guaranteed row is `VIN = 5 V` → 7.2 V min; there is **no guaranteed row between 2.5 V and 5 V**, and this board's `BAT_RAW` lives at 3.0–4.2 V.  `ΔVGATE` is monotonically increasing in `VIN` across the three published rows, so the nearest row **at or below** `VIN` is the bound — the same discipline `F6` uses for `U20`'s `RON` and `F5` for `D14`'s `VF`. |
+| source-node offset `VSOURCE − VOUT` at the 2.35 A design current | `Q3` ≈ **87 mV**, `Q2` ≈ **214 mV** | one and three channel drops at `RDS(on)` max 27 mΩ plus `R75` 10 mΩ |
+| therefore worst-case `VGS` | `Q3` ≈ **2.91 V**, `Q2` ≈ **2.79 V** | derived |
+| `NTMD4820N` `VGS(th)`, **MAXIMUM** | **3.0 V** (1.5 min) at `VDS = VGS`, `ID = 250 mA` | onsemi datasheet, archived `vendor/ONSEMI/onsemi-ntmd4820n-D.pdf` |
+| `NTMD4820N` lowest published `RDS(on)` row | **`VGS = 4.5 V`**, 20 typ / **27 max** mΩ | same |
+
+**So in the worst corner the guaranteed gate drive is BELOW the guaranteed
+threshold, and there is no published on-resistance anywhere near it.**  On
+typical parts (`VGS(th)` ≈ 2.0 V, `ΔVGATE` ≈ 4–7 V at this `VIN`) the pair is
+comfortably on, which is why it has never been a symptom — and a typical is not
+a release guarantee, which is the whole of D-779, D-780 and D788-11.
+
+**Consequence if it bites:** a higher pass-pair resistance, a larger drop from
+the pack and more heat in two SOIC-8s; at the extreme, a board that will not
+run from the battery.  It is a FUNCTIONAL risk, not a safety one — the
+`LTC4368`'s overcurrent, reverse and UV/OV protection all still act, because
+they sense across `R75` and drive the gate down, neither of which depends on
+how well the pair conducts.
+
+### 3. Selection criteria for the replacement — **both findings close together**
+
+The part has to be re-selected anyway, so R8-N01 is a criterion of that
+selection rather than a separate change.  A candidate must satisfy **all** of:
+
+| # | requirement | why |
+|---|---|---|
+| 1 | **dual N-channel in the SOIC-8 dual-MOSFET pinout** — 1,3 = sources, 2,4 = gates, 5,6 = D2, 7,8 = D1 | the board ties 1+3 and 2+4; **no PCB change is permitted** |
+| 2 | `V(BR)DSS` ≥ **30 V** | retains the fitted part's margin |
+| 3 | continuous `ID` ≥ **6 A** per channel at `TA` 25 °C in this package | above the `LTC4368`+`R75` breaker's own maximum trip and the 5 A one-shot fuse |
+| 4 | **`VGS(th)` MAXIMUM ≤ 2.5 V** | so the guaranteed 2.79 V at `Q2`'s gate is above the guaranteed threshold **with margin**, which the fitted part is not |
+| 5 | a **published `RDS(on)` MAXIMUM row at `VGS ≤ 2.8 V`** if one exists in the market; if none does, the shortfall is NAMED and measured at first article (below) | the honest bar.  Standard SO-8 duals publish 4.5 V and 10 V rows only, so this may be unsatisfiable — say so rather than pretend |
+| 6 | four channels in series ≤ **120 mΩ** at the published `VGS = 4.5 V` maximum | keeps the pack-side drop at 2.35 A under 300 mV |
+| 7 | live authorised stock ≥ **100** (5 boards × 2 parts × 10 liquidity) and a traceable lifecycle status | D-096 and `rule_open_sourcing` |
+| 8 | `Ciss` such that the `LTC4368`'s 30 mA minimum fast pull-down still meets its `tD(FAST)` | the fast turn-off is the protection |
+
+**A CANDIDATE MUST BE READ FROM ITS DATASHEET, NOT FROM A CATALOGUE ROW.**
+While deriving this list, the JLCPCB attribute table advertised `YJQ3622A` as a
+2-N-channel 30 V part with `VGS(th)` 1 V and 3112 in stock; its datasheet says
+**single** N-channel in **DFN3.3×3.3**.  It would not have fitted the land.
+That is the seventh entry in the substitution-trap table in
+`FIRST_FIVE_ASSEMBLY_PLAN.md` and it is why requirement 1 is first.
+
+### 4. First article — **`C-BAT-GATE-01`**
+
+Whatever is fitted, on the first assembled board **measure `ΔVGATE` (GATE −
+`BAT_PROTECTED_P`) and the pass-pair drop (`BAT_RAW` − `BAT_SENSE`) at 2.35 A,
+at `BAT_RAW` = 4.15 V, 3.60 V and 3.05 V**, and record all six numbers.  This
+is the measurement that converts requirement 5's possible shortfall from an
+unknown into a bounded one.
+
+### 5. REV-B
+
+The architectural observation behind R8-N01 is that an `LTC4368` at a 3.0–4.2 V
+`VIN` guarantees only 3.0 V of gate drive, while every standard SO-8 dual
+publishes its lowest on-resistance at 4.5 V.  **The classes do not meet.**  A
+REV-B that either raises the controller's supply or selects a controller with a
+higher guaranteed low-`VIN` drive removes the question instead of measuring it.
+
+---

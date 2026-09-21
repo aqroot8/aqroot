@@ -30,6 +30,7 @@
 
 #include "../hw/aqroot_accessory_power_policy.h"
 #include "../hw/aqroot_demo_board.h"
+#include "../hw/aqroot_demo_bringup_app.h"
 #include "../hw/aqroot_demo_display.h"
 #include "../hw/aqroot_demo_expanders.h"
 #include "../hw/aqroot_demo_gauge_bringup.h"
@@ -52,25 +53,34 @@ static SpiBusB g_spi_b(g_selects);
 static Ili9488 g_display;
 static bool g_display_up = false;
 static bool g_ok = true;
-static bool g_acc3v3 = false;
-static bool g_acc5v = false;
-static bool g_accessory_i2c = false;
-static uint32_t g_last_battery_guard_ms = 0;
-static uint32_t g_last_gauge_requal_ms = 0;
 static Max17048Guard g_fuel_gauge(AQROOT_I2C_ADDR_FUEL_GAUGE);
 
-// D-775 FIRMWARE POLICY.  Hardware current limiting remains the absolute
-// safety boundary.  This separate VCELL policy enforces the NORMAL D-098 load
-// contract: one accessory rail uses D-766's retained 3.50 V floor, and
-// enabling or retaining BOTH published rails requires the 3.85 V that
-// demo_feature_contract F6 DERIVES from the MAX17048 measurement node, the
-// live BAT_PROTECTED_P copper, the BQ25185 BATFET maximum and D-098's
-// published 400 mA / 300 mA.  The 5 V rail -- the expensive one, since its
-// pack current scales with the boost ratio -- is shed FIRST when a dual-rail
-// load crosses that floor, so the 3.3 V rail keeps its full published budget.
-// Unreadable VCELL is always fail-closed.  Both constants and the derivation
-// live in ../hw/aqroot_accessory_power_policy.h and F6 refuses either one
-// dropping below what it derives.
+// D-789 / D788-04 + D788-05 + D788-06.  EVERY SAFETY-RELEVANT CALL SITE THIS
+// FILE USED TO OWN NOW LIVES IN `../hw/aqroot_demo_bringup_app.h`.
+//
+// Round-8 reproduced three false greens that were all the same defect: the
+// FUNCTIONS D-788 made executable were covered, and the CALLERS of them, which
+// lived here, were compiled by no host test at all.  An early return in this
+// file's own `configureFuelGaugeActiveMode()`, a duplicate backlight ramp in
+// the serial dispatch, and a warm-reset retry with `begin()` removed each
+// passed the complete H1-H8 suite.
+//
+// `Firmware/test/test_production_callers.cpp` constructs `DemoBringupApp` over
+// a recording bus with a PHYSICAL-LATCH expander model and drives the real
+// methods, and `checks/firmware_hw_map_contract.py` mutates them.  THIS FILE
+// MAY NOT REIMPLEMENT ANY OF THEM; `H8_production_callers` refuses a
+// `demo/main.cpp` that reaches those behaviours any other way.
+//
+// D-775 FIRMWARE POLICY, unchanged and still enforced inside the app: hardware
+// current limiting remains the absolute safety boundary, and this separate
+// VCELL policy enforces the NORMAL D-098 load contract -- one accessory rail
+// uses D-766's retained 3.50 V floor, and enabling or retaining BOTH published
+// rails requires the 3.85 V that `demo_feature_contract` F6 DERIVES.  The 5 V
+// rail sheds FIRST.  Unreadable VCELL is always fail-closed.
+static void consoleLog(const char *line) { Serial.println(line); }
+
+using DemoApp = DemoBringupApp<ArduinoI2cBus, void (*)(const char *)>;
+static DemoApp g_app(g_bus, g_expanders, g_fuel_gauge, &consoleLog);
 
 static void report(const char *stage, bool ok, const char *detail = nullptr) {
   Serial.printf("[%-4s] %-34s %s\n", ok ? "PASS" : "FAIL", stage,
@@ -81,174 +91,6 @@ static void report(const char *stage, bool ok, const char *detail = nullptr) {
 // ---------------------------------------------------------------------------
 static bool i2cReadByte(uint8_t address, uint8_t reg, uint8_t *value) {
   return g_bus.readRegister(address, reg, value, 1);
-}
-
-static bool configureFuelGaugeActiveMode() {
-  // D-788 / Round-7: the executed ordering AND the wait this board actually
-  // performs both live in `../hw/aqroot_demo_gauge_bringup.h`, which
-  // `test_production_timing.cpp` compiles and runs against a recording clock.
-  // There is no second copy of the ordering here.
-  return configureFuelGaugeActiveModeOnHardware(g_fuel_gauge, g_bus);
-}
-
-// MAX17048 VCELL, register 0x02.  D-766 CORRECTED AN OFF-BY-SIXTEEN.  The read
-// below used to take only the TOP TWELVE BITS -- (raw[0] << 4) | (raw[1] >> 4)
-// -- and then apply the 78.125 uV/cell scale, which divides the answer by 16: a
-// 4.05 V cell would have reported 0.253 V, so accessoryBatteryOk() would have
-// refused BOTH accessory rails forever and shed any rail already on.  THE FULL
-// SIXTEEN BITS ARE THE VALUE, AND THAT IS PROVABLE HERE WITHOUT THE DATASHEET
-// IN HAND: 78.125 uV x 65536 = 5.12 V full scale, which is the right span for a
-// single Li-ion cell, whereas 78.125 uV x 4096 = 0.32 V full scale cannot
-// represent a charged cell at all.  It also agrees with this file's own D-750
-// finding that every MAX17048 register -- VCELL 0x02, SOC 0x04, MODE 0x06,
-// VERSION 0x08 -- is sixteen bits, MSB first.  FIRST-ARTICLE BRING-UP MUST STILL
-// READ THIS BACK against a metered cell voltage; it is printed on every refusal
-// and on every shed so that a wrong scale cannot hide.
-static bool readFuelCellVoltage(float *volts) {
-  return g_fuel_gauge.readVcell(g_bus, volts);
-}
-
-static bool accessoryBatteryAllows(bool other_rail_on, float *volts = nullptr,
-                                   float *floor = nullptr) {
-  // D-784 / Round-5: HIBRT=0 is configuration, not proof of the present mode.
-  // The guard also requires MODE.HibStat=0.  A first-rail request may
-  // requalify the gauge while the accessory tree is completely off; once any
-  // rail is active, loss of gauge readiness is fail-closed and may not be
-  // hidden behind a blocking reconfiguration attempt.
-  if (!g_fuel_gauge.activeReady()) {
-    if (g_acc3v3 || g_acc5v || g_expanders.safeShutdownPending() ||
-        !configureFuelGaugeActiveMode()) {
-      if (volts) *volts = 0.0f;
-      if (floor) *floor = accessoryEnableFloor(other_rail_on);
-      return false;
-    }
-  }
-  float v = 0.0f;
-  const bool read = readFuelCellVoltage(&v);
-  const float required = accessoryEnableFloor(other_rail_on);
-  if (volts) *volts = v;
-  if (floor) *floor = required;
-  return accessoryEnableAllowed(read, v, other_rail_on);
-}
-
-// D-782.  ONE PLACE RECONCILES SOFTWARE FLAGS WITH THE CURRENT EXPANDER
-// OUTPUT-LATCH STATE.  A failed/partial I2C transaction makes the state UNKNOWN,
-// never falsely OFF; `reconcileAccessoryFlags` keeps the caller pessimistically
-// active until the pending accessory-only safe state is confirmed.  Runtime
-// recovery no longer blanket-writes U2's display/touch/LoRa reset outputs.
-//
-static void forceAccessoriesOff(const char *why);
-static void afterAccessoryChange();
-static void applyAccessoryRetention(const char *ctx);
-static void settledAccessoryRecheck(const char *what);
-static bool blockingDemoTestAllowed(const char *what);
-static void reportAccessoryCommand(const char *rail, bool want, bool acked,
-                                   bool retained);
-
-static void afterAccessoryChange() {
-  (void)reconcileAccessoryFlags(g_expanders, &g_acc3v3, &g_acc5v,
-                                &g_accessory_i2c);
-}
-
-static bool blockingDemoTestAllowed(const char *what) {
-  afterAccessoryChange();
-  if (g_expanders.safeShutdownPending() || g_acc3v3 || g_acc5v) {
-    Serial.printf("%s REFUSED: turn both accessory rails off and wait for a confirmed safe state first\n",
-                  what);
-    return false;
-  }
-  return true;
-}
-
-// The retention rule, in ONE place, so the periodic guard and D-779's
-// post-enable settled recheck cannot drift apart.
-static void applyAccessoryRetention(const char *ctx) {
-  if (!g_acc3v3 && !g_acc5v) return;
-  float vcell = 0.0f;
-  const bool read = readFuelCellVoltage(&vcell);
-  const AccessoryBatteryAction action =
-      accessoryRetentionAction(read, vcell, g_acc3v3, g_acc5v);
-  if (action == AccessoryBatteryAction::ShedAll) {
-    char why[136];
-    if (!read) {
-      snprintf(why, sizeof(why),
-               "%s: MAX17048 VCELL unreadable; accessory load not permitted",
-               ctx);
-    } else if (!vcellIsPlausible(vcell)) {
-      // D-779: an implausible reading is NOT a low battery, and saying so
-      // keeps a stuck bus from being diagnosed as a flat pack.
-      snprintf(why, sizeof(why),
-               "%s: VCELL %.3f V outside the plausible %.2f-%.2f V band; "
-               "treated as no measurement",
-               ctx, vcell, kVcellPlausibleMinV, kVcellPlausibleMaxV);
-    } else {
-      snprintf(why, sizeof(why),
-               "%s: VCELL %.3f V below %.2f V single-rail floor",
-               ctx, vcell, kAccessorySingleRailFloorV);
-    }
-    forceAccessoriesOff(why);
-  } else if (action == AccessoryBatteryAction::Shed5v) {
-    const bool off5 = g_expanders.setAccessory5v(g_bus, false);
-    if (off5) g_acc5v = false;
-    afterAccessoryChange();
-    if (off5) {
-      Serial.printf("ACC_5V_SW SHED (%s): VCELL %.3f V below %.2f V "
-                    "dual-rail floor\n", ctx, vcell, kAccessoryDualRailFloorV);
-    } else {
-      forceAccessoriesOff("5 V dual-rail battery shed failed");
-    }
-  }
-}
-
-// D-779.  Re-read once the step has settled and apply the same rule.  The
-// MAX17048 updates VCELL about every 250 ms in active mode, which the HIBRT
-// write in setup() guarantees it is in; 400 ms covers one update with margin.
-static void settledAccessoryRecheck(const char *what) {
-  delay(400);
-  applyAccessoryRetention(what);
-  g_last_battery_guard_ms = millis();
-}
-
-// D-788 / R7-D787-09.  ONE LINE, THREE DIFFERENT FACTS.
-//
-// The old message was `ACC_3V3_SW on -> 1`, where the `1` was the I2C
-// acknowledgement captured BEFORE the settled recheck ran.  The recheck can
-// shed the rail it just enabled -- that is the whole point of D-779 -- so the
-// operator could be told `on -> 1` about a rail that is off.  A partial or
-// lost-ACK transaction is a third case again: the request neither succeeded
-// nor is known to have failed.  All three are printed.
-static void reportAccessoryCommand(const char *rail, bool want, bool acked,
-                                   bool retained) {
-  const bool uncertain = g_expanders.safeShutdownPending() ||
-                         !g_expanders.u2().outputShadowValid() ||
-                         !g_expanders.u3().outputShadowValid();
-  const char *state = uncertain ? "UNKNOWN (pending safe reconciliation)"
-                                : (retained ? "ON" : "OFF");
-  Serial.printf("%s requested %s, acknowledged %s, state after "
-                "reconciliation %s\n",
-                rail, want ? "on" : "off", acked ? "yes" : "no", state);
-}
-
-// D-779.  THE PERMISSION WAS TAKEN BEFORE THE LOAD EXISTED.
-//
-// `accessoryBatteryAllows` reads VCELL and then the rail is switched on.  The
-// reading it acted on is a PRE-STEP one: the sag the new load causes has not
-// happened yet, and on a pack near the floor the post-step voltage can be
-// below it.  F6's floors are derived FOR the loaded case, so the honest close
-// is to re-read once the step has settled and apply the ordinary retention
-// rule to the result.  One gauge update period plus margin -- the MAX17048
-// updates VCELL about every 250 ms in active mode, which the HIBRT write above
-// guarantees it is in.
-static void forceAccessoriesOff(const char *why) {
-  const bool off5 = g_expanders.setAccessory5v(g_bus, false);
-  const bool off3 = g_expanders.setAccessory3v3(g_bus, false);
-  const bool offbuf = g_expanders.setAccessoryI2cBuffer(g_bus, false);
-  if (off5) g_acc5v = false;
-  if (off3) g_acc3v3 = false;
-  if (offbuf) g_accessory_i2c = false;
-  afterAccessoryChange();
-  Serial.printf("ACCESSORY FAIL-CLOSED: %s; 5V=%d 3V3=%d I2C=%d\n",
-                why, off5, off3, offbuf);
 }
 
 static void scanI2c() {
@@ -290,56 +132,35 @@ static void probeI2cDevice(const char *name, uint8_t address, uint8_t reg,
 }
 
 // ---------------------------------------------------------------------------
+// D-789 / D788-06.  THE DIAGNOSTIC ITSELF LIVES IN `DemoBringupApp` SO THAT A
+// HOST TEST EXECUTES IT.  This wrapper does nothing but turn the app's verdict
+// into a console `report` row; it may not re-derive the verdict.
 static void releaseExpanderResetLines() {
-  if (!g_expanders.ready()) {
-    report("reset-line release", false,
-           "expanders were not safely initialised; resets remain asserted");
-    return;
+  const ResetReleaseReport r = g_app.releaseExpanderResetLines();
+  char detail[128];
+  switch (r.verdict) {
+    case ResetRelease::Confirmed:
+      snprintf(detail, sizeof(detail),
+               "CONFIRMED from U2 output latch 0x%04X", r.latch);
+      break;
+    case ResetRelease::Unknown:
+      snprintf(detail, sizeof(detail),
+               "UNKNOWN: a reset write failed and U2's output shadow is "
+               "invalid; resets may still be asserted");
+      break;
+    default:
+      if (!g_expanders.ready()) {
+        snprintf(detail, sizeof(detail),
+                 "expanders were not safely initialised; resets remain "
+                 "asserted");
+      } else {
+        snprintf(detail, sizeof(detail),
+                 "FAILED: U2 output latch 0x%04X does not show all three "
+                 "released", r.latch);
+      }
+      break;
   }
-
-  // Safe latches and directions were already committed at the very start of
-  // setup(), before USB/Serial waiting or bus discovery.  Only now release the
-  // three downstream resets in the order the parts want them.
-  //
-  // D-788 / R7-D787-08.  EVERY ONE OF THESE RETURN VALUES USED TO BE DISCARDED
-  // AND THE LINE BELOW PRINTED `PASS ... released` UNCONDITIONALLY.  A NACKed
-  // de-assert leaves the modelled latch ASSERTED and U2's output shadow
-  // INVALID, and the operator was told the resets were released.  The writes
-  // are aggregated now, and the shadow -- the only thing that says whether the
-  // device took them -- decides between CONFIRMED, FAILED and UNKNOWN.
-  bool writes_ok = g_expanders.holdNfcBoostOff(g_bus);
-  writes_ok = g_expanders.setDisplayReset(g_bus, true) && writes_ok;
-  writes_ok = g_expanders.setTouchReset(g_bus, true) && writes_ok;
-  writes_ok = g_expanders.setLoraReset(g_bus, true) && writes_ok;
-  delay(10);
-  writes_ok = g_expanders.setDisplayReset(g_bus, false) && writes_ok;
-  writes_ok = g_expanders.setTouchReset(g_bus, false) && writes_ok;
-  delay(5);
-  writes_ok = g_expanders.setLoraReset(g_bus, false) && writes_ok;
-  delay(10);
-
-  const bool shadow_known = g_expanders.u2().outputShadowValid();
-  const uint16_t latch = g_expanders.u2().outputShadow();
-  const bool released =
-      shadow_known &&
-      Pcal9535a::bitOf(latch, AQROOT_U2_DISP_RST_N) &&
-      Pcal9535a::bitOf(latch, AQROOT_U2_TOUCH_RST_N) &&
-      Pcal9535a::bitOf(latch, AQROOT_U2_SX1262_RST_N);
-  char detail[112];
-  if (writes_ok && released) {
-    snprintf(detail, sizeof(detail),
-             "CONFIRMED from U2 output latch 0x%04X", latch);
-  } else if (!shadow_known) {
-    snprintf(detail, sizeof(detail),
-             "UNKNOWN: a reset write failed and U2's output shadow is invalid; "
-             "resets may still be asserted");
-  } else {
-    snprintf(detail, sizeof(detail),
-             "FAILED: U2 output latch 0x%04X does not show all three released",
-             latch);
-  }
-  report("reset lines released (U2 P00/P01/P04)", writes_ok && released,
-         detail);
+  report("reset lines released (U2 P00/P01/P04)", r.ok(), detail);
 }
 
 static void probeRadios() {
@@ -466,7 +287,7 @@ void setup() {
   // asserted: a gauge that refuses this write still fails closed everywhere
   // else, and the operator is told which case they are in.
   {
-    const bool active = configureFuelGaugeActiveMode();
+    const bool active = g_app.configureFuelGaugeActiveMode();
     report("MAX17048 U14 hibernate disabled + read back", active,
            active ? "HIBRT=0x0000 verified; fresh active-mode VCELL required"
                   : "gauge NOT READY -- accessory enable remains fail-closed");
@@ -536,22 +357,11 @@ static void printStatus() {
 void loop() {
   if (!g_expanders.ready()) {
     // Round-4 R4-03: an MCU reset must not turn one failed safe-latch write
-    // into an indefinite energized rail.  Re-open/recover the bus and retry
-    // the complete boot-safe expander initialization until it is confirmed.
-    static uint32_t last_recovery_ms = 0;
-    if (millis() - last_recovery_ms >= 250) {
-      last_recovery_ms = millis();
-      const bool bus_open = g_bus.reopen(AQROOT_I2C_BRINGUP_HZ);
-      const bool recovered = bus_open && g_expanders.begin(g_bus);
-      if (recovered) {
-        afterAccessoryChange();
-        releaseExpanderResetLines();
-        g_bus.setClock(AQROOT_I2C_RUN_HZ);
-        g_display_up = false;
-        (void)configureFuelGaugeActiveMode();
-        Serial.println("I2C/expander safety state RECOVERED after incomplete boot");
-      }
-    }
+    // into an indefinite energized rail.  D-789 / D788-06: the retry itself --
+    // bus reopen, the COMPLETE `DemoExpanders::begin`, reset release, run-speed
+    // raise and gauge requalification -- lives in `DemoBringupApp` so that
+    // `test_production_callers.cpp` executes it against a physical-latch model.
+    if (g_app.serviceExpanderRecovery()) g_display_up = false;
     delay(10);
     return;
   }
@@ -564,7 +374,7 @@ void loop() {
   if (asserted || millis() - last_poll > 200) {
     last_poll = millis();
     if (g_expanders.service(g_bus)) {
-      afterAccessoryChange();
+      g_app.afterAccessoryChange();
       if (g_expanders.u2Inputs() != g_last_u2 ||
           g_expanders.u3Inputs() != g_last_u3) {
         g_last_u2 = g_expanders.u2Inputs();
@@ -576,7 +386,7 @@ void loop() {
       }
     } else {
       static uint32_t last_service_error = 0;
-      afterAccessoryChange();
+      g_app.afterAccessoryChange();
       if (millis() - last_service_error > 1000) {
         last_service_error = millis();
         const char *obs = "available";
@@ -593,77 +403,33 @@ void loop() {
   // If boot caught the gauge while MODE.HibStat was still asserted, keep
   // trying to qualify it in the background while accessory power is safely
   // off.  This is liveness only: no rail is energized until qualification and
-  // the subsequent VCELL permission both succeed.
-  if (!g_fuel_gauge.activeReady() && !g_acc3v3 && !g_acc5v &&
-      !g_expanders.safeShutdownPending() &&
-      millis() - g_last_gauge_requal_ms >= 1000) {
-    g_last_gauge_requal_ms = millis();
-    (void)configureFuelGaugeActiveMode();
-  }
-
-  if ((g_acc3v3 || g_acc5v) &&
-      millis() - g_last_battery_guard_ms >= 500) {
-    g_last_battery_guard_ms = millis();
-    applyAccessoryRetention("periodic");
-  }
+  // the subsequent VCELL permission both succeed.  D-789 / D788-04: the
+  // condition AND the period live in `DemoBringupApp`, which a host test runs.
+  (void)g_app.backgroundGaugeRequalification();
+  g_app.periodicBatteryGuard();
 
   if (Serial.available()) {
-    switch (Serial.read()) {
+    const char key = char(Serial.read());
+    switch (key) {
       case 'r': g_expanders.setRgb(g_bus, true, false, false); break;
       case 'g': g_expanders.setRgb(g_bus, false, true, false); break;
       case 'b': g_expanders.setRgb(g_bus, false, false, true); break;
       case 'w': g_expanders.setRgb(g_bus, true, true, true); break;
       case 'o': g_expanders.setRgb(g_bus, false, false, false); break;
-      case '3': {
-        const bool want = !g_acc3v3;
-        float vcell = 0.0f, floor = 0.0f;
-        if (want && !accessoryBatteryAllows(g_acc5v, &vcell, &floor)) {
-          Serial.printf("ACC_3V3_SW REFUSED: VCELL %.3f V / floor %.2f V\n",
-                        vcell, floor);
-          break;
-        }
-        const bool ok = g_expanders.setAccessory3v3(g_bus, want);
-        if (ok) g_acc3v3 = want;
-        afterAccessoryChange();
-        if (ok && want) settledAccessoryRecheck("ACC_3V3_SW");
-        // D-788 / R7-D787-09.  `ok` is the ACKNOWLEDGEMENT of the request, and
-        // it was captured BEFORE `settledAccessoryRecheck` -- which may have
-        // shed this very rail on the post-step VCELL.  Report the request, the
-        // acknowledgement and the RECONCILED retained state separately.
-        reportAccessoryCommand("ACC_3V3_SW", want, ok, g_acc3v3);
+      // D-789 / D788-05 + D788-04.  THE ACCESSORY AND BACKLIGHT KEYS ARE
+      // DISPATCHED BY `DemoBringupApp`, WHICH A HOST TEST EXECUTES.  Round-8
+      // showed that a duplicate live backlight implementation placed here, and
+      // a permission path that skipped the gauge qualification, both passed
+      // every gate.  This file no longer owns either behaviour: '3', '5', 'i'
+      // and 'l' are handled entirely inside the app.
+      case '3':
+      case '5':
+      case 'i':
+      case 'l':
+        (void)g_app.handleAccessoryConsole(key);
         break;
-      }
-      case '5': {
-        const bool want = !g_acc5v;
-        float vcell = 0.0f, floor = 0.0f;
-        if (want && !accessoryBatteryAllows(g_acc3v3, &vcell, &floor)) {
-          Serial.printf("ACC_5V_SW REFUSED: VCELL %.3f V / floor %.2f V\n",
-                        vcell, floor);
-          break;
-        }
-        // Boost first, switch second, and the reverse on the way down.  Both
-        // disconnects are required by D-186 and neither is optional.
-        const bool ok = g_expanders.setAccessory5v(g_bus, want);
-        if (ok) g_acc5v = want;
-        afterAccessoryChange();
-        if (ok && want) settledAccessoryRecheck("ACC_5V_SW");
-        // D-788 / R7-D787-09.  `ok` is the ACKNOWLEDGEMENT of the request, and
-        // it was captured BEFORE `settledAccessoryRecheck` -- which may have
-        // shed this very rail on the post-step VCELL.  Report the request, the
-        // acknowledgement and the RECONCILED retained state separately.
-        reportAccessoryCommand("ACC_5V_SW", want, ok, g_acc5v);
-        break;
-      }
-      case 'i': {
-        const bool want = !g_accessory_i2c;
-        const bool ok = g_expanders.setAccessoryI2cBuffer(g_bus, want);
-        if (ok) g_accessory_i2c = want;
-        afterAccessoryChange();
-        reportAccessoryCommand("ACC_PWR_EN", want, ok, g_accessory_i2c);
-        break;
-      }
       case 'm': {
-        if (!blockingDemoTestAllowed("microphone test")) break;
+        if (!g_app.blockingDemoTestAllowed("microphone test")) break;
         const MicCapture mic = captureMicrophone();
         Serial.printf("mic  %s, %lu frames, peak L=%ld R=%ld (24-bit)\n",
                       mic.installed ? "I2S RX up" : "I2S RX FAILED",
@@ -677,7 +443,7 @@ void loop() {
       }
       case 's': printStatus(); break;
       case 'd': {
-        if (!blockingDemoTestAllowed("microSD test")) break;
+        if (!g_app.blockingDemoTestAllowed("microSD test")) break;
         // The ONLY test on this board that proves SPI-A MISO: R112 is DNP, so
         // the display SDO never reaches the MCU and the card is the sole reader.
         const SdProbeResult sd = probeSdCard();
@@ -688,13 +454,8 @@ void loop() {
         report("microSD SPI-A (J2)", sd.responded_to_cmd0);
         break;
       }
-      case 'l':
-        if (!blockingDemoTestAllowed("backlight ramp")) break;
-        Serial.println("backlight ramp on GPIO46 (U17 TPS61169)");
-        backlightRamp();
-        break;
       case 'p': {
-        if (!blockingDemoTestAllowed("display test")) break;
+        if (!g_app.blockingDemoTestAllowed("display test")) break;
         // RESET IS NOT AN MCU PIN.  U2.P04 owns it, so the pulse goes through
         // the expander before a single SPI byte is sent.
         Serial.println("display: pulsing DISP_RST_N via U2.P04, then ILI9488 init");
@@ -716,7 +477,7 @@ void loop() {
         break;
       }
       case 'x': {
-        if (!blockingDemoTestAllowed("IR test")) break;
+        if (!g_app.blockingDemoTestAllowed("IR test")) break;
         const IrSelfTest ir = irSelfTest();
         Serial.printf("IR  %u/%u samples low during a 38 kHz burst -- %s\n",
                       ir.low_samples, ir.total_samples,
@@ -725,7 +486,7 @@ void loop() {
         break;
       }
       case 't':
-        if (!blockingDemoTestAllowed("audio tone")) break;
+        if (!g_app.blockingDemoTestAllowed("audio tone")) break;
         // Leaving shutdown is what makes AMP_SD_MODE observable at all.
         Serial.println("1 kHz tone -- amplifier leaving shutdown");
         g_expanders.setAmplifier(g_bus, true);

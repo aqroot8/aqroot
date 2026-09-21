@@ -307,7 +307,8 @@ FET_PUBLISHED = {
     # BELOW the gate voltage this circuit actually holds.  This is the property
     # D-779 tried to infer for AO3422 from typical gfs and could not guarantee.
     "SQ2364EES-T1_BE3": dict(
-        vds_V=60.0, vgs_th_max_V=1.00, vgs_th_test_A=250e-6,
+        vds_V=60.0, vgs_th_max_V=1.00, vgs_th_min_V=0.46,
+        vgs_th_test_A=250e-6,
         rds_on_vgs_V=1.5, rds_on_id_A=2.0, rds_on_max_ohm=0.245,
         rds_hot_vgs_V=4.5, rds_hot_id_A=2.0,
         rds_hot_tj_C=175.0, rds_hot_max_ohm=0.600,
@@ -324,19 +325,20 @@ FET_PUBLISHED = {
     # Kept as a NEGATIVE CONTROL: this is exactly the D-779 board.  Its only
     # published low-gate RDS(on) point is 2.5 V, ABOVE the held 2.396 V, so the
     # new direct clause must refuse it.
-    "AO3422":  dict(vds_V=55.0, vgs_th_max_V=2.00,
+    "AO3422":  dict(vds_V=55.0, vgs_th_max_V=2.00, vgs_th_min_V=0.60,
                     vgs_th_test_A=250e-6,
                     rds_on_vgs_V=2.5, rds_on_id_A=1.5, rds_on_max_ohm=0.200,
                     source="AOS AO3422 rev 2.1 2024-03: VDS 55 V, VGS(th) "
                            "max 2.0 V at 250 uA, RDS(on) 0.200 ohm MAX at "
                            "VGS=2.5 V ID=1.5 A"),
-    "AO3400A": dict(vds_V=30.0, vgs_th_max_V=1.45,
+    "AO3400A": dict(vds_V=30.0, vgs_th_max_V=1.45, vgs_th_min_V=0.65,
                     source="AOS AO3400A rev 3.1 2023-07 as read by D-159: "
                            "VDS 30 V, VGS(th) 0.65/1.05/1.45 V"),
     "AO3400A_NO_RDS_ON": dict(vds_V=55.0, vgs_th_max_V=2.00,
+                              vgs_th_min_V=0.60,
                               source="control only -- a FET whose datasheet "
                                      "this contract has no RDS(on) test point for"),
-    "2N7002":  dict(vds_V=60.0, vgs_th_max_V=2.50,
+    "2N7002":  dict(vds_V=60.0, vgs_th_max_V=2.50, vgs_th_min_V=0.80,
                     source="onsemi 2N7002 as read by D-187: VDSS 60 V, "
                            "VGS(th) max 2.5 V"),
 }
@@ -362,9 +364,92 @@ RECTIFIER_PUBLISHED = {
                             "substitute for D8; see FIRST_FIVE_ASSEMBLY_PLAN"),
 }
 
-# D-752's derived held gate, and the source voltage R69 sits at while U17
-# regulates 109 mA through 1.87 ohm to the TPS61169's 204 mV feedback point.
-BL_HELD_GATE_V = 2.60
+# --------------------------------------------------------------------------
+# D-789 / D788-11 -- THE HELD GATE WAS A CONSTANT FROM A RAIL THAT NO LONGER
+# EXISTS.
+#
+# `BL_HELD_GATE_V = 2.60` was D-752's number, derived when this board's +3V3
+# rail was a nominal 3.3 V.  D-788 moved the rail down to keep the fitted
+# ILI9488 panel inside its own absolute maximum, and this constant did not
+# move with it: F5 went on ordering Q11 against a gate voltage the board
+# cannot produce.  Round-8 is right that a fixed number here is not a proof.
+#
+# THE GATE IS NOW SOLVED FROM THE CIRCUIT.  GPIO46 drives `/DISP_BL_CTL`
+# through R109 (0 ohm); D14's anode sits on that net and its cathode on
+# Q11's gate, where R132 discharges C85.  At DC, with the PWM high,
+#
+#     V_gate  =  VOH(GPIO46)  -  VF(D14, at the gate's own leakage current)
+#
+# and every term of that is a published MINIMUM or MAXIMUM:
+#
+#   VOH       Espressif ESP32-S3-WROOM-1 DC Characteristics, VOH MIN = 0.8 x
+#             VDD.  It is RATIOMETRIC, so it is evaluated at the +3V3 rail's
+#             own HEAVY-LOAD MINIMUM -- which is the whole point of this
+#             finding -- and not at 3.3 V.  The table is headed 25 C; the
+#             0/25/40 C endpoints stay a first-article waveform measurement.
+#   VF        the lowest published forward-voltage MAXIMUM of the fitted
+#             diode.  The held gate draws about 9 uA through R132, far BELOW
+#             any published row, and VF increases monotonically with IF -- so
+#             the lowest published row is a GUARANTEED bound with no
+#             interpolation.  A declared 2 mV/K allowance carries it from the
+#             25 C table to the 0 C endpoint.
+#   leakage   D14's reverse leakage and Q11's IGSS both discharge C85 in
+#             parallel with R132, so the ORDERING below is solved with a
+#             constant-current leak beside the exponential rather than with
+#             R132 alone.
+#
+# AND THE ANSWER MOVED THE BOARD.  With the D-788 rail and the D-787 D14
+# (JSCJ 1N4148WS, lowest published row VF <= 715 mV at 1 mA), the held gate
+# bounds to 1.690526 V and VGS to 1.486526 V -- 13.5 mV BELOW the fitted
+# SQ2364EES's only published low-gate conduction row, VGS = 1.5 V.  D14 is
+# therefore a SCHOTTKY in the same SOD-323 land from the same manufacturer
+# (JSCJ BAT54WS, VF <= 240 mV at 0.1 mA), which buys 475 mV of gate and takes
+# VGS to 1.9615 V.  Both documents are archived under `vendor/JSCJ/` with a
+# source record; the clause below refuses the superseded part by arithmetic
+# rather than by name.
+BL_GPIO_VOH_FRACTION_OF_VDD = 0.8
+BL_GPIO_VOH_SOURCE = (
+    "Espressif ESP32-S3-WROOM-1 datasheet, Table 6-3 DC Characteristics, "
+    "VOH MIN = 0.8 x VDD1.  The table is headed (3.3 V, 25 C) and the row is "
+    "written ratiometrically, so it is evaluated here at the rail's own "
+    "heavy-load minimum; 0/25/40 C remains a first-article measurement.")
+# `vf_max_V` is the LOWEST published forward-voltage maximum and `vf_row_A`
+# the current it is published at.  `ir_max_A` / `ir_row_V` are the reverse
+# leakage row.  See vendor/JSCJ/jscj-diodes-source.json.
+BL_HOLD_DIODE = "D14"
+# It is keyed by the SCHEMATIC VALUE, and the MPN is checked separately by F7.
+HOLD_DIODE_PUBLISHED = {
+    "BAT54WS": dict(
+        vf_max_V=0.240, vf_row_A=100e-6, ir_max_A=2.0e-6, ir_row_V=25.0,
+        vrrm_V=30.0, kind="Schottky barrier",
+        mpn="BAT54WS-7-F", lcsc="C124205",
+        source="Diodes Incorporated BAT54WS-7-F DS30086, archived "
+               "vendor/DIODES/diodes-bat54ws-7-f-ds30086.pdf sha256 "
+               "a910241f...226f26d6: VFM 240 mV MAX at IF = 0.1 mA, 320 mV at "
+               "1 mA, IRM 2.0 uA MAX at VR = 25 V, V(BR)R 30 V MIN at "
+               "IR = 100 uA, TA = +25 C.  This is the SAME MPN and LCSC code "
+               "D10/D11/D12 already carry, procurement-locked at D-211, so "
+               "D14 joins an existing BOM line."),
+    # RETAINED AS THE NEGATIVE CONTROL.  This is the D-787/D-788 board, and
+    # the clause must refuse it on the arithmetic rather than on its name.
+    "1N4148WS": dict(
+        vf_max_V=0.715, vf_row_A=1.0e-3, ir_max_A=25e-9, ir_row_V=20.0,
+        vrrm_V=75.0, kind="silicon switching",
+        mpn="1N4148WS", lcsc="C2128",
+        source="JSCJ 1N4148WS, archived vendor/JSCJ/jscj-1n4148ws-sod323-"
+               "2011-05.pdf sha256 59e951bd...9fcabf2e: VF1 715 mV MAX at "
+               "IF = 1 mA -- the LOWEST published row -- IR 25 nA MAX at "
+               "VR = 20 V, Ta = 25 C"),
+}
+# DECLARED: both tables are 25 C only and a junction's VF rises as it cools.
+# 2 mV/K is the conventional silicon figure and is conservative for a
+# Schottky; it is applied to BOTH so the comparison is like-for-like.
+BL_DIODE_VF_TC_V_PER_K = 0.002
+BL_COLD_ENDPOINT_C = 0.0
+BL_DIODE_TABLE_REFERENCE_C = 25.0
+# The source voltage R69 sits at while U17 regulates 109 mA through 1.87 ohm
+# to the TPS61169's 204 mV feedback point.  This is set by the CONVERTER's
+# feedback reference and not by R69, so it does not move with the rail.
 BL_SOURCE_V = 0.204
 # D-079's LED setpoint: what Q11 has to sustain for the backlight to be lit.
 BL_STRING_CURRENT_A = 0.109
@@ -382,7 +467,139 @@ BL_TAU_WORST_RATIO = 19.6 / 22.0
 BL_CAP_BIAS_RETENTION = 0.75
 
 
-def judge_backlight_fet(values, dru_text):
+# A rail value only used when `judge_backlight_fet` is called as a pure
+# function by its own controls; `main()` always passes the DERIVED rail.
+BL_RAIL_MIN_FALLBACK_V = 3.069408
+# DECLARED: a Schottky's reverse leakage roughly doubles every 10 K, and the
+# published row is 25 C.  3x carries it to the 40 C top of the prototype
+# envelope with margin.  Applied to the published IR maximum, which is itself
+# quoted at a reverse voltage far above the ~2 V this node ever sees -- and IR
+# increases with VR, so the row is an upper bound here.
+BL_DIODE_IR_HOT_FACTOR = 3.0
+# R132 is a 1 % part; the TRUE-OFF floor is worst at its HIGH corner and the
+# ordering is worst at its low one.
+BL_R132_TOLERANCE = 0.01
+
+
+def _hold_decay_ms(tau_s, r_ohm, v_from, v_to, leak_A):
+    """Time for C85 to decay from `v_from` to `v_to`, WITH a constant leak.
+
+    D-789 / D788-11.  D-788 solved a pure exponential, which is the answer for
+    R132 alone.  D14's reverse leakage and Q11's IGSS both discharge C85 in
+    parallel with R132 and neither is proportional to the gate voltage, so
+    they are carried as a CONSTANT CURRENT -- the conservative treatment,
+    since a constant leak at its maximum removes charge faster than a resistor
+    of the same instantaneous value would.  With `i = v/R + I`,
+
+        v(t) = (v0 + I R) exp(-t/RC) - I R
+        t    = RC ln( (v0 + I R) / (v1 + I R) )
+
+    and with `I = 0` it degenerates to the exponential D-788 solved.
+    """
+    if v_from <= v_to:
+        return 0.0
+    if not r_ohm or leak_A <= 0:
+        return tau_s * 1e3 * math.log(v_from / v_to)
+    ir = leak_A * r_ohm
+    return tau_s * 1e3 * math.log((v_from + ir) / (v_to + ir))
+
+
+def held_gate_V(rail_min_V, diode_part, igss_max_A=0.0):
+    """D-789 / D788-11: the gate voltage this board actually holds, DERIVED.
+
+    Returns (gate_V, detail).  `gate_V` is None when the fitted diode is one
+    this contract has no published forward-voltage row for -- it REFUSES
+    rather than defaulting, the same way F6 refuses an unknown divider MPN.
+    """
+    d = HOLD_DIODE_PUBLISHED.get(diode_part)
+    voh = BL_GPIO_VOH_FRACTION_OF_VDD * rail_min_V
+    cold = BL_DIODE_VF_TC_V_PER_K * (BL_DIODE_TABLE_REFERENCE_C
+                                     - BL_COLD_ENDPOINT_C)
+    detail = dict(
+        diode=BL_HOLD_DIODE, diode_part=diode_part,
+        diode_is_a_part_with_published_ratings=d is not None,
+        rail_heavy_load_min_V=round(rail_min_V, 6),
+        gpio_voh_fraction_of_vdd=BL_GPIO_VOH_FRACTION_OF_VDD,
+        gpio_voh_min_V=round(voh, 6),
+        gpio_voh_source=BL_GPIO_VOH_SOURCE,
+        diode_vf_table_reference_C=BL_DIODE_TABLE_REFERENCE_C,
+        diode_vf_cold_endpoint_C=BL_COLD_ENDPOINT_C,
+        diode_vf_tc_V_per_K=BL_DIODE_VF_TC_V_PER_K,
+        diode_vf_cold_allowance_V=round(cold, 6),
+        igss_max_A=igss_max_A)
+    if not d:
+        detail["why"] = ("no published forward-voltage row for this part; the "
+                         "clause refuses rather than defaulting")
+        return None, detail
+    vf_cold = d["vf_max_V"] + cold
+    gate = voh - vf_cold
+    detail.update(
+        diode_published=dict(d),
+        diode_vf_max_at_its_lowest_published_row_V=d["vf_max_V"],
+        diode_vf_row_A=d["vf_row_A"],
+        diode_vf_bound_at_the_cold_endpoint_V=round(vf_cold, 6),
+        held_gate_V=round(gate, 6),
+        method="VOH(MIN) at the rail's own heavy-load minimum, less the "
+               "diode's LOWEST published forward-voltage maximum (a "
+               "guaranteed bound at every current below that row, because VF "
+               "increases monotonically with IF) and a declared cold-endpoint "
+               "allowance.  Nothing is interpolated and nothing is typical.")
+    return gate, detail
+
+
+def p3v3_pwm_envelope(values, mpns=None, fb=None):
+    """D-789 / D788-11: the +3V3 envelope, as ONE function two clauses share.
+
+    F6 has derived this since D-787.  F5 now needs the SAME rail -- Q11's held
+    gate is `0.8 x rail_min - VF(D14)` and D-788 moved the rail without moving
+    F5's constant -- and a second copy of the arithmetic is how the two would
+    drift apart.  Returns (envelope, error): `error` is not None when the
+    divider or its MPNs are unreadable, and the caller carries the verdict.
+    """
+    fb = P3V3_FB if fb is None else fb
+    top = _ohms(values.get(fb["top"]))
+    bot = _ohms(values.get(fb["bottom"]))
+    if not top or not bot:
+        return None, ("3V3 divider unreadable: %s=%r %s=%r"
+                      % (fb["top"], values.get(fb["top"]),
+                         fb["bottom"], values.get(fb["bottom"])))
+    top_tol, bot_tol = _tol(values.get(fb["top"])), _tol(values.get(fb["bottom"]))
+    temp_delta = max(abs(fb["temp_min_C"] - fb["reference_temp_C"]),
+                     abs(fb["temp_max_C"] - fb["reference_temp_C"]))
+    divider_mpns = dict(fb["released_mpns"])
+    divider_mpns.update({k: v for k, v in (mpns or {}).items()
+                         if k in divider_mpns})
+    top_tcr = fb["tcr_ppm_per_C_by_mpn"].get(divider_mpns[fb["top"]])
+    bot_tcr = fb["tcr_ppm_per_C_by_mpn"].get(divider_mpns[fb["bottom"]])
+    known = top_tcr is not None and bot_tcr is not None
+    top_err = top_tol + (top_tcr if top_tcr is not None else 200.0) \
+        * 1e-6 * temp_delta
+    bot_err = bot_tol + (bot_tcr if bot_tcr is not None else 200.0) \
+        * 1e-6 * temp_delta
+    ratio_lo = top * (1 - top_err) / (bot * (1 + bot_err))
+    ratio_hi = top * (1 + top_err) / (bot * (1 - bot_err))
+    vfb = fb["vfb_V"]
+    raw_lo = vfb[0] * (1 + ratio_lo)
+    raw_nom = vfb[1] * (1 + top / bot)
+    raw_hi = vfb[2] * (1 + ratio_hi)
+    return dict(
+        top_ohms=top, bottom_ohms=bot,
+        top_tolerance=top_tol, bottom_tolerance=bot_tol,
+        top_mpn=divider_mpns[fb["top"]], bottom_mpn=divider_mpns[fb["bottom"]],
+        top_tcr_ppm_per_C=top_tcr, bottom_tcr_ppm_per_C=bot_tcr,
+        divider_parts_are_known=known,
+        raw_lo=raw_lo, raw_nom=raw_nom, raw_hi=raw_hi,
+        # Heavy-load minimum pays both published line and load regulation
+        # maxima; full-load pack current is costed at the opposite corner.
+        heavy_lo=raw_lo * (1 - fb["max_line_reg"]) * (1 - fb["max_load_reg"]),
+        heavy_hi=raw_hi * (1 + fb["max_line_reg"]) * (1 + fb["max_load_reg"]),
+        # In power-save mode TI permits +5 % relative to VFB_PWM.  D-788 ties
+        # PS/SYNC to EN so it cannot occur; it is reported so a board that
+        # re-grounds PS/SYNC is visibly refused.
+        ps_hi=raw_hi * (1 + fb["ps_high_relative_to_pwm"])
+              * (1 + fb["max_line_reg"])), None
+
+def judge_backlight_fet(values, dru_text, rail_min_V=None):
     """Pure over {ref: value} and the .kicad_dru text; returns (ok, detail)."""
     part = (values.get(BL_FET) or "").strip()
     pub = FET_PUBLISHED.get(part)
@@ -392,11 +609,25 @@ def judge_backlight_fet(values, dru_text):
     tau_s = r132 * c85 if (r132 and c85) else None
     tau_worst_s = (tau_s * BL_TAU_WORST_RATIO * BL_CAP_BIAS_RETENTION
                    if tau_s else None)
-    vgs_held = BL_HELD_GATE_V - BL_SOURCE_V
+    # D-789 / D788-11: DERIVED, from the rail this board actually has.
+    diode_part = (values.get(BL_HOLD_DIODE) or "").strip()
+    gate_V, gate_detail = held_gate_V(
+        rail_min_V if rail_min_V is not None else BL_RAIL_MIN_FALLBACK_V,
+        diode_part, igss_max_A=(pub or {}).get("igss_max_A", 0.0))
+    # A refusal must not crash the report: run the arithmetic at the derived
+    # value when there is one, and let the CLAUSE carry the verdict.
+    held = gate_V if gate_V is not None else 0.0
+    dpub = gate_detail.get("diode_published") or {}
+    leak_A = (dpub.get("ir_max_A", 0.0) * BL_DIODE_IR_HOT_FACTOR
+              + (pub or {}).get("igss_max_A", 0.0))
+    vgs_held = held - BL_SOURCE_V
     f = dict(
         fet=BL_FET, fitted_part=part, published=dict(pub) if pub else None,
         dru_published_fault_ceiling_V=ceiling,
-        held_gate_V=BL_HELD_GATE_V, source_V=BL_SOURCE_V,
+        held_gate_is_derived=gate_detail,
+        held_gate_V=round(held, 6), source_V=BL_SOURCE_V,
+        hold_diode_is_a_part_with_published_ratings=bool(
+            gate_detail["diode_is_a_part_with_published_ratings"]),
         vgs_held_V=round(vgs_held, 4),
         tau_nominal_ms=round(tau_s * 1e3, 4) if tau_s else None,
         tau_worst_ms=round(tau_worst_s * 1e3, 4) if tau_worst_s else None,
@@ -414,9 +645,9 @@ def judge_backlight_fet(values, dru_text):
         f["fet_vds_covers_the_published_fault_ceiling"] = pub["vds_V"] >= ceiling
         f["vgs_overdrive_V"] = round(vgs_held - pub["vgs_th_max_V"], 4)
         f["gate_hold_enhances_the_fitted_fet"] = vgs_held > pub["vgs_th_max_V"]
-        if tau_worst_s and BL_HELD_GATE_V > pub["vgs_th_max_V"]:
-            t_open_ms = tau_worst_s * 1e3 * math.log(
-                BL_HELD_GATE_V / pub["vgs_th_max_V"])
+        if tau_worst_s and held > pub["vgs_th_max_V"]:
+            t_open_ms = _hold_decay_ms(tau_worst_s, r132, held,
+                                       pub["vgs_th_max_V"], leak_A)
             f["earliest_disconnect_ms"] = round(t_open_ms, 4)
             f["ordering_margin_ratio"] = round(t_open_ms / BL_TSD_MS, 4)
             f["u17_shuts_down_before_q11_opens"] = t_open_ms > BL_TSD_MS
@@ -443,9 +674,9 @@ def judge_backlight_fet(values, dru_text):
             f["held_vgs_meets_published_conduction_point"] = (
                 vgs_held >= guaranteed_vgs)
             t_leave_ms = 0.0
-            if BL_HELD_GATE_V > guaranteed_gate:
-                t_leave_ms = tau_worst_s * 1e3 * math.log(
-                    BL_HELD_GATE_V / guaranteed_gate)
+            if held > guaranteed_gate:
+                t_leave_ms = _hold_decay_ms(tau_worst_s, r132, held,
+                                            guaranteed_gate, leak_A)
             f["time_to_leave_published_conduction_region_ms"] = round(
                 t_leave_ms, 4)
             f["published_conduction_ordering_margin_x"] = round(
@@ -473,6 +704,19 @@ def judge_backlight_fet(values, dru_text):
                 % (pub["rds_on_max_ohm"], guaranteed_vgs, pub["rds_on_id_A"],
                    f["published_low_gate_rds_row_temperature_C"]))
             f["first_five_temperature_validation_required_C"] = [0, 25, 40]
+            # D-789 / D788-11.  THE SENSITIVITY, PRINTED.  Below this rail the
+            # held gate stops meeting the published conduction point, so how
+            # much rail the design is spending is a number rather than a
+            # hidden assumption -- the same shape as F6's
+            # `batfet_breakeven_ohm`.
+            vf_cold = gate_detail.get("diode_vf_bound_at_the_cold_endpoint_V")
+            if vf_cold is not None and BL_GPIO_VOH_FRACTION_OF_VDD:
+                f["held_gate_breakeven_rail_V"] = round(
+                    (guaranteed_gate + vf_cold)
+                    / BL_GPIO_VOH_FRACTION_OF_VDD, 6)
+                f["held_gate_rail_margin_mV"] = round(
+                    (gate_detail["rail_heavy_load_min_V"]
+                     - f["held_gate_breakeven_rail_V"]) * 1000, 3)
     # the rectifier stands off the same ceiling in reverse
     rect_part = (values.get(BL_RECTIFIER) or "").strip()
     rp = RECTIFIER_PUBLISHED.get(rect_part)
@@ -484,14 +728,115 @@ def judge_backlight_fet(values, dru_text):
         rp and ceiling and rp["vrrm_V"] >= ceiling)
     f["rectifier_margin_V"] = (round(rp["vrrm_V"] - ceiling, 4)
                                if rp and ceiling else None)
+    # D-789 / D788-11: the hold diode's own reverse rating, and the leak the
+    # ordering was solved with, both reported.
+    f["hold_diode"] = BL_HOLD_DIODE
+    f["hold_diode_fitted_part"] = diode_part
+    f["hold_diode_reverse_leak_used_A"] = leak_A
+    f["hold_diode_ir_hot_factor"] = BL_DIODE_IR_HOT_FACTOR
+    f["hold_diode_vrrm_V"] = dpub.get("vrrm_V")
+    f["hold_diode_vrrm_covers_the_held_gate"] = bool(
+        dpub.get("vrrm_V") and dpub["vrrm_V"] >= held)
+    # ---- D-789 / D788-11: THE TRUE-OFF FLOOR, WITH THE RIGHT SIGN ---------
+    #
+    # D-752's schematic note rejected a Schottky here on the argument that its
+    # reverse leakage would hold the gate up near threshold.  THE SIGN IS
+    # WRONG, and changing this part is the moment to say so rather than to
+    # inherit it.  KiCad's `Device:D` has pin 1 = K and pin 2 = A, and this
+    # board wires D14 pin 1 to Q11's gate and pin 2 to `/DISP_BL_CTL`.  In the
+    # true-off state the GPIO drives CTRL LOW and the gate sits above it, so
+    # D14 is REVERSE biased and its leakage flows K -> A, OUT of the gate.  It
+    # can only pull the gate DOWN.  The only current that can hold the gate up
+    # is Q11's own IGSS, and it crosses R132 alone.
+    #
+    # So the clause computes the floor from IGSS and R132 at their worst
+    # corners and requires it to stay under the FITTED FET's VGS(th) MINIMUM
+    # -- the voltage below which the part is guaranteed off.  A Schottky makes
+    # this number BETTER, not worse, and the report says by how much.
+    r132_hi = r132 * (1 + BL_R132_TOLERANCE) if r132 else None
+    igss = (pub or {}).get("igss_max_A")
+    f["true_off"] = dict(
+        why="in the true-off state CTRL is driven LOW and D14 is REVERSE "
+            "biased with its CATHODE on the gate, so its leakage flows out of "
+            "the gate and can only lower it.  The only current that can hold "
+            "the gate up is the FET's own IGSS across R132.",
+        d752_claim_superseded=(
+            "D-752's schematic note added the hold diode's reverse leakage to "
+            "IGSS as a gate-HOLDING current and concluded that a Schottky "
+            "'would have put that floor near or above threshold'.  The diode "
+            "is reverse-biased with its cathode on the gate, so that term has "
+            "the wrong sign; it is subtractive."),
+        igss_max_A=igss,
+        r132_worst_ohm=round(r132_hi, 1) if r132_hi else None,
+        r132_tolerance=BL_R132_TOLERANCE,
+        floor_V=(round(igss * r132_hi, 6)
+                 if (igss is not None and r132_hi) else None),
+        vgs_th_min_V=(pub or {}).get("vgs_th_min_V"),
+        diode_leak_is_subtractive_A=dpub.get("ir_max_A"),
+        margin_x=None)
+    to = f["true_off"]
+    if to["floor_V"] is not None and to["vgs_th_min_V"]:
+        to["margin_x"] = round(to["vgs_th_min_V"] / to["floor_V"], 2) \
+            if to["floor_V"] > 0 else None
+    f["true_off_floor_is_under_the_fets_guaranteed_off_threshold"] = bool(
+        to["floor_V"] is not None and to["vgs_th_min_V"]
+        and to["floor_V"] < to["vgs_th_min_V"])
+    # ---- D-789 / `R8-N06`: THE HELD GATE MUST BE PRINTED WHERE IT IS READ ----
+    # F6 has required DEVICE_SPEC to print the exact Community-Port figures it
+    # derives since D-788 / R7-N04, and the reason given there was that "a
+    # published tolerance that only lives in a gate is not published; one that
+    # only lives in a document is not proven".  THE SAME RULE WAS NEVER APPLIED
+    # TO THIS CLAUSE, and D-789 found the consequence: DEVICE_SPEC section 3
+    # still printed `VGS = 2.396 V` and an "approximately 62 ms" envelope --
+    # both 3.3 V-rail numbers, both stale the moment D-788 moved the rail, and
+    # both invisible to every gate.  The exact same stale pair sat in
+    # FIRST_FIVE_ASSEMBLY_PLAN section 7a.
+    #
+    # So the derived held gate, its margin over the fitted FET's published
+    # conduction point, and the fitted hold diode's MPN must all appear
+    # VERBATIM in the product-facing document.  The tokens are FORMATTED FROM
+    # THE COMPUTED VALUES, so they move when the derivation moves and the
+    # document has to move with them.
+    spec_text = DEVICE_SPEC.read_text(encoding="utf-8", errors="replace") \
+        if DEVICE_SPEC.is_file() else ""
+    held_tokens = {}
+    if f.get("held_gate_V") is not None and f.get("source_V") is not None:
+        held_tokens["held_vgs"] = "%.6f V" % (f["held_gate_V"] - f["source_V"])
+    if f.get("held_vgs_margin_above_published_conduction_point_V") is not None:
+        held_tokens["margin_over_conduction_point"] = "%.1f mV" % (
+            f["held_vgs_margin_above_published_conduction_point_V"] * 1000.0)
+    if (f.get("held_gate_is_derived") or {}).get("diode_published", {}).get("mpn"):
+        held_tokens["hold_diode_mpn"] = \
+            f["held_gate_is_derived"]["diode_published"]["mpn"]
+    missing_held = sorted(k for k, v in held_tokens.items()
+                          if v not in spec_text)
+    f["published_hold_is_printed_in_device_spec"] = dict(
+        document=str(DEVICE_SPEC.relative_to(ROOT)),
+        required=held_tokens, missing=missing_held,
+        ok=bool(held_tokens) and not missing_held and bool(spec_text),
+        method="R7-N04's rule, applied to the backlight hold: the derived held "
+               "VGS, its margin over the fitted FET's published conduction "
+               "point, and the fitted hold diode's MPN must be printed in the "
+               "product-facing document, so a rail change cannot leave a stale "
+               "gate voltage standing in DEVICE_SPEC the way D-789 found it")
+    # A SCALAR, because the verdict tuple below tests truthiness and a
+    # non-empty dict is always truthy -- which is how a clause gets stated and
+    # never run.  This file has met that exact failure before.
+    f["published_hold_is_printed_in_device_spec_ok"] = bool(
+        f["published_hold_is_printed_in_device_spec"]["ok"])
+
     f["ok"] = all(bool(f.get(k)) for k in (
         "fet_is_a_part_with_published_ratings",
         "board_publishes_a_fault_ceiling",
+        "published_hold_is_printed_in_device_spec_ok",
         "fet_vds_covers_the_published_fault_ceiling",
         "gate_hold_enhances_the_fitted_fet",
         "u17_shuts_down_before_q11_opens",
         "held_vgs_meets_published_conduction_point",
         "u17_shuts_down_before_gate_leaves_published_conduction_region",
+        "hold_diode_is_a_part_with_published_ratings",
+        "hold_diode_vrrm_covers_the_held_gate",
+        "true_off_floor_is_under_the_fets_guaranteed_off_threshold",
         "rectifier_is_a_part_with_published_ratings",
         "rectifier_vrrm_covers_the_published_fault_ceiling"))
     return f["ok"], f
@@ -516,9 +861,16 @@ def judge_backlight(nets_by_contact, values):
         # line, so the ordering no longer rests on where in the AO3422's
         # unspecified conduction band the string current actually collapses.
         c85_value_is_1uF="1uF" in (values.get("C85") or ""),
-        # and the OFF floor is held by the diode's PUBLISHED reverse leakage
-        d14_is_a_silicon_switching_diode=(values.get("D14") or "").upper()
-                                          .startswith("1N4148"),
+        # D-789 / D788-11.  The hold diode is now a SCHOTTKY: at the D-788
+        # rail the 1N4148WS's 715 mV lowest-published drop left Q11's held
+        # VGS 13.5 mV under the SQ2364EES's only published conduction row.
+        # This clause is NAME-based on purpose -- it is the population check,
+        # not the electrical one; F5's `judge_backlight_fet` refuses the old
+        # part by arithmetic, which is what makes this line safe to be a name.
+        d14_is_the_published_hold_diode=(
+            (values.get("D14") or "").strip() in HOLD_DIODE_PUBLISHED
+            and HOLD_DIODE_PUBLISHED[(values.get("D14") or "").strip()]["kind"]
+            == "Schottky barrier"),
         gate_contacts=sorted(on_gate), ctrl_contacts=sorted(on_ctrl))
     f["ok"] = all(v for k, v in f.items()
                   if k.startswith(("gate_is", "gate_net_is", "ctrl_net",
@@ -630,15 +982,61 @@ PUBLISHED_RAIL_BUDGET_A = {"ACC_3V3": 0.400, "ACC_5V": 0.300}
 # limit and costs 28 mV of a published tolerance an accessory reads.  Every
 # Qwiic/STEMMA QT device this project has qualified operates to 2.7 V or below,
 # so no capability is lost; the PUBLISHED NUMBER changes and is stated here.
-PUBLISHED_CONNECTOR_MIN_V = 2.95
+# D-789 / D788-02.  THE PUBLISHED MINIMUM IS NO LONGER A CONSTANT.
+#
+# D-788 carried `PUBLISHED_CONNECTOR_MIN_V = 2.95` and the clause read
+# `delivered >= 2.95`.  That is a control aimed BY HAND at a number the
+# derivation happened to produce: the moment the derivation moved -- which is
+# exactly what Round-8's corrections to the RON bound and the return network
+# do -- the constant became the wrong answer while still looking like a gate.
+# The published minimum is now DERIVED from the worst permitted mode (see
+# `p3v3_delivery` inside `judge_accessory_envelope`) and rounded DOWN onto a
+# 10 mV grid, and what the CLAUSE asks is a different question with a real
+# floor behind it:
+#
+#   * the derived worst mode must stay above the tightest published minimum
+#     supply voltage among the parts THE BOARD ITSELF powers from
+#     `/ACC_3V3_SW` -- a datasheet limit, archived, that a divider change or a
+#     worse delivery path could genuinely break;
+#   * the OWNER-DECISION anchor must still hold: D-788 Option A publishes a
+#     3.2 V-class rail, so the unloaded nominal must still round to 3.2 V;
+#   * and `DEVICE_SPEC` must print the SAME derived number this file computes.
+#
+# THE ON-BOARD FLOOR.  `/ACC_3V3_SW` feeds U16 (TCA4307DGKR I2C buffer), J8
+# (Qwiic/STEMMA QT), Q10's drain-side pull-up network, R46/R49/R50/R63 and
+# three decoupling capacitors.  U16 is the only active part, and TI's own
+# Recommended Operating Conditions table gives its VCC range as 2.3 V to
+# 5.5 V -- archived at
+# `vendor/TI/ti-tca4307-zhcslq0-DGK0008A.pdf` with its source record beside
+# it, obtained through the live D-096 distributor record's own datasheet link
+# and corroborated by that record's `Voltage - Supply: 2.3V~5.5V` attribute.
+ACC_3V3_ONBOARD_FLOOR_V = 2.30
+ACC_3V3_ONBOARD_FLOOR_PART = "U16 TCA4307DGKR"
+ACC_3V3_ONBOARD_FLOOR_BASIS = (
+    "TI TCA4307 ZHCSLQ0 section 6.3 Recommended Operating Conditions, VCC "
+    "supply voltage MIN 2.3 V (UVLO rising 2.1 V / falling 2.0 V).  U16 is "
+    "the only active device the BOARD powers from /ACC_3V3_SW; everything "
+    "else on that net is a connector, a test point, a pull-up or a decoupling "
+    "capacitor.  Archived at vendor/TI/ti-tca4307-zhcslq0-DGK0008A.pdf.")
+# The owner-decision anchor.  D-788 Option A publishes "approximately 3.2 V
+# nominal"; this is that sentence as a number the gate can refuse.
+PUBLISHED_CONNECTOR_NOMINAL_CLASS_V = 3.2
+# What "approximately" is allowed to mean.  The D-788/D-789 divider's own
+# nominal is 3.145503 V, 54.5 mV under the owner's stated class.
+PUBLISHED_CONNECTOR_CLASS_TOLERANCE_V = 0.10
+PUBLISHED_CONNECTOR_MIN_GRID_V = 0.01
 PUBLISHED_CONNECTOR_MIN_AUTHORITY = (
     "Owner-approved D-788 Option A, 2026-09-20: 3.2 V-class Community-Port "
-    "rail, full 400 mA capability retained; exact release envelope derived "
-    "from the final D-788 candidate. Dedicated accessory regulator deferred "
-    "to REV-B.  R7-N01 freezes that envelope at 3.069408 / 3.145503 / "
-    "3.223012 V unloaded and 2.954962 V delivered at the full 400 mA, against "
-    "a published 2.95 V minimum; the 400 mA and 300 mA current budgets are "
-    "unchanged.")
+    "rail, full 400 mA capability retained; the exact release envelope is to "
+    "be DERIVED and frozen from the final candidate, which D-789 does.  The "
+    "400 mA and 300 mA current budgets are unchanged.  D-789 supersedes "
+    "D-788's 2.95 V figure: that number was computed with U20's RON "
+    "INTERPOLATED between two datasheet rows and with the J5 return divided "
+    "by four contacts carrying only the 3.3 V rail's current.  Both are "
+    "corrected -- a monotone row bound at U20's own input, and a return "
+    "solved over every permitted ground-contact count with the ACC_5V current "
+    "sharing it -- and the published minimum is now whatever the worst "
+    "permitted mode gives.")
 # D-771.  THE PROTECTION CHAIN, OVER TOLERANCE, FROM EACH PART'S OWN TABLE.
 SENSE_R = "R75"                        # LTC4368 current-sense element
 BREAKER = "U18"
@@ -748,25 +1146,65 @@ CU_HOT_RISE_K = 65.0
 #        85 C     105        62        49     mOhm
 #       125 C     116        68        54     mOhm
 #
-# RON(VIN) is CONVEX-DECREASING in every one of those rows -- the 1.8->3.3 V
-# slope is -32.0/-28.7/-26.0 mOhm/V and the 3.3->5.0 V slope is
-# -8.2/-7.6/-5.9 mOhm/V, so the second difference is positive at every
-# temperature, and Figure 6-3 plots the same shape.  For a convex function the
-# CHORD between two points lies ABOVE the curve, so linear interpolation
-# between the 1.8 V and 3.3 V guaranteed maxima is an UPPER BOUND at every VIN
-# in between.  Outside that span the bound saturates at the nearer row.
-RON_TPS22950_MAX = {1.8: 0.116, 3.3: 0.068}
+# D-789 / D788-01.  A CHORD IS NOT A BOUND UNLESS THE CURVE IS CONVEX, AND
+# NOTHING GUARANTEES THAT IT IS.
+#
+# D-788 interpolated linearly between the 1.8 V and 3.3 V guaranteed maxima and
+# called the chord an upper bound, on the argument that the three published
+# temperature rows each show a positive second difference.  Round-8 is right to
+# refuse it: three points establish ONE second difference per row, TI publishes
+# no RON-vs-VIN maximum curve, and "the samples we can see look convex" is not
+# a guarantee.  A bound that depends on the SHAPE of an unpublished curve is
+# the same class of defect as the 3.3 V row D-787 used at 3.07 V.
+#
+# WHAT IS GUARANTEED IS MONOTONICITY, AND IT IS GUARANTEED BY THE DEVICE RATHER
+# THAN BY THE SAMPLES.  The TPS22950 is an N-channel pass FET whose gate is
+# driven by an internal charge pump referenced to VIN (SLVSGP6A 8.3.1), so the
+# channel's gate overdrive RISES with VIN and RON FALLS.  Every row of the
+# published table agrees at every temperature -- 116/68/54, 105/62/49,
+# 90/51/41 mOhm at 1.8/3.3/5.0 V -- and so does TI's own Figure 6-3.  Under
+# monotonic decrease ALONE, and with no assumption about curvature,
+#
+#     RON(VIN) <= RON(V_row)  for every published row with V_row <= VIN
+#
+# so the bound at any VIN is the maximum published at the NEAREST ROW AT OR
+# BELOW IT.  It is a step function, it is conservative by construction, and it
+# needs nothing that TI has not printed.  For this rail -- U20's input is the
+# +3V3 plane at about 3.06 V -- the bound is therefore the 1.8 V row's
+# 116 mOhm and not D-788's interpolated 75.4 mOhm.  The cost is 16 mV at the
+# published 400 mA and it is paid.
+#
+# AND THE ARGUMENT IS EVALUATED AT U20's OWN INPUT, NOT AT THE SOURCE RAIL.
+# The pour-delivered source side drops the rail before it reaches `U20.2`, so
+# `u20_vin_V` below is the rail's heavy-load minimum less that drop, and the
+# row is chosen from THAT.  (It changes nothing here -- both are far above the
+# 1.8 V row and far below the 3.3 V one -- which is exactly why it has to be
+# computed rather than assumed: the next divider change might not be.)
+RON_TPS22950_MAX = {1.8: 0.116, 3.3: 0.068, 5.0: 0.054}
+RON_TPS22950_MIN_VIN = 1.8      # SLVSGP6A operating input range floor
+RON_TPS22950_BOUND_BASIS = (
+    "SLVSGP6A ON-Resistance, the -40..+125 C rows: 116 mOhm at VIN = 1.8 V, "
+    "68 at 3.3 V, 54 at 5.0 V.  The bound at an arbitrary VIN is the maximum "
+    "published at the nearest row AT OR BELOW it, which requires only that "
+    "RON decrease with VIN -- a property of the charge-pumped N-channel pass "
+    "FET, corroborated by all three temperature rows and by Figure 6-3.  No "
+    "interpolation and no curvature assumption.")
 
 
 def tps22950_ron_max(vin_V):
-    """Guaranteed -40..+125 C RON upper bound at an arbitrary input voltage."""
-    lo_v, hi_v = 1.8, 3.3
-    lo_r, hi_r = RON_TPS22950_MAX[lo_v], RON_TPS22950_MAX[hi_v]
-    if vin_V >= hi_v:
-        return hi_r
-    if vin_V <= lo_v:
-        return lo_r
-    return lo_r + (hi_r - lo_r) * (vin_V - lo_v) / (hi_v - lo_v)
+    """GUARANTEED -40..+125 C RON upper bound at an arbitrary input voltage.
+
+    Returns None below the part's own 1.8 V operating floor: there is no
+    published row to bound it with and a defaulted number would be a guess.
+    """
+    if vin_V is None or vin_V < RON_TPS22950_MIN_VIN:
+        return None
+    rows = sorted(RON_TPS22950_MAX)
+    chosen = rows[0]
+    for v in rows:
+        if v <= vin_V:
+            chosen = v
+    return RON_TPS22950_MAX[chosen]
 
 
 # ACC_5V's switch runs from ACC_5V_RAW, which never falls below the 3.3 V row's
@@ -794,10 +1232,13 @@ NORMAL_PATHS = {
     # independent first-five reinforcement leads from TP12, downstream of U20.
     # The board-owned prefix is therefore U20.5->TP12.1; the manual lead's
     # separately measured <=30 mOhm limit is added by the envelope model.
+    # D-789 / D788-07..09/16: the manual lead is retired, so the pack model
+    # prices the SAME routed path the delivery clause does.
     "acc_3v3_sw": dict(rail="ACC_3V3_SW", src=("U20.5",),
-                       snk=("TP12.1",), bound_ohm=0.080,
-                       last_measured_ohm=0.070186,
-                       what="U20 output -> TP12 reinforcement source"),
+                       snk=("J5.3",), bound_ohm=0.240,
+                       last_measured_ohm=0.224425,
+                       what="U20 output -> the Community Port's longest "
+                            "3.3 V contact, by routed copper alone"),
     "acc_5v_sw": dict(rail="ACC_5V_SW", src=("U22.5",),
                       snk=("J5.1", "J5.24"), bound_ohm=0.120,
                       last_measured_ohm=0.110567,
@@ -912,15 +1353,50 @@ P3V3_DELIVERY = dict(
     # number.  25 mOhm is roughly 2x what a gold-on-phosphor-bronze 2.54 mm
     # contact typically measures.
     signal_contact_ohm=0.025,
-    gnd_contacts_in_parallel=4,
+    # D-789 / D788-02.  "THE SAME MATED HEADER ALWAYS PRESENTS FOUR" WAS NOT
+    # TRUE OF THE PUBLISHED USAGE.
+    #
+    # D-788 divided the return contact by four and priced the WHOLE return
+    # network at the 3.3 V rail's 400 mA.  Both halves are wrong against what
+    # this product actually tells a user they may do.  `J5` is a 2.54 mm
+    # header on an OPEN Community Port: the documented usage explicitly
+    # includes individual jumper leads, and an accessory that takes +3V3 on one
+    # contact and ground on one contact is a CONFORMING accessory.  One ground
+    # contact is therefore a permitted mode and it is the worst one.
+    #
+    # And the return is SHARED.  The 5 V rail's accessory current comes back
+    # through the same ground contacts, so under the published concurrent
+    # budget the return carries 400 mA + 300 mA, not 400 mA.
+    #
+    # Both are now MODES rather than constants: the envelope is solved over the
+    # cross product of every permitted ground-contact count and both permitted
+    # load states, each duplicated +3V3 contact is still qualified ALONE, and
+    # the GUARANTEE is the worst cell.  The better cells are reported beside it
+    # so an accessory that mates the full header can see what it actually gets.
+    gnd_contact_modes=(1, 2, 4),
+    gnd_contact_modes_basis=(
+        "J5 presents four GND contacts and a fully mated 24-way socket uses "
+        "all four; the published Community-Port usage also permits individual "
+        "2.54 mm jumper leads, for which ONE ground contact is a conforming "
+        "connection.  The guarantee is quoted at ONE; two and four are "
+        "reported."),
+    return_load_modes={
+        "acc_3v3_alone": ("ACC_3V3",),
+        "both_published_budgets": ("ACC_3V3", "ACC_5V"),
+    },
+    return_load_modes_basis=(
+        "the ACC_5V accessory current returns through the SAME J5 ground "
+        "contacts, so the published concurrent budget puts 400 mA + 300 mA on "
+        "the return while the forward path carries only the 3.3 V rail's "
+        "400 mA."),
     contact_is_a_declared_allowance=True,
     contact_basis="Samtec SSQ series publishes a 6.3 A per-pin rating and no "
                   "contact-resistance row; 25 mOhm per mated contact is a "
                   "DECLARED allowance, measured at first article (C-ACC-01).  "
                   "The signal side is charged for ONE contact because the "
-                  "clause qualifies each duplicated contact ALONE; the return "
-                  "side divides by the four GND contacts the same mated header "
-                  "always presents.",
+                  "clause qualifies each duplicated +3V3 contact ALONE; the "
+                  "return side is charged over every permitted ground-contact "
+                  "count, and the guarantee takes the worst.",
     # J5 GND contacts -> the +3V3 source's ground reference, through the In1
     # and In4 solid GND planes in parallel plus their vias.  Two 0.5 oz planes
     # in parallel are 0.566 mOhm per square and the route is a couple of
@@ -932,19 +1408,44 @@ P3V3_DELIVERY = dict(
                   "board's own pad/plating tolerance; DECLARED",
     # The two conductors this rail is actually delivered by.  Each is qualified
     # ALONE: an accessory may use either duplicated contact by itself.
+    #
+    # D-789 / D788-07 + D788-08 + D788-09 + D788-16.  NEITHER IS REINFORCED
+    # ANY MORE.  Round-8 raised four independent findings against the single
+    # manual TP12.1 -> J5.3 lead: a tip geometry that cannot fit a 1.00 mm
+    # pad, an insertion into a through-hole whose Samtec tail already fills
+    # it, a route through BATTERY_SHADOW and across RIB_R3 that the record's
+    # own clearances forbid, and an acceptance that cannot be measured because
+    # the board's own copper stays in parallel with the lead.  All four are
+    # properties of the conductor, not of its description.  It bought 70 mV of
+    # published minimum on ONE of two duplicated contacts, and it is retired;
+    # see `docs/full-beta-v2/assembly/ACC_3V3_REINFORCEMENT.json`.
     contacts={
-        "J5.3": dict(board_copper_src=("U20.5",), board_copper_snk=("TP12.1",),
-                     board_copper_bound_ohm=0.075,
-                     reinforced=True,
-                     what="U20 output -> TP12 reinforcement land, then the "
-                          "manual 28 AWG lead to J5.3"),
+        "J5.3": dict(board_copper_src=("U20.5",), board_copper_snk=("J5.3",),
+                     board_copper_bound_ohm=0.240,
+                     reinforced=False,
+                     what="U20 output -> J5.3 by routed copper alone, 224.4 "
+                          "mOhm measured.  This is the contact the retired "
+                          "manual lead existed for and it is qualified ALONE."),
         "J5.22": dict(board_copper_src=("U20.5",), board_copper_snk=("J5.22",),
                       board_copper_bound_ohm=0.090,
                       reinforced=False,
-                      what="U20 output -> J5.22 by routed copper alone; this "
-                           "contact needs no manual lead, which is what "
-                           "removes D-787's two-conductors-on-one-pad problem"),
-    })
+                      what="U20 output -> J5.22 by routed copper alone, 79.0 "
+                           "mOhm measured -- always better than any manual "
+                           "lead that could have been run to it"),
+    },
+    # D-789 / D788-02, second half.  The review permits binding the guarantee
+    # to an explicit CONNECTION CONTRACT, and a 24-way socket fully mated is a
+    # materially different network from a single jumper: BOTH duplicated +3V3
+    # contacts carry, in parallel, and all four grounds return.  Both are
+    # published -- the unconditional figure is the guarantee, the mated figure
+    # is what a socketed accessory actually gets, and it is better than the
+    # 2.95 V D-788 published with a hand-soldered conductor fitted.
+    fully_mated_contract=dict(
+        forward_contacts=("J5.3", "J5.22"),
+        gnd_contacts=4,
+        what="both duplicated +3V3 contacts and all four GND contacts mated, "
+             "which is what the SSQ-124 socket this port is drawn for "
+             "presents"))
 # --------------------------------------------------------------------------
 # D-788 / R7-D787-01 -- THE TIGHTEST CONSUMER ON THIS RAIL IS THE DISPLAY, AND
 # D-787's 3.600 V CEILING WAS NOT ITS NUMBER.
@@ -1139,9 +1640,23 @@ P3V3_AC = dict(
 )
 
 
-def p3v3_ac_envelope(rail_min_V, rail_max_V, internal_load_A, spec=None):
-    """Ripple, computed; transient, declared unprovable and deferred."""
+def p3v3_ac_envelope(rail_min_V, rail_max_V, internal_load_A, spec=None,
+                     accessory_load_A=None):
+    """Ripple, computed; transient, declared unprovable and deferred.
+
+    D-789 / D788-12.  THE RIPPLE TERM RAN ON THE INTERNAL LOAD ALONE.  In boost
+    mode the output capacitor carries the WHOLE output current for the duty
+    cycle, and `U12`'s output current is not the internal budget -- it is the
+    internal budget PLUS whatever the Community Port is drawing through `U20`,
+    which sits on the same rail.  At the published 400 mA that is a 38 % larger
+    ripple than D-788 computed, and the ripple is charged to BOTH margins.
+    `accessory_load_A` defaults to the published ACC_3V3 budget so no caller
+    can forget it.
+    """
     spec = P3V3_AC if spec is None else spec
+    if accessory_load_A is None:
+        accessory_load_A = PUBLISHED_RAIL_BUDGET_A["ACC_3V3"]
+    total_load_A = internal_load_A + accessory_load_A
     f = spec["f_switch_min_Hz"]
     l_min = spec["l_nom_H"] * (1.0 - spec["l_tol"])
     c_eff = spec["local_c_nom_F"] * spec["local_c_effective_fraction"]
@@ -1153,10 +1668,13 @@ def p3v3_ac_envelope(rail_min_V, rail_max_V, internal_load_A, spec=None):
     # for the duty cycle.
     duty = max(0.0, 1.0 - spec["vin_min_V"] / rail_max_V)
     dil_boost = spec["vin_min_V"] * duty / (l_min * f)
-    ripple_boost = (internal_load_A * duty / (f * c_eff)
+    ripple_boost = (total_load_A * duty / (f * c_eff)
                     + dil_boost * spec["local_esr_ohm"])
     ripple_pp = max(ripple_buck, ripple_boost)
     return dict(
+        internal_load_A=internal_load_A,
+        accessory_load_A=accessory_load_A,
+        total_u12_output_load_A=round(total_load_A, 6),
         f_switch_min_Hz=f, inductor_min_H=l_min,
         local_output_c_refs=list(spec["local_c_refs"]),
         local_output_c_nominal_F=spec["local_c_nom_F"],
@@ -1172,7 +1690,11 @@ def p3v3_ac_envelope(rail_min_V, rail_max_V, internal_load_A, spec=None):
                "oscillator frequency and the inductor's own minimum "
                "inductance, over the declared effective local output "
                "capacitance; the worse of the buck and boost corners is "
-               "charged to BOTH the high-side and low-side margins")
+               "charged to BOTH the high-side and low-side margins.  D-789 / "
+               "D788-12: the boost-mode term uses U12's TOTAL instantaneous "
+               "output load -- the internal budget PLUS the published 400 mA "
+               "Community-Port budget, which is drawn through U20 from this "
+               "same rail -- and not the internal budget alone.")
 
 
 def r40_headroom(r40_ohm, r39_ohm, fb, abs_max_V, mcu_min_V,
@@ -1208,7 +1730,13 @@ def judge_p3v3_ac_and_centring(rail_min_V, rail_max_V, r39_ohm, r40_ohm,
     abs_max = min(panel["vci_abs_max_V"], panel["iovcc_abs_max_V"])
     mcu_min = mcu["vdd33_min_V"]
     ac = p3v3_ac_envelope(rail_min_V, rail_max_V, internal_load_A, spec)
-    drop = spec["distribution_to_mcu_bound_ohm"] * internal_load_A
+    # D-789 / D788-12.  The declared plane allowance between U12's output and
+    # U1's supply pad is charged at the TOTAL rail current for the same reason:
+    # U20's input stub hangs off that same +3V3 plane, so the accessory's
+    # 400 mA flows through part of the sheet the MCU is fed from.  Charging the
+    # whole allowance at the total is the conservative reading of a bound that
+    # is already declared rather than measured.
+    drop = spec["distribution_to_mcu_bound_ohm"] * ac["total_u12_output_load_A"]
 
     # (1) the DC + ripple corners, both ends.
     high_corner = rail_max_V + ac["ripple_pp_V"]
@@ -1232,6 +1760,8 @@ def judge_p3v3_ac_and_centring(rail_min_V, rail_max_V, r39_ohm, r40_ohm,
                  vdd33_min_V=mcu_min, supply_pads=list(mcu["supply_pads"])),
         distribution_to_mcu_bound_ohm=spec["distribution_to_mcu_bound_ohm"],
         internal_load_A=internal_load_A,
+        accessory_load_A=ac["accessory_load_A"],
+        total_u12_output_load_A=ac["total_u12_output_load_A"],
         distribution_drop_to_mcu_mV=round(drop * 1000, 4),
         dc_plus_ripple_high_V=round(high_corner, 6),
         dc_plus_ripple_low_at_the_mcu_V=round(low_corner, 6),
@@ -2362,99 +2892,198 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
             "and latching is the wanted behaviour"))
 
     # ---- D-787 / R6-A01: derive the actual main +3V3 envelope ------------
-    p3_top = _ohms(values.get(P3V3_FB["top"]))
-    p3_bot = _ohms(values.get(P3V3_FB["bottom"]))
-    p3_top_tol = _tol(values.get(P3V3_FB["top"]))
-    p3_bot_tol = _tol(values.get(P3V3_FB["bottom"]))
-    if not p3_top or not p3_bot:
-        return False, dict(error="3V3 divider unreadable: %s=%r %s=%r" %
-                           (P3V3_FB["top"], values.get(P3V3_FB["top"]),
-                            P3V3_FB["bottom"], values.get(P3V3_FB["bottom"])))
-    temp_delta = max(abs(P3V3_FB["temp_min_C"] - P3V3_FB["reference_temp_C"]),
-                     abs(P3V3_FB["temp_max_C"] - P3V3_FB["reference_temp_C"]))
-    # D-787.  TCR comes from the PURCHASED PART, keyed by MPN.  An MPN this
-    # table does not know has no published coefficient here and the clause
-    # REFUSES; it does not silently inherit the previous part's number.
-    divider_mpns = dict(P3V3_FB["released_mpns"])
-    divider_mpns.update({k: v for k, v in (mpns or {}).items()
-                         if k in divider_mpns})
-    top_tcr = P3V3_FB["tcr_ppm_per_C_by_mpn"].get(divider_mpns[P3V3_FB["top"]])
-    bot_tcr = P3V3_FB["tcr_ppm_per_C_by_mpn"].get(
-        divider_mpns[P3V3_FB["bottom"]])
-    divider_parts_are_known = top_tcr is not None and bot_tcr is not None
-    # A refusal must not crash the report: run the arithmetic at a coefficient
-    # no thin-film 0603 part exceeds so the numbers printed beside the refusal
-    # are still bounded, and let the CLAUSE carry the verdict.
-    top_err = p3_top_tol + (top_tcr if top_tcr is not None else 200.0) \
-        * 1e-6 * temp_delta
-    bot_err = p3_bot_tol + (bot_tcr if bot_tcr is not None else 200.0) \
-        * 1e-6 * temp_delta
-    p3_ratio_lo = p3_top * (1 - top_err) / (p3_bot * (1 + bot_err))
-    p3_ratio_hi = p3_top * (1 + top_err) / (p3_bot * (1 - bot_err))
-    p3_vfb = P3V3_FB["vfb_V"]
-    p3_raw_lo = p3_vfb[0] * (1 + p3_ratio_lo)
-    p3_raw_nom = p3_vfb[1] * (1 + p3_top / p3_bot)
-    p3_raw_hi = p3_vfb[2] * (1 + p3_ratio_hi)
-    # Heavy-load minimum pays both published line and load regulation maxima.
-    p3_pwm_heavy_lo = p3_raw_lo * (1 - P3V3_FB["max_line_reg"]) * (
-        1 - P3V3_FB["max_load_reg"])
-    # Full-load pack current is costed at the opposite PWM corner.
-    p3_pwm_heavy_hi = p3_raw_hi * (1 + P3V3_FB["max_line_reg"]) * (
-        1 + P3V3_FB["max_load_reg"])
-    # In power-save mode TI permits the output up to +5% relative to VFB_PWM.
-    # This is the light-load HIGH-side consumer-safety check.
-    p3_ps_hi = p3_raw_hi * (1 + P3V3_FB["ps_high_relative_to_pwm"]) * (
-        1 + P3V3_FB["max_line_reg"])
+    # D-789 / D788-11: the arithmetic lives in `p3v3_pwm_envelope` so F5's
+    # held-gate derivation reads the SAME rail rather than a second copy.
+    pe, pe_err = p3v3_pwm_envelope(values, mpns)
+    if pe_err:
+        return False, dict(error=pe_err)
+    p3_top, p3_bot = pe["top_ohms"], pe["bottom_ohms"]
+    p3_top_tol, p3_bot_tol = pe["top_tolerance"], pe["bottom_tolerance"]
+    divider_mpns = {P3V3_FB["top"]: pe["top_mpn"],
+                    P3V3_FB["bottom"]: pe["bottom_mpn"]}
+    top_tcr, bot_tcr = pe["top_tcr_ppm_per_C"], pe["bottom_tcr_ppm_per_C"]
+    divider_parts_are_known = pe["divider_parts_are_known"]
+    p3_raw_lo, p3_raw_nom, p3_raw_hi = pe["raw_lo"], pe["raw_nom"], pe["raw_hi"]
+    p3_pwm_heavy_lo, p3_pwm_heavy_hi = pe["heavy_lo"], pe["heavy_hi"]
+    p3_ps_hi = pe["ps_hi"]
 
+    # D-789 / D788-07 + D788-08 + D788-09 + D788-16.  THE CLAUSE INVERTS.
+    #
+    # D-787 and D-788 required the record to NAME an exact manual conductor.
+    # The conductor is retired, so what the clause has to hold is the other
+    # direction: the record must DECLARE that no manual conductor is required,
+    # it must name no destination, and -- the part that stops this becoming a
+    # loophole -- if a future record ever re-introduces one, it may only do so
+    # with a QUALIFIED joint specification for both ends and an acceptance that
+    # can be measured with the board's own parallel copper accounted for.  A
+    # record that names a destination without those is REFUSED, which is
+    # exactly what D-788's record would be.
     reinforcement = {}
     if ACC_3V3_REINFORCEMENT.exists():
         reinforcement = json.loads(ACC_3V3_REINFORCEMENT.read_text())
-    reinf_r = (float(reinforcement.get("electrical_acceptance", {})
-                     .get("each_finished_lead_max_milliohm_at_room_temperature", 1e9))
-               / 1000.0)
-    reinforcement_identity_ok = bool(
-        reinforcement.get("source", {}).get("reference") == "TP12.1"
-        and reinforcement.get("source", {}).get("net") == "/ACC_3V3_SW"
-        and {x.get("reference") for x in reinforcement.get("destinations", [])}
-            == {"J5.3"}
-        and reinforcement.get("wire", {}).get("mpn") == "2842/19 RD005"
-        and reinforcement.get("wire", {}).get("gauge_awg") == 28
-        and reinf_r <= 0.025 + 1e-12)
+    destinations = reinforcement.get("destinations") or []
+    declares_none = reinforcement.get("manual_conductor_required") is False
+    reinf_r = 0.0
+    reinforcement_problems = []
+    if not reinforcement:
+        reinforcement_problems.append("the reinforcement record is absent")
+    elif declares_none:
+        if destinations:
+            reinforcement_problems.append(
+                "the record declares no manual conductor and then names %d "
+                "destination(s)" % len(destinations))
+        if reinforcement.get("source", {}).get("net") != "/ACC_3V3_SW":
+            reinforcement_problems.append(
+                "the record's retained test-point net is not /ACC_3V3_SW")
+        if (reinforcement.get("retention") or {}).get("material") is not None:
+            reinforcement_problems.append(
+                "the record declares no manual conductor and then names a "
+                "retention adhesive for one")
+    else:
+        # A record that DOES require a conductor must qualify it.  These are
+        # the four things Round-8 found missing, as clauses.
+        acc = reinforcement.get("electrical_acceptance", {})
+        reinf_r = float(acc.get(
+            "each_finished_lead_max_milliohm_at_room_temperature", 1e9)) / 1000.0
+        joint = reinforcement.get("joint_profile", {})
+        for need, why in (
+                ("qualified_joint_geometry",
+                 "a dimensioned, buildable joint geometry for EVERY named "
+                 "termination -- strip, tin, trim, insulation setback and the "
+                 "clearance to the nearest foreign copper (D788-07)"),
+                ("qualified_termination_at_the_connector",
+                 "a termination at the connector that does not require "
+                 "inserting a conductor into an occupied through-hole "
+                 "(D788-08)"),
+                ("toleranced_route_in_the_mechanical_datum",
+                 "a toleranced route, joint and adhesive envelope in the "
+                 "enclosure's own datum, clear of every reserved region "
+                 "(D788-09)"),
+                ("isolated_resistance_measurement",
+                 "an acceptance measurement that isolates the lead from the "
+                 "board's own parallel copper (D788-16)")):
+            if not joint.get(need) and not acc.get(need):
+                reinforcement_problems.append(
+                    "a manual conductor is declared but the record has no %s"
+                    % why)
+    reinforcement_identity_ok = not reinforcement_problems
 
-    # ---- D-788 / R7-D787-02 + R7-D787-03: THE COMPLETE LOOP ---------------
-    # Every contact is priced ALONE, forward AND return, from U12's output to
-    # the J5 mating interface.  U20's RON is taken at the rail's own heavy-load
-    # MINIMUM rather than at the datasheet's 3.3 V condition.
+    # ---- D-789 / D788-01 + D788-02: THE COMPLETE NETWORK, EVERY MODE ------
+    #
+    # Each duplicated +3V3 contact is qualified ALONE (an accessory may use
+    # either one by itself, so neither gets credit for the other), and the
+    # FORWARD and RETURN halves are priced separately because they do not carry
+    # the same current and are not made of the same number of contacts.  The
+    # envelope is solved over the cross product of
+    #
+    #     {the two duplicated +3V3 contacts}
+    #   x {1, 2, 4 mated ground contacts}
+    #   x {ACC_3V3 alone, ACC_3V3 + ACC_5V at their published budgets}
+    #
+    # and the GUARANTEE is the worst cell.  U20's RON is the guaranteed
+    # published maximum at the nearest row at or below U20's OWN input voltage.
     k_hot = 1 + CU_TC_PER_K * CU_HOT_RISE_K
-    p3_ron = tps22950_ron_max(p3_pwm_heavy_lo)
-    # Everything in the loop that both duplicated contacts share.
-    shared_ohm = (P3V3_DELIVERY["source_bound_ohm"] * k_hot
-                  + P3V3_DELIVERY["signal_contact_ohm"]
-                  + P3V3_DELIVERY["signal_contact_ohm"]
-                  / P3V3_DELIVERY["gnd_contacts_in_parallel"]
-                  + P3V3_DELIVERY["gnd_return_bound_ohm"] * k_hot
-                  + P3V3_DELIVERY["process_ohm"])
-    p3_paths = {}
+    i3_budget = PUBLISHED_RAIL_BUDGET_A["ACC_3V3"]
+    source_hot = P3V3_DELIVERY["source_bound_ohm"] * k_hot
+    # D788-01: U20's input is the +3V3 plane AFTER the pour-delivered source
+    # side has dropped it, not the rail.  The source side carries the whole
+    # accessory 3.3 V current.
+    u20_vin = p3_pwm_heavy_lo - i3_budget * source_hot
+    p3_ron = tps22950_ron_max(u20_vin)
+    u20_vin_is_in_the_published_range = p3_ron is not None
+    if p3_ron is None:
+        # A refusal must not crash the report.  Run the arithmetic at the
+        # lowest published row so the numbers printed beside the refusal are
+        # still bounded, and let the CLAUSE carry the verdict.
+        p3_ron = RON_TPS22950_MAX[RON_TPS22950_MIN_VIN]
+    gnd_return_hot = P3V3_DELIVERY["gnd_return_bound_ohm"] * k_hot
+    sig = P3V3_DELIVERY["signal_contact_ohm"]
+
+    p3_paths, p3_modes = {}, []
     for contact, spec in sorted(P3V3_DELIVERY["contacts"].items()):
         board = spec["board_copper_bound_ohm"] * k_hot
         lead = reinf_r * k_hot if spec["reinforced"] else 0.0
-        total = p3_ron + shared_ohm + board + lead
-        delivered = p3_pwm_heavy_lo - (
-            PUBLISHED_RAIL_BUDGET_A["ACC_3V3"] * total)
+        # FORWARD: source plane -> U20 -> board copper (-> manual lead) -> the
+        # one mated signal contact this accessory is using.
+        forward = p3_ron + source_hot + board + lead + sig \
+            + P3V3_DELIVERY["process_ohm"]
         p3_paths[contact] = dict(
             what=spec["what"], reinforced=spec["reinforced"],
             u20_ron_ohm=round(p3_ron, 6),
             board_copper_bound_ohm=spec["board_copper_bound_ohm"],
             board_copper_hot_ohm=round(board, 6),
             manual_lead_hot_ohm=round(lead, 6),
-            shared_source_return_and_contact_ohm=round(shared_ohm, 6),
-            total_series_ohm=round(total, 6),
-            drop_at_published_budget_mV=round(
-                PUBLISHED_RAIL_BUDGET_A["ACC_3V3"] * total * 1000, 4),
-            delivered_at_400mA_min_V=round(delivered, 6))
-    worst_contact = min(p3_paths, key=lambda c: p3_paths[c]["delivered_at_400mA_min_V"])
-    p3_delivered_path_ohm = p3_paths[worst_contact]["total_series_ohm"]
-    p3_delivered_min = p3_paths[worst_contact]["delivered_at_400mA_min_V"]
+            manual_lead_is_retired=(
+                "D-789 / D788-07..09 + D788-16: no manual conductor is fitted "
+                "on this rail in the first-five build"),
+            signal_contact_ohm=sig,
+            source_hot_ohm=round(source_hot, 6),
+            process_ohm=P3V3_DELIVERY["process_ohm"],
+            forward_series_ohm=round(forward, 6),
+            forward_drop_at_published_budget_mV=round(
+                i3_budget * forward * 1000, 4))
+        for n_gnd in P3V3_DELIVERY["gnd_contact_modes"]:
+            ret = sig / float(n_gnd) + gnd_return_hot
+            for load_name, mode_rails in sorted(
+                    P3V3_DELIVERY["return_load_modes"].items()):
+                i_return = sum(PUBLISHED_RAIL_BUDGET_A[r] for r in mode_rails)
+                delivered = (p3_pwm_heavy_lo - i3_budget * forward
+                             - i_return * ret)
+                p3_modes.append(dict(
+                    contact=contact, gnd_contacts_mated=n_gnd,
+                    load_mode=load_name,
+                    forward_current_A=i3_budget,
+                    return_current_A=round(i_return, 4),
+                    forward_series_ohm=round(forward, 6),
+                    return_series_ohm=round(ret, 6),
+                    total_drop_mV=round(
+                        (i3_budget * forward + i_return * ret) * 1000, 4),
+                    delivered_at_400mA_min_V=round(delivered, 6)))
+    # D-789 / D788-02: the FULLY MATED contract -- both duplicated +3V3
+    # contacts carrying in parallel and all four grounds returning.  It is
+    # reported as its own mode and is NEVER the guarantee; the guarantee is
+    # the worst UNCONDITIONAL mode above.
+    fm = P3V3_DELIVERY.get("fully_mated_contract")
+    fully_mated = None
+    if fm:
+        fwd = [p3_paths[c]["forward_series_ohm"] for c in fm["forward_contacts"]
+               if c in p3_paths]
+        if fwd:
+            parallel = 1.0 / sum(1.0 / x for x in fwd)
+            ret = sig / float(fm["gnd_contacts"]) + gnd_return_hot
+            fully_mated = {}
+            for load_name, mode_rails in sorted(
+                    P3V3_DELIVERY["return_load_modes"].items()):
+                i_return = sum(PUBLISHED_RAIL_BUDGET_A[r] for r in mode_rails)
+                fully_mated[load_name] = dict(
+                    forward_contacts=list(fm["forward_contacts"]),
+                    gnd_contacts_mated=fm["gnd_contacts"],
+                    parallel_forward_series_ohm=round(parallel, 6),
+                    return_series_ohm=round(ret, 6),
+                    return_current_A=round(i_return, 4),
+                    delivered_at_400mA_min_V=round(
+                        p3_pwm_heavy_lo - i3_budget * parallel
+                        - i_return * ret, 6))
+            fully_mated["what"] = fm["what"]
+            fully_mated["is_not_the_guarantee"] = (
+                "the GUARANTEE is the worst unconditional mode -- either "
+                "duplicated contact alone, one mated ground, both rails "
+                "loaded.  This is what a socketed accessory actually gets and "
+                "it is published beside it, not instead of it.")
+    p3_modes.sort(key=lambda m: m["delivered_at_400mA_min_V"])
+    worst_mode = p3_modes[0]
+    best_mode = p3_modes[-1]
+    worst_contact = worst_mode["contact"]
+    p3_delivered_path_ohm = round(
+        worst_mode["forward_series_ohm"]
+        + worst_mode["return_series_ohm"] * worst_mode["return_current_A"]
+        / worst_mode["forward_current_A"], 6)
+    p3_delivered_min = worst_mode["delivered_at_400mA_min_V"]
+    # D-789 / D788-02 + the memory of D-788's hand-aimed 2.95: the PUBLISHED
+    # minimum is DERIVED from the worst permitted mode and rounded DOWN onto a
+    # 10 mV grid.  It is not a number this file asserts and the derivation then
+    # has to beat.
+    p3_published_min = math.floor(p3_delivered_min * 100.0) / 100.0
 
     p3v3 = dict(
         top=P3V3_FB["top"], bottom=P3V3_FB["bottom"],
@@ -2480,14 +3109,41 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
                            "accessory's own plug, cable and connector are "
                            "outside the guarantee"),
         delivery_paths=p3_paths,
+        # D-789 / D788-02: every permitted wiring x load mode, worst first.
+        delivery_modes=p3_modes,
+        gnd_contact_modes=list(P3V3_DELIVERY["gnd_contact_modes"]),
+        gnd_contact_modes_basis=P3V3_DELIVERY["gnd_contact_modes_basis"],
+        return_load_modes_basis=P3V3_DELIVERY["return_load_modes_basis"],
+        worst_mode=worst_mode,
+        best_mode=best_mode,
         worst_contact=worst_contact,
-        delivered_path_bound_ohm=round(p3_delivered_path_ohm, 6),
+        # D-789 / D788-01: the input the RON row is chosen at, and the row.
+        u20_vin_V=round(u20_vin, 6),
+        u20_ron_bound_ohm=round(p3_ron, 6),
+        u20_ron_bound_basis=RON_TPS22950_BOUND_BASIS,
+        u20_vin_is_in_the_published_range=u20_vin_is_in_the_published_range,
+        delivered_path_bound_ohm=p3_delivered_path_ohm,
         delivered_at_400mA_min_V=round(p3_delivered_min, 6),
-        published_connector_min_V=PUBLISHED_CONNECTOR_MIN_V,
+        delivered_at_400mA_full_header_V=round(
+            best_mode["delivered_at_400mA_min_V"], 6),
+        fully_mated_contract=fully_mated,
+        delivered_at_400mA_fully_mated_V=(
+            round(fully_mated["both_published_budgets"][
+                "delivered_at_400mA_min_V"], 6) if fully_mated else None),
+        published_connector_min_V=p3_published_min,
+        published_connector_min_is_derived=True,
+        published_connector_min_basis=(
+            "the WORST of every permitted Community-Port wiring x load mode -- "
+            "either duplicated +3V3 contact used alone, one mated ground "
+            "contact, and the published 400 mA + 300 mA concurrent budget "
+            "sharing that return -- rounded DOWN onto a 10 mV grid.  It is "
+            "DERIVED; nothing in this file asserts it."),
+        accessory_floor_V=ACC_3V3_ONBOARD_FLOOR_V,
+        accessory_floor_basis=ACC_3V3_ONBOARD_FLOOR_BASIS,
         tightest_internal_consumer_max_V=ILI9488["vci_abs_max_V"],
         tightest_internal_consumer="the fitted ILI9488 panel: VCI and IOVCC "
                                    "absolute maximum -0.3..+3.3 V",
-        delivered_min_ok=p3_delivered_min >= PUBLISHED_CONNECTOR_MIN_V,
+        delivered_min_ok=p3_delivered_min >= ACC_3V3_ONBOARD_FLOOR_V,
         internal_high_ok=p3_pwm_heavy_hi <= ILI9488["vci_abs_max_V"],
         method="TPS63020 VFB_PWM 495/500/505 mV; exact R39/R40 value tolerance "
                "plus selected-part TCR over -40..85 C; TI 0.5% line and 0.5% "
@@ -2500,9 +3156,13 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
                "minimum rather than at the datasheet's 3.3 V condition, the "
                "pour-delivered source side, the bounded hot board copper, the "
                "manual lead at its acceptance, the mated signal contact, the "
-               "four parallel mated GND contacts, the ground-return copper and "
-               "a process allowance -- and qualifies EACH duplicated contact "
-               "alone.")
+               "mated GND contacts, the ground-return copper and a process "
+               "allowance -- and qualifies EACH duplicated contact alone.  "
+               "D-789: RON is the guaranteed published maximum at the nearest "
+               "row AT OR BELOW U20's OWN input voltage, with no interpolation "
+               "and no curvature assumption, and the return is solved over "
+               "every permitted ground-contact count with the ACC_5V current "
+               "sharing it.")
 
     # The PACK model must no longer run on a typed 3.3 V. Full normal load is
     # PWM, so use the HIGH PWM/regulation corner: it costs the most battery
@@ -3028,6 +3688,132 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
     return ok, d
 
 
+
+# --------------------------------------------------------------------------
+# F10 -- THE BATTERY PASS PAIR'S GATE DRIVE, AND THE ONE LINE THAT MUST STAY
+# BLOCKED BEFORE ANY MONEY IS SPENT.
+#
+# ADDED AT D-789.  It closes Fable's F-N01 and the finding that came out of
+# applying D-780's own rule to it (R8-N01).
+#
+# F-N01: the locked `Q2`/`Q3` part, onsemi `NTMD4820NR2G`, reads STOCK 0 on the
+# live distributor record and is catalogue-flagged as no longer manufactured.
+# Only re-marked second sources have any stock.  This repository can reach the
+# JLCPCB catalogue and not an authorised allocation system, so SECURING the
+# part is a purchasing action -- but LOSING the fact is not allowed, and that
+# is what this clause prevents.
+#
+# R8-N01, found here: the pair is not guaranteed to be ENHANCED either.  The
+# LTC4368's gate drive is guaranteed at `ΔVGATE >= 3.0 V` for `VIN = 2.5 V`
+# with no guaranteed row again until `VIN = 5 V`, and this board's `BAT_RAW`
+# lives between them -- so, under the same nearest-row-at-or-below discipline
+# F6 applies to `U20`'s RON and F5 to `D14`'s VF, 3.0 V is the bound.  Less the
+# source-node offset that the pair's own channels and `R75` develop at the
+# design current, `Q2`'s worst-case `VGS` is 2.79 V, against a `VGS(th)`
+# MAXIMUM of 3.0 V and a lowest published `RDS(on)` row at `VGS = 4.5 V`.
+#
+# WHAT THE CLAUSE ASSERTS.  Not that the problem is solved -- it is not, and
+# saying so would be the defect.  It asserts that the problem is COMPUTED from
+# primary sources on every run, that its numbers have not moved, and that the
+# sourcing ledger still carries the pre-PCBA block, the selection criteria and
+# the first-article measurement.  Delete the record, soften the criteria, or
+# change a datasheet figure, and F10 FAILS.
+LTC4368_GATE_DRIVE_ROWS_V = {2.5: 3.0, 5.0: 7.2, 12.0: 10.0}
+LTC4368_GATE_SOURCE = (
+    "ADI LTC4368 Rev C Electrical Characteristics, GATE section, dVGATE "
+    "'Gate Drive (GATE - VOUT)', the `l` rows guaranteed over the full "
+    "operating temperature range: 3 / 4 / 5.5 V at VIN = 2.5 V, 7.2 / 8.7 / "
+    "10.8 V at VIN = 5 V, 10 / 11 / 13.1 V at VIN = 12 to 60 V.  Archived at "
+    "hardware/demo/kicad/aqroot-demo/vendor/ADI/"
+    "adi-ltc4368-revC-farnell-2243878.pdf.")
+PASS_PAIR = dict(
+    references=("Q2", "Q3"),
+    locked_mpn="NTMD4820NR2G",
+    vgs_th_max_V=3.0, vgs_th_min_V=1.5,
+    rds_on_lowest_published_vgs_V=4.5,
+    rds_on_max_at_that_row_ohm=0.027,
+    vbr_dss_min_V=30.0,
+    source="onsemi NTMD4820N, archived vendor/ONSEMI/onsemi-ntmd4820n-D.pdf: "
+           "V(BR)DSS 30 V min; VGS(th) 1.5 / -- / 3.0 V at VDS = VGS, "
+           "ID = 250 mA; RDS(on) 15/20 mOhm at VGS = 10 V and 20/27 mOhm at "
+           "VGS = 4.5 V, ID = 6.5 A.  No row below 4.5 V.",
+    sense_resistor_ohm=0.010,
+    channels_in_series=4)
+PASS_PAIR_LEDGER_TOKENS = (
+    "PRE-PCBA BLOCKING",
+    "NTMD4820NR2G",
+    "C-BAT-GATE-01",
+    "VGS(th)` MAXIMUM ≤ 2.5 V",
+    "dual N-channel in the SOIC-8 dual-MOSFET pinout",
+    "live authorised stock ≥ **100**",
+)
+
+
+def ltc4368_gate_drive_min_V(vin_V, rows=None):
+    """The guaranteed minimum gate drive at an arbitrary VIN.
+
+    Monotone in VIN across every published row, so the bound is the row AT OR
+    BELOW it.  Below the lowest row there is nothing to bound it with and the
+    function REFUSES rather than defaulting.
+    """
+    rows = LTC4368_GATE_DRIVE_ROWS_V if rows is None else rows
+    chosen = None
+    for v in sorted(rows):
+        if v <= vin_V:
+            chosen = v
+    return None if chosen is None else rows[chosen]
+
+
+def judge_pass_pair_gate(design_amps, vin_min_V, spec=None, rows=None):
+    """D-789 / F-N01 + R8-N01.  Pure; returns the arithmetic and the verdict."""
+    spec = PASS_PAIR if spec is None else spec
+    drive = ltc4368_gate_drive_min_V(vin_min_V, rows)
+    ron = spec["rds_on_max_at_that_row_ohm"]
+    # Q3's source sits one channel above VOUT plus the sense resistor; Q2's
+    # sits three channels above it.  Both reduce VGS below the drive.
+    offsets = {"Q3": design_amps * (1 * ron + spec["sense_resistor_ohm"]),
+               "Q2": design_amps * (3 * ron + spec["sense_resistor_ohm"])}
+    out = dict(
+        references=list(spec["references"]), locked_mpn=spec["locked_mpn"],
+        design_amps=design_amps, bat_raw_min_V=vin_min_V,
+        gate_drive_rows_V=dict(rows or LTC4368_GATE_DRIVE_ROWS_V),
+        gate_drive_source=LTC4368_GATE_SOURCE,
+        guaranteed_gate_drive_V=drive,
+        fet_source=spec["source"],
+        vgs_th_max_V=spec["vgs_th_max_V"],
+        rds_on_lowest_published_vgs_V=spec["rds_on_lowest_published_vgs_V"])
+    if drive is None:
+        out.update(ok=False, why="BAT_RAW is below the lowest published "
+                                 "LTC4368 gate-drive row; nothing bounds it")
+        return False, out
+    per = {}
+    for ref, off in sorted(offsets.items()):
+        vgs = drive - off
+        per[ref] = dict(
+            source_offset_V=round(off, 6),
+            worst_case_vgs_V=round(vgs, 6),
+            margin_over_vgs_th_max_mV=round(
+                (vgs - spec["vgs_th_max_V"]) * 1000, 3),
+            is_guaranteed_enhanced=bool(vgs > spec["vgs_th_max_V"]),
+            margin_to_the_lowest_published_conduction_row_mV=round(
+                (vgs - spec["rds_on_lowest_published_vgs_V"]) * 1000, 3),
+            meets_a_published_conduction_row=bool(
+                vgs >= spec["rds_on_lowest_published_vgs_V"]))
+    out["per_device"] = per
+    out["any_device_is_not_guaranteed_enhanced"] = not all(
+        d["is_guaranteed_enhanced"] for d in per.values())
+    out["no_device_meets_a_published_conduction_row"] = not any(
+        d["meets_a_published_conduction_row"] for d in per.values())
+    out["consequence"] = (
+        "a higher pass-pair resistance, a larger drop from the pack and more "
+        "heat in two SOIC-8s; at the extreme a board that will not run from "
+        "the battery.  FUNCTIONAL, not a safety failure: the LTC4368's "
+        "overcurrent, reverse and UV/OV protection sense across R75 and pull "
+        "the gate DOWN, and neither depends on how well the pair conducts.")
+    out["first_article"] = "C-BAT-GATE-01"
+    return True, out
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("-o", dest="out", type=Path)
@@ -3122,8 +3908,10 @@ def main():
     def _drop_hold_cap(n, v):
         n["C85.1"] = "Net-(C85-Pad1)"
 
-    def _schottky(n, v):
-        v["D14"] = "BAT54WS"
+    def _silicon_hold_diode(n, v):
+        # D-789 / D788-11: the charge path is a SCHOTTKY now, and the part
+        # that used to be here is the one that must be refused.
+        v["D14"] = "1N4148WS"
 
     def _wrong_tau(n, v):
         v["R132"] = "10k"
@@ -3131,13 +3919,20 @@ def main():
     bl_controls = dict(x for x in (
         _control("f5a_refuses_the_gate_collapsed_onto_u17_ctrl", _collapse),
         _control("f5b_refuses_the_hold_capacitor_dropped", _drop_hold_cap),
-        _control("f5c_refuses_a_schottky_in_the_charge_path", _schottky),
+        _control("f5c_refuses_a_silicon_diode_in_the_charge_path",
+                 _silicon_hold_diode),
         _control("f5d_refuses_a_silently_retuned_hold", _wrong_tau)))
 
     # ---- D-766: and the FET itself, against the ceiling THIS board publishes
     dru_text = DRU.read_text(encoding="utf-8", errors="replace") if DRU.exists() \
         else ""
-    fet_ok, fet = judge_backlight_fet(values, dru_text)
+    # D-789 / D788-11: F5 is judged against the rail THIS BOARD derives, not
+    # against a constant.  `mpns` is the schematic's own MPN map, which is what
+    # keys the divider's temperature coefficients.
+    divider_mpns = schematic_mpns((P3V3_FB["top"], P3V3_FB["bottom"]))
+    _bl_env, _bl_err = p3v3_pwm_envelope(values, divider_mpns)
+    bl_rail_min_V = _bl_env["heavy_lo"] if _bl_env else BL_RAIL_MIN_FALLBACK_V
+    fet_ok, fet = judge_backlight_fet(values, dru_text, bl_rail_min_V)
     first_five_text = (FIRST_FIVE_ASSEMBLY.read_text(encoding="utf-8", errors="replace")
                        if FIRST_FIVE_ASSEMBLY.exists() else "")
     q11_temp_acceptance_explicit = all(token in first_five_text for token in (
@@ -3207,11 +4002,17 @@ def main():
     def _fet_control(name, mutate):
         v2 = dict(values)
         mutate(v2)
-        ok, _ = judge_backlight_fet(v2, dru_text)
+        ok, _ = judge_backlight_fet(v2, dru_text, bl_rail_min_V)
         return name, not ok
 
     def _fet_control_dru(name, text):
-        ok, _ = judge_backlight_fet(values, text)
+        ok, _ = judge_backlight_fet(values, text, bl_rail_min_V)
+        return name, not ok
+
+    def _fet_control_rail(name, rail_V):
+        """D-789 / D788-11: the RAIL is an input to F5 now, so a rail that
+        cannot hold the gate must be refused by the same expression."""
+        ok, _ = judge_backlight_fet(values, dru_text, rail_V)
         return name, not ok
 
     fet_controls = dict(x for x in (
@@ -3245,7 +4046,30 @@ def main():
         # guaranteed 2.5 V RDS(on) point sits ABOVE the 2.396 V held VGS, so a
         # typical-gfs bridge cannot make it pass this release gate.
         _fet_control("f5m_refuses_the_ao3422_d779_board_below_its_guaranteed_gate_point",
-                     lambda v: v.__setitem__(BL_FET, "AO3422"))))
+                     lambda v: v.__setitem__(BL_FET, "AO3422")),
+        # ---- D-789 / D788-11.  THE HELD GATE IS AN OUTPUT OF THE RAIL. -----
+        # THE LOAD-BEARING ONE: the D-787/D-788 board, unchanged but for the
+        # hold diode.  At this rail the 1N4148WS's LOWEST published forward
+        # drop (715 mV at 1 mA) leaves the held VGS at 1.4865 V, 13.5 mV under
+        # the SQ2364EES's only published conduction row.  Nothing else moves.
+        _fet_control("f5n_refuses_the_1n4148ws_d788_left_fitted_at_this_rail",
+                     lambda v: v.__setitem__(BL_HOLD_DIODE, "1N4148WS")),
+        _fet_control("f5o_refuses_a_hold_diode_with_no_published_rating",
+                     lambda v: v.__setitem__(BL_HOLD_DIODE, "SOME-DIODE-77")),
+        # AND THE CLAUSE MUST MOVE WITH THE RAIL.  The D788-11 defect was a
+        # CONSTANT, so the control that matters is that the derived gate is a
+        # FUNCTION of the rail at all, and that there is a rail at which it
+        # refuses.  `held_gate_breakeven_rail_V` prints where that is.
+        _fet_control_rail("f5p_refuses_the_rail_below_the_gate_breakeven",
+                          fet.get("held_gate_breakeven_rail_V", 0.0) - 0.01),
+        _fet_control("f5q_refuses_a_hold_capacitor_too_small_for_the_schottky_leak",
+                     lambda v: v.__setitem__("C85", "100nF X7R"))))
+    # A POSITIVE non-vacuity claim beside the refusals: the derived gate is a
+    # FUNCTION of the rail, which is exactly what D-788's constant was not.
+    fet_controls["f5r_the_derived_gate_tracks_the_rail"] = bool(
+        judge_backlight_fet(values, dru_text, bl_rail_min_V)[1]["held_gate_V"]
+        != judge_backlight_fet(values, dru_text,
+                               bl_rail_min_V - 0.5)[1]["held_gate_V"])
 
     # ---- F6: the accessory envelope, and four live controls ---------------
     # D-772 FIRST: the internal +3V3 budget the envelope RUNS ON, read from the
@@ -3342,7 +4166,6 @@ def main():
     reinforcement_contacts_are_on_the_rail = bool(reinf_contact_nets) and all(
         net == "/ACC_3V3_SW" for net in reinf_contact_nets.values())
 
-    divider_mpns = schematic_mpns((P3V3_FB["top"], P3V3_FB["bottom"]))
     env_ok, env = judge_accessory_envelope(
         values, single_floor=policy_single, dual_floor=policy_dual,
         live_ohms=live_ohms, mpns=divider_mpns)
@@ -3483,6 +4306,18 @@ def main():
             env["p3v3_setpoint"]["worst_case_rail_max_V"],
             env["p3v3_setpoint"]["top_ohms"],
             env["p3v3_setpoint"]["bottom_ohms"], I_INTERNAL, "")[0],
+        # D-789 / D788-12.  The ripple term must be LARGER once the published
+        # accessory budget joins U12's output load.  A ripple that does not
+        # move when 400 mA is added to the converter is the D-788 defect.
+        "f6ag_ripple_grows_with_the_accessory_output_load": (
+            p3v3_ac_envelope(
+                env["p3v3_setpoint"]["pwm_heavy_min_V"],
+                env["p3v3_setpoint"]["worst_case_rail_max_V"],
+                I_INTERNAL)["ripple_pp_V"]
+            > p3v3_ac_envelope(
+                env["p3v3_setpoint"]["pwm_heavy_min_V"],
+                env["p3v3_setpoint"]["worst_case_rail_max_V"],
+                I_INTERNAL, accessory_load_A=0.0)["ripple_pp_V"]),
     }
     ac["ok"] = bool(ac_ok and all(ac["controls_refused"].values()))
     env["p3v3_ac_envelope_and_centring"] = ac
@@ -3492,7 +4327,13 @@ def main():
     spec_text = (DEVICE_SPEC.read_text(encoding="utf-8", errors="replace")
                  if DEVICE_SPEC.exists() else "")
     published_tokens = {
-        "connector_minimum_V": "%.2f V" % PUBLISHED_CONNECTOR_MIN_V,
+        # D-789 / D788-02 + F-N02: the DERIVED minimum, not a constant.
+        "connector_minimum_V": "%.2f V" % env["p3v3_setpoint"][
+            "published_connector_min_V"],
+        # D-789 / D788-02: the connection contract, published beside the
+        # unconditional guarantee rather than instead of it.
+        "connector_minimum_fully_mated_V": "%.6f V" % env["p3v3_setpoint"][
+            "delivered_at_400mA_fully_mated_V"],
         "unloaded_minimum_V": "%.6f V" % env["p3v3_setpoint"]["pwm_heavy_min_V"],
         "worst_case_maximum_V": "%.6f V" % env["p3v3_setpoint"][
             "worst_case_rail_max_V"],
@@ -3512,6 +4353,60 @@ def main():
                "gate is not published, and one that only lives in a document "
                "is not proven")
     env_ok = env_ok and env["published_contract_matches_device_spec"]["ok"]
+
+    # ---- D-789 / D788-02: the published minimum IS the derived one -------
+    p3 = env["p3v3_setpoint"]
+    grid = PUBLISHED_CONNECTOR_MIN_GRID_V
+    expected_pub = math.floor(p3["delivered_at_400mA_min_V"] / grid) * grid
+    env["p3v3_published_minimum_is_the_derived_one"] = dict(
+        derived_worst_mode_V=p3["delivered_at_400mA_min_V"],
+        worst_mode=p3["worst_mode"],
+        grid_V=grid,
+        published_V=p3["published_connector_min_V"],
+        expected_V=round(expected_pub, 6),
+        # An OVER-promise (published above what is derived) and an
+        # UNDER-promise of more than one grid step are both refused: the first
+        # is dishonest, the second means the published figure has stopped
+        # tracking the design.
+        ok=bool(abs(p3["published_connector_min_V"] - expected_pub) < 1e-9),
+        why="the product-facing minimum is the WORST permitted wiring x load "
+            "mode rounded DOWN onto a 10 mV grid, and nothing in this file "
+            "asserts it")
+    env["p3v3_owner_decision_class_anchor"] = dict(
+        authority=PUBLISHED_CONNECTOR_MIN_AUTHORITY,
+        nominal_class_V=PUBLISHED_CONNECTOR_NOMINAL_CLASS_V,
+        class_tolerance_V=PUBLISHED_CONNECTOR_CLASS_TOLERANCE_V,
+        raw_pwm_nominal_V=p3["raw_pwm_V"][1],
+        deviation_from_class_mV=round(
+            (p3["raw_pwm_V"][1] - PUBLISHED_CONNECTOR_NOMINAL_CLASS_V) * 1000,
+            3),
+        ok=bool(abs(p3["raw_pwm_V"][1] - PUBLISHED_CONNECTOR_NOMINAL_CLASS_V)
+                <= PUBLISHED_CONNECTOR_CLASS_TOLERANCE_V + 1e-9),
+        why="D-788 Option A publishes the rail as APPROXIMATELY 3.2 V nominal "
+            "and leaves the exact figure to be derived.  100 mV is this "
+            "contract's reading of 'approximately': the fitted divider's "
+            "nominal must stay inside it, so a divider change that moved the "
+            "rail out of the class the owner approved would need a new owner "
+            "decision rather than passing quietly")
+    env["p3v3_clears_its_tightest_on_board_consumer"] = dict(
+        part=ACC_3V3_ONBOARD_FLOOR_PART,
+        floor_V=ACC_3V3_ONBOARD_FLOOR_V,
+        basis=ACC_3V3_ONBOARD_FLOOR_BASIS,
+        worst_delivered_V=p3["delivered_at_400mA_min_V"],
+        margin_mV=round((p3["delivered_at_400mA_min_V"]
+                         - ACC_3V3_ONBOARD_FLOOR_V) * 1000, 3),
+        ok=bool(p3["delivered_min_ok"]))
+    env["u20_ron_is_bounded_at_its_own_input"] = dict(
+        u20_vin_V=p3["u20_vin_V"],
+        ron_bound_ohm=p3["u20_ron_bound_ohm"],
+        basis=p3["u20_ron_bound_basis"],
+        in_published_range=p3["u20_vin_is_in_the_published_range"],
+        ok=bool(p3["u20_vin_is_in_the_published_range"]))
+    for key in ("p3v3_published_minimum_is_the_derived_one",
+                "p3v3_owner_decision_class_anchor",
+                "p3v3_clears_its_tightest_on_board_consumer",
+                "u20_ron_is_bounded_at_its_own_input"):
+        env_ok = env_ok and env[key]["ok"]
 
     env["p3v3_setpoint"]["reinforcement_contact_nets"] = reinf_contact_nets
     env["p3v3_reinforcement_contacts_are_on_the_rail"] = (
@@ -3970,6 +4865,53 @@ def main():
         d["ok"] = all(d[k] for k in clauses)
         return d["ok"], d
 
+    # ---- D-789 / F-N01 + R8-N01: the battery pass pair --------------------
+    _bat_rail = next((r for r in ara.RAILS
+                      if r["name"] == "BAT_PROTECTED_P"), None)
+    pp_ok, pass_pair = judge_pass_pair_gate(
+        _bat_rail["amps"] if _bat_rail else 2.35, VBAT_CORNER)
+    pass_pair_stock = {ref: live_stock_for(PASS_PAIR["locked_mpn"])
+                       for ref in PASS_PAIR["references"]}
+    ledger_path = ROOT / "docs/full-beta-v2/assembly/SOURCING_LEDGER.md"
+    ledger_text = (ledger_path.read_text(encoding="utf-8", errors="replace")
+                   if ledger_path.exists() else "")
+    missing_tokens = [t for t in PASS_PAIR_LEDGER_TOKENS if t not in ledger_text]
+    pass_pair_block = dict(
+        document=str(ledger_path.relative_to(ROOT)),
+        required_tokens=list(PASS_PAIR_LEDGER_TOKENS),
+        missing=missing_tokens,
+        ok=not missing_tokens and bool(ledger_text),
+        why="the block, the selection criteria and the first-article "
+            "measurement must be IN the document purchasing reads, not only "
+            "in this contract's output")
+    # A locked part with stock is not a reason to drop the block: the block is
+    # what makes a later stock-zero visible.  But the clause DOES report it.
+    pass_pair["locked_part_is_stocked_now"] = all(
+        isinstance(v.get("stock"), int) and v["stock"] >= 5 * len(
+            PASS_PAIR["references"]) * 10
+        for v in pass_pair_stock.values())
+    # Controls: each is a state this clause has to refuse.
+    pass_pair_controls = dict(
+        f10a_refuses_a_ledger_that_lost_the_pre_pcba_block=bool(missing_tokens)
+        is False and all(
+            t not in ledger_text.replace(t, "", 1)
+            for t in PASS_PAIR_LEDGER_TOKENS[:1]),
+        # the gate-drive bound must be the NEAREST ROW AT OR BELOW, not the
+        # row the board's VIN is nearest to in absolute terms
+        f10b_gate_drive_bound_is_the_row_at_or_below=(
+            ltc4368_gate_drive_min_V(4.2) == 3.0
+            and ltc4368_gate_drive_min_V(5.0) == 7.2),
+        # ...and a VIN under the lowest row is REFUSED, not defaulted
+        f10c_refuses_a_vin_under_the_lowest_published_row=(
+            ltc4368_gate_drive_min_V(2.0) is None),
+        # ...and the shortfall itself must still be TRUE: a clause that stopped
+        # reporting it would mean the arithmetic had been quietly changed
+        f10d_the_shortfall_is_still_computed=bool(
+            pass_pair.get("any_device_is_not_guaranteed_enhanced")
+            and pass_pair.get("no_device_meets_a_published_conduction_row")))
+    pass_pair_ok = bool(pp_ok and pass_pair_block["ok"]
+                        and all(pass_pair_controls.values()))
+
     bom_path = rl.ROOT / "hardware/demo/fab/aqroot-Demo-BOM-assembly.csv"
     bom_text = bom_path.read_text(encoding="utf-8", errors="replace") \
         if bom_path.exists() else ""
@@ -4425,6 +5367,25 @@ def main():
                    "BATTERY_HARNESS.json; live controls reintroduce the 24-AWG typo and a "
                    "wire-gauge mismatch so absence from BOM/CPL cannot hide an assembly error",
             controls_refused=j4_controls, semantic=j4_semantic),
+        # ---- D-789: F10, the battery pass pair -------------------------
+        "F10_battery_pass_pair_gate_drive_is_computed_and_blocked": dict(
+            ok=pass_pair_ok,
+            method="F-N01 + R8-N01.  The locked Q2/Q3 part reads STOCK 0 on "
+                   "the live distributor record, and applying D-780's own "
+                   "rule to it shows the pair is not guaranteed to be "
+                   "ENHANCED either: the LTC4368 guarantees 3.0 V of gate "
+                   "drive at this board's BAT_RAW, and the fitted FET's "
+                   "VGS(th) MAXIMUM is 3.0 V with no published RDS(on) row "
+                   "below VGS = 4.5 V.  This clause does not claim the "
+                   "problem is solved -- it is a purchasing action this "
+                   "repository cannot take.  It COMPUTES the shortfall from "
+                   "primary sources on every run and REFUSES if the sourcing "
+                   "ledger stops carrying the pre-PCBA block, the selection "
+                   "criteria or the first-article measurement.",
+            arithmetic=pass_pair,
+            live_distributor_record=pass_pair_stock,
+            pre_pcba_block=pass_pair_block,
+            controls_refused=pass_pair_controls),
         "F3_approved_nc_exactly_as_scoped": dict(
             ok=(set(nc["observed"]) == EXPECTED_NC
                 and not nc["missing"] and not nc["unexpected"]),

@@ -142,8 +142,21 @@ RAILS = (
          # D-787 deliberately reruns this package-limited neck at 2.35 A instead
          # of retaining the obsolete 1.50 A class current; the isolated-coupon
          # rise is reported as a screening number, not a predicted board temp.
-         accept=(dict(layer="B.Cu", reason="package-land-neck", max_length_mm=6.0,
-                      max_width_mm=0.20),),
+         # D-789 / D788-03.  TWO EXCEPTIONS, BECAUSE THE CONDUCTOR IS MEASURED
+         # NOW AND IT IS TWO THINGS.  D-787/D-788 licensed "6.0 mm of 0.200 mm
+         # copper", which was the TRACK ATTRIBUTE and described a neck that
+         # does not exist: 100 % of that 0.200 mm track's copper lies inside
+         # D-780's hand taper.  What the board actually has, measured, is
+         # 0.200 mm of merged copper for the first 0.900 mm out of the land --
+         # conservative, since the genuinely 0.200 mm part is the first
+         # 0.575 mm and the rest of that object is already 0.446 mm or wider --
+         # and then 0.600 mm for 2.150 mm before it reaches 1.200 mm and above.
+         # Both are licensed, both are length-bounded so neither can grow
+         # silently, and each is solved over ITS OWN length.
+         accept=(dict(layer="B.Cu", reason="package-land-neck",
+                      max_length_mm=1.2, max_width_mm=0.205),
+                 dict(layer="B.Cu", reason="package-escape-taper",
+                      max_length_mm=3.0, max_width_mm=0.62)),
          # D-788 / R7-D787-04.  THE CLAMPED END IS NOT AT PLANE TEMPERATURE.
          # This neck ends on U11's own BAT land, and the BQ25185's BATFET
          # dissipates I^2 x RON_BAT in that package: at the 2.35 A design
@@ -155,15 +168,34 @@ RAILS = (
          # is the share a soldered thermal pad typically leaves at the land,
          # and it is added to the absolute peak rather than assumed away.
          # First-article thermography measures it.
-         accept_endpoint_rise_K=25.0,
+         # D-789 / D788-03.  THE DECLARED 25 K ENDPOINT RISE IS GONE, AND SO
+         # IS THE 0.773 W IT WAS DERIVED FROM.  Round-8 is right that the two
+         # models disagreed (F6 charges the BATFET 196 mOhm, this file charged
+         # it 140) and right that turning a device's dissipation into a
+         # declared copper allowance answers about the wrong object.  The
+         # junction is COMPUTED instead, from TI's own equation and TI's own
+         # RthetaJA, and judged against TI's own TJ maximum -- see
+         # `package_junction`.  The copper clause now rules only on the
+         # copper's OWN rise, which is what a conductor-sizing limit can
+         # actually say something about.
+         accept_endpoint_rise_K=0.0,
          accept_endpoint_rise_basis=(
-             "BQ25185 BATFET dissipation 2.35^2 x 0.140 = 0.773 W at the "
-             "design current; 25 K DECLARED land rise over the surrounding "
-             "plane, measured at first article (C-THERM-01)"),
+             "D-789 / D788-03: superseded by the computed package junction "
+             "clause.  The copper's absolute peak is its own rise over the "
+             "board reference; the temperature of the LAND at the package end "
+             "is bounded by the BQ25185's junction, which is computed from TI "
+             "SLUSF65B 6.3.7.6 at the SAME 196 mOhm BATFET resistance F6 "
+             "charges, and judged against TI's own 125 C operating maximum."),
+         accept_package_junction="U11",
          accept_inside_battery_shadow=True,
          accept_reason="U11 DLH0010A pin-2 land is 0.200 mm tall; nothing wider "
                "can land on it.  Licensed by the .kicad_dru pad-escape neck rule "
-               "and bounded here to 6.0 mm of 0.200 mm copper."),
+               "and bounded here to 1.2 mm of MEASURED 0.200 mm copper plus "
+               "3.0 mm of the 0.600 mm taper out of it.  D-789 / D788-03 "
+               "replaced the 6.0 mm of 0.200 mm this exception used to license: "
+               "that was the width ATTRIBUTE of a track whose copper lies "
+               "entirely inside D-780's wider taper, and it described a neck "
+               "the board does not have."),
     dict(name="BQ25185_SYS", net="/01_POWER_TREE/BQ25185_SYS",
          src=("U11.1",), snk=("U12.1",), amps=2.35,
          basis="D-787 / R6-E07: the pour feeding the full fitted system is "
@@ -502,15 +534,129 @@ BOARD_RISE_ALLOWANCE_K = 10.0   # DECLARED: bulk board rise over ambient at the
                                 # thermography measures it
 ABSOLUTE_PEAK_LIMIT_C = 105.0
 ABSOLUTE_LIMIT_BASIS = (
-    "105 C is a DECLARED design limit and it is the tighter of two: the "
-    "laminate's, and the silicon's.  The fab notes require FR4 with Tg >= "
-    "150 C, and IPC-2221's rule is that conductor temperature must stay under "
-    "the laminate's maximum operating temperature -- 105 C leaves 45 K.  The "
-    "silicon around this run (the BQ25185 this neck lands on, Q2/Q3, U18) is "
-    "specified to TJ 125 C, and a device whose own land sits on 105 C copper "
-    "has 20 K of its junction budget left for its own dissipation.  A run "
-    "inside BATTERY_SHADOW is judged instead against the pouch limit below, "
-    "which is tighter.")
+    "105 C is a DECLARED CONDUCTOR-SIZING limit for copper heated BY ITS OWN "
+    "CURRENT on this prototype, chosen 45 K below the Tg >= 150 C laminate the "
+    "fab notes require.  D-789 / D788-03 NARROWS WHAT IT CLAIMS.  D-788 wrote "
+    "it as 'the laminate's maximum continuous operating temperature' and as "
+    "'the tighter of the laminate's and the silicon's'; neither reading is "
+    "supportable.  It is not a laminate specification -- no source in this "
+    "repository publishes an MOT for a Tg-150 FR4 -- and it is not the "
+    "silicon's, because the silicon's limit is TI's own TJ maximum, which is "
+    "COMPUTED separately (see PACKAGE_JUNCTION below) instead of being "
+    "inferred from a copper temperature.  What this number rules on is "
+    "conductor sizing, and it is deliberately conservative.  A run inside "
+    "BATTERY_SHADOW is judged instead against the pouch limit below, which is "
+    "tighter.")
+# --------------------------------------------------------------------------
+# D-789 / D788-03 -- THE HOTTEST THING ON THIS BOARD IS NOT THE COPPER, AND
+# NOTHING HAD EVER COMPUTED IT.
+#
+# Round-8: "Reconcile BATFET electrical model 196 mOhm with thermal heat basis;
+# component heat up to ~1.08 W at 2.35 A."  It is right twice over.
+#
+# FIRST, THE TWO MODELS DISAGREED.  `demo_feature_contract` F6 charges the
+# BQ25185's BATFET at RON_BAT_MAX x RON_BAT_VBAT_ALLOWANCE = 0.140 x 1.40 =
+# 196 mOhm, because SLUSF65B specifies RON_BAT only at VBAT = 4.5 V and this
+# board runs it near 3.2 V.  D-788's thermal endpoint allowance charged the
+# same FET at the raw 0.140 -- 0.773 W against the electrical model's 1.082 W.
+# One number, two answers, in one release.  They are the same number now.
+#
+# SECOND, THE QUESTION WAS BEING ASKED OF THE WRONG OBJECT.  D-788 turned the
+# device's dissipation into a DECLARED 25 K "endpoint rise" of the copper land
+# and then judged the COPPER.  TI publishes the direct answer: SLUSF65B section
+# 6.3.7.6 gives TJ = TA + thetaJA x PDISS with PDISS = PSYS + PBAT, and section
+# 5.3 gives RthetaJA = 68.3 C/W for the DLH package.  In the state this rail is
+# sized for -- battery-only discharge at the full published concurrent load --
+# PSYS is zero and PBAT = (VSYS - VBAT) x IBAT = IBAT^2 x RON_BAT.  So the
+# junction temperature is COMPUTED, from TI's own equation and TI's own
+# constants, and judged against TI's own Recommended Operating Conditions
+# maximum of 125 C.  The land the neck joins is a pin of that package and
+# cannot be hotter than its junction, so the junction clause bounds the copper
+# there as well -- which is why the copper clause above no longer has to
+# pretend to.
+#
+# WHAT IT COSTS TO BE CONSERVATIVE IS PRINTED.  The margin is reported at the
+# datasheet's own RON_BAT maximum AND with the declared 1.40x allowance on top
+# of it, and at 25 C ambient as well as at the 40 C top of the envelope, so
+# every layer of pessimism in the answer is visible rather than compounded
+# silently.  thetaJA itself is the JEDEC figure and TI says in the same
+# paragraph that it "is largely driven by the board layout, board layers,
+# copper thickness"; a six-layer board with two solid ground planes is better
+# than the JEDEC coupon, so the figure is conservative in the direction that
+# matters.  FIRST-ARTICLE THERMOGRAPHY (C-THERM-01) REMAINS THE MEASUREMENT.
+PACKAGE_JUNCTION = dict(
+    reference="U11",
+    part="BQ25185",
+    package="DLH0010A",
+    theta_ja_C_per_W=68.3,
+    theta_jb_C_per_W=34.7,
+    psi_jb_C_per_W=34.7,
+    psi_jt_C_per_W=2.0,
+    tj_operating_max_C=125.0,
+    tj_absolute_max_C=150.0,
+    tshut_rising_C=150.0,
+    source="TI SLUSF65B, archived hardware/demo/kicad/aqroot-demo/vendor/"
+           "BQ25185/ti-bq25185-slusf65b-2026-08.pdf: section 5.3 Thermal "
+           "Information RthetaJA 68.3 C/W (JEDEC) for the DLH package; "
+           "section 6.1 Recommended Operating Conditions TJ -40..125 C; "
+           "section 5.1 Absolute Maximum TJ 150 C; section 6.3.7.6 "
+           "'TJ = TA + thetaJA x PDISS' with 'PDISS = PSYS + PBAT', "
+           "'PBAT = (VSYS - VBAT) x IBAT'; TSHUT_RISING 150 C.",
+    equation="TJ = TA + thetaJA x (PBAT + P_board_copper); PBAT = IBAT^2 x "
+             "RON_BAT, and the board copper this land joins is added because "
+             "its heat enters the same package through the same pin.  PSYS is "
+             "zero: the state this rail is sized for is battery-only "
+             "discharge, where no input converter is running.",
+    measurement_of_record="first-article thermography, assembly plan "
+                          "C-THERM-01, measured at the top of the declared "
+                          "0..40 C ambient envelope with both accessory rails "
+                          "at their published budgets")
+# The same two numbers F6 rules with, so the two models cannot disagree again.
+RON_BAT_MAX_OHM = 0.140
+RON_BAT_VBAT_ALLOWANCE = 1.40
+
+
+def package_junction(amps, board_copper_W=0.0, ambient_C=None,
+                     spec=None, ron_allowance=None):
+    """TI's own junction equation, at both levels of declared conservatism."""
+    spec = PACKAGE_JUNCTION if spec is None else spec
+    ambient_C = AMBIENT_DESIGN_MAX_C if ambient_C is None else ambient_C
+    allowance = (RON_BAT_VBAT_ALLOWANCE if ron_allowance is None
+                 else ron_allowance)
+    out = dict(spec)
+    out.update(ambient_C=ambient_C, design_amps=amps,
+               board_copper_W=round(board_copper_W, 6),
+               ron_bat_datasheet_max_ohm=RON_BAT_MAX_OHM,
+               ron_bat_vbat_allowance=allowance,
+               ron_bat_used_ohm=round(RON_BAT_MAX_OHM * allowance, 6))
+    for name, ron in (("at_datasheet_ron_bat_max", RON_BAT_MAX_OHM),
+                      ("at_the_declared_vbat_allowance",
+                       RON_BAT_MAX_OHM * allowance)):
+        p_bat = amps * amps * ron
+        p_diss = p_bat + board_copper_W
+        tj = ambient_C + spec["theta_ja_C_per_W"] * p_diss
+        out[name] = dict(
+            ron_bat_ohm=round(ron, 6),
+            p_bat_W=round(p_bat, 4),
+            p_diss_W=round(p_diss, 4),
+            tj_C=round(tj, 2),
+            margin_to_operating_max_K=round(spec["tj_operating_max_C"] - tj, 2),
+            margin_to_thermal_shutdown_K=round(spec["tshut_rising_C"] - tj, 2))
+    ruling = out["at_the_declared_vbat_allowance"]
+    out.update(
+        ruling_case="at_the_declared_vbat_allowance",
+        predicted_tj_C=ruling["tj_C"],
+        limit_C=spec["tj_operating_max_C"],
+        margin_K=ruling["margin_to_operating_max_K"],
+        ok=bool(ruling["tj_C"] <= spec["tj_operating_max_C"]),
+        # REPORTED, so the ambient's share of the answer is visible too.
+        at_25C_ambient_tj_C=round(
+            25.0 + spec["theta_ja_C_per_W"] * ruling["p_diss_W"], 2),
+        the_land_cannot_be_hotter_than_the_junction=(
+            "U11.2 is a pin of this package, so the copper AT the land is "
+            "bounded by TJ.  The conductor-sizing limit above rules on the "
+            "copper's own rise; this clause rules on the package."))
+    return out
 POUCH_ADJACENT_LIMIT_C = 60.0
 POUCH_ADJACENT_BASIS = (
     "the fitted 785060 pouch cell's published discharge working range tops out "
@@ -545,6 +691,66 @@ def _fin(p_per_mm, g, axial, length_mm, boundary):
 
 
 BOUNDARY_CASES = ("both_ends_clamped", "one_end_insulated", "no_axial_sink")
+# D-789 / D788-03.  A BOUND THAT NEEDS NO LATERAL MODEL AT ALL.
+#
+# Round-8's objection to D-788 is that the acceptance cell depended on the
+# `w + 2d` transverse-spreading approximation, and that a different sensitivity
+# on the same boundary gives a much hotter answer.  It is a fair objection to a
+# model with two free choices in it.
+#
+# The answer is to stop needing them.  The heat generated in a run must leave
+# through its ends or through the dielectric; it cannot do neither.  So the
+# PHYSICALLY WORST case is that ALL of it leaves through ONE end and NONE of it
+# laterally, and for a bar with uniform distributed heating that is
+#
+#     dT = p L^2 / (2 k_cu A)
+#
+# which requires only that the OTHER end is at the reference temperature.  This
+# run's two ends are named copper objects, so that premise is a fact about the
+# board rather than a choice.  It DOMINATES every clamped and one-end-insulated
+# cell of the 2 x 3 matrix at every lateral treatment (the fin's own no-lateral
+# limit is p L^2 / 8 k A for both ends clamped, a quarter of it), so the matrix
+# becomes a REPORT and this becomes the acceptance.
+#
+# `no_axial_sink` is retained in the report and is NOT an acceptance candidate:
+# it is the semi-infinite-run limit, and it describes a conductor with no
+# terminating copper at either end.  Applying it to a 0.575 mm neck between a
+# package land and a 0.300 mm taper is not conservatism, it is a different
+# geometry.  The report says so rather than silently dropping it.
+AXIAL_ONLY_CASE = "all_heat_out_one_end_no_lateral_help"
+# Above this the axial-only bound has no fixed point and says only "this run
+# does not cool through its ends".  See `axial_only_rise`.
+AXIAL_ONLY_VACUOUS_ABOVE_K = 1000.0
+
+
+def axial_only_rise(stack, layer, width_mm, run_length_mm, amps,
+                    reference_C=None):
+    """dT = p L^2 / (2 k A), solved self-consistently in rho(T)."""
+    row = stack.get(layer)
+    if not row or not width_mm or not run_length_mm or not amps:
+        return None
+    a_cu = width_mm * row["thickness_mm"]
+    if a_cu <= 0:
+        return None
+    reference_C = (AMBIENT_DESIGN_MAX_C + BOARD_RISE_ALLOWANCE_K
+                   if reference_C is None else reference_C)
+    # THE SOLVE DIVERGES WHEN THE BOUND IS VACUOUS, AND THAT IS INFORMATION.
+    # Copper's resistivity rises with temperature, so a run long enough that
+    # the axial path alone cannot carry its heat has no fixed point -- the
+    # iteration runs away.  That is not a statement about the board: it is the
+    # bound saying "a 76 mm run does not cool through its ends".  Return None
+    # so the caller drops this candidate rather than reporting 1e48 K.
+    dt = 0.0
+    for _ in range(200):
+        rho = RHO_CU * (1.0 + ALPHA_CU * ((reference_C + dt) - 20.0))
+        p = (amps ** 2) * rho / a_cu
+        nxt = p * (run_length_mm ** 2) / (2.0 * K_CU * a_cu)
+        if nxt > AXIAL_ONLY_VACUOUS_ABOVE_K:
+            return None
+        if abs(nxt - dt) < 1e-12:
+            return nxt
+        dt = nxt
+    return None
 SPREAD_CASES = ("with_dielectric_spreading", "trace_width_only")
 
 
@@ -612,31 +818,60 @@ def accepted_run_thermal(stack, layer, width_mm, run_length_mm, amps,
                 spreading=(spread == "with_dielectric_spreading"))
             matrix["%s__%s_rise_K" % (spread, case)] = (
                 round(r, 2) if r is not None else None)
-    # THE ACCEPTANCE CELL.  Axial boundary: the WORST of the three, because
-    # neither end's thermal impedance is proven -- that was Round-7's objection
-    # and it is conceded rather than argued with.  Lateral path: WITH
-    # spreading, because a 0.200 mm strip 0.2104 mm over a solid plane does
-    # spread, and combining "no axial sink at all" with "no lateral spreading
-    # either" is two independent pessimisms multiplied, not a bound.  The
-    # trace-width-only column is reported beside it so the size of that choice
-    # is visible instead of hidden.
-    accept_key = max(
-        ("with_dielectric_spreading__%s_rise_K" % c for c in BOUNDARY_CASES),
-        key=lambda k: matrix[k] if matrix[k] is not None else -1)
-    worst = matrix[accept_key]
-    if worst is None:
+    # D-789 / D788-03.  TWO INDEPENDENT RIGOROUS BOUNDS, AND THE SMALLER ONE.
+    #
+    # The heat generated in a run leaves axially through its ends or laterally
+    # through the dielectric.  Each of those paths ALONE gives an upper bound
+    # on the rise, because the real run has BOTH and is therefore cooler than
+    # either:
+    #
+    #   AXIAL ONLY      all the heat out one end, nothing laterally:
+    #                   dT = p L^2 / (2 k_cu A).  Needs only that the other end
+    #                   is at the reference temperature, which this run's
+    #                   terminating copper is a fact about.  TIGHT for a short
+    #                   run and vacuous for a long one.
+    #   LATERAL ONLY    no axial sink at all and NO transverse spreading -- the
+    #                   heat crosses a dielectric column exactly as wide as the
+    #                   conductor: dT = p/g with g = k_fr4 w (1/d_up + 1/d_down).
+    #                   Length-independent, so it is the one that rules a long
+    #                   run, and it is the `trace_width_only__no_axial_sink`
+    #                   cell of the matrix.
+    #
+    # Taking the SMALLER is not cherry-picking between models: both are valid
+    # ceilings on the same quantity, so their minimum is also a ceiling.  What
+    # it avoids is D-788's actual defect -- an acceptance that rested on the
+    # `w + 2d` transverse-spreading APPROXIMATION, which Round-8 correctly
+    # refused as an unmeasured assumption.  The `with_dielectric_spreading`
+    # column is still reported, and is no longer used by anything.
+    axial = axial_only_rise(stack, layer, width_mm, run_length_mm, amps)
+    matrix[AXIAL_ONLY_CASE + "_rise_K"] = (round(axial, 2) if axial is not None
+                                           else None)
+    lateral = matrix.get("trace_width_only__no_axial_sink_rise_K")
+    candidates = {}
+    if axial is not None:
+        candidates[AXIAL_ONLY_CASE] = axial
+    if lateral is not None:
+        candidates["lateral_only_no_transverse_spreading"] = lateral
+    if not candidates:
         return None
+    ruling_case = min(candidates, key=lambda k: candidates[k])
+    worst = candidates[ruling_case]
     peak = (AMBIENT_DESIGN_MAX_C + BOARD_RISE_ALLOWANCE_K + endpoint_rise_K
             + worst)
     limit = POUCH_ADJACENT_LIMIT_C if under_pouch else ABSOLUTE_PEAK_LIMIT_C
     out = dict(matrix)
     out.update(
-        acceptance_cell=accept_key,
+        acceptance_cell=ruling_case,
+        acceptance_candidates_K={k: round(v, 2) for k, v in candidates.items()},
+        axial_only_is_vacuous_for_this_length=bool(axial is None),
         acceptance_cell_reason=(
-            "worst of the three axial boundary conditions, with the dielectric "
-            "spreading a 0.200 mm strip over a 0.2104 mm dielectric actually "
-            "has; the trace-width-only column is the D-787 treatment and is "
-            "reported, not used"),
+            "the MINIMUM of two independent RIGOROUS ceilings -- all the heat "
+            "out one end with no lateral help, and no axial sink with no "
+            "transverse spreading.  The real run has both paths, so it is "
+            "cooler than either bound, and the smaller of two ceilings is a "
+            "ceiling.  Neither rests on the w+2d transverse-spreading "
+            "approximation D-788's acceptance did and Round-8 refused; that "
+            "column is reported and is used by nothing."),
         worst_case_rise_K=round(worst, 2),
         relative_limit_K=ACCEPTED_RUN_DT_LIMIT_K,
         relative_ok=worst <= ACCEPTED_RUN_DT_LIMIT_K,
@@ -644,6 +879,11 @@ def accepted_run_thermal(stack, layer, width_mm, run_length_mm, amps,
         board_rise_allowance_K=BOARD_RISE_ALLOWANCE_K,
         endpoint_rise_K=round(endpoint_rise_K, 2),
         predicted_peak_C=round(peak, 2),
+        peak_is_the_conductors_own_rise=(
+            "AMBIENT + the declared bulk board rise + this run's own rise.  "
+            "The temperature of the LAND at the package end is a property of "
+            "the PACKAGE, is bounded by its junction, and is ruled on by the "
+            "package_junction clause -- not inferred from a copper limit."),
         under_pouch=under_pouch,
         absolute_limit_C=limit,
         absolute_limit_basis=(POUCH_ADJACENT_BASIS if under_pouch
@@ -987,6 +1227,175 @@ def widest_bottleneck(nodes, edges, sources, sinks, amps):
     return path, best[tgt]
 
 
+# --------------------------------------------------------------------------
+# D-789 / D788-03 -- A TRACK'S WIDTH ATTRIBUTE IS NOT THE CONDUCTOR.
+#
+# Round-8 asked for the U11.2 neck's thermal claim to be rebuilt on "actual
+# copper overlap/spreading".  Measuring it found something larger than a
+# modelling question: THE NECK THAT WAS BEING JUDGED DOES NOT EXIST.
+#
+# This file has always read `t.GetWidth()`, which is a property of a TRACK
+# OBJECT.  Copper is a property of the BOARD, and KiCad unions every same-net
+# object on a layer when it plots.  `/01_POWER_TREE/BAT_PROTECTED_P` carries a
+# 0.200 mm track from `U11.2` that runs 5.525 mm to `C36.1` -- and D-780's
+# hand-drawn taper, 0.200 -> 0.300 -> 0.400 -> 0.600 -> 0.800 -> 1.000 ->
+# 1.200 -> 1.500 mm, was laid ON TOP OF IT.  Rasterised at 2 um, 100.0 % of
+# that 0.200 mm track's 1.2027 mm2 of copper lies INSIDE other same-net B.Cu
+# objects.  Deleting all three of its segments would not change one square
+# micron of plotted copper.
+#
+# So D-787's "5.525 mm of 0.200 mm copper" and D-788's 2 x 3 boundary matrix
+# over it were both answering about an artefact.  The REAL narrow conductor is
+# the first 0.575 mm out of the `U11.2` land -- which is the package-land neck,
+# and nothing more.
+#
+# WHAT IS MEASURED HERE.  For a track, the FREE WIDTH of the merged same-net
+# copper on its own layer, measured PERPENDICULAR to the track, at stations
+# along it, taking the MINIMUM.  The minimum is what makes it sound: a 0.200 mm
+# track crossing a 2 mm one reads 2 mm at the crossing and 0.200 mm at the
+# stations either side, so a crossing cannot be mistaken for a widening.  It is
+# still CONSERVATIVE -- it ignores every other layer, the pours, and any copper
+# of the same net that the track does not itself touch.
+#
+# The report carries BOTH: `width_mm` is what the object says and
+# `effective_width_mm` is what the copper is.  Every thermal and ampacity
+# judgement below runs on the second.  `effective_width_selfcheck` proves on
+# every run that an ISOLATED track still measures its own width, so the
+# measurement cannot quietly turn into "everything is wide".
+EFFECTIVE_WIDTH_STEP_MM = 0.002
+EFFECTIVE_WIDTH_STATION_MM = 0.05
+EFFECTIVE_WIDTH_MAX_MM = 4.0
+
+
+def _seg_distance(px, py, x1, y1, x2, y2):
+    dx, dy = x2 - x1, y2 - y1
+    if dx == 0.0 and dy == 0.0:
+        return math.hypot(px - x1, py - y1)
+    t = max(0.0, min(1.0, ((px - x1) * dx + (py - y1) * dy) / (dx * dx + dy * dy)))
+    return math.hypot(px - (x1 + t * dx), py - (y1 + t * dy))
+
+
+def same_net_layer_copper(board, net, layer_name):
+    """Every same-net object on one layer, as simple shapes.
+
+    Tracks are capsules, vias and their pads are discs, footprint pads are
+    axis-aligned rectangles.  A pad that is not axis-aligned is taken at its
+    bounding box, which OVERSTATES it -- so it is excluded from the shapes a
+    width can be credited to unless its rotation is a multiple of 90 degrees.
+    """
+    lid = board.GetLayerID(layer_name)
+    caps, discs, rects = [], [], []
+    for t in board.GetTracks():
+        if t.GetNetname() != net:
+            continue
+        if t.GetClass() == "PCB_VIA":
+            if not t.IsOnLayer(lid):
+                continue
+            p = t.GetPosition()
+            discs.append((p.x / 1e6, p.y / 1e6, t.GetWidth() / 2e6))
+            continue
+        if t.GetLayer() != lid:
+            continue
+        a, b = t.GetStart(), t.GetEnd()
+        caps.append((a.x / 1e6, a.y / 1e6, b.x / 1e6, b.y / 1e6,
+                     t.GetWidth() / 2e6))
+    for fp in board.GetFootprints():
+        for pad in fp.Pads():
+            if pad.GetNetname() != net or not pad.IsOnLayer(lid):
+                continue
+            pos, size = pad.GetPosition(), pad.GetSize()
+            angle = round(float(pad.GetOrientationDegrees()) % 180.0, 3)
+            w, h = size.x / 1e6, size.y / 1e6
+            if abs(angle - 90.0) < 1e-6:
+                w, h = h, w
+            elif angle > 1e-6 and abs(angle - 180.0) > 1e-6:
+                # Not axis aligned: credit only the inscribed square, which
+                # UNDERSTATES it.  A rotated pad may not inflate a width.
+                w = h = min(w, h) / math.sqrt(2.0)
+            rects.append((pos.x / 1e6, pos.y / 1e6, w, h))
+    return caps, discs, rects
+
+
+def _in_copper(px, py, shapes, skip_cap=None):
+    caps, discs, rects = shapes
+    for i, (x1, y1, x2, y2, r) in enumerate(caps):
+        if skip_cap is not None and i == skip_cap:
+            continue
+        if _seg_distance(px, py, x1, y1, x2, y2) <= r + 1e-9:
+            return True
+    for (x, y, r) in discs:
+        if math.hypot(px - x, py - y) <= r + 1e-9:
+            return True
+    for (x, y, w, h) in rects:
+        if abs(px - x) <= w / 2 + 1e-9 and abs(py - y) <= h / 2 + 1e-9:
+            return True
+    return False
+
+
+def effective_width_mm(shapes, x1, y1, x2, y2, width_mm):
+    """The narrowest free width of the merged copper ACROSS this track."""
+    length = math.hypot(x2 - x1, y2 - y1)
+    if length <= 1e-9 or not width_mm:
+        return width_mm, []
+    ux, uy = (x2 - x1) / length, (y2 - y1) / length
+    nx, ny = -uy, ux
+    n = max(3, int(round(length / EFFECTIVE_WIDTH_STATION_MM)))
+    step = EFFECTIVE_WIDTH_STEP_MM
+    values = []
+    for k in range(n + 1):
+        f = k / float(n)
+        px, py = x1 + ux * length * f, y1 + uy * length * f
+        if not _in_copper(px, py, shapes):
+            values.append(0.0)
+            continue
+        total = 0.0
+        for sign in (1.0, -1.0):
+            d = 0.0
+            while d < EFFECTIVE_WIDTH_MAX_MM:
+                d += step
+                if not _in_copper(px + sign * nx * d, py + sign * ny * d,
+                                  shapes):
+                    break
+            total += d - step
+        values.append(round(total + step, 4))
+    return min(values), values
+
+
+def effective_width_selfcheck():
+    """NON-VACUITY, on a fixture read from no board.
+
+    An ISOLATED 0.200 mm track must still measure 0.200 mm; the same track with
+    a 1.200 mm one laid along it must measure 1.200 mm; and a 0.200 mm track
+    merely CROSSING a wide one must still measure 0.200 mm, because the
+    crossing is one station and the minimum is taken.  A measurement that
+    cannot return a narrow answer would silently widen every neck on the board.
+    """
+    lone = ([(10.0, 10.0, 15.0, 10.0, 0.100)], [], [])
+    over = ([(10.0, 10.0, 15.0, 10.0, 0.100),
+             (10.0, 10.0, 15.0, 10.0, 0.600)], [], [])
+    cross = ([(10.0, 10.0, 15.0, 10.0, 0.100),
+              (12.5, 8.0, 12.5, 12.0, 0.600)], [], [])
+    cases = [
+        dict(case="an isolated 0.200 mm track measures 0.200 mm",
+             measured=round(effective_width_mm(lone, 10.0, 10.0, 15.0, 10.0,
+                                               0.200)[0], 3),
+             expected=0.200),
+        dict(case="a 1.200 mm track laid along it measures 1.200 mm",
+             measured=round(effective_width_mm(over, 10.0, 10.0, 15.0, 10.0,
+                                               0.200)[0], 3),
+             expected=1.200),
+        dict(case="a wide track merely CROSSING it does not widen it",
+             measured=round(effective_width_mm(cross, 10.0, 10.0, 15.0, 10.0,
+                                               0.200)[0], 3),
+             expected=0.200),
+    ]
+    for c in cases:
+        c["ok"] = abs(c["measured"] - c["expected"]) <= 2 * EFFECTIVE_WIDTH_STEP_MM
+    return dict(cases=cases, step_mm=EFFECTIVE_WIDTH_STEP_MM,
+                station_mm=EFFECTIVE_WIDTH_STATION_MM,
+                fixture_is_constant=True,
+                ok=all(c["ok"] for c in cases))
+
 def accepts_segment(rail, edge, seg):
     """Is this hot segment covered by one of the rail's DECLARED exceptions?
 
@@ -997,7 +1406,9 @@ def accepts_segment(rail, edge, seg):
     for acc in rail.get("accept", ()):
         if acc["layer"] != edge["layer"]:
             continue
-        if "max_width_mm" in acc and (edge["width_mm"] or 9e9) > acc["max_width_mm"] + 1e-9:
+        # D-789 / D788-03: the MEASURED conductor, not the object's attribute.
+        w = seg.get("effective_width_mm") or edge["width_mm"] or 9e9
+        if "max_width_mm" in acc and w > acc["max_width_mm"] + 1e-9:
             continue
         return acc["reason"]
     return None
@@ -1014,6 +1425,7 @@ def main():
     board = pcbnew.LoadBoard(str(args.board.resolve()))
     board.BuildConnectivity()
     check = selfcheck()
+    eff_check = effective_width_selfcheck()
     stack = stackup_selfcheck(args.board.resolve())
     diel = stackup_dielectrics(args.board.resolve())
 
@@ -1040,27 +1452,60 @@ def main():
             out.append(row)
             continue
         segs, drop, hot = [], 0.0, []
+        shape_cache = {}
         for ed in path:
             if ed["kind"] == "pad":
                 continue
-            dT = rise(ed["area_mm2"], rail["amps"], ed["external"])
+            # D-789 / D788-03.  THE CONDUCTOR, NOT THE OBJECT.  A track whose
+            # copper lies inside wider same-net copper is not a neck, and this
+            # board's `U11.2` "5.525 mm of 0.200 mm" was exactly that.  The
+            # thermal and ampacity judgements below run on the MEASURED width.
+            eff_w, eff_stations = ed["width_mm"], None
+            if ed["kind"] == "track" and ed["width_mm"]:
+                if ed["layer"] not in shape_cache:
+                    shape_cache[ed["layer"]] = same_net_layer_copper(
+                        board, rail["net"], ed["layer"])
+                eff_w, eff_stations = effective_width_mm(
+                    shape_cache[ed["layer"]], ed["x"], ed["y"],
+                    ed.get("x2", ed["x"]), ed.get("y2", ed["y"]),
+                    ed["width_mm"])
+                # The raster steps OUTWARD until it leaves copper, so it
+                # over-reads by one step; back that out.  And a measurement
+                # may never claim LESS than the object itself guarantees.
+                eff_w = max(ed["width_mm"], eff_w - EFFECTIVE_WIDTH_STEP_MM)
+            thickness = OUTER_MM if ed["external"] else INNER_MM
+            eff_area = (eff_w * thickness if ed["kind"] == "track" and eff_w
+                        else ed["area_mm2"])
+            dT = rise(eff_area, rail["amps"], ed["external"])
+            attr_dT = rise(ed["area_mm2"], rail["amps"], ed["external"])
             r = RHO_CU * ed["length_mm"] / ed["area_mm2"] if ed["area_mm2"] else 0.0
             drop += r * rail["amps"]
             seg = dict(kind=ed["kind"], layer=ed["layer"],
-                       width_mm=ed["width_mm"], drill_mm=ed["drill_mm"],
+                       width_mm=ed["width_mm"],
+                       effective_width_mm=(round(eff_w, 4)
+                                           if ed["kind"] == "track" else None),
+                       effective_width_is_measured_copper=(
+                           ed["kind"] == "track" and eff_stations is not None),
+                       effective_width_stations_mm=(
+                           eff_stations[:64] if eff_stations else None),
+                       lies_inside_wider_same_net_copper=bool(
+                           ed["kind"] == "track" and ed["width_mm"]
+                           and eff_w > ed["width_mm"] + 2 * EFFECTIVE_WIDTH_STEP_MM),
+                       drill_mm=ed["drill_mm"],
                        length_mm=round(ed["length_mm"], 3),
                        area_mm2=round(ed["area_mm2"], 6),
+                       effective_area_mm2=round(eff_area, 6),
                        rise_K=round(dT, 1),
+                       rise_K_on_the_track_width_attribute=round(attr_dT, 1),
                        required_mm_at_10K=round(
                            width_for(rail["amps"], DT_REF, ed["external"]), 3)
                        if ed["kind"] == "track" else None,
                        plane_coupled_rise_K=(
                            round(plane_coupled_rise(diel, ed["layer"],
-                                                    ed["width_mm"],
+                                                    eff_w,
                                                     rail["amps"]), 2)
-                           if ed["kind"] == "track" and ed["width_mm"]
-                           and plane_coupled_rise(diel, ed["layer"],
-                                                  ed["width_mm"],
+                           if ed["kind"] == "track" and eff_w
+                           and plane_coupled_rise(diel, ed["layer"], eff_w,
                                                   rail["amps"]) is not None
                            else None),
                        at=[ed.get("x"), ed.get("y")])
@@ -1072,6 +1517,18 @@ def main():
         undeclared = [h for h in hot if not h.get("accepted_by")]
         accepted_len = round(sum(h["length_mm"] for h in hot
                                  if h.get("accepted_by")), 3)
+        # D-789 / D788-03.  EACH EXCEPTION IS ITS OWN RUN.  D-788 charged the
+        # TOTAL accepted length to EVERY accepted segment, which was right
+        # while there was one exception and one width; with the conductor
+        # measured rather than assumed there are two -- the 0.200 mm
+        # package-land neck and the taper out of it -- and a 0.600 mm segment
+        # must not be solved over the neck's length or the other way round.
+        accepted_len_by_reason = {}
+        for h in hot:
+            why = h.get("accepted_by")
+            if why:
+                accepted_len_by_reason[why] = round(
+                    accepted_len_by_reason.get(why, 0.0) + h["length_mm"], 3)
         # D-787 / R6-E07.  Every ACCEPTED hot segment is judged again on the
         # conduction-bounded model, over the WHOLE accepted run -- the ends of
         # a 5.5 mm neck are what clamp it, not the ends of one 0.9 mm piece --
@@ -1087,11 +1544,14 @@ def main():
             # dissipation, and an ABSOLUTE peak beside the relative rise.
             endpoint = rail.get("accept_endpoint_rise_K", 0.0)
             at = h.get("at") or [None, None]
+            run_len = accepted_len_by_reason.get(h["accepted_by"], accepted_len)
             th = accepted_run_thermal(
-                diel, h["layer"], h["width_mm"], accepted_len, rail["amps"],
+                diel, h["layer"], h.get("effective_width_mm") or h["width_mm"],
+                run_len, rail["amps"],
                 endpoint_rise_K=endpoint,
                 under_pouch=inside_battery_shadow(at[0], at[1]))
-            h["accepted_run_length_mm"] = accepted_len
+            h["accepted_run_length_mm"] = run_len
+            h["accepted_run_length_is_per_exception"] = True
             h["thermal"] = th
             h["conduction_bounded_rise_K"] = (th["worst_case_rise_K"]
                                               if th else None)
@@ -1099,6 +1559,27 @@ def main():
             h["endpoint_rise_basis"] = rail.get("accept_endpoint_rise_basis")
             if th is None or not th["ok"]:
                 over_conduction_limit.append(h)
+        # D-789 / D788-03: and the PACKAGE the accepted run lands on, computed
+        # from TI's own equation at the SAME BATFET resistance F6 charges.
+        pkg = None
+        if rail.get("accept_package_junction") and hot:
+            # ONLY the accepted run's own copper.  The rest of this rail's
+            # 81 mm is metres away from the package and charging it to the
+            # junction would be arithmetic, not physics.
+            board_copper_W = round(sum(
+                (rail["amps"] ** 2) * RHO_CU * s2["length_mm"]
+                / (s2.get("effective_area_mm2") or s2["area_mm2"])
+                for s2 in hot
+                if s2.get("accepted_by")
+                and (s2.get("effective_area_mm2") or s2.get("area_mm2"))), 6)
+            pkg = package_junction(rail["amps"], board_copper_W=board_copper_W)
+            row_pkg_ok = pkg["ok"]
+            if not row_pkg_ok:
+                over_conduction_limit.append(dict(
+                    reason="package junction over TI's operating maximum",
+                    reference=rail["accept_package_junction"],
+                    predicted_tj_C=pkg["predicted_tj_C"],
+                    limit_C=pkg["limit_C"]))
         undeclared = undeclared + over_conduction_limit
         worst_pc = [x["plane_coupled_rise_K"] for x in segs
                     if x.get("plane_coupled_rise_K") is not None]
@@ -1116,6 +1597,7 @@ def main():
                    bottleneck_amps_at_10K=round(bottleneck, 3),
                    worst_rise_K=segs_sorted[0]["rise_K"] if segs else None,
                    hot_segments=hot,
+                   package_junction=pkg,
                    undeclared_hot_segments=undeclared,
                    accepted_hot_length_mm=accepted_len,
                    accepted_reason=rail.get("accept_reason"),
@@ -1165,7 +1647,25 @@ def main():
                       form="dT = I^2 rho / (k w^2 t (1/d_up + 1/d_down))",
                       reports="rise over the ADJACENT COPPER LAYERS, not over ambient; length-independent by construction; ignores lateral spreading, conduction along the copper and the outer layers, so it is a floor on the cooling and a ceiling on the rise"),
                   method_selfcheck=check, rails=out,
+                  # D-789 / D788-03: the conductor measurement, proved on a
+                  # constant fixture on every run.
+                  effective_width_selfcheck=eff_check,
+                  effective_width_model=dict(
+                      step_mm=EFFECTIVE_WIDTH_STEP_MM,
+                      station_mm=EFFECTIVE_WIDTH_STATION_MM,
+                      reports="the FREE WIDTH of the merged same-net copper on "
+                              "the track's own layer, measured PERPENDICULAR "
+                              "to the track at stations along it, minimum "
+                              "taken.  A track lying inside wider same-net "
+                              "copper is NOT a neck, and this board's U11.2 "
+                              "'5.525 mm of 0.200 mm' was exactly that -- "
+                              "100 % of its copper lies inside the D-780 "
+                              "taper.  Conservative: it ignores every other "
+                              "layer, the pours, and any same-net copper the "
+                              "track does not itself touch."),
+                  package_junction_model=PACKAGE_JUNCTION,
                   all_ok=(check["method_reproduces_dru"] and stack["ok"]
+                          and eff_check["ok"]
                           and all(r.get("verdict") in
                                   ("OK", "OK_WITH_DECLARED_EXCEPTION",
                                    "POUR_DELIVERED") for r in out)))

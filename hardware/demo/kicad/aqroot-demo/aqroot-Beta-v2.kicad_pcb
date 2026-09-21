@@ -41144,7 +41144,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Value" "1N4148WS"
+		(property "Value" "BAT54WS"
 			(at 0.1 -1.9 90)
 			(layer "B.Fab")
 			(hide yes)

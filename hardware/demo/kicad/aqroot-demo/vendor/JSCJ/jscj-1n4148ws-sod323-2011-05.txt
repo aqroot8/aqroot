@@ -1,0 +1,171 @@
+                               JIANGSU CHANGJIANG ELECTRONICS TECHNOLOGY CO., LTD
+
+
+                               SOD-323 Plastic-Encapsulate Diodes
+
+   BAV16WS/1N4148WS                            FAST SWITCHING DIODE
+                                                                                              SOD-323
+FEATURES
+
+
+
+
+MARKING: T6, T4
+
+Maximum Ratings and Electrical Characteristics, Single Diode @Ta=25℃
+
+                   Parameter                          Symbol                         Limit                            Unit
+
+ Non-Repetitive Peak Reverse Voltage                   VRM                            100                              V
+ Peak Repetitive Peak Reverse Voltage                  VRRM
+ Working Peak Reverse Voltage                          VRWM                              100                            V
+ DC Blocking Voltage                                    VR
+ RMS Reverse Voltage                                  VR(RMS)                            71                             V
+
+ Forward Continuous Current                             IFM                           300                             mA
+
+ Average Rectified Output Current                       IO                            150                             mA
+ Peak Forward Surge Current @t=1.0μs                                                  2.0
+                                                       IFSM                                                             A
+                                 @ t=1.0s                                             1.0
+ Power Dissipation                                      Pd                            200                             mW
+
+ Thermal Resistance Junction to Ambient                RθJA                           625                             ℃/W
+
+ Junction Temperature                                   Tj                           150                               ℃
+
+ Storage Temperature                                   TSTG                         -55~+150                            ℃
+
+Electrical Ratings @Ta=25℃
+
+              Parameter                     Symbol            Min   Typ   Max      Unit                 Conditions
+
+                                             VF1                          0.715      V                   IF=1mA
+
+                                             VF2                          0.855      V                   IF=10mA
+ Forward voltage
+                                             VF3                           1.0       V                   IF=50mA
+
+                                             VF4                          1.25       V                  IF=150mA
+
+                                              IR1                          1         μA                  VR=75V
+ Reverse current
+                                              IR2                          25        nA                  VR=20V
+
+ Capacitance between terminals                CT                           2         pF              VR=0V,f=1MHz
+                                                                                                        IF=IR=10mA
+ Reverse recovery time                          trr                            4    ns
+                                                                                                   Irr=0.1XIR,RL=100Ω
+
+                                                                                                                     A,May,2011
+Typical Characteristics                                                                                                                                                      1N4148WS
+                                                          Forward            Characteristics                                                                              Reverse    Characteristics
+                                      200                                                                                                            1000
+
+                                  100
+
+                                                                                                                                                                                    Ta=100℃
+(mA)
+
+
+
+
+                                                                                                                                (nA)
+                                      10
+                                                                                                                                                     100
+
+
+
+
+                                                                         ℃
+IF
+
+
+
+
+                                                                      00
+
+
+
+
+                                                                                                                                REVERSE CURRENT IR
+                                                                  a 1
+FORWARD CURRENT
+
+
+
+
+                                                                                        5℃
+                                                                  T=
+
+
+
+
+                                                                                    a 2
+                                                                                    T=
+                                       1
+
+                                                                                                                                                                                     Ta=25℃
+                                                                                                                                                      10
+
+
+                                      0.1
+
+
+
+
+                                0.01                                                                                                                   1
+                                    0.0         0.2         0.4               0.6             0.8              1.0       1.2                                0        20               40                      60         80
+
+                                                          FORWARD VOLTAGE                    VF     (V)                                                                   REVERSE VOLTAGE     VR        (V)
+
+
+
+
+                                                      Capacitance Characteristics                                                                                          Power Derating Curve
+                                      1.2                                                                                                            300
+                                                                                                                Ta=25℃
+                                                                                                                f=1MHz
+                                                                                                                                                     250
+      CAPACITANCE BETWEEN TERMINALS
+
+
+
+
+                                                                                                                               (mW)
+
+
+
+
+                                                                                                                                                     200
+                                                                                                                               PD
+                                                                                                                               POWER DISSIPATION
+                 CT (pF)
+
+
+
+
+                                      1.0                                                                                                            150
+
+
+
+
+                                                                                                                                                     100
+
+
+
+
+                                                                                                                                                      50
+
+
+
+
+                                      0.8                                                                                                              0
+                                            0         5                       10                          15             20                                 0   25          50        75       100                 125   150
+                                                          REVERSE VOLTAGE                    VR     (V)                                                              AMBIENT TEMPERATURE           Ta     (℃ )
+
+
+
+
+                                                                                                                                                                                                              A,May,2011
+

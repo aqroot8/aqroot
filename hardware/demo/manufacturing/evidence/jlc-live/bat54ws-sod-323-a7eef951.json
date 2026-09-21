@@ -1,0 +1,3806 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": false,
+ "fetched_utc": "2026-09-21T02:24:33Z",
+ "keyword": "BAT54WS SOD-323",
+ "page_size": 25,
+ "pages": 2,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1V@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "600mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "21V"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "100mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA@25V"
+    }
+   ],
+   "componentBrandEn": "Changzhou Starsea Elec",
+   "componentCode": "C168799",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0196,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 59,
+     "productPrice": 0.0154,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 119,
+     "productPrice": 0.0118,
+     "startNumber": 60
+    },
+    {
+     "endNumber": 479,
+     "productPrice": 0.0104,
+     "startNumber": 120
+    },
+    {
+     "endNumber": 1019,
+     "productPrice": 0.0092,
+     "startNumber": 480
+    },
+    {
+     "endNumber": 1979,
+     "productPrice": 0.0086,
+     "startNumber": 1020
+    },
+    {
+     "endNumber": 4019,
+     "productPrice": 0.0084,
+     "startNumber": 1980
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0084,
+     "startNumber": 4020
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1808301843_Changzhou-Starsea-Elec-BAT54WS_C168799.pdf",
+   "describe": "1 Independent 100mA 1V@100mA 21V 2uA@25V 600mA SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/schottky-diodes_changzhou-starsea-elec-bat54ws_C168799.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 981,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1V@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "600mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "21V"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "200mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA@25V"
+    }
+   ],
+   "componentBrandEn": "Guangdong Hottech",
+   "componentCode": "C191198",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0152,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0118,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.01,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0089,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0079,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0074,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2303091600_Guangdong-Hottech-BAT54WS_C191198.pdf",
+   "describe": "1 Independent 1V@100mA 200mA 21V 2uA@25V 600mA SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/schottky-diodes_guangdong-hottech-bat54ws_C191198.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 3007
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1V@520mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "600mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "200mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA@25V"
+    }
+   ],
+   "componentBrandEn": "AnBon",
+   "componentCode": "C397611",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0117,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.009,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0084,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0075,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0068,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0063,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2207130930_AnBon-BAT54WS_C397611.pdf",
+   "describe": "-55℃~+125℃ 1V@520mA 200mA 2uA@25V 30V 600mA Independent SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/schottky-diodes_anbon-bat54ws_C397611.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 8,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 3307
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1V@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "600mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "100mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA@30V"
+    }
+   ],
+   "componentBrandEn": "LGE",
+   "componentCode": "C402232",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0258,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0207,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0178,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0146,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 20999,
+     "productPrice": 0.0131,
+     "startNumber": 9000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0123,
+     "startNumber": 21000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1912111437_LGE-BAT54WS_C402232.pdf",
+   "describe": "100mA 1V@100mA 2uA@30V 30V 600mA Independent SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/schottky-diodes_lge-bat54ws_C402232.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 8,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2348
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1V@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "13A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "200mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA@25V"
+    }
+   ],
+   "componentBrandEn": "Shandong Jingdao Microelectronics",
+   "componentCode": "C438012",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0146,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0116,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0098,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0088,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0079,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0075,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2005292133_Shandong-Jingdao-Microelectronics-BAT54WS_C438012.pdf",
+   "describe": "-55℃~+125℃ 1 Independent 13A 1V@100mA 200mA 2uA@25V 30V SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/schottky-diodes_shandong-jingdao-microelectronics-bat54ws_C438012.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 875
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1V@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "600mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "100mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA@25V"
+    }
+   ],
+   "componentBrandEn": "High Diode",
+   "componentCode": "C466657",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0123,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0096,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.008,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0071,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0063,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0059,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/1912171428_High-Diode-BAT54WS_C466657.pdf",
+   "describe": "1 Independent 100mA 1V@100mA 2uA@25V 30V 600mA SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/schottky-diodes_high-diode-bat54ws_C466657.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 277
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1V@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "600mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "200mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA@25V"
+    }
+   ],
+   "componentBrandEn": "Yangzhou Yangjie Elec Tech",
+   "componentCode": "C699104",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0292,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0241,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0214,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0181,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 20999,
+     "productPrice": 0.0167,
+     "startNumber": 9000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0158,
+     "startNumber": 21000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323(SC-90)",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2007241835_Yangzhou-Yangjie-Elec-Tech-BAT54WS_C699104.pdf",
+   "describe": "-55℃~+125℃ 1 Independent 1V@100mA 200mA 2uA@25V 30V 600mA SOD-323(SC-90) Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/schottky-diodes_yangzhou-yangjie-elec-tech-bat54ws_C699104.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 8,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 12750
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1V@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "600mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "200mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA"
+    }
+   ],
+   "componentBrandEn": "JSMSEMI",
+   "componentCode": "C916997",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.023,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0181,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0155,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0139,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 20999,
+     "productPrice": 0.0125,
+     "startNumber": 9000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0117,
+     "startNumber": 21000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2308071513_JSMSEMI-BAT54WS_C916997.pdf",
+   "describe": "-55℃~+125℃ 1V@100mA 200mA 2uA 30V 600mA Standalone SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/schottky-diodes_jsmsemi-bat54ws_C916997.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1740
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "800mV@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "600mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "200mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA@25V"
+    }
+   ],
+   "componentBrandEn": "CBI",
+   "componentCode": "C2919746",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0173,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0135,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0114,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0101,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0091,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0084,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2111261830_CBI-BAT54WS_C2919746.pdf",
+   "describe": "200mA 2uA@25V 30V 600mA 800mV@100mA Independent SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/schottky-diodes_cbi-bat54ws_C2919746.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 30
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1V@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "600mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-40℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "100mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA@25V"
+    }
+   ],
+   "componentBrandEn": "Jiangsu Changjing Electronics Technology Co., Ltd.",
+   "componentCode": "C2991936",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0295,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0243,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0215,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0188,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 20999,
+     "productPrice": 0.0173,
+     "startNumber": 9000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0165,
+     "startNumber": 21000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2204111630_Jiangsu-Changjing-Electronics-Technology-Co---Ltd--BAT54WS_C2991936.pdf",
+   "describe": "-40℃~+125℃ 100mA 1V@100mA 2uA@25V 30V 600mA Independent SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/schottky-diodes_jiangsu-changjing-electronics-technology-co-ltd-bat54ws_C2991936.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 8,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 10379
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1V@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "600mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-40℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "200mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA"
+    }
+   ],
+   "componentBrandEn": "FUXINSEMI",
+   "componentCode": "C3040452",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0127,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0102,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0085,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0077,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.007,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0066,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323(SC-90)",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2206271801_FUXINSEMI-BAT54WS_C3040452.pdf",
+   "describe": "-40℃~+125℃ 1 Independent 1V@100mA 200mA 2uA 30V 600mA SOD-323(SC-90) Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/schottky-diodes_fuxinsemi-bat54ws_C3040452.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 122825
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1V@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "600mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "300mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA@25V"
+    }
+   ],
+   "componentBrandEn": "BORN",
+   "componentCode": "C5148476",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0196,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0153,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0116,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0102,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.009,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0083,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2209141730_BORN-BAT54WS_C5148476.pdf",
+   "describe": "1 Independent 1V@100mA 2uA@25V 300mA 30V 600mA SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/schottky-diodes_born-bat54ws_C5148476.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 8125
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "800mV@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "600mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "200mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA"
+    }
+   ],
+   "componentBrandEn": "TWGMC",
+   "componentCode": "C5204756",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0183,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0145,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0125,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0098,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 20999,
+     "productPrice": 0.0087,
+     "startNumber": 9000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0081,
+     "startNumber": 21000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2210191600_TWGMC-BAT54WS_C5204756.pdf",
+   "describe": "200mA 2uA 30V 600mA 800mV@100mA Independent SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/schottky-diodes_twgmc-bat54ws_C5204756.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 7026
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "MDD(Microdiode Semiconductor)",
+   "componentCode": "C5251553",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0223,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0181,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0136,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0122,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.011,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0103,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": null,
+   "describe": "SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 53364
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "240mV@0.1mA、320mV@1mA、400mV@10mA、500mV@30mA、800mV@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "600mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "100mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA@25V"
+    }
+   ],
+   "componentBrandEn": "ST(Semtech)",
+   "componentCode": "C5443985",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0269,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.022,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0194,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0181,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 20999,
+     "productPrice": 0.0167,
+     "startNumber": 9000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0159,
+     "startNumber": 21000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304121800_ST-Semtech-BAT54WS_C5443985.pdf",
+   "describe": "100mA 240mV@0.1mA、320mV@1mA、400mV@10mA、500mV@30mA、800mV@100mA 2uA@25V 30V 600mA Standalone SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/schottky-diodes_st-semtech-bat54ws_C5443985.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 100
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "800mV@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "600mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "200mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA@25V"
+    }
+   ],
+   "componentBrandEn": "HXY MOSFET",
+   "componentCode": "C5766570",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0119,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0096,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0083,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0075,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0068,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0064,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2408201708_HXY-MOSFET-BAT54WS_C5766570.pdf",
+   "describe": "1 Independent 200mA 2uA@25V 30V 600mA 800mV@100mA SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/zener-diodes_hxy-mosfet-bat54ws_C5766570.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 22089
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1V@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "600mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-40℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "200mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA@25V"
+    }
+   ],
+   "componentBrandEn": "XZT",
+   "componentCode": "C5805719",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.012,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0093,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0079,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.007,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0063,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0058,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2306291031_XZT-BAT54WS_C5805719.pdf",
+   "describe": "-40℃~+125℃ 1 Independent 1V@100mA 200mA 2uA@25V 30V 600mA SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/schottky-diodes_xzt-bat54ws_C5805719.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 51
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1V@100mA"
+    },
+    {
+     "attribute_name_en": "Power Dissipation",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "600mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "200mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA"
+    }
+   ],
+   "componentBrandEn": "hongjiacheng",
+   "componentCode": "C7502694",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0126,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0106,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0076,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0069,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0063,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.006,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2308281443_hongjiacheng-BAT54WS_C7502694.pdf",
+   "describe": "-55℃~+125℃ 1V@100mA 200mA 2uA 30V 600mA Standalone SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/schottky-diodes_hongjiacheng-bat54ws_C7502694.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 414014
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "800mV@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "600mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-40℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "200mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA@25V"
+    }
+   ],
+   "componentBrandEn": "MSKSEMI",
+   "componentCode": "C17702994",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0119,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0093,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0078,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.007,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0062,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0058,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2309271035_MSKSEMI-BAT54WS_C17702994.pdf",
+   "describe": "-40℃~+125℃ 1 Independent 200mA 2uA@25V 30V 600mA 800mV@100mA SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/schottky-diodes_msksemi-bat54ws_C17702994.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 5174
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1V@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "600mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-65℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "100mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA@25V"
+    }
+   ],
+   "componentBrandEn": "YFW",
+   "componentCode": "C20606474",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0204,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.016,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0132,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0118,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0105,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0098,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2401121842_YFW-BAT54WS_C20606474.pdf",
+   "describe": "-65℃~+125℃ 100mA 1V@100mA 2uA@25V 30V 600mA SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/schottky-diodes_yfw-bat54ws_C20606474.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2540
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1V"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "600mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "200mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA"
+    }
+   ],
+   "componentBrandEn": "Galaxy Microelectronics",
+   "componentCode": "C21882681",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0199,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0155,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0131,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0116,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0104,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0097,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": null,
+   "describe": "-55℃~+125℃ 1V 200mA 2uA 30V 600mA SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2148
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1V@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "600mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-40℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "200mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA@25V"
+    }
+   ],
+   "componentBrandEn": "GOODWORK",
+   "componentCode": "C22439052",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0153,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0122,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0104,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 29999,
+     "productPrice": 0.0094,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 44999,
+     "productPrice": 0.0085,
+     "startNumber": 30000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.008,
+     "startNumber": 45000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2408051431_GOODWORK-BAT54WS_C22439052.pdf",
+   "describe": "-40℃~+125℃ 1V@100mA 200mA 2uA@25V 30V 600mA Standalone SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/schottky-diodes_goodwork-bat54ws_C22439052.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 5682
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1V@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "600mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "300mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA@25V"
+    }
+   ],
+   "componentBrandEn": "DOWO",
+   "componentCode": "C27636123",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0091,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0071,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.006,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0054,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0048,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0044,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2407091537_DOWO-BAT54WS_C27636123.pdf",
+   "describe": "1 Independent 1V@100mA 2uA@25V 300mA 30V 600mA SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/schottky-diodes_dowo-bat54ws_C27636123.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 3102
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1V@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "600mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "21V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "100mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA@25V"
+    }
+   ],
+   "componentBrandEn": "HT(Shenzhen Jinyu Semicon)",
+   "componentCode": "C48782960",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0201,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0167,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0148,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0137,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0127,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0122,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Diodes - General Purpose",
+   "dataManualUrl": null,
+   "describe": "1 Independent 100mA 1V@100mA 21V 2uA@25V 600mA SOD-323 Diodes - General Purpose ROHS",
+   "erpComponentName": "BAT54WS",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1296
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "800mV@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "600mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "200mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA@25V"
+    }
+   ],
+   "componentBrandEn": "YONGYUTAI",
+   "componentCode": "C49396336",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0104,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0082,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.007,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0063,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0056,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0053,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": null,
+   "describe": "1 Independent 200mA 2uA@25V 30V 600mA 800mV@100mA SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "30V 200mA",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2724
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1V@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "600mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "300mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA@25V"
+    }
+   ],
+   "componentBrandEn": "HUXN",
+   "componentCode": "C49435668",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0246,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0194,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0163,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0146,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 20999,
+     "productPrice": 0.0131,
+     "startNumber": 9000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0123,
+     "startNumber": 21000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": null,
+   "describe": "-55℃~+125℃ 1 Independent 1V@100mA 2uA@25V 300mA 30V 600mA SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2372
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "FOSAN",
+   "componentCode": "C53033509",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0094,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0074,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0063,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0056,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.005,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0047,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": null,
+   "describe": "SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1235
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1V@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "21V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-40℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "5ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "100mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "200mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA@25V"
+    }
+   ],
+   "componentBrandEn": "Chao He",
+   "componentCode": "C53373702",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0253,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0199,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.017,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0152,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 20999,
+     "productPrice": 0.0137,
+     "startNumber": 9000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0128,
+     "startNumber": 21000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": null,
+   "describe": "SOD-323 Switching Diodes ROHS",
+   "erpComponentName": "BAT54WS",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2780
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "240mV@100uA、320mV@1mA、400mV@10mA、500mV@30mA、1V@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "600mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "300mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA@25V"
+    }
+   ],
+   "componentBrandEn": "TECH PUBLIC",
+   "componentCode": "C54561857",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0133,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0104,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0088,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0078,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.007,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0066,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": null,
+   "describe": "SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 7122
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "TDD",
+   "componentCode": "C55086839",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.016,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0125,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0106,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.0095,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0085,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0079,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": null,
+   "describe": "SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2980
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "800mV@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "600mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "200mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA@25V"
+    }
+   ],
+   "componentBrandEn": "(DIOTEC)",
+   "componentCode": "C212745",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0363,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0287,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0243,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0206,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 20999,
+     "productPrice": 0.0183,
+     "startNumber": 9000
+    },
+    {
+     "endNumber": 38999,
+     "productPrice": 0.0171,
+     "startNumber": 21000
+    },
+    {
+     "endNumber": 80999,
+     "productPrice": 0.0168,
+     "startNumber": 39000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0168,
+     "startNumber": 81000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "https://datasheet.lcsc.com/lcsc/1808131643_-DIOTEC-BAT54WS_C212745.pdf",
+   "describe": "-55℃~+150℃ 1 Independent 200mA 2uA@25V 30V 600mA 800mV@100mA SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://lcsc.comhttps://lcsc.com/product-detail/Schottky-Barrier-Diodes-SBD_DIOTEC-BAT54WS_C212745.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 8,
+   "minPurchaseNum": 315,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1V@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "600mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "100mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA@25V"
+    }
+   ],
+   "componentBrandEn": "Yenji Elec",
+   "componentCode": "C388592",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0279,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0222,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0191,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0171,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 20999,
+     "productPrice": 0.0155,
+     "startNumber": 9000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0146,
+     "startNumber": 21000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": null,
+   "describe": "1 Independent 100mA 1V@100mA 2uA@25V 30V 600mA SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 20,
+   "lossNumber": 8,
+   "minPurchaseNum": 407,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "600mV@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "1A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "200mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA@25V"
+    }
+   ],
+   "componentBrandEn": "PANJIT International",
+   "componentCode": "C2992471",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0416,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0347,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.0308,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 9999,
+     "productPrice": 0.0285,
+     "startNumber": 5000
+    },
+    {
+     "endNumber": 19999,
+     "productPrice": 0.0266,
+     "startNumber": 10000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0256,
+     "startNumber": 20000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2204121745_PANJIT-International-BAT54WS_C2992471.pdf",
+   "describe": "-55℃~+125℃ 1A 200mA 2uA@25V 30V 600mV@100mA Independent SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/schottky-diodes_panjit-international-bat54ws_C2992471.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 261,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1V@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "600mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "100mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA@25V"
+    }
+   ],
+   "componentBrandEn": "SMC(Sangdest Microelectronicstronic (Nanjing))",
+   "componentCode": "C3313085",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0264,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0264,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0264,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0103,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0099,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0097,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "",
+   "describe": "-55℃~+150℃ 1 Independent 100mA 1V@100mA 2uA@25V 30V 600mA SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/schottky-diodes_smc-sangdest-microelectronicstronic-nanjing-bat54ws_C3313085.html",
+   "leastPatchNumber": 10,
+   "lossNumber": 5,
+   "minPurchaseNum": 912,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "JLCPCB Assembly",
+   "componentCode": "C9900304108",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0396,
+     "startNumber": 1
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0204,
+     "startNumber": 100
+    }
+   ],
+   "componentSpecificationEn": "SOD-323(SC-90)",
+   "componentTypeEn": "SMT",
+   "dataManualUrl": null,
+   "describe": "SOD-323(SC-90) SMT ROHS",
+   "erpComponentName": "【邮寄专用】BAT54WS",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 10,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "JLCPCB Assembly",
+   "componentCode": "C9900309219",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0396,
+     "startNumber": 1
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0204,
+     "startNumber": 100
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "SMT",
+   "dataManualUrl": null,
+   "describe": "SOD-323 SMT ROHS",
+   "erpComponentName": "【邮寄专用】BAT54WS",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 443,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1V@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "600mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "200mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA@25V"
+    }
+   ],
+   "componentBrandEn": "Yangzhou Yangjie Elec Tech",
+   "componentCode": "C2942471",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WSQ",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0328,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0253,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0212,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0183,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 20999,
+     "productPrice": 0.0161,
+     "startNumber": 9000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.015,
+     "startNumber": 21000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323(SC-90)",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2206021745_Yangzhou-Yangjie-Elec-Tech-BAT54WSQ_C2942471.pdf",
+   "describe": "1V@100mA 200mA 2uA@25V 30V 600mA Independent SOD-323(SC-90) Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WSQ",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/schottky-diodes_yangzhou-yangjie-elec-tech-bat54wsq_C2942471.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 512
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "800mV"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "600mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "200mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA"
+    }
+   ],
+   "componentBrandEn": "Shenzhen JingYang",
+   "componentCode": "C5364063",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WSX",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0293,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.023,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0196,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0175,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 20999,
+     "productPrice": 0.0156,
+     "startNumber": 9000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0146,
+     "startNumber": 21000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2405091034_Shenzhen-JingYang-BAT54WSX_C5364063.pdf",
+   "describe": "1 Independent 200mA 2uA 30V 600mA 800mV SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WSX",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/schottky-diodes_shenzhen-jingyang-bat54wsx_C5364063.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2630
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1V@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "600mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "100mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA@25V"
+    }
+   ],
+   "componentBrandEn": "Jiangsu Changjing Electronics Technology Co., Ltd.",
+   "componentCode": "C22629",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS L9",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0238,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0189,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0161,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0133,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 20999,
+     "productPrice": 0.0119,
+     "startNumber": 9000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0111,
+     "startNumber": 21000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1809140116_Jiangsu-Changjing-Electronics-Technology-Co---Ltd--BAT54WS-L9_C22629.pdf",
+   "describe": "100mA 1V@100mA 2uA@25V 30V 600mA Independent SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS L9",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/schottky-diodes_jiangsu-changjing-electronics-technology-co-ltd-bat54ws-l9_C22629.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 5738
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1V@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "600mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "200mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA@25V"
+    }
+   ],
+   "componentBrandEn": "MCC(Micro Commercial Components)",
+   "componentCode": "C668868",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS-TP",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0269,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0219,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0189,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0173,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 20999,
+     "productPrice": 0.0158,
+     "startNumber": 9000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.015,
+     "startNumber": 21000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2009021132_MCC-Micro-Commercial-Components-BAT54WS-TP_C668868.pdf",
+   "describe": "-55℃~+125℃ 1 Independent 1V@100mA 200mA 2uA@25V 30V 600mA SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS-TP",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/schottky-diodes_mcc-micro-commercial-components-bat54ws-tp_C668868.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 8,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 16621
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1V@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "600mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "300mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA@25V"
+    }
+   ],
+   "componentBrandEn": "ZRE",
+   "componentCode": "C779682",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS-L9",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0129,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.01,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.008,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.007,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0062,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0057,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "https://datasheet.lcsc.com/lcsc/2010131808_ZRE-BAT54WS-L9_C779682.pdf",
+   "describe": "1 Independent 1V@100mA 2uA@25V 300mA 30V 600mA SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS-L9",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/schottky barrier diodes (sbd)_zre_bat54ws-l9_C779682.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 903,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "JLCPCB Assembly",
+   "componentCode": "C9900006850",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS/N4",
+   "componentPrices": [
+    {
+     "endNumber": 999,
+     "productPrice": 0.0007,
+     "startNumber": 1
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0003,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "SMT",
+   "dataManualUrl": null,
+   "describe": "SOD-323 SMT ROHS",
+   "erpComponentName": "BAT54WS/N4",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1000,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1V@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "750mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "21V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-40℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "100mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA@25V"
+    }
+   ],
+   "componentBrandEn": "Jiangsu Changjing Electronics Technology Co., Ltd.",
+   "componentCode": "C2975709",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AD-BAT54WS",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0455,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0376,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0333,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0306,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 20999,
+     "productPrice": 0.0284,
+     "startNumber": 9000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0271,
+     "startNumber": 21000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2306011006_Jiangsu-Changjing-Electronics-Technology-Co---Ltd--AD-BAT54WS_C2975709.pdf",
+   "describe": "-40℃~+125℃ 1 Independent 100mA 1V@100mA 21V 2uA@25V 750mA SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "AD-BAT54WS",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/schottky-diodes_jiangsu-changjing-electronics-technology-co-ltd-ad-bat54ws_C2975709.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 199,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "800mV@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "600mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "200mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA@25V"
+    }
+   ],
+   "componentBrandEn": "(DIOTEC)",
+   "componentCode": "C3313087",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS-AQ",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0666,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.0529,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.0461,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0411,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.037,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0349,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323F",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2401161230_-DIOTEC-BAT54WS-AQ_C3313087.pdf",
+   "describe": "-55℃~+150℃ 1 Independent 200mA 2uA@25V 30V 600mA 800mV@100mA SOD-323F Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS-AQ",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/schottky-diodes_diotec-bat54ws-aq_C3313087.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 2,
+   "minPurchaseNum": 220,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1V@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "600mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "100mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA@25V"
+    }
+   ],
+   "componentBrandEn": "Diodes Incorporated",
+   "componentCode": "C124205",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS-7-F",
+   "componentPrices": [
+    {
+     "endNumber": 99,
+     "productPrice": 0.0627,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 299,
+     "productPrice": 0.0521,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0468,
+     "startNumber": 300
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0393,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.036,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0344,
+     "startNumber": 9000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1806121749_Diodes-Incorporated-BAT54WS-7-F_C124205.pdf",
+   "describe": "1 Independent 100mA 1V@100mA 2uA@25V 30V 600mA SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS-7-F",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/schottky-diodes_diodes-incorporated-bat54ws-7-f_C124205.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 6,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 82659
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "MCC(Micro Commercial Components)",
+   "componentCode": "C19984462",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WSH-TP",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.1312,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.105,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.092,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0821,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.0743,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0704,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2401151921_MCC-Micro-Commercial-Components-BAT54WSH-TP_C19984462.pdf",
+   "describe": "SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WSH-TP",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/schottky-diodes_mcc-micro-commercial-components-bat54wsh-tp_C19984462.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 99,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1V@100mA"
+    },
+    {
+     "attribute_name_en": "Power Dissipation",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "200mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA@25V"
+    }
+   ],
+   "componentBrandEn": "FOSAN",
+   "componentCode": "C48947028",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS-6AF",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0219,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0168,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0141,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.0124,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 20999,
+     "productPrice": 0.011,
+     "startNumber": 9000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0102,
+     "startNumber": 21000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "",
+   "describe": "-55℃~+150℃ 1V@100mA 200mA 2uA@25V 30V Standalone SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS-6AF",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/schottky-diodes_fosan-bat54ws-6af_C48947028.html",
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 538,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1V@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "600mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "100mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA@25V"
+    }
+   ],
+   "componentBrandEn": "Diodes Incorporated",
+   "componentCode": "C171824",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WSQ-7-F",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.278,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.2216,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1975,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.1672,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.1539,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1457,
+     "startNumber": 6000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1810121648_Diodes-Incorporated-BAT54WSQ-7-F_C171824.pdf",
+   "describe": "1 Independent 100mA 1V@100mA 2uA@25V 30V 600mA SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WSQ-7-F",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/schottky-diodes_diodes-incorporated-bat54wsq-7-f_C171824.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 4,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 977
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1V@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "600mA"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "200mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA@25V"
+    }
+   ],
+   "componentBrandEn": "MCC(Micro Commercial Components)",
+   "componentCode": "C37045821",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WSHQ-TP",
+   "componentPrices": [
+    {
+     "endNumber": 199,
+     "productPrice": 0.0429,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 599,
+     "productPrice": 0.0355,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0315,
+     "startNumber": 600
+    },
+    {
+     "endNumber": 8999,
+     "productPrice": 0.029,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 20999,
+     "productPrice": 0.0269,
+     "startNumber": 9000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0258,
+     "startNumber": 21000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": null,
+   "describe": "-55℃~+150℃ 1 Independent 1V@100mA 200mA 2uA@25V 30V 600mA SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WSHQ-TP",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 2180
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1V@100mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "13A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "1 Independent"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "200mA"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "2uA@25V"
+    }
+   ],
+   "componentBrandEn": "HY Elec",
+   "componentCode": "C19841917",
+   "componentLibraryType": "expand",
+   "componentModelEn": "BAT54WS (S1)",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.0595,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.0595,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.0595,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.0238,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.023,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0225,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Schottky Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2401151526_HY-Elec-BAT54WS--S1_C19841917.pdf",
+   "describe": "-55℃~+125℃ 1 Independent 13A 1V@100mA 200mA 2uA@25V 30V SOD-323 Schottky Diodes ROHS",
+   "erpComponentName": "BAT54WS (S1)",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/schottky-diodes_hy-elec-bat54ws-s1_C19841917.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 5,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  }
+ ],
+ "returned": 50,
+ "schema": 1,
+ "total_matches": 60
+}

@@ -1050,6 +1050,103 @@ def severed_neck(pre_isl, frag_pads, body_pads):
                      "why it is published and not charged")
 
 
+# --------------------------------------------------------------------------
+# D-789 / D788-14 -- THE NET-CHANGE EXCUSE IS A NAMED PREDICATE WITH ITS OWN
+# CONSTANT FIXTURE.
+#
+# D-788 added an excuse to PP1: a pad that DELIBERATELY changed net (the
+# `U12.13` PS/SYNC tie moving from `GND` to `EN`) is not a pad that lost its
+# pour.  The excuse was keyed on a positive connectivity fact -- the pad must
+# sit on the LARGEST copper group of its NEW net -- and it shipped with a
+# "control" that read
+#
+#     ok = all(not (x.now, x.pad) in (body - {(x.now, x.pad)}) ...)
+#
+# which removes an element from a set and then asks the set whether it contains
+# it.  That is False for every element and every set, so `ok` was True
+# unconditionally and the production predicate was never called.  Round-8
+# reproduced it: a mutant that drops the connectivity requirement entirely --
+# excusing a pad that changed net AND was left stranded -- passed.
+#
+# The predicate is therefore module-level and pure, and it has a fixture that
+# is CONSTANT: it is read from neither board, so it cannot go vacuous when a
+# run's PRE board already carries the change (which is exactly what made the
+# live control empty and `all([])` true).  The fixture drives all four
+# outcomes and then re-runs the same predicate with the connectivity
+# requirement removed, which must excuse the stranded pad -- proving the
+# requirement is load-bearing rather than decorative.
+def net_change_is_excused(item, net_changed, body):
+    """PP1's declared-net-change excuse, as ONE expression.
+
+    `item` is the (old_net, layer, pad) triple PP1 found newly unresolved;
+    `net_changed` maps pad -> (old_net, new_net) between the two boards; `body`
+    is the set of (net, pad) that sit on the LARGEST copper group of that net
+    on the POST board.  A pad is excused only if its net actually changed away
+    from the net it is being judged on AND it is carried by the new one.
+    """
+    old_net, _layer, pad = item
+    if pad not in net_changed:
+        return False
+    was, now = net_changed[pad]
+    if was != old_net:
+        return False
+    return (now, pad) in body
+
+
+def net_change_predicate_selftest():
+    """A CONSTANT fixture for `net_change_is_excused`, and a mutant of it.
+
+    Nothing here is read from a board.  `carried` changed net and is on its new
+    net's body: excused.  `stranded` changed net and is NOT: refused -- that is
+    the pad PP1 reports as `net_changed_and_unresolved`.  `same_net` did not
+    change net at all, and `wrong_old_net` changed net but is being judged on a
+    net it never held; both are refused.
+    """
+    net_changed = {
+        "U12.13": ("GND", "/01_POWER_TREE/ACC_PWR_EN"),
+        "U99.1": ("GND", "/SOME_NET"),
+    }
+    body = {("/01_POWER_TREE/ACC_PWR_EN", "U12.13"), ("GND", "U98.1")}
+    cases = [
+        dict(case="carried_by_its_new_net",
+             item=["GND", "B.Cu", "U12.13"], must_excuse=True),
+        dict(case="changed_net_and_stranded",
+             item=["GND", "B.Cu", "U99.1"], must_excuse=False),
+        dict(case="never_changed_net",
+             item=["GND", "B.Cu", "U98.1"], must_excuse=False),
+        dict(case="judged_on_a_net_it_never_held",
+             item=["/OTHER", "B.Cu", "U12.13"], must_excuse=False),
+    ]
+    for c in cases:
+        c["excused"] = bool(net_change_is_excused(tuple(c["item"]),
+                                                  net_changed, body))
+        c["ok"] = c["excused"] == c["must_excuse"]
+
+    # THE MUTANT.  Drop the connectivity requirement -- the exact edit that
+    # turns the excuse into a blanket pass -- and the stranded pad must become
+    # excused.  A fixture on which the mutant behaves identically would not be
+    # proving that the requirement does anything.
+    def _mutant(item, net_changed_, _body):
+        old_net, _layer, pad = item
+        if pad not in net_changed_:
+            return False
+        return net_changed_[pad][0] == old_net
+
+    stranded = ("GND", "B.Cu", "U99.1")
+    mutant_excuses_the_stranded_pad = bool(
+        _mutant(stranded, net_changed, body))
+    return dict(
+        cases=cases,
+        fixture_is_constant=True,
+        why="the production predicate `net_change_is_excused` is called "
+            "directly on a fixture that is read from neither board, so the "
+            "control cannot go vacuous when a run's PRE board already carries "
+            "the declared net change",
+        mutant="the connectivity requirement is removed from the excuse",
+        mutant_excuses_the_stranded_pad=mutant_excuses_the_stranded_pad,
+        ok=all(c["ok"] for c in cases) and mutant_excuses_the_stranded_pad)
+
+
 def pad_nets(board_path):
     """{"REF.PIN": netname} for every pad on a board file."""
     import pcbnew as _pcb
@@ -1227,10 +1324,9 @@ def compare(pre_path, post_path, moved=(), pours_removed=()):
     net_changed = {ref: (pre_nets[ref], post_nets[ref])
                    for ref in set(pre_nets) & set(post_nets)
                    if pre_nets[ref] != post_nets[ref]}
-    def _net_change_excused(item):
-        n, _l, r = item
-        return (r in net_changed and net_changed[r][0] == n
-                and (net_changed[r][1], r) in body)
+    def _net_change_excused(item, carried=None):
+        return net_change_is_excused(item, net_changed,
+                                     body if carried is None else carried)
 
     changed_excused, changed_stranded = [], []
     for (n, l, r) in list(new_bad):
@@ -1241,14 +1337,31 @@ def compare(pre_path, post_path, moved=(), pours_removed=()):
                 new_bad.remove((n, l, r))
             else:
                 changed_stranded.append(row)
-    # NON-VACUITY for the net-change excuse.  Withhold each excused pad's NEW
-    # net connectivity fact and the same expression must call it stranded.
+    # NON-VACUITY for the net-change excuse.
+    #
+    # D-789 / D788-14 -- THE OLD CONTROL WAS A TAUTOLOGY AND NOT A CONTROL.
+    # It read `not (k) in (body - {k})`: an element is removed from a set and
+    # the set is then asked whether it contains it.  That is False for every k
+    # and every body, so `ok` was True unconditionally -- the PRODUCTION
+    # PREDICATE was never called, and a mutant that dropped the connectivity
+    # requirement from `net_change_is_excused` passed.  Compare `excuse_control`
+    # below, which has always called `_excusable` with the fact withheld; this
+    # is now the same shape.
     net_change_control = dict(
-        ok=all(not (x["now"], x["pad"]) in (body - {(x["now"], x["pad"])})
+        ok=all(not _net_change_excused((x["was"], x["layer"], x["pad"]),
+                                       body - {(x["now"], x["pad"])})
                for x in changed_excused),
         probe=[x["pad"] for x in changed_excused],
         why="each net-changed pad, withheld from the POST connectivity fact "
-            "its excuse is keyed on, stops being excused")
+            "its excuse is keyed on, is refused by the SAME predicate the "
+            "clause is judged on")
+    # AND IT IS NON-VACUOUS EVEN WHEN NO PAD CHANGED NET.  `changed_excused` is
+    # a function of the PRE board, so on a run whose PRE already carries the
+    # change the list is empty and `all([])` is True -- a control that cannot
+    # fail again, one step further out.  The fixture below is CONSTANT: it is
+    # not read from either board, it exercises the production predicate
+    # directly, and it must produce all four outcomes.
+    net_change_selftest = net_change_predicate_selftest()
 
     excused = [x for x in new_bad if _excusable(x, body)]
     excuse_control = dict(
@@ -1282,6 +1395,7 @@ def compare(pre_path, post_path, moved=(), pours_removed=()):
     res["PP1"] = dict(ok=(not new_bad and not unclaimed_gone
                           and not changed_stranded
                           and net_change_control["ok"]
+                          and net_change_selftest["ok"]
                           and len(post) >= len(pre) - len(retired)
                           and control["ok"] and excuse_control["ok"]),
                       pads_that_changed_net=sorted(
@@ -1290,6 +1404,43 @@ def compare(pre_path, post_path, moved=(), pours_removed=()):
                           key=lambda d: d["pad"]),
                       net_change_excused=changed_excused,
                       net_change_control=net_change_control,
+                      net_change_predicate_selftest=net_change_selftest,
+                      # D-789 / D788-13.  WHICH OF THIS CLAUSE'S FIELDS ARE A
+                      # FUNCTION OF THE *PRE* BOARD, DECLARED BY THE CLAUSE
+                      # ITSELF.
+                      #
+                      # PP1 compares a PRE board -- taken from a git revision,
+                      # `HEAD` by default -- against the working tree.  The
+                      # roster of pads that CHANGED NET between them is
+                      # therefore provenance about the pair of inputs, not an
+                      # engineering result about the board: the moment D-788 is
+                      # committed, the same board against the new HEAD reports
+                      # ZERO net changes where the committed artifact reported
+                      # one.  Round-8 reproduced exactly that -- 19/19
+                      # contracts passing and `contract_regression` exiting 1
+                      # on `$.results.PP1.net_change_control.probe: 0 vs 1
+                      # entries`.
+                      #
+                      # `ref_commit` was already a declared input identifier in
+                      # that wrapper.  These pointers are declared the same way
+                      # and are normalised ONLY when `ref_commit` moved, and
+                      # ONLY these: the VERDICTS above -- `ok`,
+                      # `net_change_control.ok`, `net_changed_and_unresolved`,
+                      # `newly_unresolved` -- are compared exactly, as is the
+                      # constant `net_change_predicate_selftest`, so nothing
+                      # about an engineering result can hide behind the
+                      # declaration.  The declaration itself is compared field
+                      # by field like anything else, so a future edit that
+                      # widened it would be visible as a difference.
+                      pre_dependent_fields=[
+                          "$.results.PP1.pads_that_changed_net",
+                          "$.results.PP1.net_change_excused",
+                          "$.results.PP1.net_change_control.probe",
+                          "$.results.PP1.excuse_control.probe",
+                          "$.results.PP1.excused_by_routed_copper",
+                          "$.results.PP1.control.probe",
+                          "$.results.PP1.pours_retired_as_claimed",
+                      ],
                       net_changed_and_unresolved=changed_stranded,
                       excused_by_routed_copper=[dict(net=n, layer=l, pad=r)
                                                 for (n, l, r) in excused],

@@ -187,9 +187,9 @@ against a need of five is a build with **one** spare; **buy spares independently
 | `TSOP38238` (`C141632`) | `U6` | 3 leads | minicast IR receiver. **Hand-solder after reflow; LEAD-FORMED 90° AND TRIMMED — [`IR_LEAD_FORMING.md`](IR_LEAD_FORMING.md), NORMATIVE.** Was incorrectly also listed as machine-placed Class B until D-764 |
 | **D-781/D-782 manual battery pigtail** — 26-AWG Molex pre-crimps `2175012101` red / `2175011101` black into housing `5055700201`; **no PCB header fitted** | **`J4`** | 2 conductors through the existing 0.75 mm nominal PTH pair, wires enter from **REAR**, solder on **FRONT** | Exact detachable harness is [`BATTERY_HARNESS.json`](BATTERY_HARNESS.json). Supplier/assembler must guarantee **≥0.70 mm finished plated-hole diameter** and prove one exact tinned lead passes freely before all five boards — no strand shaving. Cavity 1 = BAT+ / red / `J4.1`; cavity 2 = GND / black / `J4.2`. **J4-T1/T2/T3/T4 are NORMATIVE**: front conductive profile **≤0.50 mm**, both inspected joints covered with **≤0.10 mm polyimide**. Rear strain relief is now frozen to **DOWSIL 3145 RTV MIL-A-46146 gray**, applied to the insulated pigtail after joint inspection with the specified service loop; disconnect Micro-Lock by the housings only, never by pulling wires. DMM-check polarity and complete the first-article fit/pull/thermal acceptance tests. **Do not install JST `C131337` at J4.** |
 | `B2B-PH-K-S(LF)(SN)` JST PH (`C131337`) | `J6` | 2 leads | SPEAKER connector, body on `F.Cu`; its leads emerge on the rear **3.5 mm clear of `BATTERY_SHADOW`**, so no trim requirement. Was missing from this table |
-| **D-788 ACC_3V3_SW REINFORCEMENT LEAD** — ONE Alpha Wire `2842/19 RD005` 28 AWG PTFE conductor, `TP12.1` → `J5.3`, plus three DOWSIL 3145 anchor beads | `TP12` / `J5.3` | 1 conductor, 2 hand joints | **MISSING FROM THIS TABLE ENTIRELY UNTIL D-788 / R7-D787-11.**  D-787 introduced a manual accessory-voltage reinforcement and neither the master assembly plan nor the off-board BOM knew about it, so the operation was not in the sequence, the wire was not in purchasing and the completion record had no line for it.  The exact dimensioned route, waypoints, bend radius, anchor locations, bead size, cure time, joint profile and per-step inspection are NORMATIVE in [`ACC_3V3_REINFORCEMENT.json`](ACC_3V3_REINFORCEMENT.json).  **D-788 also removed the second conductor**: J5.22 is delivered by routed copper alone (79.0 mΩ measured), so only `J5.3` is reinforced and no pad carries two conductors.  Finished lead **≤ 25 mΩ**, value recorded per board.  **Sequence: after reflow and AOI, before enclosure close; full cure 72 h before any pull, thermal test or shipment.** |
+| **D-789 RETIRES THE ACC_3V3_SW REINFORCEMENT LEAD** — there is NO manual accessory-voltage conductor on this board | *(none)* | **0 conductors, 0 hand joints** | **D-789 / D788-07 + D788-08 + D788-09 + D788-16.**  D-787 introduced a manual accessory-voltage reinforcement; D-788 reduced it to ONE dimensioned `TP12.1` → `J5.3` lead.  Round-8 raised four independent findings against that lead and every one is a property of the conductor rather than of its description: a tinned tip that cannot fit a 1.00 mm pad; an insertion into a through-hole already filled by J5's 0.635 mm square tail (0.898 mm diagonal in a 1.02 mm drill); a route starting inside `BATTERY_SHADOW` and crossing `RIB_R3` against the record's own 1.0 mm clearances; and a ≤ 25 mΩ acceptance that cannot be measured because the board's own copper stays in parallel with it.  **It bought 70 mV of published minimum on ONE of two duplicated contacts and it is gone.**  `TP12`/`TP25` remain as test points; **nothing is soldered to them.**  The Community Port now publishes **≥ 2.84 V unconditionally** and **2.982890 V fully mated** at the full 400 mA — see [`ACC_3V3_REINFORCEMENT.json`](ACC_3V3_REINFORCEMENT.json).  A dedicated accessory regulator is the REV-B fix the owner already approved deferring. |
 
-**FIVE through-hole references per board require manual post-reflow work: `J4`, `J5`, `J6`, `D1`, `U6`, and D-788 adds ONE non-reference manual operation: the `TP12.1` → `J5.3` accessory-voltage reinforcement lead.** `J4` is a wire pigtail rather than a fitted connector. `J4`, `D1` and `U6` have NORMATIVE trim/forming requirements, and D-782 additionally freezes J4 rear strain relief using DOWSIL 3145 plus the Micro-Lock service-loop/housing-only disconnect rules in `BATTERY_HARNESS.json`.
+**FIVE through-hole references per board require manual post-reflow work: `J4`, `J5`, `J6`, `D1`, `U6`.  D-789 removes the one non-reference manual operation D-788 had added** — the `TP12.1` → `J5.3` accessory-voltage reinforcement lead (D788-07/08/09/16) — **so the manual work per board is back to the five references and nothing else.** `J4` is a wire pigtail rather than a fitted connector. `J4`, `D1` and `U6` have NORMATIVE trim/forming requirements, and D-782 additionally freezes J4 rear strain relief using DOWSIL 3145 plus the Micro-Lock service-loop/housing-only disconnect rules in `BATTERY_HARNESS.json`.
 
 **Also PTH but not a lead:** `J3`'s four `SH` shell stakes (GCT USB4105 is a
 top-mount SMT receptacle — the stakes are mechanical anchors, pin-in-paste or
@@ -207,12 +207,29 @@ Speaker `LS1` (`AS02008MR-LW152-R`, `C3311653`, stock 0 — consign or buy direc
 
 ---
 
-## 7b. D-788 — the complete live sourcing sweep and consignment plan
+## 7c. D-789 — the complete live sourcing sweep and consignment plan
 
-**Every one of the 124 assembly lines was re-queried through the D-096 JLCPCB
-parts API on 2026-09-20** and archived at
-`hardware/demo/manufacturing/evidence/d788-sourcing-sweep.json`, so the plan
-REPLAYS rather than re-queries.  **Ten lines do not cover a five-board build.**
+*(This section was numbered `7b` through D-788, which collided with the
+transient-acceptance section below — `R8-N04`, corrected here.)*
+
+**Every one of the 123 assembly lines was re-queried through the D-096 JLCPCB
+parts API on 2026-09-21** and archived at
+`hardware/demo/manufacturing/evidence/d789-sourcing-sweep.json`, so the plan
+REPLAYS rather than re-queries.  **It was 124 lines through D-788**; `D14`'s
+`1N4148WS` line disappeared at D-789 when `D14` became the `BAT54WS-7-F` that
+`D10`/`D11`/`D12` already carry (D788-11), so that line is now one row of
+quantity four.  The ten short lines are unchanged.
+
+> **`Q2`/`Q3` IS A PRE-PCBA BLOCK AND IT IS NOT MERELY A STOCK PROBLEM.**  The
+> locked `NTMD4820NR2G` reads stock 0 and is flagged no longer manufactured
+> (F-N01), **and** `R8-N01` found that the fitted part is not guaranteed to be
+> ENHANCED at this board's `BAT_RAW`: the `LTC4368` guarantees 3.0 V of gate
+> drive and the FET's `VGS(th)` MAXIMUM is 3.0 V, with no published `RDS(on)`
+> row below `VGS` = 4.5 V.  The eight selection requirements for the
+> replacement and first-article **`C-BAT-GATE-01`** are in
+> [`SOURCING_LEDGER.md`](SOURCING_LEDGER.md), and `demo_feature_contract` F10
+> refuses a ledger that drops them.  **Do not pay for PCBA until this line is
+> resolved.  No substitution without requalification.**  **Ten lines do not cover a five-board build.**
 Nine of them are machine-placed and are in §4; `J5` is the tenth and is Class E.
 
 | part | ref | LCSC | live stock 2026-09-20 | need (5 boards) | shortfall | JLCPCB catalogue flag | placement |
@@ -253,7 +270,9 @@ order.**
 
 ## 7a. D-780 Q11 first-five temperature acceptance — `Q11-TEMP-01`
 
-`Q11` is now Vishay **SQ2364EES-T1_BE3**. Its 60 V rating covers the board's 39 V open-LED fault ceiling, and its published **0.245 Ω MAX at VGS = 1.5 V, ID = 2 A** gives a direct low-gate conduction point below AQROOT's held **VGS = 2.396 V**. The vendor electrical-characteristics table states **TC = 25 °C unless otherwise noted**, so that 1.5 V row is not being misrepresented as an all-temperature guarantee. For these five Kickstarter prototypes this is a **reworkable first-article qualification item, not a production-temperature claim**.
+`Q11` is now Vishay **SQ2364EES-T1_BE3**. Its 60 V rating covers the board's 39 V open-LED fault ceiling, and its published **0.245 Ω MAX at VGS = 1.5 V, ID = 2 A** gives a direct low-gate conduction point below AQROOT's held **VGS = 1.961526 V**.
+
+> **D-789 / D788-11 + `R8-N03` CORRECTED THE NUMBER IN THAT SENTENCE, AND THE PART THAT SETS IT.**  This section carried **2.396 V**, which was derived against the 3.3 V rail D-788 retired to keep the ILI9488 panel inside its own absolute maximum — the same hand-carried-constant failure Round-8 raised as D788-11, surviving in a second document.  The held gate is now **DERIVED** by `demo_feature_contract` F5 as `VOH(MIN) − VF(D14)` at the rail's own heavy-load minimum: `0.8 × 3.069408 V = 2.455526 V` less the diode's lowest published forward maximum plus a declared 2 mV/K cold-endpoint allowance.  **With the old `1N4148WS` that lands at `VGS` = 1.486526 V — 13.5 mV BELOW the 1.5 V conduction row above, with no lower row to bound it — so `D14` is now a `BAT54WS-7-F`** (`VF` ≤ 240 mV at `IF` = 0.1 mA, below the ~9 µA this node draws and monotone in `IF`, so it is a guaranteed bound), giving **1.961526 V — 461.5 mV inside** the published region.  It is the same MPN, LCSC code and SOD-323 land this board already fits at `D10`/`D11`/`D12`: **no new part, no new feeder, no copper, no assembly-step change.**  The acceptance below is unchanged and still runs at 0 / 25 / 40 °C. The vendor electrical-characteristics table states **TC = 25 °C unless otherwise noted**, so that 1.5 V row is not being misrepresented as an all-temperature guarantee. For these five Kickstarter prototypes this is a **reworkable first-article qualification item, not a production-temperature claim**.
 
 Before a first-five unit is accepted for Demo use, validate the backlight at **0 °C, 25 °C and 40 °C** after thermal soak: full-on, the normal firmware PWM range, commanded OFF for at least 30 s, and repeated ON→OFF→ON transitions. **D-784 startup rule:** from a discharged `C85`, firmware must first drive `DISP_BL_CTL` at **100% duty for at least 2 ms** before entering low-duty PWM; the released bring-up firmware uses a **3.0 ms microsecond-timed prime** to guarantee margin rather than relying on an Arduino millisecond tick delay. Do not start directly at 1% duty. Scope `DISP_BL_CTL`, **Q11 VGS**, `LED_BOOST`, Q11 VDS and LED current during startup/OFF/restart. Acceptance: no visible dropout/flicker at full-on or normal PWM, no TPS61169 open-LED latch during normal operation, commanded OFF remains dark, and restart is repeatable. Record the unit ID and result. The TPS61169 primary datasheet is archived at `hardware/demo/kicad/aqroot-demo/vendor/TI/tps61169.pdf` (SHA-256 `7d0b8ace2459a9fd22fe7145086cbad4ccb3bb43219247459313fcba75230151`). A failure blocks that unit and requires `Q11`/gate-drive rework before Demo use; it does **not** authorize widening the temperature claim.
 
@@ -277,29 +296,81 @@ with 4 × 22 µF), and there is no numeric overshoot row in the electrical
 characteristics table.  Reading a limit off a plot axis is not primary evidence,
 so the real excursion is **MEASURED HERE**.
 
-Before a first-five unit is accepted for Demo use, scope `+3V3` **at the
-display's own supply pins** — `J1.40`/`J1.41` (`VDDI`/`IOVCC`) and `J1.42`
-(`VCI`) — AC-coupled, ≥ 20 MHz bandwidth, ground-spring probe at the connector,
-through all of:
+**D-789 / D788-18 REWROTE HOW IT IS MEASURED AND WHERE THE STEPS ARE RUN.**
+Round-8 raised two defects in the D-788 procedure and both are real: an
+**AC-coupled** acquisition cannot prove an **absolute** limit, because it
+discards exactly the DC term the 3.300 V and 3.000 V thresholds are stated
+against; and the accessory step was written to run at **3.20 V and 3.05 V** of
+pack voltage, where a release image **refuses to enable an accessory rail at
+all** (the derived VCELL policy is 3.50 V single-rail and 3.85 V dual-rail).
+Half the matrix was therefore unexecutable and the other half could not
+support its own acceptance.
 
-- **accessory step**: `ACC_3V3_SW` enabled into a 400 mA load and then **hot
-  disconnected** at the J5 mating interface, ten times;
+### How it is acquired
+
+Scope `+3V3` **at the display's own supply pins** — `J1.40`/`J1.41`
+(`VDDI`/`IOVCC`) and `J1.42` (`VCI`) — and `U1.2` for the trough, with a
+ground-spring probe at the connector and **≥ 20 MHz** bandwidth, using
+**either**:
+
+- **(A) DC-COUPLED, preferred.**  DC coupling, vertical range and offset set so
+  the whole excursion fits on screen at the finest volts/div that keeps it
+  there.  Record the probe attenuation calibration and the instrument's own
+  **DC gain accuracy** from its datasheet.
+- **(B) SYNCHRONISED DC BASELINE + AC DETAIL**, only if (A) cannot resolve the
+  transient.  Capture the DC level of the same node with a **calibrated DMM or
+  a second DC-coupled channel on the same trigger**, capture the excursion
+  AC-coupled at high gain, and **add them**.
+
+**Either way the acceptance is judged against the measured value MINUS the
+stated measurement uncertainty on the high side and PLUS it on the low side.**
+Record the uncertainty budget — probe attenuation tolerance, vertical gain
+accuracy, offset accuracy, and for (B) the DMM accuracy and the trigger skew —
+with the reading.  A reading whose uncertainty is not recorded is not a result.
+
+### The step matrix, split by what a release image permits
+
+**INTERNAL-ONLY STEPS — run at pack voltages spanning buck, buck-boost and
+boost operation (`≈4.15 V`, `≈3.20 V`, `≈3.05 V` at `BAT_PROTECTED_P`):**
+
 - **backlight step**: `U17` commanded full-on → off → full-on, including the
   D-784 3.0 ms full-duty prime;
 - **radio step**: Wi-Fi TX bursts with `U7`/`U8` idle, and the worse sub-GHz
   radio transmitting;
 - **enable step**: `SW9` off → on from a discharged `+3V3`, watching `U12`
-  start-up overshoot;
-- each of the above at pack voltages spanning **buck, buck-boost and boost**
-  operation (`≈4.15 V`, `≈3.20 V`, `≈3.05 V` at `BAT_PROTECTED_P`).
+  start-up overshoot.
 
-**ACCEPTANCE:** the absolute peak at `J1.40`/`J1.41`/`J1.42` must stay **below
-3.300 V** with no exception, and the absolute trough at `U1.2` must stay **above
-3.000 V**.  Record the peak, the trough and the unit ID.  A failure blocks that
-unit; **the designed lever is `C29`–`C32`**, which are 22 µF 1206 X7R parts on
-existing lands — `SLVS916I` 8.2.2.3 sets **no upper limit** on output
-capacitance, so more capacitance is a **BOM value change with no PCB change**.
-Do not widen the acceptance instead.
+**ACCESSORY STEP — run ONLY where the released firmware actually permits the
+rail**, because that is the only state a user can reach: `ACC_3V3_SW` enabled
+into a 400 mA load and then **hot disconnected** at the J5 mating interface,
+ten times, at
+
+- **`≈4.15 V`** and **`≈3.90 V`** at `BAT_PROTECTED_P` with the 5 V rail ALSO
+  at its published 300 mA — above the **3.85 V** dual-rail floor;
+- **`≈3.55 V`** with the 3.3 V rail alone — above the **3.50 V** single-rail
+  floor, and below the dual floor, so this point also confirms that the 5 V
+  rail is refused or shed there.
+
+**THE FLOORS ARE NOT A TEST INCONVENIENCE AND MAY NOT BE OVERRIDDEN TO MAKE
+THIS TABLE SQUARE.**  If the worst-case accessory transient below 3.50 V is
+ever wanted as engineering data, it is taken with an **explicitly bounded bench
+image** that is built for that purpose, is labelled as such in the record, and
+**is not the release image and is never flashed to a shipped unit**.  No build
+that relaxes `kAccessorySingleRailFloorV` or `kAccessoryDualRailFloorV` may
+exist in the release tree; `demo_feature_contract` F6 refuses either constant
+below what it derives, and `firmware_hw_map_contract` H6 catches an edit to
+them.
+
+### Acceptance
+
+The absolute peak at `J1.40`/`J1.41`/`J1.42` must stay **below 3.300 V** and
+the absolute trough at `U1.2` **above 3.000 V**, both **after the measurement
+uncertainty is charged against the margin**.  Record the peak, the trough, the
+uncertainty budget, the acquisition method (A or B) and the unit ID.  A failure
+blocks that unit; **the designed lever is `C29`–`C32`**, which are 22 µF 1206
+X7R parts on existing lands — `SLVS916I` 8.2.2.3 sets **no upper limit** on
+output capacitance, so more capacitance is a **BOM value change with no PCB
+change**.  Do not widen the acceptance instead.
 
 **WHY THE DIVIDER IS WHERE IT IS.**  The window between the MCU's 3.0 V floor
 and the panel's 3.3 V absolute maximum is 300 mV and the rail's own tolerance
@@ -314,7 +385,32 @@ by that clause.  The release gate must preserve this exact acceptance marker
 
 ---
 
-## 8. Six substitution traps found while building this table
+## 7d. First-article acceptance items — the complete list (`R8-N05`, D-789)
+
+**THESE EXISTED BEFORE D-789 AND NOTHING GATHERED THEM.**  Each item was
+defined in whichever document raised it, so an assembler had to find six
+acceptance procedures in five files.  This table is the index; the normative
+text stays where it is.
+
+| item | what it accepts | where the procedure is | raised by |
+|---|---|---|---|
+| **`Q11-TEMP-01`** | backlight at 0 / 25 / 40 °C after soak, and the D-784 full-duty prime | §7a above | D-780 |
+| **`C-PWR-TRANSIENT-01`** | `+3V3` peak < 3.300 V at the panel pins and trough > 3.000 V at `U1.2`, DC-coupled or synchronised DC+AC, uncertainty charged against the margin | §7b below | D-788 / R7-N02, rewritten at D788-18 |
+| **`C-THERM-01`** | thermography at the 40 °C top of the declared ambient envelope with both accessory rails at their published budgets — the measurement of record for the **115.44 °C** BQ25185 junction and the `U11.2` narrow run | `audit_rail_ampacity.py`, `AQROOT_DEMO_FAB_HANDOFF.md` | D-788, re-based at D788-03 |
+| **`C-BAT-GATE-01`** | `ΔVGATE` and pass-pair drop at 2.35 A at `BAT_RAW` = 4.15 / 3.60 / 3.05 V — six numbers, whatever `Q2`/`Q3` ends up being | [`SOURCING_LEDGER.md`](SOURCING_LEDGER.md) | D-789 / `R8-N01` |
+| **`C-SPK-01`** | delivered speaker-lead insulation OD, then two sacrificial crimps pulled to destruction | [`OFF_BOARD_BOM.md`](OFF_BOARD_BOM.md) §7 | D-789 / D788-10 |
+| **`C-ADH-01`** | DOWSIL 3145 adhesion on the actual soldermask and the actual lead insulation, per lot, after the full 72 h hold | [`BATTERY_HARNESS.json`](BATTERY_HARNESS.json) | D-789 / D788-17 |
+| **`C-ACC-01`** | delivered Community-Port potential at the J5 mating interface, each 3.3 V contact **alone** and with the header fully mated | [`ACC_3V3_REINFORCEMENT.json`](ACC_3V3_REINFORCEMENT.json) | D-789 / D788-02 |
+| **`C-ACC-02`** | the two routed `ACC_3V3_SW` contact resistances (79.0 / 224.4 mΩ expected) | [`ACC_3V3_REINFORCEMENT.json`](ACC_3V3_REINFORCEMENT.json) | D-789 / D788-16 |
+| **J4 fit / pull / thermal** | battery pigtail hole fit, retention and thermal acceptance | [`BATTERY_HARNESS.json`](BATTERY_HARNESS.json), §6 | D-781 / D-782 |
+
+**None of these is optional and none of them is a PCB-fabrication item.**  They
+are assembly and bring-up acceptance, and they are outstanding on every one of
+the first five boards.  The manufacturer's own CAM acceptance is separate again.
+
+---
+
+## 8. Eight substitution traps found while building this table
 
 **A loose keyword search against the JLC library returns a plausible wrong part more often than it
 returns nothing.** Every one of these would have shipped silently.
@@ -327,6 +423,8 @@ returns nothing.** Every one of these would have shipped silently.
 | `Q4`, `Q6`–`Q9` | onsemi `BSS138LT1G` | LRC **`LBSS138LT1G`** `C8490` | Different manufacturer — **and the genuine onsemi part has 762,522 in stock**, so there is no reason to accept it |
 | `L2`, `L4` | Würth `74438357010` | KOHERelec **`SPM4030-1R0M`** `C2761910` | Different manufacturer's inductor in a switching regulator |
 | `Q2`, `Q3` | onsemi `NTMD4820NR2G` | VBsemi **`NTMD4820NR2G-VB`** `C7525084` | Clone in the **battery reverse-polarity pass path**. The CTO ruling forbids silent substitution of power-path parts |
+| `Q2`, `Q3` (again) | a genuine SOIC-8 dual N-FET replacement | JLC attribute table: **`YJQ3622A`** `C5440262` — advertised as *2 N-channel, 30 V, `VGS(th)` 1 V, 3112 in stock* | **D-789 / `R8-N01`. ITS DATASHEET SAYS SINGLE N-CHANNEL IN DFN3.3×3.3.** It would not have fitted the land, let alone the topology. The catalogue attribute row was simply wrong, which is why the `Q2`/`Q3` selection criteria put *read the datasheet, not the catalogue row* first |
+| `J6` speaker crimp | JST **`SPH-004T-P0.5S`** (AWG #32–#28) | JST **`SPH-002T-P0.5S`** — same series, same housing, same catalogue page, carried in this repository from D-148 to D-788 | **D-789 / D788-10 + `R8-N02`. NOT A SEARCH RESULT — A MISREAD OF THE SOURCE.** The `ePH` catalogue's series header says *#32 to #24*; the CONTACT table says `SPH-002T-P0.5S` is **#30 to #24, OD 0.8–1.5 mm** and `SPH-004T-P0.5S` is **#32 to #28, OD 0.5–0.9 mm**. The fitted AWG #32 lead was outside the fitted contact in **both** dimensions, and the two contacts take **different crimp tooling** |
 
 **Each of these is now recorded in the schematic symbol itself**, so the warning travels with the
 design instead of living only in this file.

@@ -1,0 +1,1204 @@
+                                                                                        TCA4307
+                                                                             ZHCSLQ0 – AUGUST 2020
+
+       TCA4307 具有阻塞总线恢复功能的热插拔 I2C 总线和 SMBus 缓冲器
+                                                   空闲情况为止），而不会在板卡上发生总线争用的情
+1 特性
+                                                   况。当建立连接时，该器件可提供双向缓冲，从而使背
+• 支持 I2C 总线信号的双向数据传输                               板及板卡电容保持隔离。在插入过程中，会对 SDA 和
+• 工作电源电压范围为 2.3V 至 5.5V                            SCL 线路预充电至 1V，从而有效减小对器件的寄生电
+• -40°C 至 125°C 的 TA 环境空气                          容充电所需的电流。
+  温度范围
+                                                   TCA4307 具 有 阻 塞 总 线 恢 复 功 能 ， 当 它 检 测 到
+• 具有自动总线恢复功能的阻塞总线恢复
+                                                   SDAOUT 或 SCLOUT 处 于 低 电 平 状 态 大 约 40ms
+• 对所有 SDA 和 SCL 线路的 1V 预充电可防止带电
+                                                   时，将自动断开总线。总线断开之后，该器件会在
+  板插入过程中发生损坏
+• 可适应标准模式及快速模式 I2C 器件                              SCLOUT 上自动生成多达 16 个脉冲，以尝试复位使总
+• 支持时钟展宽、仲裁及同步                                     线保持低电平的器件。
+• 断电高阻抗 I2C 引脚                                     当 I2C 总线空闲时，可通过将 EN 引脚设置为低电平将
+2 应用                                               TCA4307 置于关断模式，从而降低功耗。当 EN 被拉
+                                                   高时，TCA4307 将恢复正常运行。该器件还包括一个
+•   服务器                                            开漏 READY 输出引脚，该引脚负责在背板与板卡侧相
+•   企业交换                                           连时发出指示信号。当 READY 引脚为高电平时，
+•   电信交换设备                                         SDAIN 和 SCLIN 被连接至 SDAOUT 和 SCLOUT。当
+•   基站
+                                                   两侧断开时，READY 引脚为低电平。
+•   工业自动化设备
+                                                                    器件信息
+3 说明
+                                                         器件型号        封装(1)     封装尺寸（标称值）
+TCA4307 是一款热插拔 I2C 总线缓冲器，支持将 I/O                   TCA4307      VSSOP (8)      3.00mm × 3.00mm
+卡插入带电背板中，而不会损坏数据和破坏时钟线路。
+                                                   (1)   如需了解所有可用封装，请参阅数据表末尾的可订购产品附
+控制电路可防止背板侧 I2C 线路（输入）与板卡侧 I2C
+                                                         录。
+线路（输出）相连接（直到背板上出现停止命令或总线
+
+
+
+                                              8
+                                             VCC
+
+                      SCLIN     3                          2    SCLOUT
+
+
+
+
+                      SDAIN     6                          7    SDAOUT
+
+
+
+                                1                          5
+                                    ENABLE         READY
+                                             GND
+                                               4
+
+
+                                       简化版原理图
+
+
+
+
+    本文档旨在为方便起见，提供有关 TI 产品中文版本的信息，以确认产品的概要。有关适用的官方英文版本的最新信息，请访问
+    www.ti.com，其内容始终优先。TI 不保证翻译的准确性和有效性。在实际设计之前，请务必参考最新版本的英文版本。
+                                                         English Data Sheet: SCPS270
+TCA4307
+ZHCSLQ0 – AUGUST 2020                                                                                                                                              www.ti.com.cn
+
+
+                                                                         Table of Contents
+1 特性................................................................................... 1         8.2 Functional Block Diagram......................................... 10
+2 应用................................................................................... 1         8.3 Feature Description...................................................11
+3 说明................................................................................... 1         8.4 Device Functional Modes..........................................11
+4 Revision History.............................................................. 2              9 Application and Implementation.................................. 13
+5 Pin Configuration and Functions...................................3                             9.1 Application Information............................................. 13
+  Pin Functions.................................................................... 3             9.2 Typical Application.................................................... 13
+6 Specifications.................................................................. 4            10 Power Supply Recommendations..............................17
+  6.1 Absolute Maximum Ratings ....................................... 4                          10.1 Power Supply Best Practices..................................17
+  6.2 ESD Ratings .............................................................. 4                10.2 Power-on Reset Requirements...............................17
+  6.3 Recommended Operating Conditions ........................4                                11 Layout........................................................................... 18
+  6.4 Thermal Information ...................................................4                    11.1 Layout Guidelines................................................... 18
+  6.5 Electrical Characteristics ............................................5                    11.2 Layout Example...................................................... 19
+  6.6 Timing Requirements ................................................. 6                   12 Device and Documentation Support..........................20
+  6.7 Switching Characteristics ...........................................6                      12.1 Receiving Notification of Documentation Updates..20
+  6.8 Typical Characteristics................................................ 8                   12.2 支持资源..................................................................20
+7 Parameter Measurement Information............................ 9                                 12.3 Trademarks............................................................. 20
+8 Detailed Description......................................................10                    12.4 静电放电警告.......................................................... 20
+  8.1 Overview................................................................... 10              12.5 术语表..................................................................... 20
+
+
+
+4 Revision History
+注：以前版本的页码可能与当前版本的页码不同
+                          DATE                                                       REVISION                                                      NOTES
+                      August 2020                                                           *                                                  Initial release.
+
+
+
+
+2       Submit Document Feedback                                                                                                  Copyright © 2021 Texas Instruments Incorporated
+
+                                                                       Product Folder Links: TCA4307
+                                                                                                                                           TCA4307
+www.ti.com.cn                                                                                                               ZHCSLQ0 – AUGUST 2020
+
+
+5 Pin Configuration and Functions
+
+
+                                                      EN         1                 8         VCC
+
+                                                  SCLOUT         2                 7         SDAOUT
+
+                                                   SCLIN         3                 6         SDAIN
+
+                                                    GND          4                 5        RE ADY
+
+
+
+                                                               No t to scale
+
+                                              图 5-1. 8-Pin VSSOP, DGK Package (Top View)
+
+Pin Functions
+               PIN
+                                         I/O                                                DESCRIPTION
+ NAME                  NO.
+                                                   Active-high chip enable pin. If EN is low, the TCA4307 is in a low current mode. It also
+                                                   disables the rise-time accelerators, disables the bus pre-charge circuitry (after the initial
+ EN                      1                I        power up), drives READY low, isolates SDAIN from SDAOUT and isolates SCLIN from
+                                                   SCLOUT. EN should be high (at VCC) for normal operation. Connect EN to VCC if this
+                                                   feature is not being used.
+ SCLOUT                  2               I/O       Serial clock output. Connect this pin to the SCL bus on the card.
+ SCLIN                   3               I/O       Serial clock input. Connect this pin to the SCL bus on the backplane.
+ GND                     4                -        Supply ground
+                                                   Connection flag/rise-time accelerator control. Ready is low when either EN is low or the
+ READY                   5               O         start-up sequence has not been completed. READY goes high when EN is high and start-up
+                                                   is complete. Connect a 10-kΩ resistor from this pin to VCC to provide the pull-up current.
+ SDAIN                   6               I/O       Serial data input. Connect this pin to the SDA bus on the backplane.
+ SDAOUT                  7               I/O       Serial data output. Connect this pin to the SDA bus on the card.
+                                                   Supply Power. Main input power supply from backplane. This is the supply voltage for the
+                                                   devices on the backplane I2C buses. Connect pull-up resistors from SDAIN and SCLIN (and
+ VCC                     8                -
+                                                   also from SDAOUT and SCLOUT) to this supply. It is recommended to place a bypass
+                                                   capacitor of 0.1 μF close to this pin for best results.
+
+
+
+
+Copyright © 2021 Texas Instruments Incorporated                                                                    Submit Document Feedback          3
+                                                           Product Folder Links: TCA4307
+TCA4307
+ZHCSLQ0 – AUGUST 2020                                                                                                             www.ti.com.cn
+
+
+6 Specifications
+6.1 Absolute Maximum Ratings
+Over operating free-air temperature range (unless otherwise noted)(1)
+                                                                                                                 MIN           MAX       UNIT
+                  VCC                                                                                            –0.5             7       V
+    Input
+                  SDAIN, SCLIN, SDAOUT, SCLOUT                                                                   –0.5             7       V
+    Voltage
+                  EN, READY                                                                                      –0.5             7       V
+    IIK           Input clamp current                                  VI < 0                                                  –50       mA
+    IOK           Output clamp current                                 VO < 0                                                  –50       mA
+                                                                       SDAIN, SDAOUT, SCLIN, SCLOUT,
+    IO            Continuous output current                                                                                     ±50      mA
+                                                                       EN, READY
+    ICC           Continuous current through VCC or GND                                                                        ±100      mA
+    TJ            Maximum junction temperature                                                                                 130        °C
+    Tstg          Storage temperature                                                                            –65           150        °C
+
+(1)        Stresses beyond those listed under Absolute Maximum Rating may cause permanent damage to the device. These are stress ratings
+           only, which do not imply functional operation of the device at these or any other conditions beyond those indicated under
+           Recommended Operating Condition. Exposure to absolute-maximum-rated conditions for extended periods may affect device
+           reliability.
+
+6.2 ESD Ratings
+                                                                                                                         VALUE           UNIT
+                                                                       Human body model (HBM), per ANSI/ESDA/
+                                                                                                                         ±3500
+                                                                       JEDEC JS-001, all pins(1)
+    V(ESD)        Electrostatic discharge                                                                                                 V
+                                                                       Charged device model (CDM), per JEDEC
+                                                                                                                         ±1000
+                                                                       specification JESD22-C101, all pins(2)
+
+(1)        JEDEC document JEP155 states that 500-V HBM allows safe manufacturing with a standard ESD control process
+(2)        JEDEC document JEP157 states that 250-V CDM allows safe manufacturing with a standard ESD control process
+
+6.3 Recommended Operating Conditions
+Over operating free-air temperature range (unless otherwise noted)
+                                                                                                                        MIN      MAX      UNIT
+    VCC         Supply voltage                                                                                           2.3       5.5
+    VI          Input voltage range                                             EN input                                  0        5.5
+                                                                                                                                             V
+    VIO         Input/output voltage range                                      SDAIN, SCLIN, SDAOUT, SCLOUT              0        5.5
+    VO          Output voltage range                                            READY                                     0        5.5
+    TA          Ambient temperature                                                                                     –40       125      °C
+
+
+6.4 Thermal Information
+                                                                                                       TCA4307
+                                        THERMAL METRIC(1)                                                DGK                          UNIT
+                                                                                                         8 Pin
+    RθJA                Junction-to-ambient thermal resistance                               177.1                                    °C/W
+    RθJC(top)           Junction-to-case (top) thermal resistance                            64.5                                     °C/W
+    RθJB                Junction-to-board thermal resistance                                 99.6                                     °C/W
+    ΨJT                 Junction-to-top characterization parameter                           9.5                                      °C/W
+    ΨJB                 Junction-to-board characterization parameter                         97.9                                     °C/W
+    RθJC(bot)           Junction-to-case (bottom) thermal resistance                         N/A                                      °C/W
+
+(1)        For more information about traditional and new thermal metrics, see the Semiconductor and IC Package Thermal Metrics application
+           report.
+
+
+
+4          Submit Document Feedback                                                                   Copyright © 2021 Texas Instruments Incorporated
+
+                                                            Product Folder Links: TCA4307
+                                                                                                                          TCA4307
+www.ti.com.cn                                                                                               ZHCSLQ0 – AUGUST 2020
+
+
+6.5 Electrical Characteristics
+Over operating free-air temperature range (unless otherwise noted). Typical specifications are at TA = 25 °C, VCC = 3.3 V,
+unless otherwise noted.
+                      PARAMETER                                    TEST CONDITIONS               MIN      TYP      MAX     UNIT
+ POWER SUPPLY
+                                                      VCC = 5.5V
+ ICC         Supply current                           SDAIN, SCLIN = 0V                                    2.5      4.5    mA
+                                                      SDAOUT, SCLOUT = 10k RPU
+                                                     EN = 0 V
+                                                     SDAIN, SCLIN, SDAOUT, SCLOUT = 0V
+             Supply current in shutdown mode through or VCC
+ ISD                                                                                                        10       30     µA
+             the VCC pin(1)                          READY pin = Hi-Z
+                                                     EN pulled low after bus connection event
+                                                     (disable precharge)
+             Under voltage lockout (rising)           EN = VCC                                             2.1              V
+ UVLO
+             Under voltage lockout (falling)          READY = 10 kΩ to VCC                                   2              V
+ START-UP CIRCUITRY
+ VPRE        Pre-charge voltage                       SDA, SCL = Hi-Z                             0.8        1      1.2     V
+ RISE-TIME ACCELERATORS
+                                                      Position transition on SDA, SCL
+ IPU         RTA pull-up current(2)                   VSDA/SCL = 0.6 V, Slew rate = 1.25 V/µs.      2        5             mA
+                                                      VCC = 3.3 V
+ INPUT-OUTPUT CONNECTION
+                                                      SDA/SCL pins = 90% VCC, EN = VCC,
+ ILI         Input pin leakage                        GND                                           -1                1     µA
+                                                      SDA/SCL pins = 10% VCC, EN = GND
+             Input-output offset voltage (SCLIN to
+ VOS         SCLOUT, SCLOUT to SCLIN and SDAIN        RPU for SDA/SCL = 10 kΩ                               60      100    mV
+             to SDAOUT, SDAOUT to SDAIN
+                                                      EN = VCC, READY = VCC, Bus
+ II_RDY      Ready pin leakage                                                                      -1                1     µA
+                                                      connected
+ DIGITAL IO THRESHOLD
+                                                                                                 0.7 ×
+ VIH         High-level input voltage                 EN                                                           VCC
+                                                                                                  VCC
+                                                                                                                  0.3 ×
+ VIL         Low-level input voltage                  EN                                            0
+                                                                                                                   VCC
+                                                      SDAIN, SCLIN, SDAOUT, SCLOUT                                          V
+                                                      IOL = 4 mA                                          0.15      0.4
+ VOL         Low-level output voltage                 VIN = 0.1 V
+                                                      READY
+                                                                                                    0               0.4
+                                                      IOL = 3 mA
+ DYNAMIC CHARACTERISTICS
+                                                      VEN = 0 V or VCC
+ CIN (EN)    EN input capacitance                                                                          1.6        4
+                                                      f = 400 kHz
+ CIO                                                  VREADY = 0 V or VCC
+             READY output capacitance                                                                        7       10     pF
+ (READY)                                              f = 400 kHz
+ CIO (SDA/                                            VPIN = 0 V or VCC
+             SDA/SCL pin capacitance                                                                         5       10
+ SCL)                                                 f = 400 kHz
+ STUCK BUS RECOVERY
+ tSTUCKBU
+             Stuck bus timer                                                                       25       40       65     ms
+ S
+
+ fSB_SCLO
+             Stuck bus recovery clock frequency                                                   5.5      8.5       14    kHz
+ UT
+
+
+
+
+Copyright © 2021 Texas Instruments Incorporated                                                      Submit Document Feedback       5
+                                                     Product Folder Links: TCA4307
+TCA4307
+ZHCSLQ0 – AUGUST 2020                                                                                                                   www.ti.com.cn
+
+6.5 Electrical Characteristics (continued)
+Over operating free-air temperature range (unless otherwise noted). Typical specifications are at TA = 25 °C, VCC = 3.3 V,
+unless otherwise noted.
+                             PARAMETER                                       TEST CONDITIONS                    MIN        TYP        MAX      UNIT
+                     Low level output during stuck bus clock
+    VOL                                                         IOL = 4 mA                                         0                    0.4      V
+                     output
+
+(1)          In shutdown mode there will also be current flowing from VCC through the ready pin as this pin is pulled down to indicate the bus is
+             disconnected.
+(2)          Determined by design, not tested in production.
+
+6.6 Timing Requirements
+                                                                                                                MIN       NOM         MAX      UNIT
+    fSCL_MAX         Maximum SCL clock frequency                                                                400                             kHz
+    tBUF (1)         Bus free time between a STOP and START condition                                            1.3                             µs
+    tHD;STA    (1)   Hold time for a repeated START condition                                                    0.6                             µs
+    tSU;STA (1) Set-up time for a repeated START condition                                                       0.6                             µs
+    tSU;STO    (1)   Set-up time for a STOP condition                                                            0.6                             µs
+    tHD;DAT (1) Data hold time                                                                                     0                             ns
+    tSU;DAT    (1)   Data set-up time                                                                           100                              ns
+    tLOW (1)         LOW period of the SCL clock                                                                 1.3                             µs
+    tHIGH (1)        HIGH period of the SCL clock                                                                0.6                             µs
+                                                                                                              20 ×
+    tf (1)           Fall time of both SDA and SCL signals                                                 (VCC/5.5                    300       ns
+                                                                                                                 V)
+                                                                                                              20 ×
+    tr (1)           Rise time of both SDA and SCL signals                                                 (VCC/5.5                    300       ns
+                                                                                                                 V)
+
+(1)          These are system-level timing specs and are dependent upon bus capacitance and pull up resistor value. It is up to the system
+             designer to ensure they are met
+
+6.7 Switching Characteristics
+Over operating free-air temperature range (unless otherwise noted). Typical specifications are at TA = 25 °C, VCC = 3.3 V,
+unless otherwise noted.
+                             PARAMETER                                       TEST CONDITIONS                    MIN        TYP        MAX      UNIT
+    START-UP CIRCUITRY
+    tPRECHAR                                                    SDA,SCL = Hi-Z
+                     Time from VCC to precharge enabled                                                                      15          60      µs
+    GE                                                          EN = VCC, GND
+                                                                VCC transition from 0V to VCC
+    tEN              Time from VPOR to digital being ready      Time from VPORR to earliest stop bit                         35          95      µs
+                                                                recongized
+                                                                SDA,SCL = 10 kΩ to VCC
+    tIDLE            Bus idle time to READY active              EN = VCC                                                     95        150       µs
+                                                                Measured at 0.5 × VCC
+                                                                SDA,SCL = 10 kΩ to VCC
+    tDISABLE         Time from EN high to low to READY low      READY = 10 kΩ to VCC                                         30        200       ns
+                                                                Measured at 0.5 × VCC
+                                                                SDA,SCL = 10 kΩ to VCC
+                     SDAIN to READY delay after stop
+    tSTOP                                                       READY = 10 kΩ to VCC                                        1.2           2      µs
+                     condition
+                                                                Measured at 0.5 × VCC
+                                                                SDA,SCL = 10 kΩ to VCC
+    tREADY           SCLOUT/SDAOUT to READY                     READY = 10 kΩ to VCC                                        0.8         1.5      µs
+                                                                Measured at 0.5 × VCC
+    INPUT-OUTPUT CONNECTION
+
+
+
+6            Submit Document Feedback                                                                       Copyright © 2021 Texas Instruments Incorporated
+
+                                                                Product Folder Links: TCA4307
+                                                                                                                      TCA4307
+www.ti.com.cn                                                                                           ZHCSLQ0 – AUGUST 2020
+
+6.7 Switching Characteristics (continued)
+Over operating free-air temperature range (unless otherwise noted). Typical specifications are at TA = 25 °C, VCC = 3.3 V,
+unless otherwise noted.
+                      PARAMETER                             TEST CONDITIONS                 MIN       TYP      MAX     UNIT
+                                                  RPU for SDA/SCL = 10 kΩ
+ tPLZ        Low to high propagation delay        CL = 100 pF per pin                                    0       10     ns
+                                                  Measured at 0.5 × VCC
+                                                  RPU for SDA/SCL = 10 kΩ
+ tPZL        High to low propagation delay        CL = 100 pF per pin                                   70      150     ns
+                                                  Measured at 0.5 × VCC
+
+
+
+
+Copyright © 2021 Texas Instruments Incorporated                                                 Submit Document Feedback        7
+                                                  Product Folder Links: TCA4307
+TCA4307
+ZHCSLQ0 – AUGUST 2020                                                                                                                                                                                      www.ti.com.cn
+
+6.8 Typical Characteristics
+                         4                                                                                                                     4
+                                                                                               2.3 V                                                          -40 °C
+                                                                                               2.5 V                                                          25 °C
+                                                                                               3.3 V                                                          85 °C
+                        3.5                                                                    5V                                             3.5             125 °C
+                                                                                               5.5 V
+
+
+                         3                                                                                                                     3
+          ICC (mA)
+
+
+
+
+                                                                                                                               ICC (mA)
+                        2.5                                                                                                                   2.5
+
+
+
+                         2                                                                                                                     2
+
+
+
+                        1.5                                                                                                                   1.5
+
+
+
+                         1                                                                                                                     1
+                         -40       -15     10       35      60             85            110       130                                              2         2.5       3       3.5      4     4.5   5       5.5
+                                                 Temperature (°C)                                                                                                                 VCC (V)
+
+                                 图 6-1. ICC vs Temperature                                                                                                          图 6-2. ICC vs VCC
+                        200                                                                                                                   200
+                                   -40 C                                                                                                                      -40 C
+                                   25 C                                                                                                                       25 C
+                        175        85 C                                                                                                       175             85 C
+                                   105 C                                                                                                                      105 C
+                                   125 C                                                                                                                      125 C
+                        150                                                                                                                   150
+
+
+                        125                                                                                                                   125
+                                                                                                                               VO - VI (mV)
+           VO-VI (mV)
+
+
+
+
+                        100                                                                                                                   100
+
+
+                         75                                                                                                                    75
+
+
+                         50                                                                                                                    50
+
+
+                         25                                                                                                                    25
+
+
+                          0                                                                                                                     0
+                           0.5      1      1.5       2       2.5            3            3.5           4                                         0.5            1       1.5      2       2.5    3    3.5      4
+                                                      IOL (mA)                                                                                                                    IOL (mA)
+
+        图 6-3. VOS vs IOL (VCC = 2.3 V, VI = 0 V)                                                                              图 6-4. VOS vs IOL (VCC = 3.3 V, VI = 0 V)
+                                                                                   200
+                                                                                                 -40 C
+                                                                                                 25 C
+                                                                                   175           85 C
+                                                                                                 105 C
+                                                                                                 125 C
+                                                                                   150
+
+
+                                                                                   125
+                                                                    VO - VI (mV)
+
+
+
+
+                                                                                   100
+
+
+                                                                                   75
+
+
+                                                                                   50
+
+
+                                                                                   25
+
+
+                                                                                    0
+                                                                                     0.5          1        1.5   2       2.5           3                3.5         4
+                                                                                                                  IOL (mA)
+
+                                                                    图 6-5. VOS vs IOL (VCC = 5.5 V, VI = 0 V)
+
+
+
+
+8    Submit Document Feedback                                                                                                                                               Copyright © 2021 Texas Instruments Incorporated
+
+                                                                                           Product Folder Links: TCA4307
+                                                                                                                         TCA4307
+www.ti.com.cn                                                                                                ZHCSLQ0 – AUGUST 2020
+
+
+7 Parameter Measurement Information
+                                    SDAn/SCLn
+
+                                                        tEN
+
+                                       ENABLE
+
+                                                                  tIDLE(READY)                 tDIS
+
+                                         READY
+
+
+                                              图 7-1. Timing for tEN, tIDLE(READY), and tDIS
+
+                                        SDAIN
+
+
+                                        SCLIN
+                                      SCLOUT
+                                      SDAOUT
+                                                           tEN
+
+                                      ENABLE
+
+                                                                                       tSTOP
+
+                                       READY
+
+                                                        图 7-2. Timing for tSTOP
+
+
+
+
+Copyright © 2021 Texas Instruments Incorporated                                                       Submit Document Feedback       9
+                                                       Product Folder Links: TCA4307
+TCA4307
+ZHCSLQ0 – AUGUST 2020                                                                                              www.ti.com.cn
+
+
+8 Detailed Description
+8.1 Overview
+The TCA4307 is a hot-swappable I2C bus buffer that supports I/O card insertion into a live backplane without
+corruption of the data and clock buses. Control circuitry prevents the backplane from being connected to the
+card until a stop command or bus idle condition occurs on the backplane without bus contention on the card.
+When the connection is made, this device provides bidirectional buffering, keeping the backplane and card
+capacitances isolated. During insertion, the SDA and SCL lines are pre-charged to 1 V to minimize the current
+required to charge the parasitic capacitance of the device.
+The TCA4307 has stuck bus recovery, which will automatically disconnect the bus if it detects that SDAOUT or
+SCLOUT are low for about 40 ms. Once the bus is disconnected, the device will automatically generate up to 16
+pulses on SCLOUT to attempt to free the bus from the device which is holding it low.
+When the I2C bus is idle, the TCA4307 is put into shutdown mode by setting the EN pin low. When EN is high,
+the TCA4307 resumes normal operation. It also includes an open drain READY output pin, which indicates that
+the backplane and card sides are connected together. When READY is high, the SDAIN and SCLIN are
+connected to SDAOUT and SCLOUT. When the two sides are disconnected, READY is low.
+8.2 Functional Block Diagram
+
+              TCA4307
+                                       5 mA                         5 mA
+
+                           SLEW RATE                                 SLEW RATE
+                           DETECTOR                                  DETECTOR
+                                                                                                                       VCC
+
+                                       BACKPLANE-TO-CARD
+ SDAIN                                    CONNECTION
+                                                                                                                       SDAOUT
+                  CONNECT                                                  CONNECT                  PDSDA
+                                        CONNECT
+                                         ENABLE
+                             100 kO                                    100 kO
+                                                1 VOLT
+                                              PRECHARGE
+                             100 kO                                    100 kO
+                                       5 mA                         5 mA
+
+                           SLEW RATE                                 SLEW RATE
+                           DETECTOR                                  DETECTOR
+
+                                       BACKPLANE-TO-CARD
+ SCLIN                                    CONNECTION
+                                                                                                                       SCLOUT
+                  CONNECT                                                  CONNECT                  PDSCL
+
+
+
+
+                                                                                                       0.55*VCC/
+                                                                                                       0.45*VCC
+
+               0.55*VCC/                                                   PDSCL
+               0.45*VCC                              STOP BIT AND                      CONNECT
+                                                       BUS IDLE            PDSDA
+               UVLO                                   DETECTION                                                        READY
+ENABLE          100 µs                                PLUS STUCK                                                       GND
+                Delay                                BUS RECOVERY
+
+
+                                                                                                    CONNECT
+
+
+
+
+10   Submit Document Feedback                                                        Copyright © 2021 Texas Instruments Incorporated
+
+                                              Product Folder Links: TCA4307
+                                                                                                          TCA4307
+www.ti.com.cn                                                                                 ZHCSLQ0 – AUGUST 2020
+
+
+8.3 Feature Description
+8.3.1 Hot bus insertion
+During a hot bus insertion event, the TCA4307 keeps the buses disconnected to ensure that no data corruption
+occurs on either bus. Once the buses are idle or a stop bit on the IN side is detected, the TCA4307 connects the
+buses and READY goes high.
+8.3.2 Pre-charge voltage
+Both the SDA and SCL pins feature a 1-V pre-charge circuit through an internal 100 kΩ resistor prior to the pins
+being connected to an I2C bus. This feature helps minimize disruptions as a result of a hot bus insertion event.
+8.3.3 Rise time accelerators
+The TCA4307 features a rise time accelerator (RTA) on all I2C pins that during a positive bus transition, switches
+on a current source to quickly slew the bus pins high. This allows the use of weaker pull-up resistors, which can
+lower VOLs and lower power system level power consumption.
+8.3.4 Bus ready output indicator
+The READY pin is an open drain output that provides an indicator to whether the buses are connected and
+ready for traffic. This pin is pulled low when the connection between IN/OUT is high impedance. Once the bus is
+idle or a stop condition on the IN side is detected, and the connection between IN/OUT is made, the READY pin
+is released and pulled high by an external pull-up resistor, signaling that it is ready for traffic.
+8.3.5 Powered-off high impedance for I2C and I/O pins
+When the supply voltage is below the UVLO threshold, the I2C and digital I/O pins are a high impedance state to
+prevent leakage currents from flowing through the device. When the EN pin is taken low, the device enters an
+isolation state, presenting a high impedance on all bus pins and pulling the READY pin low.
+8.3.6 Supports clock stretching and arbitration
+The TCA4307 supports full clock stretching, and arbitration without lock up.
+8.3.7 Stuck bus recovery
+When SDAOUT or SCLOUT is low, an internal timer is started. After the timer expires, the TCA4307 will
+disconnect the IN/OUT buses and then clock the SCLOUT pin in an attempt to unstick the bus, generating up to
+16 clock pulses. Once the clock pulses are complete, the device will generate a stop bit and release the bus.
+The device will then look for the same connection requirements as described in 节 8.4.2 before reconnecting the
+IN/OUT buses.
+8.4 Device Functional Modes
+8.4.1 Start-up and precharge
+When the TCA4307 first receives power on the VCC pin, either during power-up or during live insertion, it starts
+in an under voltage lockout (UVLO) state, ignoring any activity on the SDA and SCL pins until VCC rises above
+UVLO.
+Once the ENABLE pin goes high, the ‘Stop Bit and Bus Idle’ detect circuit is enabled and the device enters
+the bus idle state.
+When VCC rises above UVLO, the precharge circuitry will activate, which biases the bus pins on both sides to
+about 1 V through an internal 100 kΩ resistor.
+8.4.2 Bus idle
+After the Stop Bit and Bus Idle detect circuits are enabled the device enters the bus idle state. The pre-charge
+circuitry becomes active and forces 1 V through 100 kΩ nominal resistors to the SCL and SDA pins. The pre-
+charge circuitry minimizes the voltage differential seen by the SCL/SDA pins during a hot insertion event. This
+minimizes the amount of disturbance seen by the I/O card.
+
+
+Copyright © 2021 Texas Instruments Incorporated                                        Submit Document Feedback      11
+                                                  Product Folder Links: TCA4307
+TCA4307
+ZHCSLQ0 – AUGUST 2020                                                                                         www.ti.com.cn
+
+The device waits for the SDAIN and SCLIN pins to be high for the bus idle time or a STOP condition to be
+observed on the IN pins. The SDAOUT and SCLOUT pins must be high and the SDAIN and SCLIN pins must
+meet 1 of the 2 qualifiers (idle timer or a STOP condition) before connecting SDAIN to SDAOUT and SCLIN to
+SCLOUT. Once the bus connections have been made, the pre-charge circuitry is disabled and the device enters
+the bus active state.
+8.4.3 Bus active
+In the bus active mode, the I2C IN and OUT pins are connected, and the input is passed bi-directionally from
+IN/OUT side of the bus to the OUT/IN side respectively. The buses remain connected until the EN pin is taken
+low.
+When the bus is connected, the driven-low side of the device is reflected on the opposite side, but with a small
+offset voltage. For example, if the input is pulled low to 100 mV, the output side will be pulled to roughly 160 mV.
+This offset allows the device to determine which side is currently being driven and avoid getting stuck low.
+For the TCA4307, once a stuck bus event is detected (about 40 ms), the bus disconnects, even if EN is high.
+8.4.4 Bus stuck
+Once a stuck bus condition has been detected on SDAOUT or SCLOUT, the TCA4307 disconnects the bus and
+begins a sequence to attempt to recover the bus. First, the OUT side is disconnected from the IN side. READY
+will go low to signal that the bus is disconnected. Second, the TCA4307 will begin generating clocks on
+SCLOUT, up to 16. It will constantly monitor the state of SDAOUT to see if it has been released. Clocking will
+continue until 16 clocks are generated, or the SDAOUT releases. Once the SDAOUT releases, the TCA4307 will
+stop clocking and will generate a stop condition to terminate the recovery sequence. The last step is to go back
+to the bus-idle state and wait for an idle bus on both sides or a stop condition to ensure it's safe to connect the
+bus.
+
+
+
+
+12   Submit Document Feedback                                                     Copyright © 2021 Texas Instruments Incorporated
+
+                                             Product Folder Links: TCA4307
+                                                                                                                                                                     TCA4307
+www.ti.com.cn                                                                                                                                 ZHCSLQ0 – AUGUST 2020
+
+
+9 Application and Implementation
+                                                                                     Note
+        Information in the following applications sections is not part of the TI component specification, and TI
+        does not warrant its accuracy or completeness. TI’s customers are responsible for determining
+        suitability of components for their purposes. Customers should validate and test their design
+        implementation to confirm system functionality.
+
+9.1 Application Information
+The typical application is to place the TCA4307 on the card that is being inserted or connected to a live bus,
+rather than being placed on the live bus. The reason for this is to provide maximum benefit by ensuring that the
+bus stays disconnected until an idle condition or stop condition is seen.
+9.2 Typical Application
+                                   VCC 3.3 V
+
+                                                                                                   C1
+                                                                                                   0.1 µF
+                            R1             R2                  R3                        8                  R4             R5            R6
+                            10 k           10 k                10 k                                         10 k           10 k          10 k
+                                                                                    VCC
+
+                     SCLIN                                         3                                         2                            SCLOUT
+
+
+
+
+                     SDAIN                                         6                                         7                            SDAOUT
+
+
+
+                                                                   1                                         5
+                                                                        ENABLE                     READY
+                                                C2                                  GND
+                                                0.1 µF                                    4
+
+
+                                                           图 9-1. General Application Schematic
+
+9.2.1 Design Requirements
+9.2.1.1 Series connections
+It is possible to have multiple buffers in series, but care must be taken when designing a system.
+
+                                   2-wire system 1                                                                         2-wire system 2
+ VCC = 5 V                                                                                                                                                             VCC
+
+                                                               C1                                                          C1
+              R4     R4             R4                         0.1 µF        R4      R4      R4      R4                    0.1 µF            R4               R4     R4
+              10 k   10 k           10 k                                     10 k    5.1 k 5.1 k    10 k                                     10 k             10 k   10 k
+                          C1                                                                                                                        C1
+                     0.01 µF               EN            VCC     SDAOUT                                     SDAOUT   VCC            EN              0.01 µF
+
+     SDA1                                  SDAIN                 SCLOUT                                     SCLOUT             SDAIN                                   SDA1
+
+     SCL1                                  SCLIN         GND       READY                                    READY    GND        SCLIN                                   SCL1
+ To other                                                                                                                                                      To other
+ system 1 devices                                                                                                                                              system 2 devices
+                                                                                        Long
+                                                                                    distance bus
+
+
+                                                               图 9-2. Series Buffer Connections
+
+
+
+Copyright © 2021 Texas Instruments Incorporated                                                                                     Submit Document Feedback                      13
+                                                                        Product Folder Links: TCA4307
+TCA4307
+ZHCSLQ0 – AUGUST 2020                                                                                           www.ti.com.cn
+
+Each buffer adds approximately 60 mV of offset. Maximum offset (VOFFSET) should be considered. The low level
+at the signal origination end is dependent upon bus load. The I2C-bus specification requires that a 3 mA current
+produces no larger than a 0.4 V VOL. As an example, if the VOL at the master is 0.1 V, and there are 4 buffers in
+series (each adding about 60 mV), then the VOL at the farthest buffer is approximately 0.34 V. This device has a
+rise time accelerator (RTA) that activates at 0.6 V. With great care, a system with 4 buffers may work, but as the
+VOL moves up, it may be possible to trigger the RTA, creating a false edge on the clock.
+It is recommended to limit the number of buffers in series to two, and to keep the load light to minimize the offset.
+Another special consideration of series connections is the effect on round-trip-delay. This is the sum of
+propagation delays through the buffers and any effects on rise time. It is possible that fast mode speeds (400
+kHz) are not possible due to delays and bus loading.
+9.2.1.2 Multiple connections to a common node
+It is possible to have multiple buffers in connect to a common node, but care must be taken when designing a
+system.
+
+
+
+                                     Buffer A                            Buffer B
+
+                 Master                                                                         Slave B
+                                                   Common
+                                                      node
+                                                                         Buffer C
+
+                                                                                                Slave C
+
+                                     图 9-3. Connections to Common Node
+
+It is important to try and avoid common node architectures. The multiple nodes sharing a common node can
+create glitches if the output voltage from a master slave device plus the offset voltage of the buffer are high
+enough to trip the RTA. Also keep in mind that the VOS must be crossed in order for a device to begin to regulate
+the other side.
+Consider a system with three buffers connected to a common node and communication between the Master and
+Slave B that are connected at either end of buffer A and buffer B in series as shown in 图 9-3. Consider if the
+VOL at the input of buffer A is 0.3 V and the VOL of Slave B (when acknowledging) is 0.36 V with the direction
+changing from Master to Slave B and then from Slave B to Master. Before the direction change the user should
+observe VIL at the input of buffer A of 0.3 V and its output, the common node, is ~0.36 V. The output of buffer B
+and buffer C would be ~0.42 V, but Slave B is driving 0.4 V, so the voltage at Slave B is 0.4 V. The output of
+buffer C is ~0.52 V. When the Master pull-down turns off, the input of buffer A rises and so does its output, the
+common node, because it is the only part driving the node. The common node rises to ~0.5 V before the buffer B
+output turns on, if the pull-up is strong the node may bounce. If the bounce goes above the threshold for the
+rising edge accelerator ~0.6 V, the accelerators on both buffer A and buffer C will ﬁre, contending with the output
+of buffer B. The node on the input of buffer A goes high as will the input node of buffer C. After the common
+node voltage is stable for a while, the rising edge accelerators turn off, and the common node returns to ~0.5 V
+because the buffer B is still on. The voltage at both the Master and Slave C nodes then fall to ~0.6 V until Slave
+B turned off. This does not cause a failure on the data line as long as the return to 0.5 V on the common node
+(~0.56 V at the Master and Slave C) occurred before the data setup time. If this were the SCL line, the parts on
+buffer A and buffer C would see a false clock rather than a stretched clock, which causes a system error.
+9.2.1.3 Propagation delays
+The delay for a rising edge is determined by the combined pull-up current from the bus resistors and the rise
+time accelerator current source and the effective capacitance on the lines. If the pull-up currents are the same,
+
+14   Submit Document Feedback                                                       Copyright © 2021 Texas Instruments Incorporated
+
+                                             Product Folder Links: TCA4307
+                                                                                                                                                         TCA4307
+www.ti.com.cn                                                                                                                              ZHCSLQ0 – AUGUST 2020
+
+any difference in rise time is directly proportional to the difference in capacitance between the two sides. The
+tPLH may be negative if the output capacitance is less than the input capacitance and would be positive if the
+output capacitance is larger than the input capacitance, when the currents are the same.
+The tPHL can never be negative because the output does not start to fall until the input is below 0.7 × VCC, the
+output turn on has a non-zero delay, and the output has a limited maximum slew rate. Even if the input slew rate
+is slow enough that the output catches up, it would still lag the falling voltage of the input by the offset voltage.
+The maximum tPHL occurs when the input is driven low with a very fast slew rate and the output is still limited by
+its turn-on delay and the falling edge slew rate.
+9.2.2 Detailed Design Procedure
+The system pull-up resistors must be strong enough to provide a positive slew rate of 1.25 V/µs on the SDA and
+SCL pins, in order to activate the boost pull-up currents during rising edges. Choose maximum resistor value
+using the formula given in 方程式 1.
+
+                     VCC (MIN ) F 0.6
+      R Q 800 × 103 l                p
+                             C                                                                                                                                (1)
+
+where R is the pull-up resistor value in Ω, VCC(MIN) is the minimum VCC voltage in volts, and C is the equivalent
+bus capacitance in picofarads (pF).
+In addition, regardless of the bus capacitance, always choose RPU ≤ 65.7 kΩ for V CC = 5.5 V, RPU ≤ 45 kΩ for
+VCC = 3.3 V, and RPU ≤ 33 kΩ for VCC = 2.5 V. The start-up circuitry requires logic HIGH voltages on SDAOUT
+and SCLOUT to connect the backplane to the card, and these pull-up values are needed to overcome the pre-
+charge voltage.
+9.2.3 Application Curves
+
+           50                                                                             70
+    RPU                                                                            RPU
+    (k )             RMAX = 45 k                                                   (k )             RMAX = 65.7 k
+           40                                                                             60
+
+
+
+           30                                                                             50
+                    Rise time = 300 ns(2)
+
+           20                                                                             40
+                    Rise time = 20 ns                                                              Rise time = 300 ns(2)
+
+           10                                                                             30
+                                        RMIN = 1 k
+
+
+           0                                                                              20
+                0              100                   200   300              400
+                                                                  Cb (pF)                          Rise time = 20 ns
+
+                        Test                                                              10
+                                                                                                                    RMIN = 1.7 k
+                        Test
+                        Test                                                              0
+                                                                                               0             100                   200        300               400
+       图 9-4. Example Bus Requirements for 3.3 V                                                                                                    Cb (pF)
+
+                       Systems                                                    图 9-5. Example Bus Requirements for 5 V Systems
+
+
+
+
+Copyright © 2021 Texas Instruments Incorporated                                                                                     Submit Document Feedback          15
+                                                                 Product Folder Links: TCA4307
+ TCA4307
+ ZHCSLQ0 – AUGUST 2020                                                                                                                   www.ti.com.cn
+
+  9.2.4 Typical Application on a Backplane
+  As shown in 图 9-6, the TCA4307 is used in a backplane connection. The TCA4307 is placed on the I/O
+  peripheral card and connects the I2C devices on the card to the backplane safely upon a hot insertion event.
+  Note that if the I/O cards were plugged directly into the backplane, all of the backplane and card capacitances
+  would add directly together, making rise time and fall time requirements difficult to meet. Placing a bus buffer on
+  the edge of each card; however, isolates the card capacitance from the backplane. For a given I/O card, the
+  TCA4307 drives the capacitance of everything on the card and the backplane must drive only the capacitance of
+  the bus buffer, which is less than 10 pF, the connector, trace, and all additional cards on the backplane.
+                         Backplane
+           Backplane     Connector
+                                                                  Power Supply              I/O Peripheral Card 1
+  VCC
+                                                                    Hot Swap                                  C1
+          R1      R2                                                             R3                           0.1 µF      R4      R5       R6
+                                     Staggered Connector
+          10 k    10 k                                                           10 k                                     10 k    10 k     10 k
+
+BD_SEL                                                                              EN              VCC        SDAOUT                             CARD1_SDA
+
+  SDA                                                                               SDAIN         TCA4307      SCLOUT                             CARD1_SCL
+
+   SCL                                                                              SCLIN           GND          READY
+
+
+
+
+                                                                  Power Supply              I/O Peripheral Card 2
+                                                                    Hot Swap                                  C3
+                                                                                 R7                           0.1 µF      R8      R9       R10
+                                     Staggered Connector
+
+
+
+
+                                                                                 10 k                                     10 k    10 k     10 k
+
+
+                                                                                    EN              VCC        SDAOUT                             CARD2_SDA
+
+                                                                                    SDAIN         TCA4307      SCLOUT                             CARD2_SCL
+
+                                                                                    SCLIN           GND          READY
+
+
+
+
+                                                                  Power Supply              I/O Peripheral Card N
+                                                                    Hot Swap                                  C5
+                                                                                 R11                          0.1 µF      R12     R13      R14
+                                     Staggered Connector
+
+
+
+
+                                                                                 10 k                                     10 k    10 k     10 k
+
+
+                                                                                    EN              VCC        SDAOUT                             CARDN_SDA
+
+                                                                                    SDAIN         TCA4307      SCLOUT                             CARDN_SCL
+
+                                                                                    SCLIN           GND          READY
+
+
+
+
+                                        图 9-6. Backplane Application Schematic
+
+  9.2.4.1 Design Requirements
+  There are a few considerations when using these hot swap buffers. It is NOT recommended to place the
+  TCA4307 on the backplane connector as it cannot isolate the cards from one another which will possibly result in
+  disturbing on-going I2C transactions. Instead, place the TCA4307 on the I/O peripheral card to maximize benefit.
+  9.2.4.2 Detailed Design Procedure
+  The design procedure is the same as outlined in 节 9.2.2.
+
+
+
+
+ 16      Submit Document Feedback                                                                         Copyright © 2021 Texas Instruments Incorporated
+
+                                                           Product Folder Links: TCA4307
+                                                                                                                  TCA4307
+www.ti.com.cn                                                                                       ZHCSLQ0 – AUGUST 2020
+
+
+10 Power Supply Recommendations
+10.1 Power Supply Best Practices
+In order for the pre-charge circuitry to dampen the effect of hot-swap insertion of the TCA4307 into an active I2C
+bus, VCC must be applied before the SCL and SDA pins make contact to the main I2C bus. This is essential
+when the TCA4307 is placed on the add-on card circuit board, as in 节 9.2.4. Although the pre-charge circuitry
+exists on both the -IN and -OUT side, the example in 节 9.2.4 shows SCLIN and SDAIN connecting to the main
+bus. The supply voltage to VCC can be applied early by ensuring that the VCC and GND pin contacts are
+physically longer than the contacts for the SCLIN and SDAIN pins. If a voltage supervisor will also be used to
+control the voltage supply on the add-on card, additional delay will exist before the 1 V pre-charge voltage is
+present on the SCL and SDA pins.
+10.2 Power-on Reset Requirements
+In order to ensure that the part starts up in the correct state, it is recommended that the power supply ramp rates
+meet the below requirements.
+                                              表 10-1. Recommended supply ramp rates
+                         Parameter                                 MIN                MAX                  UNIT
+       tRT                Rise rate                                 0.1               1000                  ms
+       tFT                 Fall rate                                0.1               1000                  ms
+
+
+
+
+Copyright © 2021 Texas Instruments Incorporated                                              Submit Document Feedback   17
+                                                      Product Folder Links: TCA4307
+TCA4307
+ZHCSLQ0 – AUGUST 2020                                                                                          www.ti.com.cn
+
+
+11 Layout
+11.1 Layout Guidelines
+For printed circuit board (PCB) layout of the TCA4307, common PCB layout practices should be followed but
+additional concerns related to high-speed data transfer such as matched impedances and differential pairs are
+not a concern for I2C signal speeds. In all PCB layouts, it is a best practice to avoid right angles in signal traces,
+to fan out signal traces away from each other upon leaving the vicinity of an integrated circuit (IC), and to use
+thicker trace widths to carry higher amounts of current that commonly pass through power and ground traces.
+By-pass and de-coupling capacitors are commonly used to control the voltage on the VCC pin, using a larger
+capacitor to provide additional power in the event of a short power supply glitch and a smaller capacitor to filter
+out high frequency ripple. These capacitors should be placed as close to the TCA4307 as possible. These best
+practices are shown in 节 11.2.
+The layout example provided in 节 11.2 shows a 4 layer board, which is preferable for boards with higher density
+signal routing. On a 4 layer PCB, it is common to route signals on the top and bottom layer, dedicate one internal
+layer to a ground plane, and dedicate the other internal layer to a power plane. In a board layout using planes or
+split planes for power and ground, vias are placed directly next to the surface mount component pad which
+needs to attach to VCC or GND and the via is connected electrically to the internal layer or the other side of the
+board. Vias are also used when a signal trace needs to be routed to the opposite side of the board, shown in the
+节 11.2 for the VCC side of the resistor connected to the EN pin; however, this routing and via is not necessary if
+VCC and GND are both full planes as opposed to the partial planes depicted.
+
+
+
+
+18   Submit Document Feedback                                                      Copyright © 2021 Texas Instruments Incorporated
+
+                                             Product Folder Links: TCA4307
+                                                                                                                              TCA4307
+www.ti.com.cn                                                                                                     ZHCSLQ0 – AUGUST 2020
+
+
+11.2 Layout Example
+
+
+
+                                                                                 To add-on card
+
+
+
+
+               LEGEND
+            Power or GND Plane
+                                                                                        By-pass/De-coupling
+        VIA to Power Plane                                                                   capacitors
+        VIA to GND Plane
+        VIA to opposite layer
+
+
+
+                                                              1            EN                       VCC          8
+
+
+
+                                                                                        TCA4307
+                                                              2            SCLOUT                 SDAOUT         7
+
+                                                              3            SCLIN                   SDAIN         6
+
+                                                              4            GND                     READY         5
+
+
+
+
+                                                                                  To backplane
+                                                                                 (main I2C bus)
+
+
+                                                  图 11-1. Layout example for TCA4307
+
+
+
+
+Copyright © 2021 Texas Instruments Incorporated                                                            Submit Document Feedback   19
+                                                        Product Folder Links: TCA4307
+TCA4307
+ZHCSLQ0 – AUGUST 2020                                                                                      www.ti.com.cn
+
+
+12 Device and Documentation Support
+12.1 Receiving Notification of Documentation Updates
+To receive notification of documentation updates, navigate to the device product folder on ti.com. In the upper
+right corner, click on Alert me to register and receive a weekly digest of any product information that has
+changed. For change details, review the revision history included in any revised document.
+12.2 支持资源
+TI E2E™ 支持论坛是工程师的重要参考资料，可直接从专家处获得快速、经过验证的解答和设计帮助。搜索现有
+解答或提出自己的问题，获得所需的快速设计帮助。
+链接的内容由各个贡献者“按原样”提供。这些内容并不构成 TI 技术规范，并且不一定反映 TI 的观点；请参阅
+TI 的使用条款。
+12.3 Trademarks
+TI E2E™ is a trademark of Texas Instruments.
+所有商标均为其各自所有者的财产。
+12.4 静电放电警告
+               静电放电 (ESD) 会损坏这个集成电路。德州仪器 (TI) 建议通过适当的预防措施处理所有集成电路。如果不遵守正确的处理
+               和安装程序，可能会损坏集成电路。
+               ESD 的损坏小至导致微小的性能降级，大至整个器件故障。精密的集成电路可能更容易受到损坏，这是因为非常细微的参
+               数更改都可能会导致器件与其发布的规格不相符。
+
+
+12.5 术语表
+ TI 术语表             本术语表列出并解释了术语、首字母缩略词和定义。
+
+Mechanical, Packaging, and Orderable Information
+The following pages include mechanical, packaging, and orderable information. This information is the most
+current data available for the designated devices. This data is subject to change without notice and revision of
+this document. For browser-based versions of this data sheet, refer to the left-hand navigation.
+
+
+
+
+20   Submit Document Feedback                                                  Copyright © 2021 Texas Instruments Incorporated
+
+                                           Product Folder Links: TCA4307
+                                                                                                                                                     PACKAGE OPTION ADDENDUM
+
+
+www.ti.com                                                                                                                                                                                              10-Dec-2020
+
+
+PACKAGING INFORMATION
+
+           Orderable Device             Status    Package Type Package Pins Package             Eco Plan            Lead finish/           MSL Peak Temp          Op Temp (°C)                   Device Marking       Samples
+                                          (1)                  Drawing        Qty                   (2)             Ball material                  (3)                                                (4/5)
+                                                                                                                         (6)
+
+            TCA4307DGKR                ACTIVE        VSSOP          DGK        8     2500     RoHS & Green          NIPDAUAG             Level-1-260C-UNLIM         -40 to 125            4307
+
+(1)
+   The marketing status values are defined as follows:
+ACTIVE: Product device recommended for new designs.
+LIFEBUY: TI has announced that the device will be discontinued, and a lifetime-buy period is in effect.
+NRND: Not recommended for new designs. Device is in production to support existing customers, but TI does not recommend using this part in a new design.
+PREVIEW: Device has been announced but is not in production. Samples may or may not be available.
+OBSOLETE: TI has discontinued the production of the device.
+
+(2)
+   RoHS: TI defines "RoHS" to mean semiconductor products that are compliant with the current EU RoHS requirements for all 10 RoHS substances, including the requirement that RoHS substance
+do not exceed 0.1% by weight in homogeneous materials. Where designed to be soldered at high temperatures, "RoHS" products are suitable for use in specified lead-free processes. TI may
+reference these types of products as "Pb-Free".
+RoHS Exempt: TI defines "RoHS Exempt" to mean products that contain lead but are compliant with EU RoHS pursuant to a specific EU RoHS exemption.
+Green: TI defines "Green" to mean the content of Chlorine (Cl) and Bromine (Br) based flame retardants meet JS709B low halogen requirements of <=1000ppm threshold. Antimony trioxide based
+flame retardants must also meet the <=1000ppm threshold requirement.
+
+(3)
+      MSL, Peak Temp. - The Moisture Sensitivity Level rating according to the JEDEC industry standard classifications, and peak solder temperature.
+
+(4)
+      There may be additional marking, which relates to the logo, the lot trace code information, or the environmental category on the device.
+
+(5)
+   Multiple Device Markings will be inside parentheses. Only one Device Marking contained in parentheses and separated by a "~" will appear on a device. If a line is indented then it is a continuation
+of the previous line and the two combined represent the entire Device Marking for that device.
+
+(6)
+   Lead finish/Ball material - Orderable Devices may have multiple material finish options. Finish options are separated by a vertical ruled line. Lead finish/Ball material values may wrap to two
+lines if the finish value exceeds the maximum column width.
+
+
+Important Information and Disclaimer:The information provided on this page represents TI's knowledge and belief as of the date that it is provided. TI bases its knowledge and belief on information
+provided by third parties, and makes no representation or warranty as to the accuracy of such information. Efforts are underway to better integrate information from third parties. TI has taken and
+continues to take reasonable steps to provide representative and accurate information but may not have conducted destructive testing or chemical analysis on incoming materials and chemicals.
+TI and TI suppliers consider certain information to be proprietary, and thus CAS numbers and other limited information may not be available for release.
+
+In no event shall TI's liability arising out of such information exceed the total purchase price of the TI part(s) at issue in this document sold by TI to Customer on an annual basis.
+
+
+
+
+                                                                                                Addendum-Page 1
+                                                                   PACKAGE MATERIALS INFORMATION
+
+www.ti.com                                                                                                              23-Aug-2020
+
+
+
+TAPE AND REEL INFORMATION
+
+
+
+
+*All dimensions are nominal
+             Device           Package Package Pins   SPQ       Reel   Reel   A0           B0     K0     P1     W     Pin1
+                               Type Drawing                  Diameter Width (mm)         (mm)   (mm)   (mm)   (mm) Quadrant
+                                                               (mm) W1 (mm)
+     TCA4307DGKR              VSSOP    DGK     8     2500      330.0     12.4      5.3   3.4    1.4    8.0    12.0    Q1
+
+
+
+
+                                                           Pack Materials-Page 1
+                                                                PACKAGE MATERIALS INFORMATION
+
+www.ti.com                                                                                                           23-Aug-2020
+
+
+
+
+*All dimensions are nominal
+             Device           Package Type   Package Drawing   Pins     SPQ     Length (mm)   Width (mm)   Height (mm)
+      TCA4307DGKR               VSSOP             DGK           8       2500       364.0        364.0         27.0
+
+
+
+
+                                                        Pack Materials-Page 2
+                                        重要声明和免责声明
+TI 提供技术和可靠性数据（包括数据表）、设计资源（包括参考设计）、应用或其他设计建议、网络工具、安全信息和其他资源，不保证没
+有瑕疵且不做出任何明示或暗示的担保，包括但不限于对适销性、某特定用途方面的适用性或不侵犯任何第三方知识产权的暗示担保。
+这些资源可供使用 TI 产品进行设计的熟练开发人员使用。您将自行承担以下全部责任：(1) 针对您的应用选择合适的 TI 产品，(2) 设计、验
+证并测试您的应用，(3) 确保您的应用满足相应标准以及任何其他安全、安保或其他要求。这些资源如有变更，恕不另行通知。TI 授权您仅可
+将这些资源用于研发本资源所述的 TI 产品的应用。严禁对这些资源进行其他复制或展示。您无权使用任何其他 TI 知识产权或任何第三方知
+识产权。您应全额赔偿因在这些资源的使用中对 TI 及其代表造成的任何索赔、损害、成本、损失和债务，TI 对此概不负责。
+TI 提供的产品受 TI 的销售条款 (https:www.ti.com.cn/zh-cn/legal/termsofsale.html) 或 ti.com.cn 上其他适用条款/TI 产品随附的其他适用条款
+的约束。TI 提供这些资源并不会扩展或以其他方式更改 TI 针对 TI 产品发布的适用的担保或担保免责声明。IMPORTANT NOTICE
+
+                      邮寄地址：上海市浦东新区世纪大道 1568 号中建大厦 32 楼，邮政编码：200122
+                           Copyright © 2021 德州仪器半导体技术（上海）有限公司
+

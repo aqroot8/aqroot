@@ -188,12 +188,44 @@ GPIO19/20); there is **no USB-UART bridge IC** (by design). See §9, §16.
 > typical transconductance.  That is not a production guarantee.  `Q11` is now
 > **Vishay `SQ2364EES-T1_BE3`**, same SOT-23 and same 1=G / 2=S / 3=D pinout,
 > with **60 V `VDS`** against the board's 39 V fault ceiling and a published
-> **`RDS(on)` MAX 0.245 Ω at `VGS = 1.5 V`, `ID = 2 A`**.  AQROOT holds
-> `VGS = 2.396 V`, **0.896 V above** that characterized low-gate point; with
-> `C85 = 1 µF`, the worst retained RC envelope remains above 1.5 V for
-> **≈62 ms**, versus the TPS61169's **2.5 ms max** shutdown time.  F5 directly
-> gates these facts and includes a negative control that puts the D-779 AO3422
-> back and requires it to fail.
+> **`RDS(on)` MAX 0.245 Ω at `VGS = 1.5 V`, `ID = 2 A`**.
+>
+> **D-789 / D788-11 + `R8-N06` RE-DERIVES THE HELD GATE AND CHANGES `D14`.**  This
+> paragraph carried **`VGS = 2.396 V`, 0.896 V above** the conduction point and an
+> **≈62 ms** envelope.  **Both were 3.3 V-rail numbers** and D-788 moved the rail down
+> to keep the ILI9488 panel inside its own absolute maximum — the hand-carried-constant
+> failure Round-8 raised as D788-11.  The held gate is **DERIVED** now, by
+> `demo_feature_contract` F5, as `VOH(MIN) − VF(D14)` evaluated at the rail's own
+> heavy-load minimum: Espressif's ratiometric `0.8 × VDD` gives **2.455526 V**, less the
+> diode's LOWEST published forward maximum plus a declared 2 mV/K allowance to the 0 °C
+> prototype endpoint.
+>
+> **At the D-788 rail the `1N4148WS` no longer qualifies.**  Its lowest published forward
+> maximum is **715 mV at `IF` = 1 mA**, which lands `VGS` at **1.486526 V — 13.5 mV BELOW**
+> the 0.245 Ω row above, and there is no lower-current row to bound it with.  **`D14` is
+> therefore a Diodes Incorporated `BAT54WS-7-F`**: `VFM` ≤ **240 mV at `IF` = 0.1 mA**,
+> which is *below* the ~9 µA this node actually draws and rises monotonically with `IF`,
+> so it is a **guaranteed bound and not an extrapolation**.
+>
+> **AQROOT therefore holds `VGS = 1.961526 V`, 461.5 mV above** the characterized low-gate
+> point.  With `C85 = 1 µF` the worst retained envelope stays inside the published
+> conduction region for **20.74 ms** and the gate cannot open at all before **59.37 ms**,
+> against the TPS61169's **2.5 ms max** shutdown — an ordering margin of **23.7×**.
+> `BAT54WS-7-F` is the **same MPN, LCSC code and SOD-323 land this board already fits at
+> `D10`/`D11`/`D12`**, so no new part, feeder, footprint or copper is added.
+>
+> **AND THE SCHOTTKY IMPROVES TRUE-OFF RATHER THAN THREATENING IT.**  D-752 rejected a
+> Schottky on the grounds that its reverse leakage would hold the gate up.  **That
+> argument's sign is wrong:** pin 1 of the symbol is `K` and the board wires it to
+> `BL_DISC_G`, so the **cathode is on the gate**; in the true-off state `CTRL` is driven
+> low, `D14` is reverse-biased and its leakage flows **out of** the gate.  The only
+> current that can hold the gate up is `Q11`'s own `IGSS` ≤ 100 nA, which across `R132`
+> is **22.2 mV** against a `VGS(th)` **minimum** of 0.46 V — **20.7×**.
+>
+> F5 directly gates every one of these facts, computes the Schottky's reverse leakage as
+> a constant-current term beside `R132`'s exponential, and carries four negative controls
+> — including one that puts the D-779 AO3422 back and one that **refuses a silicon diode
+> in the charge path at this rail**.
 >
 > The 1.5 V `RDS(on)` row is specified at **25 °C unless otherwise noted**.
 > For the first five prototypes AQROOT therefore makes no unsupported all-temp
@@ -323,7 +355,14 @@ power/NFC review, and CTO decisions.
 > **This wording is D-098's own and is MANDATORY in accessory-facing
 > documentation.**
 >
-> ## **D-788 SUPERSEDES D-787 FOR THE CURRENT FIRST-FIVE ACCESSORY CONTRACT — OPTION A OWNER-APPROVED.**
+> ## **D-789 IS THE CURRENT FIRST-FIVE ACCESSORY CONTRACT.  D-788's HIGH-SIDE CORRECTION STANDS; ITS DELIVERED NUMBERS DO NOT.**
+>
+> *Everything in this block from here to the `D-787 SUPERSEDES D-775` heading is
+> CURRENT.  Everything after that heading is HISTORICAL: every D-787 and D-775
+> figure below it — the 3.135 V connector minimum, the 3.146366 V delivered
+> figure, the 28-AWG TP12→J5 reinforcement, the 68 mΩ RON and the 3.8094 V dual
+> requirement — is superseded by the block above and by D-789's re-derivation,
+> and is retained only to record what changed and why.*
 >
 > **THE FITTED DISPLAY'S ABSOLUTE MAXIMUM IS 3.3 V AND D-787's RAIL WAS ABOVE IT.**
 > The `ER-TFT035IPS-6` is an ILI9488 panel.  ILI Technology's own datasheet
@@ -363,45 +402,88 @@ power/NFC review, and CTO decisions.
 > publishes it only as plots — and is measured at first article as
 > `C-PWR-TRANSIENT-01`.
 >
-> ### **OWNER-APPROVED D-788 OPTION A — Community Port voltage/current contract**
->
+> ### **OWNER-APPROVED D-788 OPTION A — Community Port voltage/current contract, FROZEN AT D-789**
+
 > A rail whose maximum must stay under 3.3 V must sit nominally below 3.3 V, and
 > the Community Port is switched from that rail.  **The former 3.135 V
 > (3.3 V −5 %) connector minimum is unreachable at ANY current, including
 > zero**: the rail's own heavy-load minimum is 3.069408 V before a single
-> milliohm of delivery loss.  The port now guarantees:
+> milliohm of delivery loss.
 >
-> | condition | guaranteed voltage at the J5 mating interface |
+> **D-789 RE-DERIVES THE DELIVERED NUMBERS AND SUPERSEDES D-788's 2.95 V.**
+> Round-8 reproduced two defects in the D-788 delivery model and both are real.
+> `U20`'s `RON` was **interpolated** between two datasheet rows and called a
+> bound, when nothing guarantees the curve's shape (D788-01); and the return
+> network was priced with **four parallel ground contacts carrying only the
+> 3.3 V rail's current**, when the published usage permits a single jumper and
+> the 5 V rail's current comes back through the same contacts (D788-02).  Both
+> are corrected: `RON` is now the guaranteed maximum at the nearest published
+> row **at or below `U20`'s own input voltage** — the 1.8 V row's **116 mΩ**,
+> which needs only that `RON` falls as `VIN` rises — and the delivery is solved
+> over **every permitted wiring × load mode**.  The manual reinforcement lead
+> that D-788 fitted to `J5.3` is also **retired** (D788-07/08/09/16); see
+> DELIVERY below.
+>
+> **The guarantee is the worst permitted mode.**  Either duplicated 3.3 V
+> contact used **alone**, **one** mated ground contact, and the 5 V rail also
+> drawing its published 300 mA through that same ground:
+>
+> | condition, at the J5 mating interface | guaranteed voltage |
 > |---|---|
 > | no load | **3.069408 V** |
-> | 100 mA | **3.0408 V** |
-> | 200 mA | **3.0122 V** |
-> | 400 mA (the published budget) | **2.954962 V** |
+> | 400 mA, worst permitted wiring, 5 V rail also at 300 mA | **2.849642 V** |
+> | 400 mA, worst permitted wiring, 3.3 V rail alone | **2.860909 V** |
+> | 400 mA, **header fully mated** (both 3.3 V contacts, all four grounds), 5 V rail also at 300 mA | **2.982890 V** |
 >
-> The unloaded rail spans **3.069408 V** to **3.223012 V**.
+> **PUBLISHED MINIMUM: 2.84 V** — the worst mode, rounded DOWN onto a 10 mV
+> grid.  It is **DERIVED**, not asserted: `demo_feature_contract` F6 computes it
+> from the live board on every run and refuses a document that prints a
+> different figure.  The **fully mated** number is published beside it as an
+> explicit connection contract, and it is *better* than the 2.95 V D-788
+> published with a hand-soldered conductor fitted.
+>
+> The unloaded rail spans **3.069408 V** to **3.223012 V**; raw PWM is
+> **3.100334 / 3.145503 / 3.191022 V**.
+>
+> **WHAT THE PORT'S OWN SILICON NEEDS.**  The tightest published minimum supply
+> voltage among the parts the BOARD powers from `ACC_3V3_SW` is `U16`
+> `TCA4307DGKR` at **2.3 V** (TI `ZHCSLQ0` section 6.3, archived
+> `vendor/TI/ti-tca4307-zhcslq0-DGK0008A.pdf`).  The worst delivered mode clears
+> it by **549.6 mV**.
 >
 > **`ACC_3V3_SW` = 400 mA TOTAL and `ACC_5V_SW` = 300 mA TOTAL are UNCHANGED.**
 > The owner approved **D-788 OPTION A** on 2026-09-20: the switched accessory
-> rail is published as a **3.15 V-class rail** using the derived D-788 envelope,
-> with **2.95 V minimum at the J5 mating interface at the full 400 mA budget**.
-> No promised current capability is removed. Every Qwiic/STEMMA QT device AQROOT
-> has qualified operates at or below 2.7 V. A dedicated accessory buck-boost
-> solely to restore the former 3.135 V minimum is deferred to **REV-B**.
+> rail is published as an approximately **3.15 V-class rail** using the derived
+> envelope, and the exact figures were delegated to the final candidate — which
+> is this one.  No promised current capability is removed. Every Qwiic/STEMMA QT
+> device AQROOT has qualified operates at or below 2.7 V. A dedicated accessory
+> buck-boost is deferred to **REV-B**.
 >
 > **MEASUREMENT PLANE.**  The guaranteed voltage is the potential between the
 > `ACC_3V3_SW` contact and the `GND` contacts **at the J5 mating interface**.
 > The accessory's own plug, cable and connector are outside the guarantee.
 >
-> **DELIVERY.**  `J5.22` is delivered by routed copper alone (79.0 mΩ measured).
-> `J5.3`, whose routed path is 224.4 mΩ, carries **ONE** manual 28-AWG
-> reinforcement lead from `TP12.1` — D-787's two-conductors-on-one-pad
-> arrangement is retired.  Each duplicated contact is qualified **alone**.
+> **DELIVERY — THERE IS NO MANUAL CONDUCTOR ON THIS BOARD.**  Both contacts are
+> delivered by routed copper alone: `J5.22` at **79.0 mΩ** measured, `J5.3` at
+> **224.4 mΩ**.  D-787 added two hand-soldered 28-AWG leads, D-788 reduced that
+> to one, and **D-789 removes it**: Round-8 raised four independent findings
+> against the remaining lead — a tinned tip that cannot fit a 1.00 mm pad, an
+> insertion into a through-hole already filled by J5's 0.635 mm square tail, a
+> route starting inside `BATTERY_SHADOW` and crossing `RIB_R3`, and an
+> acceptance that cannot be measured because the board's own copper stays in
+> parallel with it.  It bought **70 mV** on one of two duplicated contacts.
+> `TP12`/`TP25` remain as test points and **nothing is soldered to them**.  Each
+> duplicated contact is qualified **alone**.
 >
 > ---
 >
-> **D-787 SUPERSEDES D-775 FOR THE CURRENT FIRST-FIVE ACCESSORY CONTRACT.**  *(HISTORICAL
-> from here to the end of this block — every D-787 number below is superseded by D-788
-> above.)*
+> **D-787 SUPERSEDES D-775 FOR THE CURRENT FIRST-FIVE ACCESSORY CONTRACT.**  *(**HISTORICAL**
+> from here to the end of this block — every D-787 number below is superseded by the
+> D-788/D-789 block above.  In particular: the **3.135 V** connector minimum is
+> **unreachable at any current** and is retired; the **3.146366 V** delivered figure is
+> retired; the **28-AWG TP12→J5 reinforcement leads are RETIRED** and no manual conductor
+> is fitted on this board; and U20's **68 mΩ** RON is retired for a guaranteed **116 mΩ**
+> at the nearest published row at or below its own input voltage.)*
 > The rail budgets themselves do **not** change: `ACC_3V3_SW` remains **400 mA
 > total** across J5 pins 3+22 and `ACC_5V_SW` remains **300 mA total** across
 > J5 pins 1+24. What changed is the proof that the board can actually deliver

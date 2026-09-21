@@ -1,178 +1,59 @@
 {
-  "decision": "D-788 / R7-D787-10 -- dimensioned, inspectable, single-conductor reinforcement",
-  "supersedes": "D-787 / R6-A01, which ran TWO 28 AWG conductors onto the single 1.00 mm TP12 pad, gave no dimensioned route, no anchor locations, no retention material, no cure or bend-radius rule, and no inspection criterion for any of them.",
-  "scope": "first-five manual accessory-voltage reinforcement; ONE conductor, ONE land, no PCB copper deletion or reroute",
-  "what_changed_and_why": "Round-7 found the D-787 instruction not repeatable. Two Alpha 2842/19 conductors at 0.686 mm OD cannot be laid side by side inside a 1.00 mm pad outline without overhang, and the record specified no route, no anchors and no bend radius. D-788 removes the problem instead of documenting it: J5.22's ROUTED copper alone is 79.0 mOhm measured (bounded at 90 mOhm), which is BETTER than any manual lead from TP12 or TP25 could be, so J5.22 needs no lead at all. Only J5.3, whose routed path is 224.4 mOhm, is reinforced -- by ONE conductor of the SAME already-sourced Alpha 2842/19 wire, on ONE 1.00 mm land, with a dimensioned route, named anchors, a stated retention material and cure, a bend-radius rule and a per-step inspection criterion.",
+  "decision": "D-789 / D788-07 + D788-08 + D788-09 + D788-16 -- THE MANUAL REINFORCEMENT CONDUCTOR IS RETIRED",
+  "manual_conductor_required": false,
+  "supersedes": "D-788 / R7-D787-10, which specified ONE Alpha 2842/19 28 AWG lead from TP12.1 to J5.3 with a dimensioned route, named adhesive anchors and a 25 mOhm acceptance; and D-787 / R6-A01 before it, which ran TWO conductors onto one 1.00 mm pad.",
+  "scope": "first-five manual accessory-voltage reinforcement: NONE.  /ACC_3V3_SW is delivered to BOTH J5 contacts by routed board copper alone.",
+  "why_it_is_retired": {
+    "summary": "Round-8 raised FOUR independent findings against this one lead, and every one of them is a property of the lead rather than of how it was written down.  The lead's entire electrical value was 70 mV of published minimum on ONE of two duplicated contacts.  A first-article build whose first priority is working on the first order does not buy 70 mV with four hand processes that cannot be qualified.",
+    "D788-07": "the TP12.1 joint was impossible as written -- 2.0 +/- 0.5 mm of exposed tinned tip cannot lie inside a 1.00 mm round pad outline.  A buildable lap joint would have needed a strip length, a tin length, a trim length, an insulation setback, and a clearance to the nearest foreign copper, all dimensioned and all qualified on a representative joint.",
+    "D788-08": "the J5.3 termination was unqualified and, in ideal geometry, impossible.  J5 is a Samtec SSQ-124-02-G-S-RA whose 0.635 mm SQUARE tail has a 0.898 mm diagonal in a nominal 1.02 mm drill; the remaining gap is 0.122 mm at the tightest and a 28 AWG conductor is 0.32 mm bare.  The instruction said to insert it anyway.",
+    "D788-09": "the routed corridor started inside BATTERY_SHADOW and crossed RIB_R3 while the record itself demanded 1.0 mm of clearance to both.  Closing it needed a toleranced route, joint and adhesive envelope in the enclosure's own datum, and possibly a rib change.",
+    "D788-16": "the >=25 mOhm acceptance could not be measured.  The board's own routed U20.5 -> J5.3 copper stays in parallel with the lead, so an endpoint Kelvin reading across the finished assembly passes with an over-limit lead behind it.  Isolating it needed a coupon measurement before final connection, or a de-embedding with its own uncertainty budget.",
+    "what_was_gained_instead": "removing the conductor removes all four at the root, removes an adhesive cure from the critical path of every board, removes a wire from the off-board BOM, and removes a hand joint from a 1.00 mm pad and an occupied through-hole.  What it costs is stated below, in full, and is published."
+  },
+  "electrical_consequence": {
+    "measured_routed_copper_mohm": {
+      "U20.5_to_J5.22": 79.033,
+      "U20.5_to_J5.3": 224.425,
+      "U20.5_to_TP12.1": 64.1,
+      "note": "measured off the live board by audit_rail_ampacity's own graph on every contract run; demo_feature_contract F6 bounds both delivery paths so a re-route cannot grow them silently."
+    },
+    "published_minimum_with_the_lead_V": 2.919947,
+    "published_minimum_without_it_V": 2.849642,
+    "cost_mV": 70.3,
+    "and_what_it_buys_back": "the guarantee is now quoted BOTH unconditionally and against an explicit connection contract.  Fully mated -- both duplicated +3V3 contacts and all four grounds, which is what a 24-way socket presents -- the port delivers 2.982890 V at the full published 400 mA with the 5 V rail also at its budget, which is BETTER than the 2.95 V D-788 published with the lead fitted.  The unconditional figure covers the individual-jumper usage the Community Port also permits.",
+    "floor_it_must_clear": "the tightest published minimum supply voltage among the parts the BOARD powers from /ACC_3V3_SW: U16 TCA4307DGKR, VCC 2.3 V MIN (TI ZHCSLQ0 section 6.3, archived vendor/TI/ti-tca4307-zhcslq0-DGK0008A.pdf).  Margin 549.6 mV."
+  },
   "source": {
     "reference": "TP12.1",
     "net": "/ACC_3V3_SW",
-    "note": "TP12 is downstream of U20 TPS22950-Q1, so the reinforcement does NOT bypass current limiting or the load-switch disconnect.",
-    "pad": "1.00 mm round SMD test pad on B.Cu at (60.000, 63.500). ONE conductor only. The D-787 two-conductor stacked joint is retired.",
-    "board_copper_from_U20": "U20.5 -> TP12.1 measured 64.1 mOhm on the released board; BOUNDED at 75 mOhm in demo_feature_contract F6 so a re-route cannot grow it silently."
+    "note": "TP12 and TP25 are RETAINED as test points on /ACC_3V3_SW, downstream of U20.  They carry no conductor in the first-five build and exist for bring-up measurement and for a future rework.  Nothing is soldered to them."
   },
-  "destinations": [
+  "destinations": [],
+  "not_reinforced": [
     {
       "reference": "J5.3",
       "net": "/ACC_3V3_SW",
-      "land": "J5 pin 3 through-hole land on B.Cu at (65.900, 15.080)",
-      "finished_lead_length_mm": {
-        "nominal": 78,
-        "min": 72,
-        "max": 86
-      },
-      "why_this_contact": "the routed U20.5 -> J5.3 path is 224.4 mOhm, the longest conductor on this rail"
-    }
-  ],
-  "not_reinforced": [
+      "routed_copper_measured_mohm": 224.425,
+      "routed_copper_bound_mohm": 240.0,
+      "why": "the longest conductor on this rail, and the one the retired lead existed for.  It is qualified ALONE, on routed copper, at the published 400 mA."
+    },
     {
       "reference": "J5.22",
       "net": "/ACC_3V3_SW",
-      "routed_copper_measured_mohm": 79.0,
+      "routed_copper_measured_mohm": 79.033,
       "routed_copper_bound_mohm": 90.0,
-      "why": "routed copper alone already beats any manual lead that could be run to it; adding one would create a second hand joint for no electrical gain"
+      "why": "routed copper alone always beat any manual lead that could be run to it."
     }
   ],
-  "wire": {
-    "manufacturer": "Alpha Wire",
-    "mpn": "2842/19 RD005",
-    "gauge_awg": 28,
-    "stranding": "19/40",
-    "conductor": "silver-plated copper",
-    "insulation": "PTFE",
-    "nominal_od_mm": 0.686,
-    "minimum_bend_radius_mm": 6.9,
-    "minimum_bend_radius_rule": "10 x finished outer diameter (0.686 mm), the standard PTFE hook-up rule; applied to EVERY bend in the routed path and checked with the enclosure closed",
-    "temperature_C": [
-      -60,
-      200
-    ],
-    "voltage_rating_Vrms": 250,
-    "nominal_dcr_ohm_per_1000ft_at_20C": 58,
-    "dcr_ohm_per_metre_at_20C": 0.19029,
-    "resistance_of_the_nominal_length_mohm": 14.8,
-    "primary_source": "Alpha Wire 2842/19 product specification",
-    "unchanged_from_D787": "SAME part, SAME reel, already carried by OFF_BOARD_BOM. D-788 does not re-source the wire; it removes the second conductor, dimensions the route and tightens the acceptance from 30 mOhm to 25 mOhm, which the part's own published 58 Ohm/1000 ft supports over the 78 mm nominal length."
-  },
-  "electrical_acceptance": {
-    "each_finished_lead_max_milliohm_at_room_temperature": 25,
-    "budget": "14.8 mOhm of nominal conductor at the part's own published 58 Ohm/1000 ft over the 78 mm nominal finished length, plus two solder joints and fixture; 25 mOhm is the pass/fail limit and is what demo_feature_contract F6 prices the delivery path at, heated by the same 65 K hot-copper coefficient as board copper. D-787's limit was 30 mOhm for a lead that had to share a pad; one conductor on its own land measures better and is held to it.",
-    "measurement": "4-wire/Kelvin preferred; otherwise lead-compensated milliohm measurement with fixture resistance recorded before and after. Record the measured value per board in the completion record.",
-    "current_contract_A_total": 0.4,
-    "note": "Each duplicated J5 3.3-V contact must independently satisfy the delivered-voltage contract because either contact may carry the full published 400 mA total rail budget. J5.22 satisfies it on routed copper; J5.3 satisfies it on board copper plus this lead."
-  },
-  "routing": {
-    "corridor": "TP12.1 (60.000, 63.500) -> south along the east-side Community-Port service corridor at x = 68.5 +/- 1.5 mm -> J5.3 land (65.900, 15.080). The corridor is the 3 mm strip between the J5 body and the east board edge; it carries no other harness.",
-    "waypoints_mm": [
-      {
-        "at": [
-          60.0,
-          63.5
-        ],
-        "what": "TP12.1 joint; the conductor leaves the pad heading east, flat against B.Cu"
-      },
-      {
-        "at": [
-          68.5,
-          62.0
-        ],
-        "what": "first bend, R >= 7.9 mm; enters the service corridor"
-      },
-      {
-        "at": [
-          68.5,
-          40.0
-        ],
-        "what": "mid-corridor anchor A1"
-      },
-      {
-        "at": [
-          68.5,
-          20.0
-        ],
-        "what": "second anchor A2, before the approach bend"
-      },
-      {
-        "at": [
-          65.9,
-          15.08
-        ],
-        "what": "J5.3 land; approach bend R >= 7.9 mm"
-      }
-    ],
-    "service_loop": "One 8 mm service loop between A2 and the J5.3 land, formed in the plane of the board so it adds no height. The loop exists so J5 can be reworked once without re-terminating the lead.",
-    "clearances_mm": {
-      "to_any_other_conductor_or_land": 1.0,
-      "to_the_NFC_antenna_and_tuning_area": 3.0,
-      "to_the_RF_coax_path": 2.0,
-      "to_BATTERY_SHADOW": 1.0,
-      "to_the_display_FPC_bend_corridor": 2.0,
-      "to_button_mechanics_and_enclosure_bosses_or_ribs": 1.0,
-      "to_the_J5_mating_volume": 1.0,
-      "above_B_Cu_profile_max": 1.6
-    }
-  },
   "retention": {
-    "material": "DOWSIL 3145 RTV adhesive/sealant, grey, MIL-A-46146 -- the SAME material already frozen for the J4 battery-harness strain relief at D-782, so the first-five build carries one adhesive and one cure.",
-    "primary_source": "hardware/demo/kicad/aqroot-demo/vendor/DOW/dowsil-3145-rtv-mil-a-46146-gray-11-1832-01-0323.pdf",
-    "anchor_locations_mm": [
-      {
-        "name": "A0",
-        "at": [
-          61.5,
-          63.5
-        ],
-        "what": "strain-relief bead over the TP12 joint and the first 2 mm of insulation; the bead must wet both the insulation and bare soldermask, and must NOT cover the joint fillet so it stays inspectable before the bead is applied"
-      },
-      {
-        "name": "A1",
-        "at": [
-          68.5,
-          40.0
-        ],
-        "what": "mid-corridor tack, 4 mm bead"
-      },
-      {
-        "name": "A2",
-        "at": [
-          68.5,
-          20.0
-        ],
-        "what": "pre-approach tack, 4 mm bead"
-      }
-    ],
-    "bead_size_mm": {
-      "length": 4.0,
-      "width": 2.0,
-      "height_max": 1.0
-    },
-    "cure": "tack-free 30 min at 25 C / 50 % RH; handling strength 4 h; FULL CURE 72 h before any pull test, thermal test or shipment. Cure at 25 +/- 5 C; do not accelerate with heat while the lead is under tension.",
-    "why_anchored": "the lead must never transfer J5 insertion/removal load, enclosure-close load or service load into the TP12 solder fillet"
+    "material": null,
+    "note": "no adhesive is applied for accessory-voltage reinforcement in the first-five build.  DOWSIL 3145 remains frozen for the J4 battery-harness strain relief ONLY (D-782), and its process hold is stated there."
   },
-  "joint_profile": {
-    "TP12.1": "tin the conductor tip to 2.0 +/- 0.5 mm of exposed strand, lay it flat and central inside the 1.00 mm pad outline, reflow ONCE. Finished fillet: fully wetted, concave, no exposed strand outside the pad, no overhang onto adjacent copper or soldermask, profile <= 1.50 mm above B.Cu.",
-    "J5.3": "insert the tinned tip into the J5.3 through-hole land from the rear (B.Cu) side alongside the existing header tail, reflow with the header tail; the barrel must show a wetted fillet on BOTH faces.",
-    "forbidden": "Do not solder to U20's SOT-23-6 pad. Do not re-heat a finished joint to add a second conductor -- there is no second conductor."
-  },
-  "sequence": [
-    "1. machine assembly, reflow and AOI complete; board electrically verified",
-    "2. cut the lead to the nominal finished length, strip and tin both tips",
-    "3. solder TP12.1 joint; inspect the fillet BEFORE any adhesive",
-    "4. solder J5.3 joint; inspect both faces of the barrel",
-    "5. measure the finished lead resistance and record it",
-    "6. lay the routed path to the waypoints; check every bend radius",
-    "7. apply A0, A1, A2 beads; form the service loop",
-    "8. cure 72 h",
-    "9. enclosure-close check and final inspection"
+  "first_article": [
+    "C-ACC-01: measure the delivered /ACC_3V3_SW potential AT THE J5 MATING INTERFACE, between the +3V3 contact under test and the mated ground contacts, at the full published 400 mA with the 5 V rail also at its published 300 mA.  Record it for J5.3 alone, for J5.22 alone, and for the fully mated header, against the three published figures.",
+    "C-ACC-02: record the routed U20.5 -> J5.3 and U20.5 -> J5.22 resistances on the first assembled board and compare them with the bounds demo_feature_contract F6 prices the rail at."
   ],
-  "inspection": [
-    "continuity TP12.1 to J5.3, and no continuity to any adjacent J5 contact",
-    "TP12 joint inside the 1.00 mm pad outline, fully wetted, no strand overhang, <= 1.50 mm profile above B.Cu -- inspected BEFORE the A0 bead",
-    "J5.3 barrel wetted on both faces",
-    "finished lead <= 25 mOhm at room temperature, value recorded per board",
-    "every bend radius >= 6.9 mm, measured against the routed path",
-    "all three adhesive beads present, within the stated bead size, fully cured",
-    "clearances in routing.clearances_mm satisfied with the enclosure CLOSED",
-    "full connector insertion and enclosure-close check with no pinching, no lead under tension, no lead in the J5 mating volume"
-  ],
-  "rationale": "The original routed ACC_3V3_SW path to J5.3 is approximately 224 mOhm from U20 output. The reinforcement makes the guaranteed-delivery path for that contact U20 -> bounded U20-to-TP12 copper -> measured manual lead -> J5.3, while retaining U20 current limiting and OFF isolation. J5.22 is delivered by routed copper alone. demo_feature_contract F6 reads this record, prices BOTH contacts independently and separately proves off the live netlist that TP12.1, J5.3 and J5.22 are all on /ACC_3V3_SW. audit_rail_ampacity independently qualifies the ROUTED copper alone at the worst-case limiter current, so neither conductor of the parallel pair is allowed to lean on the other."
+  "rev_b": "a dedicated Community-Port regulator, already deferred to REV-B by the owner decision of 2026-09-20, supersedes this question entirely: it removes the delivery drop rather than compensating for it, and it is the reason a hand-soldered conductor is not worth qualifying for five boards.",
+  "rationale": "U20 TPS22950-Q1 current limiting and OFF isolation remain in series with both contacts and are unchanged.  demo_feature_contract F6 prices BOTH duplicated contacts independently over every permitted ground-contact count and both permitted load states, proves off the live netlist that J5.3 and J5.22 are on /ACC_3V3_SW, and DERIVES the published minimum from the worst of those modes.  audit_rail_ampacity independently qualifies the routed copper at the worst-case limiter current."
 }

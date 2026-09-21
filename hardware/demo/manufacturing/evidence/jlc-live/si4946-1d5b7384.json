@@ -1,0 +1,1473 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-21T03:03:35Z",
+ "keyword": "SI4946",
+ "page_size": 25,
+ "pages": 2,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Vgs",
+     "attribute_value_name": "±20V"
+    },
+    {
+     "attribute_name_en": "Configuration",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "22nC@30V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "100pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "9A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "60V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "120pF"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "45mΩ@4.5V"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "979pF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "2.5V"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "2W"
+    }
+   ],
+   "componentBrandEn": "TECH PUBLIC",
+   "componentCode": "C3040622",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SI4946BEY",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.4493,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.3581,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.3191,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2719,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.2426,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.2295,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "SOP-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2206241830_TECH-PUBLIC-SI4946BEY_C3040622.pdf",
+   "describe": "-55℃~+150℃ 100pF 120pF 2 N-Channel 2.5V 22nC@30V 2W 45mΩ@4.5V 60V 979pF 9A ±20V SOP-8 MOSFETs ROHS",
+   "erpComponentName": "SI4946BEY",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_tech-public-si4946bey_C3040622.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 794
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "1.92nF"
+    },
+    {
+     "attribute_name_en": "Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1.4V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "50nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "116pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "6.5A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "60V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "155pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "2.1W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "32mΩ@10V"
+    }
+   ],
+   "componentBrandEn": "HXY MOSFET",
+   "componentCode": "C42401392",
+   "componentLibraryType": "expand",
+   "componentModelEn": "HSI4946CDYT1GE3",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.4916,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.3907,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.3484,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2946,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.2702,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.2556,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "SOP-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "",
+   "describe": "-55℃~+150℃ 1.4V 1.92nF 116pF 155pF 2 N-Channel 2.1W 32mΩ@10V 50nC@10V 6.5A 60V N-Channel Standalone SOP-8 MOSFETs ROHS",
+   "erpComponentName": "HSI4946CDYT1GE3",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_hxy-mosfet-hsi4946cdyt1ge3_C42401392.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 33
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "840pF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "3V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "17nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "44pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "6.5A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "60V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "71pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "3.7W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "52mΩ@4.5V"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C143666",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SI4946BEY-T1-E3",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.988,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.809,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.7113,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.599,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.5502,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.5274,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "SO-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1806150010_Vishay-Intertech-SI4946BEY-T1-E3_C143666.pdf",
+   "describe": "-55℃~+175℃ 17nC@10V 2 N-Channel 3.7W 3V 44pF 52mΩ@4.5V 6.5A 60V 71pF 840pF N-Channel SO-8 MOSFETs ROHS",
+   "erpComponentName": "SI4946BEY-T1-E3",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_vishay-intertech-si4946bey-t1-e3_C143666.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 12,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "750pF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "2.5V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "18nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "62pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "7A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "60V"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "4W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "-"
+    }
+   ],
+   "componentBrandEn": "VBsemi Elec",
+   "componentCode": "C693105",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SI4946BEY-T1-VB",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.8171,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.6739,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.6023,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.5323,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.4037,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.3809,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "SO-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2211010930_VBsemi-Elec-SI4946BEY-T1-VB_C693105.pdf",
+   "describe": "-55℃~+175℃ 18nC@10V 2 N-Channel 2.5V 4W 60V 62pF 750pF 7A SO-8 MOSFETs ROHS",
+   "erpComponentName": "SI4946BEY-T1-VB",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_vbsemi-elec-si4946bey-t1-vb_C693105.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 14,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "600pF"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "2V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "11.7nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "50pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "7A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "60V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "110pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "4W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "28mΩ@10V"
+    }
+   ],
+   "componentBrandEn": "VBsemi Elec",
+   "componentCode": "C7494526",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SI4946DY-T1-E3-VB",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.6088,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.4948,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.4379,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.3825,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.3484,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.3305,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "SO-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "",
+   "describe": "-55℃~+175℃ 11.7nC@10V 110pF 2 N-Channel 28mΩ@10V 2V 4W 50pF 600pF 60V 7A N-Channel SO-8 MOSFETs ROHS",
+   "erpComponentName": "SI4946DY-T1-E3-VB",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_vbsemi-elec-si4946dy-t1-e3-vb_C7494526.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 74
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "840pF"
+    },
+    {
+     "attribute_name_en": "Vgs",
+     "attribute_value_name": "±20V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "3V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "25nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "44pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "6.5A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "60V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "71pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "3.7W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "41mΩ@10V"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C83862",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SI4946BEY-T1-GE3",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 3.0632,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 2.6075,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 2.3226,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 2.0297,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 1.8978,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 1.8409,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "SO-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1809231210_Vishay-Intertech-SI4946BEY-T1-GE3_C83862.pdf",
+   "describe": "-55℃~+175℃ 2 N-Channel 25nC@10V 3V 41mΩ@10V 6.5A 60V 840pF SO-8 MOSFETs ROHS",
+   "erpComponentName": "SI4946BEY-T1-GE3",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_vishay-intertech-si4946bey-t1-ge3_C83862.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 3,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Vgs",
+     "attribute_value_name": "±20V"
+    },
+    {
+     "attribute_name_en": "Configuration",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "2.4nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "9pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "6.1A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "60V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "148pF"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "40.9mΩ@10V"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "350pF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "3V"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "2W"
+    }
+   ],
+   "componentBrandEn": "Vishay Intertech",
+   "componentCode": "C727571",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SI4946CDY-T1-GE3",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 1.1508,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.9587,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.8627,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.7666,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.7097,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.6804,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "SO-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2103241953_Vishay-Intertech-SI4946CDY-T1-GE3_C727571.pdf",
+   "describe": "-55℃~+150℃ 2 N-Channel 2.4nC@10V 2W 350pF 3V 40.9mΩ@10V 6.1A 60V SO-8 MOSFETs ROHS",
+   "erpComponentName": "SI4946CDY-T1-GE3",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_vishay-intertech-si4946cdy-t1-ge3_C727571.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 8,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "3V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "16nC@10V"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "6.3A"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "60V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "2W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "55mΩ@4.5V"
+    }
+   ],
+   "componentBrandEn": "JSMSEMI",
+   "componentCode": "C18191412",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SI4946BEY-T1-JSM",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.6088,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.6088,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.6088,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2442,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.2361,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.2312,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "SOP-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2407160934_JSMSEMI-SI4946BEY-T1-JSM_C18191412.pdf",
+   "describe": "16nC@10V 2 N-Channel 2W 3V 55mΩ@4.5V 6.3A 60V N-Channel SOP-8 MOSFETs ROHS",
+   "erpComponentName": "SI4946BEY-T1-JSM",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_jsmsemi-si4946bey-t1-jsm_C18191412.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 15,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "600pF"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "2V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "11.7nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "50pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "7A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "60V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "110pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "4W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "28mΩ@10V、30mΩ@4.5V"
+    }
+   ],
+   "componentBrandEn": "VBsemi Elec",
+   "componentCode": "C5878845",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SI4946BEY-T1-E3-VB",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.5616,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.4476,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.3907,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.3337,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.3142,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.2963,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "SO-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2305061722_VBsemi-Elec-SI4946BEY-T1-E3-VB_C5878845.pdf",
+   "describe": "-55℃~+175℃ 11.7nC@10V 110pF 2 N-Channel 28mΩ@10V、30mΩ@4.5V 2V 4W 50pF 600pF 60V 7A N-Channel SO-8 MOSFETs ROHS",
+   "erpComponentName": "SI4946BEY-T1-E3-VB",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_vbsemi-elec-si4946bey-t1-e3-vb_C5878845.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 611
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "1.92nF"
+    },
+    {
+     "attribute_name_en": "Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1.4V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "50nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "116pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "6.5A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "60V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "155pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "2.1W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "32mΩ@10V"
+    }
+   ],
+   "componentBrandEn": "HXY MOSFET",
+   "componentCode": "C22366492",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SI4946BEY-T1-E3-HXY",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.3125,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.2486,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2211,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.1869,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.1717,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.1625,
+     "startNumber": 6000
+    }
+   ],
+   "componentSpecificationEn": "SOP-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2403261655_HXY-MOSFET-SI4946BEY-T1-E3-HXY_C22366492.pdf",
+   "describe": "-55℃~+150℃ 1.92nF 116pF 155pF 2 N-Channel 2.1W 2V 48mΩ@4.5V 50nC@10V 6.5A 60V N-Channel SOP-8 MOSFETs ROHS",
+   "erpComponentName": "SI4946BEY-T1-E3-HXY",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_hxy-mosfet-si4946bey-t1-e3-hxy_C22366492.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 30
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Vgs",
+     "attribute_value_name": "±20V"
+    },
+    {
+     "attribute_name_en": "Configuration",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "11.7nC"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "50pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "60V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "110pF"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "28mΩ@10V"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "600pF"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "2V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "4W"
+    }
+   ],
+   "componentBrandEn": "VBsemi Elec",
+   "componentCode": "C53063676",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SI4946CDY-T1-GE3-VB",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.6495,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.5355,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.4786,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.4232,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.389,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.3711,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "SO-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": null,
+   "describe": "SO-8 MOSFETs ROHS",
+   "erpComponentName": "SI4946CDY-T1-GE3-VB",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 2,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 5
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "600pF"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "2V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "11.7nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "50pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "7A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "60V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "110pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "4W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "28mΩ@10V、30mΩ@4.5V"
+    }
+   ],
+   "componentBrandEn": "VBsemi Elec",
+   "componentCode": "C19632156",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SI4946EY-T1-E3-VB",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.6088,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.4948,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.4379,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.3825,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.3484,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.3305,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "SO-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2408211456_VBsemi-Elec-SI4946EY-T1-E3-VB_C19632156.pdf",
+   "describe": "-55℃~+175℃ 11.7nC@10V 110pF 2 N-Channel 28mΩ@10V、30mΩ@4.5V 2V 4W 50pF 600pF 60V 7A N-Channel SO-8 MOSFETs ROHS",
+   "erpComponentName": "SI4946EY-T1-E3-VB",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_vbsemi-elec-si4946ey-t1-e3-vb_C19632156.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 19,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+150℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "1.92nF"
+    },
+    {
+     "attribute_name_en": "Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1.4V"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "50nC@10V"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "116pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "6.5A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "60V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "155pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "2.1W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "32mΩ@10V"
+    }
+   ],
+   "componentBrandEn": "HXY MOSFET",
+   "componentCode": "C49256923",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SI4946BEY-T1-GE3-HXY",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.4948,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 0.3972,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 0.3549,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.3028,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.2784,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.2637,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "SOP-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": null,
+   "describe": "-55℃~+150℃ 1.4V 1.92nF 116pF 155pF 2 N-Channel 2.1W 32mΩ@10V 50nC@10V 6.5A 60V N-Channel Standalone SOP-8 MOSFETs ROHS",
+   "erpComponentName": "SI4946BEY-T1-GE3-HXY",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": null,
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 464
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "3V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "16nC@10V"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "6.3A"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "60V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "2W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "55mΩ@4.5V"
+    }
+   ],
+   "componentBrandEn": "JSMSEMI",
+   "componentCode": "C18194454",
+   "componentLibraryType": "expand",
+   "componentModelEn": "SI4946DY-T1-E3-JSM",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 0.6088,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 0.6088,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 0.6088,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.2442,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.2361,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.2312,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "SOP-8",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2407160936_JSMSEMI-SI4946DY-T1-E3-JSM_C18194454.pdf",
+   "describe": "16nC@10V 2 N-Channel 2W 3V 55mΩ@4.5V 6.3A 60V N-Channel SOP-8 MOSFETs ROHS",
+   "erpComponentName": "SI4946DY-T1-E3-JSM",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_jsmsemi-si4946dy-t1-e3-jsm_C18194454.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 5,
+   "minPurchaseNum": 15,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  }
+ ],
+ "returned": 14,
+ "schema": 1,
+ "total_matches": 14
+}

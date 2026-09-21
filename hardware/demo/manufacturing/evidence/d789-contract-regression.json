@@ -1,0 +1,532 @@
+{
+ "all_identical": false,
+ "all_identical_where_comparable": true,
+ "all_ran": true,
+ "baseline": "d788",
+ "contracts": [
+  {
+   "baseline": "d788-neck-contract.json",
+   "baseline_verdict": true,
+   "board_sha256": "40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf",
+   "claimed": [],
+   "comparable": false,
+   "contract": "neck",
+   "difference": "$.board_sha256: '40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf' vs '57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b'",
+   "difference_excluding_inputs": null,
+   "emitted_baseline": "d789-neck-contract.json",
+   "identical": false,
+   "inputs_moved": {
+    "board_sha256": [
+     [
+      "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b"
+     ],
+     [
+      "40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf"
+     ]
+    ]
+   },
+   "pre_dependent_fields_normalised": null,
+   "ran": true,
+   "returncode": 0,
+   "substantive_difference": null,
+   "verdict": true
+  },
+  {
+   "baseline": "d788-placement-contract.json",
+   "baseline_verdict": "PASS",
+   "board_sha256": null,
+   "claimed": [],
+   "comparable": true,
+   "contract": "placement",
+   "difference": null,
+   "difference_excluding_inputs": null,
+   "emitted_baseline": "d789-placement-contract.json",
+   "identical": true,
+   "inputs_moved": null,
+   "pre_dependent_fields_normalised": null,
+   "ran": true,
+   "returncode": 0,
+   "substantive_difference": null,
+   "verdict": "PASS"
+  },
+  {
+   "baseline": "d788-population-contract.json",
+   "baseline_verdict": "PASS",
+   "board_sha256": "40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf",
+   "claimed": [],
+   "comparable": false,
+   "contract": "population",
+   "difference": "$.board_sha256: '40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf' vs '57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b'",
+   "difference_excluding_inputs": null,
+   "emitted_baseline": "d789-population-contract.json",
+   "identical": false,
+   "inputs_moved": {
+    "board_sha256": [
+     [
+      "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b"
+     ],
+     [
+      "40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf"
+     ]
+    ]
+   },
+   "pre_dependent_fields_normalised": null,
+   "ran": true,
+   "returncode": 0,
+   "substantive_difference": null,
+   "verdict": "PASS"
+  },
+  {
+   "baseline": "d788-land_parity-contract.json",
+   "baseline_verdict": "PASS",
+   "board_sha256": "40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf",
+   "claimed": [],
+   "comparable": false,
+   "contract": "land_parity",
+   "difference": "$.board_sha256: '40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf' vs '57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b'",
+   "difference_excluding_inputs": null,
+   "emitted_baseline": "d789-land_parity-contract.json",
+   "identical": false,
+   "inputs_moved": {
+    "board_sha256": [
+     [
+      "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b"
+     ],
+     [
+      "40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf"
+     ]
+    ]
+   },
+   "pre_dependent_fields_normalised": null,
+   "ran": true,
+   "returncode": 0,
+   "substantive_difference": null,
+   "verdict": "PASS"
+  },
+  {
+   "baseline": "d788-keepout_stackup-contract.json",
+   "baseline_verdict": true,
+   "board_sha256": null,
+   "claimed": [],
+   "comparable": true,
+   "contract": "keepout_stackup",
+   "difference": null,
+   "difference_excluding_inputs": null,
+   "emitted_baseline": "d789-keepout_stackup-contract.json",
+   "identical": true,
+   "inputs_moved": null,
+   "pre_dependent_fields_normalised": null,
+   "ran": true,
+   "returncode": 0,
+   "substantive_difference": null,
+   "verdict": true
+  },
+  {
+   "baseline": "d788-rf_symmetry-contract.json",
+   "baseline_verdict": "PASS",
+   "board_sha256": null,
+   "claimed": [],
+   "comparable": true,
+   "contract": "rf_symmetry",
+   "difference": null,
+   "difference_excluding_inputs": null,
+   "emitted_baseline": "d789-rf_symmetry-contract.json",
+   "identical": true,
+   "inputs_moved": null,
+   "pre_dependent_fields_normalised": null,
+   "ran": true,
+   "returncode": 0,
+   "substantive_difference": null,
+   "verdict": "PASS"
+  },
+  {
+   "baseline": "d788-pour_partition-contract.json",
+   "baseline_verdict": true,
+   "board_sha256": null,
+   "claimed": [],
+   "comparable": false,
+   "contract": "pour_partition",
+   "difference": "$.ref_commit: '2344ebb2a8eac204e54af2cee6f1f0a1abdb38de' vs 'a5c74da51cf70a5fbbdfee75628fd651a9b1ebb9'",
+   "difference_excluding_inputs": "$.results.PP1.net_change_control.probe: 0 vs 1 entries",
+   "emitted_baseline": "d789-pour_partition-contract.json",
+   "identical": false,
+   "inputs_moved": {
+    "ref_commit": [
+     [
+      "a5c74da51cf70a5fbbdfee75628fd651a9b1ebb9"
+     ],
+     [
+      "2344ebb2a8eac204e54af2cee6f1f0a1abdb38de"
+     ]
+    ]
+   },
+   "pre_dependent_fields_normalised": null,
+   "ran": true,
+   "returncode": 0,
+   "substantive_difference": "$.results.PP1.net_change_control.probe: 0 vs 1 entries",
+   "verdict": true
+  },
+  {
+   "baseline": "d788-pour_bond-contract.json",
+   "baseline_verdict": true,
+   "board_sha256": "40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf",
+   "claimed": [],
+   "comparable": false,
+   "contract": "pour_bond",
+   "difference": "$.board_sha256: '40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf' vs '57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b'",
+   "difference_excluding_inputs": null,
+   "emitted_baseline": "d789-pour_bond-contract.json",
+   "identical": false,
+   "inputs_moved": {
+    "board_sha256": [
+     [
+      "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b"
+     ],
+     [
+      "40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf"
+     ]
+    ]
+   },
+   "pre_dependent_fields_normalised": null,
+   "ran": true,
+   "returncode": 0,
+   "substantive_difference": null,
+   "verdict": true
+  },
+  {
+   "baseline": "d788-leaf-land-contract.json",
+   "baseline_verdict": true,
+   "board_sha256": "40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf",
+   "claimed": [],
+   "comparable": false,
+   "contract": "leaf_land",
+   "difference": "$.board_sha256: '40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf' vs '57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b'",
+   "difference_excluding_inputs": null,
+   "emitted_baseline": "d789-leaf-land-contract.json",
+   "identical": false,
+   "inputs_moved": {
+    "board_sha256": [
+     [
+      "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b"
+     ],
+     [
+      "40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf"
+     ]
+    ]
+   },
+   "pre_dependent_fields_normalised": null,
+   "ran": true,
+   "returncode": 0,
+   "substantive_difference": null,
+   "verdict": true
+  },
+  {
+   "baseline": "d788-protected-copper.json",
+   "baseline_verdict": true,
+   "board_sha256": null,
+   "claimed": [],
+   "comparable": true,
+   "contract": "protected_copper",
+   "difference": null,
+   "difference_excluding_inputs": null,
+   "emitted_baseline": "d789-protected-copper.json",
+   "identical": true,
+   "inputs_moved": null,
+   "pre_dependent_fields_normalised": null,
+   "ran": true,
+   "returncode": 0,
+   "substantive_difference": null,
+   "verdict": true
+  },
+  {
+   "baseline": "d788-obstacle_model-contract.json",
+   "baseline_verdict": "PASS",
+   "board_sha256": "40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf",
+   "claimed": [],
+   "comparable": false,
+   "contract": "obstacle_model",
+   "difference": "$.board_sha256: '40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf' vs '57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b'",
+   "difference_excluding_inputs": null,
+   "emitted_baseline": "d789-obstacle_model-contract.json",
+   "identical": false,
+   "inputs_moved": {
+    "board_sha256": [
+     [
+      "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b"
+     ],
+     [
+      "40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf"
+     ]
+    ]
+   },
+   "pre_dependent_fields_normalised": null,
+   "ran": true,
+   "returncode": 0,
+   "substantive_difference": null,
+   "verdict": "PASS"
+  },
+  {
+   "baseline": "d788-trunk_floor-contract.json",
+   "baseline_verdict": true,
+   "board_sha256": "40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf",
+   "claimed": [],
+   "comparable": false,
+   "contract": "trunk_floor",
+   "difference": "$.board_sha256: '40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf' vs '57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b'",
+   "difference_excluding_inputs": null,
+   "emitted_baseline": "d789-trunk_floor-contract.json",
+   "identical": false,
+   "inputs_moved": {
+    "board_sha256": [
+     [
+      "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b"
+     ],
+     [
+      "40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf"
+     ]
+    ]
+   },
+   "pre_dependent_fields_normalised": null,
+   "ran": true,
+   "returncode": 0,
+   "substantive_difference": null,
+   "verdict": true
+  },
+  {
+   "baseline": "d788-tap-contract.json",
+   "baseline_verdict": true,
+   "board_sha256": "40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf",
+   "claimed": [],
+   "comparable": false,
+   "contract": "tap",
+   "difference": "$.board_sha256: '40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf' vs '57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b'",
+   "difference_excluding_inputs": null,
+   "emitted_baseline": "d789-tap-contract.json",
+   "identical": false,
+   "inputs_moved": {
+    "board_sha256": [
+     [
+      "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b"
+     ],
+     [
+      "40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf"
+     ]
+    ]
+   },
+   "pre_dependent_fields_normalised": null,
+   "ran": true,
+   "returncode": 0,
+   "substantive_difference": null,
+   "verdict": true
+  },
+  {
+   "baseline": "d788-fab_provenance-contract.json",
+   "baseline_verdict": "PASS",
+   "board_sha256": "40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf",
+   "claimed": [],
+   "comparable": false,
+   "contract": "fab_provenance",
+   "difference": "$.board_sha256: '40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf' vs '57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b'",
+   "difference_excluding_inputs": null,
+   "emitted_baseline": "d789-fab_provenance-contract.json",
+   "identical": false,
+   "inputs_moved": {
+    "board_sha256": [
+     [
+      "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b"
+     ],
+     [
+      "40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf"
+     ]
+    ]
+   },
+   "pre_dependent_fields_normalised": null,
+   "ran": true,
+   "returncode": 0,
+   "substantive_difference": null,
+   "verdict": "PASS"
+  },
+  {
+   "baseline": "d788-connection-width-contract.json",
+   "baseline_verdict": true,
+   "board_sha256": null,
+   "claimed": [],
+   "comparable": true,
+   "contract": "connection_width",
+   "difference": null,
+   "difference_excluding_inputs": null,
+   "emitted_baseline": "d789-connection-width-contract.json",
+   "identical": true,
+   "inputs_moved": null,
+   "pre_dependent_fields_normalised": null,
+   "ran": true,
+   "returncode": 0,
+   "substantive_difference": null,
+   "verdict": true
+  },
+  {
+   "baseline": "d788-demo-feature-contract.json",
+   "baseline_verdict": true,
+   "board_sha256": "40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf",
+   "claimed": [],
+   "comparable": false,
+   "contract": "demo_feature",
+   "difference": "$.board_sha256: '40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf' vs '57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b'",
+   "difference_excluding_inputs": "$.checks.F10_battery_pass_pair_gate_drive_is_computed_and_blocked: missing in baseline",
+   "emitted_baseline": "d789-demo-feature-contract.json",
+   "identical": false,
+   "inputs_moved": {
+    "board_sha256": [
+     [
+      "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b"
+     ],
+     [
+      "40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf"
+     ]
+    ]
+   },
+   "pre_dependent_fields_normalised": null,
+   "ran": true,
+   "returncode": 0,
+   "substantive_difference": "$.checks.F10_battery_pass_pair_gate_drive_is_computed_and_blocked: missing in baseline",
+   "verdict": true
+  },
+  {
+   "baseline": "d788-firmware-hw-map-contract.json",
+   "baseline_verdict": "PASS",
+   "board_sha256": "40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf",
+   "claimed": [],
+   "comparable": false,
+   "contract": "firmware_hw_map",
+   "difference": "$.H2_board_digest.board_sha256: '40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf' vs '57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b'",
+   "difference_excluding_inputs": "$.H5_firmware_layer_uses_the_map.sources: 15 vs 14 entries",
+   "emitted_baseline": "d789-firmware-hw-map-contract.json",
+   "identical": false,
+   "inputs_moved": {
+    "board_sha256": [
+     [
+      "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b",
+      "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b"
+     ],
+     [
+      "40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf",
+      "40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf"
+     ]
+    ]
+   },
+   "pre_dependent_fields_normalised": null,
+   "ran": true,
+   "returncode": 0,
+   "substantive_difference": "$.H5_firmware_layer_uses_the_map.sources: 15 vs 14 entries",
+   "verdict": "PASS"
+  },
+  {
+   "baseline": "d788-mechanical_keepout-contract.json",
+   "baseline_verdict": true,
+   "board_sha256": "40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf",
+   "claimed": [],
+   "comparable": false,
+   "contract": "mechanical_keepout",
+   "difference": "$.board_sha256: '40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf' vs '57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b'",
+   "difference_excluding_inputs": "$.checks.MK8_component_height_in_the_limited_regions.note: \"allowance_mm is a no-regression ceiling at the board's own measured profile; register_limit_mm is the inherited rule and the gap between them is an OPEN CAD ITEM (D-760).  D-789 / D788-19: every part's figure is taken from its PURCHASED MPN where this repository has read one, and `priced_by_footprint_family` names every part still priced by its package rather than by its part.\" vs \"allowance_mm is a no-regression ceiling at the board's own measured profile; register_limit_mm is the inherited rule and the gap between them is an OPEN CAD ITEM (D-760)\"",
+   "emitted_baseline": "d789-mechanical_keepout-contract.json",
+   "identical": false,
+   "inputs_moved": {
+    "board_sha256": [
+     [
+      "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b"
+     ],
+     [
+      "40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf"
+     ]
+    ]
+   },
+   "pre_dependent_fields_normalised": null,
+   "ran": true,
+   "returncode": 0,
+   "substantive_difference": "$.checks.MK8_component_height_in_the_limited_regions.note: \"allowance_mm is a no-regression ceiling at the board's own measured profile; register_limit_mm is the inherited rule and the gap between them is an OPEN CAD ITEM (D-760).  D-789 / D788-19: every part's figure is taken from its PURCHASED MPN where this repository has read one, and `priced_by_footprint_family` names every part still priced by its package rather than by its part.\" vs \"allowance_mm is a no-regression ceiling at the board's own measured profile; register_limit_mm is the inherited rule and the gap between them is an OPEN CAD ITEM (D-760)\"",
+   "verdict": true
+  },
+  {
+   "baseline": "d788-battery-pack-contract.json",
+   "baseline_verdict": true,
+   "board_sha256": "40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf",
+   "claimed": [],
+   "comparable": false,
+   "contract": "battery_pack",
+   "difference": "$.board_sha256: '40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf' vs '57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b'",
+   "difference_excluding_inputs": null,
+   "emitted_baseline": "d789-battery-pack-contract.json",
+   "identical": false,
+   "inputs_moved": {
+    "board_sha256": [
+     [
+      "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b",
+      "57145f5cc1d761cc08afc2ba31ba99e8ee3440c30157f70330a705de0a6fea4b"
+     ],
+     [
+      "40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf",
+      "40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf"
+     ]
+    ]
+   },
+   "pre_dependent_fields_normalised": null,
+   "ran": true,
+   "returncode": 0,
+   "substantive_difference": null,
+   "verdict": true
+  }
+ ],
+ "contracts_compared": 19,
+ "contracts_incomparable": 14,
+ "contracts_run": 19,
+ "contracts_with_substantive_difference": [
+  "pour_partition",
+  "demo_feature",
+  "firmware_hw_map",
+  "mechanical_keepout"
+ ],
+ "contracts_without_baseline": 0,
+ "emitted_baseline": "d789",
+ "method": "each contract re-run now and compared FIELD BY FIELD with the artifact the baseline decision committed; path-typed fields (board, schematic, guard, pre_board) compare by basename because they record the path as typed",
+ "no_substantive_difference": false,
+ "pre_dependent_normalisation": {
+  "claims": [
+   {
+    "claim": "a declared PRE-dependent roster with a moved PRE is not a substantive difference",
+    "difference": null,
+    "must_be_none": true,
+    "ok": true
+   },
+   {
+    "claim": "the same roster with the PRE UNCHANGED still is",
+    "difference": "$.results.PP1.net_change_control.probe: 0 vs 1 entries",
+    "must_be_none": false,
+    "ok": true
+   },
+   {
+    "claim": "an undeclared verdict beside it is still reported",
+    "difference": "$.results.PP1.ok: False vs True",
+    "must_be_none": false,
+    "ok": true
+   },
+   {
+    "claim": "a widened declaration cannot hide an undeclared verdict",
+    "difference": "$.results.PP1.ok: False vs True",
+    "must_be_none": false,
+    "ok": true
+   },
+   {
+    "claim": "--strict ignores the declaration entirely",
+    "difference": "$.results.PP1.net_change_control.probe: 0 vs 1 entries",
+    "must_be_none": false,
+    "ok": true
+   }
+  ],
+  "fixture_is_constant": true,
+  "ok": true
+ },
+ "question": "does this change move ANY standing contract beyond the inputs it legitimately moved?  When the board digest or the PRE-board commit is the same, `all_identical` is the answer; when one of them moved, the row is INCOMPARABLE and `difference_excluding_inputs` is the answer, so a substantive change can never hide behind an input identifier",
+ "schema": 1,
+ "vacuous": false
+}

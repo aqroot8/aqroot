@@ -1,0 +1,115 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-21T03:03:34Z",
+ "keyword": "YJQ3622A",
+ "page_size": 25,
+ "pages": 2,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+175℃"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "N-Channel"
+    },
+    {
+     "attribute_name_en": "Input Capacitance(Ciss)",
+     "attribute_value_name": "1.015nF"
+    },
+    {
+     "attribute_name_en": "Number",
+     "attribute_value_name": "2 N-Channel"
+    },
+    {
+     "attribute_name_en": "Gate Threshold Voltage (Vgs(th))",
+     "attribute_value_name": "1V"
+    },
+    {
+     "attribute_name_en": "Gate Charge(Qg)",
+     "attribute_value_name": "23.6nC"
+    },
+    {
+     "attribute_name_en": "Reverse Transfer Capacitance (Crss@Vds)",
+     "attribute_value_name": "164pF"
+    },
+    {
+     "attribute_name_en": "Current - Continuous Drain(Id)",
+     "attribute_value_name": "30A"
+    },
+    {
+     "attribute_name_en": "Drain to Source Voltage",
+     "attribute_value_name": "30V"
+    },
+    {
+     "attribute_name_en": "Output Capacitance(Coss)",
+     "attribute_value_name": "201pF"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "10.5W"
+    },
+    {
+     "attribute_name_en": "RDS(on)",
+     "attribute_value_name": "16mΩ@4.5V"
+    }
+   ],
+   "componentBrandEn": "Yangzhou Yangjie Elec Tech",
+   "componentCode": "C919566",
+   "componentLibraryType": "expand",
+   "componentModelEn": "YJQ3622A",
+   "componentPrices": [
+    {
+     "endNumber": 49,
+     "productPrice": 0.1769,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 149,
+     "productPrice": 0.1573,
+     "startNumber": 50
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.1488,
+     "startNumber": 150
+    },
+    {
+     "endNumber": 2499,
+     "productPrice": 0.1382,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 4999,
+     "productPrice": 0.1021,
+     "startNumber": 2500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0993,
+     "startNumber": 5000
+    }
+   ],
+   "componentSpecificationEn": "DFN3333-8L-Dual",
+   "componentTypeEn": "MOSFETs",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2201131330_Yangzhou-Yangjie-Elec-Tech-YJQ3622A_C919566.pdf",
+   "describe": "-55℃~+175℃ 1.015nF 10.5W 164pF 16mΩ@4.5V 1V 2 N-Channel 201pF 23.6nC 30A 30V N-Channel DFN3333-8L-Dual MOSFETs ROHS",
+   "erpComponentName": "YJQ3622A",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/mosfets_yangzhou-yangjie-elec-tech-yjq3622a_C919566.html",
+   "leastPatchNumber": 5,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 3112
+  }
+ ],
+ "returned": 1,
+ "schema": 1,
+ "total_matches": 1
+}

@@ -454,8 +454,22 @@ MAX_HEIGHT_MM = {
     "C_0402_1005Metric": (0.55, "eia", "MLCC, 0402"),
     "C_0603_1608Metric": (0.90, "eia", "MLCC, 0603, high-capacitance build"),
     "C_0805_2012Metric": (1.25, "eia", "MLCC, 0805, high-capacitance build"),
-    "C_1206_3216Metric": (1.80, "vendor", "Murata GRM31C 1206: T = 1.6 +/- 0.2 mm"),
-    "C_1210_3225Metric": (2.00, "eia", "MLCC, 1210, high-capacitance build"),
+    # D-789 / D788-19: this row no longer names a manufacturer, because it is
+    # applied to whatever 1206 capacitor happens to be fitted.  The PURCHASED
+    # part's own figure is in MAX_HEIGHT_BY_MPN below and takes precedence.
+    "C_1206_3216Metric": (1.90, "eia",
+                          "MLCC, 1206, high-capacitance build -- the worst "
+                          "case across common 1206 thickness codes, used only "
+                          "when the fitted MPN has no published figure"),
+    # D-789 / D788-19: the generic 1210 row was 2.00 mm, which no
+    # high-capacitance 1210 build actually meets -- Samsung's own 1210
+    # thickness table runs to 2.50 +/- 0.30.  A family fallback must be the
+    # WORST case of the family, not a typical one.
+    "C_1210_3225Metric": (2.80, "eia",
+                          "MLCC, 1210, worst-case high-capacitance build "
+                          "(thickness code V, 2.50 +/- 0.30 mm, from "
+                          "Samsung's published 1210 thickness table); used "
+                          "only when the fitted MPN has no published figure"),
     "L_0603_1608Metric": (0.95, "eia", "chip inductor / ferrite bead, 0603"),
     "TestPoint_Pad_D1.0mm": (0.00, "geometry", "a bare copper pad has no body"),
     # discretes
@@ -493,6 +507,66 @@ MAX_HEIGHT_MM = {
                          "lead-formed 90 deg"),
 }
 
+# --------------------------------------------------------------------------
+# D-789 / D788-19 -- A FOOTPRINT IS NOT A PART, AND THE CENSUS WAS PRICING
+# FOUR CAPACITORS AGAINST ANOTHER MANUFACTURER'S DATASHEET.
+#
+# `MAX_HEIGHT_MM` is keyed by FOOTPRINT, and its `C_1206_3216Metric` row read
+# 1.80 mm on the basis "Murata GRM31C 1206: T = 1.6 +/- 0.2 mm".  `C26` and
+# `C27` ARE Murata `GRM31CR71E106KA12L`.  `C29`, `C30`, `C31` and `C32` are
+# CCTC `TCC1206X7R226K160HT`, and nothing in this file had ever looked.
+#
+# CCTC's own document (DRAAW108N/0, archived `vendor/CCTC/`) prints TWO 1206
+# dimension rows: T = 1.60 +/- 0.20 and, marked `*1` for "1uF and above", T =
+# 1.60 +/- 0.30.  These parts are 22 uF, so the applicable MAXIMUM is 1.90 mm
+# and not 1.80 mm.  `C29` and `C30` stand inside `BATTERY_SHADOW`, whose
+# measured-profile allowance had been set at 1.80 mm BECAUSE this table said
+# they were 1.80 mm -- a ceiling derived from its own error.
+#
+# So the census is MPN-FIRST now.  The MPN is read from the schematic, the
+# figure comes from the purchased part's own document, and a part inside a
+# height-limited region that falls back to a family row is REPORTED as such --
+# a fallback is not wrong, but it must be visible.
+MAX_HEIGHT_BY_MPN = {
+    "TCC1206X7R226K160HT": (
+        1.90, "vendor",
+        "CCTC DRAAW108N/0 section 5 Dimensions, the 1206 row marked *1 "
+        "('1uF and above'): T = 1.60 +/- 0.30 mm.  Thickness code H = 1.60 mm "
+        "from the same document's ordering table.  Archived at "
+        "vendor/CCTC/cctc-mlcc-DRAAW108N-0.pdf with its source record."),
+    "GRM31CR71E106KA12L": (
+        1.80, "vendor", "Murata GRM31C 1206: T = 1.6 +/- 0.2 mm"),
+    "CL32B226KAJNNNE": (
+        2.70, "vendor",
+        "Samsung MLCC CL series catalogue, archived at "
+        "vendor/SAMSUNG/samsung-mlcc-CL-series.pdf.  The part number's "
+        "eleventh character is the THICKNESS CODE: CL-32-B-226-K-A-**J**-NNNE, "
+        "and the 1210(3225) thickness table gives J = 2.50 mm +/- 0.20, so the "
+        "MAXIMUM is 2.70 mm -- 0.70 mm more than the generic 1210 family row "
+        "this census used to apply to it.  C12 is not inside a height-limited "
+        "region, so no verdict moves; the figure is corrected because the "
+        "next 1210 might be."),
+}
+
+
+def mpn_by_reference():
+    """{REF: MPN} from the schematic sheets, for the height census."""
+    import re as _re
+    out = {}
+    for sheet in sorted(PROJECT.glob("*.kicad_sch")):
+        text = sheet.read_text(encoding="utf-8", errors="replace")
+        for m in _re.finditer(r'\(property "Reference" "([^"]+)"', text):
+            ref = m.group(1)
+            tail = text[m.end():m.end() + 6000]
+            nxt = tail.find('(property "Reference"')
+            if nxt > 0:
+                tail = tail[:nxt]
+            n = _re.search(r'\(property "MPN" "([^"]*)"', tail)
+            if n and n.group(1):
+                out.setdefault(ref, n.group(1))
+    return out
+
+
 # The region allowances MK8 enforces, and the rule each one is measured
 # against.  `allowance_mm` is a NO-REGRESSION CEILING set at the board's own
 # measured profile -- the board may not get taller here without a decision --
@@ -502,7 +576,23 @@ MAX_HEIGHT_MM = {
 # without the enclosure.
 HEIGHT_REGIONS = {
     "DISPLAY_SHADOW": dict(side="F", register_limit_mm=0.80, allowance_mm=0.80),
-    "BATTERY_SHADOW": dict(side="B", register_limit_mm=1.20, allowance_mm=1.80),
+    # D-789 / D788-19: 1.80 -> 1.90 mm.  THIS IS A CORRECTED MEASUREMENT, NOT
+    # A TALLER BOARD.  The allowance is defined as the board's own measured
+    # profile, and it had been set at 1.80 mm because this file priced C29 and
+    # C30 -- CCTC TCC1206X7R226K160HT, 22 uF -- against MURATA's GRM31C
+    # dimensions.  CCTC's own document gives T = 1.60 +/- 0.30 for 1206 parts
+    # of 1 uF and above, so those two capacitors have always been 1.90 mm and
+    # the ceiling was derived from the census's own error.  Not one component
+    # moved and no part changed.  What DID change is the size of the open CAD
+    # item: the B-side profile under the pouch is 1.90 mm against a register
+    # limit of 1.20 mm, a 0.70 mm gap rather than 0.60 mm, and closing it is
+    # still a stack calculation that needs the enclosure.
+    "BATTERY_SHADOW": dict(side="B", register_limit_mm=1.20, allowance_mm=1.90,
+                           allowance_basis=(
+                               "measured profile, D-789 / D788-19: C29/C30 "
+                               "CCTC TCC1206X7R226K160HT at 1.90 mm max "
+                               "(T = 1.60 +/- 0.30, the *1 '1uF and above' "
+                               "1206 row of CCTC DRAAW108N/0)")),
     "NFC_CLEAR_D48": dict(side="B", register_limit_mm=1.00, allowance_mm=1.40),
 }
 NFC_CLEAR_CENTRE_DOC = (31.800, 124.500)
@@ -520,6 +610,7 @@ def mk8(board, reg=None):
         except Exception:
             pass
     out, ok, unknown = {}, True, set()
+    mpns = mpn_by_reference()
     for name, spec in HEIGHT_REGIONS.items():
         side = spec["side"]
         parts = []
@@ -545,13 +636,21 @@ def mk8(board, reg=None):
                            for q in f.Pads()):
                     continue
             fid = f.GetFPIDAsString().split(":")[-1]
-            h = MAX_HEIGHT_MM.get(fid)
+            ref = f.GetReference()
+            # D-789 / D788-19: THE PURCHASED PART FIRST.
+            mpn = mpns.get(ref)
+            h = MAX_HEIGHT_BY_MPN.get(mpn) if mpn else None
+            keyed_by = "mpn" if h else "footprint"
+            if h is None:
+                h = MAX_HEIGHT_MM.get(fid)
             if h is None:
                 unknown.add(fid)
-                parts.append(dict(ref=f.GetReference(), footprint=fid,
+                parts.append(dict(ref=ref, footprint=fid, mpn=mpn,
+                                  keyed_by=None,
                                   max_height_mm=None, source=None))
                 continue
-            parts.append(dict(ref=f.GetReference(), footprint=fid,
+            parts.append(dict(ref=ref, footprint=fid, mpn=mpn,
+                              keyed_by=keyed_by,
                               max_height_mm=h[0], source=h[1], basis=h[2]))
         known = [p for p in parts if p["max_height_mm"] is not None]
         tallest = max((p["max_height_mm"] for p in known), default=0.0)
@@ -565,17 +664,30 @@ def mk8(board, reg=None):
         out[name] = dict(ok=clause_ok, side=side,
                          register_limit_mm=spec["register_limit_mm"],
                          allowance_mm=spec["allowance_mm"],
+                         allowance_basis=spec.get("allowance_basis"),
                          measured_tallest_mm=round(tallest, 3),
                          parts_over_the_allowance=over_allowance,
                          parts_over_the_register_limit=over_register,
                          open_cad_gap_mm=round(max(0.0, tallest - spec["register_limit_mm"]), 3),
+                         # D-789 / D788-19: which figures came from the
+                         # PURCHASED part and which fell back to a family row.
+                         priced_by_purchased_mpn=sorted(
+                             p["ref"] for p in parts if p.get("keyed_by") == "mpn"),
+                         priced_by_footprint_family=sorted(
+                             p["ref"] for p in parts
+                             if p.get("keyed_by") == "footprint"),
                          parts=sorted(parts, key=lambda p: (-(p["max_height_mm"] or 0),
                                                             p["ref"])))
     return dict(ok=ok, regions=out,
                 footprints_with_no_height_figure=sorted(unknown),
+                priced_by_purchased_mpn=sorted(MAX_HEIGHT_BY_MPN),
                 note="allowance_mm is a no-regression ceiling at the board's own "
                      "measured profile; register_limit_mm is the inherited rule "
-                     "and the gap between them is an OPEN CAD ITEM (D-760)")
+                     "and the gap between them is an OPEN CAD ITEM (D-760).  "
+                     "D-789 / D788-19: every part's figure is taken from its "
+                     "PURCHASED MPN where this repository has read one, and "
+                     "`priced_by_footprint_family` names every part still "
+                     "priced by its package rather than by its part.")
 
 
 

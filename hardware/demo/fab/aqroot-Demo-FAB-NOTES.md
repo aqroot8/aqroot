@@ -153,20 +153,16 @@ The authoritative detachable-harness record is `aqroot-Demo-BATTERY-HARNESS.json
 - Rear strain relief: **DOWSIL 3145 RTV MIL-A-46146 Adhesive/Sealant, gray**. After joint/profile inspection and cleaning, apply the frozen adhesive fillet to the insulated pigtail, preserve the >=35 mm housing free-wire/service-loop rule, and never unplug by pulling wires.
 - First article: verify finished-hole/conductor fit, cured strain relief, DMM polarity, terminal retention/pull acceptance, housing-only disconnect, enclosure route, and worst-case load temperature rise per the packaged harness record.
 
-## ACC_3V3 Community-Port reinforcement -- MANUAL FIRST-FIVE OPERATION
+## ACC_3V3 Community-Port reinforcement -- **NONE.  NOTHING TO DO.**
 
-The authoritative work instruction is `aqroot-Demo-ACC-3V3-REINFORCEMENT.json` in this package, and it is DIMENSIONED: corridor, waypoints, bend radius, anchor positions, bead size, cure time, joint profile, sequence and inspection are all in it.
+**THERE IS NO MANUAL ACCESSORY-VOLTAGE CONDUCTOR ON THIS BOARD.**  Both duplicated Community-Port 3.3 V contacts are delivered by ROUTED COPPER ALONE.  If a build instruction, a work order or an older revision of this package tells you to solder a wire from `TP12` to `J5.3`, it is superseded -- do not do it.
 
-- **ONE conductor per board (D-788 / R7-D787-10).**  D-787 ran TWO conductors onto the single 1.00 mm `TP12` pad; that is retired.  No pad carries two conductors.
-- Source: **TP12.1**, downstream of U20; this does **not** bypass the TPS22950-Q1 current limiter or OFF disconnect.
-- Destination: **J5.3**.
-- NOT reinforced: **J5.22 (routed copper alone, 79.0 mOhm measured)** -- better than any manual lead could be, so it gets none.
-- Wire: **Alpha Wire 2842/19 RD005, AWG28, PTFE, nominal OD 0.686 mm**; minimum bend radius **6.9 mm** (10 x OD) at EVERY bend.
-- Electrical acceptance: finished lead **<=25 mOhm at room temperature**, Kelvin/4-wire preferred, **value recorded per board**.
-- Retention: **DOWSIL 3145 RTV adhesive/sealant, grey, MIL-A-46146 -- the SAME material already frozen for the J4 battery-harness strain relief at D-782, so the first-five build carries one adhesive and one cure.**, three beads 4.0 x 2.0 x <=1.0 mm at A0 at (61.5, 63.5), A1 at (68.5, 40.0), A2 at (68.5, 20.0).
-- Cure: tack-free 30 min at 25 C / 50 % RH; handling strength 4 h; FULL CURE 72 h before any pull test, thermal test or shipment. Cure at 25 +/- 5 C; do not accelerate with heat while the lead is under tension.
-- Route in the corridor the traveler dimensions; keep clear of battery, NFC/RF, display/FPC, button mechanics and enclosure load paths to the clearances it states.
-- Inspect continuity, adjacent-pin shorts, the TP12 fillet BEFORE any adhesive, both faces of the J5.3 barrel, every bend radius, all three cured beads, and enclosure closure -- before power.
+- Delivered by routed copper: **J5.3 (routed copper alone, 224.4 mOhm measured, bounded at 240), J5.22 (routed copper alone, 79.0 mOhm measured, bounded at 90)**.
+- `TP12` and `TP25` remain on the board as TEST POINTS on `/ACC_3V3_SW`, downstream of `U20`, for bring-up measurement and for a future rework.  **Nothing is soldered to them.**
+- `U20` TPS22950-Q1 current limiting and OFF isolation are unchanged and remain in series with both contacts.
+- Published delivery, DERIVED by `demo_feature_contract` F6 over every permitted wiring and load mode: **2.849642 V** at the full 400 mA in the worst permitted mode (one 3.3 V contact alone, one mated ground, the 5 V rail also at its 300 mA budget), and **2.982890 V** with the header fully mated.
+- Why it was retired, in one line each: the `TP12` tip geometry could not be built inside a 1.00 mm pad; the `J5.3` termination required inserting a 0.32 mm conductor into a 1.02 mm hole already carrying a 0.635 mm square tail; the route started inside `BATTERY_SHADOW` and crossed `RIB_R3` against its own clearance rule; and its <= 25 mOhm acceptance could not be measured with the board's own copper in parallel.  The full record is `aqroot-Demo-ACC-3V3-REINFORCEMENT.json` in this package.
+- First article: **C-ACC-01** measures the delivered potential at the J5 mating interface for each contact alone and for the fully mated header; **C-ACC-02** records the two routed resistances.
 
 ## Stackup, finish and required process -- NOT SUBSTITUTABLE
 
@@ -193,7 +189,7 @@ Everything below is read out of the board file's own stackup block and is also c
 - **Total declared stack 1.5744 mm; required finished thickness 1.5744 +/- 0.10 mm.**  Do not substitute a house-default thickness without written engineering approval.  `J4` is now a manual pigtail land: its front conductive profile is MEASURED <=0.50 mm after soldering, not inferred from board thickness.  Finished thickness still affects enclosure stack and PTH process capability.
 - **Surface finish: ENIG -- not substitutable.**  HASL coplanarity is incompatible with the fine-pitch lands on this board and with the 0.000 mm solder-mask expansion it is drawn with.
 - **Solder-mask expansion is 0.000 mm board-wide** -- a pad's mask aperture IS its copper.  Do not apply a house expansion.
-- **LAMINATE: FR4 with Tg >= 150 C -- D-788 / R7-D787-04.**  The board file declares FR4 and nothing more, and a house TG130 default would be a different thermal design: `audit_rail_ampacity`'s ABSOLUTE acceptance for the one named narrow-run exception on this board -- the 0.200 mm `U11.2` package-land neck -- is a 105 C predicted peak, and 105 C is chosen as the laminate's maximum continuous operating temperature with 45 K of margin below a 150 C Tg.  A TG130 build leaves 25 K and the acceptance must be re-derived before the order.  State the laminate and its Tg on the acknowledgement.
+- **LAMINATE: FR4 with Tg >= 150 C -- D-788 / R7-D787-04, restated at D-789 / D788-03.**  The board file declares FR4 and nothing more, and a house TG130 default is not an acceptable substitution.  THE REASON IS NOT WHAT D-788 WROTE.  That note called 105 C "the laminate's maximum continuous operating temperature"; nothing in this repository publishes an MOT for a Tg-150 FR4, so that sentence claimed a specification it did not have.  105 C is a DECLARED CONDUCTOR-SIZING limit in `audit_rail_ampacity` for copper heated by its own current, and the named narrow-run exceptions on this board meet it with more than 50 K to spare (the `U11.2` package-land neck reaches a 52.3 C predicted peak).  What the Tg requirement actually protects is the HOTTEST POINT ON THIS BOARD, which is the BQ25185's own junction: computed from TI SLUSF65B 6.3.7.6 at the same 196 mOhm BATFET resistance the electrical model charges, it reaches **115.4 C at the 40 C top of the declared ambient envelope**, against TI's own 125 C operating maximum and 33.6 K below a 150 C Tg.  A TG130 build leaves 14.6 K to the glass transition at that point and is refused.  State the laminate and its Tg on the acknowledgement.
 - **100% BARE-BOARD ELECTRICAL TEST (flying probe or fixture) IS REQUIRED ON EVERY DELIVERED PCB CIRCUIT, against the final accepted netlist; panel-level sampling is not sufficient.**  This is a 6-layer board with resin-filled, cap-plated via-in-pad under fine-pitch parts: an open in a filled barrel is not findable at assembly and not repairable after it.  Provide traceable test confirmation with the lot.
 
 ## Component placement (CPL) convention -- READ BEFORE PROGRAMMING THE PLACER

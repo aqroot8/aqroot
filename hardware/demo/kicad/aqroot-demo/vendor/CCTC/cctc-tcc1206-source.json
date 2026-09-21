@@ -1,0 +1,36 @@
+{
+  "schema": 1,
+  "decision": "D-789 / D788-19",
+  "why": "the mechanical height census priced every C_1206_3216Metric part at 1.80 mm on a basis string that reads 'Murata GRM31C 1206: T = 1.6 +/- 0.2 mm'.  C26 and C27 ARE Murata GRM31CR71E106KA12L.  C29, C30, C31 and C32 are NOT: they are CCTC TCC1206X7R226K160HT, and the census had never looked at the MPN.",
+  "vendor": "CCTC (Chaozhou Three-Circle)",
+  "mpn": "TCC1206X7R226K160HT",
+  "lcsc": "C22392398",
+  "references": ["C29", "C30", "C31", "C32"],
+  "document": "vendor/CCTC/cctc-mlcc-DRAAW108N-0.pdf",
+  "document_number": "DRAAW108N/0",
+  "sha256": "b2df0acdc0462daab468502151c77ae88d3fd5a5e101254e6079d3fafacfac4e",
+  "obtained_from": "https://datasheet.lcsc.com/datasheet/pdf/71a9f8eccc4da164324d4a716182c5e3.pdf",
+  "obtained_via": "the dataManualUrl of the live D-096 JLCPCB record evidence/jlc-live/tcc1206x7r226k160ht-67b4b28f.json (C22392398, CCTC, stock 4421)",
+  "part_number_decode": {
+    "TCC": "CCTC MLCC",
+    "1206": "chip size 3.20 x 1.60 mm",
+    "X7R": "dielectric",
+    "226": "22 uF",
+    "K": "+/-10 %",
+    "160": "16 VDC",
+    "H": "THICKNESS CODE H = 1.60 mm",
+    "T": "tape carrier, small reel",
+    "source": "section 'Code of Ceramic Capacitor' ordering table, which lists the thickness codes Y 0.20 / A 0.50 / B 0.60 / C 0.80 / D 0.85 / E 1.00 / F 1.25 / G 2.00 / H 1.60 / M 2.50 / Z 0.30 mm"
+  },
+  "facts": {
+    "section": "5. Dimensions, 1206 rows",
+    "L_mm": "3.20 +/- 0.30",
+    "W_mm": "1.60 +/- 0.30",
+    "T_nominal_mm": 1.60,
+    "T_tolerance_mm": 0.30,
+    "T_max_mm": 1.90,
+    "which_1206_row": "the datasheet prints TWO 1206 rows: 3.20 +/- 0.20 / 1.60 +/- 0.20 with T = 1.60 +/- 0.20, and a second marked *1 at 3.20 +/- 0.30 / 1.60 +/- 0.30 with T = 1.60 +/- 0.30.  The footnote reads 'The model identification of this type is 1uF and above specifications of product size'.  These parts are 22 uF, so the *1 row applies and the thickness MAXIMUM is 1.90 mm -- 0.10 mm MORE than the 1.80 mm the census had been charging them at.",
+    "consequence": "C29 and C30 sit inside BATTERY_SHADOW, whose measured-profile allowance was set at 1.80 mm BECAUSE the census said these parts were 1.80 mm.  The corrected figure moves the region's measured tallest to 1.90 mm.  Nothing on the board got taller; the census was reading another manufacturer's part."
+  },
+  "unit_check": "the extracted .txt was checked against the PDF; the quoted dimension rows carry only millimetres and the thickness-code table is reproduced above from the same page."
+}

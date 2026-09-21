@@ -1,7 +1,198 @@
 # AQROOT Demo — FABRICATION HANDOFF
 
 
-> # **STATUS: D-788 ROUND-7 CORRECTION — EXTERNAL-REVIEW TARGET, BOARD AUTHORITY `57145f5c` (2026-09-20).**
+> # **STATUS: D-789 ROUND-8 CORRECTION — EXTERNAL-REVIEW TARGET, BOARD AUTHORITY `40e65ac9` (2026-09-21).**
+>
+> **D-789 supersedes D-788, which Round-8 external review REJECTED. THIS IS A
+> REVIEW TARGET, NOT A FABRICATION AUTHORIZATION — DO NOT ORDER. NO OWNER
+> DECISION IS OPEN: the owner's D-788 OPTION A approval of 2026-09-20 stands and
+> D-789 stays inside it.**
+>
+> **AND THERE IS A HARD PURCHASING GATE ON THIS TARGET: `Q2`/`Q3` MUST BE
+> RESOLVED BEFORE PCBA PAYMENT.** See §"`Q2`/`Q3` pre-PCBA block" below.
+>
+> Fable passed the design review with two residuals. **Astra blocked the order
+> with 19 findings** (0 critical, 5 high, 10 medium, 4 low), fourteen requiring
+> pre-order correction, and established **no unconditional PCB respin**. All 19
+> are closed here, plus both Fable-only items, plus one more found here
+> (`R8-N01`).
+>
+> ### What actually changed on the board
+>
+> **ONE part value: `D14`, `1N4148WS` → `BAT54WS-7-F`.** Nothing else. No
+> copper moved, no footprint changed, no net changed. `D14` is `Q11`'s
+> gate-hold diode; D-788 lowered the `+3V3` rail to keep the ILI9488 panel
+> inside its 3.3 V absolute maximum, and at the new rail the silicon diode's
+> lowest published forward maximum (715 mV at 1 mA) leaves `Q11`'s `VGS` at
+> **1.486526 V — 13.5 mV BELOW** the fitted `SQ2364EES`'s only published
+> low-gate conduction row, with no lower row to bound it. The Schottky
+> publishes **`VF` ≤ 240 mV at 0.1 mA**, below the ~9 µA this node draws and
+> monotone, so it is a guaranteed bound: `VGS` **1.961526 V**, **461.5 mV
+> inside** the published region. **It is the same MPN and LCSC code this board
+> already fits at `D10`/`D11`/`D12`, in the same SOD-323 land** — no new part,
+> no new feeder, no new footprint, and the assembly BOM goes **124 → 123**
+> lines. *(D-752's "a Schottky would raise the true-off floor" argument is
+> superseded: the cathode is on the gate, so the diode's reverse leakage flows
+> OUT of it and a Schottky improves true-off.)*
+>
+> ### What changed in the proofs, which is the real content of this round
+>
+> Three of the five Astra highs are the same error in three domains — a
+> **bound** that was really an **interpolation**, an **assumed parallel
+> network**, and an **approximation** standing in for a thermal model. All
+> three replacements are *worse numbers*, and that is the point.
+>
+> **`U20`'s `RON`** is no longer interpolated between two guaranteed
+> `SLVSGP6A` rows. It is the maximum published at the nearest row **at or
+> below `U20`'s own input voltage** — the 1.8 V row's **116 mΩ**, not the
+> 75.379 mΩ chord — which needs only that `RON` fall as `VIN` rises. And it is
+> evaluated at `U20`'s **actual 3.056853 V** input, not at the source rail.
+>
+> **The Community Port's return network** is no longer four parallel grounds
+> carrying one rail's current. The published usage permits individual Dupont
+> jumpers and the 5 V rail returns through the same contacts, so `F6` solves
+> **every permitted wiring × load mode** and publishes the worst.
+>
+> **`U11.2`'s thermal acceptance** no longer rests on a `w + 2d`
+> transverse-spreading conductance. It is the **minimum of two independent
+> rigorous ceilings** — all heat out one end with no lateral help, and no axial
+> sink with no transverse spreading — giving **52.3 °C** predicted peak. The
+> licensed exception also shrank from 6.0 mm to **1.2 mm of measured 0.200 mm
+> copper plus 3.0 mm of the 0.600 mm taper**, because the 6.0 mm was a width
+> *attribute* of copper that lies inside a wider taper.
+>
+> ### THE HOTTEST POINT ON THIS BOARD IS NOT COPPER — read this before quoting a laminate
+>
+> From TI `SLUSF65B` 6.3.7.6, at the **same 196 mΩ** BATFET resistance the
+> electrical model charges and θJA **68.3 °C/W** for the DLH package, the
+> BQ25185's junction reaches **115.44 °C at the 40 °C top of the declared
+> ambient envelope** against TI's own **125 °C** operating maximum — **9.56 K**.
+> That, and not a copper temperature, is why the fab notes require **FR4 with
+> Tg ≥ 150 °C**: a TG130 build leaves 14.6 K to the glass transition at that
+> point and **is refused**. The 105 °C figure elsewhere in this package is a
+> **declared conductor-sizing limit**, not a laminate MOT — no source here
+> publishes one. The IPC-2221B coupon rise reported beside the narrow runs is a
+> **screening number for an isolated coupon in still air** and is never a
+> predicted board temperature. `C-THERM-01` first-article thermography is the
+> measurement of record.
+>
+> ### Community Port — the published contract, derived and frozen
+>
+> | condition at the J5 mating interface | guaranteed |
+> |---|---|
+> | no load | **3.069408 V** |
+> | 400 mA, worst permitted wiring, 5 V rail also at 300 mA | **2.849642 V** |
+> | 400 mA, worst permitted wiring, 3.3 V rail alone | **2.860909 V** |
+> | 400 mA, **header fully mated**, 5 V rail also at 300 mA | **2.982890 V** |
+>
+> **PUBLISHED MINIMUM 2.84 V**, the worst permitted mode rounded DOWN onto a
+> 10 mV grid — either duplicated 3.3 V contact used **alone**, **one** mated
+> ground, and the 5 V rail **also** at its published 300 mA. The fully-mated
+> figure is published beside it as an explicit connection contract and is
+> **better** than the 2.95 V D-788 published with a hand-soldered wire fitted.
+> Unloaded span **3.069408 … 3.223012 V**; raw PWM **3.100334 / 3.145503 /
+> 3.191022 V**. `ACC_3V3_SW` **400 mA total** and `ACC_5V_SW` **300 mA total**
+> are **UNCHANGED**. The tightest published minimum supply among the parts the
+> board powers from `ACC_3V3_SW` is `U16` `TCA4307DGKR` at **2.3 V**; the worst
+> mode clears it by **549.6 mV**. Every figure here is **DERIVED** by
+> `demo_feature_contract` F6 from the live board on every run, and F6 refuses a
+> `DEVICE_SPEC` that prints a different one.
+>
+> ### THERE IS NO MANUAL CONDUCTOR ON THIS BOARD — if an older instruction says otherwise, it is superseded
+>
+> D-787 added two hand-soldered 28-AWG accessory-reinforcement leads, D-788
+> reduced that to one, and **D-789 removes it**. Round-8 raised four
+> independent findings and every one is a property of the conductor rather than
+> of its description: a 2.0 ± 0.5 mm tinned tip that cannot fit a **1.00 mm**
+> `TP12` pad; a `J5.3` insertion into a **1.02 mm** drill already filled by J5's
+> **0.635 mm square** tail; a route that started **inside `BATTERY_SHADOW`** and
+> crossed **`RIB_R3`** against its own 1.0 mm clearances; and a ≤ 25 mΩ
+> acceptance that cannot be measured with the board's own copper in parallel.
+> **It bought 70 mV on one of two duplicated contacts.** Both contacts are
+> routed copper alone — `J5.22` **79.0 mΩ**, `J5.3` **224.4 mΩ** — `TP12`/`TP25`
+> remain test points with **nothing soldered to them**, `U20`'s current limiting
+> and OFF isolation remain in series with both, the Alpha Wire reel leaves the
+> off-board BOM, and **manual post-reflow work is back to the five through-hole
+> references (`J4`, `J5`, `J6`, `D1`, `U6`) and nothing else.**
+>
+> ### `Q2`/`Q3` pre-PCBA block — DO NOT PAY FOR PCBA UNTIL THIS IS RESOLVED
+>
+> Two independent reasons, and the second is new at D-789.
+>
+> **(1) Unbuyable.** The locked onsemi `NTMD4820NR2G` reads **stock 0** live,
+> onsemi's page reports **Obsolete**, and the only same-MPN rows with stock are
+> re-marked second sources. A viable authorised ten-piece allocation is **NOT
+> VERIFIED**.
+>
+> **(2) `R8-N01` — not guaranteed to be ENHANCED.** The `LTC4368` guarantees
+> **3.0 V** of gate drive at this board's `BAT_RAW`; the fitted FET's
+> `VGS(th)` **MAXIMUM is 3.0 V**; its lowest published `RDS(on)` row is at
+> `VGS` = 4.5 V. In the worst corner the guaranteed drive is **below** the
+> guaranteed threshold. **FUNCTIONAL, not safety** — the breaker senses across
+> `R75` and acts by pulling the gate DOWN, so overcurrent, reverse and UV/OV
+> protection are unaffected.
+>
+> The eight selection requirements for the replacement, the live evidence and
+> first-article **`C-BAT-GATE-01`** are in
+> [`assembly/SOURCING_LEDGER.md`](assembly/SOURCING_LEDGER.md), and
+> `demo_feature_contract` **F10** refuses a ledger that drops any of them.
+> **No substitution without requalification. Read the datasheet, not the
+> catalogue row** — a JLCPCB attribute table advertised `YJQ3622A` as a
+> 2-N-channel 30 V part during this work; its datasheet says single N-channel
+> in DFN3.3×3.3 and it would not have fitted the land.
+>
+> ### The other Round-8 corrections, one line each
+>
+> Production **callers** are now executed rather than inspected — they moved
+> into `DemoBringupApp` and `test_production_callers.cpp` catches **13
+> call-site mutations** over a physical-latch expander model (D788-04/05/06);
+> the speaker crimp becomes **`SPH-004T-P0.5S`** for the fitted **AWG #32**
+> leads, with its own tooling named and **`C-SPK-01`** pull qualification
+> (D788-10); the ripple term uses `U12`'s **total** output including the
+> accessory 400 mA (D788-12); the regression wrapper normalises only the
+> PRE-dependent fields a contract **declares**, intersected between both sides
+> and never under `--strict`, proved narrow by a constant self-test (D788-13);
+> the pour changed-net control builds a **nonempty** stranded-pad fixture and
+> calls the **production predicate** (D788-14); the assembly drawings' release
+> label is **derived** from the newest CHANGELOG heading and re-derived by
+> `FAB14` (D788-15); the adhesive cure is **one condition-controlled hold**
+> citing the archived DOWSIL datasheet's 78-minute tack-free figure, with
+> **`C-ADH-01`** per-lot adhesion qualification (D788-17); the transient
+> procedure is **DC-coupled or synchronised DC+AC** with a recorded uncertainty
+> budget, and its accessory steps moved to pack voltages a release image
+> actually permits — **4.15 / 3.90 V dual, 3.55 V single** (D788-18); and the
+> cap-height census is bound to the purchased **CCTC `TCC1206X7R226K160HT`**
+> (D788-19).
+>
+> ### D-789 review-target identity
+>
+> | field | value |
+> |---|---|
+> | branch / remote | `aqroot-demo` / `origin/aqroot-demo` |
+> | content commit | `recorded in the identity commit that follows` |
+> | PCB `sha256` | `40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf` |
+> | `MANIFEST` `sha256` | `d2abda1e384739ec8f13561dc78d10b080e70487b6f5b4b16feaaf28b12ce3b9` |
+> | order authorization | **NONE — manufacturer CAM (B01–B10) and first-article (C01–C18 + `C-PWR-TRANSIENT-01`, `C-BAT-GATE-01`, `C-SPK-01`, `C-ADH-01`, `C-ACC-01`, `C-ACC-02`) outstanding, and `Q2`/`Q3` is a pre-PCBA block. DO NOT ORDER.** |
+>
+> The identity record is `hardware/demo/manufacturing/evidence/d789-review-target.json`, and
+> the HEAD carrying it is one commit after the milestone — a record cannot contain its own
+> hash.
+>
+> ### Release verification on this candidate
+>
+> **F1–F10 PASS** (F10 new); **H1–H8 PASS** with 7 host tests, 297 claims and 46 mutations
+> caught, including the 13 new call-site mutations; **FAB1–FAB16 PASS** on a package
+> regenerated from this candidate; **ampacity all_ok** (`U11.2` 52.3 °C peak, BQ25185 `TJ`
+> 115.44 °C); **19/19 standing contracts** individually with a clean, non-vacuous wrapper;
+> **protected copper IDENTICAL** at 15 nets / 406 objects; connectivity **174 / 173 / 1
+> owner-approved `U11.3` / 0 unapproved**; KiCad DRC **199 `lib_footprint_issues` warnings /
+> 0 errors** plus 17 declared unconnected items; schematic parity **246 warnings / 0
+> errors**; **123** assembly lines re-swept live with ten consignment identities; **four**
+> PlatformIO environments SUCCESS; `hardware/beta-v2` untouched.
+>
+> ---
+>
+> # **STATUS: D-788 ROUND-7 CORRECTION — EXTERNAL-REVIEW TARGET, BOARD AUTHORITY `57145f5c` (2026-09-20).**  *(HISTORICAL — superseded by D-789 above.  Its ILI9488 absolute-maximum correction STANDS; its delivered Community-Port numbers, its `U20` RON, its `U11.2` thermal acceptance, its one reinforcement lead and its `D14` silicon diode DO NOT.)*
 >
 > **D-788 supersedes D-787, which Round-7 external review REJECTED. THIS IS A
 > REVIEW TARGET, NOT A FABRICATION AUTHORIZATION — DO NOT ORDER. NO OWNER
@@ -712,6 +903,25 @@ lost); all four PlatformIO environments build SUCCESS.
 ---
 
 ## 1. Final board status
+
+> **HISTORICAL BODY — SECTIONS 1 THROUGH 10 ARE THE D-765/D-776 ENGINEERING HANDOFF AND
+> ARE NOT THE CURRENT RELEASE STATUS.**  They are retained because their method, their
+> per-subsystem reasoning and their risk register are still the best description of how
+> this board was built and what it still owes a first article.  **Where any number here
+> conflicts with the D-789 banner at the top of this file, the banner governs.**  In
+> particular, on the current candidate: the board authority is
+> **`40e65ac99bffb1764fc6cc09a7898fedbb802893af22ee996f01034a03a9afcf`**, not the
+> `9e4728ae…` quoted below; the Community Port publishes **≥ 2.84 V at 400 mA** (2.982890 V
+> fully mated) and **not** 3.135 V; **there is no manual reinforcement conductor on this
+> board**; `D14` is a **`BAT54WS-7-F`**, not a `1N4148WS`, and `Q11`'s held `VGS` is
+> **1.961526 V**, not the 2.396 V quoted below — that was a 3.3 V-rail number; the speaker
+> crimp is **`SPH-004T-P0.5S`**, not `SPH-002T-P0.5S`; the `U11.2` narrow-run exception
+> is bounded at **52.3 °C** predicted peak by the minimum of two rigorous ceilings, and the
+> board's real thermal margin is the **BQ25185 junction at 115.44 °C** against TI's 125 °C;
+> and `Q2`/`Q3` is a **pre-PCBA block**.  Connectivity (**174 / 173 / 1 owner-approved
+> `U11.3` / 0 unapproved**), the approved Demo NC set and the "no open owner decision"
+> status below are all still true.
+
 
 77.000 × 148.000 mm stepped outline, 6 copper layers, 3552 tracks, 918 vias,
 71 zones, 315 footprints, 298 fitted references and 16 schematic-DNP.

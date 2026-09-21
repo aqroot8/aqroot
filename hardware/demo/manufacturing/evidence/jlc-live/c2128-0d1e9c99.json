@@ -1,0 +1,3020 @@
+{
+ "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+ "exhausted": true,
+ "fetched_utc": "2026-09-21T02:22:40Z",
+ "keyword": "C2128",
+ "page_size": 25,
+ "pages": 2,
+ "records": [
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage - Forward(Vf@If)",
+     "attribute_value_name": "1.25V@150mA"
+    },
+    {
+     "attribute_name_en": "Non-Repetitive Peak Forward Surge Current",
+     "attribute_value_name": "2A"
+    },
+    {
+     "attribute_name_en": "Voltage - DC Reverse(Vr)",
+     "attribute_value_name": "100V"
+    },
+    {
+     "attribute_name_en": "Operating Junction Temperature Range",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Reverse Recovery Time (trr)",
+     "attribute_value_name": "4ns"
+    },
+    {
+     "attribute_name_en": "Diode Configuration",
+     "attribute_value_name": "Standalone"
+    },
+    {
+     "attribute_name_en": "Current - Rectified",
+     "attribute_value_name": "150mA"
+    },
+    {
+     "attribute_name_en": "Pd - Power Dissipation",
+     "attribute_value_name": "200mW"
+    },
+    {
+     "attribute_name_en": "Reverse Leakage Current (Ir)",
+     "attribute_value_name": "1uA@75V"
+    }
+   ],
+   "componentBrandEn": "Jiangsu Changjing Electronics Technology Co., Ltd.",
+   "componentCode": "C2128",
+   "componentLibraryType": "base",
+   "componentModelEn": "1N4148WS",
+   "componentPrices": [
+    {
+     "endNumber": 499,
+     "productPrice": 0.0168,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 2999,
+     "productPrice": 0.0133,
+     "startNumber": 500
+    },
+    {
+     "endNumber": 5999,
+     "productPrice": 0.0121,
+     "startNumber": 3000
+    },
+    {
+     "endNumber": 23999,
+     "productPrice": 0.011,
+     "startNumber": 6000
+    },
+    {
+     "endNumber": 50999,
+     "productPrice": 0.0105,
+     "startNumber": 24000
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.0102,
+     "startNumber": 51000
+    }
+   ],
+   "componentSpecificationEn": "SOD-323",
+   "componentTypeEn": "Switching Diodes",
+   "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1810101110_Jiangsu-Changjing-Electronics-Technology-Co---Ltd--1N4148WS_C2128.pdf",
+   "describe": "1.25V@150mA 100V 150mA 1uA@75V 200mW 2A 4ns Independent SOD-323 Switching Diodes ROHS",
+   "erpComponentName": "1N4148WS",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/switching-diodes_jiangsu-changjing-electronics-technology-co-ltd-1n4148ws_C2128.html",
+   "leastPatchNumber": 20,
+   "lossNumber": 10,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 1852995
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Series",
+     "attribute_value_name": "MC2000 Series"
+    },
+    {
+     "attribute_name_en": "Function",
+     "attribute_value_name": "Set and Reset"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-55℃~+125℃"
+    },
+    {
+     "attribute_name_en": "Clock Frequency",
+     "attribute_value_name": "35MHz"
+    },
+    {
+     "attribute_name_en": "Type",
+     "attribute_value_name": "JK-Type"
+    },
+    {
+     "attribute_name_en": "Number of Bits per Element",
+     "attribute_value_name": "1"
+    },
+    {
+     "attribute_name_en": "Output Type",
+     "attribute_value_name": "Complementary type"
+    },
+    {
+     "attribute_name_en": "Voltage - Supply",
+     "attribute_value_name": "4.5V~6V"
+    },
+    {
+     "attribute_name_en": "Trigger Type",
+     "attribute_value_name": "Falling Edge"
+    },
+    {
+     "attribute_name_en": "Number of Elements",
+     "attribute_value_name": "1"
+    }
+   ],
+   "componentBrandEn": "MOTOROLA",
+   "componentCode": "C3826377",
+   "componentLibraryType": "expand",
+   "componentModelEn": "MC2128L",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 16.9905,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 16.9905,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 16.9905,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 6.5755,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 6.3444,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 6.2305,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "TO-116",
+   "componentTypeEn": "Flip Flops",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2401161518_MOTOROLA-MC2128L_C3826377.pdf",
+   "describe": "-55℃~+125℃ 1 1 35MHz 4.5V~6V Complementary type Falling Edge JK-Type MC2000 Series Set and Reset TO-116 Flip Flops",
+   "erpComponentName": "MC2128L",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/flip-flops_motorola-mc2128l_C3826377.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 0,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+125℃@(TJ)"
+    },
+    {
+     "attribute_name_en": "Function",
+     "attribute_value_name": "Step-down type"
+    },
+    {
+     "attribute_name_en": "Synchronous Rectifier",
+     "attribute_value_name": "Yes"
+    },
+    {
+     "attribute_name_en": "Frequency - Switching",
+     "attribute_value_name": "270kHz~800kHz"
+    },
+    {
+     "attribute_name_en": "Voltage - Supply",
+     "attribute_value_name": "4.5V~75V"
+    },
+    {
+     "attribute_name_en": "Output Type",
+     "attribute_value_name": "Adjustable"
+    },
+    {
+     "attribute_name_en": "Output Current",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Quiescent Current",
+     "attribute_value_name": "1.4mA"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Adjustable soft-start、Operating status indication、Adjustable current limiting、Hiccup current limiting、Built-in LDO regulator"
+    },
+    {
+     "attribute_name_en": "Switch tube (built-in/external)",
+     "attribute_value_name": "External"
+    },
+    {
+     "attribute_name_en": "Topology",
+     "attribute_value_name": "Buck"
+    },
+    {
+     "attribute_name_en": "Output Voltage",
+     "attribute_value_name": "600mV~30V"
+    },
+    {
+     "attribute_name_en": "Number of Outputs",
+     "attribute_value_name": "1"
+    }
+   ],
+   "componentBrandEn": "Microchip Tech",
+   "componentCode": "C621532",
+   "componentLibraryType": "expand",
+   "componentModelEn": "MIC2128YML-TR",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 2.6254,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 2.1973,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 1.9304,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 1.6553,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 1.5316,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 1.4779,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "VQFN-16-EP(3x3)",
+   "componentTypeEn": "DC-DC Converters",
+   "dataManualUrl": "https://datasheet.lcsc.com/lcsc/2210180630_Microchip-Tech-MIC2128YML-TR_C621532.pdf",
+   "describe": "-40℃~+125℃@(TJ) 1 270kHz~800kHz 4.5V~75V 600mV~30V Adjustable Buck Buck External Yes VQFN-16-EP(3x3) DC-DC Converters ROHS",
+   "erpComponentName": "降压型 4.5V~75V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/dc-dc converters_microchip tech_mic2128yml-tr_C621532.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 73
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "200V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Polarity type",
+     "attribute_value_name": "有极性"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "1200uF"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C1609247",
+   "componentLibraryType": "expand",
+   "componentModelEn": "B43601C2128M",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 8.1738,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 8.1738,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 8.1738,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 3.1641,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 3.0534,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 2.9981,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin",
+   "componentTypeEn": "Horn-Type Electrolytic Capacitors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2211021130_TDK-B43601C2128M_C1609247.pdf",
+   "describe": "1200uF 200V ±20% 插件 Horn-Type Electrolytic Capacitors ROHS",
+   "erpComponentName": "1200uF ±20% 200V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/horn-type-electrolytic-capacitors_tdk-b43601c2128m_C1609247.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "200V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Polarity type",
+     "attribute_value_name": "有极性"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "1200uF"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C1609490",
+   "componentLibraryType": "expand",
+   "componentModelEn": "B43305C2128M",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 8.2064,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 8.2064,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 8.2064,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 3.1771,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 3.0648,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 3.0095,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin",
+   "componentTypeEn": "Horn-Type Electrolytic Capacitors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2211021130_TDK-B43305C2128M_C1609490.pdf",
+   "describe": "1200uF 200V ±20% 插件 Horn-Type Electrolytic Capacitors ROHS",
+   "erpComponentName": "1200uF ±20% 200V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/horn-type-electrolytic-capacitors_tdk-b43305c2128m_C1609490.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+125℃@(TJ)"
+    },
+    {
+     "attribute_name_en": "Function",
+     "attribute_value_name": "Buck"
+    },
+    {
+     "attribute_name_en": "Synchronous Rectifier",
+     "attribute_value_name": "Yes"
+    },
+    {
+     "attribute_name_en": "Frequency - Switching",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Output Type",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Switch tube (built-in/external)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Topology",
+     "attribute_value_name": "Buck"
+    },
+    {
+     "attribute_name_en": "Number of Outputs",
+     "attribute_value_name": "1"
+    }
+   ],
+   "componentBrandEn": "Microchip Tech",
+   "componentCode": "C632999",
+   "componentLibraryType": "expand",
+   "componentModelEn": "MIC2128YML-T5",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 5.8285,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 5.8285,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 5.8285,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 2.2559,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 2.1761,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 2.1371,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "VQFN-16-EP(3x3)",
+   "componentTypeEn": "DC-DC Converters",
+   "dataManualUrl": "https://datasheet.lcsc.com/lcsc/2210172330_Microchip-Tech-MIC2128YML-T5_C632999.pdf",
+   "describe": "-40℃~+125℃@(TJ) 1 Buck Buck Yes VQFN-16-EP(3x3) DC-DC Converters ROHS",
+   "erpComponentName": "降压型",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/dc-dc converters_microchip tech_mic2128yml-t5_C632999.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "200V"
+    },
+    {
+     "attribute_name_en": "Height - Seated (Max)",
+     "attribute_value_name": "30mm"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Polarity type",
+     "attribute_value_name": "有极性"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "1200uF"
+    },
+    {
+     "attribute_name_en": "Diameter",
+     "attribute_value_name": "35mm"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C1611987",
+   "componentLibraryType": "expand",
+   "componentModelEn": "B43508C2128M2",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 9.3262,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 9.3262,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 9.3262,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 3.6101,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 3.4831,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 3.4196,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D35xL30mm",
+   "componentTypeEn": "Horn-Type Electrolytic Capacitors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2211011530_TDK-B43508C2128M2_C1611987.pdf",
+   "describe": "1200uF 200V 30mm 35mm ±20% 插件,D35xL30mm Horn-Type Electrolytic Capacitors ROHS",
+   "erpComponentName": "1200uF ±20% 200V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/horn-type-electrolytic-capacitors_tdk-b43508c2128m2_C1611987.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "200V"
+    },
+    {
+     "attribute_name_en": "Height - Seated (Max)",
+     "attribute_value_name": "30mm"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Polarity type",
+     "attribute_value_name": "有极性"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "1200uF"
+    },
+    {
+     "attribute_name_en": "Diameter",
+     "attribute_value_name": "35mm"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C1611995",
+   "componentLibraryType": "expand",
+   "componentModelEn": "B43508C2128M7",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 9.3262,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 9.3262,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 9.3262,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 3.6101,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 3.4831,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 3.4196,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D35xL30mm",
+   "componentTypeEn": "Horn-Type Electrolytic Capacitors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2211011530_TDK-B43508C2128M7_C1611995.pdf",
+   "describe": "1200uF 200V 30mm 35mm ±20% 插件,D35xL30mm Horn-Type Electrolytic Capacitors ROHS",
+   "erpComponentName": "1200uF ±20% 200V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/horn-type-electrolytic-capacitors_tdk-b43508c2128m7_C1611995.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "200V"
+    },
+    {
+     "attribute_name_en": "Height - Seated (Max)",
+     "attribute_value_name": "30mm"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Polarity type",
+     "attribute_value_name": "有极性"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "1200uF"
+    },
+    {
+     "attribute_name_en": "Diameter",
+     "attribute_value_name": "35mm"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C1610677",
+   "componentLibraryType": "expand",
+   "componentModelEn": "B43508C2128M67",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 9.7363,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 9.7363,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 9.7363,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 3.7679,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 3.6361,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 3.571,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D35xL30mm",
+   "componentTypeEn": "Horn-Type Electrolytic Capacitors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2211021100_TDK-B43508C2128M67_C1610677.pdf",
+   "describe": "1200uF 200V 30mm 35mm ±20% 插件,D35xL30mm Horn-Type Electrolytic Capacitors ROHS",
+   "erpComponentName": "1200uF ±20% 200V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/horn-type-electrolytic-capacitors_tdk-b43508c2128m67_C1610677.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "200V"
+    },
+    {
+     "attribute_name_en": "Height - Seated (Max)",
+     "attribute_value_name": "30mm"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Polarity type",
+     "attribute_value_name": "有极性"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "1200uF"
+    },
+    {
+     "attribute_name_en": "Diameter",
+     "attribute_value_name": "35mm"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C1610691",
+   "componentLibraryType": "expand",
+   "componentModelEn": "B43508C2128M62",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 9.7363,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 9.7363,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 9.7363,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 3.7679,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 3.6361,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 3.571,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D35xL30mm",
+   "componentTypeEn": "Horn-Type Electrolytic Capacitors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2211021100_TDK-B43508C2128M62_C1610691.pdf",
+   "describe": "1200uF 200V 30mm 35mm ±20% 插件,D35xL30mm Horn-Type Electrolytic Capacitors ROHS",
+   "erpComponentName": "1200uF ±20% 200V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/horn-type-electrolytic-capacitors_tdk-b43508c2128m62_C1610691.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "200V"
+    },
+    {
+     "attribute_name_en": "Height - Seated (Max)",
+     "attribute_value_name": "30mm"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Polarity type",
+     "attribute_value_name": "有极性"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "1200uF"
+    },
+    {
+     "attribute_name_en": "Diameter",
+     "attribute_value_name": "35mm"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C1610696",
+   "componentLibraryType": "expand",
+   "componentModelEn": "B43508C2128M60",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 9.7363,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 9.7363,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 9.7363,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 3.7679,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 3.6361,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 3.571,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D35xL30mm",
+   "componentTypeEn": "Horn-Type Electrolytic Capacitors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2211021100_TDK-B43508C2128M60_C1610696.pdf",
+   "describe": "1200uF 200V 30mm 35mm ±20% 插件,D35xL30mm Horn-Type Electrolytic Capacitors ROHS",
+   "erpComponentName": "1200uF ±20% 200V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/horn-type-electrolytic-capacitors_tdk-b43508c2128m60_C1610696.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "200V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Polarity type",
+     "attribute_value_name": "有极性"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "1200uF"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C1611065",
+   "componentLibraryType": "expand",
+   "componentModelEn": "B43601C2128M67",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 8.5693,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 8.5693,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 8.5693,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 3.3171,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 3.1999,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 3.1429,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin",
+   "componentTypeEn": "Horn-Type Electrolytic Capacitors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2211021100_TDK-B43601C2128M67_C1611065.pdf",
+   "describe": "1200uF 200V ±20% 插件 Horn-Type Electrolytic Capacitors ROHS",
+   "erpComponentName": "1200uF ±20% 200V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/horn-type-electrolytic-capacitors_tdk-b43601c2128m67_C1611065.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "200V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Polarity type",
+     "attribute_value_name": "有极性"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "1200uF"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C1611115",
+   "componentLibraryType": "expand",
+   "componentModelEn": "B43601C2128M62",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 8.5693,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 8.5693,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 8.5693,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 3.3171,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 3.1999,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 3.1429,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin",
+   "componentTypeEn": "Horn-Type Electrolytic Capacitors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2211021100_TDK-B43601C2128M62_C1611115.pdf",
+   "describe": "1200uF 200V ±20% 插件 Horn-Type Electrolytic Capacitors ROHS",
+   "erpComponentName": "1200uF ±20% 200V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/horn-type-electrolytic-capacitors_tdk-b43601c2128m62_C1611115.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 2,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "250V"
+    },
+    {
+     "attribute_name_en": "Height - Seated (Max)",
+     "attribute_value_name": "40mm"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Polarity type",
+     "attribute_value_name": "有极性"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "1200uF"
+    },
+    {
+     "attribute_name_en": "Diameter",
+     "attribute_value_name": "35mm"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C1612140",
+   "componentLibraryType": "expand",
+   "componentModelEn": "B43504C2128M87",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 13.4049,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 13.4049,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 13.4049,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 5.1872,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 5.0049,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 4.9154,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D35xL40mm",
+   "componentTypeEn": "Horn-Type Electrolytic Capacitors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2211011530_TDK-B43504C2128M87_C1612140.pdf",
+   "describe": "1200uF 250V 35mm 40mm ±20% 插件,D35xL40mm Horn-Type Electrolytic Capacitors ROHS",
+   "erpComponentName": "1200uF ±20% 250V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/horn-type-electrolytic-capacitors_tdk-b43504c2128m87_C1612140.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "250V"
+    },
+    {
+     "attribute_name_en": "Height - Seated (Max)",
+     "attribute_value_name": "40mm"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Polarity type",
+     "attribute_value_name": "有极性"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "1200uF"
+    },
+    {
+     "attribute_name_en": "Diameter",
+     "attribute_value_name": "35mm"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C1612152",
+   "componentLibraryType": "expand",
+   "componentModelEn": "B43504C2128M80",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 13.4049,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 13.4049,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 13.4049,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 5.1872,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 5.0049,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 4.9154,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D35xL40mm",
+   "componentTypeEn": "Horn-Type Electrolytic Capacitors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2211011530_TDK-B43504C2128M80_C1612152.pdf",
+   "describe": "1200uF 250V 35mm 40mm ±20% 插件,D35xL40mm Horn-Type Electrolytic Capacitors ROHS",
+   "erpComponentName": "1200uF ±20% 250V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/horn-type-electrolytic-capacitors_tdk-b43504c2128m80_C1612152.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "250V"
+    },
+    {
+     "attribute_name_en": "Height - Seated (Max)",
+     "attribute_value_name": "40mm"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Polarity type",
+     "attribute_value_name": "有极性"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "1200uF"
+    },
+    {
+     "attribute_name_en": "Diameter",
+     "attribute_value_name": "35mm"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C1612424",
+   "componentLibraryType": "expand",
+   "componentModelEn": "B43504C2128M62",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 12.8841,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 12.8841,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 12.8841,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 4.987,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 4.8112,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 4.725,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D35xL40mm",
+   "componentTypeEn": "Horn-Type Electrolytic Capacitors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2211011530_TDK-B43504C2128M62_C1612424.pdf",
+   "describe": "1200uF 250V 35mm 40mm ±20% 插件,D35xL40mm Horn-Type Electrolytic Capacitors ROHS",
+   "erpComponentName": "1200uF ±20% 250V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/horn-type-electrolytic-capacitors_tdk-b43504c2128m62_C1612424.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "250V"
+    },
+    {
+     "attribute_name_en": "Height - Seated (Max)",
+     "attribute_value_name": "40mm"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Polarity type",
+     "attribute_value_name": "有极性"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "1200uF"
+    },
+    {
+     "attribute_name_en": "Diameter",
+     "attribute_value_name": "35mm"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C1612435",
+   "componentLibraryType": "expand",
+   "componentModelEn": "B43504C2128M60",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 12.8841,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 12.8841,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 12.8841,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 4.987,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 4.8112,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 4.725,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D35xL40mm",
+   "componentTypeEn": "Horn-Type Electrolytic Capacitors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2211011530_TDK-B43504C2128M60_C1612435.pdf",
+   "describe": "1200uF 250V 35mm 40mm ±20% 插件,D35xL40mm Horn-Type Electrolytic Capacitors ROHS",
+   "erpComponentName": "1200uF ±20% 250V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/horn-type-electrolytic-capacitors_tdk-b43504c2128m60_C1612435.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "200V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Polarity type",
+     "attribute_value_name": "有极性"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "1200uF"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C1612899",
+   "componentLibraryType": "expand",
+   "componentModelEn": "B43305C2128M62",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 9.0413,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 9.0413,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 9.0413,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 3.4994,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 3.3757,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 3.3155,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin",
+   "componentTypeEn": "Horn-Type Electrolytic Capacitors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2211011530_TDK-B43305C2128M62_C1612899.pdf",
+   "describe": "1200uF 200V ±20% 插件 Horn-Type Electrolytic Capacitors ROHS",
+   "erpComponentName": "1200uF ±20% 200V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/horn-type-electrolytic-capacitors_tdk-b43305c2128m62_C1612899.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "200V"
+    },
+    {
+     "attribute_name_en": "Height - Seated (Max)",
+     "attribute_value_name": "30mm"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Polarity type",
+     "attribute_value_name": "有极性"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "1200uF"
+    },
+    {
+     "attribute_name_en": "Diameter",
+     "attribute_value_name": "35mm"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C1613142",
+   "componentLibraryType": "expand",
+   "componentModelEn": "B43508C2128M82",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 10.223,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 10.223,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 10.223,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 3.9567,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 3.8184,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 3.7484,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D35xL30mm",
+   "componentTypeEn": "Horn-Type Electrolytic Capacitors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2211011530_TDK-B43508C2128M82_C1613142.pdf",
+   "describe": "1200uF 200V 30mm 35mm ±20% 插件,D35xL30mm Horn-Type Electrolytic Capacitors ROHS",
+   "erpComponentName": "1200uF ±20% 200V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/horn-type-electrolytic-capacitors_tdk-b43508c2128m82_C1613142.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "200V"
+    },
+    {
+     "attribute_name_en": "Height - Seated (Max)",
+     "attribute_value_name": "30mm"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Polarity type",
+     "attribute_value_name": "有极性"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "1200uF"
+    },
+    {
+     "attribute_name_en": "Diameter",
+     "attribute_value_name": "35mm"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C1613146",
+   "componentLibraryType": "expand",
+   "componentModelEn": "B43508C2128M80",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 10.223,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 10.223,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 10.223,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 3.9567,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 3.8184,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 3.7484,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D35xL30mm",
+   "componentTypeEn": "Horn-Type Electrolytic Capacitors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2211011530_TDK-B43508C2128M80_C1613146.pdf",
+   "describe": "1200uF 200V 30mm 35mm ±20% 插件,D35xL30mm Horn-Type Electrolytic Capacitors ROHS",
+   "erpComponentName": "1200uF ±20% 200V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/horn-type-electrolytic-capacitors_tdk-b43508c2128m80_C1613146.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "200V"
+    },
+    {
+     "attribute_name_en": "Height - Seated (Max)",
+     "attribute_value_name": "30mm"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Polarity type",
+     "attribute_value_name": "有极性"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "1200uF"
+    },
+    {
+     "attribute_name_en": "Diameter",
+     "attribute_value_name": "35mm"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C1613309",
+   "componentLibraryType": "expand",
+   "componentModelEn": "B43508C2128M87",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 10.223,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 10.223,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 10.223,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 3.9567,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 3.8184,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 3.7484,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D35xL30mm",
+   "componentTypeEn": "Horn-Type Electrolytic Capacitors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2211011500_TDK-B43508C2128M87_C1613309.pdf",
+   "describe": "1200uF 200V 30mm 35mm ±20% 插件,D35xL30mm Horn-Type Electrolytic Capacitors ROHS",
+   "erpComponentName": "1200uF ±20% 200V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/horn-type-electrolytic-capacitors_tdk-b43508c2128m87_C1613309.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "200V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Polarity type",
+     "attribute_value_name": "有极性"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "1200uF"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C1614496",
+   "componentLibraryType": "expand",
+   "componentModelEn": "B43305C2128M67",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 9.0413,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 9.0413,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 9.0413,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 3.4994,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 3.3757,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 3.3155,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin",
+   "componentTypeEn": "Horn-Type Electrolytic Capacitors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2211011500_TDK-B43305C2128M67_C1614496.pdf",
+   "describe": "1200uF 200V ±20% 插件 Horn-Type Electrolytic Capacitors ROHS",
+   "erpComponentName": "1200uF ±20% 200V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/horn-type-electrolytic-capacitors_tdk-b43305c2128m67_C1614496.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "200V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Polarity type",
+     "attribute_value_name": "有极性"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "1200uF"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C1614501",
+   "componentLibraryType": "expand",
+   "componentModelEn": "B43305C2128M80",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 9.0413,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 9.0413,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 9.0413,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 3.4994,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 3.3757,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 3.3155,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin",
+   "componentTypeEn": "Horn-Type Electrolytic Capacitors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2211011500_TDK-B43305C2128M80_C1614501.pdf",
+   "describe": "1200uF 200V ±20% 插件 Horn-Type Electrolytic Capacitors ROHS",
+   "erpComponentName": "1200uF ±20% 200V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/horn-type-electrolytic-capacitors_tdk-b43305c2128m80_C1614501.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "200V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Polarity type",
+     "attribute_value_name": "有极性"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "1200uF"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C1614967",
+   "componentLibraryType": "expand",
+   "componentModelEn": "B43601C2128M80",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 9.0739,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 9.0739,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 9.0739,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 3.5124,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 3.3887,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 3.3285,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin",
+   "componentTypeEn": "Horn-Type Electrolytic Capacitors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2211021030_TDK-B43601C2128M80_C1614967.pdf",
+   "describe": "1200uF 200V ±20% 插件 Horn-Type Electrolytic Capacitors ROHS",
+   "erpComponentName": "1200uF ±20% 200V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/horn-type-electrolytic-capacitors_tdk-b43601c2128m80_C1614967.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "200V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Polarity type",
+     "attribute_value_name": "有极性"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "1200uF"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C1614970",
+   "componentLibraryType": "expand",
+   "componentModelEn": "B43601C2128M82",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 9.0739,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 9.0739,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 9.0739,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 3.5124,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 3.3887,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 3.3285,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin",
+   "componentTypeEn": "Horn-Type Electrolytic Capacitors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2211021030_TDK-B43601C2128M82_C1614970.pdf",
+   "describe": "1200uF 200V ±20% 插件 Horn-Type Electrolytic Capacitors ROHS",
+   "erpComponentName": "1200uF ±20% 200V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/horn-type-electrolytic-capacitors_tdk-b43601c2128m82_C1614970.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+105℃"
+    },
+    {
+     "attribute_name_en": "Lifetime",
+     "attribute_value_name": "3000hrs@105℃"
+    },
+    {
+     "attribute_name_en": "Equivalent Series Resistance(ESR)",
+     "attribute_value_name": "100mΩ"
+    },
+    {
+     "attribute_name_en": "Pin Spacing",
+     "attribute_value_name": "10mm"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "200V"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Polarity type",
+     "attribute_value_name": "有极性"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "1200uF"
+    },
+    {
+     "attribute_name_en": "Ripple Current",
+     "attribute_value_name": "3.03A@100Hz"
+    },
+    {
+     "attribute_name_en": "Diameter",
+     "attribute_value_name": "35mm"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C1607838",
+   "componentLibraryType": "expand",
+   "componentModelEn": "B43642C2128M000",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 2.793,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 2.793,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 2.793,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 1.0808,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 1.0433,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 1.0254,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin",
+   "componentTypeEn": "Horn-Type Electrolytic Capacitors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2201190130_TDK-B43642C2128M000_C1607838.pdf",
+   "describe": "-40℃~+105℃ 100mΩ 10mm 1200uF 200V 3.03A@100Hz 3000hrs@105℃ 35mm ±20% 插件 Horn-Type Electrolytic Capacitors ROHS",
+   "erpComponentName": "1200uF ±20% 200V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/horn-type-electrolytic-capacitors_tdk-b43642c2128m000_C1607838.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 4,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+85℃"
+    },
+    {
+     "attribute_name_en": "Lifetime",
+     "attribute_value_name": "8000hrs@85℃"
+    },
+    {
+     "attribute_name_en": "Equivalent Series Resistance(ESR)",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Pin Spacing",
+     "attribute_value_name": "10mm"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "200V"
+    },
+    {
+     "attribute_name_en": "Height - Seated (Max)",
+     "attribute_value_name": "37mm"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Polarity type",
+     "attribute_value_name": "有极性"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "1200uF"
+    },
+    {
+     "attribute_name_en": "Ripple Current",
+     "attribute_value_name": "3.24A@100Hz"
+    },
+    {
+     "attribute_name_en": "Diameter",
+     "attribute_value_name": "35mm"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C3721787",
+   "componentLibraryType": "expand",
+   "componentModelEn": "B43624C2128M000",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 2.5147,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 2.5147,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 2.5147,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 0.9734,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 0.9392,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 0.9229,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D35xL37mm",
+   "componentTypeEn": "Horn-Type Electrolytic Capacitors",
+   "dataManualUrl": "",
+   "describe": "-40℃~+85℃ 10mm 1200uF 200V 3.24A@100Hz 35mm 37mm 8000hrs@85℃ ±20% 插件,D35xL37mm Horn-Type Electrolytic Capacitors ROHS",
+   "erpComponentName": "1200uF ±20% 200V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/horn-type-electrolytic-capacitors_tdk-b43624c2128m000_C3721787.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 4,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+105℃"
+    },
+    {
+     "attribute_name_en": "Lifetime",
+     "attribute_value_name": "3000hrs@105℃"
+    },
+    {
+     "attribute_name_en": "Equivalent Series Resistance(ESR)",
+     "attribute_value_name": "130mΩ"
+    },
+    {
+     "attribute_name_en": "Pin Spacing",
+     "attribute_value_name": "10mm"
+    },
+    {
+     "attribute_name_en": "Voltage Rating",
+     "attribute_value_name": "200V"
+    },
+    {
+     "attribute_name_en": "Height - Seated (Max)",
+     "attribute_value_name": "30mm"
+    },
+    {
+     "attribute_name_en": "Tolerance",
+     "attribute_value_name": "±20%"
+    },
+    {
+     "attribute_name_en": "Polarity type",
+     "attribute_value_name": "有极性"
+    },
+    {
+     "attribute_name_en": "Capacitance",
+     "attribute_value_name": "1200uF"
+    },
+    {
+     "attribute_name_en": "Ripple Current",
+     "attribute_value_name": "1.94A@100Hz"
+    },
+    {
+     "attribute_name_en": "Diameter",
+     "attribute_value_name": "35mm"
+    }
+   ],
+   "componentBrandEn": "TDK",
+   "componentCode": "C3724507",
+   "componentLibraryType": "expand",
+   "componentModelEn": "B43508C2128M000",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 9.2074,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 9.2074,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 9.2074,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 3.5629,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 3.4375,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 3.3757,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "Plugin,D35xL30mm",
+   "componentTypeEn": "Horn-Type Electrolytic Capacitors",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404080935_TDK-B43508C2128M000_C3724507.pdf",
+   "describe": "-40℃~+105℃ 1.94A@100Hz 10mm 1200uF 130mΩ 200V 3000hrs@105℃ 30mm 35mm ±20% 插件,D35xL30mm Horn-Type Electrolytic Capacitors ROHS",
+   "erpComponentName": "1200uF ±20% 200V",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/horn-type-electrolytic-capacitors_tdk-b43508c2128m000_C3724507.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "EEPROM",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+85℃"
+    },
+    {
+     "attribute_name_en": "CPU Maximum Speed",
+     "attribute_value_name": "66MHz"
+    },
+    {
+     "attribute_name_en": "DAC (Bit)",
+     "attribute_value_name": "12bit"
+    },
+    {
+     "attribute_name_en": "Program Memory Type",
+     "attribute_value_name": "FLASH"
+    },
+    {
+     "attribute_name_en": "Program Storage Size",
+     "attribute_value_name": "128KB"
+    },
+    {
+     "attribute_name_en": "Voltage - Supply",
+     "attribute_value_name": "3V~5.5V"
+    },
+    {
+     "attribute_name_en": "Core Size",
+     "attribute_value_name": "32 Bit"
+    },
+    {
+     "attribute_name_en": "RAM Size",
+     "attribute_value_name": "32KB"
+    },
+    {
+     "attribute_name_en": "CPU Core",
+     "attribute_value_name": "AVR"
+    },
+    {
+     "attribute_name_en": "Number of I/O",
+     "attribute_value_name": "45"
+    },
+    {
+     "attribute_name_en": "ADC (Bit)",
+     "attribute_value_name": "12bit"
+    },
+    {
+     "attribute_name_en": "Oscillator Type",
+     "attribute_value_name": "Built-in"
+    }
+   ],
+   "componentBrandEn": "Microchip Tech",
+   "componentCode": "C610370",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AT32UC3C2128C-Z2UT",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 12.0735,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 12.0735,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 99,
+     "productPrice": 12.0735,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 12.0735,
+     "startNumber": 100
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 12.0735,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 12.0735,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "QFN-64-EP(9x9)",
+   "componentTypeEn": "Microcontrollers (MCU/MPU/SOC)",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2210180930_Microchip-Tech-AT32UC3C2128C-Z2UT_C610370.pdf",
+   "describe": "-40℃~+85℃ 128KB 12bit 12bit 32 Bit 32KB 3V~5.5V 45 66MHz AVR Built-in FLASH QFN-64-EP(9x9) Microcontrollers (MCU/MPU/SOC) ROHS",
+   "erpComponentName": "32位RISC架构处理器特性",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/microcontrollers-mcu-mpu-soc_microchip-tech-at32uc3c2128c-z2ut_C610370.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "Microchip Tech",
+   "componentCode": "C610505",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AT32UC3C2128C-A2UR",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 10.1367,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 10.1367,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 10.1367,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 3.9226,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 3.7858,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 3.7175,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "TQFP-64",
+   "componentTypeEn": "Microcontrollers (MCU/MPU/SOC)",
+   "dataManualUrl": "",
+   "describe": "TQFP-64(10x10) Microcontrollers (MCU/MPU/SOC) ROHS",
+   "erpComponentName": "AT32UC3C2128C-A2UR",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/microcontrollers-mcu-mpu-soc_microchip-tech-at32uc3c2128c-a2ur_C610505.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+85℃"
+    },
+    {
+     "attribute_name_en": "DAC (Bit)",
+     "attribute_value_name": "12bit"
+    },
+    {
+     "attribute_name_en": "Program Memory Type",
+     "attribute_value_name": "FLASH"
+    },
+    {
+     "attribute_name_en": "RAM Size",
+     "attribute_value_name": "32KB"
+    },
+    {
+     "attribute_name_en": "CPU Core",
+     "attribute_value_name": "AVR"
+    },
+    {
+     "attribute_name_en": "Number of I/O",
+     "attribute_value_name": "45"
+    },
+    {
+     "attribute_name_en": "Oscillator Type",
+     "attribute_value_name": "Built-in"
+    },
+    {
+     "attribute_name_en": "EEPROM",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "CPU Maximum Speed",
+     "attribute_value_name": "66MHz"
+    },
+    {
+     "attribute_name_en": "Program Storage Size",
+     "attribute_value_name": "128KB"
+    },
+    {
+     "attribute_name_en": "Voltage - Supply",
+     "attribute_value_name": "3V~5.5V"
+    },
+    {
+     "attribute_name_en": "Core Size",
+     "attribute_value_name": "32 Bit"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Storage encryption"
+    },
+    {
+     "attribute_name_en": "ADC (Bit)",
+     "attribute_value_name": "12bit"
+    }
+   ],
+   "componentBrandEn": "Microchip Tech",
+   "componentCode": "C610506",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AT32UC3C2128C-Z2UR",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 54.4577,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 54.4577,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 54.4577,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 21.0758,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 20.3352,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 19.969,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "QFN-64-EP(9x9)",
+   "componentTypeEn": "Microcontrollers (MCU/MPU/SOC)",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2210180930_Microchip-Tech-AT32UC3C2128C-Z2UR_C610506.pdf",
+   "describe": "-40℃~+85℃ 128KB 12bit 12bit 32 Bit 32KB 3V~5.5V 45 66MHz AVR Built-in FLASH QFN-64-EP(9x9) Microcontrollers (MCU/MPU/SOC) ROHS",
+   "erpComponentName": "AT32UC3C2128C-Z2UR",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/microcontrollers-mcu-mpu-soc_microchip-tech-at32uc3c2128c-z2ur_C610506.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "Microchip Tech",
+   "componentCode": "C619144",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AT32UC3C2128C-A2UT",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 9.917,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 9.917,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 9.917,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 3.8379,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 3.7028,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 3.6361,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "TQFP-64",
+   "componentTypeEn": "Microcontrollers (MCU/MPU/SOC)",
+   "dataManualUrl": "",
+   "describe": "TQFP-64(10x10) Microcontrollers (MCU/MPU/SOC) ROHS",
+   "erpComponentName": "AT32UC3C2128C-A2UT",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/microcontrollers-mcu-mpu-soc_microchip-tech-at32uc3c2128c-a2ut_C619144.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+85℃"
+    },
+    {
+     "attribute_name_en": "DAC (Bit)",
+     "attribute_value_name": "12bit"
+    },
+    {
+     "attribute_name_en": "Program Memory Type",
+     "attribute_value_name": "FLASH"
+    },
+    {
+     "attribute_name_en": "RAM Size",
+     "attribute_value_name": "32KB"
+    },
+    {
+     "attribute_name_en": "CPU Core",
+     "attribute_value_name": "AVR"
+    },
+    {
+     "attribute_name_en": "Number of I/O",
+     "attribute_value_name": "45"
+    },
+    {
+     "attribute_name_en": "Oscillator Type",
+     "attribute_value_name": "Built-in"
+    },
+    {
+     "attribute_name_en": "EEPROM",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "CPU Maximum Speed",
+     "attribute_value_name": "66MHz"
+    },
+    {
+     "attribute_name_en": "Program Storage Size",
+     "attribute_value_name": "128KB"
+    },
+    {
+     "attribute_name_en": "Voltage - Supply",
+     "attribute_value_name": "3V~5.5V"
+    },
+    {
+     "attribute_name_en": "Core Size",
+     "attribute_value_name": "32 Bit"
+    },
+    {
+     "attribute_name_en": "Features",
+     "attribute_value_name": "Power-on reset (POR)、Built-in general-purpose timer、Calendar function、Window watchdog (WWDG)"
+    },
+    {
+     "attribute_name_en": "ADC (Bit)",
+     "attribute_value_name": "12bit"
+    }
+   ],
+   "componentBrandEn": "Microchip Tech",
+   "componentCode": "C1337474",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AT32UC3C2128C-A2UT",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 9.9772,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 9.9772,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 9.9772,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 3.8607,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 3.7256,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 3.6589,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "TQFP-64(10x10)",
+   "componentTypeEn": "Microcontrollers (MCU/MPU/SOC)",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2202151100_Microchip-Tech-AT32UC3C2128C-A2UT_C1337474.pdf",
+   "describe": "-40℃~+85℃ 128KB 12bit 12bit 32 Bit 32KB 3V~5.5V 45 66MHz AVR Built-in FLASH TQFP-64(10x10) Microcontrollers (MCU/MPU/SOC) ROHS",
+   "erpComponentName": "AT32UC3C2128C-A2UT",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/microcontrollers-mcu-mpu-soc_microchip-tech-at32uc3c2128c-a2ut_C1337474.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": null,
+   "componentBrandEn": "Microchip Tech",
+   "componentCode": "C1340439",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AT32UC3C2128C-Z2UT",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 9.9381,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 29,
+     "productPrice": 9.9381,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 9.9381,
+     "startNumber": 30
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 3.8461,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 999,
+     "productPrice": 3.711,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 3.6442,
+     "startNumber": 1000
+    }
+   ],
+   "componentSpecificationEn": "QFN-64-EP(9x9)",
+   "componentTypeEn": "Microcontrollers (MCU/MPU/SOC)",
+   "dataManualUrl": "",
+   "describe": "QFN-64-EP(9x9) Microcontrollers (MCU/MPU/SOC) ROHS",
+   "erpComponentName": "AT32UC3C2128C-Z2UT",
+   "isBuyComponent": "0",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/microcontrollers-mcu-mpu-soc_microchip-tech-at32uc3c2128c-z2ut_C1340439.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": "This product is no longer manufactured.",
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "EEPROM",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+125℃"
+    },
+    {
+     "attribute_name_en": "CPU Maximum Speed",
+     "attribute_value_name": "66MHz"
+    },
+    {
+     "attribute_name_en": "DAC (Bit)",
+     "attribute_value_name": "12bit"
+    },
+    {
+     "attribute_name_en": "Program Memory Type",
+     "attribute_value_name": "FLASH"
+    },
+    {
+     "attribute_name_en": "Program Storage Size",
+     "attribute_value_name": "128KB"
+    },
+    {
+     "attribute_name_en": "Voltage - Supply",
+     "attribute_value_name": "3V~5.5V"
+    },
+    {
+     "attribute_name_en": "Core Size",
+     "attribute_value_name": "32 Bit"
+    },
+    {
+     "attribute_name_en": "RAM Size",
+     "attribute_value_name": "32KB"
+    },
+    {
+     "attribute_name_en": "CPU Core",
+     "attribute_value_name": "AVR"
+    },
+    {
+     "attribute_name_en": "Number of I/O",
+     "attribute_value_name": "45"
+    },
+    {
+     "attribute_name_en": "ADC (Bit)",
+     "attribute_value_name": "12bit"
+    },
+    {
+     "attribute_name_en": "Oscillator Type",
+     "attribute_value_name": "Built-in"
+    }
+   ],
+   "componentBrandEn": "Microchip Tech",
+   "componentCode": "C1342032",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AT32UC3C2128C-A2ZT",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 10.9945,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 10.9945,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 10.9945,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 4.2546,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 799,
+     "productPrice": 4.1048,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 4.0316,
+     "startNumber": 800
+    }
+   ],
+   "componentSpecificationEn": "TQFP-64(10x10)",
+   "componentTypeEn": "Microcontrollers (MCU/MPU/SOC)",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2201141800_Microchip-Tech-AT32UC3C2128C-A2ZT_C1342032.pdf",
+   "describe": "-40℃~+125℃ 128KB 12bit 12bit 32 Bit 32KB 3V~5.5V 45 66MHz AVR Built-in FLASH TQFP-64(10x10) Microcontrollers (MCU/MPU/SOC) ROHS",
+   "erpComponentName": "AT32UC3C2128C-A2ZT",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/microcontrollers-mcu-mpu-soc_microchip-tech-at32uc3c2128c-a2zt_C1342032.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "CPU Maximum Speed",
+     "attribute_value_name": "66MHz"
+    },
+    {
+     "attribute_name_en": "DAC (Bit)",
+     "attribute_value_name": "12bit"
+    },
+    {
+     "attribute_name_en": "Program Memory Type",
+     "attribute_value_name": "FLASH"
+    },
+    {
+     "attribute_name_en": "Program Storage Size",
+     "attribute_value_name": "128KB"
+    },
+    {
+     "attribute_name_en": "Voltage - Supply",
+     "attribute_value_name": "3V~5.5V"
+    },
+    {
+     "attribute_name_en": "CPU Core",
+     "attribute_value_name": "AVR"
+    },
+    {
+     "attribute_name_en": "Number of I/O",
+     "attribute_value_name": "45"
+    },
+    {
+     "attribute_name_en": "ADC (Bit)",
+     "attribute_value_name": "12bit"
+    }
+   ],
+   "componentBrandEn": "Microchip Tech",
+   "componentCode": "C2052839",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AT32UC3C2128C-A2UR",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 10.3483,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 10.3483,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 10.3483,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 4.0056,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 3.864,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 3.7956,
+     "startNumber": 1500
+    }
+   ],
+   "componentSpecificationEn": "QFP-64(10x10)",
+   "componentTypeEn": "Microcontrollers (MCU/MPU/SOC)",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2202010700_Microchip-Tech-AT32UC3C2128C-A2UR_C2052839.pdf",
+   "describe": "128KB 12bit 12bit 3V~5.5V 45 66MHz AVR FLASH QFP-64(10x10) Microcontrollers (MCU/MPU/SOC) ROHS",
+   "erpComponentName": "AT32UC3C2128C-A2UR",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/microcontrollers-mcu-mpu-soc_microchip-tech-at32uc3c2128c-a2ur_C2052839.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  },
+  {
+   "assemblyComponentFlag": false,
+   "attributes": [
+    {
+     "attribute_name_en": "EEPROM",
+     "attribute_value_name": "-"
+    },
+    {
+     "attribute_name_en": "Operating Temperature",
+     "attribute_value_name": "-40℃~+125℃"
+    },
+    {
+     "attribute_name_en": "CPU Maximum Speed",
+     "attribute_value_name": "66MHz"
+    },
+    {
+     "attribute_name_en": "Program Memory Type",
+     "attribute_value_name": "FLASH"
+    },
+    {
+     "attribute_name_en": "Program Storage Size",
+     "attribute_value_name": "128KB"
+    },
+    {
+     "attribute_name_en": "Voltage - Supply",
+     "attribute_value_name": "3V~5.5V"
+    },
+    {
+     "attribute_name_en": "Core Size",
+     "attribute_value_name": "32 Bit"
+    },
+    {
+     "attribute_name_en": "RAM Size",
+     "attribute_value_name": "32KB"
+    },
+    {
+     "attribute_name_en": "CPU Core",
+     "attribute_value_name": "AVR"
+    },
+    {
+     "attribute_name_en": "Number of I/O",
+     "attribute_value_name": "45"
+    },
+    {
+     "attribute_name_en": "Oscillator Type",
+     "attribute_value_name": "Built-in"
+    }
+   ],
+   "componentBrandEn": "Microchip Tech",
+   "componentCode": "C3228490",
+   "componentLibraryType": "expand",
+   "componentModelEn": "AT32UC3C2128C-A2ZR",
+   "componentPrices": [
+    {
+     "endNumber": 9,
+     "productPrice": 11.595,
+     "startNumber": 1
+    },
+    {
+     "endNumber": 11,
+     "productPrice": 11.595,
+     "startNumber": 10
+    },
+    {
+     "endNumber": 199,
+     "productPrice": 11.595,
+     "startNumber": 12
+    },
+    {
+     "endNumber": 499,
+     "productPrice": 4.4873,
+     "startNumber": 200
+    },
+    {
+     "endNumber": 1499,
+     "productPrice": 4.3295,
+     "startNumber": 500
+    },
+    {
+     "endNumber": -1,
+     "productPrice": 4.253,
+     "startNumber": 1500
+    }
+   ],
+   "componentSpecificationEn": "TQFP-64(14x14)",
+   "componentTypeEn": "Microcontrollers (MCU/MPU/SOC)",
+   "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2309071112_Microchip-Tech-AT32UC3C2128C-A2ZR_C3228490.pdf",
+   "describe": "-40℃~+125℃ 128KB 32 Bit 32KB 3V~5.5V 45 66MHz AVR Built-in FLASH TQFP-64(14x14) Microcontrollers (MCU/MPU/SOC) ROHS",
+   "erpComponentName": "AT32UC3C2128C-A2ZR",
+   "isBuyComponent": "1",
+   "lcscGoodsUrl": "https://www.lcsc.com/product-detail/microcontrollers-mcu-mpu-soc_microchip-tech-at32uc3c2128c-a2zr_C3228490.html",
+   "leastPatchNumber": 0,
+   "lossNumber": 0,
+   "minPurchaseNum": 1,
+   "noBuyReason": null,
+   "rohsFlag": 1,
+   "stockCount": 0
+  }
+ ],
+ "returned": 37,
+ "schema": 1,
+ "total_matches": 37
+}

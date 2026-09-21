@@ -75,7 +75,42 @@ ACC_3V3_REINFORCEMENT_PACKAGE = "aqroot-Demo-ACC-3V3-REINFORCEMENT.json"
 # The assembly drawing is a RELEASE ARTIFACT, not a generic KiCad plot.  The
 # revision is intentionally explicit so a regenerated PDF cannot silently look
 # current while carrying an older review authority.
-ASSEMBLY_RELEASE = "D-787"
+#
+# D-789 / D788-15 -- AND IT WAS HAND-TYPED, SO IT WENT STALE.  This constant
+# read `"D-787"` through the whole of D-788: both assembly PDFs were
+# regenerated and rehashed for a D-788 board and printed a D-787 release label
+# on their title blocks, which is exactly the "looks current while carrying an
+# older review authority" the comment above was written to prevent.  A label
+# that a human has to remember to bump is not an identity.
+#
+# It is DERIVED now, from the newest entry in the release CHANGELOG, which is
+# the one document that cannot be forgotten in a release: the entry is what
+# states the release.  `fab_package_contract` FAB1 re-derives it the same way
+# and refuses a package whose drawings carry a different one.
+CHANGELOG = ROOT / "docs/full-beta-v2/CHANGELOG.md"
+
+
+def assembly_release(changelog=None):
+    """The release label the assembly drawings must carry, DERIVED.
+
+    The newest `## D-NNN` heading in the release CHANGELOG.  Raises rather
+    than defaulting: a package that cannot say which release it is is not a
+    package.
+    """
+    path = CHANGELOG if changelog is None else Path(changelog)
+    text = path.read_text(encoding="utf-8", errors="replace")
+    for line in text.splitlines():
+        if not line.startswith("## "):
+            continue
+        m = re.search(r"\bD-(\d{3})\b", line)
+        if m:
+            return "D-%s" % m.group(1)
+    raise SystemExit(
+        "cannot derive the assembly release label: no '## ... D-NNN ...' "
+        "heading in %s" % path)
+
+
+ASSEMBLY_RELEASE = assembly_release()
 
 # The board's own enabled copper layers, in stackup order, plus every
 # non-copper layer a fabricator and an assembler actually need.  The contract
@@ -448,14 +483,23 @@ def stackup_process_notes(board):
         % (finish or "AS DECLARED IN THE BOARD STACKUP"),
         "- **Solder-mask expansion is 0.000 mm board-wide** -- a pad's mask "
         "aperture IS its copper.  Do not apply a house expansion.",
-        "- **LAMINATE: FR4 with Tg >= 150 C -- D-788 / R7-D787-04.**  The "
-        "board file declares FR4 and nothing more, and a house TG130 default "
-        "would be a different thermal design: `audit_rail_ampacity`'s ABSOLUTE "
-        "acceptance for the one named narrow-run exception on this board -- "
-        "the 0.200 mm `U11.2` package-land neck -- is a 105 C predicted peak, "
-        "and 105 C is chosen as the laminate's maximum continuous operating "
-        "temperature with 45 K of margin below a 150 C Tg.  A TG130 build "
-        "leaves 25 K and the acceptance must be re-derived before the order.  "
+        "- **LAMINATE: FR4 with Tg >= 150 C -- D-788 / R7-D787-04, restated "
+        "at D-789 / D788-03.**  The board file declares FR4 and nothing more, "
+        "and a house TG130 default is not an acceptable substitution.  THE "
+        "REASON IS NOT WHAT D-788 WROTE.  That note called 105 C \"the "
+        "laminate's maximum continuous operating temperature\"; nothing in "
+        "this repository publishes an MOT for a Tg-150 FR4, so that sentence "
+        "claimed a specification it did not have.  105 C is a DECLARED "
+        "CONDUCTOR-SIZING limit in `audit_rail_ampacity` for copper heated by "
+        "its own current, and the named narrow-run exceptions on this board "
+        "meet it with more than 50 K to spare (the `U11.2` package-land neck "
+        "reaches a 52.3 C predicted peak).  What the Tg requirement actually "
+        "protects is the HOTTEST POINT ON THIS BOARD, which is the BQ25185's "
+        "own junction: computed from TI SLUSF65B 6.3.7.6 at the same 196 mOhm "
+        "BATFET resistance the electrical model charges, it reaches **115.4 C "
+        "at the 40 C top of the declared ambient envelope**, against TI's own "
+        "125 C operating maximum and 33.6 K below a 150 C Tg.  A TG130 build "
+        "leaves 14.6 K to the glass transition at that point and is refused.  "
         "State the laminate and its Tg on the acknowledgement.",
         "- **100% BARE-BOARD ELECTRICAL TEST (flying probe or fixture) IS "
         "REQUIRED ON EVERY DELIVERED PCB CIRCUIT, against the final accepted "
@@ -579,49 +623,62 @@ def battery_harness_notes():
 
 
 def acc_3v3_reinforcement_notes():
-    """D-788 manual first-five ACC_3V3 delivery reinforcement -- ONE conductor."""
+    """D-789 / D788-07 + D788-08 + D788-09 + D788-16: there is no conductor.
+
+    D-787 introduced a manual accessory-voltage reinforcement, D-788 reduced it
+    to one dimensioned lead, and Round-8 raised four independent findings
+    against what remained.  All four are properties of the conductor, not of
+    its description, so it is retired.  This section exists so a reader of the
+    PACKAGE is told that, plainly, rather than finding a silence where an
+    operation used to be -- and so the assembler knows there is nothing to do.
+    """
     h = json.loads(ACC_3V3_REINFORCEMENT.read_text(encoding="utf-8"))
-    wire = h["wire"]; acc = h["electrical_acceptance"]; ret = h["retention"]
-    dest = ", ".join(x["reference"] for x in h["destinations"])
-    not_reinforced = ", ".join("%s (routed copper alone, %.1f mOhm measured)"
-                               % (x["reference"], x["routed_copper_measured_mohm"])
-                               for x in h.get("not_reinforced", ()))
-    anchors = ", ".join("%s at (%.1f, %.1f)" % (a["name"], a["at"][0], a["at"][1])
-                        for a in ret["anchor_locations_mm"])
+    if h.get("manual_conductor_required") is not False or h.get("destinations"):
+        raise SystemExit(
+            "ACC_3V3_REINFORCEMENT declares a manual conductor; D-789 retired "
+            "it.  A package that reintroduces one needs a qualified joint "
+            "specification for both ends and an isolated acceptance "
+            "measurement -- see demo_feature_contract F6.")
+    ec = h["electrical_consequence"]
+    not_reinforced = ", ".join(
+        "%s (routed copper alone, %.1f mOhm measured, bounded at %.0f)"
+        % (x["reference"], x["routed_copper_measured_mohm"],
+           x["routed_copper_bound_mohm"])
+        for x in h.get("not_reinforced", ()))
     return [
-        "## ACC_3V3 Community-Port reinforcement -- MANUAL FIRST-FIVE OPERATION", "",
-        "The authoritative work instruction is `%s` in this package, and it is "
-        "DIMENSIONED: corridor, waypoints, bend radius, anchor positions, bead "
-        "size, cure time, joint profile, sequence and inspection are all in it."
-        % ACC_3V3_REINFORCEMENT_PACKAGE,
+        "## ACC_3V3 Community-Port reinforcement -- **NONE.  NOTHING TO DO.**",
         "",
-        "- **ONE conductor per board (D-788 / R7-D787-10).**  D-787 ran TWO "
-        "conductors onto the single 1.00 mm `TP12` pad; that is retired.  No "
-        "pad carries two conductors.",
-        "- Source: **TP12.1**, downstream of U20; this does **not** bypass the "
-        "TPS22950-Q1 current limiter or OFF disconnect.",
-        "- Destination: **%s**." % dest,
-        "- NOT reinforced: **%s** -- better than any manual lead could be, so "
-        "it gets none." % (not_reinforced or "none"),
-        "- Wire: **%s %s, AWG%d, %s, nominal OD %.3f mm**; minimum bend radius "
-        "**%.1f mm** (10 x OD) at EVERY bend."
-        % (wire["manufacturer"], wire["mpn"], wire["gauge_awg"],
-           wire["insulation"], wire["nominal_od_mm"],
-           wire["minimum_bend_radius_mm"]),
-        "- Electrical acceptance: finished lead **<=%d mOhm at room "
-        "temperature**, Kelvin/4-wire preferred, **value recorded per board**."
-        % acc["each_finished_lead_max_milliohm_at_room_temperature"],
-        "- Retention: **%s**, three beads %.1f x %.1f x <=%.1f mm at %s."
-        % (ret["material"], ret["bead_size_mm"]["length"],
-           ret["bead_size_mm"]["width"], ret["bead_size_mm"]["height_max"],
-           anchors),
-        "- Cure: %s" % ret["cure"],
-        "- Route in the corridor the traveler dimensions; keep clear of "
-        "battery, NFC/RF, display/FPC, button mechanics and enclosure load "
-        "paths to the clearances it states.",
-        "- Inspect continuity, adjacent-pin shorts, the TP12 fillet BEFORE any "
-        "adhesive, both faces of the J5.3 barrel, every bend radius, all three "
-        "cured beads, and enclosure closure -- before power.",
+        "**THERE IS NO MANUAL ACCESSORY-VOLTAGE CONDUCTOR ON THIS BOARD.**  "
+        "Both duplicated Community-Port 3.3 V contacts are delivered by ROUTED "
+        "COPPER ALONE.  If a build instruction, a work order or an older "
+        "revision of this package tells you to solder a wire from `TP12` to "
+        "`J5.3`, it is superseded -- do not do it.",
+        "",
+        "- Delivered by routed copper: **%s**." % (not_reinforced or "none"),
+        "- `TP12` and `TP25` remain on the board as TEST POINTS on "
+        "`/ACC_3V3_SW`, downstream of `U20`, for bring-up measurement and for "
+        "a future rework.  **Nothing is soldered to them.**",
+        "- `U20` TPS22950-Q1 current limiting and OFF isolation are unchanged "
+        "and remain in series with both contacts.",
+        "- Published delivery, DERIVED by `demo_feature_contract` F6 over every "
+        "permitted wiring and load mode: **%.6f V** at the full 400 mA in the "
+        "worst permitted mode (one 3.3 V contact alone, one mated ground, the "
+        "5 V rail also at its 300 mA budget), and **%.6f V** with the header "
+        "fully mated."
+        % (ec["published_minimum_without_it_V"],
+           float(h["electrical_consequence"]["and_what_it_buys_back"]
+                 .split("delivers ")[1].split(" V")[0])),
+        "- Why it was retired, in one line each: the `TP12` tip geometry could "
+        "not be built inside a 1.00 mm pad; the `J5.3` termination required "
+        "inserting a 0.32 mm conductor into a 1.02 mm hole already carrying a "
+        "0.635 mm square tail; the route started inside `BATTERY_SHADOW` and "
+        "crossed `RIB_R3` against its own clearance rule; and its <= 25 mOhm "
+        "acceptance could not be measured with the board's own copper in "
+        "parallel.  The full record is `%s` in this package."
+        % ACC_3V3_REINFORCEMENT_PACKAGE,
+        "- First article: **C-ACC-01** measures the delivered potential at the "
+        "J5 mating interface for each contact alone and for the fully mated "
+        "header; **C-ACC-02** records the two routed resistances.",
         "",
     ]
 
@@ -1370,7 +1427,7 @@ def main():
         raise SystemExit("missing frozen D-781 battery harness: %s" % BATTERY_HARNESS)
     shutil.copy2(BATTERY_HARNESS, out / BATTERY_HARNESS_PACKAGE)
     if not ACC_3V3_REINFORCEMENT.is_file():
-        raise SystemExit("missing D-787 ACC_3V3 reinforcement traveler: %s" %
+        raise SystemExit("missing ACC_3V3 delivery record: %s" %
                          ACC_3V3_REINFORCEMENT)
     shutil.copy2(ACC_3V3_REINFORCEMENT, out / ACC_3V3_REINFORCEMENT_PACKAGE)
     notes, via_in_pad, sub_floor_vias, mask_dams, nfc_tune = export_fab_notes(out)

@@ -2,6 +2,40 @@
 
 **Status: LIVING DASHBOARD.**
 
+**D-789 (2026-09-21) — ROUND-8 CORRECTION; EXTERNAL-REVIEW TARGET; NO OPEN OWNER DECISION.**
+Round-8 rejected D-788: Fable passed the design with two residuals, **Astra blocked the order
+with 19 findings** (0 critical, 5 high, 10 medium, 4 low) and established **no unconditional
+PCB respin**.  All 19 are closed, plus both Fable-only items, plus one more found here
+(`R8-N01`).  **The theme was a proof stretched past its evidence**, in three domains:
+`U20`'s `RON` was **interpolated** between two guaranteed rows and is now the guaranteed
+maximum at the nearest row **at or below** its own input (**116 mΩ**, at `U20`'s actual
+3.056853 V); the Community Port's **return network** assumed four parallel grounds carrying
+one rail and is now solved over **every permitted wiring × load mode**; and `U11.2`'s thermal
+bound rested on a transverse-spreading approximation and is now the **minimum of two
+independent rigorous ceilings** (**52.3 °C**).  The hottest point on the board turns out not
+to be copper at all — the **BQ25185 junction reaches 115.44 °C at 40 °C ambient** against TI's
+125 °C, computed at the same 196 mΩ BATFET the electrical model charges, and the Tg ≥ 150 °C
+fab requirement is re-justified against that.  **Published port contract:** 3.069408…3.223012 V
+unloaded, **≥ 2.84 V at the full 400 mA in the worst permitted mode** and **2.982890 V fully
+mated**, all derived by `F6` and cross-checked against `DEVICE_SPEC`.  **The manual
+reinforcement lead is retired** — four independent Round-8 findings, all properties of the
+conductor, for 70 mV on one of two duplicated contacts — so there is **no hand-soldered
+conductor on this board** and manual post-reflow work is back to five through-hole references.
+**The production callers are now executed, not inspected**: they moved into `DemoBringupApp`
+and `test_production_callers.cpp` catches **13 call-site mutations** over a physical-latch
+model.  **One part changed**: `D14` `1N4148WS` → **`BAT54WS-7-F`**, the same MPN this board
+already fits at `D10`/`D11`/`D12`, because at the D-788 rail the silicon diode left `Q11`'s
+`VGS` **13.5 mV below** its only published conduction row; the Schottky puts it **461.5 mV
+inside**.  Assembly BOM 124 → **123** lines.  **`Q2`/`Q3` is a PRE-PCBA BLOCK** on two
+grounds — stock 0 / no-longer-manufactured (F-N01) and a newly computed `R8-N01` shortfall
+where the `LTC4368`'s guaranteed 3.0 V gate drive sits at the fitted FET's 3.0 V `VGS(th)`
+maximum — gated by the new **`F10`**.  **Five more found here by auditing this candidate against its own sources** (`R8-N02`…`R8-N06`): D788-10's speaker contact survived in `MECHANICAL_INTERFACE_SPEC` and in **B-62** with the reason inverted — #32–#24 is the PH *series* range across two contacts, so B-62 had recorded an out-of-spec lead as "inside spec"; D788-11's 2.396 V held gate survived in the master assembly plan; two sections were both numbered 7b; eight first-article items sat in five files unindexed; and **`F5` never required its own derived number to be published** though `F6` has since `R7-N04` — it does now, and the first draft of that clause was vacuous and was caught by running its control.  Board authority `40e65ac9`.  Connectivity unchanged
+(174 / 173 / 1 owner-approved / 0 unapproved); protected copper identical (15 nets / 406
+objects); `hardware/beta-v2` untouched.  F1–F10, H1–H8 with 13 new call-site controls, all 19
+contracts individually and the wrapper clean, FAB1–FAB16, ampacity, sourcing (123 lines),
+DRC 199 warnings / parity 246 warnings / 0 errors, and four PlatformIO builds pass.
+**Not authorized for fabrication; `Q2`/`Q3` must be resolved before PCBA payment.**
+
 **D-788 (2026-09-20) — ROUND-7 CORRECTION; EXTERNAL-REVIEW TARGET; NO OPEN OWNER DECISION.**
 Round-7 rejected D-787 with **20 observed release defects**; all twenty are closed.
 The high one was an **ABSOLUTE MAXIMUM violation**: the fitted ILI9488 panel's `VCI`/`IOVCC`
@@ -1498,7 +1532,7 @@ New working document:
 | **B-65** | **The `+3V3` / `SYS` IR source-select link listed in `ARCHITECTURE.md` cannot be built without a sheet-01 edit.** `BQ25185_SYS` is a sheet-01-local net, not published hierarchically. Building it is one hierarchical label on sheet 01 plus a DNP resistor on sheet 07 | **OPEN, low.** A provision, not a fix — `+3V3` is the analysed-correct choice (D-156) |
 | **B-66** | **TSAL6100 ±10° beam ergonomics unvalidated.** The narrow cone is the one real risk in the emitter choice | **OPEN, medium.** First article: if aiming is fussy, fit the **TSAL6200** — a proven drop-in with identical package, `VF` and `IFM`, so `R24` is unchanged and `R123` trims the current back up |
 | **B-61** | **`AS02008MR-LW152-R` availability not confirmed from a live listing.** PUI's product page would not render here after three attempts and Digi-Key search is bot-protected. The datasheet is served live from PUI's API today and the sibling `AS02008MR-R` is catalogued — but **D-096 asks for a live listing and that is not one** | **OPEN, medium.** Procurement, before the BOM gate |
-| **B-62** | **AWG #32 into JST PH `SPH-002T-P0.5S` is the small end of the #32–#24 applicable range.** Inside spec, but a crimp pull test belongs at first article | **OPEN, low.** First article |
+| **B-62** | ~~AWG #32 into JST PH `SPH-002T-P0.5S` is the small end of the #32–#24 applicable range. Inside spec.~~ **WRONG, AND CORRECTED AT D-789 (D788-10 + `R8-N02`). #32–#24 is the PH SERIES range across two contacts.** JST's archived `ePH` contact table gives `SPH-002T-P0.5S` as **#30 to #24, OD 0.8–1.5 mm**, so the fitted AWG #32 lead was **outside spec in both dimensions** — an under-filled crimp with no published pull strength and an insulation crimp that cannot close. The contact is now **`SPH-004T-P0.5S`** (**#32 to #28, OD 0.5–0.9 mm**, LCSC `C160351`) with `MKS-L-10` / `APLMK SPH004-05S` tooling | **CLOSED as a spec defect at D-789**; the pull test survives as first-article **`C-SPK-01`**, which also measures the delivered insulation OD |
 | **B-63** | **The PCB acoustic hole and the pad-4 paste pullback are not in the microphone footprint.** Ø1.05 mm NPTH concentric with pad 4, and a stencil aperture kept back from the hole edge so solder cannot wick into the port | **OPEN.** PCB stage / FBV2-S2 |
 | **B-64** | **The PCB still carries `MK1` with the ICS-43434 footprint.** Part of the standing transitional state — the board is bit-identical to Beta-DM and matches no migrated sheet. Recorded so the microphone change is not lost when the PCB is redone | **OPEN.** FBV2-P1 |
 | **B-60** | **`0x36` (MAX17048) and `0x38` (FT6236) are not datasheet-cited.** Every Analog Devices and FocalTech fetch failed here — analog.com timed out, the Mouser mirror returned HTML, focuslcds returned 403 | **OPEN, low.** Consistent across every prior audit and almost certainly right, but *almost certainly* is not this programme's standard. **A first-article bus scan closes it in ten seconds** |

@@ -1,10 +1,10 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-20T19:33:40Z",
+ "fetched_utc": "2026-09-21T02:31:17Z",
  "keyword": "BAT54WS-7-F",
  "page_size": 25,
- "pages": 1,
+ "pages": 2,
  "records": [
   {
    "assemblyComponentFlag": false,
@@ -164,7 +164,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 82787
+   "stockCount": 82659
   },
   {
    "assemblyComponentFlag": false,
