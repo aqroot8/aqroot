@@ -1,0 +1,150 @@
+{
+ "board": "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_changes": [
+  "R97 1.78 kOhm -> 1.87 kOhm (0603WAF1781T5E / LCSC C22849 -> 0603WAF1871T5E / LCSC C22850), same UNI-ROYAL 0603WAF series, same 0603 land, value only",
+  "Q4/Q6/Q7/Q8/Q9 BSS138LT1G manufacturer field Alpha & Omega Semiconductor -> onsemi (D790-F-N01)",
+  "Q10 2N7002 manufacturer field onsemi -> Jiangsu Changjing Electronics Technology (R10-N03, found by the new F13)",
+  "Q5 AO3401A manufacturer field normalised to 'Alpha & Omega Semiconductor'",
+  "AO4800 symbol channel pin NAMES corrected to the AOS map (F-N03); electrically immaterial here because both gates and both sources are tied"
+ ],
+ "board_sha256": "c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907",
+ "branch": "aqroot-demo",
+ "closed_here": {
+  "astra_round_10": [
+   "D790-A01",
+   "D790-A02",
+   "D790-A03",
+   "D790-A04",
+   "D790-A05",
+   "D790-A06",
+   "D790-A07",
+   "D790-A08",
+   "D790-A09",
+   "D790-A10",
+   "D790-A11",
+   "D790-A12",
+   "D790-A13",
+   "D790-A14",
+   "D790-S01"
+  ],
+  "fable_complementary": [
+   "F-N01",
+   "F-N02",
+   "F-N03",
+   "F-N04",
+   "F-V04",
+   "F-V05",
+   "F-C01",
+   "F-C03"
+  ],
+  "found_by_this_closeout": [
+   "R10-N01",
+   "R10-N02",
+   "R10-N03",
+   "R10-N04",
+   "R10-N05"
+  ]
+ },
+ "content_commit": "17db618303c342711dc8ff8d4fb6e5397c0e5a79",
+ "decision": "D-791",
+ "found_at_the_verification_pass": {
+  "R10-N04": "FIRST_FIVE_ASSEMBLY_PLAN 7b -- the C-PWR-TRANSIENT-01 accessory step, the text that CHOOSES the bench voltages a technician sets -- still named the retired 3.50 V / 3.85 V floors and quoted ONE node voltage per point, where the release image judges ENABLE on the pre-load gauge reading and RETENTION on the loaded node.  Test points re-derived to 4.15/3.75 V pre-enable (dual) and 3.60 V (single), with the loaded node required to stay above the 3.20 V retention floor.",
+  "R10-N05": "F11's TRANSIENT_REQUIRED_TOKENS ended in the two floor phrases TYPED OUT BY HAND.  When D-791/D790-A03 moved the floors, that control became a gate REQUIRING THE RETIRED NUMBER TO STAY IN THE DOCUMENT: correcting the procedure made F11 FAIL.  The tokens are now formatted from F12's derived floors; f11g deletes a token it formatted; and the new f11h refuses a run that supplies no floors at all.",
+  "negative_control": "hardware/demo/manufacturing/evidence/d791-r10n04-r10n05-negative-control.json"
+ },
+ "manifest": "hardware/demo/fab/MANIFEST.json",
+ "manifest_sha256": "6ebe4edcb81cdd00a00744c8d58acb4e7a505deebd8d23467ca1e98738f6988c",
+ "no_copper_change": "no copper, no net, no footprint, no placement and no protected-copper object moved.  Every change above is value or identity.",
+ "order_status": "HOLD -- REVIEW TARGET, NOT A FABRICATION AUTHORIZATION.  DO NOT ORDER.",
+ "owner_decision_open": false,
+ "parent_rejected_by_round_10": "58a4cc765d369429dd5d881b504a0b8bff0c7e2b",
+ "post_commit_verification": {
+  "battery_pack_contract": {
+   "verdict": "PASS"
+  },
+  "beta_v2": "untouched",
+  "bom_sourcing": {
+   "assembly_lines": 123,
+   "unsourced_lines": 0
+  },
+  "contract_regression": {
+   "all_children_exited_zero": true,
+   "all_contracts_pass": true,
+   "all_identical_where_comparable": true,
+   "all_ran": true,
+   "baseline": "d791",
+   "baseline_is_complete": true,
+   "contracts_run": 19,
+   "failing": [],
+   "no_substantive_difference": true,
+   "note": "a clean REPRODUCTION: every one of the 19 contracts re-run against the committed tree is byte-identical to the evidence this commit carries."
+  },
+  "demo_feature_contract": {
+   "clauses": "F1-F13 all_pass",
+   "verdict": "PASS"
+  },
+  "fab_package_contract": {
+   "verdict": "PASS"
+  },
+  "fab_provenance_contract": {
+   "verdict": "PASS"
+  },
+  "firmware_hw_map_contract": {
+   "claims": 388,
+   "clauses": "H1-H8",
+   "host_tests": 8,
+   "negative_controls_all_caught": 82,
+   "verdict": "PASS"
+  },
+  "kicad_drc": {
+   "declared_unconnected_items": 17,
+   "errors": 0,
+   "included_severities": [
+    "error",
+    "warning",
+    "exclusion"
+   ],
+   "kicad_version": "10.0.5",
+   "note": "run at --severity-all, so no exclusion is hiding a violation",
+   "schematic_parity_warnings": 246,
+   "warning_class": "lib_footprint_issues (single class)",
+   "warnings": 199
+  },
+  "platformio_builds": {
+   "environments": 4,
+   "names": [
+    "esp32-s3-aqroot",
+    "wokwi",
+    "esp32-s3-aqroot-dm",
+    "aqroot-demo"
+   ],
+   "succeeded": 4
+  },
+  "protected_copper": {
+   "identical": true,
+   "nets": 15,
+   "objects": 406
+  },
+  "rail_ampacity": {
+   "all_ok": true,
+   "bat_sys_design_amps": 2.6,
+   "note": "audit bases derived from the D-791 envelope and ABOVE the ~2.35 A BAT/SYS and ~1.95 A P3V3 bases Round-10 asked to be re-verified; IPC isolated-coupon rise is NOT presented as a predicted board temperature",
+   "p3v3_design_amps": 2.0
+  },
+  "routing_ledger": {
+   "approved_open": "owner-approved U11.3 / STAT2",
+   "approved_unrouted_edges": 1,
+   "connected_retained_nets": 173,
+   "retained_multi_pad_nets": 174,
+   "unapproved_open_edges": 0
+  },
+  "run_against": "17db618303c342711dc8ff8d4fb6e5397c0e5a79",
+  "worktree_clean_at_run": true
+ },
+ "schema": 1,
+ "what_remains": {
+  "first_article": "C01-C24 plus C-PWR-TRANSIENT-01, C-BAT-GATE-01, C-SPK-01, C-ADH-01, C-ACC-01, C-ACC-02, C-THERM-01, C-DISP-01, C-FW-ABORT-01 and C-WARM-IMAGE-01 remain unmeasured.  No first-article result may retroactively justify an unsupported pre-order electrical bound.",
+  "manufacturer_cam": "Astra B01-B14 capability/process acceptance remains outstanding",
+  "procurement": "nine fitted groups are SHORT on the live sweep -- J5, L2/L4, L5/L6, MK1, Q11, U18, U19, U2/U3, U9 -- and Q2/Q3 is a tenth exact identity needing an authorised allocation without being short.  No clone or re-marked substitution is authorised."
+ }
+}

@@ -1,0 +1,20 @@
+=== esp32-s3-aqroot ===
+Environment      Status    Duration
+---------------  --------  ------------
+esp32-s3-aqroot  SUCCESS   00:00:30.633
+========================= 1 succeeded in 00:00:30.633 =========================
+=== wokwi ===
+Environment    Status    Duration
+-------------  --------  ------------
+wokwi          SUCCESS   00:00:29.434
+========================= 1 succeeded in 00:00:29.434 =========================
+=== esp32-s3-aqroot-dm ===
+Environment         Status    Duration
+------------------  --------  ------------
+esp32-s3-aqroot-dm  SUCCESS   00:00:30.084
+========================= 1 succeeded in 00:00:30.084 =========================
+=== aqroot-demo ===
+Environment    Status    Duration
+-------------  --------  ------------
+aqroot-demo    SUCCESS   00:00:05.872
+========================= 1 succeeded in 00:00:05.872 =========================

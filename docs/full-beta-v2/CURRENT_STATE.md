@@ -138,6 +138,13 @@
 >
 > **Board authority `c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907`.**
 > **`MANIFEST` `6ebe4edcb81cdd00a00744c8d58acb4e7a505deebd8d23467ca1e98738f6988c`.**
+> **Content commit `17db618303c342711dc8ff8d4fb6e5397c0e5a79` on `origin/aqroot-demo`.**
+> Post-commit against that exact tree: **19/19 contracts PASS**, all children exit zero
+> and every report **byte-identical** to the evidence this target carries; F1-F13;
+> H1-H8 with 8 host tests / 388 claims / 82 negative controls all caught; **4/4**
+> PlatformIO builds; KiCad DRC **zero errors** at `--severity-all`; protected copper
+> IDENTICAL at 15 nets / 406 objects; rail ampacity `all_ok`; 123 sourcing lines /
+> 0 unsourced.  Recorded at `evidence/d791-review-target.json`.
 >
 > **What did NOT change:** no copper, no net, no footprint, no placement, no
 > protected-copper object.  Connectivity **174 retained / 173 connected / one
