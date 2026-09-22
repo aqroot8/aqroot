@@ -1,0 +1,222 @@
+{
+ "beta_v2_untouched": true,
+ "board": "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_changes": [],
+ "board_sha256": "c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907",
+ "branch": "aqroot-demo",
+ "closed_here": {
+  "astra_round_12": [
+   "R12-01",
+   "R12-02",
+   "R12-03",
+   "R12-04",
+   "R12-05",
+   "R12-06",
+   "R12-07",
+   "R12-08"
+  ],
+  "fable_complementary": [
+   "assembly PDF release label: now D-793, and cross-checked against BOTH release markers",
+   "active docs carrying retired floors/values: a semantic stale-value scan over five documents and five claim families, with four negative controls",
+   "DECLARED_DUAL_RAIL_BUDGET_A moved into the canonical model as a POLICY_BUDGET-tagged value, and F12 now ASSERTS the constant equals the derivation -- which D-792's comment claimed and no code did",
+   "the declared pair's enforcement and overload behaviour stated explicitly: it is an operator/policy limit, there is no accessory current sense, and the ordered response is shed-5V -> shed-all -> U20/U22 limiters -> recoverable BATOCP -> latching breaker -> one-shot fuse",
+   "pass-FET thermal basis documented: RthetaJL 40 C/W (junction to LEAD) rules because the leads sit on this board's copper; the vendor reference-board RthetaJA figures are reported only; the land is a DECLARED 5 K above the internal air and C-BAT-GATE-01 is the measurement of record; nothing claims a measured junction",
+   "charge-time load ceiling user-visible behaviour retained and restated",
+   "AO4800 embedded schematic symbol cache re-checked: AQROOT_Beta:AO4800 with the correct value, MPN and description, no stale name",
+   "post-recovery amplifier-intent reconciliation: production-caller test and three negative controls retained",
+   "Q10 manufacturer identity, panel/FPC, footprint/vendor drawings, enclosure, microphone, radio pin tables and antenna/coax identities: prior closures preserved, none silently downgraded"
+  ],
+  "found_by_this_closeout": [
+   "R12-N01",
+   "R12-N02"
+  ]
+ },
+ "content_commit": "6273357a6894802af8adc911464bcf7fbfc62446",
+ "convergence_architecture": {
+  "canonical_model": "hardware/demo/manufacturing/aqroot_power_model.py",
+  "charger_states_checked_by_the_oracle": 64,
+  "completeness_is_a_verdict_term": true,
+  "independent_oracle": "hardware/demo/manufacturing/aqroot_power_oracle.py -- imports nothing from the canonical model, the ampacity audit or the feature contract; solves nothing; 29 primitives are a CHECKSUM of the canonical registry joined BY KEY",
+  "instantaneous_and_sustained_are_separate_models": "four ELECTRICAL limits and the firmware's own retention read are judged with the worst reachable burst PRESENT; the junction and the internal air stay on the duty-averaged model",
+  "normative_documents_are_machine_scanned": "five documents x five claim families, block-level and sentence-level fencing, four negative controls",
+  "provenance_is_a_role_tag_matrix": "DEVICE_BOUND / SUPPLY_REQUIREMENT / POLICY_BUDGET / REPORTED; a GUARANTEED_ROC may never be a DEVICE_BOUND and the first run caught Espressif's IVDD row by key",
+  "rejected_post_states": 27,
+  "required_mutations_caught": [
+   "halve_the_charger_package_heat",
+   "delete_the_energy_oracle",
+   "remove_the_5v_first_transition",
+   "discard_the_failed_post_states",
+   "reverse_the_gauge_error_direction",
+   "omit_the_return_path"
+  ],
+  "seeded_rejection": "seeded_canary/d790_declared -- a deliberately failing post-state, so the inclusion invariant cannot pass vacuously",
+  "three_gates_kept_apart": [
+   "PRE-ORDER ANALYTICAL: CLOSED on this target",
+   "FAB/CAM ACCEPTANCE: PENDING",
+   "FIRST-ARTICLE VALIDATION: PENDING",
+   "PROCUREMENT: PENDING"
+  ]
+ },
+ "decision": "D-793",
+ "derived_release_values": {
+  "cell_to_bat_protected_p_fixed_series_ohm": 0.355204,
+  "charge_time_discontinuity_step_K": 30.902,
+  "charge_time_junction_at_the_published_ceiling_C": 104.726,
+  "charge_time_raw_ceiling_W": 3.818199,
+  "charge_time_system_power_ceiling_W": 3.6,
+  "d792_junction_at_its_own_published_number_C": 155.436,
+  "d792_published_charge_ceiling_W": 4.063,
+  "declared_simultaneous_pair_A": {
+   "ACC_3V3": 0.22,
+   "ACC_5V": 0.17
+  },
+  "enable_first_rail_floor_V": 3.85,
+  "enable_second_rail_floor_V": 3.85,
+  "full_pair_ambient_ceiling_C": null,
+  "full_pair_note": "the FULL 400 mA + 300 mA pair is not supported at any ambient in the declared 0..40 C envelope; D-792 held it below 33.0 C",
+  "harness_hot_and_aged_ohm": 0.177478,
+  "internal_p3v3_peak_envelope_A": 1.402034,
+  "permitted_permission_rows": "6 of 32 across both arrival edges (4 of 16 mode/rail combinations on the rail edge and 2 of 16 on the mode edge), against 20 of 32 at D-792",
+  "published_per_rail_budgets_A": {
+   "ACC_3V3": 0.4,
+   "ACC_5V": 0.3
+  },
+  "retention_floor_V": 3.2,
+  "usb_source_contract": "24 AWG or heavier, no longer than 2 m -- at most 0.4472 ohm of source path, measurable as at least 4.2581 V at U11 pin 10 at the programmed 1.1 A input limit (C-CHG-01)"
+ },
+ "manifest": "hardware/demo/fab/MANIFEST.json",
+ "manifest_sha256": "c0a34519784323545c1f8e148c0f0722205d0639e35a2e0b52e185e6bb67023a",
+ "no_copper_change": "no copper, no net, no footprint, no placement, no part value and no protected-copper object moved.  The board sha256 is identical to the reviewed D-792 target; the only files added under hardware/demo/kicad are the archived Molex product specification and its text rendering.",
+ "order_status": "HOLD -- REVIEW TARGET, NOT A FABRICATION AUTHORIZATION.  DO NOT ORDER.  Manufacturer/CAM written acceptance, first-article physical qualification and procurement all remain outstanding and are NOT closed by this release.",
+ "owner_visible_item": {
+  "alternatives_costed": 4,
+  "blocks_this_review_target": false,
+  "recommendation": "accept the narrowed window for the first five and schedule the REV-B pass-pair rewiring.  Q2 and Q3 are two dual AO4800 packages wired as two back-to-back pairs IN SERIES -- four channels of conduction where the LTC4368's reverse-blocking function needs ONE pair -- which is about 292 mOhm hot and 49 % of the entire cell-to-node series resistance.  Wiring the two packages in PARALLEL keeps the function, takes the pair to about 73 mOhm and restores the window outright.  It is a schematic ECO plus a rework of protected BAT_MID copper, so it is a REV-B item and not a D-793 one.",
+  "what": "the accessory permission WINDOW narrows.  Four of sixteen mode/rail combinations are permitted against ten at D-792, the first-rail enable floor moves 3.65 -> 3.80 V, and the FULL 400 + 300 pair is unsupported at every ambient in the declared envelope.  The per-rail budgets and the declared simultaneous pair are UNCHANGED.",
+  "where": "docs/full-beta-v2/CTO_DECISIONS.md, D-793 section 0",
+  "why_not": "the D-788 Option A approval protects the per-rail CURRENT capability, which is unchanged, and delegated the exact release figures to the final candidate.  The charter requires a recommendation with costed alternatives rather than a bare escalation, and section 0 carries four."
+ },
+ "parent_rejected_by_round_12": "087ec3278bcc48c75c4f17320348d721eafa113c",
+ "post_commit_verification": {
+  "battery_pack_contract": {
+   "verdict": "PASS"
+  },
+  "beta_v2_untouched": true,
+  "contract_regression": {
+   "all_children_exited_zero": true,
+   "all_contracts_pass": true,
+   "all_ran": true,
+   "baseline": "d792",
+   "contracts_run": 19,
+   "contracts_with_substantive_difference": [
+    "demo_feature",
+    "firmware_hw_map",
+    "battery_pack"
+   ],
+   "emitted_baseline": "d793",
+   "why_a_substantive_difference_is_expected": "D-793 is a FULL CONVERGENCE release: it deliberately changes the verification architecture, so three reports legitimately differ from the D-792 baseline -- demo_feature gained F14, the independent-oracle clause, the semantic document scan and the declared-pair cross-check; firmware_hw_map gained the R12-03 and R12-08 mutation controls and the host-test claims that catch them; and battery_pack's connector margin moved with R12-01's corrected source path.  `all_contracts_pass` and `all_children_exited_zero` are both true."
+  },
+  "demo_feature_contract": {
+   "board_sha256": "c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907",
+   "checks": "F1-F14, 14 of 14",
+   "verdict": "PASS"
+  },
+  "fab_package_contract": {
+   "verdict": "PASS"
+  },
+  "firmware_hw_map_contract": {
+   "note": "H1-H8, every host-test mutation caught",
+   "verdict": "PASS"
+  },
+  "host_tests": {
+   "compiled_with": "g++ -std=c++17 -Wall -Wextra -Werror",
+   "test_accessory_power_policy": {
+    "claims": 83,
+    "verdict": "PASS"
+   },
+   "test_expander_order": {
+    "claims": 123,
+    "verdict": "PASS"
+   },
+   "test_fuel_gauge_safety": {
+    "claims": 37,
+    "verdict": "PASS"
+   },
+   "test_production_callers": {
+    "claims": 122,
+    "verdict": "PASS"
+   },
+   "test_production_image": {
+    "claims": 94,
+    "verdict": "PASS"
+   },
+   "test_production_timing": {
+    "claims": 17,
+    "verdict": "PASS"
+   },
+   "test_spi_bus_b": {
+    "claims": 43,
+    "verdict": "PASS"
+   },
+   "test_timing_policy": {
+    "claims": 10,
+    "verdict": "PASS"
+   }
+  },
+  "kicad_drc_and_schematic_parity": {
+   "errors": 17,
+   "items": 462,
+   "note": "two of the seventeen unconnected items name a DIFFERENT but equivalent endpoint of the same net island than the D-792 run recorded -- a KiCad reporting choice on a byte-identical board.  The count, the class and the net set are identical and the board sha256 is unchanged.",
+   "schematic_parity_identical_to_the_reviewed_d792_baseline": true,
+   "unconnected_nets_identical_to_the_reviewed_d792_baseline": true,
+   "violations_identical_to_the_reviewed_d792_baseline": true
+  },
+  "platformio": {
+   "all_success": true,
+   "environments": [
+    "esp32-s3-aqroot",
+    "wokwi",
+    "esp32-s3-aqroot-dm",
+    "aqroot-demo"
+   ],
+   "note": "also verified from CLEAN at this content commit"
+  },
+  "population_contract": {
+   "verdict": "PASS"
+  },
+  "protected_copper": {
+   "identical": true,
+   "nets": 15,
+   "objects": 406
+  },
+  "rail_ampacity": {
+   "all_ok": true
+  },
+  "routing_ledger": {
+   "approved_unrouted_edges": 1,
+   "connected_retained_nets": 173,
+   "retained_multi_pad_nets": 174,
+   "unapproved_open_edges": 0
+  },
+  "run_against": "6273357a6894802af8adc911464bcf7fbfc62446, clean tree",
+  "sourcing_sweep": {
+   "assembly_lines": 123,
+   "evidence": "evidence/d793-sourcing-sweep.json",
+   "short_or_unknown_groups": 9
+  }
+ },
+ "schema": 1,
+ "what_is_not_claimed": [
+  "no first-article measurement has been taken",
+  "C-BAT-PATH-01 is the measurement of record for every itemised path resistance including the new board-copper and ground-return terms",
+  "C-CHG-01 is the measurement of record for the USB source contract at U11 pin 10",
+  "C-PWR-CHARGE-01 measures the charge regime at the published ceiling; a supplement at or below it is a FAILURE of that test",
+  "C-RADIO-QUIESCE-01 measures the retained-transmit quiesce on real silicon",
+  "C-THERM-01, C-BAT-GATE-01, C-DISP-01 and C-MCU-01 remain as before",
+  "the archived Molex copy is Revision A1 and the product page cites A6; every row the design depends on agrees between them and the discrepancy is on the record",
+  "the ST25R3916's physical field state after an MCU reset is UNKNOWN-but-bounded, not proven: no datasheet is in this repository and its field is already carried as a bounded-duty always-on allowance",
+  "the Demo's sustained thermal envelope remains an explicit OPERATOR rule; there is no calibrated die-temperature measurement on this board",
+  "the NFC antenna-side shunt still has no dedicated CAD site and remains a first-article tuning/rework risk",
+  "nine fitted groups are SHORT on the live sweep and Q2/Q3 needs an authorised genuine allocation"
+ ]
+}
