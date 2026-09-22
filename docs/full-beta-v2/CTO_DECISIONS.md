@@ -1,6 +1,10 @@
 ## D-793 — **ROUND-12 FULL CONVERGENCE: A CONNECTOR SPECIFICATION THAT WAS IN THE ARCHIVE ALL ALONG, A CEILING THAT ROUNDED UP ACROSS A CLIFF, A RADIO STILL TRANSMITTING AFTER THE RESET, AND A MODEL THAT WAS ITS OWN ORACLE**
 
     authority  board c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907
+    manifest   c0a34519784323545c1f8e148c0f0722205d0639e35a2e0b52e185e6bb67023a
+    content    6273357a6894802af8adc911464bcf7fbfc62446
+    identity   c897b6f23a6f6a07a01f0119fe49e9c5f627f926 (post-commit verification
+               record; see evidence/d793-review-target.json)
     parent     087ec3278bcc48c75c4f17320348d721eafa113c (D-792, REJECTED by Round-12)
     scope      R12-01..R12-08 (Astra, reproduced), every Fable complementary
                residual, and R12-N01/R12-N02 found at this closeout

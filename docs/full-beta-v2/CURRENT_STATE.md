@@ -14,6 +14,24 @@
 
 ## 1. Authoritative HEAD
 
+> ### **D-793 REVIEW TARGET — THE EXACT FROZEN IDENTITY**
+>
+> | what | value |
+> |---|---|
+> | branch | `origin/aqroot-demo` |
+> | content commit | `6273357a6894802af8adc911464bcf7fbfc62446` |
+> | identity / post-commit verification commit | `c897b6f23a6f6a07a01f0119fe49e9c5f627f926` |
+> | board `aqroot-Beta-v2.kicad_pcb` sha256 | `c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907` |
+> | `hardware/demo/fab/MANIFEST.json` sha256 | `c0a34519784323545c1f8e148c0f0722205d0639e35a2e0b52e185e6bb67023a` |
+> | parent, REJECTED by Round-12 | `087ec3278bcc48c75c4f17320348d721eafa113c` |
+>
+> The board sha256 is IDENTICAL to the reviewed D-792 target: **no copper moved**.
+> The full record, including the post-commit verification re-run against the
+> content commit on a clean tree, is
+> [`evidence/d793-review-target.json`](../../hardware/demo/manufacturing/evidence/d793-review-target.json).
+> **REVIEW TARGET, NOT A FABRICATION AUTHORIZATION.  DO NOT ORDER.**
+
+
 > **OWNER/CTO ARCHITECTURE AUTHORITY, GRANTED 2026-09-12 (commit `cc9f356`,
 > labelled `D-703` in `CTO_DECISIONS.md`).**  The owner has authorized Opus to
 > *"evaluate and choose the best engineering architecture rather than continuing

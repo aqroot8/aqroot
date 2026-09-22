@@ -84,6 +84,8 @@
   "retention_floor_V": 3.2,
   "usb_source_contract": "24 AWG or heavier, no longer than 2 m -- at most 0.4472 ohm of source path, measurable as at least 4.2581 V at U11 pin 10 at the programmed 1.1 A input limit (C-CHG-01)"
  },
+ "identity_commit": "c897b6f23a6f6a07a01f0119fe49e9c5f627f926",
+ "identity_note": "the CONTENT commit carries the release; the IDENTITY commit carries this record of it, and a third commit records both in the normative documents.  A commit cannot contain its own SHA, so the reviewable target is the pair: fetch origin/aqroot-demo and check out 6273357a for the content, or the branch tip for the content plus this record plus the documented identity.",
  "manifest": "hardware/demo/fab/MANIFEST.json",
  "manifest_sha256": "c0a34519784323545c1f8e148c0f0722205d0639e35a2e0b52e185e6bb67023a",
  "no_copper_change": "no copper, no net, no footprint, no placement, no part value and no protected-copper object moved.  The board sha256 is identical to the reviewed D-792 target; the only files added under hardware/demo/kicad are the archived Molex product specification and its text rendering.",
@@ -205,6 +207,11 @@
    "short_or_unknown_groups": 9
   }
  },
+ "recorded_in": [
+  "docs/full-beta-v2/CURRENT_STATE.md section 1",
+  "docs/full-beta-v2/CTO_DECISIONS.md D-793 header",
+  "hardware/demo/manufacturing/evidence/d793-review-target.json"
+ ],
  "schema": 1,
  "what_is_not_claimed": [
   "no first-article measurement has been taken",
