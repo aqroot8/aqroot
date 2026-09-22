@@ -601,8 +601,32 @@ PRODUCTION_IMAGE_CONTROLS = [
      "  (void)0;"),
     ("the image quiesces but reports the result as CONFIRMED regardless",
      "demo/main.cpp",
-     "  g_app.noteRadiosQuiesced(q.ok());",
+     "  g_app.noteRadiosQuiesced(q.cc1101_confirmed && q.sx1262_confirmed);",
      "  g_app.noteRadiosQuiesced(true);"),
+    # --- D-794 / R13-03: the same mutation for the THIRD radio.  The NFC
+    # field is a retained physical state on the same boot path, and reporting
+    # it CONFIRMED regardless is exactly what D-793 did in prose.
+    ("the image quiesces the NFC front end but reports the field as "
+     "CONFIRMED OFF regardless",
+     "demo/main.cpp",
+     "  g_app.noteNfcFieldQuiesced(q.nfc_confirmed, q.nfc_operation_control);",
+     "  g_app.noteNfcFieldQuiesced(true, 0x00);"),
+    # --- D-794 / R13-03: the field is commanded off but never VERIFIED.  A
+    # part that ACKs the Set default and keeps driving RFO1/RFO2 is exactly
+    # the state the read-back exists for.
+    ("the ST25R3916 quiesce trusts the Set default write instead of reading "
+     "the Operation control register back",
+     "aqroot_demo_radios.h",
+     "  return op == 0x00;",
+     "  return true;"),
+    # --- D-794 / R13-03: "Do not assume 'stop all activities' is sufficient
+    # for every retained state."  C2/C3h leaves the Operation control register
+    # alone, so the carrier survives it (DS12484 Rev 3 section 4.4.2).
+    ("the NFC quiesce sends Stop all activities instead of Set default, "
+     "which leaves the Operation control register -- and the carrier -- alone",
+     "aqroot_demo_radios.h",
+     "  const uint8_t kSetDefault = 0xC1;          // Table 13, section 4.4.1",
+     "  const uint8_t kSetDefault = 0xC3;          // Stop all activities"),
     ("the CC1101 quiesce accepts ANY MARCSTATE at or above IDLE, which is "
      "every state including TX",
      "aqroot_demo_radios.h",
@@ -617,7 +641,7 @@ PRODUCTION_IMAGE_CONTROLS = [
     ("the loop stops retrying a failed quiesce, so a board that missed it "
      "once refuses accessory power forever",
      "demo/main.cpp",
-     "  if (!g_app.radiosQuiesced()) {",
+     "  if (!g_app.radiosQuiesced() || !g_app.nfcFieldConfirmedOff()) {",
      "  if (false) {"),
     # --- D-792 / R11-04: the SPI-B transmit gate is never attached.  The image
     # still builds, still runs, still probes both radios -- and every future TX
@@ -677,6 +701,30 @@ PRODUCTION_IMAGE_CONTROLS = [
      "    delay(kAccessorySettledRecheckMs);\n    applyAccessoryRetention(what);",
      "    if (acc3v3_ || acc5v_) return;\n    delay(kAccessorySettledRecheckMs);\n"
      "    applyAccessoryRetention(what);"),
+    # --- D-794 / R13-01: the load-epoch rule, four ways.  Each of these is
+    # the D-793 behaviour written back in, and each must be CAUGHT by the
+    # stale-pre-light-step reproduction in test_production_image.cpp.
+    ("the gauge reader stops waiting for a post-load conversion, which is "
+     "D-793's behaviour exactly",
+     "aqroot_demo_bringup_app.h",
+     "    waitForPostLoadConversion();\n    return gauge_.readVcell(bus_, volts);",
+     "    return gauge_.readVcell(bus_, volts);"),
+    ("the post-load window is shortened to D-779's one update, which leaves "
+     "three quarters of the VCELL average describing the pre-load board",
+     "aqroot_demo_bringup_app.h",
+     "      delay(remaining);",
+     "      delay(remaining / 4);"),
+    ("the display initialisation stops being a material load edge",
+     "aqroot_demo_bringup_app.h",
+     """    display_up_ = up;
+    noteMaterialLoadEdge(up ? "the ILI9488 display initialisation"
+                            : "the display going down");""",
+     "    display_up_ = up;"),
+    ("the load epoch never reports anything outstanding, so an armed edge "
+     "costs nothing and the reader is D-793's again",
+     "aqroot_accessory_power_policy.h",
+     "    if (!armed_) return 0;",
+     "    return 0;\n    if (!armed_) return 0;"),
     # --- Astra 5: the reset diagnostic is forced true in main's wrapper
     ("main's reset-release diagnostic is forced to report success",
      "demo/main.cpp",

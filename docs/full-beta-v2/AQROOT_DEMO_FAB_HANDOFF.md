@@ -107,7 +107,13 @@
 > CONTRACT.**  Priced as a linear element, the BQ25185's input FET puts the
 > junction above TI's operating maximum at the sustained reference state's own
 > load — the part would reach `TSHUT`, which is protection acting as control.
-> The derived charge-time system power ceiling is **3.600 W** at 40 °C ambient;
+> The derived charge-REGIME system power ceiling is **3.600 W** at 40 °C ambient
+> — it guarantees that the battery does not DISCHARGE while the adapter is
+> attached and that `U11` stays inside TI's operating maximum, and **D-794 /
+> `R13-02` renamed it because D-793 called it a charge-TIME ceiling, which it
+> is not.**  The separate **charge-COMPLETION** ceiling — the system load below
+> which a cycle delivers the rated capacity and terminates inside the BQ25185's
+> 360 min `tMAXCHG` on every qualified cable — is **1.150 W**;
 > the heaviest combination under it is `display_wifi` with no accessory, at a
 > junction of **104.4 °C**.  The fitted pouch publishes **0…40 °C for CHARGE**
 > against 0…60 °C for discharge and the cell sits in the internal air, so the
@@ -371,7 +377,7 @@
 > temperature. `C-THERM-01` first-article thermography **MEASURES `R_SYS` and the
 > internal-air rise**; nothing here claims they have been measured.
 >
-> ### The two thin margins on this candidate, named rather than buried
+> ### The two thin margins on this candidate, named rather than buried  *(the `U12` row below is **HISTORICAL** — its 1.9702 A compound case and its 29.8 mA margin are **RETIRED**; D-794 / `R13-06` re-derives the current position in `DEVICE_SPEC.md`, where the fault-coincidence case is 2.2069 A and is accepted on the device's own switch limit rather than on a margin)*
 >
 > `D789-A11`'s corrected display budget adds **80.6 mA** to the internal `+3V3` load, and
 > two margins downstream are now thin. Both are **positive on published worst cases at

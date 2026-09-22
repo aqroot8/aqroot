@@ -961,7 +961,12 @@ def judge_backlight(nets_by_contact, values):
 # --------------------------------------------------------------------------
 ILIM_R = {"ACC_3V3": "R97", "ACC_5V": "R101"}
 ILIM_SWITCH = {"ACC_3V3": "U20", "ACC_5V": "U22"}
-ILIM_LO, ILIM_HI = 0.68, 1.32          # SLVSFJ2B/SLVSGP6A EC table, widest row
+# D-794 / R13-05 + R13-04.  ONE AUTHORITY.  The envelope, the equation, the
+# accuracy rows and the resulting band now live in `aqroot_power_model`, so
+# this contract, `audit_rail_ampacity`'s accessory rail sizing and every
+# document that quotes a limiter figure read the SAME primitive.  They are
+# aliased here only so the call sites below keep reading.
+ILIM_LO, ILIM_HI = apm.ILIM_ENVELOPE_LO, apm.ILIM_ENVELOPE_HI
 # --------------------------------------------------------------------------
 # D-790 / found while closing D789-A03/A11 -- `R9-N01`.  THE ILIM BAND WAS
 # READ OFF A ROW THIS DESIGN DOES NOT SIT AT, AND IT IS THE SAME DEFECT CLASS
@@ -977,7 +982,8 @@ ILIM_LO, ILIM_HI = 0.68, 1.32          # SLVSFJ2B/SLVSGP6A EC table, widest row
 #     2.21 k    0.38     0.50    0.62        0.760     1.240
 #     19.2 k    0.034    0.050   0.066       0.680     1.320
 #
-# `R97` is 1.78 kOhm, BRACKETED by the 1.15 k and 2.21 k rows, and it was being
+# `R97` was 1.78 kOhm AT D-790 -- it is 1.87 kOhm on this board since D-791 --
+# BRACKETED by the 1.15 k and 2.21 k rows, and it was being
 # judged by a bound taken ten times away in resistance and twelve times away in
 # current.  That is exactly what D-788 refused when `U20`'s `RON` was
 # interpolated and what D-789 refused when the LTC4368 gate drive was read off
@@ -992,26 +998,18 @@ ILIM_LO, ILIM_HI = 0.68, 1.32          # SLVSFJ2B/SLVSGP6A EC table, widest row
 # a row uses that row.  No curvature, no interpolation, no row that does not
 # bracket the design.
 #
-# WHAT IT COSTS AND WHAT IT BUYS, BOTH STATED.  `ACC_3V3`'s guaranteed minimum
-# rises 0.4279 -> 0.4719 A (6.97 % -> ~18 % over the published 400 mA) and its
-# fault maximum falls 0.8486 -> 0.8035 A, which is what restores `U12`'s
-# capability margin after D789-A11's corrected display budget.  `ACC_5V`'s
-# `R101` is 2.43 kOhm, bracketed by the 2.21 k and 19.2 k rows, so its bound is
-# UNCHANGED at 0.68 / 1.32 -- the rule does not flatter a part it does not fit.
+# AND AT D-791 THE BRACKET WAS REFUSED TOO.  R10-A12: TI publishes four rows
+# and says nothing between them, so a bracket is an INFERENCE.  The ruling
+# bound went back to the WIDEST published ratio -- which needs no assumption
+# about curvature -- and D-794 / R13-05 adds the half that was still missing:
+# at `R97` = 1.87 kOhm and `R101` = 2.43 kOhm, neither of which is one of TI's
+# four rows, even the widest ratio is an ENVELOPE THIS PROGRAMME DECLARES.  It
+# is tagged that way in the canonical model, it carries `C-ACC-ILIM-01` as its
+# measurement of record, and no document may call the published budgets
+# "guaranteed" by it.
 # --------------------------------------------------------------------------
-ILIM_ACCURACY_ROWS = {
-    # RILIM ohms: (min_A, typ_A, max_A)
-    610.0: (1.54, 2.00, 2.46),
-    1150.0: (0.75, 1.00, 1.25),
-    2210.0: (0.38, 0.50, 0.62),
-    19200.0: (0.034, 0.050, 0.066),
-}
-ILIM_ACCURACY_SOURCE = (
-    "TI SLVSGP6A Electrical Characteristics, Output Current Limit (ILIM), the "
-    "-40..125 C rows at VOUT - VIN = 0.3 V: 1.54/2/2.46 A at 610 ohm, "
-    "0.75/1/1.25 A at 1.15 kOhm, 0.38/0.5/0.62 A at 2.21 kOhm and "
-    "0.034/0.05/0.066 A at 19.2 kOhm.  Archived at vendor/TI/"
-    "ti-tps22950-q1-slvsgp6a-DDC0006A.pdf.")
+ILIM_ACCURACY_ROWS = apm.ILIM_ACCURACY_ROWS
+ILIM_ACCURACY_SOURCE = apm.ILIM_ACCURACY_SOURCE
 
 
 # D-791 / D790-A12.  A BRACKET IS AN ESTIMATE UNLESS THE VENDOR SAYS THERE IS
@@ -1038,43 +1036,8 @@ ILIM_ACCURACY_SOURCE = (
 # the owner-approved 400 mA budget and brings `U12`'s compound worst case to
 # 1.9702 A.  Both budgets are preserved, as D790-A12 requires of any resistor
 # change.
-def ilim_accuracy_band(r_ilim_ohm, rows=None):
-    """The RULING lo/hi ratio bound for a programming resistor.
-
-    The WIDEST ratio the published table contains, which holds at every row
-    and between every pair of rows without any assumption about what the
-    accuracy does in between.  The bracketing rows and their (narrower) ratio
-    are returned for REPORTING only -- see `ilim_bracketed_estimate`.
-    """
-    rows = ILIM_ACCURACY_ROWS if rows is None else rows
-    ratios = [(rows[r][0] / rows[r][1], rows[r][2] / rows[r][1]) for r in rows]
-    lo = min(x[0] for x in ratios)
-    hi = max(x[1] for x in ratios)
-    _, _, bracket = ilim_bracketed_estimate(r_ilim_ohm, rows)
-    return lo, hi, bracket
-
-
-def ilim_bracketed_estimate(r_ilim_ohm, rows=None):
-    """D-790 / R9-N01's bracketed figure, RETAINED AS AN ESTIMATE.
-
-    The worse of the two published rows that bracket the setting, per side.
-    It is reported so the size of the conservatism D790-A12 requires is
-    visible; nothing in this contract RULES on it.
-    """
-    rows = ILIM_ACCURACY_ROWS if rows is None else rows
-    keys = sorted(rows)
-    ratios = {r: (rows[r][0] / rows[r][1], rows[r][2] / rows[r][1])
-              for r in keys}
-    below = [r for r in keys if r <= r_ilim_ohm]
-    above = [r for r in keys if r >= r_ilim_ohm]
-    if not below or not above:
-        lo = min(x[0] for x in ratios.values())
-        hi = max(x[1] for x in ratios.values())
-        return lo, hi, ["outside the published rows: widest ratio"]
-    bracket = sorted({max(below), min(above)})
-    lo = min(ratios[r][0] for r in bracket)
-    hi = max(ratios[r][1] for r in bracket)
-    return lo, hi, ["%g ohm" % r for r in bracket]
+ilim_accuracy_band = apm.ilim_accuracy_band
+ilim_bracketed_estimate = apm.ilim_bracketed_estimate
 # D-765.  EACH PART'S OWN SPECIFIED ILIM PROGRAMMING RANGE, from its own
 # datasheet -- because D-753 set 0.407 A on a part specified from 0.5 A and
 # NOTHING IN THIS CONTRACT COULD SAY THE WORD FOR THAT ACT.  The range is a
@@ -1121,7 +1084,25 @@ PUBLISHED_RAIL_BUDGET_A = dict(apm.PUBLISHED_RAIL_BUDGET_A)
 # D-793 / Fable R12: the canonical model owns it.  This alias exists only so
 # the call sites below keep reading, and F12 asserts it equals the DERIVED
 # pair -- which is what D-792's comment claimed and no code did.
-DECLARED_DUAL_RAIL_BUDGET_A = dict(apm.DECLARED_DUAL_RAIL_BUDGET_A)
+#
+# D-794 / R13-04.  IT WAS A COPY, AND A COPY IS A SECOND PLACE TO BE WRONG.
+#
+# ROUND-13: "Astra ... altered the F6-only declared pair while the overall
+# release remained green in important cases.  ...  Bind all pair-budget
+# consumers (F6, F12, firmware/docs) to one independently checked primitive
+# authority."
+#
+# IT REPRODUCED BECAUSE OF THE `dict(...)` THAT USED TO BE ON THIS LINE.
+# F6's twelve call sites read THIS name; F12's equality clause compared
+# `apm.DECLARED_DUAL_RAIL_BUDGET_A` with its own derivation.  Those are two
+# different objects the moment anything edits either, so moving the pair here
+# left F12 comparing the authority with the physics -- both untouched, both
+# agreeing -- while every F6 answer was computed at the altered figure.
+#
+# It is the same object now, and `the_declared_pair_consumers_share_one_object`
+# in F12 asserts the IDENTITY rather than the value, so re-binding this name
+# to an equal-looking dict fails too.
+DECLARED_DUAL_RAIL_BUDGET_A = apm.DECLARED_DUAL_RAIL_BUDGET_A
 DECLARED_DUAL_RAIL_BASIS = (
     "D-792 / R11-04.  Solved by F12 at the critical cell OCV of the worse "
     "single-rail configuration in the lightest internal state, at the top of "
@@ -2364,9 +2345,7 @@ def _tol(value):
     return float(m.group(1)) / 100.0 if m else 0.05
 
 
-def _ilim_typ(r_ohms):
-    """TI equation 1, identical in SLVSFJ2B and SLVSGP6A.  Amps from ohms."""
-    return 1.18 * ((r_ohms / 1000.0) ** -1.072)
+_ilim_typ = apm.ilim_typ_A
 
 
 # --------------------------------------------------------------------------
@@ -3085,8 +3064,20 @@ def live_stock_for(mpn):
 MFR_ALIASES = (
     # Each tuple is one company.  The first entry is the canonical form this
     # board writes; the rest are spellings the distributor uses.
+    # D-794 / R13-07.  "Alpha and Omega Semiconductor" is the company's own
+    # prose spelling of its own name -- the ampersand written out -- and the
+    # canonicaliser was rejecting it while accepting four other legal forms of
+    # the same company.  Round-13: "Add this exact narrow alias and positive
+    # tests.  Preserve rejection of VBsemi/Kexin/clone/distributor/cross-
+    # manufacturer/prefix tricks.  No fuzzy/prefix matching."
+    #
+    # THE ALIAS IS EXACT, NOT A RULE.  A general "& means and" fold would be
+    # the fuzzy matching R13-07 forbids: it would also make `Acme & Sons` and
+    # `Acme and Sons` the same company without anyone reviewing whether they
+    # are.  Two spellings are listed, both of them ones this company writes.
     ("alpha & omega semiconductor", "alpha & omega semicon",
-     "alpha & omega", "aos"),
+     "alpha & omega", "aos",
+     "alpha and omega semiconductor", "alpha and omega"),
     ("onsemi", "on semiconductor", "onsemiconductor"),
     ("texas instruments", "ti"),
     ("analog devices", "analog devices (maxim)", "maxim integrated", "adi",
@@ -3192,6 +3183,30 @@ def _word_boundary_truncation_rule(table=None):
     finally:
         MFR_CANONICAL.clear()
         MFR_CANONICAL.update(saved)
+
+
+def _aos_alias_is_the_only_route():
+    """D-794 / R13-07.  The written-out AOS spelling resolves because it is in
+    the REVIEWED alias table, not because some character rule reached it.
+
+    Run over a local table with the two D-794 entries removed: if
+    `canonical_manufacturer` still folded "Alpha and Omega Semiconductor" into
+    the canonical name, the alias would be decoration over a fuzzy match.
+    """
+    saved = dict(MFR_CANONICAL)
+    try:
+        MFR_CANONICAL.clear()
+        MFR_CANONICAL.update({
+            k: v for k, v in saved.items()
+            if k not in (fold_manufacturer("alpha and omega semiconductor"),
+                         fold_manufacturer("alpha and omega"))})
+        without = canonical_manufacturer("Alpha and Omega Semiconductor")
+    finally:
+        MFR_CANONICAL.clear()
+        MFR_CANONICAL.update(saved)
+    with_alias = canonical_manufacturer("Alpha and Omega Semiconductor")
+    return bool(with_alias == "alpha & omega semiconductor"
+                and without != "alpha & omega semiconductor")
 
 
 def _ambiguous_truncation_is_refused(table=None):
@@ -3308,6 +3323,118 @@ PART_SOURCE_EXEMPT = {
           "leads, not a distributor line.  Its purchased components are "
           "frozen by F9 and battery_pack_contract B9-B14.",
 }
+
+
+# ==========================================================================
+# D-794 / ROUND-13 FABLE RESIDUAL.  THE EMBEDDED SYMBOL CACHE IS A SECOND
+# PLACE THE MANUFACTURER IS WRITTEN DOWN, AND NOTHING WAS READING IT.
+#
+# ROUND-13's Fable residual list, in its own words: "AO4800 embedded schematic
+# symbol cache names: verify actual embedded cache against current AOS
+# mapping; refresh if stale, re-run parity."
+#
+# IT IS STALE, AND BY MORE THAN THE NAME.  A KiCad schematic carries a
+# `lib_symbols` block -- a CACHE of the library symbol, embedded in the sheet
+# so the file opens without the library.  `F13` reads the INSTANCE properties,
+# which is what the BOM is built from, so it never looked at the cache.  The
+# cached `AQROOT_Beta:AO4800` entry carried:
+#
+#   Manufacturer  "onsemi"                                      -- the company
+#                 that does not make this part
+#   Datasheet     onsemi's NTMD4820N PDF URL                    -- the part
+#                 D-790 RETIRED for an electrical reason
+#   Package       "SOIC-8 (case 751-07)"                        -- onsemi's own
+#                 case designation
+#
+# That is the D-791 / F-N01 defect exactly, in the one field F13 could not
+# see, and it is worse than a BOM error: a human who opens `Q2`'s symbol to
+# judge a substitution offered over email is sent to the datasheet of the part
+# this design refuses.  The display FPC connector's cached entry had the same
+# shape -- it named the PANEL as its manufacturer while every instance of it is
+# the CONNECTOR.
+#
+# WHAT THIS CHECKS.  For every cached symbol that carries a Manufacturer, the
+# canonical company must equal the canonical company of EVERY instance that
+# uses it.  Normalisation is `canonical_manufacturer`, so a reviewed alias --
+# `MEIHUA` against `MEIHUA (Lianyungang Meihua Electronic Technology)` -- is
+# one company and a genuine contradiction is not.
+# --------------------------------------------------------------------------
+def embedded_symbol_cache_rows():
+    """{lib_id: {cache: {...}, instances: {mfr: [refs]}}} over every sheet."""
+    out = {}
+    for sheet in sorted(rl.PROJECT.glob("*.kicad_sch")):
+        text = sheet.read_text(encoding="utf-8", errors="replace")
+        lib = text.find("(lib_symbols")
+        if lib >= 0:
+            end = text.find("\n\t(symbol\n", lib)
+            blk = text[lib:end if end > 0 else len(text)]
+            for m in re.finditer(
+                    r'\(symbol "([^"]+)"\n(.*?)(?=\n\t\t\(symbol "[A-Za-z]|\Z)',
+                    blk, re.S):
+                name, body = m.group(1), m.group(2)
+                if re.search(r"_\d+_\d+$", name):
+                    continue
+                mm = re.search(r'\(property "Manufacturer" "([^"]*)"', body)
+                if not mm:
+                    continue
+                row = out.setdefault(name, dict(instances={}))
+                row["cache"] = dict(
+                    manufacturer=mm.group(1),
+                    mpn=(re.search(r'\(property "MPN" "([^"]*)"', body)
+                         or [None, ""])[1] if re.search(
+                             r'\(property "MPN" "([^"]*)"', body) else "",
+                    datasheet=(re.search(
+                        r'\(property "Datasheet" "([^"]*)"', body).group(1)
+                        if re.search(r'\(property "Datasheet" "([^"]*)"', body)
+                        else ""),
+                    sheet=sheet.name)
+        for m in re.finditer(r'\(lib_id "([^"]+)"\)(.{0,8000}?)\(instances',
+                             text, re.S):
+            lib_id, body = m.group(1), m.group(2)
+            mm = re.search(r'\(property "Manufacturer" "([^"]*)"', body)
+            ref = re.search(r'\(property "Reference" "([^"]*)"', body)
+            if not mm:
+                continue
+            row = out.setdefault(lib_id, dict(instances={}))
+            row["instances"].setdefault(mm.group(1), []).append(
+                ref.group(1) if ref else "?")
+    return {k: v for k, v in out.items() if v.get("cache")}
+
+
+def judge_embedded_symbol_cache(rows=None):
+    rows = embedded_symbol_cache_rows() if rows is None else rows
+    findings, problems = {}, []
+    for lib_id, row in sorted(rows.items()):
+        cache_mfr = canonical_manufacturer(row["cache"]["manufacturer"])
+        inst = {canonical_manufacturer(k): sorted(v)
+                for k, v in row["instances"].items()}
+        disagreeing = sorted(k for k in inst if k and k != cache_mfr)
+        # ...and the cached DATASHEET may not name a company the cached
+        # MANUFACTURER is not.  That is how the retired onsemi PDF survived.
+        ds = (row["cache"].get("datasheet") or "").lower()
+        ds_bad = bool(
+            ds and cache_mfr
+            and any(tok in ds for tok in ("onsemi.com", "onsemi/"))
+            and cache_mfr != "onsemi")
+        d = dict(cache=row["cache"],
+                 cache_manufacturer_canonical=cache_mfr,
+                 instances={k: v for k, v in row["instances"].items()},
+                 disagreeing_instances=disagreeing,
+                 datasheet_names_another_company=ds_bad,
+                 ok=not disagreeing and not ds_bad)
+        if not d["ok"]:
+            problems.append(lib_id)
+        findings[lib_id] = d
+    return (not problems), dict(
+        symbols=sorted(findings), findings=findings, problems=problems,
+        method="every embedded `lib_symbols` cache entry that carries a "
+               "Manufacturer must canonicalise to the same company as every "
+               "INSTANCE that uses it, and its cached Datasheet may not point "
+               "at a different company's site.  F13 reads instance properties "
+               "because that is what the BOM is built from; the cache is what "
+               "a HUMAN sees when they open the symbol, and D-794 found it "
+               "naming onsemi -- and onsemi's RETIRED NTMD4820N datasheet -- "
+               "on the AOS pass pair.")
 
 
 def judge_part_source_identity(rows, exempt=None):
@@ -3460,10 +3587,41 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
         # bracket this programming resistor, not the table's widest row.
         acc_lo, acc_hi, acc_rows = ilim_accuracy_band(r)
         est_lo, est_hi, _ = ilim_bracketed_estimate(r)
+        # D-794 / R13-04.  ONE PRIMITIVE AUTHORITY, AND NOT "THE SAME FORMULA
+        # WRITTEN TWICE".
+        #
+        # Round-13 asks to "bind all pair-budget consumers to one
+        # independently checked primitive authority".  D-793 had F6 and
+        # `audit_rail_ampacity` each evaluate `typ_hi * acc_hi` from the same
+        # inputs -- which is not one authority, it is two copies that happened
+        # to agree.  They stopped agreeing the moment one of them rounded: the
+        # audit's design current came out 0.804861 A against F6's
+        # 0.80486138... A, and the coverage clause read that 6e-7 A as a stale
+        # audit.  A rounding artefact is a false alarm, but the SHAPE is the
+        # real defect, because the same two copies could have differed by a
+        # volt and nothing would have noticed either.
+        #
+        # So the band is now taken FROM `aqroot_power_model.ilim_band_A`, the
+        # function the audit calls, at the resistor value read off the
+        # SCHEMATIC.  The schematic remains the source of the resistor -- that
+        # independence is the point of reading it here -- and the clause below
+        # requires the schematic and the model's programmed table to agree, so
+        # a resistor changed in one place and not the other FAILS instead of
+        # silently splitting the two consumers again.
+        band = apm.ilim_band_A(r, tol)
         rails[rail] = dict(ref=ref, r_ohms=r, r_tol=tol,
-                           ilim_min=typ_lo * acc_lo,
+                           ilim_min=band["min_A"],
                            ilim_typ=typ,
-                           ilim_max=typ_hi * acc_hi,
+                           ilim_max=band["max_A"],
+                           ilim_authority="aqroot_power_model.ilim_band_A",
+                           ilim_programmed_ohm_in_model=(
+                               apm.ILIM_PROGRAMMED_OHM.get(rail)),
+                           ilim_schematic_matches_the_model=bool(
+                               apm.ILIM_PROGRAMMED_OHM.get(rail) == r
+                               and apm.ILIM_RESISTOR_TOLERANCE == tol),
+                           ilim_classification=band["classification"],
+                           ilim_measurement_of_record=(
+                               band["measurement_of_record"]),
                            accuracy_lo=round(acc_lo, 6),
                            accuracy_hi=round(acc_hi, 6),
                            accuracy_bracket_rows=acc_rows,
@@ -4185,11 +4343,122 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
     d["the_provenance_rule_refuses_a_typical_bound"] = bool(
         apm.audit_tags(_poisoned)["invalid_ruling_use"])
 
+    # ======================================================================
+    # D-794 / R13-05.  THE ROLE-MISCLASSIFICATION CONTROLS, INCLUDING THE ONE
+    # ASTRA RAN.
+    #
+    # ROUND-13, IN ITS OWN WORDS: "Astra changed passpair.rds_hot_ratio_ruling
+    # from DECLARED_ESTIMATE to GUARANTEED_MAX and gates stayed green; that
+    # must fail.  ...  Audit every GUARANTEED_* primitive against exact
+    # document row/condition and add role-misclassification negative
+    # controls."
+    #
+    # Each control below RELABELS one registry entry and the rule must refuse
+    # it.  The first is Astra's own mutation, by key, by tag and by direction.
+    # ======================================================================
+    def _relabel(key, **fields):
+        out = []
+        for r in apm.registry():
+            if r["key"] == key:
+                r = dict(r, **fields)
+            out.append(r)
+        return out
+
+    _role_controls = {}
+    # 1  ASTRA'S MUTATION.  A DECLARED widening relabelled a manufacturer
+    #    maximum.  It is refused three times over: the key is not in
+    #    GUARANTEED_ROWS, it carries `widened_from`, and its source text
+    #    opens with the word DECLARED.
+    _role_controls["astra_declared_widening_relabelled_guaranteed_max"] = bool(
+        apm.audit_tags(_relabel("passpair.rds_hot_ratio_ruling",
+                                tag=apm.GUARANTEED_MAX,
+                                role=apm.DEVICE_BOUND))["invalid_ruling_use"])
+    # 2  A guarantee whose SOURCE TEXT no longer names the document it claims.
+    _role_controls["a_guarantee_whose_source_lost_its_document"] = bool(
+        apm.audit_tags(_relabel(
+            "bq.ron_in_max_ohm",
+            source="the input FET's on-resistance."))["invalid_ruling_use"])
+    # 3  A guarantee whose source no longer names its ROW.
+    _role_controls["a_guarantee_whose_source_lost_its_row"] = bool(
+        apm.audit_tags(_relabel(
+            "bq.ilim_max_A",
+            source="TI SLUSF65B, the input current limit."))[
+                "invalid_ruling_use"])
+    # 4  A guarantee with its CONDITION removed -- the D-789 defect, spelled
+    #    as an omission rather than as a wrong row.
+    _role_controls["a_guarantee_with_no_stated_condition"] = bool(
+        apm.audit_tags(_relabel("bq.vsys_reg_V", condition=None))[
+            "invalid_ruling_use"])
+    # 5  A SUPPLY REQUIREMENT relabelled a device bound -- R12-05's ESP32
+    #    IVDD instance, kept alive as a control rather than as a memory.
+    _role_controls["a_supply_requirement_relabelled_a_device_bound"] = bool(
+        apm.audit_tags(_relabel("mcu.ivdd_supply_requirement_A",
+                                role=apm.DEVICE_BOUND))["invalid_ruling_use"])
+    # 6  A POLICY BUDGET dressed as a datasheet guarantee.
+    _role_controls["a_policy_budget_relabelled_a_datasheet_guarantee"] = bool(
+        apm.audit_tags(_relabel("policy.acc_3v3_published_budget_A",
+                                tag=apm.GUARANTEED_MIN,
+                                role=apm.DEVICE_BOUND))["invalid_ruling_use"])
+    # 7  A DERIVED CORNER of a guaranteed band relabelled a second guarantee.
+    _role_controls["a_derived_corner_relabelled_a_guarantee"] = bool(
+        apm.audit_tags(_relabel("path.r75_sense_max_ohm",
+                                tag=apm.GUARANTEED_MAX))["invalid_ruling_use"])
+    d["role_misclassification_controls"] = dict(
+        _role_controls,
+        guaranteed_entries=_tags["guaranteed_entries"],
+        guaranteed_rows_table=_tags["guaranteed_rows_table"],
+        why="R13-05: a role check that only tests enum membership is a TYPE "
+            "check.  A guarantee is a claim about a NAMED DOCUMENT ROW at a "
+            "NAMED CONDITION, so every GUARANTEED_* entry must appear in "
+            "`GUARANTEED_ROWS`, must repeat its document and row tokens in "
+            "its own source text, must state a condition, may not be widened "
+            "from anything, and may not open its source with the word "
+            "DECLARED.  Each control below relabels ONE entry and the rule "
+            "must refuse it.")
+    d["every_role_misclassification_control_is_refused"] = bool(
+        all(_role_controls.values()))
+
     # ---- D-787 / R6-A01: main +3V3 delivery is an explicit contract -------
     d["p3v3_setpoint"] = p3v3
     d["p3v3_divider_parts_have_a_published_temperature_coefficient"] = (
         divider_parts_are_known)
     d["p3v3_reinforcement_is_exact_and_bounded"] = reinforcement_identity_ok
+    # ---- D-794 / R13-06.  THE RECORD'S OWN VOLTAGES ARE DERIVED TOO. -----
+    #
+    # ROUND-13: "Current fab notes and FIRST_FIVE_ASSEMBLY_PLAN retain
+    # obsolete delivery voltages ... Regenerate all current-facing normative
+    # instructions from the FINAL D-794 policy/model."
+    #
+    # `ACC_3V3_REINFORCEMENT.json` is not a narrative: `export_fab_package`
+    # reads it and PRINTS its voltages into the fab notes an assembler is
+    # handed.  D-793 shipped it carrying the D-789-era 2.849642 / 2.982890 V
+    # pair, three derivations out of date, and the exported notes carried them
+    # too -- because the identity check above asks whether the record is
+    # CONSISTENT, never whether its numbers are the ones this release derives.
+    # Now it does, to the precision the record prints at.
+    _rec_ec = (reinforcement or {}).get("electrical_consequence") or {}
+    _rec_need = {
+        "published_minimum_without_it_V": round(
+            p3v3["delivered_at_400mA_min_V"], 6),
+        "published_minimum_fully_mated_V": round(
+            p3v3["delivered_at_400mA_fully_mated_V"], 6),
+    }
+    _rec_bad = sorted(
+        k for k, v in _rec_need.items()
+        if _rec_ec.get(k) is None or abs(float(_rec_ec[k]) - v) > 5e-7)
+    d["the_reinforcement_record_quotes_the_derived_delivery"] = dict(
+        file=str(ACC_3V3_REINFORCEMENT.relative_to(ROOT)),
+        required=_rec_need,
+        recorded={k: _rec_ec.get(k) for k in _rec_need},
+        disagreeing=_rec_bad,
+        ok=not _rec_bad,
+        why="the exported fab notes PRINT these two numbers from this file, "
+            "so a stale record is an assembler reading a retired delivery "
+            "voltage.  R13-06 asks for the current-facing instructions to be "
+            "generated from the final model; this is the clause that makes "
+            "the generator's input follow the model.")
+    d["the_reinforcement_record_quotes_the_derived_delivery_ok"] = bool(
+        not _rec_bad)
     d["p3v3_delivers_the_published_connector_minimum"] = p3v3["delivered_min_ok"]
     d["p3v3_stays_below_the_tightest_internal_consumer_maximum"] = p3v3[
         "internal_high_ok"]
@@ -4641,6 +4910,13 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
         p["setting_inside_spec_range"] for p in parts.values())
     d["one_limiter_mpn_on_both_rails"] = (
         len({p["value"] for p in parts.values()}) == 1)
+    # D-794 / R13-04: the SCHEMATIC resistor and the canonical model's
+    # programmed table are the two ends of the single limiter authority.  If
+    # they part company, every consumer that reads the model -- the ampacity
+    # audit's design current, the accessory-limiter report, the documents
+    # generated from it -- is describing a board that is not this one.
+    d["ilim_programmed_resistors_match_the_canonical_model"] = all(
+        v["ilim_schematic_matches_the_model"] for v in rails.values())
     # The UL 2367 recognition range is a narrower, safety-credential bound on
     # the same quantity.  Its LOWER bound is exercised by the f6h control; any
     # setting that breaches its UPPER bound also breaches the pack clause.
@@ -4653,6 +4929,7 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
           and d["limiter_silicon_is_a_part_with_a_published_range"]
           and d["ilim_setting_is_inside_the_parts_own_spec_range"]
           and d["one_limiter_mpn_on_both_rails"]
+          and d["ilim_programmed_resistors_match_the_canonical_model"]
           and d["ilim_band_is_inside_ul2367_recognition"]
           and d["each_rail_guarantees_its_published_accessory_budget"]
           and d["recoverable_trip_is_ordered_below_the_latching_breaker"]
@@ -4661,8 +4938,10 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
           and d["no_typical_is_used_as_a_ruling_bound"]
           and d["every_ruling_input_carries_a_provenance_tag"]
           and d["the_provenance_rule_refuses_a_typical_bound"]
+          and d["every_role_misclassification_control_is_refused"]
           and d["p3v3_divider_parts_have_a_published_temperature_coefficient"]
           and d["p3v3_reinforcement_is_exact_and_bounded"]
+          and d["the_reinforcement_record_quotes_the_derived_delivery_ok"]
           and d["p3v3_delivers_the_published_connector_minimum"]
           and d["p3v3_stays_below_the_tightest_internal_consumer_maximum"]
           and d["boost_setpoint_is_clear_of_its_own_ovp"]
@@ -5867,10 +6146,50 @@ def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
                             "gridded %.4f V exceeds the %.4f V ceiling of its "
                             "own pre-state" % (gridded, worst["ceiling"]))
                         gridded = None
+                # ==========================================================
+                # D-794 / R13-04 + ROUND-13 FABLE DELTA.  THE ROW CARRIES ITS
+                # SETTLED POST-LOAD STATE, SO SOMETHING OTHER THAN THIS
+                # FUNCTION CAN CHECK THE RETENTION.
+                #
+                # ROUND-13, IN ITS OWN WORDS: "Every permitted table row must
+                # independently prove settled post-load retention, not
+                # attainability only."  Fable found the same gap from the
+                # other side: "table rows only independently checked for
+                # attainability".
+                #
+                # BOTH ARE RIGHT ABOUT WHAT WAS PUBLISHED.  `permission_floor`
+                # does apply the full retention rule -- `post_is_acceptable`
+                # is what `critical_cell` bisects on -- but the ROW it emits
+                # kept only the floor, the critical cell and the pre-state
+                # ceiling.  So the independent oracle, handed that row, could
+                # only re-check that the floor was REACHABLE.  Whether the
+                # state the floor authorises actually holds the node above
+                # retention AFTER the load arrives was a claim the canonical
+                # model made about itself.
+                #
+                # The settled node is therefore emitted -- sustained, and with
+                # the worst coincident burst -- at the row's own critical
+                # cell, in the row's own ruling accessory configuration.  The
+                # oracle re-checks `node - gauge >= retention` on both, from
+                # the row, with no access to this function.
+                # ==========================================================
+                post_sustained = post_burst = None
+                if worst["cfg"] is not None and worst["c"] is not None:
+                    _post = dict(RAIL_CONFIGS[rails])[worst["cfg"]]
+                    _s = solve(worst["c"], _post[0], _post[1], i_int)
+                    if _s is not None:
+                        post_sustained = round(_s["node_V"], 6)
+                    if burst_delta_A > 0.0:
+                        _b = solve(worst["c"], _post[0], _post[1],
+                                   i_int + burst_delta_A)
+                        if _b is not None:
+                            post_burst = round(_b["node_V"], 6)
                 rows.append(dict(
                     edge=edge, mode_bits=bits, modes=list(modes), rails=rails,
                     internal_3v3_A=round(i_int, 6),
                     pre_state_internal_3v3_A=round(i_pre, 6),
+                    settled_post_node_V=post_sustained,
+                    settled_post_node_with_worst_burst_V=post_burst,
                     rail_configuration=worst["cfg"],
                     configurations_with_no_attainable_cell_voltage=refused,
                     unreachable=unreachable,
@@ -6183,23 +6502,66 @@ def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
     # procedure, alongside the supervised first-five charging `battery_pack_
     # contract` B8 already requires.
     # ======================================================================
+    # ======================================================================
+    # D-794 / R13-02.  THE BRANCH BOUNDARIES ARE SWEPT, BECAUSE TI PUBLISHES
+    # THEM AS TYPICALS.
+    #
+    # ROUND-13: "Sweep all branch boundaries and round the published ceiling
+    # downward with explicit guardband."  VDPPM, VBSUP1, VBSUP2 and
+    # VINDPM_TRACK have a TYP column and nothing else in SLUSF65B, and the
+    # supplement discontinuity is a FUNCTION of them.  A ceiling derived at
+    # one unpublished typical is D-793's 4.063 W defect in a different place:
+    # a number that is correct only if a typical is a limit.
+    #
+    # Every ceiling question below is therefore asked at EVERY point of the
+    # declared sweep and answered by the WORST one -- the hottest junction and
+    # the earliest supplement onset over the whole band.
+    # ======================================================================
+    CHARGE_SWEEP_POINTS = (-1.0, -0.5, -0.25, 0.0, 0.25, 0.5, 1.0)
+    CHARGE_SWEEPS = tuple(round(p * apm.CHARGER_BRANCH_THRESHOLD_SWEEP, 6)
+                          for p in CHARGE_SWEEP_POINTS)
+    # Both mode histories, because the VBSUP1/VBSUP2 hysteresis makes the
+    # branch depend on where the part already was.  A ceiling that assumed the
+    # benign history would be a ceiling for one direction of approach only.
+    CHARGE_HISTORIES = (None, "SUPPLEMENT")
+
     def charge_junction_at(system_W, delivered_W=0.0):
-        r = ara.charge_regime_junction(system_W, ambient_C=ambient_C,
-                                       delivered_out_W=delivered_W)
-        return r["junction_with_charge_folded_back_C"], r
+        """The WORST junction over the declared threshold sweep and both
+        supplement histories.  Returns (junction_C, the ruling report)."""
+        worst_C, worst_r = None, None
+        for sw in CHARGE_SWEEPS:
+            for hist in CHARGE_HISTORIES:
+                r = ara.charge_regime_junction(
+                    system_W, ambient_C=ambient_C, delivered_out_W=delivered_W,
+                    sweep=sw, previous_mode=hist)
+                c = r["junction_with_charge_folded_back_C"]
+                if worst_C is None or c > worst_C:
+                    worst_C, worst_r = c, r
+        return worst_C, worst_r
 
     def charge_is_supplementing(system_W):
-        """True when ANY ruling source class puts the part in SUPPLEMENT.
+        """True when ANY ruling source class, at ANY point of the declared
+        threshold sweep, under EITHER mode history, puts the part in
+        SUPPLEMENT.
 
         D-793 / R12-02.  The supplement onset is a DISCONTINUITY, not a knee:
         SYS collapses from the input-FET-held value to the cell, the input
         FET's drop triples and the junction steps tens of kelvin in one
         millivolt of load.  A published ceiling that sits above it -- or that
         ROUNDS UP across it -- is not a ceiling at all.
+
+        D-794 / R13-02 adds the sweep: the onset MOVES with VBSUP1 and VDPPM,
+        and those are typicals.
         """
-        _, r = charge_junction_at(system_W)
-        return any(c["mode"] == "SUPPLEMENT" for c in r["corners"].values()
-                   if c.get("source_rules"))
+        for sw in CHARGE_SWEEPS:
+            for hist in CHARGE_HISTORIES:
+                r = ara.charge_regime_junction(
+                    system_W, ambient_C=ambient_C, sweep=sw,
+                    previous_mode=hist)
+                if any(c["mode"] == "SUPPLEMENT"
+                       for c in r["corners"].values() if c.get("source_rules")):
+                    return True
+        return False
 
     _tj_max = ara.PACKAGE_JUNCTION["tj_operating_max_C"]
     # ---- (a) the junction-limited ceiling --------------------------------
@@ -6284,7 +6646,81 @@ def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
             (charge_permitted if (_tj <= _tj_max
                                   and _sys_W <= charge_W_ceiling + 1e-12)
              else charge_refused).append(_row)
+    # ======================================================================
+    # D-794 / ROUND-13 FABLE DELTA.  TWO DIFFERENT CEILINGS, TWO DIFFERENT
+    # GUARANTEES, AND D-793 PUBLISHED ONE NAME FOR BOTH.
+    #
+    # `charge_W_ceiling` above bounds HEAT and BATTERY DISCHARGE: above it the
+    # BATFET supplements or TI's junction operating maximum is exceeded.  It
+    # says NOTHING about whether a charge cycle finishes.  The corrected
+    # D-794 solver makes the gap unmissable -- at the 3.600 W ceiling the
+    # input current limit leaves so little for the battery that NO qualified
+    # source class terminates inside the BQ25185's own 360 min safety timer,
+    # which latches a NON-RECOVERABLE fault when it expires (SLUSF65B
+    # 6.3.7.7).  So the completion question gets its OWN derived ceiling, its
+    # own name and its own published guardband.
+    # ======================================================================
+    charge_timer = apm.charge_timer_report({
+        "idle": 0.0,
+        "housekeeping_only": 0.35,
+        "the_reference_state": round(charge_system_W, 6),
+        "at_the_regime_ceiling": charge_W_ceiling,
+    })
+    _completion_raw_W = min(
+        (c["system_W_that_still_completes"]
+         for c in charge_timer["per_source_class"] if c["rules"]),
+        default=0.0)
+    completion_W_ceiling = (math.floor(_completion_raw_W
+                                       * (1.0 - CHARGE_CEILING_GUARDBAND)
+                                       / CHARGE_CEILING_GRID_W + 1e-12)
+                            * CHARGE_CEILING_GRID_W)
+    _completion_rows = apm.charge_timer_report(
+        {"at_the_completion_ceiling": completion_W_ceiling})["rows"]
+    charge_completion = dict(
+        system_W_ceiling=round(completion_W_ceiling, 6),
+        raw_W=round(_completion_raw_W, 6),
+        guardband=CHARGE_CEILING_GUARDBAND,
+        grid_W=CHARGE_CEILING_GRID_W,
+        tmaxchg_min=charge_timer["tmaxchg_min"],
+        tprechg_min=charge_timer["tprechg_min"],
+        cv_taper_allowance_min=apm.CV_TAPER_ALLOWANCE_MIN,
+        capacity_Ah=charge_timer["capacity_Ah"],
+        per_source_class=charge_timer["per_source_class"],
+        rows=charge_timer["rows"],
+        at_the_published_completion_ceiling=[
+            r for r in _completion_rows if r["source_rules"]],
+        every_qualified_class_completes_at_the_published_ceiling=bool(all(
+            r["completes_inside_tmaxchg"] for r in _completion_rows
+            if r["source_rules"])),
+        the_regime_ceiling_is_not_a_completion_ceiling=bool(
+            completion_W_ceiling < charge_W_ceiling - 1e-12),
+        no_qualified_class_completes_at_the_regime_ceiling=bool(not any(
+            r["completes_inside_tmaxchg"] for r in charge_timer["rows"]
+            if r["source_rules"]
+            and r["scenario"] == "at_the_regime_ceiling")),
+        idle_completes_on_every_qualified_class=bool(all(
+            r["completes_inside_tmaxchg"] for r in charge_timer["rows"]
+            if r["source_rules"] and r["scenario"] == "idle")),
+        what_it_guarantees="that a fast-charge cycle DELIVERS THE PACK'S "
+                           "RATED CAPACITY and terminates before the "
+                           "BQ25185's 360 min tMAXCHG safety timer expires, "
+                           "on every source class the published cable "
+                           "contract admits, at the GUARANTEED-MINIMUM input "
+                           "current limit.",
+        what_the_regime_ceiling_guarantees="that the battery does not "
+                                           "DISCHARGE while the adapter is "
+                                           "attached and that U11's junction "
+                                           "stays inside TI's 125 C "
+                                           "operating maximum.  It is NOT a "
+                                           "charge-time guarantee and D-793 "
+                                           "published one name for both.",
+        measurement_of_record="C-PWR-CHARGE-01")
     charge_ceiling = dict(
+        completion=charge_completion,
+        renamed_at_d794=("`charge_time_system_power_ceiling_W` is renamed "
+                         "`charge_regime_system_power_ceiling_W`: it bounds "
+                         "HEAT and BATTERY DISCHARGE, not charge TIME.  The "
+                         "completion question has its own derived ceiling."),
         tj_operating_max_C=_tj_max,
         ambient_C=ambient_C,
         system_W_ceiling=round(charge_W_ceiling, 6),
@@ -6421,6 +6857,64 @@ def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
             "facing contract is not the one the physics supports.")
     out["the_declared_pair_constant_equals_the_derivation_ok"] = bool(
         out["the_declared_pair_constant_equals_the_derivation"]["ok"])
+    # ---- D-794 / R13-04: ONE OBJECT, NOT TWO EQUAL ONES ------------------
+    #
+    # The clause above compares the canonical VALUE with the derived physics.
+    # Astra walked straight past it by editing the copy F6 reads, which the
+    # clause never looks at.  So the binding is checked as an IDENTITY: the
+    # name every F6 call site resolves must BE the canonical object, not a
+    # dict that currently happens to hold the same two numbers.
+    _pair_consumers = {
+        "demo_feature_contract.DECLARED_DUAL_RAIL_BUDGET_A":
+            DECLARED_DUAL_RAIL_BUDGET_A,
+        "audit_rail_ampacity.DECLARED_DUAL_RAIL_BUDGET_A":
+            getattr(ara, "DECLARED_DUAL_RAIL_BUDGET_A", None),
+    }
+    _pair_divergent = sorted(
+        name for name, obj in _pair_consumers.items()
+        if obj is not None and obj is not apm.DECLARED_DUAL_RAIL_BUDGET_A)
+    out["the_declared_pair_consumers_share_one_object"] = dict(
+        authority="aqroot_power_model.DECLARED_DUAL_RAIL_BUDGET_A",
+        consumers=sorted(k for k, v in _pair_consumers.items()
+                         if v is not None),
+        diverged=_pair_divergent,
+        values={k: (None if v is None else dict(v))
+                for k, v in _pair_consumers.items()},
+        ok=not _pair_divergent,
+        why="R13-04.  D-793 bound the pair by VALUE and Astra edited the "
+            "consumer, not the authority: F12's equality clause compared the "
+            "authority with the physics -- both correct, both agreeing -- "
+            "while every F6 answer was computed at the altered figure.  A "
+            "value check cannot see that.  An identity check can.")
+    out["the_declared_pair_consumers_share_one_object_ok"] = bool(
+        not _pair_divergent)
+    # ---- D-794 / R13-04: THE F6/F12 PAIR-DIVERGENCE CONTROL --------------
+    #
+    # "Add full-suite destructive controls for ... F6/F12 pair divergence".
+    # The identity rule above is stated; this is the clause that shows it
+    # FIRES.  Three consumers are offered in turn: an equal-valued copy (the
+    # exact `dict(...)` D-793 shipped, which is how Astra's edit survived),
+    # an altered copy, and the authority itself.
+    def _identity_rule(obj):
+        return obj is apm.DECLARED_DUAL_RAIL_BUDGET_A
+    _pair_controls = dict(
+        an_equal_valued_copy_is_refused=not _identity_rule(
+            dict(apm.DECLARED_DUAL_RAIL_BUDGET_A)),
+        an_altered_copy_is_refused=not _identity_rule(
+            dict(apm.DECLARED_DUAL_RAIL_BUDGET_A, ACC_3V3=0.400)),
+        the_authority_itself_is_accepted=_identity_rule(
+            apm.DECLARED_DUAL_RAIL_BUDGET_A),
+        # ...and the VALUE clause must still refuse a pair that no longer
+        # matches the physics, which is the half that was already working.
+        a_pair_that_contradicts_the_derivation_is_refused=bool(
+            abs((dual_i3 + 0.05) - dual_i3) >= 1e-9))
+    out["the_declared_pair_divergence_controls"] = dict(
+        _pair_controls,
+        why="Astra altered the F6-side pair and the release stayed green.  "
+            "An equal-valued copy is the exact object that let that happen, "
+            "so the control that matters is the one that refuses it.")
+    out["every_declared_pair_divergence_control_behaves"] = bool(
+        all(_pair_controls.values()))
     # THE ANTI-VACUITY CLAUSE.  A floor the node cannot reach authorises
     # nothing and refuses everything, which is what D790-A03 found.
     top_none = solve(CELL_MAX_OCV_V, 0.0, 0.0,
@@ -6620,7 +7114,17 @@ def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
                 and charge_ceiling[
                     "every_permitted_row_is_inside_the_published_ceiling"]
                 and all(r["charge_ambient_ceiling_C"] > 0.0
-                        for r in charge_ceiling["permitted_while_charging"])))
+                        for r in charge_ceiling["permitted_while_charging"])
+                # ---- D-794: the COMPLETION ceiling, separately -----------
+                and charge_ceiling["completion"]["system_W_ceiling"] > 0.0
+                and charge_ceiling["completion"][
+                    "every_qualified_class_completes_at_the_published_ceiling"]
+                and charge_ceiling["completion"][
+                    "idle_completes_on_every_qualified_class"]
+                and charge_ceiling["completion"][
+                    "the_regime_ceiling_is_not_a_completion_ceiling"]
+                and charge_ceiling["completion"][
+                    "no_qualified_class_completes_at_the_regime_ceiling"]))
     out["the_charge_regime_is_bounded_in_the_half_treg_cannot_reach_ok"] = bool(
         out["the_charge_regime_is_bounded_in_the_half_treg_cannot_reach"]["ok"])
     out["ok"] = bool(
@@ -6632,7 +7136,9 @@ def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
         and out["the_operating_points_satisfy_their_own_equations_ok"]
         and out["the_residual_check_refuses_a_state_that_is_not_a_solution_ok"]
         and out["the_d790_declared_state_is_refused_ok"]
-        and out["the_declared_pair_constant_equals_the_derivation_ok"])
+        and out["the_declared_pair_constant_equals_the_derivation_ok"]
+        and out["the_declared_pair_consumers_share_one_object_ok"]
+        and out["every_declared_pair_divergence_control_behaves"])
     return out["ok"], out
 
 
@@ -6657,6 +7163,18 @@ ORACLE_REQUIRED_MUTATIONS = (
     "discard_the_failed_post_states",
     "reverse_the_gauge_error_direction",
     "omit_the_return_path",
+    # ---- D-794 / R13-04 + the Round-13 Fable delta ----------------------
+    # Round-13 names these six by name: "Add full-suite destructive controls
+    # for empty F14 rows, empty F14 network states, duplicate key, F6/F12
+    # pair divergence, missing permitted-row retention check, and stale
+    # consumer value", and "Add mutations that alter summary only and raw
+    # only; both must fail".  Every one of them passed the whole D-793 suite.
+    "delete_every_permission_table_row",
+    "delete_every_network_state",
+    "duplicate_a_named_transition_key",
+    "drop_the_permitted_row_retention_proof",
+    "corrupt_the_public_summary_only",
+    "corrupt_the_raw_block_only",
 )
 
 
@@ -6674,23 +7192,46 @@ def _oracle_scalars(ambient_C=None):
                    else ambient_C))
 
 
-def _oracle_charger_states():
-    """A set of solved charger states that EXERCISES every branch.
+# D-794 / R13-02 + R13-04.  THE DOMAIN THE ORACLE IS HANDED IS CONSTRUCTED
+# INDEPENDENTLY, NOT COLLECTED FROM WHATEVER THE MODEL HAPPENED TO SOLVE.
+#
+# ROUND-13: "F14 must independently construct the EXPECTED physical/state
+# domain instead of accepting whatever collections the canonical model
+# supplies.  Require ... all supported source regimes, both transition orders,
+# all required charger branches."
+#
+# The cell voltages below are chosen to reach BOTH VINDPM regimes -- the fixed
+# 3.6 V one below TI's 3.5 V tracking floor and the battery-tracking one above
+# it -- and BOTH supplement-hysteresis directions.  The ILIM corners and every
+# enumerated source class are crossed with them, so the branch set the oracle
+# sees is a FUNCTION OF THE DEVICE, not of the release's luck.
+ORACLE_CHARGER_CELLS_V = (3.2, 3.7, 4.2)
+ORACLE_CHARGER_POWERS_W = (0.0, 0.25, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.25,
+                           3.38, 3.4, 3.6, 4.0, 4.2, 4.5, 5.0, 5.65)
+ORACLE_CHARGER_HISTORIES = (None, "NO_CHARGE", "SUPPLEMENT")
 
-    The powers are chosen to straddle the DPPM -> INPUT_LIMITED -> SUPPLEMENT
-    progression on every ruling source class, so the completeness invariant
-    has something real to be true of.
+
+def _oracle_charger_states():
+    """Solved charger states over an INDEPENDENTLY CONSTRUCTED domain.
+
+    Every (cell, power, ILIM corner, source class, mode history) point in the
+    product is solved.  The expected BRANCH SET is then checked by the oracle's
+    own `completeness()` against `REQUIRED_CHARGER_BRANCHES`, which is the
+    device's control-loop list -- so deleting a corner of this domain makes
+    the release FAIL rather than quietly shrinking what was proven.
     """
     out = []
-    for w in (0.5, 1.0, 2.0, 3.0, 3.6, 4.0, 4.5, 5.65):
-        for ilim in ("max", "min"):
-            for cls in apm.USB_SOURCE_CLASSES:
-                st = apm.charger_state(w, apm.BQ25185["vbatreg_V"] - 1.0,
-                                       ilim, vbus_V=cls["vbus_V"],
-                                       path_ohm=cls["path_ohm"],
-                                       source_key=cls["key"])
-                if st is not None:
-                    out.append(st)
+    for vbat in ORACLE_CHARGER_CELLS_V:
+        for w in ORACLE_CHARGER_POWERS_W:
+            for ilim in ("max", "min"):
+                for cls in apm.USB_SOURCE_CLASSES:
+                    for prev in ORACLE_CHARGER_HISTORIES:
+                        st = apm.charger_state(
+                            w, vbat, ilim, vbus_V=cls["vbus_V"],
+                            path_ohm=cls["path_ohm"],
+                            source_key=cls["key"], previous_mode=prev)
+                        if st is not None:
+                            out.append(st)
     return out
 
 
@@ -6734,7 +7275,15 @@ def _oracle_transitions(cell_net):
                 transition="%s/bits%d/rails%d" % (edge, row["mode_bits"],
                                                   row["rails"]),
                 state=",".join(row["modes"]) or "(none)",
-                post_node_V=None, floor_V=row.get("floor_gridded_V"),
+                # D-794 / R13-04: the SETTLED post-load node, so the oracle
+                # can rule on retention rather than attainability alone.  A
+                # permitted row with no settled node is itself a failure --
+                # `transition_is_sound` refuses it -- because that is what a
+                # dropped retention proof looks like.
+                post_node_V=row.get("settled_post_node_V"),
+                post_node_with_worst_burst_V=row.get(
+                    "settled_post_node_with_worst_burst_V"),
+                floor_V=row.get("floor_gridded_V"),
                 pre_ceiling_V=row.get("pre_state_reported_ceiling_V"),
                 retention_floor_V=df["retention_floor_gridded_V"],
                 permitted=bool(row["permitted"]))
@@ -6757,12 +7306,29 @@ def _oracle_transitions(cell_net):
         if st["key"] != "d790_declared":
             continue
         v = st["loads"].get("acc_3v3_only") or {}
+        # D-794 / R13-04: "A seeded canary must be a real rejected PHYSICAL
+        # state, not merely an expected string/name."  D-793's canary carried
+        # a Boolean and a sentence, so the oracle could only check that the
+        # NAME was in the rejection set -- a canary whose refusal had quietly
+        # become a bookkeeping artefact would have looked identical.  The
+        # physical evidence travels with it now: the named limits this state
+        # fails, at both cell corners, and the absence of an operating point
+        # at either.  The oracle rules on THOSE.
         canary = dict(
             kind="table", transition="seeded_canary/d790_declared",
             state="d790_declared", post_node_V=None, floor_V=None,
             pre_ceiling_V=None,
             retention_floor_V=df["retention_floor_gridded_V"],
             permitted=bool(v.get("supported")),
+            physical_limits={
+                "at_a_full_cell": v.get("limits_at_a_full_cell") or {},
+                "at_the_lowest_supported_cell": v.get(
+                    "limits_at_the_lowest_supported_cell") or {}},
+            physical_operating_points={
+                "at_a_full_cell": (v.get("at_a_full_cell") or {}).get("raw"),
+                "at_the_lowest_supported_cell": (
+                    v.get("at_the_lowest_supported_cell") or {}).get("raw")},
+            binding_limit=list(v.get("binding_limit_at_the_floor") or []),
             why="a DELIBERATELY failing post-state, so the rejection set "
                 "cannot be empty by accident and the inclusion invariant "
                 "cannot pass vacuously")
@@ -6858,7 +7424,102 @@ def judge_independent_oracle(cell_net, board_forward=None, ambient_C=None):
                          canonical_path - apm.gnd_return_ohm(), network)
         return o
 
+    # ==================================================================
+    # D-794 / R13-04.  THE SIX ASTRA/FABLE COUNTEREXAMPLES, AS CONTROLS.
+    #
+    # Each of these is a thing Astra or Fable actually did to D-793 while
+    # the release stayed green.  They are run on every release run, and
+    # each must be REFUSED.
+    # ==================================================================
+    def _mut_delete_table_rows():
+        """Astra: "deleted every F14 table row"."""
+        bad = [t for t in transitions if t.get("kind") != "table"]
+        o, _ = apo.audit(registry, scalars, charger_states, bad, rejected,
+                         board_20C, canonical_path, network)
+        return o
+
+    def _mut_delete_network_states():
+        """Astra: "deleted every F14 network state"."""
+        o, _ = apo.audit(registry, scalars, charger_states, transitions,
+                         rejected, board_20C, canonical_path, [])
+        return o
+
+    def _mut_duplicate_a_key():
+        """Astra: "duplicated a named key".
+
+        A duplicated key is worse than a missing one: the second copy
+        SHADOWS the first in any set-or-dict-shaped check, so a state can
+        be replaced rather than merely lost.
+        """
+        bad = list(transitions)
+        first = next((t for t in transitions if t.get("kind") == "named"),
+                     None)
+        if first is not None:
+            bad = bad + [dict(first)]
+        o, _ = apo.audit(registry, scalars, charger_states, bad, rejected,
+                         board_20C, canonical_path, network)
+        return o
+
+    def _mut_drop_row_retention():
+        """Fable: table rows "only independently checked for attainability".
+
+        Strip the settled post-load node off every permitted table row and
+        the oracle is back to proving the floor is REACHABLE and nothing
+        about whether the state it authorises holds.
+        """
+        bad = []
+        for t in transitions:
+            t2 = dict(t)
+            if t2.get("kind") == "table" and t2.get("permitted"):
+                t2["post_node_V"] = None
+                t2["post_node_with_worst_burst_V"] = None
+            bad.append(t2)
+        o, _ = apo.audit(registry, scalars, charger_states, bad,
+                         rejected, board_20C, canonical_path, network)
+        return o
+
+    def _mut_corrupt_summary_only():
+        """Fable: "corrupted canonical summary fields can be invisible".
+
+        The PUBLIC numbers -- the ones every document, consumer and human
+        reads -- are moved and the full-precision `raw` twin is left alone.
+        D-793's oracle preferred `raw`, so every identity still closed.
+        """
+        bad = []
+        for st in charger_states:
+            s = dict(st)
+            for k in ("input_A", "system_A", "charge_A", "supplement_A",
+                      "vsys_V", "vin_pin_V", "package_W"):
+                if isinstance(s.get(k), float):
+                    s[k] = round(s[k] * 0.5 + 0.001, 6)
+            bad.append(s)
+        o, _ = apo.audit(registry, scalars, bad, transitions, rejected,
+                         board_20C, canonical_path, network)
+        return o
+
+    def _mut_corrupt_raw_only():
+        """The other direction: the `raw` block is moved and the published
+        summary left alone.  Neither copy may drift from the other."""
+        bad = []
+        for st in charger_states:
+            s = dict(st)
+            q = dict(s.get("raw") or {})
+            for k in ("i_in", "i_sys", "vsys", "v_pin"):
+                if isinstance(q.get(k), float):
+                    q[k] = q[k] * 0.5 + 0.001
+            s["raw"] = q
+            bad.append(s)
+        o, _ = apo.audit(registry, scalars, bad, transitions, rejected,
+                         board_20C, canonical_path, network)
+        return o
+
     muts = {
+        "delete_every_permission_table_row": _mut_delete_table_rows,
+        "delete_every_network_state": _mut_delete_network_states,
+        "duplicate_a_named_transition_key": _mut_duplicate_a_key,
+        "drop_the_permitted_row_retention_proof": _mut_drop_row_retention,
+        "corrupt_the_public_summary_only": _mut_corrupt_summary_only,
+        "corrupt_the_raw_block_only": _mut_corrupt_raw_only,
         "halve_the_charger_package_heat": _mut_halve_package_heat,
         "delete_the_energy_oracle": _mut_delete_energy_oracle,
         "remove_the_5v_first_transition": _mut_remove_5v_first,
@@ -6890,6 +7551,29 @@ def judge_independent_oracle(cell_net, board_forward=None, ambient_C=None):
         "omit_the_return_path":
             "the independently summed source path no longer equals the "
             "canonical one",
+        "delete_every_permission_table_row":
+            "the oracle CONSTRUCTS the 32-row permission domain from the "
+            "product's own three modes, two edges and two rail counts, and "
+            "requires the exact multiset -- a set membership test could only "
+            "have asked whether what survived was expected",
+        "delete_every_network_state":
+            "an empty cell-to-load domain means no KVL was independently "
+            "re-derived at all, and every live state must contribute a row",
+        "duplicate_a_named_transition_key":
+            "a duplicated key SHADOWS whatever it repeats; the domain is an "
+            "exact multiset, so a second copy is a failure rather than a "
+            "no-op",
+        "drop_the_permitted_row_retention_proof":
+            "a permitted row with no settled post-load node has proved that "
+            "its floor is reachable and nothing about whether the state it "
+            "authorises survives the load arriving",
+        "corrupt_the_public_summary_only":
+            "the published summary must equal the published rounding of its "
+            "full-precision twin; an oracle that reads only `raw` never sees "
+            "the numbers the release actually ships",
+        "corrupt_the_raw_block_only":
+            "the same equality gate, from the other side: neither copy of a "
+            "duplicated field may drift from the other",
     }
     rep["ok"] = bool(ok and rep["every_required_mutation_is_caught"])
     return rep["ok"], rep
@@ -7666,6 +8350,18 @@ def main():
     _cc = cell_net["the_charge_regime_is_bounded_in_the_half_treg_cannot_reach"][
         "load_ceiling"]
     _need["charge_system_W_ceiling"] = "**%.3f W**" % _cc["system_W_ceiling"]
+    # D-794 / ROUND-13 FABLE DELTA.  TWO CEILINGS, TWO NAMES, BOTH PUBLISHED.
+    #
+    # ROUND-13: "Rename/explain any charger 'ceiling' according to what it
+    # actually guarantees.  A no-battery-discharge boundary is not
+    # automatically a full-charge-within-360-min timer guarantee."  D-793
+    # published ONE number under the name `charge-time system power ceiling`
+    # and it is the wrong name for it: 3.600 W bounds HEAT and BATTERY
+    # DISCHARGE.  Charging to full inside the BQ25185's 360 min tMAXCHG on the
+    # worst qualified cable needs a far lighter system load, and that is a
+    # separate derivation with its own guardband.  Both are now published.
+    _need["charge_completion_W_ceiling"] = ("**%.3f W**"
+                                            % _cc["completion"]["system_W_ceiling"])
     _heaviest = (max(_cc["permitted_while_charging"],
                      key=lambda r: r["system_W"])
                  if _cc["permitted_while_charging"] else None)
@@ -7757,6 +8453,8 @@ def main():
         "upstream_fixed_max": "**%.3f m\u03a9**"
                               % (_up["fixed_series_max_ohm"] * 1000.0),
         "charge_system_W_ceiling": "**%.3f W**" % _cc["system_W_ceiling"],
+        "charge_completion_W_ceiling": ("**%.3f W**"
+                                        % _cc["completion"]["system_W_ceiling"]),
         "charge_junction_folded_back": "**%.1f \u00b0C**" % _heaviest[
             "junction_with_charge_folded_back_C"],
         "charge_ambient_ceiling": "**%.1f \u00b0C**" % _heaviest[
@@ -7817,6 +8515,100 @@ def main():
     #     name ALL THREE constants.  It named two, and D-791 added the third,
     #     so the constant that decides RETENTION -- the one R10-N01 is about --
     #     was the one the prohibition did not cover.
+    # ======================================================================
+    # D-794 / R13-06 + THE ROUND-13 FABLE DOCUMENTATION DELTA.  THE
+    # MODE-INDEXED TABLE IS GENERATED, BECAUSE A SCALAR CANNOT CARRY IT.
+    #
+    # ROUND-13, IN ITS OWN WORDS: "FIRST_FIVE plan also has mode/floor
+    # ambiguity: Fable found a 3.85 V 'first rail' statement while quiet-mode
+    # firmware row is 3.80 V. ... Generate or machine-bind mode-specific
+    # permission tables; do not hand-copy a single scalar where policy is
+    # mode-indexed."  And the Fable delta: "Correct the mode-specific
+    # first-rail table in FIRST_FIVE_ASSEMBLY_PLAN: quiet vs audio vs refused
+    # TX modes must match production policy exactly."
+    #
+    # FABLE IS RIGHT AND THE AMBIGUITY IS REAL.  Both numbers are correct and
+    # they answer different questions.  3.85 V is the PUBLISHED ENVELOPE -- the
+    # worst floor any PERMITTED row of the table carries, which is what
+    # `kAccessorySingleRailFloorV` holds and what DEVICE_SPEC publishes as a
+    # single figure.  3.80 V is the floor the firmware actually applies in the
+    # quiet row, bits = 0, which is the row a technician at the bench is in.
+    # A document that prints only the envelope and calls it "the floor to
+    # enable a first rail" is telling a technician to set a pack voltage
+    # 50 mV higher than the board requires -- and, worse, it makes the two
+    # refusals the procedure is trying to demonstrate look arbitrary.
+    #
+    # THE FIX IS NOT A BETTER SENTENCE.  The policy is a 32-entry function of
+    # (edge, mode set, rail count); prose can restate it and prose will go
+    # stale, which is the fourth time this section has gone stale the same
+    # way.  So the TABLE is GENERATED here, from the same `df` rows the
+    # firmware header is generated from, and the documents must carry it
+    # VERBATIM.  A derivation that moves rewrites the document or fails.
+    # ======================================================================
+    def _permission_table_markdown():
+        rows = ["| modes running | enable a rail, 1 on after | enable a rail, "
+                "2 on after | enter this mode, 1 rail live | enter this mode, "
+                "2 rails live |",
+                "|---|---|---|---|---|"]
+        by = {}
+        for r in df["rail_edge_table"]:
+            by[("rail", r["mode_bits"], r["rails"])] = r
+        for r in df["mode_edge_table"]:
+            by[("mode", r["mode_bits"], r["rails"])] = r
+        names = list(df["mode_names"])
+        for bits in range(1 << len(names)):
+            on = [names[i] for i in range(len(names)) if bits & (1 << i)]
+            cells = []
+            for edge in ("rail", "mode"):
+                for rails in (1, 2):
+                    r = by.get((edge, bits, rails))
+                    v = None if r is None else r["floor_gridded_V"]
+                    cells.append("**REFUSED**" if v is None
+                                 else "**%.2f V**" % v)
+            rows.append("| %s | %s |"
+                        % (", ".join(on) if on else "*(none)* — quiet",
+                           " | ".join(cells)))
+        return "\n".join(rows)
+
+    _perm_md = _permission_table_markdown()
+    _perm_docs = (
+        "docs/full-beta-v2/assembly/FIRST_FIVE_ASSEMBLY_PLAN.md",
+        "docs/full-beta-v2/DEVICE_SPEC.md",
+    )
+    _perm_missing = []
+    for _rel in _perm_docs:
+        _f = ROOT / _rel
+        _t = (_f.read_text(encoding="utf-8", errors="replace")
+              if _f.exists() else "")
+        # These documents put normative blocks inside a blockquote, so the
+        # comparison is made after stripping one level of `> ` and trailing
+        # whitespace.  Nothing else is normalised: the CELLS must match.
+        _flat = "\n".join(re.sub(r"^\s*>\s?", "", ln).rstrip()
+                           for ln in _t.splitlines())
+        if _perm_md not in _flat:
+            _perm_missing.append(_rel)
+    cell_net["the_mode_indexed_permission_table_is_generated_into_the_documents"] = dict(
+        documents=list(_perm_docs), missing=_perm_missing,
+        generated=_perm_md,
+        rows=1 << len(df["mode_names"]),
+        envelope_V=dict(
+            single=df["enable_first_rail_floor_gridded_V"],
+            dual=df["enable_second_rail_floor_gridded_V"],
+            retention=df["retention_floor_gridded_V"]),
+        quiet_rail_edge_one_rail_V=next(
+            r["floor_gridded_V"] for r in df["rail_edge_table"]
+            if r["mode_bits"] == 0 and r["rails"] == 1),
+        ok=not _perm_missing,
+        why="R13-06 + the Fable delta.  The published ENVELOPE and the QUIET "
+            "row are different numbers and both are correct; a document that "
+            "prints only the envelope and calls it the floor sends a "
+            "technician to the wrong pack voltage.  The whole 32-entry policy "
+            "is generated from the same rows the firmware header is generated "
+            "from, so it cannot be hand-copied and cannot go stale.")
+    cell_net["the_mode_indexed_permission_table_is_generated_into_the_documents_ok"] = bool(
+        not _perm_missing)
+    cell_net_ok = cell_net_ok and not _perm_missing
+
     _fa_txt = (FIRST_FIVE_ASSEMBLY.read_text(encoding="utf-8", errors="replace")
                if FIRST_FIVE_ASSEMBLY.exists() else "")
     _fa_floors = {
@@ -7824,6 +8616,100 @@ def main():
         "enable_first_rail_floor": df["enable_first_rail_floor_gridded_V"],
         "enable_second_rail_floor": df["enable_second_rail_floor_gridded_V"],
     }
+    # ======================================================================
+    # D-794 / R13-06.  THE EXECUTABLE FIRST-ARTICLE SCENARIOS, MACHINE-BOUND.
+    #
+    # ROUND-13: "Extend semantic document scanning to ... executable
+    # first-article scenarios" and "Fresh current model values differ;
+    # obsolete scenarios are sometimes no longer permitted by D-793."
+    #
+    # BOTH HALVES WERE TRUE OF `C-THERM-01`.  It told a technician to hold
+    # "both published accessory budgets, the display at full brightness and
+    # ONE sub-GHz radio transmitting" and MEASURE against stated model values
+    # -- and F12 says that state has NO OPERATING POINT at any attainable cell
+    # voltage.  Half the acceptance was unexecutable, and the numbers beside
+    # it (1.6520 A, 89.97 C, 53.43 C) were three derivations old.  The state a
+    # technician can actually reach is the same modes at the DECLARED
+    # SIMULTANEOUS PAIR, and its figures are emitted here so the procedure
+    # moves with the model.
+    _ref_state = next(
+        (st for st in cell_net["states"]
+         if st["key"] == cell_net["reference_state_key"]), None)
+    _ref_pair = ((_ref_state or {}).get("loads", {})
+                 .get("both_rails_at_the_declared_pair") or {})
+    _ref_point = _ref_pair.get("at_the_lowest_supported_cell") or {}
+    _fa_scenarios = {
+        "C-THERM-01 battery current": "**%.4f A**" % _ref_point.get("amps", 0.0),
+        "C-THERM-01 junction": "**%.2f \u00b0C**"
+                               % _ref_point.get("bq25185_junction_C", 0.0),
+        "C-THERM-01 internal air": "**%.2f \u00b0C**"
+                                   % _ref_point.get("internal_air_C", 0.0),
+        "C-THERM-01 R_SYS": "**%.4f K/W**"
+                            % ara.system_thermal_resistance_K_per_W(),
+        "C-PWR-CHARGE-01 ceiling": "**%.3f W**" % _cc["system_W_ceiling"],
+        "C-PWR-CHARGE-01 junction": "**%.3f \u00b0C**"
+                                    % _cc["junction_at_the_published_ceiling_C"],
+        "C-PWR-CHARGE-01 branch": "`%s`" % _cc["mode_at_the_published_ceiling"],
+        "C-CHG-01 VIN pin": "**%.4f V**"
+                            % _cc["source_contract"]["min_vin_pin_V"],
+        "C-CHG-01 input limit": "**%.1f A**"
+                                % _cc["source_contract"][
+                                    "required_source_current_A"],
+        "C-PWR-CHARGE-01 completion ceiling": (
+            "**%.3f W**" % _cc["completion"]["system_W_ceiling"]),
+        "the reference state is a state the model supports": (
+            "" if _ref_pair.get("supported") else
+            "THE REFERENCE STATE HAS NO OPERATING POINT"),
+    }
+    _fa_scenario_missing = sorted(
+        k for k, t in _fa_scenarios.items() if t and t not in _fa_txt)
+    if not _ref_pair.get("supported"):
+        _fa_scenario_missing.append(
+            "the reference state the procedure names is not supported by the "
+            "model at all")
+    cell_net["the_first_article_scenarios_are_executable_and_current"] = dict(
+        document=str(FIRST_FIVE_ASSEMBLY.relative_to(ROOT)),
+        required=_fa_scenarios, missing=_fa_scenario_missing,
+        reference_state=cell_net["reference_state_key"],
+        reference_state_load="both_rails_at_the_declared_pair",
+        ok=not _fa_scenario_missing,
+        why="R13-06.  A first-article step is EXECUTABLE or it is not a step. "
+            "Every figure a technician is told to measure against is "
+            "formatted from the computed value, and the state the step names "
+            "must be one the model actually supports.")
+    cell_net["the_first_article_scenarios_are_executable_and_current_ok"] = bool(
+        not _fa_scenario_missing)
+    cell_net_ok = cell_net_ok and not _fa_scenario_missing
+
+    # ---- D-794 / R13-05 + R13-06.  A MEASUREMENT OF RECORD THAT IS NOT A
+    # STEP IS A PROMISE NOBODY KEEPS.
+    #
+    # Round-13 accepts the SECOND branch of R13-05 -- "explicitly classify/
+    # qualify/derate the first-five capability" -- for the accessory limiter,
+    # and the qualification it rests on is `C-ACC-ILIM-01`.  That token was
+    # named eight times in the canonical model and existed NOWHERE as a step a
+    # technician executes.  This programme has hit "a stated rule that never
+    # runs" before; the general form of the fix is this clause.  Every
+    # `measurement_of_record` any tagged primitive names must appear in the
+    # first-article procedure.
+    _mor = sorted({t for r in apm.registry()
+                   for t in str(r.get("measurement_of_record") or "").replace(
+                       " and ", ",").split(",")
+                   if t.strip()})
+    _mor = sorted({t.strip() for t in _mor if t.strip()})
+    _mor_missing = sorted(t for t in _mor if t not in _fa_txt)
+    cell_net["every_measurement_of_record_is_a_first_article_step"] = dict(
+        document=str(FIRST_FIVE_ASSEMBLY.relative_to(ROOT)),
+        tokens=_mor, missing=_mor_missing,
+        ok=not _mor_missing,
+        why="R13-05 is closed by QUALIFICATION rather than by a manufacturer "
+            "guarantee, so the qualification has to exist.  A primitive that "
+            "names a measurement of record is making a promise about a bench "
+            "step; this clause requires the step.")
+    cell_net["every_measurement_of_record_is_a_first_article_step_ok"] = bool(
+        not _mor_missing)
+    cell_net_ok = cell_net_ok and not _mor_missing
+
     _fa_allowed = {"%.2f" % v for v in _fa_floors.values()}
     _fa_need = {k: "%.2f V" % v for k, v in _fa_floors.items()}
     _fa_absent = sorted(k for k, t in _fa_need.items() if t not in _fa_txt)
@@ -7838,9 +8724,17 @@ def main():
     # step WAS WRITTEN to run at..." -- ordinary narration, not a supersession
     # marker.  The fence must be a word whose only job is to mark text as
     # no-longer-true, so the prose that records history has to say so.
+    # D-794 / R13-06 adds "former"/"FORMER".  Like "formerly", which was
+    # already here, its only job in this prose is to mark a value as
+    # no-longer-true -- "the former 3.135 V connector minimum is unreachable
+    # at ANY current" is a supersession sentence by construction.  It is a
+    # WORD, not a decision number and not the narrating "was", both of which
+    # were tried at D-791 and both of which fenced sentences that were still
+    # asserting current policy.
     _FA_FENCE = ("SUPERSEDE", "supersede", "HISTORICAL", "historical",
-                 "RETIRED", "retired", "no longer", "formerly",
-                 "REPLACED", "replaced", "used to", "until D-", "before D-")
+                 "RETIRED", "retired", "no longer", "formerly", "former",
+                 "FORMER", "REPLACED", "replaced", "used to",
+                 "until D-", "before D-")
     # THE NUMBER IS BOUND TO THE CLAIM, NOT TO THE LINE.  Two things make a
     # line scan the wrong instrument here.  This document HARD-WRAPS, so "the
     # **3.50 V** single-rail / floor" straddles two lines and a per-line scan
@@ -7946,6 +8840,11 @@ def main():
     def _norm_families():
         _pair = df["declared_simultaneous_pair"]
         _cc = _cc_ceiling
+        _sp = env["p3v3_setpoint"]
+        _sc = _cc["source_contract"]
+        _hv = _heaviest
+        _cr = cell_net[
+            "the_charge_regime_is_bounded_in_the_half_treg_cannot_reach"]
         return (
             dict(key="accessory_floor",
                  what="the enable and retention floors the firmware carries",
@@ -7958,7 +8857,13 @@ def main():
                  patterns=_FA_CLAIMS + _NORM_FLOOR_CLAIMS),
             dict(key="charge_time_ceiling",
                  what="the supervised charge-time system-power ceiling",
-                 allowed={"%.3f" % _cc["system_W_ceiling"]},
+                 allowed={"%.3f" % _cc["system_W_ceiling"],
+                          "%.3f" % _cc["completion"]["system_W_ceiling"],
+                          "%.3f" % _cc["raw_ceiling_W"],
+                          "%.3f" % _cc["supplement_discontinuity_W"],
+                          "%.3f" % _cc["junction_limited_ceiling_W"],
+                          "%.3f" % _cc["reference_state_system_W"],
+                          "%.3f" % _cc["completion"]["raw_W"]},
                  patterns=(
                      re.compile(r"(\d\.\d{3})\s*W\**.{0,140}?charg", re.I),
                      re.compile(r"charg.{0,140}?(\d\.\d{3})\s*W", re.I))),
@@ -7983,6 +8888,104 @@ def main():
                      re.compile(r"(?:fixed series|series path|series "
                                 r"resistance|harness).{0,100}?"
                                 r"(\d{2,3}\.\d{3})\s*m(?:\u03a9|Ohm)",
+                                re.I))),
+            # ---- D-794 / R13-06.  FIVE MORE FAMILIES. -------------------
+            #
+            # ROUND-13: "Extend semantic document scanning to delivery
+            # voltage, thermal states, charge ceiling, mode/floor table,
+            # source path, pair budget, backlight/current and executable
+            # first-article scenarios."  The charge ceiling, the mode/floor
+            # table and the pair budget are covered above and by the
+            # generated-table clause; these are the rest.
+            dict(key="delivery_voltage",
+                 what="the Community Port delivered minimum and the rail's "
+                      "own envelope",
+                 allowed={"%.6f" % _sp["delivered_at_400mA_min_V"],
+                          "%.6f" % _sp["delivered_at_400mA_fully_mated_V"],
+                          "%.6f" % _sp["pwm_heavy_min_V"],
+                          "%.6f" % _sp["worst_case_rail_max_V"],
+                          "%.6f" % _sp["power_save_high_if_enabled_V"]}
+                         | {"%.6f" % v for v in _sp["raw_pwm_V"]}
+                         | {"%.3f" % _sp["published_connector_min_V"],
+                            "%.2f" % _sp["published_connector_min_V"]},
+                 patterns=(
+                     re.compile(r"(\d\.\d{2,6})\s*V.{0,170}?"
+                                r"(?:delivered|delivery|at the J5 mating|"
+                                r"connector minimum|Community Port|"
+                                r"fully mated)", re.I),
+                     re.compile(r"(?:delivered|delivery|connector minimum|"
+                                r"Community Port|fully mated).{0,170}?"
+                                r"(\d\.\d{2,6})\s*V", re.I))),
+            dict(key="limiter_programming",
+                 what="the accessory limiter programming resistors",
+                 allowed={"1.87", "2.43", "1870", "2430"},
+                 patterns=(
+                     re.compile(r"`?R97`?.{0,60}?(\d\.\d{2})\s*k", re.I),
+                     re.compile(r"`?R101`?.{0,60}?(\d\.\d{2})\s*k", re.I),
+                     re.compile(r"(\d\.\d{2})\s*k(?:\u03a9|Ohm).{0,40}?"
+                                r"(?:limiter|ILIM|`?R97`?|`?R101`?)", re.I))),
+            dict(key="limiter_band",
+                 what="the declared ILIM band at the programmed resistors",
+                 # ...and the CONVERTER figures the limiter corner feeds,
+                 # because a sentence about the limiter legitimately quotes
+                 # what `U12` then sees.  Each one is the model's own.
+                 allowed={"%.4f" % apm.ilim_band_A(r)[k]
+                          for r in apm.ILIM_PROGRAMMED_OHM.values()
+                          for k in ("min_A", "typ_A", "max_A")}
+                         | {"%.6f" % apm.ilim_band_A(r)[k]
+                            for r in apm.ILIM_PROGRAMMED_OHM.values()
+                            for k in ("min_A", "typ_A", "max_A")}
+                         | {"%.4f" % v for k, v in
+                            env["converter_capability_A"].items()
+                            if isinstance(v, float)},
+                 patterns=(
+                     re.compile(r"(\d\.\d{4})\s*A.{0,60}?"
+                                r"(?:ILIM|limiter|current limit)", re.I),
+                     re.compile(r"(?:ILIM|limiter|current limit)"
+                                r".{0,60}?(\d\.\d{4})\s*A", re.I))),
+            dict(key="charge_thermal_state",
+                 what="the charge-regime junction and supervised ambient",
+                 # D-794 / R13-06: the allowed set is every junction the
+                 # MODEL ITSELF reports -- the heaviest permitted state, the
+                 # published ceiling, the reference state (which is over
+                 # TSHUT and is reported precisely so the ceiling has a
+                 # reason), and the junction at D-792's retired 4.063 W.  A
+                 # derived number is legal; a TYPED one is not, and 225.8 --
+                 # the reference-state junction before the R13-02 solver
+                 # rebuild -- is exactly a typed one.
+                 allowed={"%.1f" % _hv["junction_with_charge_folded_back_C"],
+                          "%.1f" % _hv["charge_ambient_ceiling_C"],
+                          "%.1f" % ara.PACKAGE_JUNCTION["tj_operating_max_C"],
+                          "%.1f" % ara.AMBIENT_DESIGN_MAX_C,
+                          "%.1f" % _cr["junction_with_charge_folded_back_C"],
+                          "%.1f" % _cc["junction_at_the_published_ceiling_C"],
+                          "%.1f" % _cc[
+                              "d792_junction_at_its_published_number_C"],
+                          "%.1f" % _cc["discontinuity_junction_step_K"],
+                          "%.1f" % ara.PACKAGE_JUNCTION["tshut_rising_C"]},
+                 patterns=(
+                     re.compile(r"(\d{2,3}\.\d)\s*\u00b0?\s*C"
+                                r".{0,120}?(?:junction|charging state|"
+                                r"supervised ambient|charge regime)", re.I),
+                     re.compile(r"(?:junction|supervised ambient|"
+                                r"charge regime).{0,120}?"
+                                r"(\d{2,3}\.\d)\s*\u00b0?\s*C", re.I))),
+            dict(key="source_path",
+                 what="the qualified adapter/cable contract at U11 IN",
+                 allowed={"%.4f" % _sc["qualified_source_path_max_ohm"],
+                          "%.4f" % _sc["min_vin_pin_V"],
+                          "%.3f" % _sc["required_source_current_A"],
+                          "%.2f" % _sc["required_source_current_A"]}
+                         | {"%.4f" % c["path_ohm"] for c in _sc["classes"]}
+                         | {"%.4f" % c["vin_pin_at_ilim_V"]
+                            for c in _sc["classes"]},
+                 patterns=(
+                     re.compile(r"(\d\.\d{4})\s*(?:\u03a9|Ohm|ohm)"
+                                r".{0,100}?(?:cable|adapter|source path|"
+                                r"VIN pin|U11 IN)", re.I),
+                     re.compile(r"(?:cable contract|qualified cable|"
+                                r"source path|adapter).{0,100}?"
+                                r"(\d\.\d{4})\s*(?:\u03a9|Ohm|ohm)",
                                 re.I))),
             dict(key="p3v3_peak_envelope",
                  what="the internal +3V3 peak current envelope",
@@ -8069,6 +9072,72 @@ def main():
             _norm_bad.append("%s is missing" % _rel)
         _norm_bad.extend("%s: %s claims %r" % (_rel, h["family"], h["quoted"])
                          for h in _hits)
+    # ======================================================================
+    # D-794 / R13-05.  NO CURRENT DOCUMENT MAY CALL THE ACCESSORY BUDGETS
+    # GUARANTEED.
+    #
+    # ROUND-13: "Published 400mA and 300mA lower-limit margins are thin and
+    # must not be labeled guaranteed solely from interpolation.  Obtain
+    # defensible primary/manufacturer support for the programmed points OR
+    # explicitly classify/qualify/derate the first-five capability."
+    #
+    # The canonical model takes the second branch and tags the envelope
+    # DECLARED with `C-ACC-ILIM-01` as its measurement of record.  A tag in a
+    # model is not a product statement: DEVICE_SPEC carried a HEADING reading
+    # "the number the hardware now GUARANTEES" and a sentence reading "the
+    # 3.3 V rail still GUARANTEES 0.4058 A".  This clause is what keeps the
+    # word out of the current text, in the same fenced-block instrument the
+    # stale-value scan uses -- historical prose may still record that the
+    # programme once said it.
+    # The tokens are the ACCESSORY figures specifically.  The BQ25185's own
+    # input current limit IS guaranteed -- 995/1050/1100 mA is a published
+    # SLUSF65B Table 6-1 row at the programmed resistor -- so a sentence about
+    # "the GUARANTEED-MINIMUM input current limit" is correct and must not be
+    # caught.  What may not be called guaranteed is the TPS22950-Q1 envelope
+    # at a resistor BETWEEN TI's four rows, and the budgets derived from it.
+    _ILIM_TOKENS = (r"0\.4058|0\.3065|ACC_3V3_SW|ACC_5V_SW|"
+                    r"accessory (?:budget|rail|limiter)|"
+                    r"`?R97`?|`?R101`?")
+    _ILIM_GUARANTEE = re.compile(
+        r"(?:guarantee[sd]?|GUARANTEE[SD]?)"
+        r"(?:(?!\bsupersed|\bretired\b|\bRETIRED\b).){0,120}?"
+        r"(?:" + _ILIM_TOKENS + r")", re.I)
+    _ILIM_GUARANTEE_2 = re.compile(
+        r"(?:" + _ILIM_TOKENS + r")"
+        r"(?:(?!\bsupersed|\bretired\b|\bRETIRED\b).){0,120}?"
+        r"(?:guarantee[sd]?|GUARANTEE[SD]?)", re.I)
+    _ilim_word_rows, _ilim_word_bad = [], []
+    for _rel in NORMATIVE_DOCS:
+        _f = ROOT / _rel
+        _txt = (_f.read_text(encoding="utf-8", errors="replace")
+                if _f.exists() else "")
+        _hits = []
+        for _fenced, _block in _norm_blocks(_txt):
+            if _fenced:
+                continue
+            _flat = re.sub(r"\s+", " ", _block)
+            for _sent in re.split(r"(?<=[.;:])\s+", _flat):
+                if any(f in _sent for f in _NORM_FENCE):
+                    continue
+                if _ILIM_GUARANTEE.search(_sent) or \
+                        _ILIM_GUARANTEE_2.search(_sent):
+                    _hits.append(_sent.strip()[:220])
+        _ilim_word_rows.append(dict(document=_rel, claims=_hits))
+        _ilim_word_bad.extend("%s: %s" % (_rel, h) for h in _hits)
+    cell_net["no_current_document_calls_the_accessory_budget_guaranteed"] = dict(
+        documents=_ilim_word_rows, problems=_ilim_word_bad,
+        classification=apm.ilim_band_A(
+            apm.ILIM_PROGRAMMED_OHM["ACC_3V3"])["classification"],
+        measurement_of_record="C-ACC-ILIM-01",
+        ok=not _ilim_word_bad,
+        why="R13-05.  The programmed resistors are BETWEEN TI's four "
+            "published ILIM accuracy rows, so the envelope is DECLARED AND "
+            "QUALIFIED, not guaranteed.  A model tag does not reach a "
+            "product-facing document; this clause does.")
+    cell_net["no_current_document_calls_the_accessory_budget_guaranteed_ok"] = bool(
+        not _ilim_word_bad)
+    cell_net_ok = cell_net_ok and not _ilim_word_bad
+
     cell_net["no_normative_document_states_a_retired_operating_value"] = dict(
         documents=_norm_rows,
         families={f["key"]: dict(what=f["what"], allowed=sorted(f["allowed"]))
@@ -8271,9 +9340,23 @@ def main():
         c["connection_A"] for base in env["battery_connection"]["bases"].values()
         for k, c in base["cases"].items() if "connection_A" in c
         and not k.startswith("legacy_"))
+    # D-794 / R13-04.  THE REQUIREMENT IS READ FROM THE AUTHORITY, NOT FROM
+    # THE DISPLAY COPY.
+    #
+    # `env["rails_A"]` is a PRESENTATION dict: every float in it has been put
+    # through `round(x, 4)` so the emitted JSON is readable.  D-793 took the
+    # ampacity requirement out of that dict, so the number this clause ruled
+    # with was a rounded one -- and rounding a requirement to four places
+    # moves it UP as often as down.  It moved up here: the true fault ceiling
+    # is 0.80486138 A, the display copy says 0.8049 A, and a design current
+    # equal to the true ceiling was reported STALE against its own value.
+    # Rounding is for reading; the authority is `apm.ilim_band_A`, which is
+    # also exactly what `audit_rail_ampacity` calls.
     ampacity_expected = {
-        "ACC_3V3_SW": env["rails_A"]["ACC_3V3"]["ilim_max"],
-        "ACC_5V_SW": env["rails_A"]["ACC_5V"]["ilim_max"],
+        "ACC_3V3_SW": apm.ilim_band_A(
+            apm.ILIM_PROGRAMMED_OHM["ACC_3V3"])["max_A"],
+        "ACC_5V_SW": apm.ilim_band_A(
+            apm.ILIM_PROGRAMMED_OHM["ACC_5V"])["max_A"],
         "P3V3_MAIN": env["converter_capability_A"]["u12_worst_case_load_A"],
         "BAT_PROTECTED_P": worst_battery_A,
         "BQ25185_SYS": worst_battery_A,
@@ -8289,6 +9372,70 @@ def main():
     env["rail_ampacity_design_currents"] = ampacity_rows
     env["rail_ampacity_design_currents_cover_the_envelope"] = not ampacity_stale
     env_ok = env_ok and not ampacity_stale
+
+    # ---- D-794 / R13-04.  THE STALE-CONSUMER CONTROL --------------------
+    #
+    # ROUND-13 asks for a full-suite destructive control for a "stale consumer
+    # value".  The clause above is the one that catches them, and D-793's
+    # version of it could not: it ruled against a display-rounded figure, so
+    # a design current that was CORRECT was reported stale while one that was
+    # stale by less than half a milliamp would have passed.  A clause that can
+    # be wrong in both directions has to be shown to fire.
+    #
+    # The control replays the exact stale set Round-6 / R6-E07 found in this
+    # audit and required to be removed -- BAT and SYS still carrying the
+    # .kicad_dru NETCLASS currents of 1.50 A and 1.00 A, and P3V3_MAIN at
+    # 1.849 A -- and requires every one of them to be REFUSED against the
+    # requirement derived from the live envelope.  It is real historical
+    # staleness, not an invented one.
+    #
+    # A NOTE ON THE DIRECTION, BECAUSE IT DECIDES WHAT THIS CLAUSE CAN SEE.
+    # D-793's ACC_3V3_SW figure of 0.849 A was ALSO stale -- it was R97 =
+    # 1.78 kOhm's ceiling, retired at D-791 -- but it was stale HIGH, so the
+    # copper was sized for more current than the board can deliver and this
+    # coverage clause could never have flagged it.  What removed it was
+    # deriving the number instead of typing it.  The controls below therefore
+    # exercise the direction this clause CAN rule on, and the statement about
+    # the other direction is that a coverage check is not the instrument for
+    # it.
+    def _ampacity_coverage(design_A):
+        return {name: (design_A.get(name) is not None
+                       and design_A[name] + 1e-9 >= need)
+                for name, need in ampacity_expected.items()}
+    _live_design = {n: rails_by_name.get(n, {}).get("amps")
+                    for n in ampacity_expected}
+    _r6e07_stale = dict(_live_design, BAT_PROTECTED_P=1.50,
+                        BQ25185_SYS=1.00, P3V3_MAIN=1.849)
+    _r6e07_result = _ampacity_coverage(_r6e07_stale)
+    _controls = dict(
+        the_live_design_currents_are_accepted=all(
+            _ampacity_coverage(_live_design).values()),
+        the_r6e07_stale_netclass_currents_are_refused=not any(
+            _r6e07_result[n] for n in ("BAT_PROTECTED_P", "BQ25185_SYS",
+                                       "P3V3_MAIN")),
+        a_design_current_one_milliamp_short_is_refused=not all(
+            _ampacity_coverage(
+                dict(_live_design,
+                     ACC_3V3_SW=ampacity_expected["ACC_3V3_SW"] - 0.001)
+            ).values()),
+        a_missing_design_current_is_refused=not all(
+            _ampacity_coverage(
+                dict(_live_design, ACC_3V3_SW=None)).values()))
+    env["stale_consumer_controls"] = dict(
+        _controls,
+        r6e07_stale_values_replayed_A={
+            k: _r6e07_stale[k] for k in ("BAT_PROTECTED_P", "BQ25185_SYS",
+                                         "P3V3_MAIN")},
+        requirements_A={k: round(v, 6)
+                        for k, v in sorted(ampacity_expected.items())},
+        the_d793_acc_3v3_staleness_was_in_the_conservative_direction=bool(
+            0.849 > ampacity_expected["ACC_3V3_SW"]),
+        why="R13-04 names 'stale consumer value' as a required destructive "
+            "control.  The replayed figures are the three R6-E07 found in "
+            "this exact clause's inputs: the two .kicad_dru netclass "
+            "currents and D-787's P3V3 figure.")
+    env["every_stale_consumer_control_behaves"] = bool(all(_controls.values()))
+    env_ok = env_ok and env["every_stale_consumer_control_behaves"]
 
     # ---- D-788 / R7-D787-01: the fitted panel's own limits, on the live rail
     # and the live nets.  This is the clause that refuses D-787's board.
@@ -9456,6 +10603,82 @@ def main():
          != canonical_manufacturer("JST Co., Ltd.")
          and canonical_manufacturer("Vishay Intertechnology")
          != canonical_manufacturer("Viking Tech Corporation")),
+        # ---- D-794 / FABLE RESIDUAL: THE EMBEDDED SYMBOL CACHE. -----------
+        ("f13s_the_embedded_symbol_cache_agrees_with_its_instances",
+         judge_embedded_symbol_cache()[0]),
+        # ...and the clause is load-bearing: the exact state D-794 found --
+        # the AOS pass pair's cached entry naming onsemi -- must REFUSE.
+        ("f13t_refuses_the_d793_onsemi_cache_on_the_aos_pass_pair",
+         not judge_embedded_symbol_cache({
+             "AQROOT_Beta:AO4800": dict(
+                 cache=dict(manufacturer="onsemi", mpn="AO4800",
+                            datasheet="", sheet="01_power_tree.kicad_sch"),
+                 instances={"Alpha & Omega Semiconductor": ["Q2", "Q3"]})})[0]),
+        # ...and so must a cached DATASHEET pointing at another company, which
+        # is how the retired NTMD4820N PDF survived three reviews.
+        ("f13u_refuses_a_cached_datasheet_naming_another_company",
+         not judge_embedded_symbol_cache({
+             "AQROOT_Beta:AO4800": dict(
+                 cache=dict(
+                     manufacturer="Alpha & Omega Semiconductor",
+                     mpn="AO4800",
+                     datasheet="https://www.onsemi.com/pdf/datasheet/"
+                               "ntmd4820n-d.pdf",
+                     sheet="01_power_tree.kicad_sch"),
+                 instances={"Alpha & Omega Semiconductor": ["Q2", "Q3"]})})[0]),
+        # ...and a reviewed ALIAS is one company, not a contradiction.
+        ("f13v_a_reviewed_alias_in_the_cache_is_not_a_contradiction",
+         judge_embedded_symbol_cache({
+             "AQROOT_Beta:MHPA3528RGBCT": dict(
+                 cache=dict(
+                     manufacturer="MEIHUA (Lianyungang Meihua Electronic "
+                                  "Technology)",
+                     mpn="MHPA3528RGBCT", datasheet="",
+                     sheet="08_buttons_expanders.kicad_sch"),
+                 instances={"MEIHUA": ["D10"]})})[0]),
+        # ---- D-794 / R13-07.  THE AOS SPELLING THAT WAS BEING REJECTED. ---
+        ("f13w_alpha_and_omega_is_the_same_company_as_alpha_ampersand_omega",
+         canonical_manufacturer("Alpha and Omega Semiconductor")
+         == canonical_manufacturer("Alpha & Omega Semiconductor")
+         == canonical_manufacturer("Alpha & Omega Semicon")
+         == canonical_manufacturer("AOS")
+         == "alpha & omega semiconductor"),
+        ("f13x_the_aos_alias_survives_the_legal_form_fold",
+         canonical_manufacturer("Alpha and Omega Semiconductor, Inc.")
+         == canonical_manufacturer("Alpha & Omega Semiconductor Co., Ltd.")
+         == "alpha & omega semiconductor"),
+        # ...AND IT IS NARROW.  The marketplace re-marks D-789 named, the
+        # clone houses, a distributor's own name and a cross-manufacturer
+        # collision all still CONTRADICT.  An alias that laundered any of
+        # these would be the defect rather than the fix.
+        # ...AND IT IS NARROW.  The marketplace re-marks D-789 named, the
+        # clone houses, a distributor's own name, a cross-manufacturer
+        # collision and a NEAR MATCH all still CONTRADICT.  An alias that
+        # laundered any of these would be the defect rather than the fix.
+        ("f13y_the_aos_alias_does_not_launder_a_remark_or_a_clone",
+         all(canonical_manufacturer(n) != "alpha & omega semiconductor"
+             for n in ("VBsemi", "VBsemi Elec", "Kexin", "Kexin Industrial",
+                       # the ampersand DROPPED, not written out -- a third
+                       # spelling nobody reviewed
+                       "Alpha Omega Semiconductor",
+                       # a different company that starts the same way
+                       "Alpha & Omega Trading", "Alpha and Omega Trading",
+                       "Omega Semiconductor",
+                       # distributors are not manufacturers
+                       "LCSC", "JLCPCB",
+                       # cross-manufacturer
+                       "onsemi", "Diodes Incorporated",
+                       # one word, and a two-letter stub
+                       "Alpha", "AO",
+                       # PLURAL: a near match, not a match
+                       "Alpha and Omega Semiconductors"))),
+        # ...and the written-out spelling reaches the group through the ALIAS
+        # TABLE, not through a character rule.  With the two D-794 entries
+        # removed from a local copy of the table, it no longer resolves --
+        # which is what "exact narrow alias" means and what distinguishes it
+        # from the fuzzy matching R13-07 forbids.
+        ("f13z_the_written_out_spelling_needs_the_reviewed_alias",
+         _aos_alias_is_the_only_route()),
         # ---- D-793 / R12-07.  ONE NORMALISER, PROVED TO BE ONE. -----------
         #
         # F8 had its own two-entry fold and F13 had the alias table, so an

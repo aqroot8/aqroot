@@ -1,0 +1,202 @@
+{
+ "beta_v2_untouched": true,
+ "board": "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_changes": [],
+ "board_sha256": "c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907",
+ "branch": "aqroot-demo",
+ "closed_here": {
+  "astra_round_13": [
+   "R13-01",
+   "R13-02",
+   "R13-03",
+   "R13-04",
+   "R13-05",
+   "R13-06",
+   "R13-07"
+  ],
+  "fable_deltas": [
+   "oracle raw/summary divergence: charger_residuals preferred st['raw'], so a corrupted public summary was invisible.  Every duplicated field is EQUALITY-GATED to the published rounding of its raw twin, and summary-only and raw-only mutations are both release-run controls.",
+   "permitted table rows checked only for attainability: each row now carries its SETTLED post-load node, sustained and with the worst coincident burst, and the oracle rules on retention.",
+   "mode/floor ambiguity in FIRST_FIVE_ASSEMBLY_PLAN: the 32-entry mode-indexed permission table is GENERATED into that plan and into DEVICE_SPEC, so the 3.85 V envelope and the 3.80 V quiet row are both visible and neither can be quoted as the other.",
+   "charger 'ceiling' naming: 3.600 W is RENAMED the charge-REGIME ceiling (no battery discharge, junction inside the operating maximum) and the separate charge-COMPLETION ceiling, 1.150 W, is derived and published.",
+   "charging gauge-node observation documented as physics: the charge current raises the node the gauge reads above the cell, so unplugging may trigger a safe retention shed.",
+   "active-looking historical values purged or fenced: 28 found by five new semantic scan families across five normative documents.",
+   "AO4800 embedded schematic symbol cache: STALE and worse than the name -- it carried onsemi, onsemi's case designation and onsemi's RETIRED NTMD4820N datasheet URL.  Corrected, and F13 now reads the cache.",
+   "post-recovery amplifier-intent reconciliation, Q10 identity, panel/FPC and footprint/vendor drawings, enclosure, microphone, radio pin tables and antenna/coax identities: prior closures preserved, none silently downgraded."
+  ],
+  "found_by_this_closeout": [
+   "R13-N01 -- the ampacity coverage clause read its RULING requirement out of env['rails_A'], a presentation dict in which every float has been through round(x, 4).  The true ACC_3V3_SW fault ceiling is 0.80486138 A, the display copy says 0.8049 A, and a design current equal to the true ceiling was reported STALE against its own value.  Rounding a requirement moves it UP as often as down.",
+   "R13-N02 -- C-ACC-ILIM-01 was named eight times in the canonical model as a measurement of record and existed NOWHERE as a step a technician executes.  It exists now, and F12 requires every measurement_of_record any tagged primitive names to appear in the first-article procedure.",
+   "R13-N03 -- the ST25R3916 IC identity register could be ASSERTED rather than merely reported the moment the datasheet premise was corrected: DS12484 Rev 3 Table 117 gives ic_type4..0 = 0b00101 at address 3Fh, so a wrong part in that socket now fails the probe instead of reading 'alive'.  The die revision is still reported, not asserted.",
+   "R13-N04 -- DEVICE_SPEC carried U12's compound worst case as 1.9702 A with a 'NAMED THIN MARGIN of 29.8 mA'.  Both are RETIRED: the fault-coincidence case is 2.2069 A, ABOVE TI's guaranteed 2 A output, and is accepted on the device's own switch-current limit instead.  The CONFORMING worst case, 1.8020 A, is what is inside the guaranteed output.  F6 already ruled on the corrected basis; the document did not say so."
+  ]
+ },
+ "content_commit": "PENDING -- filled by the identity commit",
+ "convergence_architecture": {
+  "charger_control_loops": "SYS_REG, CC_PATH_LIMITED, ILIM, VINDPM, DPPM, NO_CHARGE, SUPPLEMENT -- rebuilt from SLUSF65B 6.3.1/6.3.2/6.3.3/6.3.5/6.3.6 with battery-tracking VINDPM, the VBSUP1/VBSUP2 hysteresis band and explicit mode history.  Every ceiling question is asked at seven points of the declared threshold sweep and both histories and answered by the worst.",
+  "gauge_conversion_age": "ADI 19-6171 Rev.7: VCELL is the AVERAGE OF FOUR conversions updated every 250 ms, so the post-load window is 4 x 250 = 1000 ms.  GaugeLoadEpoch records the last material load edge and the ONE production gauge reader spends the remainder of the window before every permission and retention read.  Nothing else clears the epoch -- not an ACK, not a qualification, not a successful read.",
+  "independent_domain_construction": "the oracle DECLARES the product's domain and CONSTRUCTS the key multiset it expects -- 32 permission rows, 24 named transitions, each exactly once, every live state contributing network rows, the rejection set matched as a multiset.",
+  "normative_values_are_generated": "ten semantic scan families over five documents; the mode-indexed permission table is EMITTED into two documents; the fab notes' delivery voltages and thermal figures are derived; every measurement_of_record must be a first-article step.",
+  "one_source_of_truth": "duplicated raw/summary state fields are EQUALITY-GATED; the declared pair is ONE OBJECT gated by identity; the ILIM band has one primitive authority that F6 and audit_rail_ampacity both call.",
+  "provenance_is_semantic": "every GUARANTEED_* primitive must name its document and row in GUARANTEED_ROWS, repeat both tokens in its own source, state a CONDITION, carry no widening and not declare itself.",
+  "required_oracle_mutations_caught": [
+   "halve_the_charger_package_heat",
+   "delete_the_energy_oracle",
+   "remove_the_5v_first_transition",
+   "discard_the_failed_post_states",
+   "reverse_the_gauge_error_direction",
+   "omit_the_return_path",
+   "delete_every_permission_table_row",
+   "delete_every_network_state",
+   "duplicate_a_named_transition_key",
+   "drop_the_permitted_row_retention_proof",
+   "corrupt_the_public_summary_only",
+   "corrupt_the_raw_block_only"
+  ],
+  "retained_state_reconciliation": "CC1101 SRES/SIDLE + MARCSTATE, SX1262 SetStandby + GetStatus, and ST25R3916 Set default + Operation control read-back.  An unconfirmed NFC field refuses accessory power BY NAME and HOLDS the burst slot on U9's behalf.",
+  "three_gates_kept_apart": [
+   "PRE-ORDER ANALYTICAL: CLOSED on this target",
+   "FAB/CAM ACCEPTANCE: PENDING",
+   "FIRST-ARTICLE VALIDATION: PENDING",
+   "PROCUREMENT: PENDING"
+  ]
+ },
+ "decision": "D-794",
+ "identity_commit": "PENDING -- this record is amended by the identity commit",
+ "identity_note": "A commit cannot contain its own SHA, so the reviewable target is the PAIR: a CONTENT commit carrying every engineering change, and an IDENTITY commit that records the content commit's SHA in this file and in the normative documents.  Both halves are stated rather than implied.",
+ "manifest": "hardware/demo/fab/MANIFEST.json",
+ "manifest_sha256": "0db6f2c202772600b6a120f84c177344923e6147a68c802b233c6c8666faca95",
+ "no_copper_change": true,
+ "order_status": {
+  "FAB_CAM_ACCEPTANCE": "PENDING",
+  "FIRST_ARTICLE_VALIDATION": "PENDING",
+  "PRE_ORDER_ANALYTICAL": "CLOSED on this target",
+  "PROCUREMENT": "PENDING -- nine constrained fitted groups plus the AOS pass-pair allocation"
+ },
+ "parent_rejected_by_round_13": "f79fbdee9dbb8c3a244da90b8adb80f821d7fe3d",
+ "recorded_in": [
+  "docs/full-beta-v2/CTO_DECISIONS.md -- D-794 section",
+  "docs/full-beta-v2/CURRENT_STATE.md -- D-794 block and section 1",
+  "docs/full-beta-v2/CHANGELOG.md -- D-794 entry",
+  "docs/full-beta-v2/DEVICE_SPEC.md",
+  "docs/full-beta-v2/AQROOT_DEMO_FAB_HANDOFF.md",
+  "docs/full-beta-v2/assembly/FIRST_FIVE_ASSEMBLY_PLAN.md"
+ ],
+ "release_verification": {
+  "battery_pack_contract": {
+   "verdict": "PASS"
+  },
+  "beta_v2_untouched": true,
+  "contract_regression": {
+   "all_children_exited_zero": true,
+   "all_contracts_pass": true,
+   "all_ran": true,
+   "baseline": "d793",
+   "contracts_run": 19,
+   "contracts_with_substantive_difference": [
+    "demo_feature",
+    "firmware_hw_map"
+   ],
+   "emitted_baseline": "d794",
+   "why_a_substantive_difference_is_expected": "D-794 is a FULL CONVERGENCE release and deliberately changes the verification architecture.  `demo_feature` gained the R13-02 charger branch sweep, the R13-04 constructed domain and six new destructive controls, five R13-06 document-scan families, the generated permission table, the executable-scenario binding and the R13-05 guarantee-row audit; `firmware_hw_map` gained the R13-01 and R13-03 mutation controls and the host-test claims that catch them (test_production_image 94 -> 129 claims).  `pour_partition` differs only in its recorded `ref_commit`.  all_contracts_pass, all_ran and all_children_exited_zero are all true."
+  },
+  "demo_feature_contract": {
+   "board_sha256": "c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907",
+   "checks": "F1-F14, 14 of 14",
+   "verdict": "PASS"
+  },
+  "fab_package_contract": {
+   "note": "FAB14 assembly-drawing release label D-794, derived from BOTH release markers",
+   "verdict": "PASS"
+  },
+  "firmware_hw_map_contract": {
+   "note": "H1-H8, every host-test mutation caught, including the four R13-01 load-epoch mutants and the three R13-03 NFC ones",
+   "verdict": "PASS"
+  },
+  "host_tests": {
+   "compiled_with": "g++ -std=c++17 -Wall -Wextra -Werror",
+   "test_accessory_power_policy": {
+    "claims": 83,
+    "verdict": "PASS"
+   },
+   "test_expander_order": {
+    "claims": 123,
+    "verdict": "PASS"
+   },
+   "test_fuel_gauge_safety": {
+    "claims": 37,
+    "verdict": "PASS"
+   },
+   "test_production_callers": {
+    "claims": 122,
+    "verdict": "PASS"
+   },
+   "test_production_image": {
+    "claims": 129,
+    "note": "94 at D-793; the new claims are the R13-01 stale-VCELL reproduction with its positive and retention controls, its isolated four-update mechanism claim, and the four R13-03 retained-NFC scenarios",
+    "verdict": "PASS"
+   },
+   "test_production_timing": {
+    "claims": 17,
+    "verdict": "PASS"
+   },
+   "test_spi_bus_b": {
+    "claims": 43,
+    "verdict": "PASS"
+   },
+   "test_timing_policy": {
+    "claims": 10,
+    "verdict": "PASS"
+   }
+  },
+  "kicad_drc_and_schematic_parity": {
+   "note": "199 lib_footprint_issues warnings, 17 unconnected items and 246 schematic-parity warnings -- 462 items, identical in count and class to the reviewed D-793 baseline on a byte-identical board.  The two corrected symbol-cache entries are CACHE properties and change no parity class.",
+   "schematic_parity_items": 246,
+   "total_items": 462,
+   "unconnected_items": 17,
+   "violations": 199
+  },
+  "platformio": {
+   "all_success": true,
+   "environments": [
+    "esp32-s3-aqroot",
+    "wokwi",
+    "esp32-s3-aqroot-dm",
+    "aqroot-demo"
+   ],
+   "verified_from_clean": true
+  },
+  "population_contract": {
+   "verdict": "PASS"
+  },
+  "rail_ampacity": {
+   "all_ok": true
+  },
+  "routing_ledger": {
+   "approved_unrouted_edges": 1,
+   "connected_retained_nets": 173,
+   "retained_multi_pad_nets": 174,
+   "unapproved_open_edges": 0
+  },
+  "run_against": "the working tree that became the D-794 content commit",
+  "sourcing_sweep": {
+   "assembly_lines": 123,
+   "evidence": "evidence/d794-sourcing-sweep.json",
+   "short_or_unknown_groups": 9
+  }
+ },
+ "schema": 1,
+ "schematic_changes": [
+  "01_power_tree.kicad_sch -- the EMBEDDED lib_symbols cache entry for AQROOT_Beta:AO4800 only: Manufacturer onsemi -> Alpha & Omega Semiconductor, Datasheet onsemi's RETIRED NTMD4820N URL -> the archived AOS Rev 6.1 PDF, Package onsemi's case 751-07 -> the AOS outline.  No land, pin, net or instance property.",
+  "03_spi_a_display_sd.kicad_sch -- the EMBEDDED lib_symbols cache entry for AQROOT_Beta:ER-TFT035IPS-6_50P only: Manufacturer/MPN moved from the off-board PANEL to the board-side HIROSE CONNECTOR that is actually fitted on the land, and the Description says which is which.  No land, pin, net or instance property."
+ ],
+ "what_is_not_claimed": [
+  "no manufacturer CAM acceptance",
+  "no B01-B14 acceptance",
+  "no enclosure/CAD closure",
+  "no first-article FA01-FA10 measurement",
+  "no procurement: nine constrained fitted groups plus the AOS pass-pair allocation remain",
+  "the pack DC multiplier, the AO4800 hot ratio, the thetaJL/local-air relation and the panel logic current remain DECLARED bounds",
+  "the accessory ILIM envelope is DECLARED AND QUALIFIED, not a manufacturer guarantee at the programmed resistors; C-ACC-ILIM-01 is the measurement of record"
+ ]
+}

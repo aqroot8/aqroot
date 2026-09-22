@@ -290,7 +290,14 @@ RAILS = (
     # to lean on the other, so whichever conductor an assembled board actually
     # favours, both are qualified alone.
     dict(name="ACC_3V3_SW", net="/ACC_3V3_SW",
-         src=("U20.5",), snk=("J5.3", "J5.22"), amps=0.849,
+         src=("U20.5",), snk=("J5.3", "J5.22"),
+         # D-794 / R13-04 + R13-05: DERIVED from the one limiter authority in
+         # `aqroot_power_model`, not hand-typed.  D-793 carried 0.849 A, which
+         # was R97 = 1.78 kOhm's number; the board has been at 1.87 kOhm since
+         # D-791 and the fault ceiling is 0.8049 A.  Hand-copying it is how it
+         # went stale, so it is no longer hand-copied.
+         amps=round(apm.ilim_band_A(
+             apm.ILIM_PROGRAMMED_OHM["ACC_3V3"])["max_A"], 6),
          accept=(dict(layer="In2.Cu", reason="dru-5f", max_length_mm=76.0,
                       max_width_mm=0.40),),
          accept_reason="D-771 / .kicad_dru section 5f, the SAME model and the "
@@ -304,19 +311,31 @@ RAILS = (
                "whole rail.  THE ELECTRICAL COST IS ACCEPTED WITH ITS NUMBER: "
                "224 mOhm, which is 190 mV at the limiter's worst case and "
                "90 mV at D-098's PUBLISHED 400 mA -- the figure an accessory "
-               "actually sees.  With U20's own 68 mOhm max RON that is 117 mV "
-               "at the published budget, leaving the Community Port above "
-               "3.18 V against a 3.135 V -5 % floor.  Length is bounded at "
-               "76.0 mm against 73.3 used, so a re-route cannot grow it "
-               "silently.",
-         basis="U20 TPS22950-Q1 worst-case ILIM at D-771's R97 = 1.78 kOhm: "
-               "SLVSGP6A equation 1 gives 0.636 A typ, and the EC table's "
-               "widest ratio (1.32x) over the resistor's own 1 % band gives "
-               "0.849 A over -40..+125 C.  The PUBLISHED budget is D-098's "
-               "400 mA total, which the same setting GUARANTEES (0.428 A); "
-               "this row is sized by the limiter, not by the publication."),
+               "actually sees.  D-794: the 68 mOhm RON and the 3.135 V -5 % "
+               "floor this sentence used to end on are BOTH RETIRED -- "
+               "R7-D787-02 replaced 68 mOhm with the guaranteed 116 mOhm at "
+               "the nearest published row at or below U20's own input, and "
+               "the D-788 Option A owner decision retired the 3.135 V "
+               "connector minimum.  F6 owns the delivery proof against the "
+               "CURRENT rail contract; this row owns the COPPER.  Length is "
+               "bounded at 76.0 mm against 73.3 used, so a re-route cannot "
+               "grow it silently.",
+         basis="U20 TPS22950-Q1 worst-case ILIM at the board's R97 = "
+               "1.87 kOhm (D-791): SLVSGP6A equation 1 gives 0.6032 A typ, "
+               "and the EC table's widest ratio (1.32x) over the resistor's "
+               "own 1 % band gives 0.8049 A over -40..+125 C.  D-794 / "
+               "R13-05: 1.87 kOhm is NOT one of TI's four published ILIM "
+               "rows, so that envelope is DECLARED AND QUALIFIED by this "
+               "programme -- C-ACC-ILIM-01 is the measurement of record -- "
+               "and the published 400 mA budget is not called GUARANTEED by "
+               "it: the declared low end is 0.4058 A, 1.46 % above the "
+               "publication.  This row is sized by the limiter, not by the "
+               "publication.  D-793 carried 0.849 A here, which was the "
+               "RETIRED 1.78 kOhm setting's number."),
     dict(name="ACC_5V_SW", net="/ACC_5V_SW",
-         src=("U22.5",), snk=("J5.1", "J5.24"), amps=0.608,
+         src=("U22.5",), snk=("J5.1", "J5.24"),
+         amps=round(apm.ilim_band_A(
+             apm.ILIM_PROGRAMMED_OHM["ACC_5V"])["max_A"], 6),
          accept=(dict(layer="In3.Cu", reason="dru-5f", max_length_mm=41.0,
                       max_width_mm=0.40),),
          accept_reason="D-771, re-measured at D-773 / .kicad_dru section 5f.  "
@@ -833,7 +852,8 @@ CHARGE_REGIME = dict(
 
 
 def charge_regime_junction(system_W, ambient_C=None, spec=None, system=None,
-                           charge=None, delivered_out_W=0.0):
+                           charge=None, delivered_out_W=0.0, sweep=0.0,
+                           previous_mode=None):
     """D-792 / R11-03.  The adapter-attached regime, solved as a PHYSICAL MODE.
 
     D-791 computed VSYS, IIN, ICHG and ISUPP from four independent formulas
@@ -863,7 +883,9 @@ def charge_regime_junction(system_W, ambient_C=None, spec=None, system=None,
             st = apm.charger_state(system_W, vbat, ilim_corner,
                                    vbus_V=cls["vbus_V"],
                                    path_ohm=cls["path_ohm"],
-                                   source_key=cls["key"])
+                                   source_key=cls["key"],
+                                   previous_mode=previous_mode,
+                                   sweep=sweep)
             if st is None:
                 continue
             st = dict(st, source_rules=cls["rules"], source_what=cls["what"])
@@ -892,6 +914,11 @@ def charge_regime_junction(system_W, ambient_C=None, spec=None, system=None,
     return dict(
         ambient_C=ambient_C, system_W=round(system_W, 6),
         system_A=worst["system_A"],
+        # D-794 / R13-02: the declared branch-threshold sweep this point was
+        # solved at, so a ceiling derived over the sweep can say so.
+        branch_threshold_sweep=sweep,
+        previous_mode=previous_mode,
+        controls=worst.get("controls"),
         corners=corners,
         ruling_corner="%s / %s" % (worst["ilim_corner"],
                                    worst.get("source_key")

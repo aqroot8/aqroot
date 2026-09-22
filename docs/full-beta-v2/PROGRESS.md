@@ -2,6 +2,26 @@
 
 **Status: LIVING DASHBOARD.**
 
+**D-794 (2026-09-22) — ROUND-13 FULL CONVERGENCE; EXTERNAL-REVIEW TARGET; NO OPEN OWNER DECISION.**
+Round-13 rejected D-793: Astra graded it **C — DO NOT ORDER** with seven findings and
+established **no unconditional PCB respin**; Fable graded B on reviewed scope and declared
+its own review INCOMPLETE.  `R13-01`…`R13-07`, every Fable delta and residual, and four
+defects found by this closeout are closed.  **No copper moved** — the board sha256 is
+unchanged — and two EMBEDDED SCHEMATIC SYMBOL CACHE entries carry the only schematic edit.
+The theme: every guard this programme has built asks whether a number is TRUE, and none of
+them asked WHEN IT IS FROM or whether it is ALL OF THEM.  A MAX17048 reading that averages
+four conversions could authorise a rail against a board the product was no longer in; the
+charger branch set named two physical control loops where SLUSF65B has four; the
+independent oracle accepted its domain from the model it was meant to check; and the
+current-facing documents were three derivations behind.  **No published capability moves**;
+the accessory budgets are reclassified DECLARED AND QUALIFIED with a new first-article
+measurement, `C-ACC-ILIM-01`.  **REVIEW TARGET, NOT A FABRICATION AUTHORIZATION.  DO NOT
+ORDER.**  Full record: `CTO_DECISIONS.md` D-794, `CURRENT_STATE.md` D-794 block,
+`evidence/d794-review-target.json`.
+
+**D-792 and D-793 are recorded in `CHANGELOG.md`, `CTO_DECISIONS.md` and `CURRENT_STATE.md`;
+this dashboard skipped them and is brought forward here.**
+
 **D-791 (2026-09-21) — ROUND-10 CORRECTION; EXTERNAL-REVIEW TARGET; NO OPEN OWNER DECISION.**
 Round-10 rejected D-790: Fable passed the design for CAM/order closure with 3 medium / 16 low
 plus residuals, **Astra blocked the order with 15 findings** (0 critical, 4 high, 8 medium,

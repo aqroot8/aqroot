@@ -14,7 +14,25 @@
 
 ## 1. Authoritative HEAD
 
-> ### **D-793 REVIEW TARGET — THE EXACT FROZEN IDENTITY**
+> ### **D-794 REVIEW TARGET — THE EXACT FROZEN IDENTITY**
+>
+> | what | value |
+> |---|---|
+> | branch | `origin/aqroot-demo` |
+> | content commit | *(recorded by the identity commit — see `evidence/d794-review-target.json`)* |
+> | identity / post-commit verification commit | *(this commit)* |
+> | board `aqroot-Beta-v2.kicad_pcb` sha256 | `c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907` |
+> | `hardware/demo/fab/MANIFEST.json` sha256 | `0db6f2c202772600b6a120f84c177344923e6147a68c802b233c6c8666faca95` |
+> | parent, REJECTED by Round-13 | `f79fbdee9dbb8c3a244da90b8adb80f821d7fe3d` |
+>
+> The board sha256 is IDENTICAL to the reviewed D-793 target: **no copper
+> moved**.  Two EMBEDDED SCHEMATIC SYMBOL CACHE entries change — manufacturer,
+> MPN, datasheet and package text only — so the MANIFEST moves while the board
+> does not.  The full record is
+> [`evidence/d794-review-target.json`](../../hardware/demo/manufacturing/evidence/d794-review-target.json).
+> **REVIEW TARGET, NOT A FABRICATION AUTHORIZATION.  DO NOT ORDER.**
+
+> ### **D-793 REVIEW TARGET — THE EXACT FROZEN IDENTITY**  *(**HISTORICAL** — REJECTED by Round-13)*
 >
 > | what | value |
 > |---|---|
@@ -90,7 +108,89 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
-> # **D-793 ROUND-12 FULL-CONVERGENCE CORRECTION — CURRENT EXTERNAL-REVIEW TARGET**
+> # **D-794 ROUND-13 FULL-CONVERGENCE CORRECTION — CURRENT EXTERNAL-REVIEW TARGET**
+>
+> **THIS IS A REVIEW TARGET, NOT A FABRICATION AUTHORIZATION. DO NOT ORDER.**
+> Round-13 external review REJECTED D-793.  Astra graded it **C — DO NOT ORDER**
+> with seven findings; Fable graded B on reviewed scope and declared its own
+> review INCOMPLETE and not sufficient alone for order authorization.  Astra's
+> reproduced counterexamples control.  **No mandatory copper respin was
+> established and none is made here: no copper, no net, no footprint, no
+> placement, no part value and no protected-copper object moves at D-794.**  Two
+> SCHEMATIC SYMBOL CACHE entries change — manufacturer, MPN, datasheet and
+> package text only; no land, pin or connection.  Connectivity is unchanged at
+> **174 retained / 173 connected / one owner-approved `U11.3` open / zero
+> unapproved**.
+>
+> **`R13-01`…`R13-07` are closed here, plus every Fable delta and residual and
+> the new-defect sweep this closeout performed afterwards.**
+>
+> **THE THEME OF ROUND-13 IS THAT EVERY GUARD THIS PROGRAMME HAS BUILT ASKS
+> WHETHER A NUMBER IS TRUE, AND NONE OF THEM ASKED WHEN IT IS FROM OR WHETHER IT
+> IS ALL OF THEM.**  Round-12 was the round where the checking apparatus was the
+> defect.  Round-13 is the round where the apparatus is sound and its INPUTS are
+> not: a valid gauge reading that describes a board the product is no longer in;
+> a charger branch set that named two physical loops where the silicon has four;
+> a domain the independent oracle ACCEPTED from the model it was meant to check;
+> and current-facing documents three derivations behind the model that derives
+> them.
+>
+> ### THE PRODUCT-FACING CONSEQUENCES, IN ONE PLACE
+>
+> * **No published capability moves at D-794.**  `ACC_3V3_SW` = 400 mA TOTAL and
+>   `ACC_5V_SW` = 300 mA TOTAL, each deliverable ALONE, and the DECLARED
+>   SIMULTANEOUS PAIR of **220 mA + 170 mA**, are all exactly what D-793
+>   published and what the D-788 Option A owner decision preserved.  The
+>   permission window is unchanged.
+> * **ONE WORD CHANGES, AND IT IS THE HONEST ONE.**  The accessory current
+>   budgets are **DECLARED AND QUALIFIED**, not *guaranteed*.  TI publishes the
+>   TPS22950-Q1 `ILIM` accuracy band at four discrete `RILIM` rows and neither
+>   fitted resistor is one of them, so even the widest ratio — which needs no
+>   assumption about curvature — is an envelope this programme declares at the
+>   programmed points.  The low-side margins are stated as numbers: **+1.46 %**
+>   on the 3.3 V rail and **+2.17 %** on the 5 V rail.  A NEW first-article step,
+>   **`C-ACC-ILIM-01`**, measures the real limit on all five units at 0 °C, 25 °C
+>   and 40 °C, and no current document may call the budgets guaranteed.
+> * **THE CHARGE CEILING HAS TWO NAMES BECAUSE IT ANSWERS TWO QUESTIONS.**  The
+>   **charge-REGIME** ceiling is **3.600 W** — re-derived from scratch on the
+>   corrected branch model, swept over the four typ-only control thresholds and
+>   both mode histories, guardbanded and floored — and it guarantees that the
+>   battery does not DISCHARGE while charging and that `U11` stays inside TI's
+>   operating maximum.  The **charge-COMPLETION** ceiling is **1.150 W**: the
+>   system load below which a cycle delivers the rated capacity and terminates
+>   inside the BQ25185's 360 min `tMAXCHG` on EVERY qualified cable.  D-793
+>   published one number under the other's name.
+> * **AN ACCESSORY RAIL IS NO LONGER AUTHORISED ON A READING THAT PREDATES THE
+>   LOAD.**  ADI publishes VCELL as the AVERAGE OF FOUR conversions updated every
+>   250 ms, so for a full second after any material load edge the register still
+>   describes the board as it was.  Every production gauge read now spends the
+>   remainder of that window first.  A user sees an extra pause of up to one
+>   second after the display comes up, the backlight ramps, the amplifier moves
+>   or a rail switches — and does not see a rail granted and taken away.
+> * **THE NFC FRONT END IS QUIESCED AND VERIFIED ACROSS AN MCU RESET**, with the
+>   ST25R3916's own documented `Set default` command and a read-back of its
+>   Operation control register.  While the field state is unknown the board
+>   refuses accessory power AND holds the burst slot on U9's behalf, so a microSD
+>   write or an IR burst cannot overlap a field it cannot see.
+> * **AN OBSERVED CHARGING BEHAVIOUR IS DOCUMENTED RATHER THAN LEFT TO BE
+>   REPORTED AS A FAULT.**  The gauge reads `BAT_PROTECTED_P`, upstream of which
+>   the charge current flows through the pass pair and `R75`, so a VCELL read
+>   while charging over-states the cell — and unplugging can therefore trigger a
+>   safe retention shed as the node falls back.  That is the retention rule doing
+>   its job on a real node movement.
+>
+> ### WHAT IS NOT CLAIMED
+>
+> D-794 is an **ANALYTICAL** closure.  The manufacturer has not accepted CAM;
+> B01-B14 acceptance is pending; enclosure/CAD and first-article FA01-FA10 remain
+> downstream PHYSICAL evidence; nine constrained fitted sourcing groups and the
+> AOS pass-pair allocation are unresolved; and the pack DC multiplier, the AO4800
+> hot ratio, the θJL/local-air relation and the panel logic current remain
+> DECLARED bounds until first article measures them.  **PRE-ORDER ANALYTICAL is
+> closed on this target; FAB/CAM ACCEPTANCE, FIRST-ARTICLE VALIDATION and
+> PROCUREMENT are not.**
+>
+> # **D-793 ROUND-12 FULL-CONVERGENCE CORRECTION**  *(**HISTORICAL** — superseded by the D-794 block above, which closes Round-13.  Its convergence architecture, its permission table, its provenance role matrix and its independent oracle all STAND; the following are RETIRED: its charger branch set, which named two physical control loops where SLUSF65B has four; its "charge-TIME" name for the 3.600 W regime ceiling; its **2.849642 / 2.982890 V** delivered Community-Port pair; its **115.4 / 96.0 / 142.8 °C** typed junction figures; its **225.8 °C** reference-state junction; its **1.9702 A** `U12` compound case; and its use of the word *guaranteed* for the accessory current budgets.)*
 >
 > **THIS IS A REVIEW TARGET, NOT A FABRICATION AUTHORIZATION. DO NOT ORDER.**
 > Round-12 external review REJECTED D-792.  Astra graded it **C — DO NOT ORDER**
@@ -887,7 +987,7 @@
 > routing remains 174 retained / 173 connected / one approved `U11.3` open / zero
 > unapproved opens; and all 30 frozen fab-package file hashes match MANIFEST.
 >
-> # **D-784 ROUND-5 GAUGE/TIMING CORRECTION — EXTERNAL_REVIEW_HOLD**
+> # **D-784 ROUND-5 GAUGE/TIMING CORRECTION — EXTERNAL_REVIEW_HOLD**  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 >
 > Round-5 identified two firmware/verifier residuals after D-783. MAX17048 HIBRT=0
 > is configuration, not proof of the current operating mode, so D-784 now requires
@@ -906,7 +1006,7 @@
 > release remains **EXTERNAL_REVIEW_HOLD** pending an independent review of the final
 > clean/pushed D-784 target.
 >
-> # **D-783 OUTPUT-SHADOW RECOVERY CORRECTION — EXTERNAL_REVIEW_HOLD**
+> # **D-783 OUTPUT-SHADOW RECOVERY CORRECTION — EXTERNAL_REVIEW_HOLD**  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 >
 > A post-D-782 CTO fault-injection probe reproduced one remaining firmware recovery hole:
 > an uncertain `ACC_PWR_EN` **OFF** transaction invalidated U2's output shadow without
@@ -923,7 +1023,7 @@
 > copper, schematic, BOM, CPL, Gerber or drill changed. The release remains on external
 > review hold; D-782 is superseded by the final clean/pushed D-783 target.
 >
-> # **D-782 ROUND-4 CORRECTION CANDIDATE — NO COPPER RESPIN; EXTERNAL RE-REVIEW STILL REQUIRED**
+> # **D-782 ROUND-4 CORRECTION CANDIDATE — NO COPPER RESPIN; EXTERNAL RE-REVIEW STILL REQUIRED**  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 >
 > **Authority board SHA-256 remains `cef458b92c6e92462bea250b434a481b3e8454a991eb13b2b66623ca1f4a880e`; no PCB copper/geometry changed.**
 > Astra's Round-4 executable counterexamples were reproduced and closed in the firmware/verifier/package layers: partial/lost-ACK enables now enter pending-safe recovery; software state comes from confirmed PCAL output latches rather than a stale one-shot event; runtime safe shutdown no longer blanket-resets U2 display/touch/LoRa lines; failed boot-safe establishment is retried after bus recovery; MAX17048 HIBRT=0 is write/readback-qualified and reverified before safety VCELL use; F8 binds voltage evidence to exact manufacturer/MPN and requires a bounded DC or named non-DC proof for every fitted capacitor; assembly drawings/package semantics are machine-checked.
@@ -958,7 +1058,7 @@
 > pull and first-article temperature-rise checks are frozen in
 > `assembly/BATTERY_HARNESS.json`.
 >
-> # **THE ROUND-3 EXTERNAL REVIEW HOLD IS CLOSED ON BOARD `880a2ece` (2026-09-19, D-777 · D-778 · D-779).**
+> # **THE ROUND-3 EXTERNAL REVIEW HOLD IS CLOSED ON BOARD `880a2ece` (2026-09-19, D-777 · D-778 · D-779).**  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 >
 > **D-776's readiness was withdrawn by round-3 external review for six items.
 > All six are closed, every one of them by measurement, and NOT ONE COPPER
@@ -1092,9 +1192,9 @@
 > hole, the stepped profile/tooling, ENIG and bare-board electrical test** must
 > be confirmed with the board house at quote.  **Independent CTO review follows.**
 >
-> # **THE D-776 ENTRY BELOW STANDS AS HISTORY.**
+> # **THE D-776 ENTRY BELOW STANDS AS HISTORY.**  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 >
-> # **`DEMO_READY_FOR_FAB` IS RE-DECLARED ON BOARD `8c548ece` (2026-09-19, D-771 · D-772 · D-773 · D-774 · D-775 · D-776).**
+> # **`DEMO_READY_FOR_FAB` IS RE-DECLARED ON BOARD `8c548ece` (2026-09-19, D-771 · D-772 · D-773 · D-774 · D-775 · D-776).**  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 >
 > **D-776 — THE AS-BUILT LIMITS NAMED A SIGNAL THAT DOES NOT EXIST, AND THE
 > LIST OF SIGNALS THAT DO NOT EXIST IS NOW COMPUTED.**  The generated firmware
@@ -1260,9 +1360,9 @@
 > Residual risks are `CTO_DECISIONS.md` **D-776 §7**, **D-775 §6**, **D-773 §7**, **D-772 §8**,
 > **D-771 §10** and **D-770 §5**.  Independent CTO review follows.
 >
-> # **THE D-771, D-772 AND D-770 ENTRIES BELOW STAND AS HISTORY.**
+> # **THE D-771, D-772 AND D-770 ENTRIES BELOW STAND AS HISTORY.**  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 >
-> # **`DEMO_READY_FOR_FAB` IS RE-DECLARED ON BOARD `c15672df` (2026-09-19, D-771 · D-772).**
+> # **`DEMO_READY_FOR_FAB` IS RE-DECLARED ON BOARD `c15672df` (2026-09-19, D-771 · D-772).**  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 >
 > **D-771 closed the CTO's withdrawal.  D-772 then found the bad input to the
 > clause D-771 had just built, and the board did not have to move for either.**
@@ -1335,9 +1435,9 @@
 > Residual risks are `CTO_DECISIONS.md` **D-772 §8**, **D-771 §10** and **D-770
 > §5**.  Independent CTO review follows.
 >
-> # **THE D-771 AND D-770 ENTRIES BELOW STAND AS HISTORY.**
+> # **THE D-771 AND D-770 ENTRIES BELOW STAND AS HISTORY.**  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 >
-> # **`DEMO_READY_FOR_FAB` IS RE-DECLARED ON BOARD `c15672df` (2026-09-19, D-771).**
+> # **`DEMO_READY_FOR_FAB` IS RE-DECLARED ON BOARD `c15672df` (2026-09-19, D-771).**  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 >
 > **D-770's declaration was WITHDRAWN by the CTO for one item, and that item is
 > closed.**  The withdrawal read: *"D-098 locks first-five `ACC_3V3_SW` = 400 mA
@@ -1402,9 +1502,9 @@
 > Residual risks are `CTO_DECISIONS.md` **D-771 §10** and **D-770 §5**.
 > Independent CTO review follows.
 >
-> # **THE D-770 ENTRY BELOW STANDS AS HISTORY.**
+> # **THE D-770 ENTRY BELOW STANDS AS HISTORY.**  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 >
-> # **`DEMO_READY_FOR_FAB` IS RE-DECLARED (2026-09-18, D-770).**
+> # **`DEMO_READY_FOR_FAB` IS RE-DECLARED (2026-09-18, D-770).**  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 >
 > **Board authority `5849b658`.  External review round 2 withdrew D-764's
 > readiness for two items.  D-765 closed the first (the unsupported `TPS22950C`
@@ -1446,9 +1546,9 @@
 > ordering margin, six first-article measurements, the touch-silicon and FPC-tail
 > procurement items, and enclosure CAD.  **Independent CTO review follows.**
 >
-> # **THE ENTRIES BELOW STAND AS HISTORY.**
+> # **THE ENTRIES BELOW STAND AS HISTORY.**  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 >
-> # **THE ROUND-2 CAUSES ARE CLOSED, AND SO IS EVERY DEFECT CLASS THEY BELONGED TO (D-766 · D-767 · D-768 · D-769).**
+> # **THE ROUND-2 CAUSES ARE CLOSED, AND SO IS EVERY DEFECT CLASS THEY BELONGED TO (D-766 · D-767 · D-768 · D-769).**  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 >
 > **Board authority `5849b658`, unchanged since D-766.  D-765 closed the first
 > round-2 item and D-766 the second; D-767 asked D-766's two defect classes of
@@ -1478,9 +1578,9 @@
 > proved so by walking into it: at D-768, after the schematic was fully
 > corrected, `F7` **still failed** until the fabrication package was regenerated.
 >
-> # **D-766, D-767 AND D-768's ENTRIES FOLLOW.**
+> # **D-766, D-767 AND D-768's ENTRIES FOLLOW.**  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 >
-> # **THE ROUND-2 CAUSES ARE CLOSED, AND THE RELEASED BOM NO LONGER NAMES THE WRONG DISPLAY (D-766 · D-767 · D-768).**
+> # **THE ROUND-2 CAUSES ARE CLOSED, AND THE RELEASED BOM NO LONGER NAMES THE WRONG DISPLAY (D-766 · D-767 · D-768).**  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 >
 > **Board authority `5849b658`, unchanged since D-766.  D-765 closed the first
 > round-2 item, D-766 the second, D-767 generalised both defect classes across
@@ -1511,9 +1611,9 @@
 > until the package was regenerated.  The two dead display symbols left in the
 > library are annotated **`RETIRED -- DO NOT INSTANTIATE`**.
 >
-> # **D-766's AND D-767's ENTRIES FOLLOW.**
+> # **D-766's AND D-767's ENTRIES FOLLOW.**  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 >
-> # **THE TWO ROUND-2 CAUSES ARE CLOSED, AND THEIR DEFECT CLASSES TOO (2026-09-18, D-766 + D-767).**
+> # **THE TWO ROUND-2 CAUSES ARE CLOSED, AND THEIR DEFECT CLASSES TOO (2026-09-18, D-766 + D-767).**  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 >
 > **Board authority `5849b658`.  D-765 closed the first round-2 item (the
 > unsupported `TPS22950C` `ILIM` setting).  D-766 closed the second (firmware
@@ -1559,9 +1659,9 @@
 > decisions.  **A note is not a gate** — that sentence is now `F5`'s rating
 > clause.
 >
-> # **D-766's ENTRY FOLLOWS.**
+> # **D-766's ENTRY FOLLOWS.**  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 >
-> # **BOTH CAUSES OF THE ROUND-2 WITHDRAWAL ARE CLOSED (2026-09-18, D-766).**
+> # **BOTH CAUSES OF THE ROUND-2 WITHDRAWAL ARE CLOSED (2026-09-18, D-766).**  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 >
 > **Board authority `5849b658`.  D-765 closed the first (the unsupported `TPS22950C`
 > `ILIM` setting).  D-766 closes the second (firmware fault / warm-reset handling)
@@ -1644,9 +1744,9 @@
 > four PlatformIO builds SUCCESS; `hardware/beta-v2` untouched.  **There is no
 > open owner decision.**
 >
-> # **D-765's ENTRY STANDS BELOW AS HISTORY.**
+> # **D-765's ENTRY STANDS BELOW AS HISTORY.**  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 >
-> # **READINESS WAS WITHDRAWN AND ONE OF ITS TWO CAUSES WAS CLOSED (2026-09-18, D-765).**
+> # **READINESS WAS WITHDRAWN AND ONE OF ITS TWO CAUSES WAS CLOSED (2026-09-18, D-765).**  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 >
 > **D-764's `DEMO_READY_FOR_FAB` WAS WITHDRAWN BY EXTERNAL REVIEW ROUND 2 FOR TWO
 > ITEMS: an unsupported `TPS22950C` `ILIM` setting, and firmware fault /
@@ -1708,9 +1808,9 @@
 > separately and is NOT part of this transaction.  There is **no open owner
 > decision**.
 >
-> # **D-764's DECLARATION STANDS BELOW AS HISTORY, WITHDRAWN.**
+> # **D-764's DECLARATION STANDS BELOW AS HISTORY, WITHDRAWN.**  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 >
-> # **DEMO_READY_FOR_FAB IS DECLARED (2026-09-18, D-764).**
+> # **DEMO_READY_FOR_FAB IS DECLARED (2026-09-18, D-764).**  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 >
 > **Board authority `1a06b058`, UNCHANGED since D-759.** D-764 changes no PCB,
 > schematic or firmware. It closes a release/assembly failure mode the electrical
@@ -1754,9 +1854,9 @@
 > special processes and final CAM/placement review. First-article measurements
 > remain validation, not a substitute for a known pre-order defect.
 >
-> # **D-763's DECLARATION STANDS BELOW AS HISTORY.**
+> # **D-763's DECLARATION STANDS BELOW AS HISTORY.**  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 >
-> # **DEMO_READY_FOR_FAB IS DECLARED (2026-09-18, D-763).**
+> # **DEMO_READY_FOR_FAB IS DECLARED (2026-09-18, D-763).**  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 >
 > **Board authority `1a06b058`, UNCHANGED since D-759.**  D-763 touches no board
 > file, no fabrication output and no firmware.  It found a **physical** defect in
@@ -1828,9 +1928,9 @@
 > Demo fabrication blocker.**  The two OPEN CAD items stand unchanged:
 > `BATTERY_SHADOW` **1.80 mm**, `NFC_CLEAR_D48` **1.40 mm**.
 
-> # **D-762's DECLARATION STANDS AND IS LEFT BELOW AS HISTORY.**
+> # **D-762's DECLARATION STANDS AND IS LEFT BELOW AS HISTORY.**  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 >
-> # **DEMO_READY_FOR_FAB IS DECLARED (2026-09-18, D-762).**
+> # **DEMO_READY_FOR_FAB IS DECLARED (2026-09-18, D-762).**  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 >
 > **Board authority `1a06b058`, UNCHANGED since D-759.**  D-762 touches no board
 > file, no fabrication output and no firmware.  What it repairs is the CHAIN
@@ -1915,9 +2015,9 @@
 > Demo fabrication blocker.**  The two OPEN CAD items stand unchanged and are
 > still numbers: `BATTERY_SHADOW` **1.80 mm**, `NFC_CLEAR_D48` **1.40 mm**.
 
-> # **D-761's DECLARATION STANDS AND IS LEFT BELOW AS HISTORY.**
+> # **D-761's DECLARATION STANDS AND IS LEFT BELOW AS HISTORY.**  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 >
-> # **DEMO_READY_FOR_FAB IS DECLARED (2026-09-18, D-761).**
+> # **DEMO_READY_FOR_FAB IS DECLARED (2026-09-18, D-761).**  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 >
 > **Board authority `1a06b058`, UNCHANGED since D-759.**  Three more statements
 > that nothing was checking.
@@ -1951,7 +2051,7 @@
 > `connection_width` reads IDENTICAL, which is D-760's determinism fix proving
 > itself. Everything else carries forward from D-760 unchanged.
 
-> # **D-760's DECLARATION STANDS AND IS LEFT BELOW AS HISTORY.**
+> # **D-760's DECLARATION STANDS AND IS LEFT BELOW AS HISTORY.**  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 >
 > **Board authority `1a06b058`, UNCHANGED.**  D-760 touches no board file, no
 > fabrication output and no firmware — git reports zero modified files under
@@ -2010,7 +2110,7 @@
 > **There is no open owner decision and no unresolved Demo fabrication blocker.
 > There are TWO OPEN CAD ITEMS, and they are now numbers instead of silence.**
 
-> # **D-759's DECLARATION STANDS AND IS LEFT BELOW AS THE BOARD'S LAST COPPER CHANGE.**
+> # **D-759's DECLARATION STANDS AND IS LEFT BELOW AS THE BOARD'S LAST COPPER CHANGE.**  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 >
 > **Board authority `1a06b058`.**  D-758's board changes are **REVERTED WHOLE**
 > and this board differs from D-757's `78a68921` by **exactly one line**.
@@ -2135,7 +2235,7 @@
 > and `DEVICE_SPEC`'s mechanical UNRESOLVED list is one item shorter than it has
 > been since `D-226`.**
 
-> # **DEMO_READY_FOR_FAB WAS DECLARED AT D-757 AND IS LEFT STANDING AS HISTORY.**
+> # **DEMO_READY_FOR_FAB WAS DECLARED AT D-757 AND IS LEFT STANDING AS HISTORY.**  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 >
 > **Board authority `78a68921`.**  The D-756 declaration below stands in every
 > electrical and copper respect — `D-757` changes **no copper at all** — but the
@@ -2191,7 +2291,7 @@
 > What remains is FIRST-ARTICLE and PROCUREMENT, in
 > `AQROOT_DEMO_FAB_HANDOFF.md` §8.
 
-> # **DEMO_READY_FOR_FAB WAS DECLARED AT D-756 AND IS LEFT STANDING AS HISTORY.**
+> # **DEMO_READY_FOR_FAB WAS DECLARED AT D-756 AND IS LEFT STANDING AS HISTORY.**  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 >
 > **Board authority `6f2fc8b6`.**  The D-751 declaration below was HELD by an
 > independent re-review on one named blocker; closing it uncovered four more,
@@ -2249,7 +2349,7 @@
 > 5.525 mm × 0.200 mm segment** with its derived ceiling; the panel check is a
 > diode-mode reading with its expected values stated.
 
-> # **D-755 ADJUDICATED THE NFC MATCHING NETWORK AGAINST `AN5276`.**
+> # **D-755 ADJUDICATED THE NFC MATCHING NETWORK AGAINST `AN5276`.**  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 >
 > **Board authority `6f2fc8b6`, unchanged — no copper, no symbol, no BOM, no
 > fabrication output.**  The second review item in two decisions that was open
@@ -2281,7 +2381,7 @@
 > fill-and-cap-plate instruction, so each is a planar solderable land.  **No mask
 > removal, no cut track, no symmetry loss.**
 
-> # **D-754 CLOSED THE DISPLAY-ORIENTATION ITEM FROM THE VENDOR DRAWING, AND CORRECTED THE EXPANDER'S RESET VALUE.**
+> # **D-754 CLOSED THE DISPLAY-ORIENTATION ITEM FROM THE VENDOR DRAWING, AND CORRECTED THE EXPANDER'S RESET VALUE.**  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 >
 > **Board authority `6f2fc8b6`, unchanged — no copper, no symbol, no BOM line,
 > no fabrication output.**
@@ -2317,7 +2417,7 @@
 > so the rule is non-vacuous against the part's real default — **61 claims, 0
 > failures**, `H1`–`H6` PASS, all four PlatformIO environments build.
 
-> # **D-753 CLOSED THE LAST OPEN PRE-ORDER ENGINEERING ITEM.**
+> # **D-753 CLOSED THE LAST OPEN PRE-ORDER ENGINEERING ITEM.**  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 >
 > **Board authority `6f2fc8b6`.**  The accessory-load concurrency item that the
 > block below named as OPEN is closed — **by two resistors, not by prose**.
@@ -2381,7 +2481,7 @@
 > firmware **H1–H6** with 11 controls refused and all four PlatformIO builds;
 > `hardware/beta-v2` untouched.
 
-> # **THE D-751 DECLARATION WAS HELD, AND D-752 CLOSED WHAT HELD IT.**
+> # **THE D-751 DECLARATION WAS HELD, AND D-752 CLOSED WHAT HELD IT.**  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 >
 > **Board authority `7f133e64`.**  An independent CTO re-review read the D-751
 > package and named ONE pre-order blocker: *"`Q11` must not share the `TPS61169`
@@ -2443,7 +2543,7 @@
 > not what an arbitrary accessory then draws.  Everything else outstanding is
 > FIRST-ARTICLE or PROCUREMENT.
 
-> # **DEMO_READY_FOR_FAB IS RE-DECLARED (2026-09-18, after D-751).**
+> # **DEMO_READY_FOR_FAB IS RE-DECLARED (2026-09-18, after D-751).**  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 >
 > **Board authority `bdf1376c`.**  The D-748 declaration below is
 > **SUPERSEDED and left standing as history**: an external first-spin review
@@ -2520,7 +2620,7 @@
 > library symbol, three labels and three wires — and the rest is a CRLF→LF
 > normalisation.
 
-> # **DEMO_READY_FOR_FAB IS DECLARED (2026-09-18, after D-748).**
+> # **DEMO_READY_FOR_FAB IS DECLARED (2026-09-18, after D-748).**  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 >
 > **Board authority `c7f5c618`, unchanged since D-743.**  D-746 released the
 > fabrication package and the handoff; the independent CTO re-review held the
@@ -17432,13 +17532,13 @@
   handoff; `36662db` D-294 (003T) direction-2 executed / full gate FAIL; `9c708f3` D-293 owner
   approval of direction 2.
 
-## 2. Mission
+## 2. Mission  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 - Deliver Full Beta v2 to **READY FOR JLCPCB** — a fabricable, assembly-ready
   authoritative board with all governing routing / DRC / ERC / connectivity / safety
   gates passing and the final JLCPCB deliverables generated and reviewed.
 - Terminal condition: **READY FOR JLCPCB**.
 
-## 3. Current phase / gate
+## 3. Current phase / gate  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 - **Phase P2 — battery/power-block Phase-A routing is COMPLETE and PROMOTED (D-302).** The authoritative
   board carries **432 tracks / 54 vias / 6 layers** of Phase-A battery-block copper (all in-scope power-tree
   nets, 0 out-of-scope), DRC zero new copper classes, `router_regression` ALL 79 PASS.
@@ -17545,7 +17645,7 @@
   - **BAT_RAW R89.1/R86.2 divider taps** — a capacity symptom, not a width lever; re-verify on a full
     PASS.
 
-## 4. Last accepted milestone
+## 4. Last accepted milestone  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 - **Latest milestone — FBV2-P2-004A · Decision:** **D-301** · **Result (a governed ACCEPT + COMMIT +
   overall-run FAIL, no copper):** THE `AQROOT_LTCGATE_KO` PATH-SHAPING LEVER'S FULL-AUTHORITY GATE
   CONFIRMED A **GENUINE +1** (closes `LTC_GATE U18.10→Q3.4`, LOST 0, no new DRC) — so the minimum
@@ -17691,7 +17791,7 @@
   (27/27); D-286 the gate baseline measured on the actual complete pre-copper placement (regression
   G12).
 
-## 5. Next task — FBV2-P2-025 (route the next clean rest-of-board increment in an OPEN region; continue avoiding the saturated west-XGPIO F.Cu corridor)
+## 5. Next task — FBV2-P2-025 (route the next clean rest-of-board increment in an OPEN region; continue avoiding the saturated west-XGPIO F.Cu corridor)  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 
 - **Where 025 left it (D-323 — PROMOTED, eighteenth increment).** EIGHTEEN increments promoted; **138 of 164
   rest nets unrouted**; authoritative `sha256 a7bf8bdc…c57f9f626` (781 trk / 68 via / 6 layers / 41 zones /
@@ -17810,7 +17910,7 @@
 - **Downstream, still CTO-scope:** on a full PASS, re-verify the (now-past) `REF_POL R87.2` F-corridor
   and the BAT_RAW R89.1/R86.2 divider taps.
 
-## 6. Authoritative PCB state
+## 6. Authoritative PCB state  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 - **Routing/promotion (D-322): Phase-A copper + SEVENTEEN rest-of-board increments.** Authoritative board =
   **six copper layers, 759 signal tracks, 67 vias, 41 zones** (verified `sha256 a861e30e5760515288ef9a3fc0c21ea6d3e9c31409f9181dd66d56ed0628efd1`),
   carrying the **432-track Phase-A battery block (D-302) PLUS** FRONT_RGB 20 (D-304) + ACC 31 (D-305) + DISP 11/1
@@ -17868,7 +17968,7 @@
   journal was backed up and restored around the full run; scratch churn discarded).
 - PCB routing **0 %**; overall repo progress **74 %**.
 
-## 7. Locked invariants (reference the D-xxx rulings, not the history)
+## 7. Locked invariants (reference the D-xxx rulings, not the history)  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 - **D-275** forced-south `BAT_PROTECTED_P` bridge geometry (lane + landing proven). **D-288** the
   entry-array two-layer tie is FIXED (rotation-aware in-pad `scan_entry_sites` + symmetric B.Cu
   tie-stub, `via_dangling`-clean; an electrical pass, not merely geometric). The **0.60 mm BAT_MAIN
@@ -17943,7 +18043,7 @@
   Six-layer stack, GND, netclasses, footprints, polarity, safety set — all frozen. Frozen
   `beta-full-reference-v1` untouched.
 
-## 8. Open owner decisions
+## 8. Open owner decisions  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 - **NONE. D-293 resolved the last owner decision (direction 2 authorized); D-294..D-301 each re-raised
   none.** Direction 2 is being executed under full CTO authority; the U18.8 wall is closed in principle
   by the accepted D-297 In3-join lever, the U19 field by the committed D-299 U19CAP lever, and the
@@ -17959,7 +18059,7 @@
 - **Nothing has been changed under any decision:** no part moved, no floor relaxed, no DRC absorbed
   into the authoritative board; the authoritative PCB is six layers / 0 tracks / 0 vias.
 
-## 9a. Opportunity & Simplification Scan (D-301, LTC_GATE close / BPP trunk milestone)
+## 9a. Opportunity & Simplification Scan (D-301, LTC_GATE close / BPP trunk milestone)  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 - **Mandated bounded scan** at this milestone, grounded in the accepted `AQROOT_LTCGATE_KO` lever and the
   newly-exposed `U11.2` BPP trunk wall (U11.2=(66.400,78.200) EAST node; D9.1=(11.350,72.500) WEST; the
   `u11_escape()` cross-board 1.50 mm trunk has no legal corridor on the saturated western margin).
@@ -17984,7 +18084,7 @@
   architecture; no irreversible cost, no strategic fork, no opportunity loss. **Open owner decisions:
   NONE.** The deferred opportunity is only the *technical* 004B lever above, pursued under CTO autonomy.
 
-## 9. JLCPCB readiness
+## 9. JLCPCB readiness  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 - **JLCPCB readiness ~78 %** (authoritative governance figure; unchanged by D-323 — the rest-of-board
   increments add real authoritative copper but the fabrication package/Gerbers are not yet regenerated, so
   the JLCPCB file itself is unchanged; readiness is not moved absent that evidence).
@@ -17998,7 +18098,7 @@
   polarity/DNP + assembly review; board-outline/stackup/fab-rule review; Gerber/drill/BOM/CPL
   generation and independent manufacturing-package review.
 
-## 10. Active orchestration
+## 10. Active orchestration  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 - **Persistent CTO session:** `agent:main:aqroot-fbv2-cto` — sole owner of Claude engineering
   launches; receives every completion event.
 - **Autopilot:** cron/systemd may only WAKE the persistent CTO; it must never launch Claude or become
@@ -18018,7 +18118,7 @@
 - **DEVICE_SPEC gate:** before any render / website / Kickstarter / enclosure brief / external-mechanical
   / product-description claim, consult `docs/full-beta-v2/DEVICE_SPEC.md` and claim only MARKETING-SAFE rows.
 
-## 11. Recovery instructions (a fresh CTO/Claude reads these, in order)
+## 11. Recovery instructions (a fresh CTO/Claude reads these, in order)  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 0. `docs/full-beta-v2/DEVICE_SPEC.md` — the authoritative current-product spec/index (MCU/radios/antennas/
    power/connectors/mechanical, with LOCKED/FITTED/DNP/UNRESOLVED + MARKETING-SAFE labels). **MANDATORY**
    before any external / mechanical / marketing claim.
@@ -18050,7 +18150,7 @@
    (D-297); `place_003l.json`, `place_002z/` candidate set.
 - **Never** trust this checkpoint over a conflicting `CTO_DECISIONS.md`; repair this file if they
   diverge.
-# Demo update — USB_VBUS_RAW shield-refloor boundary qualified (D-534, 2026-09-03)
+# Demo update — USB_VBUS_RAW shield-refloor boundary qualified (D-534, 2026-09-03)  *(**HISTORICAL** — D-794 / `R13-06` marks every heading below the current release block, so the semantic stale-value scan fences the retired figures under it.)*
 
 The complete-net corridor inventory identifies only `Net-(J3-SHIELD)` as
 accepted B.Cu copper binding the C20-to-J3.A9 north-edge window.  Withdrawing

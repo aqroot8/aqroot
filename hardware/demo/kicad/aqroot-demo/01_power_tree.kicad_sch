@@ -5641,7 +5641,7 @@
 					)
 				)
 			)
-			(property "Datasheet" "https://www.onsemi.com/pdf/datasheet/ntmd4820n-d.pdf"
+			(property "Datasheet" "vendor/AOS/aos-ao4800-rev6p1-2023-08.pdf"
 				(at 0 0 0)
 				(hide yes)
 				(effects
@@ -5659,7 +5659,7 @@
 					)
 				)
 			)
-			(property "Manufacturer" "onsemi"
+			(property "Manufacturer" "Alpha & Omega Semiconductor"
 				(at 0 0 0)
 				(hide yes)
 				(effects
@@ -5677,7 +5677,7 @@
 					)
 				)
 			)
-			(property "Package" "SOIC-8 (case 751-07)"
+			(property "Package" "SOIC-8 (AOS Rev 6.1 outline)"
 				(at 0 0 0)
 				(hide yes)
 				(effects

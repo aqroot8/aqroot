@@ -19,10 +19,12 @@
       "note": "measured off the live board by audit_rail_ampacity's own graph on every contract run; demo_feature_contract F6 bounds both delivery paths so a re-route cannot grow them silently."
     },
     "published_minimum_with_the_lead_V": 2.919947,
-    "published_minimum_without_it_V": 2.849642,
+    "published_minimum_without_it_V": 2.805637,
     "cost_mV": 70.3,
-    "and_what_it_buys_back": "the guarantee is now quoted BOTH unconditionally and against an explicit connection contract.  Fully mated -- both duplicated +3V3 contacts and all four grounds, which is what a 24-way socket presents -- the port delivers 2.982890 V at the full published 400 mA with the 5 V rail also at its budget, which is BETTER than the 2.95 V D-788 published with the lead fitted.  The unconditional figure covers the individual-jumper usage the Community Port also permits.",
-    "floor_it_must_clear": "the tightest published minimum supply voltage among the parts the BOARD powers from /ACC_3V3_SW: U16 TCA4307DGKR, VCC 2.3 V MIN (TI ZHCSLQ0 section 6.3, archived vendor/TI/ti-tca4307-zhcslq0-DGK0008A.pdf).  Margin 549.6 mV."
+    "and_what_it_buys_back": "the guarantee is quoted BOTH unconditionally and against an explicit connection contract.  Fully mated -- both duplicated +3V3 contacts and all four grounds, which is what a 24-way socket presents -- the port delivers 2.910494 V at the full published 400 mA with the 5 V rail also at its budget.  The unconditional figure covers the individual-jumper usage the Community Port also permits.",
+    "floor_it_must_clear": "the tightest published minimum supply voltage among the parts the BOARD powers from /ACC_3V3_SW: U16 TCA4307DGKR, VCC 2.3 V MIN (TI ZHCSLQ0 section 6.3, archived vendor/TI/ti-tca4307-zhcslq0-DGK0008A.pdf).  Margin 505.637 mV.",
+    "published_minimum_fully_mated_V": 2.910494,
+    "these_numbers_are_derived_not_transcribed": "D-794 / R13-06.  Every voltage in this block is DERIVED by demo_feature_contract F6 from the live board and the canonical power model, and F6 now REFUSES a release in which this file disagrees with its own derivation.  D-793 shipped this file carrying the D-789-era 2.849642 / 2.982890 V pair while F6 derived 2.805637 / 2.910494 V, and the exported fab notes -- which are generated FROM this file -- told an assembler the retired figures.  A hand-maintained consumer of a derived number goes stale; this one is gated."
   },
   "source": {
     "reference": "TP12.1",

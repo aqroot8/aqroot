@@ -178,6 +178,10 @@ struct Rig {
     // of this file and its own real-image scenarios in
     // `test_production_image.cpp`.
     app.noteRadiosQuiesced(true);
+    // D-794 / R13-03: and from one whose NFC field has been commanded off and
+    // CONFIRMED off.  The refusal an unconfirmed field produces has its own
+    // claims at the end of this file.
+    app.noteNfcFieldQuiesced(true, 0x00);
   }
   bool bringUp() {
     const bool ok = expanders.begin(bus);

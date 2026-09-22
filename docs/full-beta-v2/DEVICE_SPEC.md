@@ -349,7 +349,29 @@ power/NFC review, and CTO decisions.
 
 ### 6.3a Accessory-power ENVELOPE (D-753, silicon corrected D-765, **budget guaranteed and protection chain ordered at D-771**) — ENGINEERING-ONLY, **bounded by hardware**
 
-> ## THE PUBLISHED ACCESSORY BUDGET — D-098, and the number the hardware now GUARANTEES
+> ## THE PUBLISHED ACCESSORY BUDGET — D-098, and what the hardware is DECLARED AND QUALIFIED to deliver
+>
+> **D-794 / `R13-05` RETIRED THE WORD *GUARANTEES* FROM THIS HEADING AND
+> FROM THE SENTENCES UNDER IT.**  Round-13, in its own words: "Exact
+> R97=1.87k and R101=2.43k lie between discrete TPS22950-Q1
+> characterization rows.  Widest observed row ratio is a DECLARED
+> engineering/qualification envelope, not a manufacturer guarantee for
+> every intermediate resistor/temperature/VIN.  Published 400mA and 300mA
+> lower-limit margins are thin and must not be labeled guaranteed solely
+> from interpolation."  That is correct.  TI publishes an ILIM accuracy
+> band at FOUR discrete `RILIM` rows — 610 Ω, 1.15 kΩ, 2.21 kΩ and
+> 19.2 kΩ — and neither fitted resistor is one of them.  The WIDEST ratio
+> in that table needs no assumption about curvature and is what every gate
+> rules at, but at a resistor BETWEEN rows it is an envelope **this
+> programme DECLARES**.  The first five therefore ship a **DECLARED AND
+> QUALIFIED** capability: the envelope, plus **`C-ACC-ILIM-01`**, which
+> measures the real limit at the programmed resistors on every unit at
+> 0 °C, 25 °C and 40 °C before the capability is described as anything
+> stronger.  The low-side margins are stated as numbers rather than as
+> adjectives: **+1.46 %** on `ACC_3V3_SW` (declared low end **0.4058 A**
+> against the published 400 mA) and **+2.17 %** on `ACC_5V_SW` (**0.3065 A**
+> against 300 mA).  **The published CURRENT capability is unchanged**;
+> what changed is the word used for it.
 >
 > **`ACC_3V3_SW` = 400 mA TOTAL.  `ACC_5V_SW` = 300 mA TOTAL** for the first five
 > boards.  **THE TWO DUPLICATE CONTACTS ON EACH RAIL SHARE THE RAIL LIMIT — they
@@ -460,16 +482,34 @@ power/NFC review, and CTO decisions.
 >   the LTC4368's gate-drive row.  **The ruling band goes back to the WIDEST
 >   published ratio**, which needs no assumption at all, and the bracketed
 >   figure is reported beside it as the engineering estimate it is.
-> * **`R97` MOVES 1.78 kΩ → 1.87 kΩ** (same UNI-ROYAL 0603 1 % line,
+> * **`R97` MOVES 1.78 kΩ → 1.87 kΩ** *(the 1.78 kΩ value is RETIRED)* (same UNI-ROYAL 0603 1 % line,
 >   `0603WAF1871T5E`, LCSC `C22850`) because those two corrections together
->   would otherwise leave `U12` NEGATIVE: at 1.78 kΩ the limiter's worst
->   corner plus the corrected internal budget is **2.0139 A** against the
->   TPS63020's published 2 A.  At 1.87 kΩ the 3.3 V rail still GUARANTEES
->   **0.4058 A** — **+1.46 %** over the published 400 mA, at the WIDEST
->   published accuracy ratio and therefore without any assumption — and
->   `U12`'s worst compound case is **1.9702 A**, a **NAMED THIN MARGIN** of
->   29.8 mA.  The fault maximum is **0.8049 A**.  Both published budgets are
->   unchanged, which is what the owner decision requires of any part change.
+>   would otherwise leave `U12` NEGATIVE: at the RETIRED 1.78 kΩ the limiter's worst
+>   corner plus the corrected internal budget was **2.0139 A** against the
+>   TPS63020's published 2 A.  At 1.87 kΩ the 3.3 V rail's DECLARED AND
+>   QUALIFIED low end is **0.4058 A** — **+1.46 %** over the published 400 mA,
+>   at the WIDEST published accuracy ratio and therefore without any assumption
+>   about curvature, though not a manufacturer guarantee at a resistor between
+>   TI's four published rows (D-794 / `R13-05`; `C-ACC-ILIM-01` measures it) — and
+>   `U12`'s CONFORMING worst case is **1.8020 A**, inside TI's guaranteed 2 A.
+>   The fault maximum is **0.8049 A**.  Both published budgets are unchanged,
+>   which is what the owner decision requires of any part change.
+>
+>   **D-794 CORRECTS THE `U12` FIGURE THAT USED TO END THIS BULLET, AND THE
+>   CONCLUSION WITH IT.**  D-791 wrote "`U12`'s worst compound case is
+>   **1.9702 A**, a NAMED THIN MARGIN of 29.8 mA".  That number is RETIRED and
+>   the margin it named no longer exists: R11-02's missing ESP32-S3 baseline
+>   and R11-07's itemised upstream path have since raised the internal `+3V3`
+>   envelope, and the FAULT-COINCIDENCE case — every internal subsystem at its
+>   published maximum WITH a shorted accessory holding `U20` at its limiter
+>   corner — is now **2.2069 A**, which is ABOVE TI's guaranteed 2 A output.
+>   It is accepted on a different and explicitly weaker basis, and `F6` rules
+>   on that basis rather than on the retired margin: the CONFORMING worst case
+>   (**1.8020 A**) is inside the guaranteed output, and the fault coincidence
+>   is inside the device's OWN switch-current limit (**2.8548 A**) — which is
+>   what a TPS63020 does when asked for more than its rated output, and which
+>   is a FAULT state bounded by `U20`'s limiter, not an operating point.  A
+>   dedicated accessory regulator is the REV-B fix that removes the case.
 >
 > **D-789's own corrections stand.**
 > Round-8 reproduced two defects in the D-788 delivery model and both are real.
@@ -500,7 +540,7 @@ power/NFC review, and CTO decisions.
 > grid.  It is **DERIVED**, not asserted: `demo_feature_contract` F6 computes it
 > from the live board on every run and refuses a document that prints a
 > different figure.  The **fully mated** number is published beside it as an
-> explicit connection contract, and it is *better* than the 2.95 V D-788
+> explicit connection contract, and it is *better* than the RETIRED 2.95 V D-788
 > published with a hand-soldered conductor fitted.
 >
 > **HISTORICAL, SUPERSEDED:** D-788 published **2.95 V**, D-789 published
@@ -531,7 +571,7 @@ power/NFC review, and CTO decisions.
 > device AQROOT has qualified operates at or below 2.7 V. A dedicated accessory
 > buck-boost is deferred to **REV-B**.
 
-> ### **D-793 — ACCESSORY RETENTION, THE TWO PERMISSION EDGES, AND THE SUPPORTED CONCURRENCY THEY COME FROM**
+> ### **D-793, CORRECTED AT D-794 — ACCESSORY RETENTION, THE TWO PERMISSION EDGES, AND THE SUPPORTED CONCURRENCY THEY COME FROM**
 >
 > **THIS SUPERSEDES D-791's 3.55 V / 3.65 V PAIR AND, WITH IT, THE 3.50 V /
 > 3.85 V PAIR EVERY EARLIER BLOCK IN THIS DOCUMENT STATES.**  Round-11
@@ -640,16 +680,36 @@ power/NFC review, and CTO decisions.
 > highest value the gauge can report in its OWN pre-state, which on this
 > candidate is **3.936902 V** in the lightest state.
 >
-> | modes ON | ENABLE a rail (rail edge) | ENTER this mode with a rail live (mode edge) |
-> |---|---:|---:|
-> | none | **3.80 V** | **3.80 V** |
-> | audio at the capped level | **3.85 V** | **not permitted** |
-> | sub-GHz TX | **not permitted** | **not permitted** |
-> | audio + sub-GHz TX | **not permitted** | **not permitted** |
-> | Wi-Fi / BLE TX | **not permitted** | **not permitted** |
-> | Wi-Fi + audio | **not permitted** | **not permitted** |
-> | Wi-Fi + sub-GHz TX | **not permitted** | **not permitted** |
-> | all three | **not permitted** | **not permitted** |
+> **D-794 / `R13-06` GENERATES THIS TABLE INSTEAD OF RESTATING IT.**  Every
+> earlier version of this block was a HAND-WRITTEN summary with one column per
+> edge, which quietly asserted that the one-rail and two-rail floors are the
+> same in every row.  They are on this candidate and that is a fact about the
+> derated pair, not a property of the policy.  Round-13 asks for the
+> mode-specific table to be generated or machine-bound rather than hand-copied,
+> so the thirty-two entries below are EMITTED by `demo_feature_contract` **F12**
+> from the same rows `aqroot_accessory_power_policy.h` is generated from, and
+> F12 REFUSES a release in which this document does not carry them verbatim.
+>
+> | modes running | enable a rail, 1 on after | enable a rail, 2 on after | enter this mode, 1 rail live | enter this mode, 2 rails live |
+> |---|---|---|---|---|
+> | *(none)* — quiet | **3.80 V** | **3.80 V** | **3.80 V** | **3.80 V** |
+> | Wi-Fi / BLE TX | **REFUSED** | **REFUSED** | **REFUSED** | **REFUSED** |
+> | audio at the capped level | **3.85 V** | **3.85 V** | **REFUSED** | **REFUSED** |
+> | Wi-Fi / BLE TX, audio at the capped level | **REFUSED** | **REFUSED** | **REFUSED** | **REFUSED** |
+> | sub-GHz TX | **REFUSED** | **REFUSED** | **REFUSED** | **REFUSED** |
+> | Wi-Fi / BLE TX, sub-GHz TX | **REFUSED** | **REFUSED** | **REFUSED** | **REFUSED** |
+> | audio at the capped level, sub-GHz TX | **REFUSED** | **REFUSED** | **REFUSED** | **REFUSED** |
+> | Wi-Fi / BLE TX, audio at the capped level, sub-GHz TX | **REFUSED** | **REFUSED** | **REFUSED** | **REFUSED** |
+>
+> **THE QUIET ROW IS 3.80 V AND THE PUBLISHED ENVELOPE IS 3.85 V, AND BOTH ARE
+> CORRECT.**  `kAccessorySingleRailFloorV` is the MOST DEMANDING floor any
+> PERMITTED row carries — the envelope, which is what a specification publishes
+> as one number.  A board sitting quiet, with no optional mode running, is in
+> the first row and its floor is **3.80 V**.  Reading the envelope as "the
+> floor" overstates what the board requires by 50 mV and makes the refusals in
+> the rows below look arbitrary; that ambiguity was found by Round-13's Fable
+> reviewer in `FIRST_FIVE_ASSEMBLY_PLAN.md`, and it is answered here by
+> publishing the table rather than a scalar.
 >
 > **THE ACCESSORY WINDOW IS NARROWER AT D-793 THAN IT WAS AT D-792, AND THE
 > REASON IS PHYSICS THAT WAS NOT IN THE MODEL BEFORE.**  Ten of the sixteen
@@ -767,7 +827,7 @@ power/NFC review, and CTO decisions.
 > fuse (`R10-N02`).
 >
 >
-> ### **D-793 — THE CHARGE REGIME IS A LOAD CEILING, NOT A PASS MARK**
+> ### **D-793, CORRECTED AT D-794 — THE CHARGE REGIME IS A LOAD CEILING, NOT A PASS MARK**
 >
 > D-790 stated that the charge regime "needs no bound, by design", because
 > SLUSF65B 6.3.7.6 reduces the CHARGE current at `TREG` = 100 °C.  `D790-A02`
@@ -793,13 +853,54 @@ power/NFC review, and CTO decisions.
 > | BATFET, supplement mode (§6.3.3) | whatever the system asks for beyond the input limit, and only while `VSYS < VBAT` | **no** |
 >
 > **AND THE ANSWER IS A CEILING.**  Priced as the linear element it is, the
-> reference state's own 5.65 W of system load puts the input FET at 2.36 W and
-> the junction at 225.8 °C — the part would reach `TSHUT` and stop, which is
+> reference state's own 5.65 W of system load puts the input FET at 2.209 W and
+> the junction at 215.8 °C — the part would reach `TSHUT` and stop, which is
 > protection acting as control, and `R11-03` is explicit that this must not be
 > the answer.  So the largest sustained SYSTEM POWER for which the half `TREG`
 > cannot reach stays inside TI's 125 °C operating maximum is SOLVED:
 >
-> **CHARGE-TIME SYSTEM POWER CEILING: **3.600 W**, at 40 °C ambient.**
+> **CHARGE-REGIME SYSTEM POWER CEILING: **3.600 W**, at 40 °C ambient.**
+>
+> **D-794 / `R13-02` + THE ROUND-13 FABLE DELTA RENAMED IT, BECAUSE THE OLD
+> NAME CLAIMED SOMETHING IT DOES NOT PROVE.**  D-793 called this the
+> *charge-TIME* ceiling.  It is not one.  What it guarantees is that **the
+> battery does not DISCHARGE while the adapter is attached** and that `U11`'s
+> junction stays inside TI's 125 °C operating maximum.  Whether a cycle also
+> *finishes* — delivers the pack's rated 2.5 Ah and terminates before the
+> BQ25185's **360 min** `tMAXCHG` safety timer expires — is a different
+> question with a different answer, because on a throttled source the charge
+> current is what folds back first.  Both are derived and both are published:
+>
+> | ceiling | value | what it actually guarantees |
+> |---|---:|---|
+> | **charge-regime system power** | **3.600 W** | the battery does not discharge while charging, and `U11` stays inside its operating maximum |
+> | **charge-COMPLETION system power** | **1.150 W** | a fast-charge cycle delivers the rated capacity and terminates inside `tMAXCHG`, on **every** source class the published cable contract admits, at the GUARANTEED-MINIMUM input current limit |
+>
+> At the regime ceiling **no** qualified source class completes inside
+> `tMAXCHG`; at the completion ceiling **every** one does, with the worst
+> qualified 2 m cable leaving **13.8 min** of margin.  Both figures are reduced
+> by a declared 5 % guardband and floored onto a 0.05 W grid, and F12 refuses a
+> release in which either is not printed here from the computed value.
+>
+> **THE OBSERVED GAUGE-NODE BEHAVIOUR WHILE CHARGING, WHICH IS PHYSICS AND NOT
+> A DEFECT.**  The MAX17048 reads `BAT_PROTECTED_P`, which is on the SYS side
+> of the pass pair and `R75`.  While the charger is delivering current INTO the
+> cell, that current flows through those same elements in the charging
+> direction, so the node the gauge reads sits ABOVE the cell's own terminal
+> voltage by `I_chg` times the path resistance.  Two consequences follow and
+> both are expected first-five behaviour:
+>
+> * a reported `VCELL` taken while charging over-states the cell, so an
+>   accessory permission granted on it would be granted on an optimistic
+>   reading — which is why the permission floors are derived at the DISCHARGE
+>   network and why the D-794 / `R13-01` load epoch treats plugging and
+>   unplugging as material load edges;
+> * **unplugging may trigger a safe retention shed.**  The node falls by that
+>   same product the instant the charge current stops, and if a rail was live
+>   near the retention floor the settled recheck sheds the 5 V rail first.  That
+>   is the retention rule doing exactly its job on a real node movement, not a
+>   fault, and it is recorded here so a first-five operator who sees it does not
+>   report it as one.
 >
 > **AND THE NUMBER IS ROUNDED DOWN, ON PURPOSE.**  D-792 published **4.063 W**,
 > which its own bisection had produced as 4.06293325 W and then `round()`ed
@@ -854,7 +955,7 @@ power/NFC review, and CTO decisions.
 > supervision and D-792 puts the load ceiling beside it.
 >
 >
-> **MEASUREMENT PLANE.**  The guaranteed voltage is the potential between the
+> **MEASUREMENT PLANE.**  The published minimum voltage is the potential between the
 > `ACC_3V3_SW` contact and the `GND` contacts **at the J5 mating interface**.
 > The accessory's own plug, cable and connector are outside the guarantee.
 >
@@ -871,6 +972,16 @@ power/NFC review, and CTO decisions.
 > duplicated contact is qualified **alone**.
 >
 > ---
+>
+> #### **HISTORICAL — SUPERSEDED D-787 / D-775 / D-771 ACCESSORY CONTRACT (everything from here to the next `###` heading)**
+>
+> *(D-794 / `R13-06` turned the inline marker that used to open this region into
+> a HEADING.  The semantic stale-value scan in `demo_feature_contract` F12
+> fences a block by its own heading; an inline sentence fenced only itself, so
+> every retired figure below — the **1.78 kΩ** `R97`, the **3.135 V** connector
+> minimum, the **3.146366 V** delivered figure, the **68 mΩ** `U20` RON — sat in
+> this document UNFENCED and read as current text.  That is the exact shape
+> Round-13 asked to have purged or strongly fenced.  Nothing below is current.)*
 >
 > **D-787 SUPERSEDES D-775 FOR THE CURRENT FIRST-FIVE ACCESSORY CONTRACT.**  *(**HISTORICAL**
 > from here to the end of this block — every D-787 number below is superseded by the
@@ -1059,7 +1170,7 @@ settings (1.15 kΩ and 2.21 kΩ) publish 0.75–0.76× / 1.24–1.25×.
 > **minimum** OVP threshold would make a good board fault on itself.  It clears by
 > **6.1 %**, and `F6` now refuses a divider that does not.
 >
-> **This is what moved `R101` from 2.32 kΩ to 2.37 kΩ.**  At the corrected
+> **This is what moved `R101` from the RETIRED 2.32 kΩ to 2.37 kΩ.**  At the corrected
 > setpoint, D-771's 2.32 kΩ left **0.52 %** of pack margin on the 5 V rail's
 > limiter state.  2.37 kΩ is the **E96 value nearest the centre of that
 > resistor's own legal window — 2.298 kΩ to 2.478 kΩ**: below 2.298 the limiter's
@@ -1086,7 +1197,7 @@ settings (1.15 kΩ and 2.21 kΩ) publish 0.75–0.76× / 1.24–1.25×.
 at the 1.0 A internal term they used; only the last column is re-based on the
 1.063 A D-772 derived.)*
 
-> ### D-775 — NORMAL D-098 CONCURRENCY IS GATED, AND THE FLOOR IS SOLVED FOR RATHER THAN CHOSEN
+> ### D-775 — NORMAL D-098 CONCURRENCY IS GATED (**HISTORICAL — SUPERSEDED BY D-787 FOR EVERY NUMBER**)
 >
 > **HISTORICAL. SUPERSEDED BY D-787 FOR EVERY NUMBER IN THIS SECTION.**  The
 > METHOD below is unchanged and still current — the floor is solved for, not

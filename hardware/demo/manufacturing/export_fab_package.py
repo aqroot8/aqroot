@@ -410,6 +410,28 @@ def stackup_process_notes(board):
     way `audit_rail_ampacity.stackup_dielectrics` reads it.
     """
     import re as _re
+    # D-794 / R13-06.  THE THERMAL JUSTIFICATION IS DERIVED, NOT TYPED.
+    #
+    # ROUND-13: "Recompute all thermal/charge first-article instructions after
+    # the corrected solver is frozen" and "Correct generated explanatory text
+    # as well as numbers."  The Tg paragraph below carried three junction
+    # temperatures as literals -- 115.4 C, 96.0 C and 142.8 C -- and the first
+    # of them is a figure D-790 RETIRED while the note still printed it as the
+    # reason the Tg requirement exists.  They come out of the same model the
+    # audit uses now, so a corrected solver rewrites this note.
+    import audit_rail_ampacity as _ara
+    _bat_amps = next(r["amps"] for r in _ara.RAILS
+                     if r["name"] == "BAT_PROTECTED_P")
+    _pj = _ara.package_junction(_bat_amps)
+    _th = dict(
+        r_sys_K_per_W=_pj["r_sys_K_per_W"],
+        ambient_C=_pj["ambient_C"],
+        tj_operating_max_C=_pj["tj_operating_max_C"],
+        tshut_C=_pj["tshut_rising_C"],
+        design_amps=_bat_amps,
+        sustained_A=_pj["sustained_thermal_envelope_A"],
+        sustained_tj_C=_pj["sustained_thermal_envelope"]["tj_C"],
+        peak_tj_C=_pj["predicted_tj_C"])
     text = BOARD.read_text(encoding="utf-8", errors="replace")
     block = text[text.find("(stackup"):]
     end = block.find('(copper_finish')
@@ -494,25 +516,45 @@ def stackup_process_notes(board):
         "`audit_rail_ampacity` for copper heated by its own current, and the "
         "named narrow-run exceptions meet it with more than 50 K to spare (the "
         "`U11.2` package-land neck reaches a 52.3 C predicted peak).  D-789 "
-        "then justified the Tg against a BQ25185 junction of **115.4 C**, "
-        "computed with TI's JEDEC RthetaJA referenced to the EXTERNAL ambient "
-        "-- and a JEDEC thermal resistance is measured in OPEN STILL AIR, "
-        "which this sealed 85 x 160 x 23 mm enclosure is not.  D-790 replaces "
+        "D-789's own Tg justification -- a BQ25185 junction computed with "
+        "TI's JEDEC RthetaJA referenced to the EXTERNAL ambient -- is "
+        "RETIRED: a JEDEC thermal resistance is measured in OPEN STILL AIR, "
+        "which this sealed 85 x 160 x 23 mm enclosure is not.  D-790 replaced "
         "it with TJ = TA + R_SYS x P_internal + thetaJA x P_U11, where R_SYS "
-        "is the enclosure's own declared 3.25 K/W and P_internal now also "
+        "is the enclosure's own declared %.2f K/W and P_internal also "
         "carries the UPSTREAM losses -- the four pass-pair channels, R75, F1 "
         "and the pack's own PCM and harness, all of which are under the same "
         "lid.  WHAT THE Tg REQUIREMENT ACTUALLY PROTECTS is the hottest point "
-        "on this board, which is that junction.  At the DECLARED SUSTAINED "
-        "THERMAL ENVELOPE -- both published accessory budgets, the display at "
-        "full brightness and both radios transmitting, held indefinitely at "
-        "the 40 C top of the ambient range -- it reaches **96.0 C**, against "
-        "TI's own 125 C operating maximum and 54 K below a 150 C Tg.  At the "
-        "PEAK electrical envelope, which is the conductor-sizing and "
-        "protection-ordering basis and NOT a steady state, the same model "
-        "gives 142.8 C: over TI's operating maximum, 7.2 K below its 150 C "
-        "thermal shutdown, and the reason the sustained envelope is published "
-        "separately.  A TG130 build has no margin at either figure and is "
+        "on this board, which is that junction."
+        % _th["r_sys_K_per_W"],
+        "",
+        "  - At the DECLARED SUSTAINED THERMAL ENVELOPE -- the %.4f A "
+        "battery current this enclosure supports indefinitely at the %.0f C "
+        "top of the ambient range -- the junction reaches **%.2f C**, "
+        "against TI's own %.0f C operating maximum and %.2f K below a 150 C "
+        "Tg.  THIS is the figure the Tg requirement is justified against."
+        % (_th["sustained_A"], _th["ambient_C"], _th["sustained_tj_C"],
+           _th["tj_operating_max_C"], 150.0 - _th["sustained_tj_C"]),
+        "  - At the PEAK ELECTRICAL ENVELOPE -- every internal subsystem at "
+        "its published maximum with both accessory rails at their published "
+        "budgets, concurrently, which is the CONDUCTOR-SIZING and "
+        "PROTECTION-ORDERING basis and is NOT a steady state -- the same "
+        "model gives **%.2f C** at the %.1f A the copper is sized for.  That "
+        "is above TI's %.0f C operating maximum AND above its %.0f C thermal "
+        "shutdown, which is exactly why the sustained envelope is derived and "
+        "published separately and why `demo_feature_contract` F12 proves the "
+        "cell-to-load network CANNOT HOLD the peak envelope as an operating "
+        "point.  A board that could sit there would shut its charger down; "
+        "this one cannot get there.  (D-790 printed 142.8 C here; the "
+        "itemised upstream path of R11-07 and the missing ESP32-S3 baseline "
+        "of R11-02 have since raised it, and D-794 / R13-06 DERIVES it here "
+        "rather than repeating a literal.)"
+        % (_th["peak_tj_C"], _th["design_amps"],
+           _th["tj_operating_max_C"], _th["tshut_C"]),
+        "  - Both figures EXCLUDE the accepted narrow run's own copper "
+        "dissipation, which enters the same package through the same pin; "
+        "`audit_rail_ampacity`'s `BAT_PROTECTED_P` row adds it and is the "
+        "RULING figure.  A TG130 build has no margin at either and is "
         "refused.  State the laminate and its Tg on the acknowledgement, and "
         "see `C-THERM-01`, which MEASURES R_SYS rather than assuming it.",
         "- **100% BARE-BOARD ELECTRICAL TEST (flying probe or fixture) IS "
@@ -679,9 +721,13 @@ def acc_3v3_reinforcement_notes():
         "worst permitted mode (one 3.3 V contact alone, one mated ground, the "
         "5 V rail also at its 300 mA budget), and **%.6f V** with the header "
         "fully mated."
+        # D-794 / R13-06: BOTH figures come from the record's own explicit
+        # fields, which `demo_feature_contract` F6 binds to its derivation.
+        # D-793 scraped the fully-mated figure out of an English sentence
+        # with `.split("delivers ")`, so the note's second number could only
+        # ever be as current as a prose paragraph nothing gated.
         % (ec["published_minimum_without_it_V"],
-           float(h["electrical_consequence"]["and_what_it_buys_back"]
-                 .split("delivers ")[1].split(" V")[0])),
+           ec["published_minimum_fully_mated_V"]),
         "- Why it was retired, in one line each: the `TP12` tip geometry could "
         "not be built inside a 1.00 mm pad; the `J5.3` termination required "
         "inserting a 0.32 mm conductor into a 1.02 mm hole already carrying a "

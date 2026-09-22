@@ -1,3 +1,102 @@
+## D-794 — 2026-09-22 — ROUND-13 FULL CONVERGENCE: A GAUGE READING THAT PREDATES THE LOAD IT AUTHORISES, A CHARGER MODEL WITH TWO NAMES FOR FOUR CONTROL LOOPS, AN NFC FIELD WHOSE DATASHEET WAS IN THE ARCHIVE, AND A DOMAIN THE ORACLE WAS HANDED INSTEAD OF CONSTRUCTING
+
+Round-13 external review **REJECTED D-793**.  Astra graded it **C — DO NOT ORDER** with
+seven findings and no unconditional copper respin established; Fable graded B on reviewed
+scope and declared its own review INCOMPLETE and not sufficient alone for order
+authorization.  Astra's reproduced counterexamples control.  **`R13-01`…`R13-07` are
+closed here, plus every Fable delta and residual and the new-defect sweep this closeout
+performed afterwards.**
+
+**NO COPPER.**  No copper, no net, no footprint, no placement, no part value and no
+protected-copper object moves.  Two SCHEMATIC SYMBOL CACHE entries change — manufacturer,
+MPN, datasheet and package text only; no land, pin or connection.  Board sha256 unchanged;
+KiCad DRC and schematic parity compared against the reviewed D-793 baseline.
+`hardware/beta-v2` untouched.
+
+**THE THEME IS THAT EVERY GUARD THIS PROGRAMME HAS BUILT ASKS WHETHER A NUMBER IS TRUE,
+AND NONE OF THEM ASKED WHEN IT IS FROM OR WHETHER IT IS ALL OF THEM.**  Round-12 was the
+round where the checking apparatus was the defect; Round-13 is the round where the
+apparatus is sound and its INPUTS are not.
+
+* **`R13-01`** a VALID gauge reading can describe a board the product is no longer in.
+  ADI 19-6171 Rev.7 publishes VCELL as the **average of FOUR conversions** updated every
+  250 ms, so for a full second after any material load edge the register is still partly
+  pre-load — and D-779's 400 ms settled recheck was derived against the update rate alone.
+  A **load epoch** now records the instant of the last material change in what the board
+  draws, and the ONE production gauge reader spends the remainder of the 1000 ms window
+  before every permission and retention read.  Astra's `p` → `5` reproduction is a
+  permanent regression, with a MAX17048 model that converts on its own schedule, quantises
+  to the register's own 78.125 µV LSB and holds ONE constant gauge-error sign; it fails on
+  D-793's reader and passes here.  Post-enable retention shedding is preserved and has its
+  own control.
+* **`R13-02`** the charger branch set named two physical loops where SLUSF65B has four.
+  SYS regulation is a SERIES PASS regulation with no authority over the charge current;
+  the loops that fold charge are the input current limit, `VINDPM`, `DPPM` and `TREG`.
+  Rebuilt from the primary datasheet with battery-tracking `VINDPM`, the
+  `VBSUP1`/`VBSUP2` hysteresis band and explicit mode history.  The ceiling is re-derived
+  from scratch, swept over seven points of the four typ-only thresholds and both mode
+  histories, and published as the raw figure less a declared 5 % guardband floored onto a
+  0.05 W grid: **3.600 W**, confirmed rather than inherited.  It is RENAMED the
+  **charge-REGIME** ceiling, because it bounds battery discharge and junction temperature
+  and not charge time; the separate **charge-COMPLETION** ceiling is **1.150 W**.  The
+  adapter/cable contract at `U11` pin 10 is published with four source classes, their
+  impedance and the required source capability.
+* **`R13-03`** the ST25R3916 can retain a physical RF field across an MCU-only reset, and
+  D-793 left it alone because "this repository holds no ST25R3916 datasheet".  **It does**
+  — `hardware/beta/kicad/aqroot-beta/vendor/ST25R3916/ST25R3916_DS12484_Rev3.pdf`, since
+  the Beta board was drawn.  The field is commanded off with **Set default** (C0/C1h,
+  section 4.4.1, Operation mode ALL) and **VERIFIED** by reading Operation control **02h**
+  back for **0x00**, with section 4.1's overheat frame re-sent.  *Stop all activities* is
+  shown by negative control to be insufficient: it leaves that register alone.  An
+  unconfirmed field refuses accessory power BY NAME and HOLDS the burst slot on U9's
+  behalf, so SD/IR cannot overlap a field the board cannot see.  An independently retained
+  NFC stub is in the production-image test with four scenarios.
+* **`R13-04`** the independent oracle ACCEPTED its domain from the model it checks.  It
+  now DECLARES the product's domain and CONSTRUCTS the key multiset it expects — 32
+  permission rows, 24 named transitions, each exactly once, every live state contributing
+  network rows, the rejection set matched as a multiset.  Every permitted row carries its
+  SETTLED post-load node, sustained and with the worst burst, so retention is proved
+  rather than attainability alone.  The seeded canary travels with the physics of its
+  refusal.  The declared pair is ONE OBJECT, gated by identity — a value check could not
+  see Astra editing the consumer.  **Six destructive controls** run every release: empty
+  rows, empty network states, a duplicated key, a dropped retention proof, and Fable's
+  summary-only and raw-only corruptions.
+* **`R13-05`** a guarantee is a claim about a NAMED DOCUMENT ROW.  Every `GUARANTEED_*`
+  primitive must name its document and row, repeat both in its own source, state a
+  CONDITION, carry no widening and not declare itself.  Astra's
+  `DECLARED_ESTIMATE` → `GUARANTEED_MAX` relabel is a refused control.  The accessory
+  budgets are reclassified **DECLARED AND QUALIFIED** — neither `R97` = 1.87 kΩ nor
+  `R101` = 2.43 kΩ is one of TI's four published `ILIM` rows — with thin margins stated as
+  numbers (**+1.46 %**, **+2.17 %**) and a NEW first-article step **`C-ACC-ILIM-01`** as
+  the measurement of record.  **No published current capability moves.**
+* **`R13-06`** the current-facing documents were three derivations behind.  Five new
+  semantic scan families found twenty-eight active-looking retired values; each was
+  corrected or fenced.  Three were real: the exported fab notes told an assembler a
+  RETIRED delivery voltage (2.849642 / 2.982890 V against a derived 2.805637 /
+  2.910494 V, one of them scraped out of an English sentence); `C-THERM-01` was half
+  UNEXECUTABLE, naming a state the model says has no operating point; and the Tg
+  justification quoted three typed junction temperatures, the first of which D-790 had
+  retired.  All are derived now.  The 32-entry mode-indexed permission table is
+  **GENERATED** into both `DEVICE_SPEC` and `FIRST_FIVE_ASSEMBLY_PLAN`, closing Fable's
+  3.85 V-envelope / 3.80 V-quiet-row ambiguity, and every `measurement_of_record` the
+  model names must exist as a first-article step.
+* **`R13-07`** `Alpha and Omega Semiconductor` — the ampersand written out — is an EXACT
+  reviewed alias, with four claims proving it reaches the group through the table rather
+  than through any character rule, and that the re-marks, clones, distributors and the
+  plural near-match all still contradict.
+* **Fable's embedded-symbol-cache residual is real and worse than the name.**  The cached
+  `AQROOT_Beta:AO4800` entry carried `Manufacturer = onsemi`, onsemi's case designation
+  and **onsemi's RETIRED NTMD4820N datasheet URL** — so a human opening `Q2`'s symbol to
+  judge a substitution was sent to the part this design refuses.  The display FPC
+  connector's cache named the PANEL while every instance is the CONNECTOR.  Both corrected;
+  F13 now reads the cache, with the exact D-793 state as a refused control.
+
+**WHAT IS NOT CLAIMED.**  D-794 is an ANALYTICAL closure.  Manufacturer CAM acceptance,
+B01-B14, enclosure/CAD, first-article FA01-FA10 and procurement all remain outstanding,
+and nine constrained fitted sourcing groups plus the AOS pass-pair allocation are
+unresolved.  **REVIEW TARGET, NOT A FABRICATION AUTHORIZATION.  DO NOT ORDER.**
+
+
 ## D-793 — 2026-09-22 — ROUND-12 FULL CONVERGENCE: A CONNECTOR SPECIFICATION THAT WAS IN THE ARCHIVE ALL ALONG, A CEILING THAT ROUNDED UP ACROSS A CLIFF, A RADIO STILL TRANSMITTING AFTER THE RESET, AND A MODEL THAT WAS ITS OWN ORACLE
 
 Round-12 external review **REJECTED D-792**.  Astra graded it **C — DO NOT ORDER**

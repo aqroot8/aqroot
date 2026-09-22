@@ -177,15 +177,22 @@ static bool bringUpSpiBAndQuiesceRadios() {
   SPI.begin(AQROOT_PIN_SPI_B_SCK, AQROOT_PIN_SPI_B_MISO, AQROOT_PIN_SPI_B_MOSI,
             -1);
   const RadioQuiesce q = quiesceRadios(g_spi_b);
-  g_app.noteRadiosQuiesced(q.ok());
-  char detail[176];
+  g_app.noteRadiosQuiesced(q.cc1101_confirmed && q.sx1262_confirmed);
+  // D-794 / R13-03: the NFC front end is quiesced and verified on the same
+  // path, and its verdict is reported separately because it gates a
+  // different set of permissions -- the burst slot as well as the rails.
+  g_app.noteNfcFieldQuiesced(q.nfc_confirmed, q.nfc_operation_control);
+  char detail[232];
   snprintf(detail, sizeof(detail),
-           "CC1101 MARCSTATE=0x%02X (%s), SX1262 status=0x%02X (%s), NFC field "
-           "state UNKNOWN-but-bounded (carried as a duty allowance)",
+           "CC1101 MARCSTATE=0x%02X (%s), SX1262 status=0x%02X (%s), "
+           "ST25R3916 Operation control=0x%02X (%s)",
            q.cc1101_marcstate, q.cc1101_confirmed ? "IDLE" : "NOT IDLE",
-           q.sx1262_status, q.sx1262_confirmed ? "STANDBY" : "NOT STANDBY");
-  report("radios quiesced after MCU reset (U7 SRES/SIDLE, U8 SetStandby)",
-         q.ok(), detail);
+           q.sx1262_status, q.sx1262_confirmed ? "STANDBY" : "NOT STANDBY",
+           q.nfc_operation_control,
+           q.nfc_confirmed ? "FIELD OFF (power-up state)"
+                           : "FIELD STATE UNKNOWN");
+  report("radios quiesced after MCU reset (U7 SRES/SIDLE, U8 SetStandby, "
+         "U9 Set default)", q.ok(), detail);
   return q.ok();
 }
 
@@ -491,7 +498,10 @@ void loop() {
   // D-793 / R12-03.  LIVENESS.  A board that failed to quiesce once would
   // otherwise sit with an unknown radio state forever and refuse accessory
   // power with no way back -- the same shape as the expander recovery retry.
-  if (!g_app.radiosQuiesced()) {
+  // D-794 / R13-03: the NFC field is part of the same liveness requirement --
+  // an unconfirmed field holds a burst slot and refuses accessory power, so a
+  // board that gave up on it would refuse both forever.
+  if (!g_app.radiosQuiesced() || !g_app.nfcFieldConfirmedOff()) {
     static uint32_t last_quiesce = 0;
     static bool quiesce_retry_started = false;
     const uint32_t now = millis();

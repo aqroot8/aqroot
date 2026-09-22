@@ -1,0 +1,102 @@
+{
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_dnp_attribute": [
+  "C21",
+  "C22",
+  "C34",
+  "C35",
+  "C81",
+  "C82",
+  "L2",
+  "R107",
+  "R112",
+  "R119",
+  "R123",
+  "R44",
+  "R45",
+  "R68",
+  "R93",
+  "U13"
+ ],
+ "board_sha256": "c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907",
+ "checks": {
+  "POP1": {
+   "absent_from_board": [],
+   "board_dnp_attribute": 16,
+   "missing_flag": [],
+   "ok": true,
+   "schematic_dnp": 16
+  },
+  "POP2": {
+   "ok": true,
+   "sprayed_onto_fitted": []
+  },
+  "POP3": {
+   "board_only": [],
+   "ok": true,
+   "schematic_only": []
+  },
+  "POP4": {
+   "dnp_still_placed": [],
+   "fitted_dropped": [],
+   "ok": true,
+   "pos_rows_all": 267,
+   "pos_rows_excluding_dnp": 251
+  },
+  "POP5": {
+   "basis": {
+    "BOSS1": "moulded enclosure boss; mechanical, no schematic symbol.",
+    "BOSS2": "moulded enclosure boss; mechanical, no schematic symbol.",
+    "J4": "the battery interface is a MANUAL wire-solder operation, not an SMT placement: BATTERY_HARNESS freezes rear insertion and front-side barrel-fill inspection, and a pick-and-place row for it would be an instruction to fit a connector that is not fitted.",
+    "LS1": "PUI AS02008MR-LW152-R, a 20 mm 8 ohm speaker on 152 mm flying leads that mates to J6.  It is FITTED in the product, shipped on aqroot-Demo-OFF-BOARD.csv, and is not a board footprint.",
+    "test_points": "a test point is a bare copper land with no component to place; it exists for probing and rework and has no pick-and-place row."
+   },
+   "board_only_declaration_is_stale": [],
+   "board_only_declared": [
+    "BOSS1",
+    "BOSS2"
+   ],
+   "board_only_references": [],
+   "board_references": 315,
+   "fitted_absent_from_board": [],
+   "fitted_but_not_placed": [],
+   "not_placed_declaration_is_stale": [],
+   "not_placed_declared": [
+    "J4"
+   ],
+   "not_placed_prefixes": [
+    "TP"
+   ],
+   "off_board_declaration_is_stale": [],
+   "off_board_declared": [
+    "LS1"
+   ],
+   "off_board_not_marked_fitted_in_the_schematic": [],
+   "ok": true,
+   "placed_rows": 251,
+   "schematic_fitted": 298,
+   "why": "POP1-POP4 are all about the DNP FLAG.  None of them asks whether a reference the schematic marks FITTED exists on the board at all, so deleting a fitted footprint left this contract green while land_parity failed (R11-08).  Every exemption is declared and is checked in BOTH directions, so a stale declaration refuses as loudly as an undeclared absence."
+  }
+ },
+ "schema": 1,
+ "schematic_dnp": [
+  "C21",
+  "C22",
+  "C34",
+  "C35",
+  "C81",
+  "C82",
+  "L2",
+  "R107",
+  "R112",
+  "R119",
+  "R123",
+  "R44",
+  "R45",
+  "R68",
+  "R93",
+  "U13"
+ ],
+ "schematic_fitted": 298,
+ "verdict": "PASS"
+}

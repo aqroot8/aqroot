@@ -1,3 +1,349 @@
+## D-794 — **ROUND-13 FULL CONVERGENCE: A GAUGE READING THAT PREDATES THE LOAD IT AUTHORISES, A CHARGER MODEL WITH TWO NAMES FOR FOUR CONTROL LOOPS, AN NFC FIELD WHOSE DATASHEET WAS IN THE ARCHIVE, AND A DOMAIN THE ORACLE WAS HANDED INSTEAD OF CONSTRUCTING**
+
+    authority  board c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907
+    manifest   0db6f2c202772600b6a120f84c177344923e6147a68c802b233c6c8666faca95
+    content    recorded by the identity commit; see evidence/d794-review-target.json
+    identity   the post-commit verification record commit
+    parent     f79fbdee9dbb8c3a244da90b8adb80f821d7fe3d (D-793, REJECTED by Round-13)
+    scope      R13-01..R13-07 (Astra, reproduced), every Fable delta and residual,
+               and the new-defect sweep this closeout performed afterwards
+    copper     NONE.  No copper, no net, no footprint, no placement, no part
+               value and no protected-copper object moves at D-794.  Two
+               SCHEMATIC SYMBOL CACHE entries change (manufacturer, MPN,
+               datasheet and package text only); no land, pin or connection.
+    order      HOLD.  External-review target only.  Manufacturer CAM, B01-B14
+               acceptance, first-article FA01-FA10 and procurement all remain
+               outstanding, and nine constrained fitted sourcing groups plus the
+               AOS pass-pair allocation are unresolved.
+    owner      NO NEW OWNER DECISION IS REQUIRED.  Section 0 records one product
+               statement that CHANGES WORDING WITHOUT CHANGING CAPABILITY, under
+               the D-788 Option A decision already given.
+
+Round-13 rejected D-793.  **Astra** graded it **C — DO NOT ORDER** with seven findings
+and no unconditional copper respin established; **Fable** graded B on reviewed scope and
+declared its own review INCOMPLETE and not sufficient alone for order authorization.
+Astra's reproduced counterexamples control.
+
+**THE THEME IS THAT EVERY GUARD THIS PROGRAMME HAS BUILT ASKS WHETHER A NUMBER IS
+TRUE, AND NONE OF THEM ASKED WHEN IT IS FROM OR WHETHER IT IS ALL OF THEM.**  Round-12
+was the round where the checking apparatus was the defect.  Round-13 is the round where
+the apparatus is sound and its INPUTS are not: a valid gauge reading that describes a
+board the product is no longer in; a branch set that named two physical loops where the
+silicon has four; a domain the independent oracle accepted from the model it was meant
+to check; and a set of normative documents whose current-facing numbers were three
+derivations behind the model that derives them.
+
+### 0 — THE ONE OWNER-VISIBLE STATEMENT, AND IT IS A WORD RATHER THAN A CAPABILITY
+
+`R13-05` refuses the word *guaranteed* for the accessory current budgets, and it is
+right.  TI publishes the TPS22950-Q1 `ILIM` accuracy band at **four discrete `RILIM`
+rows** — 610 Ω, 1.15 kΩ, 2.21 kΩ and 19.2 kΩ — and **neither fitted resistor is one of
+them**: `R97` is 1.87 kΩ and `R101` is 2.43 kΩ.  D-791 already refused the BRACKETED
+figure for exactly this reason and fell back to the table's WIDEST ratio, which needs no
+assumption about curvature.  What D-793 did not say is that even the widest ratio, AT A
+RESISTOR BETWEEN ROWS, is an envelope **this programme declares** rather than one the
+manufacturer guarantees.  The low-side margins are thin and are now stated as numbers:
+**+1.46 %** on `ACC_3V3_SW` and **+2.17 %** on `ACC_5V_SW`.
+
+**THE PUBLISHED CURRENT CAPABILITY DOES NOT MOVE.**  `ACC_3V3_SW` = 400 mA total and
+`ACC_5V_SW` = 300 mA total, exactly as D-098 and the D-788 Option A owner decision
+require.  What moves is the CLASSIFICATION: **DECLARED AND QUALIFIED**, with
+**`C-ACC-ILIM-01`** — a new first-article step that measures the real limit at the
+programmed resistors, on all five units, at 0 °C, 25 °C and 40 °C — as the measurement
+of record.  No current document may call the budgets guaranteed, and `F12` now refuses a
+release in which one does.  Obtaining a manufacturer statement at the programmed points
+would upgrade the classification; nothing in this round assumes one.
+
+### 1 — `R13-01`: A VALID READING IS NOT NECESSARILY A READING OF THE PRESENT STATE
+
+**WHAT ASTRA REPRODUCED.**  The real production `p` → `5` sequence, with physical latch
+modelling: the display initialisation runs, the accessory enable is granted, the settled
+read falls below 3.20 V, and the rail is shed.
+
+**WHY, AND IT IS A QUESTION NO EARLIER GUARD ASKED.**  ADI 19-6171 Rev.7, VCELL Register
+(0x02): *"VCELL is the average of four ADC conversions.  The value updates every 250ms
+in active mode."*  Two facts, and the second one had been missed for fifteen decisions.
+The register is not a sample; it is a **MOVING AVERAGE OF FOUR**.  Immediately after a
+load edge all four averaged conversions are pre-load.  One update later, three are.
+Only after **four updates — 1000 ms** — is every conversion in the average post-load.
+
+D-779's 400 ms settled recheck was derived against the *other* fact, and its own comment
+says so: *"the MAX17048 updates VCELL about every 250 ms … 400 ms covers one update with
+margin."*  One update.  Three quarters of the average is still describing the board as it
+was before the step, and the reading is optimistic by three quarters of the step.
+
+Every guard this programme has built about this part asks whether the NUMBER is
+trustworthy — D-779 plausibility, D-784 `HIBRT`, D-790 forced sleep, D-791 the pre-state.
+None asks WHEN THE NUMBER IS FROM, and no transfer-level fact can answer it: an I2C ACK
+proves the part is alive, `MODE.HibStat` = 0 proves it is converting, and **neither
+proves it has converted since the load arrived.**
+
+**THE FIX IS A LOAD EPOCH, AND IT IS BOUND AT THE READER.**  `GaugeLoadEpoch` records the
+instant of the most recent material change in what the board draws.
+`DemoBringupApp::readFuelCellVoltage` — the ONE path every production consumer takes:
+`accessoryBatteryAllows` (the enable edge), `modeEntryAllowed` (the mode edge) and
+`applyAccessoryRetention` (retention and the post-enable recheck) — spends whatever is
+left of the averaging window before it reads, and logs that it is doing so.  The epoch is
+stamped at the display initialisation, the backlight ramp, the amplifier in both
+directions, each accessory rail step and each shed.  Nothing else clears it: not an ACK,
+not a qualification, not a successful read.
+
+**THE REPRODUCTION IS NOW A PERMANENT REGRESSION.**  `test_production_image.cpp` gained a
+MAX17048 model that converts on its own schedule — a four-deep ring, one push per 250 ms
+of recorded time, every conversion quantised to the register's own 78.125 µV LSB, and one
+CONSTANT gauge-error sign so nothing passes because two errors cancelled.  The node is
+derived from what is physically on at the moment of each conversion, read off the
+expander latch history and the recorder's own `digitalWrite` log — nothing is told to it.
+At a 3.960 V pack with a 0.200 V panel step the stale reading is 3.980 V (above the
+3.80 V quiet floor) and the honest one is 3.780 V (below it), and the state the stale
+reading would have authorised settles at 3.180 V, under the 3.20 V retention floor.
+**On D-793's reader the rail is granted and never shed; on D-794 it is refused at the
+edge.**  A positive control (a pack that can carry the rail still gets it) and a
+retention control (post-enable shedding still fires) bound it on both sides, and four
+mutation controls in `firmware_hw_map_contract` write D-793's behaviour back in.
+
+### 2 — `R13-02`: TWO NAMES FOR FOUR CONTROL LOOPS
+
+**WHAT ROUND-13 FOUND.**  *"Current DPPM treatment can hold SYS at the regulation value
+while folding charge, instead of respecting battery-tracking DPPM behavior.  VINDPM
+battery-tracking, DPPM, supplement entry/exit hysteresis, input current limiting,
+thermal foldback and mode history must be distinct physical controls."*
+
+It reproduces, and it is not a naming complaint.  D-793's branch 1 computed the input
+current that would hold `VSYS_REG` exactly and then folded the CHARGE current back to
+stay inside it.  **Nothing in the BQ25185 does that.**  SYS regulation (SLUSF65B 6.3.5)
+is a SERIES PASS regulation: it limits `VSYS` from above by dropping the surplus across
+the input FET, and it has no authority over the charge current at all.  The loops that DO
+fold charge are the input current limit, `VINDPM`, `DPPM` and `TREG`, each with its own
+threshold.  The consequence is physical: with the worst QUALIFIED cable the real part
+draws the full programmed charge current and lets SYS fall to whatever the source
+resistance leaves, which is HOTTER than D-793's model at light load — and the published
+charge ceiling is derived from that heat.
+
+**THE BRANCH SET IS REBUILT FROM THE PRIMARY DATASHEET** — `SYS_REG`, `CC_PATH_LIMITED`,
+`ILIM`, `VINDPM`, `DPPM`, `NO_CHARGE`, `SUPPLEMENT` — with `VINDPM` battery-tracking
+(`VBAT` + 330 mV above 3.5 V, a fixed 3.6 V below it), the `VBSUP1`/`VBSUP2` hysteresis
+band and an explicit MODE HISTORY, so a state inside the band is solved from where the
+part already was.  `F14`'s oracle checks every branch INEQUALITY independently, from its
+own primitives, and never reads the solver's conclusions.
+
+**THE CEILING IS RE-DERIVED FROM SCRATCH AND IT IS SWEPT.**  `VDPPM`, `VBSUP1`, `VBSUP2`
+and `VINDPM_TRACK` have a TYP column in SLUSF65B and nothing else, and the supplement
+discontinuity is a FUNCTION of them — so every ceiling question is asked at seven points
+of a declared threshold sweep and both mode histories, and answered by the worst.  The
+raw ceiling is **3.818199 W**; the published figure is that reduced by a declared 5 %
+guardband and FLOORED onto a 0.05 W grid — **3.600 W**, confirmed rather than inherited.
+
+**AND THE NAME WAS WRONG, WHICH FABLE FOUND SEPARATELY.**  D-793 called 3.600 W the
+*charge-TIME* ceiling.  It is not one: it guarantees that the battery does not DISCHARGE
+while the adapter is attached and that `U11` stays inside TI's 125 °C operating maximum.
+Whether a cycle also FINISHES — delivers the pack's rated 2.5 Ah and terminates before
+the BQ25185's 360 min `tMAXCHG` safety timer — is a different question, and on a
+throttled source the charge current is what folds back first.  Both are now derived and
+published: the **charge-REGIME** ceiling **3.600 W**, and the **charge-COMPLETION**
+ceiling **1.150 W**.  At the regime ceiling NO qualified source class completes inside
+`tMAXCHG`; at the completion ceiling EVERY one does, the worst qualified 2 m cable with
+13.8 min of margin.
+
+**THE ADAPTER AND CABLE ARE A PUBLISHED CONTRACT** at `U11` pin 10, with four enumerated
+source classes, their source impedance, the VIN-pin potential each leaves at the
+programmed 1.1 A input limit, the required source CAPABILITY, and one class deliberately
+OUTSIDE the contract reported so the cost of ignoring it is a number rather than a
+warning.
+
+### 3 — `R13-03`: THE THIRD RADIO, AND THE DATASHEET WAS IN THE REPOSITORY ALL ALONG
+
+D-793 quiesced the CC1101 and the SX1262 across an MCU reset and left the ST25R3916
+alone, with this reason in the source: *"this repository holds no ST25R3916 datasheet."*
+
+**IT DOES.**  `hardware/beta/kicad/aqroot-beta/vendor/ST25R3916/ST25R3916_DS12484_Rev3.pdf`,
+sha256 `6cac393e345ead685360befd6098d5aec7fbb1088b76ec33d1317a1c1a9773f6`, has been in
+the tree since the Beta board was drawn.  A refusal justified by an absent document, where
+the document is present, is not conservatism — it is a wrong premise that happened to
+point at the cautious answer.  **This is the second time this programme has found a
+specification it already owned**; the first was the Molex connector at `R12-01`.
+
+**WHAT THE PRIMARY DOCUMENT SUPPORTS.**  Section 4.4.1, **Set default**, direct command
+code **C0/C1h**, Table 13 Operation mode **ALL** — so unlike most direct commands it does
+not require `en` to be set first: *"puts the ST25R3916/7 in the same state as power-up
+initialization."*  Section 4.2: *"At power-on all its bits are set to 0"* — Power-down.
+Table 21, Operation control register **02h**: bit 7 `en`, bit 6 `rx_en`, bit 3 `tx_en`,
+every default 0.  So the field is commanded off with the part's own documented mechanism
+and then **VERIFIED** by reading 02h back and requiring **0x00** — not assumed from the
+write having ACKed, because a part that answers SPI and keeps driving RFO1/RFO2 is exactly
+the state being defended against.  Section 4.1's `FCh / 04h / 10h` overheat-protection
+frame is re-sent, because that section requires it after power-on **and after Set
+default**.
+
+**AND "STOP ALL ACTIVITIES" IS NOT SUFFICIENT**, which `R13-03` asks about by name:
+section 4.4.2 stops the FIFO, the transfers and the timers and leaves the Operation
+control register ALONE, so an unmodulated carrier survives it — and it is only accepted
+while `en` is set.  Both facts are negative controls in the production-image test.
+
+**THE BURST ARBITER NOW MATCHES THE PHYSICAL FIELD.**  The arbiter exists because the
+permission table is derived at the worst SINGLE burst rather than the coincident sum of
+three (`R12-08`), and that derivation is only sound if the arbiter's model matches the
+board.  An MCU reset zeroes it while U9 is still driving its antenna — so an UNCONFIRMED
+field TAKES the slot, on U9's behalf, and a microSD write or an IR burst is refused rather
+than being handed a slot the field physically occupies.  Accessory power is refused by
+name while the field state is unknown: D-793 argued the retained field needed no refusal
+because the ledger carries it as a bounded-duty allowance, and that is true of the HEAT
+and false of the PERMISSION — the allowance is 25 % of 100 mA and a field a dead image
+left keyed is 100 mA continuously, four times what every floor was derived against.
+
+An independently retained ST25R3916 stub — constructed before `setup()`, so the image's
+own construction cannot clear it — is in the production-image test with four scenarios: a
+retained field quiesced and verified, a part that ignores Set default, the
+stop-all-activities-only case, and the liveness retry.
+
+### 4 — `R13-04`: THE ORACLE WAS HANDED ITS DOMAIN INSTEAD OF CONSTRUCTING IT
+
+Astra deleted every F14 table row, deleted every F14 network state, duplicated a named
+key, and altered the F6-only declared pair — and the release stayed green in important
+cases.  **All four have one cause.**  `completeness()` built a SET from whatever it was
+handed and asked whether the required names were IN it.  A set answers *is this present*;
+it cannot answer *is this all of it*, and it cannot answer *was this said twice*.
+
+The oracle now DECLARES the product's own domain — three optional modes, two permission
+edges, two rail counts, seven cell-to-load states, five accessory configurations, two cell
+corners — and CONSTRUCTS the key multiset it expects.  What arrived must equal it exactly:
+32 permission rows, 24 named transitions, each exactly once, every live state contributing
+network rows, and the rejection set matching the refused rows as a multiset rather than
+merely being non-empty.
+
+**EVERY PERMITTED ROW NOW PROVES SETTLED RETENTION, NOT ATTAINABILITY.**  The permission
+table's rows carried a floor, a critical cell and a pre-state ceiling, so the oracle could
+only re-check that the floor was REACHABLE.  Whether the state it authorises holds the
+node above retention after the load arrives was a claim the canonical model made about
+itself.  Each row now carries its settled post-load node — sustained, and with the worst
+coincident burst — and the oracle re-checks `node − gauge ≥ retention` on both.
+
+**THE SEEDED CANARY IS A PHYSICAL STATE, NOT A NAME.**  It travels with the limits it
+fails at both cell corners and the absence of an operating point at either, and the oracle
+rules on those.
+
+**THE DECLARED PAIR IS ONE OBJECT.**  D-793 bound it by VALUE and Astra edited the
+CONSUMER: `DECLARED_DUAL_RAIL_BUDGET_A = dict(apm.DECLARED_DUAL_RAIL_BUDGET_A)` made a
+copy, F12's equality clause compared the authority with the physics — both correct, both
+agreeing — while every F6 answer used the altered figure.  A value check cannot see that;
+an IDENTITY check can, and the clause now asserts `is`.
+
+The same shape produced a second, smaller find at this closeout: the ampacity coverage
+clause read its REQUIREMENT out of `env["rails_A"]`, a presentation dict in which every
+float has been through `round(x, 4)`.  The true ACC_3V3_SW fault ceiling is 0.80486138 A;
+the display copy says 0.8049 A; a design current equal to the true ceiling was reported
+STALE against its own value.  Rounding a requirement moves it up as often as down.
+
+**Six destructive controls** run on every release run, each one a thing Astra or Fable
+actually did: empty table rows, empty network states, a duplicated key, a dropped
+permitted-row retention proof, a summary-only corruption and a raw-only corruption.  The
+last two are Fable's delta: `charger_residuals` preferred `st['raw']`, so a corrupted
+public summary was invisible.  The duplicate is not removed — a 1e-9 W energy residual
+cannot be taken on six-decimal numbers — it is EQUALITY-GATED, and both directions fail.
+
+### 5 — `R13-05`: A GUARANTEE IS A CLAIM ABOUT A NAMED DOCUMENT ROW
+
+Astra relabelled `passpair.rds_hot_ratio_ruling` from `DECLARED_ESTIMATE` to
+`GUARANTEED_MAX` and every gate stayed green.  It reproduces because D-793's provenance
+audit was a TYPE check: it asked whether a (role, tag) pair was in a matrix, and
+`GUARANTEED_MAX` + `DEVICE_BOUND` is in that matrix.
+
+Every `GUARANTEED_*` entry must now appear in `GUARANTEED_ROWS`, which names the DOCUMENT
+and the ROW it is read from; must repeat both tokens in its own source text; must state a
+CONDITION, because a bound with no condition is `D-789`'s defect with the condition
+omitted; may not carry `widened_from`, because a widening is by construction not the
+published figure; and may not open its source with the word DECLARED.  Two entries were
+re-tagged by this audit: `R75`'s tolerance corners are `DERIVED`, because a corner of a
+guaranteed band is a calculation rather than a second guarantee.
+
+### 6 — `R13-06`: THE CURRENT-FACING DOCUMENTS WERE THREE DERIVATIONS BEHIND
+
+The semantic stale-value scan gained five claim families — delivery voltage, the limiter
+programming resistors, the declared ILIM band, the charge-regime thermal states and the
+adapter/cable source path — and found **twenty-eight** active-looking retired values
+across five normative documents.  Each was either corrected or fenced by its own heading,
+and three of them were real staleness rather than history:
+
+* **the exported fab notes told an assembler a RETIRED delivery voltage.**
+  `ACC_3V3_REINFORCEMENT.json` carried the D-789-era **2.849642 / 2.982890 V** pair while
+  F6 derived **2.805637 / 2.910494 V**, and `export_fab_package` PRINTS those two numbers
+  from that file — one of them by scraping an English sentence with
+  `.split("delivers ")`.  Both are read from explicit fields now and F6 binds the file to
+  its own derivation.
+* **`C-THERM-01` was half unexecutable.**  It told a technician to hold *both published
+  accessory budgets* with the display at full brightness and a sub-GHz radio transmitting,
+  and F12 says that combination has **no operating point at any attainable cell voltage**.
+  The step is re-based onto the same modes at the DECLARED SIMULTANEOUS PAIR, and its
+  three measured-against figures are emitted from the model.
+* **the fab notes' Tg justification quoted three typed junction temperatures**, the first
+  of which — 115.4 °C — D-790 RETIRED while the note still printed it as the reason the
+  Tg requirement exists.  All three are derived now, and the honest current answer is
+  published: **102.16 °C** at the sustained thermal envelope, and **178.42 °C** at the
+  peak ELECTRICAL envelope, which is above TI's operating maximum AND above its thermal
+  shutdown — which is exactly why the sustained envelope is derived and published
+  separately and why F12 proves the network cannot hold the peak envelope as an operating
+  point.
+
+**AND THE MODE-INDEXED PERMISSION TABLE IS GENERATED RATHER THAN RESTATED.**  Fable found
+`FIRST_FIVE_ASSEMBLY_PLAN` saying "3.85 V to enable a first rail" while the firmware's
+QUIET row applies **3.80 V**.  Both numbers are correct and they answer different
+questions — 3.85 V is the published ENVELOPE, the worst floor any permitted row carries;
+3.80 V is the row a bench is actually in.  A procedure that prints only the envelope sends
+a technician to a pack voltage 50 mV above what the board requires and makes the refusals
+it is trying to demonstrate look arbitrary.  The whole 32-entry policy is now EMITTED by
+F12 from the same rows the firmware header is generated from, into both
+`FIRST_FIVE_ASSEMBLY_PLAN` and `DEVICE_SPEC`, and a release that does not carry it
+verbatim FAILS.
+
+**THE OBSERVED CHARGING GAUGE-NODE BEHAVIOUR IS DOCUMENTED** as physics rather than as a
+fault: the MAX17048 reads `BAT_PROTECTED_P`, on the SYS side of the pass pair and `R75`,
+so while the charger delivers current INTO the cell that same current raises the node the
+gauge reads above the cell's own terminal.  A reported VCELL taken while charging
+over-states the cell, and unplugging may trigger a safe retention shed as the node falls
+by that product.  Both are expected first-five behaviour and are recorded so an operator
+does not report the second as a defect.
+
+**AND A MEASUREMENT OF RECORD THAT IS NOT A STEP IS A PROMISE NOBODY KEEPS.**
+`C-ACC-ILIM-01` was named eight times in the canonical model and existed nowhere as a step
+a technician executes.  It exists now, and F12 requires EVERY `measurement_of_record` any
+tagged primitive names to appear in the first-article procedure.
+
+### 7 — `R13-07` AND THE FABLE RESIDUALS
+
+`Alpha and Omega Semiconductor` — the company's own prose spelling of its own name, the
+ampersand written out — was being rejected while four other legal forms of the same
+company were accepted.  It is an EXACT alias, not a rule: a general "& means and" fold
+would be the fuzzy matching `R13-07` forbids.  Four positive and negative claims bound it,
+including that the written-out spelling reaches the group through the REVIEWED TABLE and
+not through any character rule, and that VBsemi, Kexin, the ampersand simply DROPPED,
+`Alpha & Omega Trading`, the distributors and the plural near-match all still contradict.
+
+**AND FABLE'S EMBEDDED-SYMBOL-CACHE RESIDUAL IS REAL, AND WORSE THAN THE NAME.**  A KiCad
+sheet carries a `lib_symbols` CACHE of each library symbol.  `F13` reads INSTANCE
+properties, because that is what the BOM is built from, so nothing had ever read the
+cache.  `AQROOT_Beta:AO4800` carried `Manufacturer = "onsemi"`, `Package = "SOIC-8 (case
+751-07)"` — onsemi's own case designation — and `Datasheet` = **onsemi's NTMD4820N PDF
+URL**, the part D-790 retired for an electrical reason.  A human who opens `Q2`'s symbol
+to judge a substitution offered over email was being sent to the datasheet of the part
+this design refuses.  The display FPC connector's cached entry had the same shape,
+naming the PANEL as its manufacturer while every instance of it is the CONNECTOR.  Both
+are corrected, and F13 now requires every cached Manufacturer to canonicalise to the same
+company as every instance that uses it and forbids a cached datasheet pointing at another
+company — with the exact D-793 state as a refused control, and a reviewed alias as a
+positive one.
+
+### WHAT IS NOT CLAIMED
+
+D-794 is an **ANALYTICAL** closure and nothing more.  No copper moved.  The manufacturer
+has not accepted CAM; B01-B14 acceptance is pending; enclosure/CAD and first-article
+FA01-FA10 remain downstream PHYSICAL evidence that no amount of modelling replaces; nine
+constrained fitted sourcing groups and the AOS pass-pair allocation are unresolved; and
+the pack DC multiplier, the AO4800 hot ratio, the θJL/local-air relation and the panel
+logic current remain DECLARED bounds until first article measures them.  The four gates
+stay apart: PRE-ORDER ANALYTICAL is closed on this target; FAB/CAM ACCEPTANCE, FIRST-
+ARTICLE VALIDATION and PROCUREMENT are not.
+
+
 ## D-793 — **ROUND-12 FULL CONVERGENCE: A CONNECTOR SPECIFICATION THAT WAS IN THE ARCHIVE ALL ALONG, A CEILING THAT ROUNDED UP ACROSS A CLIFF, A RADIO STILL TRANSMITTING AFTER THE RESET, AND A MODEL THAT WAS ITS OWN ORACLE**
 
     authority  board c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907

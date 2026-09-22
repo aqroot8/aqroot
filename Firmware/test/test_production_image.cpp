@@ -93,6 +93,120 @@ class Board : public aqroot_hal::I2cModel {
   bool fail_writes = true;
   bool fail_reads = true;
 
+  // =========================================================================
+  // D-794 / R13-01.  A MAX17048 THAT CONVERTS ON ITS OWN SCHEDULE.
+  //
+  // ROUND-13: "Add the Astra stale-pre-light-step reproduction as a permanent
+  // negative/regression test, including threshold/gauge quantization and one
+  // constant gauge-error sign."
+  //
+  // Every scenario above this one reads `vcell_counts` as a constant, which
+  // is the right model for a test about HIBRT, sleep or plausibility and the
+  // wrong one for a test about AGE.  With `physical_conversions` set, the
+  // register stops being a variable the test writes and becomes what ADI
+  // 19-6171 Rev.7 describes: "VCELL is the average of four ADC conversions.
+  // The value updates every 250ms in active mode."
+  //
+  // THE THREE THINGS THE ROUND-13 WORDING ASKS FOR, EXPLICITLY:
+  //
+  //   FOUR-DEEP AVERAGE, 250 ms APART.  `conversions_` is a ring of four and
+  //   `advance()` pushes one per 250 ms of RECORDED time.  Immediately after
+  //   a load step all four are pre-step; one update later three are; only
+  //   after four is the register describing the present load.  This is the
+  //   mechanism, not an approximation of it.
+  //
+  //   QUANTIZATION.  Every conversion is rounded to the register's own LSB,
+  //   78.125 uV, exactly as the part reports it, so a threshold comparison in
+  //   the image sees the same grid the silicon produces.
+  //
+  //   ONE CONSTANT GAUGE-ERROR SIGN.  `gauge_error_V` is added to every
+  //   conversion and never flipped, so no scenario can pass because an error
+  //   that hurt on one read happened to help on the next.  The default is the
+  //   POSITIVE sign, which is the adverse one for admission: it makes the
+  //   part report a healthier cell than it has.
+  //
+  // THE NODE.  Derived from what is physically ON at the moment of each
+  // conversion -- the accessory latches (from this model's own write history,
+  // so a conversion in the past sees the past) and the panel (from the
+  // recorder's own `digitalWrite` log for DISP_BL_PWM, which is the line
+  // `runDisplayInitialisation` raises).  Nothing here is told by the test
+  // when a load arrived; it is read off what the image did.
+  // =========================================================================
+  bool physical_conversions = false;
+  double ocv_V = 4.000;
+  double display_sag_V = 0.0;
+  double acc3v3_sag_V = 0.0;
+  double acc5v_sag_V = 0.0;
+  double gauge_error_V = +0.020;    // ADI 19-6171 Rev.7: +/-20 mV/cell
+  struct LatchEvent { uint64_t t_us; uint16_t u3_output; };
+  std::vector<LatchEvent> latch_events;
+  uint32_t last_conversion_ms = 0;
+  uint16_t conversions[4] = {0, 0, 0, 0};
+  bool conversions_primed = false;
+
+  static uint16_t quantise(double volts) {
+    if (volts < 0.0) volts = 0.0;
+    double counts = volts / double(Max17048Guard::kVcellLsbV);
+    if (counts > 65535.0) counts = 65535.0;
+    return uint16_t(counts);          // the part TRUNCATES to its own LSB
+  }
+
+  bool accessoryOnAt(uint64_t t_us, uint8_t bit) const {
+    uint16_t latch = 0x0000;
+    bool seen = false;
+    for (const auto &e : latch_events) {
+      if (e.t_us > t_us) break;
+      latch = e.u3_output;
+      seen = true;
+    }
+    if (!seen) return false;
+    return Pcal9535a::bitOf(latch, bit);
+  }
+
+  static bool displayUpAt(uint64_t t_us) {
+    bool up = false;
+    for (const auto &w : aqroot_hal::recorder().digital_writes) {
+      if (w.t_us > t_us) break;
+      if (w.pin == AQROOT_PIN_DISP_BL_PWM) up = (w.value != LOW);
+    }
+    return up;
+  }
+
+  double nodeAt(uint64_t t_us) const {
+    double v = ocv_V;
+    if (displayUpAt(t_us)) v -= display_sag_V;
+    if (accessoryOnAt(t_us, AQROOT_U3_ACC_3V3_EN)) v -= acc3v3_sag_V;
+    if (accessoryOnAt(t_us, AQROOT_U3_ACC_5V_SW_EN)) v -= acc5v_sag_V;
+    return v;
+  }
+
+  void advanceConversions() {
+    if (!physical_conversions) return;
+    const uint64_t now_us = aqroot_hal::recorder().clock_us;
+    if (!conversions_primed) {
+      conversions_primed = true;
+      last_conversion_ms = uint32_t(now_us / 1000u);
+      const uint16_t c = quantise(nodeAt(now_us) + gauge_error_V);
+      for (uint16_t &x : conversions) x = c;
+      vcell_counts = c;
+      return;
+    }
+    uint64_t tick_us = uint64_t(last_conversion_ms) * 1000u;
+    while (now_us >= tick_us + uint64_t(kGaugeVcellUpdateMs) * 1000u) {
+      tick_us += uint64_t(kGaugeVcellUpdateMs) * 1000u;
+      conversions[0] = conversions[1];
+      conversions[1] = conversions[2];
+      conversions[2] = conversions[3];
+      conversions[3] = quantise(nodeAt(tick_us) + gauge_error_V);
+    }
+    last_conversion_ms = uint32_t(tick_us / 1000u);
+    // The register is the AVERAGE of the four, and it is the average that is
+    // stale -- not one sample of it.
+    const uint32_t sum = uint32_t(conversions[0]) + conversions[1]
+                       + conversions[2] + conversions[3];
+    vcell_counts = uint16_t(sum / 4u);
+  }
+
   bool shouldFail(uint8_t address, uint8_t reg, bool writing) const {
     if (bus_down) return true;
     if (fail_address < 0 || int(address) != fail_address) return false;
@@ -114,7 +228,15 @@ class Board : public aqroot_hal::I2cModel {
     if (address == AQROOT_EXP_U2_ADDR || address == AQROOT_EXP_U3_ADDR) {
       uint16_t &out = (address == AQROOT_EXP_U2_ADDR) ? u2_output : u3_output;
       uint16_t &cfg = (address == AQROOT_EXP_U2_ADDR) ? u2_config : u3_config;
-      if (reg == Pcal9535a::kRegOutput0) out = value;
+      if (reg == Pcal9535a::kRegOutput0) {
+        out = value;
+        // D-794 / R13-01: the latch history, so a conversion that happened
+        // before this write sees the state that was there before it.
+        if (address == AQROOT_EXP_U3_ADDR) {
+          latch_events.push_back(
+              {aqroot_hal::recorder().clock_us, u3_output});
+        }
+      }
       else if (reg == Pcal9535a::kRegConfig0) cfg = value;
       return true;
     }
@@ -166,6 +288,11 @@ class Board : public aqroot_hal::I2cModel {
         // A SLEEPING gauge stops converting, so VCELL is whatever it was --
         // the model returns the LAST value, which is the whole point: a stale
         // reading is indistinguishable from a fresh one by its value alone.
+        //
+        // D-794 / R13-01: with `physical_conversions` set, the same sentence
+        // is true of an AWAKE part for the first second after any load edge,
+        // and that is the defect Round-13 reproduced.
+        if (!asleep()) advanceConversions();
         value = vcell_counts;
       } else if (reg == 0x08) value = 0x0012;   // VERSION
       for (size_t i = 0; i < length; ++i) {
@@ -226,10 +353,119 @@ class Cc1101Stub : public aqroot_hal::SpiModel {
     const bool sx = r.pin_low[AQROOT_PIN_SX1262_CS_N];
     if (cc) return cc1101(out);
     if (sx) return sx1262(out);
-    return 0x3F;                     // the NFC part answers with a plausible id
+    return st25r3916(out);
   }
 
+  // =========================================================================
+  // D-794 / R13-03.  THE INDEPENDENTLY RETAINED ST25R3916.
+  //
+  // ROUND-13: "Add an independent retained-NFC peripheral stub to the real
+  // production-image reset test: field active before MCU reset, U9 remains
+  // powered, production setup must physically quiesce/verify before
+  // permission."
+  //
+  // U9 is supplied from +3V3 and from ACC_5V's boost; an MCU reset touches
+  // neither.  So this model, like the CC1101 above, is constructed BEFORE
+  // `setup()` and is not owned by the image -- construction, which is what a
+  // reset is, cannot clear it.  It starts with the Operation control register
+  // holding `en | tx_en`: oscillator and regulators up, transmitter enabled.
+  // That is a live 13.56 MHz carrier by DS12484 Rev 3 Table 21's own
+  // definition, drawing continuously where the ledger charges 25 % duty.
+  //
+  // It leaves that state only when it is actually commanded to.  DS12484
+  // section 4.4.1: Set default "puts the ST25R3916/7 in the same state as
+  // power-up initialization", and section 4.2: "At power-on all its bits are
+  // set to 0".  `ignores_set_default` is the negative control -- a part that
+  // does not quiesce must leave the image refusing, not reporting success.
+  //
+  // `stop_all_activities_is_enough` is the OTHER negative control, and it is
+  // the one R13-03 asks for by name ("Do not assume 'stop all activities' is
+  // sufficient for every retained state").  With it false -- which is what
+  // the datasheet describes -- C2/C3h clears the FIFO and the timers and
+  // leaves Operation control ALONE, so an image that sent only that would
+  // read back 0x88 and be refused.
+  // =========================================================================
+  uint16_t nfc_operation_control = 0x88;   // en | tx_en: the field is UP
+  uint8_t nfc_ic_identity = 0x2A;          // DS12484 Table 117 default
+  bool nfc_ignores_set_default = false;
+  bool nfc_stop_all_activities_is_enough = false;
+  int nfc_set_default_commands = 0;
+  int nfc_stop_all_commands = 0;
+  int nfc_operation_control_reads = 0;
+  int nfc_operation_control_reads_while_field_up = 0;
+  int nfc_overheat_frames = 0;
+  bool nfcFieldIsUp() const { return (nfc_operation_control & 0x88) != 0; }
+
  private:
+  uint8_t st25r3916(uint8_t out) {
+    // DS12484 Rev 3 Table 11: the first two bits of the first byte are the
+    // mode.  00 = register write, 01 = register read, 11 = direct command.
+    if (nfc_pending_read_) {
+      nfc_pending_read_ = false;
+      if (nfc_read_addr_ == 0x02) {
+        ++nfc_operation_control_reads;
+        if (nfcFieldIsUp()) ++nfc_operation_control_reads_while_field_up;
+        return uint8_t(nfc_operation_control);
+      }
+      // DS12484 Rev 3 Table 117: ic_type4..0 = 0b00101 and ic_rev2..0.
+      // 0x2A is the documented power-up value; the probe asserts the
+      // TYPE half and reports the revision.
+      if (nfc_read_addr_ == 0x3F) return nfc_ic_identity;
+      return 0x00;
+    }
+    if (nfc_pending_write_ > 0) {
+      --nfc_pending_write_;
+      if (nfc_write_addr_ == 0x02) nfc_operation_control = out;
+      return 0x00;
+    }
+    if (nfc_overheat_bytes_ > 0) { --nfc_overheat_bytes_; return 0x00; }
+    // DS12484 Rev 3 Table 13: FCh is the Test access direct command, "Enable
+    // R/W access to Test register", and section 4.1 requires the three-byte
+    // frame FCh / 04h / 10h after power-on AND after Set default.  It is
+    // matched before the generic direct-command branch because its two
+    // trailing bytes are a register write into the TEST space, not the
+    // ordinary one.
+    if (out == 0xFC) {
+      ++nfc_overheat_frames;
+      nfc_overheat_bytes_ = 2;
+      return 0x00;
+    }
+    const uint8_t mode = uint8_t(out & 0xC0);
+    if (mode == 0xC0) {                        // direct command
+      if (out == 0xC0 || out == 0xC1) {        // Set default, section 4.4.1
+        ++nfc_set_default_commands;
+        if (!nfc_ignores_set_default) nfc_operation_control = 0x00;
+        return 0x00;
+      }
+      if (out == 0xC2 || out == 0xC3) {        // Stop all activities, 4.4.2
+        ++nfc_stop_all_commands;
+        // Section 4.4.2 stops the FIFO, transmission/reception and the
+        // timers.  It does NOT touch the Operation control register, so the
+        // carrier keeps running -- unless this control says otherwise.
+        if (nfc_stop_all_activities_is_enough) nfc_operation_control = 0x00;
+        return 0x00;
+      }
+      return 0x00;
+    }
+    if (mode == 0x40) {                        // register read
+      nfc_pending_read_ = true;
+      nfc_read_addr_ = uint8_t(out & 0x3F);
+      return 0x00;
+    }
+    if (mode == 0x00) {                        // register write
+      nfc_pending_write_ = 1;
+      nfc_write_addr_ = uint8_t(out & 0x3F);
+      return 0x00;
+    }
+    return 0x00;
+  }
+
+  bool nfc_pending_read_ = false;
+  uint8_t nfc_read_addr_ = 0;
+  int nfc_pending_write_ = 0;
+  uint8_t nfc_write_addr_ = 0;
+  int nfc_overheat_bytes_ = 0;
+
   uint8_t cc1101(uint8_t out) {
     if (pending_marcstate_) {
       pending_marcstate_ = false;
@@ -1041,6 +1277,284 @@ int main() {
           "radio state forever", radio.sres_strobes > sres_before);
     claim("...and the retained transmit state is cleared on the retry",
           !radio.transmitting);
+  }
+
+  // =========================================================================
+  // D-794 / R13-03.  A RETAINED NFC FIELD ACROSS AN MCU RESET.
+  //
+  // ROUND-13: "ST25R3916 can retain a physical RF field across MCU-only reset
+  // while software authority restarts with no burst owner. ... Use the exact
+  // ST25R3916 primary-documented mechanism to disable/reset the field and
+  // verify the physical state before accessory/burst/radio authority becomes
+  // permissive."
+  // =========================================================================
+  {
+    Cc1101Stub radio;
+    radio.transmitting = false;            // the sub-GHz side is clean
+    radio.nfc_operation_control = 0x88;    // en | tx_en: the FIELD IS UP
+    rigWithRetainedRadio(radio);
+    claim("R13-03: the NFC field really is up before the image starts",
+          radio.nfcFieldIsUp());
+    setup();
+
+    claim("setup issues the ST25R3916 Set default direct command "
+          "(DS12484 Rev 3 section 4.4.1, code C0/C1h)",
+          radio.nfc_set_default_commands >= 1);
+    claim("...and the retained field is actually gone",
+          !radio.nfcFieldIsUp());
+    claim("...and the Operation control register is at its power-up value, "
+          "which section 4.2 defines as Power-down",
+          radio.nfc_operation_control == 0x00);
+    claim("...and the quiesce is VERIFIED by reading register 02h back, not "
+          "assumed from the write having ACKed",
+          radio.nfc_operation_control_reads >= 1);
+    claim("...and no verifying read was taken while the field was still up",
+          radio.nfc_operation_control_reads_while_field_up == 0);
+    claim("...and section 4.1's overheat-protection frame is re-sent, which "
+          "Set default has just undone",
+          radio.nfc_overheat_frames >= 1);
+    claim("the console reports the ST25R3916 state as part of the quiesce",
+          rec().consoleHas("ST25R3916 Operation control=0x00"));
+    // With the field CONFIRMED off the accessory path is not refused for NFC
+    // reasons, and the burst slot is free.
+    press("3");
+    pump(2);
+    claim("...so the accessory rail is no longer refused by the NFC sentinel",
+          !rec().consoleHas("the physical field state of U9"));
+  }
+  {
+    // THE NEGATIVE CONTROL.  A part that ignores Set default must leave the
+    // image refusing, not reporting success.
+    Cc1101Stub radio;
+    radio.transmitting = false;
+    radio.nfc_operation_control = 0x88;
+    radio.nfc_ignores_set_default = true;
+    rigWithRetainedRadio(radio);
+    setup();
+    claim("R13-03 control: a part that ignores Set default is NOT reported "
+          "quiesced", rec().consoleHas("FIELD STATE UNKNOWN"));
+    claim("...and the field really is still up", radio.nfcFieldIsUp());
+    claim("...and the image says the field state is UNKNOWN by name",
+          rec().consoleHas("NFC quiesce: NOT CONFIRMED"));
+    press("3");
+    pump(2);
+    claim("...and the accessory rail is REFUSED, by name",
+          rec().consoleHas("the physical field state of U9"));
+    claim("...and the rail is physically OFF",
+          !Pcal9535a::bitOf(g_board.u3_output, AQROOT_U3_ACC_3V3_EN));
+    // ...and the BURST SLOT is held on U9's behalf, so a microSD write or an
+    // IR burst cannot overlap a field the board cannot see.
+    press("d");
+    pump(2);
+    claim("...and a microSD burst is refused because the NFC field holds the "
+          "arbiter", rec().consoleHas("NFC field is already drawing its "
+                                      "burst"));
+    press("x");
+    pump(2);
+    claim("...and so is an IR burst", rec().consoleCount(
+        "NFC field is already drawing its burst") >= 2);
+  }
+  {
+    // THE SECOND NEGATIVE CONTROL, AND R13-03 ASKS FOR IT BY NAME: "Do not
+    // assume 'stop all activities' is sufficient for every retained state."
+    // DS12484 section 4.4.2 stops the FIFO, the transfers and the timers and
+    // leaves the Operation control register alone, so a carrier survives it.
+    // An image that sent only C2/C3h would read 0x88 back and be refused.
+    Cc1101Stub radio;
+    radio.transmitting = false;
+    radio.nfc_operation_control = 0x88;
+    radio.nfc_ignores_set_default = true;          // pretend only C2/C3 landed
+    radio.nfc_stop_all_activities_is_enough = false;
+    rigWithRetainedRadio(radio);
+    setup();
+    claim("R13-03 control: Stop all activities alone does not clear the "
+          "Operation control register, so the field survives it",
+          radio.nfcFieldIsUp());
+    claim("...and the image refuses rather than reporting a quiesce",
+          rec().consoleHas("FIELD STATE UNKNOWN"));
+  }
+  {
+    // LIVENESS, on the same rule as the sub-GHz retry: an unconfirmed field
+    // refuses accessory power and holds a burst slot, so a board that gave up
+    // would refuse both forever.
+    Cc1101Stub radio;
+    radio.transmitting = false;
+    radio.nfc_operation_control = 0x88;
+    radio.nfc_ignores_set_default = true;
+    rigWithRetainedRadio(radio);
+    setup();
+    claim("R13-03 liveness: the failed NFC quiesce is reported",
+          rec().consoleHas("NFC quiesce: NOT CONFIRMED"));
+    radio.nfc_ignores_set_default = false;         // the part starts answering
+    const int before = radio.nfc_set_default_commands;
+    for (int i = 0; i < 8 && radio.nfcFieldIsUp(); ++i) {
+      delay(kRadioQuiescePeriodMs + 10);
+      loop();
+    }
+    claim("loop() retries the NFC quiesce rather than sitting with an "
+          "unknown field forever",
+          radio.nfc_set_default_commands > before);
+    claim("...and the retained field is cleared on the retry",
+          !radio.nfcFieldIsUp());
+  }
+
+  // =========================================================================
+  // D-794 / R13-01.  THE STALE PRE-LOAD VCELL, REPRODUCED AND THEN REFUSED.
+  //
+  // ROUND-13, IN ITS OWN WORDS: "Astra reproduced the real production p -> 5
+  // sequence with physical latch modeling: enable write occurs, settled read
+  // falls below 3.20 V, then safe shed."
+  //
+  // THE NUMBERS BELOW PUT THE DEFECT ON THE ONLY PATH THROUGH, AND THEY ARE
+  // CHOSEN SO THE TWO READINGS FALL ON OPPOSITE SIDES OF THE SHIPPED FLOOR.
+  //
+  //   pack open circuit                  3.960 V
+  //   panel + backlight cost             0.200 V of node
+  //   the 3.3 V accessory rail costs     0.600 V more
+  //   gauge error, ONE CONSTANT SIGN    +0.020 V  (the adverse direction)
+  //
+  //   reported BEFORE the panel   3.960 + 0.020 = 3.980 V  -> clears 3.80 V
+  //   reported AFTER  the panel   3.760 + 0.020 = 3.780 V  -> BELOW 3.80 V
+  //   settled if it HAD been granted  3.160 + 0.020 = 3.180 V -> below the
+  //                                   3.20 V retention floor
+  //
+  // So the stale reading AUTHORISES and the honest one REFUSES, and the state
+  // the stale reading authorises is one the very next settled recheck sheds.
+  // That is Astra's sequence with the numbers written out.  The shipped
+  // 3.80 V rail-edge floor is not wrong and is not touched: what was wrong is
+  // the value it was being compared against.
+  //
+  // WHAT THIS SCENARIO CATCHES.  On D-793 the '3' key reads 3.980 V, grants,
+  // and the recheck sheds -- so `ACCESSORY FAIL-CLOSED` appears and the
+  // refusal line does not.  On D-794 the read waits out the averaging window,
+  // sees 3.780 V, and refuses at the EDGE.  Both claims below are false on
+  // D-793 and true here, for that reason and no other.
+  // =========================================================================
+  {
+    rig();
+    g_board.physical_conversions = true;
+    g_board.ocv_V = 3.960;
+    g_board.display_sag_V = 0.200;
+    g_board.acc3v3_sag_V = 0.600;
+    g_board.gauge_error_V = +0.020;
+    // Prime the conversion ring at the PRE-PANEL node.  Without this the
+    // first read of the scenario would prime it at whatever the board is
+    // doing then, and a model that primes itself after the load edge cannot
+    // demonstrate a stale one.
+    g_board.advanceConversions();
+    setup();
+
+    // THE SEQUENCE, EXACTLY AS AN OPERATOR WALKS IT.
+    press("p");
+    pump(2);
+    claim("R13-01: the display initialisation ran", rec().consoleHas(
+        "display: four quadrants"));
+    const uint64_t after_display_us = rec().clock_us;
+    // The register really is still describing the pre-panel board at this
+    // instant -- which is what makes the rest of the scenario a reproduction
+    // rather than a construction.
+    g_board.advanceConversions();
+    const double stale_reported =
+        double(g_board.vcell_counts) * double(Max17048Guard::kVcellLsbV);
+    claim("...and the gauge still reports the PRE-PANEL node, above the "
+          "3.80 V rail-edge floor",
+          stale_reported > kAccessorySingleRailFloorV - 0.05);
+
+    press("3");
+    pump(3);
+
+    claim("...and the image says it is waiting for a post-load conversion",
+          rec().consoleHas("waiting") &&
+          rec().consoleHas("post-load conversion"));
+    claim("...and the wait is long enough to flush the whole four-conversion "
+          "average, not one update of it",
+          rec().clock_us - after_display_us
+          >= uint64_t(kGaugePostLoadConversionMs) * 1000u);
+
+    // THE OUTCOME, AND IT IS A REFUSAL AT THE EDGE RATHER THAN A GRANT AND A
+    // SHED.  R13-01: "permission itself must not knowingly authorize a state
+    // that immediately sheds."
+    claim("...and the accessory rail is REFUSED on the honest reading",
+          rec().consoleHas("ACC_3V3_SW REFUSED"));
+    claim("...and the rail was never physically energised",
+          !Pcal9535a::bitOf(g_board.u3_output, AQROOT_U3_ACC_3V3_EN));
+    claim("...and no grant-then-shed happened at all, which is the whole "
+          "point: the permission did not authorise a state the next recheck "
+          "would take away",
+          !rec().consoleHas("ACCESSORY FAIL-CLOSED"));
+  }
+  {
+    // THE POSITIVE CONTROL, WHICH IS WHAT MAKES THE ONE ABOVE MEAN ANYTHING.
+    // The same sequence on a pack that can genuinely carry the rail must
+    // still END WITH THE RAIL ON.  A guard that refused everything would pass
+    // the scenario above and fail here.
+    rig();
+    g_board.physical_conversions = true;
+    g_board.ocv_V = 4.150;
+    g_board.display_sag_V = 0.160;
+    g_board.acc3v3_sag_V = 0.120;
+    g_board.gauge_error_V = +0.020;
+    setup();
+    press("p");
+    pump(2);
+    press("3");
+    pump(3);
+    claim("R13-01 positive control: a pack that can carry the rail still "
+          "gets it", Pcal9535a::bitOf(g_board.u3_output,
+                                      AQROOT_U3_ACC_3V3_EN));
+    claim("...and it survives the settled recheck",
+          !rec().consoleHas("ACCESSORY FAIL-CLOSED"));
+  }
+  {
+    // AND THE RETENTION SHED IS STILL THERE.  R13-01: "Preserve post-enable
+    // retention shedding."  A rail granted on an honest reading whose load
+    // then turns out heavier than the enable floor anticipated must still be
+    // shed by the settled recheck -- the epoch changes WHEN the reading is
+    // taken, never whether the rule runs.
+    rig();
+    g_board.physical_conversions = true;
+    g_board.ocv_V = 4.150;
+    g_board.display_sag_V = 0.160;
+    g_board.acc3v3_sag_V = 0.820;     // heavier than any floor anticipates
+    g_board.gauge_error_V = +0.020;
+    setup();
+    press("p");
+    pump(2);
+    press("3");
+    pump(4);
+    claim("R13-01: post-enable retention shedding is PRESERVED",
+          rec().consoleHas("ACCESSORY FAIL-CLOSED"));
+    claim("...and it names the retention floor rather than a flat pack",
+          rec().consoleHas("retention floor"));
+    claim("...and the rail ends physically OFF",
+          !Pcal9535a::bitOf(g_board.u3_output, AQROOT_U3_ACC_3V3_EN));
+  }
+  {
+    // THE MECHANISM ITSELF, ISOLATED.  Without the wait, the register really
+    // does still describe the pre-display board -- which is the fact the
+    // whole finding rests on, and it is worth claiming directly rather than
+    // only through the image's behaviour.
+    rig();
+    g_board.physical_conversions = true;
+    g_board.ocv_V = 3.980;
+    g_board.display_sag_V = 0.160;
+    g_board.gauge_error_V = 0.0;
+    g_board.advanceConversions();            // prime at the pre-display node
+    const uint16_t before = g_board.vcell_counts;
+    aqroot_hal::recorder().digital_writes.push_back(
+        {AQROOT_PIN_DISP_BL_PWM, HIGH, rec().clock_us});
+    delay(kGaugeVcellUpdateMs);              // ONE update, D-779's model
+    g_board.advanceConversions();
+    const uint16_t after_one = g_board.vcell_counts;
+    delay(kGaugeVcellUpdateMs * 3);          // three more: the full average
+    g_board.advanceConversions();
+    const uint16_t after_four = g_board.vcell_counts;
+    const double lsb = double(Max17048Guard::kVcellLsbV);
+    claim("R13-01 mechanism: after ONE update the register is still mostly "
+          "the pre-load node -- D-779's 400 ms bought a quarter of the step",
+          double(before - after_one) * lsb < 0.160 * 0.30);
+    claim("...and only after FOUR updates does it describe the present load",
+          double(before - after_four) * lsb > 0.160 * 0.98);
   }
 
   std::printf("\n%s -- %d failure(s)\n", failures ? "FAIL" : "PASS", failures);

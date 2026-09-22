@@ -52,8 +52,20 @@
 namespace aqroot {
 
 // How long the board waits after an accessory step before re-reading VCELL.
-// D-779: the MAX17048 updates VCELL about every 250 ms in active mode, which
-// the HIBRT write guarantees it is in; 400 ms covers one update with margin.
+//
+// D-779 derived this as "the MAX17048 updates VCELL about every 250 ms in
+// active mode ... 400 ms covers one update with margin", and D-794 / R13-01
+// SUPERSEDES that derivation: ADI 19-6171 Rev.7 says the register is the
+// AVERAGE OF FOUR conversions updated every 250 ms, so one update leaves
+// three quarters of the average describing the load as it was BEFORE the
+// step.  The governing interval is `kGaugePostLoadConversionMs` (1000 ms),
+// enforced by the load epoch inside `readFuelCellVoltage`.
+//
+// This constant is RETAINED as the ELECTRICAL settling allowance -- the time
+// the node itself needs to reach its new operating point before any
+// conversion of it means anything -- and the epoch wait then covers the
+// remainder of the averaging window on top of whatever this has already
+// spent.  The two answer different questions and neither replaces the other.
 constexpr uint32_t kAccessorySettledRecheckMs = 400;
 // The warm-reset recovery retry period and the background requalification
 // period, both of which are LIVENESS requirements: a board that gave up would
@@ -139,16 +151,23 @@ class DemoBringupApp : public AccessoryLoadAuthority {
   // an unconfirmed radio state refuses accessory power rather than granting it
   // against a load the board may actually be carrying.
   //
-  // THE NFC FRONT END IS TREATED DIFFERENTLY, ON PURPOSE.  R12-03 says "do not
-  // blindly add resets without primary-device semantics", and this repository
-  // holds NO ST25R3916 datasheet -- D-742 is the standing reminder of what a
-  // decode carried from memory costs.  A register write invented here could
-  // energise a field rather than quiet one.  What can be said without a
-  // datasheet is bounded and sufficient: the NFC field is carried in the
-  // canonical ledger as a BOUNDED-DUTY allowance inside the ALWAYS-ON set, so
-  // a field left on by a dead image is already inside every floor in the
-  // permission table.  It is reported as UNKNOWN and it is not a load the
-  // model has failed to charge for.
+  // THE NFC FRONT END IS NOW TREATED THE SAME WAY, AND D-793's REASON FOR NOT
+  // DOING SO WAS A FALSE PREMISE.  D-793 wrote here that "this repository holds
+  // NO ST25R3916 datasheet", so a register write would have been a decode
+  // carried from memory -- D-742's standing lesson.  The datasheet is
+  // `hardware/beta/kicad/aqroot-beta/vendor/ST25R3916/ST25R3916_DS12484_Rev3.pdf`
+  // and has been in the tree since the Beta board was drawn.  R12-03's actual
+  // instruction -- "do not blindly add resets without primary-device
+  // semantics" -- was satisfiable from the archive on the day it was written.
+  //
+  // D-794 / R13-03 therefore quiesces U9 with its OWN documented mechanism and
+  // VERIFIES the physical state; see `noteNfcFieldQuiesced` below and
+  // `st25r3916Quiesce` in `aqroot_demo_radios.h`.  D-793's fallback argument --
+  // that a retained field is bounded because the ledger carries it as a
+  // duty allowance inside the ALWAYS-ON set -- is TRUE OF THE HEAT and FALSE
+  // OF THE PERMISSION: the allowance is 25 % of 100 mA and a field a dead
+  // image left keyed draws 100 mA continuously, four times what every floor in
+  // the permission table was derived against.
   // =========================================================================
   bool radiosQuiesced() const { return radios_quiesced_; }
   bool radioPhysicalStateIsKnown() override { return radios_quiesced_; }
@@ -160,6 +179,53 @@ class DemoBringupApp : public AccessoryLoadAuthority {
            "power is refused until a confirmed quiesce.");
     }
   }
+
+  // =========================================================================
+  // D-794 / R13-03.  THE NFC FIELD IS A THIRD RETAINED STATE, AND IT OWNS A
+  // BURST SLOT WHETHER OR NOT THIS IMAGE ASKED FOR ONE.
+  //
+  // ROUND-13: "Ensure BurstArbiter ownership matches physical field state
+  // after reset and prevents SD/IR/NFC overlap when the retained field is
+  // unconfirmed."
+  //
+  // The arbiter exists because the permission table is derived at the worst
+  // SINGLE burst rather than the coincident sum of three (D-793 / R12-08).
+  // That derivation is only sound if the arbiter's model of who is bursting
+  // matches the board.  An MCU reset zeroes `BurstArbiter::active_` while U9
+  // is still driving its antenna -- so the arbiter says "nobody" and hands a
+  // microSD write or an IR burst the slot the NFC field is physically already
+  // occupying, and the coincident sum the table refused to charge for is
+  // exactly what the board then draws.
+  //
+  // So an UNCONFIRMED field TAKES the slot.  Not as a flag beside it -- as
+  // the arbiter's real owner, because every consumer already asks the
+  // arbiter and none of them should have to learn a second rule.  A confirmed
+  // quiesce releases it.
+  // =========================================================================
+  void noteNfcFieldQuiesced(bool confirmed, uint8_t operation_control = 0xFF) {
+    nfc_field_confirmed_off_ = confirmed;
+    nfc_operation_control_ = operation_control;
+    if (confirmed) {
+      burst_.end(BurstLoad::NfcField);
+      return;
+    }
+    // Take the slot on behalf of the part.  `begin` refuses if something else
+    // holds it, which cannot be true this early on a boot path but is the
+    // correct behaviour if it ever is: the arbiter stays honest either way.
+    (void)burst_.begin(BurstLoad::NfcField);
+    char line[288];
+    snprintf(line, sizeof(line),
+             "NFC quiesce: NOT CONFIRMED -- ST25R3916 Operation control reads "
+             "0x%02X, not the 0x00 power-up state Set default produces "
+             "(DS12484 Rev 3 Table 21).  The field state is UNKNOWN, the "
+             "burst slot is held on U9's behalf, and accessory power is "
+             "refused until a confirmed quiesce.",
+             unsigned(operation_control));
+    log_(line);
+  }
+
+  bool nfcFieldConfirmedOff() const { return nfc_field_confirmed_off_; }
+  uint8_t nfcOperationControl() const { return nfc_operation_control_; }
 
   AccessoryLoadState accessoryLoadState() const {
     AccessoryLoadState s;
@@ -258,9 +324,66 @@ class DemoBringupApp : public AccessoryLoadAuthority {
     return configureFuelGaugeActiveModeOnHardware(gauge_, bus_);
   }
 
+  // =========================================================================
+  // D-794 / R13-01.  THE ONE GAUGE READER, AND IT OWES THE LOAD EPOCH.
+  //
+  // R13-01: "after any material load edge relevant to admission, invalidate
+  // the prior safety conversion, wait for a genuinely new qualified MAX17048
+  // conversion, and re-read before granting accessory power. ... Bind exact
+  // production call sites, not helpers only."
+  //
+  // EVERY production path that acts on VCELL comes through here:
+  // `accessoryBatteryAllows` (the enable edge), `modeEntryAllowed` (the mode
+  // edge) and `applyAccessoryRetention` (retention and the post-enable
+  // settled recheck).  Putting the rule in the reader is what binds all three
+  // without a fourth place to forget it, and the reader is in the header the
+  // host tests compile and run -- which is the lesson D-788 and D-789 each
+  // paid for once.
+  //
+  // THE WAIT IS SPENT HERE RATHER THAN REFUSED.  A refusal would be safe and
+  // useless: the operator presses '5' after looking at the display and gets a
+  // rejection for a second, which is indistinguishable from a flat pack.  The
+  // board waits out the remainder of the averaging window and then reads, so
+  // the answer the permission is granted on describes the load the board is
+  // actually carrying.  `noteMaterialLoadEdge` records WHEN; nothing else
+  // clears the epoch -- not an ACK, not a qualification, not a successful
+  // read.
   bool readFuelCellVoltage(float *volts) {
+    waitForPostLoadConversion();
     return gauge_.readVcell(bus_, volts);
   }
+
+  // A material change in what the board draws.  Call AFTER the new load is
+  // established, because the window is measured from the new load, not from
+  // the start of the operation that created it.
+  void noteMaterialLoadEdge(const char *what) {
+    load_epoch_.noteMaterialLoadEdge(millis(), what);
+  }
+
+  // Spend whatever is left of the averaging window.  Returns the number of
+  // milliseconds actually waited, which is what the host tests claim on.
+  uint32_t waitForPostLoadConversion() {
+    const uint32_t remaining = load_epoch_.remainingMs(millis());
+    if (remaining > 0) {
+      char line[200];
+      snprintf(line, sizeof(line),
+               "gauge: VCELL still averages conversions from before %s; "
+               "waiting %lu ms for a post-load conversion before any "
+               "permission (D-794 / R13-01, ADI 19-6171 Rev.7: four averaged "
+               "conversions at 250 ms)",
+               load_epoch_.what(), (unsigned long)remaining);
+      log_(line);
+      delay(remaining);
+    }
+    load_epoch_.noteWindowSpent(millis());
+    return remaining;
+  }
+
+  bool gaugeConversionIsPostLoad() const {
+    return load_epoch_.conversionIsPostLoad(millis());
+  }
+  const char *pendingLoadEdge() const { return load_epoch_.what(); }
+  bool loadEpochArmed() const { return load_epoch_.armed(); }
 
   // D-784 / Round-5: HIBRT=0 is configuration, not proof of the present mode.
   // A first-rail request may requalify the gauge while the accessory tree is
@@ -279,6 +402,24 @@ class DemoBringupApp : public AccessoryLoadAuthority {
       log_("ACCESSORY REFUSED: the physical transmit state of U7/U8 is "
            "UNKNOWN after this reset and has not been quiesced; a retained "
            "transmit is a load this permission cannot account for");
+      if (volts) *volts = 0.0f;
+      if (floor) *floor = kAccessoryNotPermittedV;
+      return false;
+    }
+    // D-794 / R13-03.  THE SAME SENTENCE, FOR THE THIRD RADIO.
+    //
+    // D-793 argued that a retained NFC field needed no refusal because it is
+    // carried in the canonical ledger as a bounded-duty allowance inside the
+    // ALWAYS-ON set.  That is true of the HEAT and false of the PERMISSION:
+    // the duty allowance is 25 % of 100 mA, and a field a dead image left
+    // KEYED is 100 mA continuously, which is four times what every floor in
+    // the table was derived against.  R12-08 drew exactly that distinction
+    // for the burst loads and D-793 did not apply it here.
+    if (!nfc_field_confirmed_off_) {
+      log_("ACCESSORY REFUSED: the physical field state of U9 (ST25R3916) is "
+           "UNKNOWN after this reset and has not been quiesced; a retained "
+           "field draws continuously where the ledger charges a bounded duty, "
+           "so this permission cannot account for it");
       if (volts) *volts = 0.0f;
       if (floor) *floor = kAccessoryNotPermittedV;
       return false;
@@ -320,6 +461,10 @@ class DemoBringupApp : public AccessoryLoadAuthority {
     if (off3) acc3v3_ = false;
     if (offbuf) accessory_i2c_ = false;
     afterAccessoryChange();
+    // D-794 / R13-01: shedding is a load edge too.  Nothing here is admitted
+    // on the strength of it, but the NEXT permission must not be granted on
+    // an average that still contains the shed load.
+    if (off5 || off3 || offbuf) noteMaterialLoadEdge("the accessory shed");
     // D-787 / R6-E06.  This line may NOT say the rails are off while the
     // hardware state is unknown: `off*` is the ACKNOWLEDGEMENT of each write,
     // and a NACKed write leaves the latch where it was.  The reconciled state
@@ -372,6 +517,7 @@ class DemoBringupApp : public AccessoryLoadAuthority {
       const bool off5 = expanders_.setAccessory5v(bus_, false);
       if (off5) acc5v_ = false;
       afterAccessoryChange();
+      if (off5) noteMaterialLoadEdge("the ACC_5V_SW shed");
       if (off5) {
         char line[160];
         snprintf(line, sizeof(line),
@@ -532,6 +678,15 @@ class DemoBringupApp : public AccessoryLoadAuthority {
     const bool confirmed = acked && amplifierConfirmed(on);
     amp_intent_.pending = !confirmed;
     ++amp_intent_.attempts;
+    // D-794 / R13-01: the amplifier at its capped level is one of the three
+    // modes the permission table is indexed by, so energising or quieting it
+    // is a material load edge.  The epoch is stamped on the ACK rather than
+    // on the confirmation, deliberately: a write that landed and could not be
+    // read back has still changed the load.
+    if (acked) {
+      noteMaterialLoadEdge(on ? "the amplifier being energised"
+                              : "the amplifier being quieted");
+    }
     char line[168];
     snprintf(line, sizeof(line),
              "AMP_SD_MODE requested %s, acknowledged %s, state after "
@@ -673,7 +828,23 @@ class DemoBringupApp : public AccessoryLoadAuthority {
   // reintroduce one; `firmware_hw_map_contract` records that mutating it alone
   // is now an EQUIVALENT mutant rather than leaving a vacuous control passing.
   bool displayIsUp() const { return display_up_ && !disp_reset_intent_.pending; }
-  void noteDisplayInitialised(bool up) { display_up_ = up; }
+  // D-794 / R13-01.  THE EDGE ASTRA'S REPRODUCTION WALKS THROUGH.
+  //
+  // The `p` key resets the panel and runs the ILI9488 initialisation, and
+  // that is the largest load step this image makes: a 3.5 in panel's own
+  // analog and logic supply plus whatever the backlight is left at.  The
+  // gauge's four-conversion average still describes the board as it was
+  // before the panel came up, and `5` pressed next is admitted on it.
+  //
+  // This is where the panel load becomes REAL to the rest of the image, so
+  // this is where the epoch is stamped.  It is stamped for BOTH directions
+  // -- a panel going down is as material as one coming up, and the average is
+  // equally wrong about it.
+  void noteDisplayInitialised(bool up) {
+    display_up_ = up;
+    noteMaterialLoadEdge(up ? "the ILI9488 display initialisation"
+                            : "the display going down");
+  }
 
   // -------------------------------------------------------------------------
   // D788-06.  THE WARM-RESET RECOVERY RETRY, EXECUTED.
@@ -775,6 +946,11 @@ class DemoBringupApp : public AccessoryLoadAuthority {
         const bool ok = expanders_.setAccessory3v3(bus_, want);
         if (ok) acc3v3_ = want;
         afterAccessoryChange();
+        // D-794 / R13-01: the rail itself is a material load edge, in both
+        // directions.  The settled recheck below must be taken on a
+        // conversion that is entirely post-step, not on an average that is
+        // still three quarters pre-step.
+        if (ok) noteMaterialLoadEdge("the ACC_3V3_SW step");
         if (ok && want) settledAccessoryRecheck("ACC_3V3_SW");
         reportAccessoryCommand("ACC_3V3_SW", want, ok, acc3v3_);
         return true;
@@ -795,6 +971,7 @@ class DemoBringupApp : public AccessoryLoadAuthority {
         const bool ok = expanders_.setAccessory5v(bus_, want);
         if (ok) acc5v_ = want;
         afterAccessoryChange();
+        if (ok) noteMaterialLoadEdge("the ACC_5V_SW step");
         if (ok && want) settledAccessoryRecheck("ACC_5V_SW");
         reportAccessoryCommand("ACC_5V_SW", want, ok, acc5v_);
         return true;
@@ -811,6 +988,10 @@ class DemoBringupApp : public AccessoryLoadAuthority {
         if (!blockingDemoTestAllowed("backlight ramp")) return true;
         log_("backlight ramp on GPIO46 (U17 TPS61169)");
         backlightRamp();
+        // D-794 / R13-01: the backlight is the largest single +3V3 consumer
+        // this image can switch, and the ramp ends by parking the duty.
+        // Whatever it ends at, the gauge's average spans the whole ramp.
+        noteMaterialLoadEdge("the backlight ramp");
         return true;
       }
       default:
@@ -840,8 +1021,15 @@ class DemoBringupApp : public AccessoryLoadAuthority {
   // D-793 / R12-03: FALSE until a confirmed quiesce.  The reset value is the
   // pessimistic one deliberately.
   bool radios_quiesced_ = false;
+  // D-794 / R13-03: the same pessimism for the NFC front end, which D-793
+  // left as "unknown but bounded" on a premise about the archive that was
+  // not true.
+  bool nfc_field_confirmed_off_ = false;
+  uint8_t nfc_operation_control_ = 0xFF;
   // D-793 / R12-08.
   BurstArbiter burst_;
+  // D-794 / R13-01: when the board's load last changed materially.
+  GaugeLoadEpoch load_epoch_;
   uint32_t last_recovery_ms_ = 0;
   uint32_t last_gauge_requal_ms_ = 0;
   uint32_t last_battery_guard_ms_ = 0;

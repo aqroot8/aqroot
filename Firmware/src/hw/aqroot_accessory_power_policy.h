@@ -1,5 +1,9 @@
 #pragma once
 
+// D-794 / R13-01 introduced the gauge conversion-age rule, which is stated in
+// milliseconds and therefore needs a fixed-width type.
+#include <stdint.h>
+
 namespace aqroot {
 
 // ===========================================================================
@@ -272,6 +276,106 @@ constexpr float kVcellAllOnesV = 5.1199f;
 inline bool vcellIsPlausible(float vcell) {
   return vcell >= kVcellPlausibleMinV && vcell <= kVcellPlausibleMaxV;
 }
+
+// ===========================================================================
+// D-794 / R13-01.  A VALID READING IS NOT NECESSARILY A READING OF THE
+// PRESENT STATE.
+//
+// ROUND-13, IN ITS OWN WORDS: "Production display/backlight initialization can
+// materially change load after the last MAX17048 conversion.  Current
+// admission logic may read a valid-but-pre-load VCELL and authorize a rail
+// that immediately falls below retention after the display load plus
+// accessory load.  Astra reproduced the real production p -> 5 sequence with
+// physical latch modeling: enable write occurs, settled read falls below
+// 3.20 V, then safe shed.  Fix the ROOT timing/validity rule: after any
+// material load edge relevant to admission, invalidate the prior safety
+// conversion, wait for a genuinely new qualified MAX17048 conversion, and
+// re-read before granting accessory power.  Do not treat I2C ACK or
+// active-mode status as proof the conversion is post-load."
+//
+// IT REPRODUCES, AND EVERY GUARD THIS PROGRAMME HAS BUILT SO FAR IS ABOUT A
+// DIFFERENT QUESTION.  D-779 refused an implausible value.  D-784 refused a
+// hibernating part.  D-790 refused a sleeping one.  D-791 refused a floor
+// derived from the wrong pre-state.  Every one of them asks whether the
+// NUMBER is trustworthy.  None of them asks WHEN THE NUMBER IS FROM -- and
+// that is a separate question with a separate answer, because a MAX17048 in
+// perfect health, fully qualified, ACKing every transfer, returns the result
+// of a conversion that finished before the caller did anything.
+//
+// THE AGE IS PUBLISHED AND IT IS NOT SMALL.  ADI 19-6171 Rev.7, VCELL Register
+// (0x02), in its own words: "VCELL is the average of four ADC conversions.
+// The value updates every 250ms in active mode."  Two separate facts, and the
+// second is the one that has been missed: the register is not a sample, it is
+// a MOVING AVERAGE OF FOUR.  Immediately after a load edge the register still
+// contains four pre-load conversions.  One update later it contains three.
+// Only after FOUR updates is every conversion in the average post-load, so the
+// interval after which the register is guaranteed to describe the present load
+// is 4 x 250 ms = 1000 ms.  ADI publishes no separate ADC conversion period
+// and no way to observe which conversions are in the average, so four updates
+// is the only bound that can be STATED rather than assumed.
+//
+// D-779'S 400 ms WAS DERIVED AGAINST THE OTHER FACT.  Its own comment says so:
+// "the MAX17048 updates VCELL about every 250 ms ... 400 ms covers one update
+// with margin".  One update.  Three quarters of the average is still pre-load
+// at that point, and the reading is optimistic by three quarters of the step.
+// That is why the post-enable recheck could pass and the next one shed.
+//
+// WHAT THIS CLASS IS.  A LOAD EPOCH: the instant of the most recent material
+// change in what the board draws.  Admission may not use a conversion older
+// than that epoch plus the full averaging window, and the rule is stated in
+// TIME rather than in bus health, because no transfer-level fact can answer
+// it.  An ACK proves the part is alive.  MODE.HibStat proves it is converting.
+// Neither proves it has converted SINCE THE LOAD ARRIVED.
+// ===========================================================================
+constexpr uint32_t kGaugeVcellUpdateMs = 250;
+constexpr unsigned kGaugeVcellAveragedConversions = 4;
+// The interval after a load edge at which every conversion in the VCELL
+// average is guaranteed post-load.
+constexpr uint32_t kGaugePostLoadConversionMs =
+    kGaugeVcellUpdateMs * kGaugeVcellAveragedConversions;
+static_assert(kGaugePostLoadConversionMs == 1000,
+              "ADI 19-6171 Rev.7: four averaged conversions at a 250 ms "
+              "update rate is a 1000 ms window");
+
+class GaugeLoadEpoch {
+ public:
+  // A material change in what the board draws.  `now_ms` is the moment the
+  // new load is ESTABLISHED, not the moment the operation began.
+  void noteMaterialLoadEdge(uint32_t now_ms, const char *what) {
+    armed_ = true;
+    edge_ms_ = now_ms;
+    what_ = (what == nullptr) ? "an unnamed load edge" : what;
+  }
+
+  bool armed() const { return armed_; }
+  const char *what() const { return what_; }
+  uint32_t edgeMs() const { return edge_ms_; }
+
+  // How much longer the VCELL average may still contain pre-load conversions.
+  uint32_t remainingMs(uint32_t now_ms) const {
+    if (!armed_) return 0;
+    const uint32_t elapsed = now_ms - edge_ms_;     // wraps correctly
+    if (elapsed >= kGaugePostLoadConversionMs) return 0;
+    return kGaugePostLoadConversionMs - elapsed;
+  }
+
+  bool conversionIsPostLoad(uint32_t now_ms) const {
+    return remainingMs(now_ms) == 0;
+  }
+
+  // Called once the window has genuinely been spent.  The epoch is not
+  // cleared by anything else -- in particular not by a successful read, a
+  // successful qualification or a successful transfer, which is the whole
+  // point of R13-01.
+  void noteWindowSpent(uint32_t now_ms) {
+    if (armed_ && conversionIsPostLoad(now_ms)) armed_ = false;
+  }
+
+ private:
+  bool armed_ = false;
+  uint32_t edge_ms_ = 0;
+  const char *what_ = "none";
+};
 
 enum class AccessoryBatteryAction { Keep, Shed5v, ShedAll };
 
