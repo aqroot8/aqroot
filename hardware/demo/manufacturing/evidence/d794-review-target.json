@@ -31,7 +31,7 @@
    "R13-N04 -- DEVICE_SPEC carried U12's compound worst case as 1.9702 A with a 'NAMED THIN MARGIN of 29.8 mA'.  Both are RETIRED: the fault-coincidence case is 2.2069 A, ABOVE TI's guaranteed 2 A output, and is accepted on the device's own switch-current limit instead.  The CONFORMING worst case, 1.8020 A, is what is inside the guaranteed output.  F6 already ruled on the corrected basis; the document did not say so."
   ]
  },
- "content_commit": "PENDING -- filled by the identity commit",
+ "content_commit": "8afa995115e889178712f9b53f93da5f09d247ef",
  "convergence_architecture": {
   "charger_control_loops": "SYS_REG, CC_PATH_LIMITED, ILIM, VINDPM, DPPM, NO_CHARGE, SUPPLEMENT -- rebuilt from SLUSF65B 6.3.1/6.3.2/6.3.3/6.3.5/6.3.6 with battery-tracking VINDPM, the VBSUP1/VBSUP2 hysteresis band and explicit mode history.  Every ceiling question is asked at seven points of the declared threshold sweep and both histories and answered by the worst.",
   "gauge_conversion_age": "ADI 19-6171 Rev.7: VCELL is the AVERAGE OF FOUR conversions updated every 250 ms, so the post-load window is 4 x 250 = 1000 ms.  GaugeLoadEpoch records the last material load edge and the ONE production gauge reader spends the remainder of the window before every permission and retention read.  Nothing else clears the epoch -- not an ACK, not a qualification, not a successful read.",
@@ -62,7 +62,7 @@
   ]
  },
  "decision": "D-794",
- "identity_commit": "PENDING -- this record is amended by the identity commit",
+ "identity_commit": "this commit -- it records the content commit's SHA; a commit cannot contain its own",
  "identity_note": "A commit cannot contain its own SHA, so the reviewable target is the PAIR: a CONTENT commit carrying every engineering change, and an IDENTITY commit that records the content commit's SHA in this file and in the normative documents.  Both halves are stated rather than implied.",
  "manifest": "hardware/demo/fab/MANIFEST.json",
  "manifest_sha256": "0db6f2c202772600b6a120f84c177344923e6147a68c802b233c6c8666faca95",
@@ -74,6 +74,66 @@
   "PROCUREMENT": "PENDING -- nine constrained fitted groups plus the AOS pass-pair allocation"
  },
  "parent_rejected_by_round_13": "f79fbdee9dbb8c3a244da90b8adb80f821d7fe3d",
+ "post_commit_verification": {
+  "beta_v2_untouched": true,
+  "board_sha256": "c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907",
+  "demo_feature_contract": {
+   "checks": "F1-F14, 14 of 14",
+   "verdict": "PASS"
+  },
+  "fab_package_contract": {
+   "note": "FAB14 assembly-drawing release label D-794",
+   "verdict": "PASS"
+  },
+  "firmware_hw_map_contract": {
+   "note": "H1-H8, every host-test mutation caught",
+   "verdict": "PASS"
+  },
+  "host_tests": {
+   "compiled_with": "g++ -std=c++17 -Wall -Wextra -Werror",
+   "failures": 0,
+   "tests": {
+    "test_accessory_power_policy": 83,
+    "test_expander_order": 123,
+    "test_fuel_gauge_safety": 37,
+    "test_production_callers": 122,
+    "test_production_image": 129,
+    "test_production_timing": 17,
+    "test_spi_bus_b": 43,
+    "test_timing_policy": 10
+   },
+   "total_claims": 564
+  },
+  "kicad_drc_and_schematic_parity": {
+   "identical_in_count_and_class_to_the_reviewed_d793_baseline": true,
+   "schematic_parity_items": 246,
+   "total_items": 462,
+   "unconnected_items": 17,
+   "violations": 199
+  },
+  "manifest_sha256": "0db6f2c202772600b6a120f84c177344923e6147a68c802b233c6c8666faca95",
+  "platformio": {
+   "all_success": true,
+   "environments": [
+    "esp32-s3-aqroot",
+    "wokwi",
+    "esp32-s3-aqroot-dm",
+    "aqroot-demo"
+   ],
+   "from_clean": true
+  },
+  "rail_ampacity": {
+   "all_ok": true
+  },
+  "routing_ledger": {
+   "approved_unrouted_edges": 1,
+   "connected_retained_nets": 173,
+   "retained_multi_pad_nets": 174,
+   "unapproved_open_edges": 0
+  },
+  "run_against": "8afa995115e889178712f9b53f93da5f09d247ef, clean tree",
+  "worktree_clean": true
+ },
  "recorded_in": [
   "docs/full-beta-v2/CTO_DECISIONS.md -- D-794 section",
   "docs/full-beta-v2/CURRENT_STATE.md -- D-794 block and section 1",

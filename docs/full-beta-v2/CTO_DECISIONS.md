@@ -2,8 +2,9 @@
 
     authority  board c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907
     manifest   0db6f2c202772600b6a120f84c177344923e6147a68c802b233c6c8666faca95
-    content    recorded by the identity commit; see evidence/d794-review-target.json
-    identity   the post-commit verification record commit
+    content    8afa995115e889178712f9b53f93da5f09d247ef
+    identity   the post-commit verification record commit; see
+               evidence/d794-review-target.json
     parent     f79fbdee9dbb8c3a244da90b8adb80f821d7fe3d (D-793, REJECTED by Round-13)
     scope      R13-01..R13-07 (Astra, reproduced), every Fable delta and residual,
                and the new-defect sweep this closeout performed afterwards
