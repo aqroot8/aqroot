@@ -1,0 +1,699 @@
+                                                              PRODUCT SPECIFICATION
+
+
+
+                            Micro-Lock Plus 2.0
+        WIRE TO WIRE CONNECTOR SYSTEM
+           (SINGLE ROW TIN-PLATING)
+                        Receptacle Terminal                                             Receptacle Housing
+
+
+
+
+                                 Series: 505572                                                  Series: 505570
+
+
+
+
+                             Plug Terminal                                                    Plug Housing
+
+
+
+
+                                 Series: 213720                                                  Series: 213719
+
+
+
+
+    Micro-Lock Plus 2.0 Connector Web Page                                       TABLE OF CONTENT
+  THIS DOCUMENT CONTAINS INFORMATION THAT IS PROPRIETARY TO MOLEX ELECTRONIC TECHNOLOGIES, LLC AND SHOULD NOT BE USED WITHOUT WRITTEN PERMISSION
+
+REVISION
+DESCRIPTION                                                                  MICRO-LOCK PLUS 2.0
+                                                               WIRE TO WIRE CONNECTOR SINGLE ROW TIN-PLATING
+CHANGE NO.     748551
+REVISED BY     PRAMOD                   DATE   2023/05/04   DOC TYPE               DOC TYPE DESCRIPTION                    DOC PART      SERIES
+REV APPR BY    MRAMAKRISHNA             DATE   2023/05/05     PS                PRODUCT SPECIFICATION WORD                    000        505570
+                      INITIAL RELEASE                         CUSTOMER                  DOCUMENT NUMBER                   REVISION      SHEET
+INITIAL DRWN SOKUMURA01                 DATE   2021/03/18
+INITIAL APPR   AIDA                     DATE   2022/02/18
+                                                               GENERAL                 5055700003-PS                         A1         1 OF 13
+
+PROCEDURE: 1703070003-ES TEMPLATE: 1703070003TEMP-A4 REVISION: A2
+                                                                       PRODUCT SPECIFICATION
+
+                                                                      Table of Contents
+             ITEMS                                                                                                                                        PAGE
+           1.0 SCOPE ....................................................................................................................................... 3
+           2.0 PRODUCTS DESCRIPTION ...................................................................................................... 3
+                    2.1       DESCRIPTIONS, SERIES NUMBER, AND LINKS ....................................................... 3
+                    2.2       DIMENSIONS, MATERIALS, PLATINGS...................................................................... 3
+                    2.3       ENVIRONMENTAL CONFORMANCE: ......................................................................... 3
+                    2.4       SAFETY AGENCY LISTINGS ....................................................................................... 3
+           3.0 REFERANCE DOCUMENTS ..................................................................................................... 3
+                    3.1       MOLEX DOCUMENTS .................................................................................................. 3
+           4.0 ELECTRICAL PERFORMANCE RATINGS .............................................................................. 4
+                    4.1       VOLTAGE...................................................................................................................... 4
+                    4.2       RATED CURRENT AND APPLICABLE WIRES ............................................................ 4
+                    4.3       CURRENT DERATING ................................................................................................. 4
+                    4.4       TEMPERATURE ........................................................................................................... 4
+                    4.5       DURABILITY ................................................................................................................. 4
+           5.0 QUALIFICATION........................................................................................................................ 4
+           6.0 PERFORMANCE........................................................................................................................ 5
+                    6.1       ELECTRICAL PERFORMANCE ................................................................................... 5
+                    6.2       MECHANICAL PERFORMANCE .................................................................................. 6
+                    6.3       ENVIRONMENTAL PERFORMANCE .......................................................................... 8
+           7.0 INSERTION / WITHDRAWAL FORCE .................................................................................... 10
+           8.0 CONTACT RESISTANCE MEASURING POINT ..................................................................... 10
+           9.0 PACKAGING ............................................................................................................................ 10
+           10.0 CABLE TIE AND / OR TWIST TIE LOCATION ..................................................................... 11
+           11.0 NOTE ...................................................................................................................................... 12
+
+
+
+
+    Micro-Lock Plus 2.0 Connector Web Page                                                        TABLE OF CONTENT
+  THIS DOCUMENT CONTAINS INFORMATION THAT IS PROPRIETARY TO MOLEX ELECTRONIC TECHNOLOGIES, LLC AND SHOULD NOT BE USED WITHOUT WRITTEN PERMISSION
+
+REVISION
+DESCRIPTION                                                                           MICRO-LOCK PLUS 2.0
+                                                                        WIRE TO WIRE CONNECTOR SINGLE ROW TIN-PLATING
+CHANGE NO.     748551
+REVISED BY     PRAMOD                   DATE      2023/05/04        DOC TYPE                         DOC TYPE DESCRIPTION                             DOC PART   SERIES
+REV APPR BY    MRAMAKRISHNA             DATE      2023/05/05            PS                       PRODUCT SPECIFICATION WORD                               000     505570
+                      INITIAL RELEASE                                  CUSTOMER                           DOCUMENT NUMBER                            REVISION    SHEET
+INITIAL DRWN SOKUMURA01                 DATE      2021/03/18
+INITIAL APPR   AIDA                     DATE      2022/02/18
+                                                                         GENERAL                          5055700003-PS                                  A1      2 OF 13
+
+PROCEDURE: 1703070003-ES TEMPLATE: 1703070003TEMP-A4 REVISION: A2
+                                                              PRODUCT SPECIFICATION
+     1.0 SCOPE
+
+               This product specification covers the performance requirements for Micro-Lock Plus 2.0 WIRE TO WIRE
+               CONNECTOR SINGLE ROW TIN PLATING series.
+
+     2.0 PRODUCTS DESCRIPTION
+
+               2.1 DESCRIPTIONS, SERIES NUMBER, AND LINKS
+
+                           DESCRIPTIONS                            PART NUMBER                        DRAWING NUMBER
+               Receptacle terminal                                     5055721000                     5055721000 PSD 000
+               Receptacle housing                                      505570**0*                     5055700001 PSD 000
+               Plug Terminal                                           2137201000                   2137200000-SD PSD 000
+               Plug Housing                                            2137192***                   2137190000-SD PSD 000
+
+               2.2 DIMENSIONS, MATERIALS, PLATINGS
+
+                  See sales drawings for details on dimensions, materials, platings, and markings.
+
+               2.3 ENVIRONMENTAL CONFORMANCE:
+
+                        Go to molex.com
+                        Enter the part number in the search field.
+                        At the bottom of the page go to “Environmental” to see compliance status.
+
+               2.4 SAFETY AGENCY LISTINGS
+
+                  UL / cUL File Number: E29179
+
+     3.0 REFERANCE DOCUMENTS
+
+               3.1 MOLEX DOCUMENTS
+
+                  Micro-Lock Plus 2.0 w-t-b and w-t-w Connector System Application Specification 5055700001 PS A03
+                  ATS – Application Tooling Specification*
+
+                  *Application Tooling Specification for terminals is not provided in this document. ATS for terminals can be
+                  available from respective terminal part number page in Molex.com
+
+
+
+
+    Micro-Lock Plus 2.0 Connector Web Page                                       TABLE OF CONTENT
+  THIS DOCUMENT CONTAINS INFORMATION THAT IS PROPRIETARY TO MOLEX ELECTRONIC TECHNOLOGIES, LLC AND SHOULD NOT BE USED WITHOUT WRITTEN PERMISSION
+
+REVISION
+DESCRIPTION                                                                  MICRO-LOCK PLUS 2.0
+                                                               WIRE TO WIRE CONNECTOR SINGLE ROW TIN-PLATING
+CHANGE NO.     748551
+REVISED BY     PRAMOD                   DATE   2023/05/04   DOC TYPE                DOC TYPE DESCRIPTION                   DOC PART      SERIES
+REV APPR BY    MRAMAKRISHNA             DATE   2023/05/05     PS                PRODUCT SPECIFICATION WORD                    000        505570
+                      INITIAL RELEASE                         CUSTOMER                  DOCUMENT NUMBER                   REVISION      SHEET
+INITIAL DRWN SOKUMURA01                 DATE   2021/03/18
+INITIAL APPR   AIDA                     DATE   2022/02/18
+                                                               GENERAL                 5055700003-PS                         A1         3 OF 13
+
+PROCEDURE: 1703070003-ES TEMPLATE: 1703070003TEMP-A4 REVISION: A2
+                                                                PRODUCT SPECIFICATION
+     4.0 ELECTRICAL PERFORMANCE RATINGS
+
+               4.1 VOLTAGE
+
+                      250 V AC rms / DC
+
+               4.2 RATED CURRENT AND APPLICABLE WIRES
+
+                              Wire Size                   Rated Current (MAX.)
+                              AWG #22                            3.4 A                          Insulation O.D.
+                              AWG #24                            3.0 A                         φ 0.9～φ 1.5mm
+                              AWG #26                            2.6 A
+
+               4.3 CURRENT DERATING
+
+                                          2-circuits              6-circuits            9-circuits
+                        AWG
+                                         Current (A)             Current (A)           Current (A)
+                         22                  4.7                     4.0                   3.4
+                         24                  3.9                     3.1                   3.0
+                         26                  2.9                     2.7                   2.6
+
+                  1.     Values are for REFERENCE ONLY.
+                  2.     Current deratings are based on not exceeding 30 °C Temperature Rise
+                  3.     Temperature Rise is measured in barrel area of crimp terminal.
+                  4.     PCB trace design can greatly affect temperature rise results.
+                  5.     Data is for all circuits powered.
+
+               4.4 TEMPERATURE
+
+                              Ambient Temperature Range*1*2*3                  :- 40 °C ~ + 105 °C
+                                                                               Not freeze to low temperature
+
+                              NOTE:
+
+                               *1. Non-operating connectors after reflow must follow the operating temperature range condition.
+                               *2. Including terminal temperature rise.
+                               *3. Applicable wires must also meet the specified temperature range.
+
+               4.5 DURABILITY
+
+
+                                               Plating Type                      Number of Cycles
+                                                Tin Plated                           30 cycles
+
+     5.0 QUALIFICATION
+
+                  Sample selection is in accordance with EIA-364-1000.
+
+
+    Micro-Lock Plus 2.0 Connector Web Page                                         TABLE OF CONTENT
+  THIS DOCUMENT CONTAINS INFORMATION THAT IS PROPRIETARY TO MOLEX ELECTRONIC TECHNOLOGIES, LLC AND SHOULD NOT BE USED WITHOUT WRITTEN PERMISSION
+
+REVISION
+DESCRIPTION                                                                    MICRO-LOCK PLUS 2.0
+                                                                 WIRE TO WIRE CONNECTOR SINGLE ROW TIN-PLATING
+CHANGE NO.     748551
+REVISED BY     PRAMOD                   DATE     2023/05/04   DOC TYPE                DOC TYPE DESCRIPTION                 DOC PART      SERIES
+REV APPR BY    MRAMAKRISHNA             DATE     2023/05/05      PS                PRODUCT SPECIFICATION WORD                 000        505570
+                      INITIAL RELEASE                            CUSTOMER                DOCUMENT NUMBER                  REVISION      SHEET
+INITIAL DRWN SOKUMURA01                 DATE     2021/03/18
+INITIAL APPR   AIDA                     DATE     2022/02/18
+                                                                 GENERAL                 5055700003-PS                       A1         4 OF 13
+
+PROCEDURE: 1703070003-ES TEMPLATE: 1703070003TEMP-A4 REVISION: A2
+                                                                PRODUCT SPECIFICATION
+     6.0 PERFORMANCE
+
+               6.1 ELECTRICAL PERFORMANCE
+
+                ITEM           DESCRIPTION                                TEST CONDITION                            REQUIREMENT
+                                                            Mate connectors and measured by dry circuit,
+                                                            20mV MAX., 10 mA MAX. and subtract wire
+                6.1.1       Contact Resistance              conductor resistance. Refer to paragraph 8             20 milliohms MAX.
+                                                            Contact resistance measuring point.
+                                                            (JIS C5402-2-1)
+                                                            Mate connectors and apply 500 V DC
+                                                            between adjacent terminals or between
+                6.1.2      Insulation Resistance                                                                 1000 Megohms MIN.
+                                                            terminal and ground.
+                                                            (JIS C5402-3-1 / MIL-STD-202 Method 302)
+                                                            Mate connectors, apply 800V AC rms for
+                                                            1 minute between adjacent terminals or
+                6.1.3        Dielectric Strength                                                                No Damage on function
+                                                            between terminal and ground.
+                                                            (JIS C5402-4-1/MIL-STD-202 Method 301)
+                                                            Crimp the applicable wire to the terminal,
+                          Contact Resistance on
+                6.1.4                                       measured by dry circuit, 20 mV MAX.,                   5 milliohms MAX.
+                             crimped portion
+                                                            10 mA. MAX.
+                                                            Mate connectors and all crimp terminals shall
+                                                            be connected in a direct series.
+                                                                                                          Temperature               30 °C
+                6.1.5        Temperature Rise               The temperature rise shall be measured when
+                                                                                                             Rise                   MAX.
+                                                            maximum rated current is flowed and thermal
+                                                            equilibrium reaches. (UL498)
+
+
+
+
+    Micro-Lock Plus 2.0 Connector Web Page                                        TABLE OF CONTENT
+  THIS DOCUMENT CONTAINS INFORMATION THAT IS PROPRIETARY TO MOLEX ELECTRONIC TECHNOLOGIES, LLC AND SHOULD NOT BE USED WITHOUT WRITTEN PERMISSION
+
+REVISION
+DESCRIPTION                                                                    MICRO-LOCK PLUS 2.0
+                                                                 WIRE TO WIRE CONNECTOR SINGLE ROW TIN-PLATING
+CHANGE NO.     748551
+REVISED BY     PRAMOD                   DATE   2023/05/04    DOC TYPE                DOC TYPE DESCRIPTION                  DOC PART      SERIES
+REV APPR BY    MRAMAKRISHNA             DATE   2023/05/05       PS                PRODUCT SPECIFICATION WORD                  000        505570
+                      INITIAL RELEASE                           CUSTOMER                DOCUMENT NUMBER                   REVISION      SHEET
+INITIAL DRWN SOKUMURA01                 DATE   2021/03/18
+INITIAL APPR   AIDA                     DATE   2022/02/18
+                                                                 GENERAL                5055700003-PS                        A1         5 OF 13
+
+PROCEDURE: 1703070003-ES TEMPLATE: 1703070003TEMP-A4 REVISION: A2
+                                                               PRODUCT SPECIFICATION
+               6.2 MECHANICAL PERFORMANCE
+
+                ITEM        DESCRIPTION                                TEST CONDITION                                REQUIREMENT
+                                                       Insert and withdraw connectors at the speed rate
+                            Insertion and
+                6.2.1                                  of 25±3 mm/minute. The data is measured when                Refer to paragraph 7
+                           Withdrawal Force
+                                                       the housing lock is removed.
+                                                       Fix the crimped terminal to the jig,       AWG #22          39.2 N {4.0 kgf} MIN.
+                               Crimping                apply axial pull out force on the wire
+                                                                                                  AWG #24          29.4 N {3.0 kgf} MIN.
+                6.2.2        Pull out Force            at the speed rate of 25±3 mm/minute.
+                                                       (JIS C5402-16-4)                           AWG #26          19.6 N {2.0 kgf} MIN.
+
+                            Crimp Terminal
+                6.2.3                                  Insert a crimped terminal into the housing                  9.8 N {1.0 kgf} MAX.
+                            Insertion Force
+
+                                                       Apply axial pull out force at the speed rate of 25±3
+                            Crimp Terminal
+                6.2.4                                  mm/minute on a crimped terminal assembled in the           25.0 N {2.55 kgf} MIN.
+                            Retention Force
+                                                       housing.
+                                                                                                 2-3 circuit      25.0 N {2.55 kgf} MIN.
+                              Housing Lock             Mate connectors and apply axial pull
+                6.2.5           Strength               out force at the speed rate of 25 ± 3     4-5 circuit      40.0 N {4.08 kgf} MIN.
+                             [Positive Lock]           mm/minute.
+                                                                                                 6-9 circuit      80.0 N {8.16 kgf} MIN.
+
+
+
+
+    Micro-Lock Plus 2.0 Connector Web Page                                       TABLE OF CONTENT
+  THIS DOCUMENT CONTAINS INFORMATION THAT IS PROPRIETARY TO MOLEX ELECTRONIC TECHNOLOGIES, LLC AND SHOULD NOT BE USED WITHOUT WRITTEN PERMISSION
+
+REVISION
+DESCRIPTION                                                                  MICRO-LOCK PLUS 2.0
+                                                               WIRE TO WIRE CONNECTOR SINGLE ROW TIN-PLATING
+CHANGE NO.     748551
+REVISED BY     PRAMOD                   DATE   2023/05/04   DOC TYPE               DOC TYPE DESCRIPTION                    DOC PART      SERIES
+REV APPR BY    MRAMAKRISHNA             DATE   2023/05/05      PS               PRODUCT SPECIFICATION WORD                    000        505570
+                      INITIAL RELEASE                          CUSTOMER                 DOCUMENT NUMBER                   REVISION      SHEET
+INITIAL DRWN SOKUMURA01                 DATE   2021/03/18
+INITIAL APPR   AIDA                     DATE   2022/02/18
+                                                                GENERAL                5055700003-PS                         A1         6 OF 13
+
+PROCEDURE: 1703070003-ES TEMPLATE: 1703070003TEMP-A4 REVISION: A2
+                                                                PRODUCT SPECIFICATION
+               6.2 MECHANICAL PERFORMANCE CONTINUED
+
+                ITEM           DESCRIPTION                               TEST CONDITION                            REQUIREMENT
+                                                            Insert and withdraw connectors up to 30
+                                  Repeated                                                                      Contact        40 milliohms
+                 6.2.6                                      cycles repeatedly at speed rate of 10
+                           Insertion / Withdrawal                                                              Resistance         MAX.
+                                                            cycles per minute maximum.
+                                                            Mate connectors and conduct test subject
+                                                            to the following vibration conditions, for a                       No Damage
+                                                                                                             Appearance
+                                                            period of 2 hours in each of 3 mutually                            on function
+                                                            perpendicular axes, passing DC 1mA
+                                                            during the test.                                    Contact        40 milliohms
+                 6.2.7             Vibration                Cables should be fixed during the test.            Resistance         MAX.
+                                                            Amplitude : 1.5mm P-P
+                                                            Frequency : 10~55~10 Hz in 1 minute.
+                                                            Duration : 2 hours in each X.Y.Z.axes.                                  1.0
+                                                            (JIS C 60068-2-6/                               Discontinuity      microsecond
+                                                            MIL-STD-202 Method 201)                                               MAX.
+
+                                                            Mate connectors and conduct test subject
+                                                            to the following shock conditions. 3 shocks                        No Damage
+                                                                                                             Appearance
+                                                            shall be applied 6 directions along 3                              on function
+                                                            mutually perpendicular axes [±x, ±y, ±z,
+                                                            each], passing DC 1 mA current during the           Contact        40 milliohms
+                 6.2.8       Mechanical Shock               test. [Total of 18 shocks]                         Resistance         MAX.
+                                                            Test pulse : Half Sine
+                                                            Peak value : 490 m/s2 {50 G}
+                                                            Duration : 11 ms                                                       1.0
+                                                            (JIS C60068-2-27/                               Discontinuity      microsecond
+                                                            MIL-STD-202 Method 213)                                               MAX.
+
+
+
+
+    Micro-Lock Plus 2.0 Connector Web Page                                         TABLE OF CONTENT
+  THIS DOCUMENT CONTAINS INFORMATION THAT IS PROPRIETARY TO MOLEX ELECTRONIC TECHNOLOGIES, LLC AND SHOULD NOT BE USED WITHOUT WRITTEN PERMISSION
+
+REVISION
+DESCRIPTION                                                                    MICRO-LOCK PLUS 2.0
+                                                                 WIRE TO WIRE CONNECTOR SINGLE ROW TIN-PLATING
+CHANGE NO.     748551
+REVISED BY     PRAMOD                   DATE   2023/05/04     DOC TYPE               DOC TYPE DESCRIPTION                   DOC PART     SERIES
+REV APPR BY    MRAMAKRISHNA             DATE   2023/05/05       PS                PRODUCT SPECIFICATION WORD                  000        505570
+                      INITIAL RELEASE                           CUSTOMER                 DOCUMENT NUMBER                  REVISION      SHEET
+INITIAL DRWN SOKUMURA01                 DATE   2021/03/18
+INITIAL APPR   AIDA                     DATE   2022/02/18
+                                                                 GENERAL                 5055700003-PS                        A1        7 OF 13
+
+PROCEDURE: 1703070003-ES TEMPLATE: 1703070003TEMP-A4 REVISION: A2
+                                                                PRODUCT SPECIFICATION
+               6.3 ENVIRONMENTAL PERFORMANCE
+
+                ITEM           DESCRIPTION                              TEST CONDITION                             REQUIREMENT
+                                                            Mate connectors and conduct test subject
+                                                            to the following conditions for 5 cycles.
+                                                                                                                              No Damage
+                                                            Upon completion of the exposure period,         Appearance
+                                                                                                                              on function
+                                                            the test specimens shall be left at ambient
+                                                            room temperature for 1 to 2 hours. After
+                                Temperature                 that, the measurements shall be
+                6.3.1
+                                  Cycling                   performed.
+                                                            5 cycles of :
+                                                             a) – 40±3 °C       30 minutes                    Contact         40 milliohms
+                                                             b) + 105±2 °C       30 minutes                  Resistance          MAX
+                                                            Shifting time: within 5 minutes
+                                                            (JIS C60068-2-14)
+                                                            Mate connectors and expose to 105±2 °C
+                                                            for 96 hours. Upon completion of the                              No Damage
+                                                                                                         Appearance
+                                                            exposure period, the test specimens shall                         on function
+                                                            be left at ambient room temperature for 1 to
+                6.3.2         Heat Resistance               2 hours. After that, the measurements
+                                                            shall be performed.                            Contact            40 milliohms
+                                                            (JIS C60068-2-2/                             Resistance              MAX
+                                                            MIL-STD-202 Method 108)
+                                                            Mate connectors and expose to -40±3 °C
+                                                            for 96 hours. Upon completion of the                              No Damage
+                                                                                                       Appearance
+                                                            exposure period, the test specimens shall                         on function
+                6.3.3         Cold Resistance               be left at ambient room temperature for
+                                                            1 to 2 hours. After that, the measurements   Contact              40 milliohms
+                                                            shall be performed.                        Resistance                MAX
+                                                            (JIS C60068-2-1)
+
+                                                            Mate connectors and expose to 60±2 °C,                            No Damage
+                                                                                                            Appearance
+                                                            relative humidity 90 to 95 % for 96 hours.                        on function
+                                                            Upon completion of the exposure period,           Contact         40 milliohms
+                                                            the test specimens shall be left at ambient      Resistance          MAX
+                6.3.4              Humidity                 room temperature for 1 to 2 hours. After
+                                                            that, the measurements shall be                  Insulation      100 Megohms
+                                                            performed.                                       Resistance          MIN.
+                                                            (JIS C60068-2-78/                                 Dielectric       Must meet
+                                                            MIL-STD-202 Method 103)                           Strength           6.1.3
+
+
+
+
+    Micro-Lock Plus 2.0 Connector Web Page                                        TABLE OF CONTENT
+  THIS DOCUMENT CONTAINS INFORMATION THAT IS PROPRIETARY TO MOLEX ELECTRONIC TECHNOLOGIES, LLC AND SHOULD NOT BE USED WITHOUT WRITTEN PERMISSION
+
+REVISION
+DESCRIPTION                                                                    MICRO-LOCK PLUS 2.0
+                                                                 WIRE TO WIRE CONNECTOR SINGLE ROW TIN-PLATING
+CHANGE NO.     748551
+REVISED BY     PRAMOD                   DATE   2023/05/04    DOC TYPE               DOC TYPE DESCRIPTION                   DOC PART      SERIES
+REV APPR BY    MRAMAKRISHNA             DATE   2023/05/05       PS               PRODUCT SPECIFICATION WORD                   000        505570
+                      INITIAL RELEASE                           CUSTOMER                DOCUMENT NUMBER                    REVISION     SHEET
+INITIAL DRWN SOKUMURA01                 DATE   2021/03/18
+INITIAL APPR   AIDA                     DATE   2022/02/18
+                                                                 GENERAL                5055700003-PS                        A1         8 OF 13
+
+PROCEDURE: 1703070003-ES TEMPLATE: 1703070003TEMP-A4 REVISION: A2
+                                                                PRODUCT SPECIFICATION
+               6.3 ENVIRONMENTAL PERFORMANCE CONTINUED
+
+                 ITEM          DESCRIPTION                              TEST CONDITION                             REQUIREMENT
+                                                            Mate connectors and expose to the
+                                                            following salt mist conditions. Upon
+                                                            completion of the exposure period, salt
+                                                            deposits shall be removed by a gentle           Appearance        No Damage
+                                                            water wash or dip in running water. After
+                                                            that, the measurements shall be
+                                                            performed.
+                 6.3.5            Salt Spray
+                                                            NaCl solution
+                                                            Concentration: 5±1 %
+                                                            Spray time : 48±4 hours                           Contact         40 milliohms
+                                                            Ambient temperature : 35±2 °C                    Resistance          MAX
+                                                            (JIS 60068-2-11/
+                                                            MIL-STD-202 Method 101)
+                                                                                                                              No Damage
+                                                            Mate connectors and expose to the         Appearance
+                                                                                                                              on function
+                 6.3.6             SO2 Gas                  conditions of 50±5 ppm SO2 gas at ambient
+                                                            temperature 40±2 °C for 24 hours.           Contact               40 milliohms
+                                                                                                      Resistance                 MAX
+
+                                                            Mate connectors and expose to the                                 No Damage
+                                                                                                            Appearance
+                                                            conditions of 28 % concentration NH3                              on function
+                 6.3.7             NH3 Gas
+                                                            solution for 40 minutes.                          Contact         40 milliohms
+                                                            [The ratio is 25 ml per 1L]                      Resistance          MAX
+
+                                                                                                            ( ) : Reference Standard
+                                                                                                            { } : Reference Unit
+
+
+
+
+    Micro-Lock Plus 2.0 Connector Web Page                                        TABLE OF CONTENT
+  THIS DOCUMENT CONTAINS INFORMATION THAT IS PROPRIETARY TO MOLEX ELECTRONIC TECHNOLOGIES, LLC AND SHOULD NOT BE USED WITHOUT WRITTEN PERMISSION
+
+REVISION
+DESCRIPTION                                                                   MICRO-LOCK PLUS 2.0
+                                                                WIRE TO WIRE CONNECTOR SINGLE ROW TIN-PLATING
+CHANGE NO.     748551
+REVISED BY     PRAMOD                   DATE   2023/05/04    DOC TYPE               DOC TYPE DESCRIPTION                   DOC PART      SERIES
+REV APPR BY    MRAMAKRISHNA             DATE   2023/05/05       PS               PRODUCT SPECIFICATION WORD                   000        505570
+                      INITIAL RELEASE                           CUSTOMER                DOCUMENT NUMBER                   REVISION      SHEET
+INITIAL DRWN SOKUMURA01                 DATE   2021/03/18
+INITIAL APPR   AIDA                     DATE   2022/02/18
+                                                                 GENERAL               5055700003-PS                         A1         9 OF 13
+
+PROCEDURE: 1703070003-ES TEMPLATE: 1703070003TEMP-A4 REVISION: A2
+                                                               PRODUCT SPECIFICATION
+     7.0 INSERTION / WITHDRAWAL FORCE
+
+                No. of                                 Insertion (MAX.)                         Withdrawal (MIN.)
+                               UNIT
+                CKT                               1st         6th        30th              1st         6th         30th
+                                 N                6.5         7.5        14.5              0.3         0.3          0.3
+                  2
+                               {kgf}            {0.66}      {0.77}      {1.48}           {0.03}      {0.03}       {0.03}
+                                 N                9.7          10.7        17.7            0.5              0.5            0.5
+                  3
+                               {kgf}            {0.99}        {1.09}      {1.81}         {0.05}           {0.05}         {0.05}
+                                 N               12.9          13.9        20.9            0.7              0.7            0.7
+                  4
+                               {kgf}            {1.32}        {1.42}      {2.13}         {0.07}           {0.07}         {0.07}
+                                 N               16.1          17.1        24.1            0.9              0.9            0.9
+                  5
+                               {kgf}            {1.64}        {1.74}      {2.46}         {0.09}           {0.09}         {0.09}
+                                 N               19.3          20.3        27.3            1.1              1.1            1.1
+                  6
+                               {kgf}            {1.97}        {2.07}      {2.79}         {0.11}           {0.11}         {0.11}
+                                 N               22.5          23.5        30.5            1.3              1.3            1.3
+                  7
+                               {kgf}            {2.30}        {2.40}      {3.11}         {0.13}           {0.13}         {0.13}
+                                 N               25.7          26.7        33.7            1.5              1.5            1.5
+                  8
+                               {kgf}            {2.62}        {2.72}      {3.44}         {0.15}           {0.15}         {0.15}
+                                 N               28.9          29.9        36.9            1.7              1.7            1.7
+                  9
+                               {kgf}            {2.95}        {3.05}      {3.77}         {0.17}           {0.17}         {0.17}
+           ※Release the positive lock, and measure.                                                   {    } : Reference Unit
+
+     8.0 CONTACT RESISTANCE MEASURING POINT
+
+
+
+
+                                                         Contact Resistance: mΩ = V/A
+
+     9.0 PACKAGING
+
+                      Parts shall be packaging to protect the parts from damage during standard shipping, storage, and
+                      handling. Refer Molex.com specific part number webpage to get the exact packaging document for that
+                      item.
+
+
+
+    Micro-Lock Plus 2.0 Connector Web Page                                         TABLE OF CONTENT
+  THIS DOCUMENT CONTAINS INFORMATION THAT IS PROPRIETARY TO MOLEX ELECTRONIC TECHNOLOGIES, LLC AND SHOULD NOT BE USED WITHOUT WRITTEN PERMISSION
+
+REVISION
+DESCRIPTION                                                                   MICRO-LOCK PLUS 2.0
+                                                                WIRE TO WIRE CONNECTOR SINGLE ROW TIN-PLATING
+CHANGE NO.     748551
+REVISED BY     PRAMOD                    DATE   2023/05/04   DOC TYPE               DOC TYPE DESCRIPTION                   DOC PART      SERIES
+REV APPR BY    MRAMAKRISHNA              DATE   2023/05/05      PS              PRODUCT SPECIFICATION WORD                    000        505570
+                       INITIAL RELEASE                         CUSTOMER                 DOCUMENT NUMBER                   REVISION      SHEET
+INITIAL DRWN SOKUMURA01                  DATE   2021/03/18
+INITIAL APPR   AIDA                      DATE   2022/02/18
+                                                                GENERAL                5055700003-PS                         A1        10 OF 13
+
+PROCEDURE: 1703070003-ES TEMPLATE: 1703070003TEMP-A4 REVISION: A2
+                                                               PRODUCT SPECIFICATION
+     10.0 CABLE TIE AND / OR TWIST TIE LOCATION
+
+                                                             CKT Size                  Dim T Min.
+                                                              2 - 9 ckt                 35 mm
+
+                                                               T
+
+
+                                                                                                          Bundling material
+
+
+
+
+                      The “T” dimension defines a “free” length of wire, or a length of wire that is not subject to significant bias
+                      by external factors such as a wire tie, wire twisting, or other means of bending or deforming of the wires
+                      that repositions them from their natural relaxed state or location where they enter the housing. Wires are
+                      to be dressed in such a manner to allow the terminals to float freely in the pocket. This dimension is
+                      general recommendation and may need to be adjusted for different wire gauges and wire type and
+                      insulation thickness and insulation material.
+
+
+
+
+    Micro-Lock Plus 2.0 Connector Web Page                                       TABLE OF CONTENT
+  THIS DOCUMENT CONTAINS INFORMATION THAT IS PROPRIETARY TO MOLEX ELECTRONIC TECHNOLOGIES, LLC AND SHOULD NOT BE USED WITHOUT WRITTEN PERMISSION
+
+REVISION
+DESCRIPTION                                                                   MICRO-LOCK PLUS 2.0
+                                                                WIRE TO WIRE CONNECTOR SINGLE ROW TIN-PLATING
+CHANGE NO.     748551
+REVISED BY     PRAMOD                    DATE   2023/05/04   DOC TYPE              DOC TYPE DESCRIPTION                    DOC PART      SERIES
+REV APPR BY    MRAMAKRISHNA              DATE   2023/05/05     PS               PRODUCT SPECIFICATION WORD                    000        505570
+                       INITIAL RELEASE                         CUSTOMER                 DOCUMENT NUMBER                   REVISION      SHEET
+INITIAL DRWN SOKUMURA01                  DATE   2021/03/18
+INITIAL APPR   AIDA                      DATE   2022/02/18
+                                                                GENERAL                5055700003-PS                         A1        11 OF 13
+
+PROCEDURE: 1703070003-ES TEMPLATE: 1703070003TEMP-A4 REVISION: A2
+                                                              PRODUCT SPECIFICATION
+     11.0 NOTE
+
+               1.         When connectors are unmated, positive locks shall certainly be released.
+               2.         There is no influence in the product performance in the case that the black spot or bubble might be
+                          appeared on the plastic part of this product and the color shade might be different (including
+                          discoloration by aging etc.).
+               3.         The sliding surface marking might be shown on the appearance because the tin plating is used for
+                          the tail and nail, however, there is no influence in the product performance.
+               4.         A few scratches may be seen on the surface of the housing and the plating of this product, however,
+                          there is no issue in the product performance.
+               5.         Discoloration of the plastic part of this product can be appeared by the exposure to ultraviolet light,
+                          however, there is no issue in the product performance.
+               6.         hen this product is used at a place where the water exposure could be expected, please provide the
+                          appropriate care to avoid the damage from water. There is a possibility of causing insulated
+                          malfunction between the circuits by condensation and water leakage.
+               7.         Please do not conduct any washing process on the connectors because it may damage the
+                          functionality.
+               8.         Please avoid the situation which the contact area of connector always moves around. For example,
+                          the contact area is experiencing a constant movement by the sympathetic vibration of wires and
+                          PCB, rotating construction of devices, and action of moveable area. This may cause a defect in the
+                          conductivity due to the contact area being worn down. Therefore, please fix wires and PCB on the
+                          chassis, and reduces sympathetic vibration.
+               9.         Please do not apply the extra pressure on the connector. For example, do not carry around the
+                          substrate which has mated hanging connector on board. There is a case where it causes the
+                          damage of connector.
+               10.        After mating the connectors, please do not apply the pressure on the connectors in either the pitch
+                          direction, the span direction or rotational direction. It may cause the damage of connector and may
+                          crack the soldering.
+               11.        Please ensure to prevent from applying any external forces or shock to the connector when
+                          connector or the cable assembly in process or cable assembly is under being packaged, or under
+                          transportation. This may cause deformation and damage to the connector and may cause a defect
+                          in product performance.
+               12.        When using this product, please ensure to follow within its rated current per circuit. Please ensure
+                          not to apply the sum of the rated current separated in several circuits to exceed the maximum
+                          allowable rated current.
+               13.        This product is not designed for mating and un-mating of the connector under the condition of an
+                          active electrical circuit. It may cause a risk of electric spark and the defect in product performance.
+                          Please do not conduct the hot plug and hot unplug.
+               14.        The applicable wire for this connector, in principle, is tin-plated copper stranded wire.
+                          Please contact molex in advance when using other kind of wires.
+               15.        Please ensure to keep enough clearance between the connector and chassis of your device in order
+                          not to apply pressure on the connector.
+               16.        Please tie the cables at least 35 mm away from the edge of the connector housing and ensure that
+                          the forces on all of the wires are applied evenly.
+
+
+    Micro-Lock Plus 2.0 Connector Web Page                                       TABLE OF CONTENT
+  THIS DOCUMENT CONTAINS INFORMATION THAT IS PROPRIETARY TO MOLEX ELECTRONIC TECHNOLOGIES, LLC AND SHOULD NOT BE USED WITHOUT WRITTEN PERMISSION
+
+REVISION
+DESCRIPTION                                                                  MICRO-LOCK PLUS 2.0
+                                                               WIRE TO WIRE CONNECTOR SINGLE ROW TIN-PLATING
+CHANGE NO.     748551
+REVISED BY     PRAMOD                   DATE   2023/05/04   DOC TYPE               DOC TYPE DESCRIPTION                    DOC PART      SERIES
+REV APPR BY    MRAMAKRISHNA             DATE   2023/05/05     PS                PRODUCT SPECIFICATION WORD                    000        505570
+                      INITIAL RELEASE                         CUSTOMER                  DOCUMENT NUMBER                   REVISION      SHEET
+INITIAL DRWN SOKUMURA01                 DATE   2021/03/18
+INITIAL APPR   AIDA                     DATE   2022/02/18
+                                                               GENERAL                 5055700003-PS                         A1        12 OF 13
+
+PROCEDURE: 1703070003-ES TEMPLATE: 1703070003TEMP-A4 REVISION: A2
+                                                              PRODUCT SPECIFICATION
+               17.        When extracting a crimp terminal from the housing by using a jig, it may deform the housing lance,
+                          and it causes to reduce the terminal retention force enormously after re-inserting the terminal.
+                          Therefore, please ensure to use a new housing after repairing the crimp terminals.
+               18.        When positioning cable assembly and cable assembly after mating connectors in the device, it
+                          should not have a constant stress or a pulling force applied on it. This phenomenon may damage
+                          the contact area, crimping area, or terminal lock area, and it causes the defect in conductivity.
+                          Therefore, when designing the wire positioning in the device, please ensure that there is enough
+                          wire length not to stress on the connector.
+               19.        When un-mating connector, please ensure to hold wires all together lightly and release the lock
+                          completely by attaching flat part of fingers to the lock and pushing the lock bar. Then, please
+                          withdraw the receptacle housing slowly and straightly to the mating axial direction. Please avoid
+                          withdrawing diagonally and strongly. This may cause the damage of the connector.
+
+
+
+
+               20.        Please do not deliberately deform the movable portion (the lock area and lance of housing) and
+                          terminals. It would lead to product failure.
+               21.        Please mate the connector in parallel with the mating axis as much as possible. At this time, after
+                          positioning and facing each external wall of both receptacle and plug housing, push the connector to
+                          mate straight until both plug and receptacle housings strike each other. (This is the complete
+                          connector mating position.) In the case of the diagonal mating, position and face lightly each
+                          external wall of both receptacle and plug housings less than angle of 10 °, and then push to mate.
+                          When mating connector in the diagonal angle excessively, it may damage the connector.
+
+
+
+
+               22.        Because the plug housing material of this product is using polyamide, the water absorption status of
+                          the housing material might influence the insertion force / withdrawal force or feeling of insertion.
+                          Though its excessive water absorption status may cause to interfere with insertion a bit or to
+                          weaken the lock click feeling when mating, it does not damage the product’s performance and
+                          functions.
+
+    Micro-Lock Plus 2.0 Connector Web Page                                       TABLE OF CONTENT
+  THIS DOCUMENT CONTAINS INFORMATION THAT IS PROPRIETARY TO MOLEX ELECTRONIC TECHNOLOGIES, LLC AND SHOULD NOT BE USED WITHOUT WRITTEN PERMISSION
+
+REVISION
+DESCRIPTION                                                                  MICRO-LOCK PLUS 2.0
+                                                               WIRE TO WIRE CONNECTOR SINGLE ROW TIN-PLATING
+CHANGE NO.     748551
+REVISED BY     PRAMOD                   DATE   2023/05/04   DOC TYPE               DOC TYPE DESCRIPTION                    DOC PART      SERIES
+REV APPR BY    MRAMAKRISHNA             DATE   2023/05/05     PS                PRODUCT SPECIFICATION WORD                    000        505570
+                      INITIAL RELEASE                         CUSTOMER                  DOCUMENT NUMBER                   REVISION      SHEET
+INITIAL DRWN SOKUMURA01                 DATE   2021/03/18
+INITIAL APPR   AIDA                     DATE   2022/02/18
+                                                               GENERAL                 5055700003-PS                         A1        13 OF 13
+
+PROCEDURE: 1703070003-ES TEMPLATE: 1703070003TEMP-A4 REVISION: A2
+

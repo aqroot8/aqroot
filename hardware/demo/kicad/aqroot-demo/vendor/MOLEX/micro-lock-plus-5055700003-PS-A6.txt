@@ -17,3 +17,48 @@ This file is a concise engineering transcription, not a replacement for the vend
 Molex series chart 217501, checked 2026-09-19: 2175012101 = Micro-Lock Plus 2.0 female-to-pigtail, matte tin, 75.00 mm, 26 AWG, RED, UL 10002.
 Molex series chart 217501, checked 2026-09-19: 2175011101 = Micro-Lock Plus 2.0 female-to-pigtail, matte tin, 75.00 mm, 26 AWG, BLACK, UL 10002.
 Source: https://www.molex.com/en-us/products/series-chart/217501
+
+--- ADDED AT D-793 / R12-01: THE PRIMARY DOCUMENT ITSELF IS NOW IN THE TREE ---
+D-792 recorded 5055700003-PS as "not retrievable from this environment" and DECLARED the
+contact-resistance terms at 20 mOhm initial / 30 mOhm aged on that basis.  Round-12 states
+that Molex primary evidence supports a 40 mOhm post-durability/environment criterion, and
+it does: the document retrieved at D-793 through the Internet Archive snapshot
+20231101174835 of the same molex.com URL and is archived beside this file as
+molex-5055700003-PS-A1.pdf (sha256 0218c6300aa4e4b4906e7607b7e033ece51c2adc6439ae8be90ce8e659942440,
+13 pages) with a pdftotext -layout rendering as molex-5055700003-PS-A1.txt
+(sha256 9d84e54fa59b772a4109f8d57e5e66d10855169128d33522c731ef6b70d4d9b2).
+
+REVISION DISCREPANCY, RECORDED RATHER THAN SMOOTHED.  The retrieved copy is REVISION A1
+(initial release; drawn 2021-03-18, approved 2022-02-18, change 748551 dated 2023-05-04/05).
+The transcription above cites Revision A6 approved 2025-04-25, taken from the Molex product
+page at D-781.  Every row this repository had already transcribed is present and IDENTICAL
+in the A1 copy -- 4.2 rated current 3.4/3.0/2.6 A, 4.3 derating reference 4.7/3.9/2.9 A,
+4.4 ambient -40..+105 C, 6.1.5 temperature rise 30 C MAX, 6.2.2 crimp pull-out
+39.2/29.4/19.6 N MIN, section 10 free-wire 35 mm -- so the two revisions agree everywhere
+the design already depended on them.  The rows below are read from the A1 copy and are the
+ones D-793 RULES at; they are conservative in the direction that matters.
+
+Section 6.1.1 Contact Resistance: 20 milliohms MAX.
+  Condition: "Mate connectors and measured by dry circuit, 20mV MAX., 10 mA MAX. and
+  SUBTRACT WIRE CONDUCTOR RESISTANCE.  Refer to paragraph 8 Contact resistance measuring
+  point. (JIS C5402-2-1)".  So the figure is the mated contact pair ALONE and the harness
+  conductor is counted separately, which is how aqroot_power_model itemises it.
+Section 6.1.4 Contact Resistance on crimped portion: 5 milliohms MAX.
+  Condition: "Crimp the applicable wire to the terminal, measured by dry circuit,
+  20 mV MAX., 10 mA MAX."  D-792 carried 1 mOhm per crimp as a DECLARED allowance; the
+  manufacturer's published maximum is five times that.
+Post-durability / post-environmental criterion, 40 milliohms MAX Contact Resistance, stated
+identically in EVERY one of these rows:
+  6.2.6 Repeated Insertion / Withdrawal, 30 cycles at <=10 cycles/minute
+  6.2.7 Vibration, 10-55-10 Hz 1.5 mm P-P, 2 h in each of X/Y/Z
+  6.2.8 Mechanical Shock, half sine 490 m/s2 {50 G} 11 ms, 18 shocks
+  6.3.1 Temperature Cycling, 5 cycles -40+/-3 C / +105+/-2 C, 30 min each
+  6.3.2 Heat Resistance, 105+/-2 C for 96 h
+  6.3.3 Cold Resistance, -40+/-3 C for 96 h
+  6.3.4 Humidity, 60+/-2 C at 90-95 % RH for 96 h
+  6.3.5 Salt Spray, 5+/-1 % NaCl, 48+/-4 h at 35+/-2 C
+  6.3.6 SO2 Gas, 50+/-5 ppm at 40+/-2 C for 24 h
+  6.3.7 NH3 Gas, 28 % NH3 solution, 40 minutes
+Section 4.5 Durability: tin plated, 30 cycles.
+Section 6.2.4 Crimp Terminal Retention Force: 25.0 N {2.55 kgf} MIN.
+Section 6.2.5 Housing Lock Strength, 2-3 circuit: 25.0 N {2.55 kgf} MIN.

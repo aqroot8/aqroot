@@ -492,9 +492,9 @@ power/NFC review, and CTO decisions.
 > | condition, at the J5 mating interface | guaranteed voltage |
 > |---|---|
 > | no load | **3.069408 V** |
-> | 400 mA, worst permitted wiring, 5 V rail also at 300 mA | **2.808509 V** |
-> | 400 mA, best permitted wiring (`J5.22`, four grounds, 3.3 V rail alone) | **2.902602 V** |
-> | 400 mA, **header fully mated** (both 3.3 V contacts, all four grounds), 5 V rail also at 300 mA | **2.913365 V** |
+> | 400 mA, worst permitted wiring, 5 V rail also at 300 mA | **2.805637 V** |
+> | 400 mA, best permitted wiring (`J5.22`, four grounds, 3.3 V rail alone) | **2.899731 V** |
+> | 400 mA, **header fully mated** (both 3.3 V contacts, all four grounds), 5 V rail also at 300 mA | **2.910494 V** |
 >
 > **PUBLISHED MINIMUM: 2.80 V** — the worst mode, rounded DOWN onto a 10 mV
 > grid.  It is **DERIVED**, not asserted: `demo_feature_contract` F6 computes it
@@ -505,8 +505,9 @@ power/NFC review, and CTO decisions.
 >
 > **HISTORICAL, SUPERSEDED:** D-788 published **2.95 V**, D-789 published
 > **2.84 V** with **2.849642 / 2.982890 V**, D-790 published **2.81 V** with
-> **2.813742 / 2.918599 V**, and D-791 published **2.81 V** with
-> **2.813068 / 2.917924 V**.  All four are retained here only as the record of
+> **2.813742 / 2.918599 V**, D-791 published **2.81 V** with
+> **2.813068 / 2.917924 V**, and D-792 published **2.80 V** with
+> **2.808509 / 2.913365 V**.  All four are retained here only as the record of
 > what moved and NONE of them is a current figure; the current table is the one
 > immediately above.  D-792 moved it again by **4.6 mV**, and the reason is
 > `R11-02`: the shared `U12`-output-to-`U20`-input plane carries
@@ -530,7 +531,7 @@ power/NFC review, and CTO decisions.
 > device AQROOT has qualified operates at or below 2.7 V. A dedicated accessory
 > buck-boost is deferred to **REV-B**.
 
-> ### **D-792 — ACCESSORY RETENTION, THE TWO PERMISSION EDGES, AND THE SUPPORTED CONCURRENCY THEY COME FROM**
+> ### **D-793 — ACCESSORY RETENTION, THE TWO PERMISSION EDGES, AND THE SUPPORTED CONCURRENCY THEY COME FROM**
 >
 > **THIS SUPERSEDES D-791's 3.55 V / 3.65 V PAIR AND, WITH IT, THE 3.50 V /
 > 3.85 V PAIR EVERY EARLIER BLOCK IN THIS DOCUMENT STATES.**  Round-11
@@ -548,27 +549,38 @@ power/NFC review, and CTO decisions.
 > Two further Round-11 corrections move every number here, and both are
 > corrections to the MODEL rather than to the board:
 >
-> * **`R11-07` — the battery path was one allowance, and it did not bound the
->   harness this programme froze.**  D-791 carried **54 mΩ** for "two UL 26 AWG
->   conductors at 0.1339 Ω/m nominal plus the J4 terminations".  It counted ONE
->   pair of conductors where the frozen harness has TWO (the pack's own factory
->   leads and the Molex 75 mm pre-crimps), counted NO mated contacts where the
->   battery path crosses two, and used the SOLID-conductor nominal at 20 °C for
->   stranded appliance wire running warm inside a sealed case.  The itemisation
->   in `aqroot_power_model` — every conductor, contact, crimp and solder barrel,
->   with its own length, count, provenance tag and basis — sums to **132.282 mΩ**
->   hot and aged, and the cell-to-`BAT_PROTECTED_P` fixed series resistance is
->   **249.782 mΩ** against D-791's 124 mΩ.
-> * **`R11-02` — the load ledger had no processor line at all.**  A Demo holding
->   its display at full brightness with no radio transmitting was modelled as
->   drawing **nothing** for the ESP32-S3 driving it.  The canonical ledger now
->   carries a **165.48 mA** baseline (Espressif v1.8 Table 6-6's worst published
->   row, plus its note-3 flash allowance, plus a declared allowance for the
->   N16R8's in-package PSRAM, widened 20 % because Espressif publishes no MAX),
->   and the Wi-Fi/BLE line is the INCREMENT over it, so baseline + increment is
->   exactly Espressif's own 500 mA supply requirement and neither is
->   double-counted.  The internal `+3V3` peak envelope moves **1.1653 A →
->   1.310554 A** and every sustained state gains the baseline.
+> * **`R12-01` — the battery path is the Molex specification's own numbers now,
+>   and it has a board-copper and a ground-return term it never had.**  Molex
+>   `5055700003-PS` retrieved at D-793 and is archived in the tree.  Its section
+>   6.1.1 publishes a **20 mΩ MAX** initial mated-contact resistance with the
+>   wire conductor SUBTRACTED, its 6.1.4 publishes **5 mΩ MAX** on the crimped
+>   portion, and its 6.2.6 / 6.2.7 / 6.2.8 / 6.3.1–6.3.7 rows publish **40 mΩ
+>   MAX** after 30 insertion cycles, after vibration, after 50 G shock, after
+>   96 h at 105 °C, after 96 h at 60 °C/90–95 % RH, after salt spray and after
+>   SO₂ and NH₃ exposure.  D-792 DECLARED 30 mΩ aged and 1 mΩ per crimp, so
+>   every contact term moves, and two terms that were in NO model at all are
+>   added: the **measured `J4.1 → F1 → Q2 → Q3 → R75.1` board copper**, and the
+>   **ground return** through the two solid `In1`/`In4` planes.  The itemised
+>   harness is **177.478 mΩ** hot and aged and the whole fixed series path,
+>   forward and return, is **355.204 mΩ**.
+> * **`R12-05` — Espressif's 500 mA is a requirement on the SUPPLY, not a bound
+>   on the module.**  Table 6-2's `IVDD` row reads "current delivered by
+>   external power supply, MIN 0.5 A"; D-792 used it as the module's own maximum
+>   draw.  The transmitting total is now built from Espressif's own CURRENT
+>   rows — the 107.9 mA modem-sleep worst row, the note-3 10 mA flash
+>   allowance, a declared 20 mA for the N16R8's in-package PSRAM and the 355 mA
+>   Table 6-4 802.11b transmit peak, which Espressif states is *"rated at a
+>   100 % duty cycle"* — all at the declared 1.20 widening, giving **591.5 mA**.
+>   The internal `+3V3` peak envelope is **1.402034 A**.  The 500 mA row keeps
+>   its own job: it is checked as a SUPPLY capability the `+3V3` rail must meet.
+> * **`R12-08` — a duty average is not an instantaneous permission bound.**  The
+>   microSD, NFC and IR lines enter a sustained state at their duty average,
+>   which is right for heat and wrong for a permission edge: the pre-read is
+>   taken quiet and the settled recheck lands 400 ms later.  The four
+>   ELECTRICAL limits and the firmware's own retention read are now evaluated
+>   with the worst reachable burst PRESENT.  The firmware serialises the three
+>   bursty peripherals (`BurstArbiter`), so the ruling instantaneous delta is
+>   the worst SINGLE burst rather than the sum of all three.
 >
 > `demo_feature_contract` **F12** solves the COMPLETE network as one
 > self-consistent fixed point — cell EMF → pack DC resistance → both 26 AWG lead
@@ -589,15 +601,13 @@ power/NFC review, and CTO decisions.
 > critical cell voltage the single-rail permission already reaches, at the top of
 > the declared 0…40 °C ambient envelope, rounded DOWN onto a 10 mA grid.
 >
-> **WHAT HAPPENED TO THE FULL PAIR, STATED PLAINLY.**  At 40 °C ambient, in the
-> lightest internal state, both rails at their full published budgets settle the
-> node at **3.1763 V** — inside every one of the seven hardware limits, and
-> **44 mV below the retention criterion the firmware itself applies**.  It is
-> therefore not a supported sustained state at the top of the ambient envelope.
-> It IS supported at a lower ambient, and that ambient is derived rather than
-> guessed: **33.0 °C**.  At 40 °C the largest simultaneous pair the lightest
-> state holds is 98.1 % of the full one; the per-state figures are in the
-> concurrency table below.  Drawing beyond the declared pair is not a hazard —
+> **WHAT HAPPENED TO THE FULL PAIR, STATED PLAINLY.**  With the corrected source
+> path, the corrected module total and the burst-aware permission edge, the FULL
+> 400 mA + 300 mA pair drawn at the same time is **not supported at any ambient in the declared 0–40 °C envelope**
+> — D-792 could still hold it below 33 °C and this candidate cannot.  The
+> DECLARED pair is unchanged at 220 mA + 170 mA, each rail's own published
+> budget is unchanged, and the per-state figures are in the concurrency table
+> below.  Drawing beyond the declared pair is not a hazard —
 > the 5 V rail sheds first and the 3.3 V rail keeps its full published 400 mA —
 > but it is outside the published contract, and `F6` now classifies it with the
 > accessory overcurrents, where it must still land in the RECOVERABLE protection
@@ -608,8 +618,8 @@ power/NFC review, and CTO decisions.
 > | firmware constant | value | what it is |
 > |---|---:|---|
 > | `kAccessoryRetentionFloorV` | **3.20 V** | the HARD node floor: the BQ25185's own `VBUVLO` bound (3.0 V typical, carried at a DECLARED +5 % because TI publishes no tolerance), plus the MAX17048's **+20 mV** voltage error and one 78.125 µV quantisation step, because firmware compares a REPORTED value (`D790-A14`) |
-> | `kAccessorySingleRailFloorV` | **3.95 V** | the MOST DEMANDING floor the permission table permits for ONE accessory rail |
-> | `kAccessoryDualRailFloorV` | **3.95 V** | the same, for TWO rails at the declared pair.  The two may legitimately COINCIDE: the dual case is the DERATED pair and therefore a lighter load than one rail at its full published budget |
+> | `kAccessorySingleRailFloorV` | **3.85 V** | the MOST DEMANDING floor the permission table permits for ONE accessory rail |
+> | `kAccessoryDualRailFloorV` | **3.85 V** | the same, for TWO rails at the declared pair.  The two may legitimately COINCIDE: the dual case is the DERATED pair and therefore a lighter load than one rail at its full published budget |
 >
 > **TWO SCALARS CANNOT CARRY THIS ANSWER, SO THERE IS A TABLE.**  Whether a
 > transition survives its own settled state depends on what else is ON: the
@@ -625,22 +635,36 @@ power/NFC review, and CTO decisions.
 > does not change the mode set, so its pre-read is taken with those modes already
 > running.  A MODE edge is entered from a mode set one step LIGHTER, so its
 > pre-read is HIGHER and its floor is higher.  Collapsing them means taking the
-> larger, and that would put the Wi-Fi state's rail-edge floor at 3.95 V when the
-> highest value the gauge can report in that state with the accessory idle is
-> **3.8049 V** — a floor the node cannot reach, which is `D790-A03` exactly.
+> larger, and the consequence is a floor the node cannot reach — which is
+> `D790-A03` exactly.  Every row is therefore attainability-checked against the
+> highest value the gauge can report in its OWN pre-state, which on this
+> candidate is **3.936902 V** in the lightest state.
 >
 > | modes ON | ENABLE a rail (rail edge) | ENTER this mode with a rail live (mode edge) |
 > |---|---:|---:|
-> | none | **3.65 V** | **3.65 V** |
-> | audio at the capped level | **3.70 V** | **3.75 V** |
-> | sub-GHz TX | **3.70 V** | **3.80 V** |
-> | audio + sub-GHz TX | **3.75 V** | **3.80 V** |
-> | Wi-Fi / BLE TX | **3.75 V** | **3.95 V** |
+> | none | **3.80 V** | **3.80 V** |
+> | audio at the capped level | **3.85 V** | **not permitted** |
+> | sub-GHz TX | **not permitted** | **not permitted** |
+> | audio + sub-GHz TX | **not permitted** | **not permitted** |
+> | Wi-Fi / BLE TX | **not permitted** | **not permitted** |
 > | Wi-Fi + audio | **not permitted** | **not permitted** |
 > | Wi-Fi + sub-GHz TX | **not permitted** | **not permitted** |
 > | all three | **not permitted** | **not permitted** |
 >
-> **"NOT PERMITTED" IS A REFUSAL, NOT A HIGH FLOOR.**  Six of the sixteen
+> **THE ACCESSORY WINDOW IS NARROWER AT D-793 THAN IT WAS AT D-792, AND THE
+> REASON IS PHYSICS THAT WAS NOT IN THE MODEL BEFORE.**  Ten of the sixteen
+> rows were permitted at D-792.  Four are permitted here.  The cause is the
+> three corrections above, and their arithmetic is visible: the fixed series
+> path grew 249.782 → **355.204 mΩ**, the transmitting module total grew from an
+> ROC misused as a load bound to a figure built out of published current rows,
+> and a permission edge is now judged with a burst present.  Nothing about the
+> BOARD changed.  A **REV-B** rewiring of the pass pair — the four `AO4800`
+> channels are in SERIES where the LTC4368's function needs one back-to-back
+> pair, and paralleling the two packages takes the pair from about 292 mΩ hot to
+> about 73 mΩ — restores the window outright and is the recommended fix; see
+> `CTO_DECISIONS.md` D-793 section 0.
+>
+> **"NOT PERMITTED" IS A REFUSAL, NOT A HIGH FLOOR.**  Twelve of the sixteen
 > combinations have NO attainable cell voltage at which the settled state
 > survives its own retention criterion at the top of the ambient envelope.
 > Encoding them as a large number would read as a restriction and behave as a
@@ -656,19 +680,51 @@ power/NFC review, and CTO decisions.
 > switched on, so it must anticipate the drop that rail will cause; a retention
 > decision reads a node that already is.  Judging retention at an enable floor
 > is what sheds a rail 400 ms after authorising it, every time.  The worst node
-> step is **0.6972 V** for a first rail and **0.6847 V** for a second.
+> step is **0.5625 V** for a first rail and **0.5553 V** for a second.
 >
 > **ATTAINABILITY, WHICH IS THE CLAUSE THAT MAKES THIS NON-VACUOUS.**  Every row
 > of the table is checked against the highest value the gauge can report in that
 > row's OWN pre-state, and a row that fails is refused rather than published.
 > D-791's version of this clause compared two scalars against one reference
-> state, which is how a 3.95 V rail-edge floor for the Wi-Fi state came within
-> 5 mV of shipping.
+> state, and that is how a rail-edge floor for the Wi-Fi state came within 5 mV
+> of shipping while the node could not reach it.
 >
 > **SHED ORDER IS UNCHANGED.**  Below the retention floor with both rails live
 > the **5 V rail sheds FIRST**, which restores the node and leaves the 3.3 V rail
 > delivering its full published **400 mA**.  Unreadable or implausible `VCELL` is
 > always fail-closed.
+>
+> #### **HOW THE DECLARED PAIR IS ENFORCED, AND WHAT HAPPENS ON OVERLOAD**
+>
+> **IT IS AN OPERATOR / POLICY LIMIT, NOT A CURRENT MEASUREMENT.**  This board
+> has **no current sense on either accessory rail** and the firmware cannot see
+> how much an accessory draws.  What the firmware enforces is the PERMISSION
+> and the RETENTION: a rail is enabled only when the gauge's reported `VCELL`
+> clears the permission table's floor for the mode set the board is in, and a
+> live rail is SHED when the reported `VCELL` falls below
+> `kAccessoryRetentionFloorV`.  The declared pair is a contract with the
+> **accessory designer** about what the port supports; it is not a thing the
+> board measures.
+>
+> **ON OVERLOAD, IN ORDER.**  An accessory drawing beyond the declared pair
+> pulls the node down; the settled recheck sheds the **5 V rail**; if the node
+> is still low, every accessory rail goes off.  Beyond that the **hardware**
+> acts and the firmware is not involved: `U20`/`U22` current-limit at their
+> programmed points, then the BQ25185's **recoverable** `BATOCP`, then the
+> **latching** LTC4368 breaker, then `F1`'s one-shot fuse — in that order, which
+> `demo_feature_contract` **F6** proves is the order every reachable state
+> actually meets.  An accessory overcurrent is therefore a recoverable event,
+> not a latched one, up to the point where a user has genuinely shorted the
+> port.
+>
+> **AND THE PASS PAIR'S JUNCTION IS MODELLED, NOT MEASURED.**  The AO4800
+> junction figure this network carries uses AOS's **RthetaJL** (junction to
+> LEAD, 40 °C/W MAX steady state) because the drain leads sit on this board's
+> copper, with the land taken a DECLARED **5 K** above the enclosure's internal
+> air.  AOS's RthetaJA figures — 62.5 °C/W at 10 s, 90 °C/W steady state — are
+> vendor **reference-board** numbers in open still air and are reported only.
+> `C-BAT-GATE-01` is the measurement of record for both that allowance and the
+> declared hot-resistance ratio; nothing here claims a measured junction.
 >
 > ### **SUPPORTED SUSTAINED CONCURRENCY — DERIVED, AND EXPRESSED IN OBSERVABLE MODES**
 >
@@ -685,13 +741,13 @@ power/NFC review, and CTO decisions.
 >
 > | state | modes ON beyond the always-on set | internal `+3V3` | both rails at the DECLARED PAIR | `ACC_3V3` alone at 400 mA | `ACC_5V` alone at 300 mA | no accessory | both at the FULL pair |
 > |---|---|---:|---:|---:|---:|---:|---:|
-> | `display_only` | no radio transmitting, amplifier idle | **0.5460 A** | **3.824 V** | **3.752 V** | **3.833 V** | **3.468 V** | 4.211 V |
-> | `display_audio` | audio at the capped level | **0.6660 A** | **3.923 V** | **3.845 V** | **3.933 V** | **3.546 V** | **not supported** |
-> | `display_subghz` | sub-GHz TX | **0.6860 A** | **3.940 V** | **3.861 V** | **3.951 V** | **3.559 V** | **not supported** |
-> | `display_subghz_audio` | sub-GHz TX, audio at the capped level | **0.8060 A** | **4.048 V** | **3.963 V** | **4.060 V** | **3.641 V** | **not supported** |
-> | `display_wifi` | Wi-Fi / BLE TX | **0.8806 A** | **4.119 V** | **4.030 V** | **4.148 V** | **3.695 V** | **not supported** |
-> | `display_wifi_subghz` | Wi-Fi / BLE TX, sub-GHz TX | **1.0206 A** | **not supported** | **not supported** | **not supported** | **3.800 V** | **not supported** |
-> | `d790_declared` | Wi-Fi / BLE TX, sub-GHz TX, audio at the capped level | **1.1406 A** | **not supported** | **not supported** | **not supported** | **3.898 V** | **not supported** |
+> | `display_only` | no radio transmitting, amplifier idle | **0.5460 A** | **3.967 V** | **3.881 V** | **3.979 V** | **3.537 V** | **not supported** |
+> | `display_audio` | audio at the capped level | **0.6660 A** | **4.085 V** | **3.993 V** | **4.098 V** | **3.631 V** | **not supported** |
+> | `display_subghz` | sub-GHz TX | **0.6860 A** | **4.106 V** | **4.012 V** | **4.119 V** | **3.647 V** | **not supported** |
+> | `display_subghz_audio` | sub-GHz TX, audio at the capped level | **0.8060 A** | **not supported** | **4.133 V** | **not supported** | **3.747 V** | **not supported** |
+> | `display_wifi` | Wi-Fi / BLE TX | **0.9720 A** | **not supported** | **not supported** | **not supported** | **3.893 V** | **not supported** |
+> | `display_wifi_subghz` | Wi-Fi / BLE TX, sub-GHz TX | **1.1120 A** | **not supported** | **not supported** | **not supported** | **4.026 V** | **not supported** |
+> | `d790_declared` | Wi-Fi / BLE TX, sub-GHz TX, audio at the capped level | **1.2320 A** | **not supported** | **not supported** | **not supported** | **not supported** | **not supported** |
 >
 > **THE PUBLISHED SUSTAINED REFERENCE STATE IS `display_subghz`** — both
 > Community-Port rails at the declared simultaneous pair, the display at full
@@ -711,7 +767,7 @@ power/NFC review, and CTO decisions.
 > fuse (`R10-N02`).
 >
 >
-> ### **D-792 — THE CHARGE REGIME IS A LOAD CEILING, NOT A PASS MARK**
+> ### **D-793 — THE CHARGE REGIME IS A LOAD CEILING, NOT A PASS MARK**
 >
 > D-790 stated that the charge regime "needs no bound, by design", because
 > SLUSF65B 6.3.7.6 reduces the CHARGE current at `TREG` = 100 °C.  `D790-A02`
@@ -743,13 +799,40 @@ power/NFC review, and CTO decisions.
 > the answer.  So the largest sustained SYSTEM POWER for which the half `TREG`
 > cannot reach stays inside TI's 125 °C operating maximum is SOLVED:
 >
-> **CHARGE-TIME SYSTEM POWER CEILING: **4.063 W**, at 40 °C ambient.**
+> **CHARGE-TIME SYSTEM POWER CEILING: **3.600 W**, at 40 °C ambient.**
 >
-> The heaviest combination under it is `display_subghz` + `acc_3v3_only`, whose
-> junction with the charge current folded all the way to zero is **111.3 °C**.
-> `display_only` + the declared simultaneous pair is also permitted.  What is
-> REFUSED while an adapter is attached is every state with two radios keyed, and
-> every state combining the audio amplifier with an accessory rail.
+> **AND THE NUMBER IS ROUNDED DOWN, ON PURPOSE.**  D-792 published **4.063 W**,
+> which its own bisection had produced as 4.06293325 W and then `round()`ed
+> UPWARD across a **branch discontinuity**: at exactly 4.063 W the solver is in
+> a different regime — the input current limit binds, `SYS` collapses from the
+> input-held node to the cell, the BATFET supplements and the junction is
+> **155.4 °C**, past `TSHUT`, let alone past the 125 °C operating maximum.  A
+> constant-power load into a current-limited source has no stable point between
+> those two regimes, so the step is real and it is **30.9 K** of junction wide.
+> The published figure is now the lower of TI's junction maximum and that
+> discontinuity, reduced by a declared **5 %** guardband and FLOORED onto a
+> 0.05 W grid; the real solver is evaluated AT the published number and over a
+> 200-point scan of everything below it, and no ruling source class supplements
+> anywhere in that range.
+>
+> **THE CHARGING SOURCE IS A PUBLISHED CONTRACT NOW, NOT A CONSTANT.**  D-792
+> carried one declared 0.200 Ω for "the cable, both mated USB connector pairs
+> and the board's own VBUS copper" and called it pessimistic for a 2 m 28 AWG
+> cable.  It is not: 2 m of 28 AWG is about 0.85 Ω on its own.  **Charge the
+> Demo from the supplied adapter and cable, or from a USB 2.0 source and a cable
+> with 24 AWG or heavier power conductors no longer than 2 m.**  That is a
+> source path of at most **0.4472 Ω** and it is a MEASURABLE acceptance
+> criterion — at least **4.2581 V** at `U11` pin 10 with the charger drawing its
+> programmed 1.1 A input limit, measured at first article as `C-CHG-01`.  A
+> cable outside that contract lowers the ceiling and the sensitivity is
+> published beside the number rather than left as a warning.
+>
+> The heaviest combination under the ceiling is `display_wifi` + `no_accessory`,
+> whose junction with the charge current folded all the way to zero is
+> **104.4 °C**.  `display_only` + `acc_3v3_only` at its full published 400 mA is
+> also permitted.  What is REFUSED while an adapter is attached is the 5 V
+> accessory rail, the declared simultaneous pair, and every state with two
+> radios keyed.
 >
 > **THIS CANNOT BE A FIRMWARE RULE, WHICH IS WHY IT IS A PUBLISHED ONE.**  This
 > board has **no VBUS-present signal on any MCU or expander pin** —
@@ -764,7 +847,7 @@ power/NFC review, and CTO decisions.
 > the cell sits in the internal air.  "Charge at up to 40 °C ambient" is
 > therefore not a statement this enclosure can make.  What is derivable is the
 > external ambient at which the internal air REACHES that limit, and at the
-> heaviest permitted charging state that is **27.7 °C**.  A lighter system load
+> heaviest permitted charging state that is **24.5 °C**.  A lighter system load
 > raises it.  This is a SUPERVISED operating condition a human can observe —
 > `battery_pack_contract` **B8** already requires supervised first-five
 > charging and the pack has no thermistor; D-791 put a number on the
@@ -797,9 +880,11 @@ power/NFC review, and CTO decisions.
 > is fitted on this board; and U20's **68 mΩ** RON is retired for a guaranteed **116 mΩ**
 > at the nearest published row at or below its own input voltage.  **AND AT D-791:**
 > `R97` is **1.87 kΩ**, not 1.78 kΩ; the guaranteed `ACC_3V3` minimum is
-> **0.4058 A**, not 0.4279 A; and the VCELL policy is **THREE derived floors —
-> retention 3.20 V, first-rail enable 3.55 V, second-rail enable 3.65 V** — not
-> the 3.50 V / 3.85 V pair every sentence below states.  `D790-A03` found that
+> **0.4058 A**, not 0.4279 A; and the VCELL policy of the day was **THREE
+> derived floors — retention 3.20 V, first-rail enable 3.55 V, second-rail
+> enable 3.65 V** — both enable figures now RETIRED and SUPERSEDED by D-793's
+> 3.85 V, and neither is the 3.50 V / 3.85 V pair every sentence below
+> states.  `D790-A03` found that
 > 3.85 V is a node voltage `BAT_PROTECTED_P` **cannot reach under the published
 > load at any attainable cell voltage**, so the pair below would have authorised
 > the second rail and shed it again 400 ms later, on a full pack.  The current
@@ -1076,9 +1161,10 @@ at the 1.0 A internal term they used; only the last column is re-based on the
 > available to 3.50 V.  `F6` parses the actual firmware constants, requires the gauge
 > and charger `BAT` pins to be on `BAT_PROTECTED_P`, and refuses a live path that has
 > grown past its declared ceiling.  Five destructive controls are refused: the old
-> single 3.50 V dual floor, **the first draft's asserted 3.75 V**, a single-rail floor
-> under its own requirement, and `BAT_PROTECTED_P` or `SYS`→`U21` copper past its
-> ceiling.  `H6` adds three C++ mutations — collapsing the dual floor, failing open on
+> single 3.50 V dual floor, **the first draft's asserted 3.75 V** — both of those
+> floors are RETIRED and the current ones are in the D-793 block above — a
+> single-rail floor under its own requirement, and `BAT_PROTECTED_P` or
+> `SYS`→`U21` copper past its ceiling.  `H6` adds three C++ mutations — collapsing the dual floor, failing open on
 > an unreadable gauge, and losing the 5 V-first shed order.
 >
 against a `BQ25185` `IBAT_OCP` band of **2.5625 / 3.125 / 3.6875 A** (3.125 A typ

@@ -1,0 +1,52 @@
+{
+ "CONTAINED_PRIOR": [],
+ "EXACT_PRIOR": [],
+ "NEAR_MISS": [],
+ "NO_CANDIDATE": [],
+ "REFUSED": [],
+ "TUNE_PENDING": [],
+ "assembly_lines": 123,
+ "board": "../kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "graftable": {
+  "lines": 0,
+  "parts": 0
+ },
+ "no_candidate_prefixes": {},
+ "package": "/home/aqroot8/aqroot-demo/hardware/demo/fab",
+ "prior_sources": {
+  "BETA_DM": 66,
+  "DEMO": 123,
+  "LEDGER": 30
+ },
+ "schema": 2,
+ "summary": {
+  "CONTAINED_PRIOR": {
+   "lines": 0,
+   "parts": 0
+  },
+  "EXACT_PRIOR": {
+   "lines": 0,
+   "parts": 0
+  },
+  "NEAR_MISS": {
+   "lines": 0,
+   "parts": 0
+  },
+  "NO_CANDIDATE": {
+   "lines": 0,
+   "parts": 0
+  },
+  "REFUSED": {
+   "lines": 0,
+   "parts": 0
+  },
+  "TUNE_PENDING": {
+   "lines": 0,
+   "parts": 0
+  }
+ },
+ "tune_refs": [],
+ "unreadable": [],
+ "unsourced_lines": 0,
+ "unsourced_parts": 0
+}

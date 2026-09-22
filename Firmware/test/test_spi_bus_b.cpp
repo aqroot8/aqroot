@@ -120,11 +120,20 @@ int main() {
   {
     struct Authority : aqroot::AccessoryLoadAuthority {
       bool permit = true;
+      // D-793 / R12-03: TRUE here so the existing claims keep asking the
+      // question they were written to ask; the retained-state claims below
+      // drive it FALSE on purpose.
+      bool physical_state_known = true;
       int asked = 0;
+      int physical_asked = 0;
       int notified_on = 0, notified_off = 0;
       bool subGhzTransmitPermitted() override { ++asked; return permit; }
       void noteSubGhzTransmitting(bool on) override {
         if (on) ++notified_on; else ++notified_off;
+      }
+      bool radioPhysicalStateIsKnown() override {
+        ++physical_asked;
+        return physical_state_known;
       }
     };
     RecordingSelects selects;
@@ -170,6 +179,37 @@ int main() {
           && SpiBusB::isSubGhz(SpiBDevice::Sx1262)
           && !SpiBusB::isSubGhz(SpiBDevice::St25r3916)
           && !SpiBusB::isSubGhz(SpiBDevice::None));
+
+    // =====================================================================
+    // D-793 / R12-03.  AN UNKNOWN PHYSICAL TRANSMIT STATE REFUSES EVERYTHING.
+    //
+    // `transmitting_` is a C++ member and an MCU reset zeroes it; U7 and U8
+    // stay powered.  Until the boot path has quiesced them and CONFIRMED it,
+    // the bus may not key ANY transmitter -- including the NFC front end,
+    // which is exempt from the LOAD question but not from the "is something
+    // already radiating" question.
+    // =====================================================================
+    authority.permit = true;
+    authority.physical_state_known = false;
+    const int asked_before = authority.asked;
+    check("no transmitter may be keyed while the physical radio state is "
+          "UNKNOWN", !bus.beginTransmit(SpiBDevice::Sx1262));
+    check("...and the LOAD question is not even reached, because it is "
+          "meaningless while a transmitter may already be keyed",
+          authority.asked == asked_before);
+    check("...and the other sub-GHz radio is refused too",
+          !bus.beginTransmit(SpiBDevice::Cc1101));
+    check("...and so is the NFC front end, which is exempt from the load "
+          "rule and not from this one",
+          !bus.beginTransmit(SpiBDevice::St25r3916));
+    check("...and the bus is left exactly as it was",
+          bus.transmitting() == SpiBDevice::None
+          && authority.notified_on == 1);
+    check("...and the bus really did ask", authority.physical_asked >= 4);
+    authority.physical_state_known = true;
+    check("a confirmed quiesce re-permits keying",
+          bus.beginTransmit(SpiBDevice::Sx1262));
+    bus.endTransmit(SpiBDevice::Sx1262);
   }
 
   {

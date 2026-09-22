@@ -1,0 +1,47 @@
+{
+ "schema": 1,
+ "decision": "D-793",
+ "date": "2026-09-22",
+ "why": "R11-06 asks a DECLARED allowance to show that the attempt to replace it with a published number is on the record.  D-792 recorded three documents as unobtainable from this environment; D-793 re-attempted all three, and the Molex product specification RETRIEVED.",
+ "attempts": [
+  {
+   "vendor": "MOLEX",
+   "document": "5055700003-PS Micro-Lock Plus 2.0 wire-to-wire product specification",
+   "direct_url": "https://www.molex.com/content/dam/molex/molex-dot-com/products/automated/en-us/productspecificationpdf/505/505570/5055700003-PS-000.pdf",
+   "direct_result": "HTTP/2 INTERNAL_ERROR, then connection timeout on HTTP/1.1 (same as the D-792 attempt)",
+   "archive_url": "http://web.archive.org/web/20231101174835if_/http://www.molex.com/content/dam/molex/molex-dot-com/products/automated/en-us/productspecificationpdf/505/505570/5055700003-PS-000.pdf",
+   "archive_result": "HTTP 200, 645403 bytes, 13-page PDF",
+   "retrieved": true,
+   "archived_as": "hardware/demo/kicad/aqroot-demo/vendor/MOLEX/molex-5055700003-PS-A1.pdf",
+   "sha256": "0218c6300aa4e4b4906e7607b7e033ece51c2adc6439ae8be90ce8e659942440",
+   "text_rendering": "hardware/demo/kicad/aqroot-demo/vendor/MOLEX/molex-5055700003-PS-A1.txt",
+   "text_sha256": "9d84e54fa59b772a4109f8d57e5e66d10855169128d33522c731ef6b70d4d9b2",
+   "revision_retrieved": "A1",
+   "revision_on_the_product_page": "A6",
+   "revision_note": "Every row this repository already depended on -- 4.2 rated current, 4.3 derating reference, 4.4 ambient range, 6.1.5 temperature rise, 6.2.2 crimp pull-out, section 10 free-wire length -- is present and IDENTICAL in the A1 copy.  The three contact-resistance rows D-793 now RULES at are read from it.",
+   "what_it_changed": "R12-01.  Contact resistance moves from DECLARED 20 mOhm initial / 30 mOhm aged and 1 mOhm per crimp to the manufacturer's published 20 mOhm initial (6.1.1, conductor subtracted), 5 mOhm per crimped portion (6.1.4) and 40 mOhm post-durability/post-environmental (6.2.6-6.2.8, 6.3.1-6.3.7).  All three become GUARANTEED_MAX."
+  },
+  {
+   "vendor": "MOLEX",
+   "document": "5055701001-PS",
+   "retrieved": false,
+   "result": "not re-attempted separately: 5055700003-PS is the specification the fitted 505570 receptacle housing and 505572 terminal are governed by, and it retrieved.",
+   "stands_in": "n/a"
+  },
+  {
+   "vendor": "Coilcraft",
+   "document": "XFL4020 family datasheet",
+   "retrieved": false,
+   "result": "HTTP 404 at D-792; not re-attempted at D-793.",
+   "stands_in": "the inductor's core-loss fraction remains DECLARED_ESTIMATE with C-DISP-01 as the measurement of record.  The DCR figure that RULES is the manufacturer's published MAXIMUM 57.4 mOhm and is unaffected."
+  }
+ ],
+ "declared_values_that_still_stand_in_for_a_document": [
+  "panel.logic_and_touch_mA -- the EastRising module datasheet RETRIEVED at D-792 and publishes NO active-mode supply current; the 50 mA is a statement about the evidence and is measured at C-DISP-01",
+  "path.pack_ac_to_dc_multiplier -- the 785060 pack publishes an AC 1 kHz impedance only; the 2.5x DC widening is declared and measured at C-BAT-PATH-01",
+  "path.f1_fuse_max_ohm and path.f1_fuse_tolerance -- Littelfuse publishes no cold-resistance row for the 0466005",
+  "path.gnd_return_squares -- a pour cannot be walked by a track graph; the 12 squares are a declared 2.7x widening on the geometric estimate",
+  "usb.* source-path terms -- the USB cable is a CONTRACT with a measurable acceptance criterion at U11 pin 10 (C-CHG-01) rather than a datasheet number",
+  "pass_pair.land_above_internal_air_K -- 5 K is a declared allowance, measured at C-BAT-GATE-01"
+ ]
+}

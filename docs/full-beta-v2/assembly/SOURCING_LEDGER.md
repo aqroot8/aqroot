@@ -142,10 +142,11 @@ before any order.  **DO NOT ORDER** on the strength of the table above.
 
 > **SUPERSEDED AS A CURRENT SOURCING STATEMENT — D-788 / `R7-N05` (2026-09-20).**  This
 > section records the state of an FBV2-S2-001-era task and is retained as HISTORY.  The
-> authoritative current sourcing position is the **D-791 live sweep of all 123 assembly
-> lines** (`evidence/d791-sourcing-sweep.json`, 2026-09-21 — **nine** short/consignment
-> lines, and `Q2`/`Q3` a tenth exact identity needing an authorised allocation without
-> being short), §4a above, and the consignment table in
+> authoritative current sourcing position is the **D-793 live sweep of all 123 assembly
+> lines** (`evidence/d793-sourcing-sweep.json`, 2026-09-22 — **nine** short/consignment
+> lines, unchanged from the D-792 and D-791 sweeps: `J5`, `L4`, `L5`/`L6`, `MK1`, `Q11`,
+> `U18`, `U19`, `U2`/`U3`, `U9` — and `Q2`/`Q3` a tenth exact identity needing an
+> authorised allocation without being short), §4a above, and the consignment table in
 > [`FIRST_FIVE_ASSEMBLY_PLAN.md`](FIRST_FIVE_ASSEMBLY_PLAN.md) §18.  Two rows below were
 > carried here after they had already been retired elsewhere, which is exactly the defect
 > class `R7-D787-19`/`R7-D787-20` named: **`U18` is `LTC4368IMS-1#TRPBF` / `C688401`,
@@ -283,7 +284,7 @@ away** (see §4).
 |---|---|---|---|
 | 1 | **dual N-channel in the SOIC-8 dual-MOSFET pinout** — 1,3 = sources, 2,4 = gates, 5,6 and 7,8 = the two separate drains | 1 = S2, 2 = G2, 3 = S1, 4 = G1, 5/6 = D1, 7/8 = D2 | **MET** — the board ties 1+3 and 2+4, so which channel is which is immaterial; **no PCB change** |
 | 2 | `V(BR)DSS` ≥ **30 V** | 30 V | MET |
-| 3 | continuous `ID` ≥ the envelope | 6.9 A at 25 °C, 5.8 A at 70 °C vs **2.60 A** (D-791 re-based the peak envelope at the derived retention floor) | MET |
+| 3 | continuous `ID` ≥ the envelope | 6.9 A at 25 °C, 5.8 A at 70 °C vs **2.70 A** (D-791 re-based the peak envelope at the derived retention floor; D-793 / `R12-05` + `R12-08` re-based it again on the corrected ESP32-S3 transmitting total and the burst-aware permission edge) | MET |
 | 4 | **`VGS(th)` MAXIMUM ≤ 2.5 V** | **1.5 V** (0.7 min, 1.1 typ) at `ID = 250 µA` | **MET with over a volt of margin** |
 | 5 | a **published `RDS(on)` MAXIMUM row at `VGS ≤ 2.8 V`** | **50 mΩ at `VGS = 2.5 V`, `ID = 5 A`** | **MET** — this is the row the retired part did not have |
 | 6 | the four series channels' drop is bounded and carried into the thermal model | ≈ 534 mV and ≈ 1.00 W at the sustained envelope; see §4 | MET, and **named as a cost** |

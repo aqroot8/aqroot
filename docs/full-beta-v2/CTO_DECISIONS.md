@@ -1,3 +1,360 @@
+## D-793 — **ROUND-12 FULL CONVERGENCE: A CONNECTOR SPECIFICATION THAT WAS IN THE ARCHIVE ALL ALONG, A CEILING THAT ROUNDED UP ACROSS A CLIFF, A RADIO STILL TRANSMITTING AFTER THE RESET, AND A MODEL THAT WAS ITS OWN ORACLE**
+
+    authority  board c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907
+    parent     087ec3278bcc48c75c4f17320348d721eafa113c (D-792, REJECTED by Round-12)
+    scope      R12-01..R12-08 (Astra, reproduced), every Fable complementary
+               residual, and R12-N01/R12-N02 found at this closeout
+    copper     NONE.  No copper, no net, no footprint, no placement, no part
+               value and no protected-copper object moves at D-793.
+    order      HOLD.  External-review target.  Manufacturer CAM and first-article
+               acceptance remain outstanding; nine fitted groups are SHORT on the
+               live sweep and Q2/Q3 is a tenth exact identity needing an
+               authorised distributor allocation.
+    owner      ONE OWNER-VISIBLE ITEM IS RAISED IN SECTION 0 BELOW.  It does not
+               block this review target, and section 0 carries the recommendation
+               and the four costed alternatives the charter requires rather than
+               a bare request.
+
+Round-12 rejected D-792.  **Astra** graded it **C -- DO NOT ORDER** with eight
+findings and no unconditional copper respin established; **Fable** graded B on
+verified scope and declared its own review INCOMPLETE and not usable alone for order
+authorization.  Astra's reproduced counterexamples control.
+
+**THE THEME IS THAT A MODEL CANNOT GRADE ITSELF.**  Round-8 was a proof stretched past
+its evidence; Round-9 a number read at the wrong condition; Round-10 a model that never
+asked whether its own answer was reachable; Round-11 an architecture in which the same
+quantity could exist twice.  Round-12 is the one where the checking apparatus itself is
+the defect.  D-792's `energy_balance` invariant compared
+
+    p_in + p_from_cell - p_sys - p_stored     against     p_diss
+
+and `p_diss` had been DEFINED as that expression three lines earlier.  The check was
+`0 == 0`, and Astra halved the canonical charger package heat and watched the whole
+F1-F13 suite pass.  It then removed the 5 V-first transition, watched the completeness
+Boolean go false, and watched the verdict stay PASS -- because the verdict was a
+conjunction that did not include it.  Everything else in this round follows from taking
+that seriously.
+
+### 0. THE ONE OWNER-VISIBLE ITEM: THE ACCESSORY PERMISSION WINDOW NARROWS
+
+**THE PROBLEM, STATED WITHOUT SOFTENING.**  The corrected model permits **four** of the
+sixteen mode/rail combinations where D-792 permitted **ten**, and the first-rail enable
+floor moves **3.65 V -> 3.80 V**.  In product terms: the Community Port may be enabled
+with no optional mode running, or with the audio amplifier driving, and **not while
+either radio transmits**; and it needs a pack the gauge reports at 3.80 V or above.  The
+published per-rail budgets do not move -- `ACC_3V3_SW` = 400 mA TOTAL and `ACC_5V_SW` =
+300 mA TOTAL, each deliverable alone -- and the declared simultaneous pair does not move
+either, at 220 mA + 170 mA.  What moves is WHEN they may be drawn.  The FULL 400+300 pair
+is now unsupported at every ambient in the declared 0..40 C envelope, where D-792 could
+still hold it below 33 C.
+
+**NOTHING ABOUT THE BOARD CHANGED.**  Three model corrections put it there and all three
+are corrections to what this repository KNEW, not to what it built:
+
+* `R12-01`: the Molex `5055700003-PS` product specification, which D-792 recorded as not
+  retrievable and stood DECLARED allowances in for, **retrieved** and is archived.  Its
+  own rows are worse than the allowances: 40 mOhm MAX aged contact resistance against a
+  declared 30, and 5 mOhm MAX on a crimped portion against a declared 1.  Add the
+  MEASURED `J4 -> R75` board copper and the ground return -- neither of which was in any
+  model -- and the fixed series path goes **249.782 -> 355.204 mOhm**.
+* `R12-05`: Espressif's 500 mA `IVDD` row is a RECOMMENDED OPERATING CONDITION on the
+  external supply and D-792 used it as the module's own maximum draw.  Built out of
+  published CURRENT rows instead the transmitting total is **591.5 mA**, and the `+3V3`
+  peak envelope goes 1.310554 -> **1.402034 A**.
+* `R12-08`: a permission edge is judged with a burst PRESENT now, not with a duty
+  average.
+
+**WHAT I HAVE DONE.**  Everything that can be recovered inside the existing copper has
+been: the firmware SERIALISES the three bursty peripherals (`BurstArbiter`), which takes
+the instantaneous permission delta from 170 mA to 75 mA and buys back two of the four
+lost rows.  The rest is physics on the board as built.
+
+**MY RECOMMENDATION: ACCEPT THE NARROWED WINDOW FOR THE FIRST FIVE AND SCHEDULE THE
+REV-B PASS-PAIR REWIRING.**  `Q2` and `Q3` are two dual `AO4800` packages wired as two
+back-to-back pairs IN SERIES -- four channels of conduction where the LTC4368's
+reverse-blocking function needs ONE back-to-back pair.  At the solved operating point
+that is about **292 mOhm hot**, which is **49 %** of the entire cell-to-node series
+resistance and the single largest term in it.  Wiring the two packages in PARALLEL
+instead of in series keeps the back-to-back function, takes the pass pair to about
+**73 mOhm**, and restores the window outright.  It is a schematic ECO plus a rework of
+the `BAT_MID` copper on a protected net, so it is a REV-B item and not a D-793 one.
+
+**THE ALTERNATIVES, COSTED.**
+
+1. **Accept and schedule Rev-B (RECOMMENDED).**  Cost: the first five ship with a
+   narrower accessory window, published in DEVICE_SPEC and visible to a first-article
+   technician.  Schedule: none.  Risk: none added.  It is the only option that does not
+   either move protected copper on a frozen target or relieve a model to buy capability.
+2. **Do the pass-pair rewiring NOW.**  Benefit: the window comes back at D-793.  Cost: a
+   protected-copper exception on `BAT_MID`/`BAT_SENSE`, a schematic ECO that re-hashes
+   every sheet, a full re-route of the highest-current path on the board, and a complete
+   re-verification -- and it is precisely the "unconditional copper respin" Round-12 says
+   was NOT established.  Schedule: days, and it puts a fresh, unreviewed copper change
+   into a review target.  **Rejected for this round.**
+3. **Relax the model.**  The 65 K hot rise on the harness, the 2.5x pack AC->DC
+   multiplier and the 40 mOhm post-environmental contact figure are each individually
+   arguable for a consumer prototype that will never see salt spray.  Cost: this
+   programme has been rejected four rounds running for exactly this move.  **Rejected.**
+4. **Reduce the published per-rail budgets.**  Benefit: the floors come down.  Cost: it
+   removes a promised Kickstarter-visible capability, which the charter makes an
+   escalation in its own right, and the D-788 Option A approval explicitly protects the
+   400 mA.  **Rejected.**
+
+**WHY THIS DOES NOT BLOCK THE REVIEW TARGET.**  The D-788 Option A approval protects the
+per-rail CURRENT capability, which is unchanged, and delegated the exact release figures
+to the final candidate.  The charter asks for a recommendation with costed alternatives
+rather than a bare escalation, and this section carries four.
+
+### 1. R12-01 -- THE SOURCE PATH, COMPLETE
+
+Round-12: *"Molex primary evidence supports 40 mOhm post-durability/environment
+criterion ... itemize the COMPLETE source path ... Exact fitted 10 mOhm R75 1 % high
+corner is 10.1 mOhm; do not tag 10.0 mOhm as guaranteed max."*
+
+All of it reproduces.  `5055700003-PS` retrieved through the Internet Archive's
+2023-11-01 snapshot of the same molex.com URL D-792 recorded as timing out, and is
+archived at `vendor/MOLEX/molex-5055700003-PS-A1.pdf` with a `pdftotext` rendering
+beside it.  **REVISION, RECORDED RATHER THAN SMOOTHED:** the retrieved copy is Rev A1
+and the product page cites Rev A6; every row this repository had already transcribed --
+rated current, derating reference, ambient range, temperature rise, crimp pull-out,
+free-wire length -- is present and IDENTICAL in it.  Three rows it had never seen:
+
+    6.1.1  Contact Resistance                     20 mOhm MAX, wire subtracted
+    6.1.4  Contact Resistance on crimped portion    5 mOhm MAX
+    6.2.6/6.2.7/6.2.8 and 6.3.1..6.3.7            40 mOhm MAX
+
+The third is the same number after 30 insertion cycles, after vibration, after 50 G
+shock, after 96 h at 105 C, after 96 h at -40 C, after 96 h at 60 C/90-95 % RH, after
+48 h salt spray, after SO2 and after NH3.  It is the figure this model now RULES at, and
+all three move from DECLARED_ESTIMATE to GUARANTEED_MAX.
+
+`R75`'s condition string SAID "at its 1 % high corner" and its VALUE was the nominal.
+Both corners are computed from the nominal and the tolerance now, so the sentence and
+the number cannot disagree again: **10.100 mOhm** high, 9.900 mOhm low.  `F1` gains a
+declared +/-25 % tolerance on an allowance Littelfuse does not publish at all.
+
+**AND TWO TERMS WERE IN NO MODEL.**  The forward board copper from `J4.1` through `F1`,
+`Q2` and `Q3` to `R75.1` is **MEASURED** off the live board with the same
+widest-bottleneck walk the downstream paths use -- 4.879 + 6.327 + 9.394 + 14.520 =
+35.12 mOhm at 20 C, 44.091 mOhm hot -- and every one of those four segments is UPSTREAM
+of `R75.2`, so none of them is double-counted against the `BAT_PROTECTED_P -> SYS` term
+F12 already measured.  The GROUND RETURN is priced as the sheet it is: two solid 0.5 oz
+`In1`/`In4` planes in parallel at 0.5658 mOhm per square over a DECLARED 12 squares
+(a 2.7x widening on the 4.4-square geometric estimate) plus 2 mOhm of barrels, 11.035
+mOhm hot, with a 2x and 4x sensitivity reported beside it.
+
+Totals: harness **177.478 mOhm** hot and aged; fixed series path, forward and return,
+**355.204 mOhm**.
+
+### 2. R12-02 -- THE CHARGE-TIME CEILING, AND THE CABLE CONTRACT
+
+Round-12: *"Current published charge-time load ceiling 4.063 W rounds UP across a solver
+branch boundary from exact 4.06293325 W.  Astra reproduced a different modeled regime and
+much higher junction estimate at the rounded published number."*
+
+**IT REPRODUCES EXACTLY.**  D-792's bisection produced 4.06293325 W; DEVICE_SPEC printed
+**4.063 W**; and the solver at 4.063 W is in the SUPPLEMENT regime with a junction of
+**155.436 C** -- past `TSHUT`, let alone past TI's 125 C operating maximum.  The step is
+**30.902 K** wide and it is REAL: a constant-power load into a current-limited source has
+no stable operating point between the input-held node and the cell, so the transition is
+a discontinuity and not a knee.
+
+**WHAT REPLACES IT.**  The published figure is the lower of TI's junction maximum and
+that discontinuity, reduced by a DECLARED 5 % guardband and FLOORED onto a 0.05 W grid:
+**3.600 W**.  Five clauses make it safe rather than merely derived -- it is strictly
+below the raw ceiling, the real solver AT that number is inside the junction maximum
+(104.726 C), no ruling source class supplements there, a 200-point scan of everything
+below it is clean, and the enumerated permitted set agrees with the scalar instead of
+quietly exceeding it.
+
+**THE BRANCH SOLVING IS REBUILT.**  Every branch closes its own coupled equations to
+machine precision now rather than to a damped iteration.  `INPUT_LIMITED` has a closed
+form -- `VSYS^2 - VBUS.VSYS + P.(Rpath + Ron_in) = 0`, stable root -- and `SUPPLEMENT`
+is a bisection on the residual `VBAT - (P/VSYS - IIN(VSYS)).Ron_bat - VSYS` with `IIN`
+itself solved against the source, so the source, the input FET, the BATFET and the load
+all close simultaneously.  D-792's DPPM test asked only whether the FULL charge current
+fitted, which made a lightly-loaded weak source fall all the way to SUPPLEMENT with no
+DPPM step in between; the charge current folds back first now, as the device does.  Over
+1200 power points x 2 ILIM corners x 4 source classes there are **zero** invariant
+violations and the terminal-vs-internal residual is **exactly zero**.
+
+**AND THE CABLE IS A CONTRACT.**  D-792 carried one declared 0.200 ohm and called it
+pessimistic for a 2 m 28 AWG cable; 2 m of 28 AWG is about 0.85 ohm on its own.  Four
+SOURCE CLASSES are enumerated with conductor arithmetic, three of them RULE and the
+fourth -- 2 m of 28 AWG, outside the contract -- is REPORTED.  The published contract is
+**24 AWG or heavier, no longer than 2 m**, which is at most **0.4472 ohm**, and it is a
+MEASURABLE acceptance criterion rather than an adjective: at least **4.2581 V** at `U11`
+pin 10 at the programmed 1.1 A input limit, measured as `C-CHG-01`.
+
+### 3. R12-03 -- A RADIO STILL TRANSMITTING AFTER THE RESET
+
+Round-12: *"Astra reproduced retained physical CC1101 transmit state while software
+resets its arbiter/mode state to NONE.  U7 stays powered; CS parking is not a radio
+reset."*
+
+`SpiBusB::transmitting_` and `DemoBringupApp::subghz_tx_` are both C++ members and both
+are zero after construction, which is what an MCU reset does to them.  `U7` and `U8` are
+supplied from `+3V3`, which an MCU reset does not interrupt.  So an `STX` issued by the
+image that died is still keying the PA while the object reports no transmitter and hands
+the permission table a mode set the board is not in.  It is D-766's powered-PCAL9535A
+defect, one subsystem further out.
+
+**THE BOOT PATH QUIESCES AND VERIFIES.**  `CC1101`: `SIDLE` (0x36), then `SRES` (0x30,
+BURST CLEAR -- the trap `probeCc1101` already documents), then `MARCSTATE` (0xC0|0x35)
+must read IDLE.  `SX1262`: `SetStandby(0x00)` then `GetStatus`, chip mode must be
+`STBY_RC` or `STBY_XOSC`.  Until BOTH confirm, `accessoryLoadState().subghz_tx` reads
+TRUE and `accessoryBatteryAllows` refuses accessory power **by name** rather than by a
+floor comparison -- the table refusal is the second line of defence, not the only one.
+`SpiBusB::beginTransmit` refuses EVERY transmitter, the NFC front end included, while
+the state is unknown.  A failed quiesce is retried from `loop()` every 250 ms, and a
+warm-reset expander recovery invalidates it because that path re-asserts `U2.P01`, which
+is the SX1262's reset.
+
+**THE NFC FRONT END IS DELIBERATELY NOT TOUCHED.**  Round-12 says *"do not blindly add
+resets without primary-device semantics"*, and this repository holds no ST25R3916
+datasheet; D-742 is the standing reminder of what a decode carried from memory costs, and
+a guessed register write could ENERGISE a field rather than quiet one.  What can be said
+without the datasheet is bounded and sufficient: the NFC field is carried in the
+canonical ledger as a BOUNDED-DUTY allowance inside the ALWAYS-ON set, so a field left on
+by a dead image is already inside every floor in the permission table.
+
+**THE TEST IS THE ONE ROUND-12 ASKED FOR.**  `test_production_image.cpp` installs an
+independently retained CC1101 stub -- constructed BEFORE `setup()`, so the image's own
+construction cannot clear it -- keyed in TX, and proves the strobes land, the MARCSTATE
+read happens AFTER them, the quiesce precedes the gauge qualification, and accessory
+power is refused when the part ignores the strobes.  Three negative controls and a
+liveness case go with it.
+
+### 4. R12-04 -- AN INDEPENDENT ORACLE
+
+`hardware/demo/manufacturing/aqroot_power_oracle.py` imports NOTHING from the canonical
+model, the ampacity audit or the feature contract.  It solves nothing and iterates
+nothing: it takes an already-solved state as plain numbers and re-derives what that state
+claims, from primitives, with arithmetic a reader can check by hand.
+
+**IT IS NOT A SECOND AUTHORITY, AND THE DISTINCTION IS THE POINT.**  D-792 exists because
+two files were allowed to describe two different boards.  The oracle's primitives are a
+CHECKSUM of the canonical registry, not a competing copy: `primitives_agree()` compares
+all 29 of them with the canonical tagged value and a disagreement is a FAILURE that names
+the key.  An edit to a canonical primitive that is not mirrored stops the release and puts
+a human in front of both files, which is the only useful thing a second implementation can
+do.
+
+The identity D-792 did not have is `P_in + VBAT.I_supp - P_sys - VBAT.I_chg  ==  P_pkg +
+I_in^2.Rpath` -- two different sets of quantities, one identity.  **COMPLETENESS IS A
+VERDICT TERM**, not metadata: both rail orders, all four transition keys, all three
+charger branches, a non-empty rejection set containing a NAMED SEEDED CANARY, and both
+independent residuals inside tolerance.  Six mutations run on every release and each must
+be caught for its own reason -- halve the package heat, delete the energy accounting,
+remove the 5 V-first transition, discard the failed post-states, reverse the gauge-error
+direction, omit the return path.
+
+### 5. R12-05 -- SEMANTIC PROVENANCE, AND THE ONE IT CATCHES
+
+Round-12: *"Release logic must reject category misuse, not just validate that the tag
+string is in an enum."*
+
+D-792's `audit_tags` was a membership test and `GUARANTEED_ROC` was in `RULING_TAGS`, so
+Espressif's `IVDD` row -- "current delivered by external power supply, MIN 0.5 A", a
+recommendation about the SUPPLY -- passed as a bound on the module's DRAW.  Every
+registered value now carries a ROLE as well as a TAG and the audit is a MATRIX:
+`DEVICE_BOUND`, `SUPPLY_REQUIREMENT`, `POLICY_BUDGET`, `REPORTED`.  A `GUARANTEED_ROC`
+may never be a `DEVICE_BOUND`; a `TYPICAL` or a `RECOMMENDED_CAPABILITY` may be REPORTED
+and may seed a declared widening and may never be a bound of any kind.  The first run of
+the new rule caught exactly the instance R12-05 names, by key.
+
+**THE TPS22950 PROGRAMMED LIMITER.**  R12-05 is right that TI publishes accuracy at four
+discrete `RILIM` values and nothing between them.  D-791 already refused the interpolated
+bracket for this reason and rules at the WIDEST published ratio, which needs no
+assumption about any row; the bracketed figure stays REPORTED.  Both budgets still close:
+`ACC_3V3` guarantees 0.4058 A against 400 mA and `ACC_5V` guarantees 0.3065 A against
+300 mA, at the widest ratio.
+
+### 6. R12-06 -- THE DOCUMENTS ARE SCANNED SEMANTICALLY NOW
+
+Every clause before this round asked whether the CURRENT value was PRESENT.  None asked
+whether a RETIRED one was also present and stated as if it were current -- which is how
+the fab handoff came to carry three generations of accessory floor.
+`no_normative_document_states_a_retired_operating_value` scans DEVICE_SPEC, the fab
+handoff, CURRENT_STATE, the first-article plan and the fab notes over five CLAIM FAMILIES
+-- accessory floors, the charge-time ceiling, the declared pair, the itemised series
+resistance and the `+3V3` peak envelope.  The number is bound to the CLAIM rather than to
+the line, the unit of scan is a whitespace-normalised SENTENCE because these documents
+hard-wrap, and only an explicit supersession marker exempts a sentence: a decision number
+does not, and neither does the word "was".  Both were tried at D-791 and both silently
+exempted the worst sentence in the file.
+
+### 7. R12-07 -- TWO NORMALISERS BECAME ONE, AND AN EXACT GROUND RULE
+
+`judge_capacitor_derating` skipped a pad whose net's LEAF was spelled `GND` -- which is
+true of `/ALIEN/GND` and of any hierarchy at all.  It is the exact defect D-788 removed
+from the DC lookup one line below it, left standing on the line above.  The skip is keyed
+by the EXACT canonical net now; an unknown GND-like leaf falls through, is UNESTABLISHED,
+and must carry a named non-DC proof or the part is refused.  Four negative controls cover
+`/ALIEN/GND`, a real-sheet `GND` leaf, one-known-one-unknown terminals, and the frozen
+board still passing.
+
+And there were TWO manufacturer normalisers: F8 folded with a private two-entry
+dictionary, F13 with the reviewed alias table, so an alias added to one did not reach the
+other -- R11-09's defect in the other gate, one round later.  `_norm_cap_mfr` IS
+`canonical_manufacturer` now.  The truncation rule is tightened to a WORD BOUNDARY with at
+least two whole words, and an AMBIGUOUS truncation resolves to neither company rather than
+picking one; `NXP Semicon`, which is a legitimate LCSC spelling and a mid-word truncation,
+moves into the reviewed table where it belongs.
+
+### 8. R12-08 -- INSTANTANEOUS AND SUSTAINED ARE SEPARATE MODELS
+
+The microSD write, the NFC field and the IR burst enter a sustained state at their duty
+averages -- 50 + 25 + 5 = 80 mA.  Their PEAKS are 250 mA.  A permission is granted on a
+pre-read taken in a quiet moment and re-checked about 400 ms later, and any of the three
+can begin in between.  The four ELECTRICAL limits and the firmware's own retention read
+are evaluated with the worst reachable burst PRESENT; the junction and the internal air
+stay on the duty-averaged model, because a 200 ms burst does not move a minute-scale
+thermal integral.
+
+**THE FIRMWARE TAKES THE ALTERNATIVE R12-08 OFFERS.**  Unserialised the three peaks add
+170 mA at that instant and cost four permission rows.  `BurstArbiter` admits at most ONE
+bursty peripheral at a time -- unconditionally, so the rule is sound under every ordering
+including a rail enabled DURING two running bursts -- and the ruling delta is 75 mA.  The
+model may only use the serialised delta if `demo_feature_contract` can FIND the arbiter in
+the shipped policy header AND find a `BurstArbiter::Hold` on each production burst call
+site with no unarbitrated call to either entry point; otherwise it falls back to 170 mA
+and the table tightens by itself.
+
+### 9. FOUND AT THIS CLOSEOUT
+
+* **`R12-N01`: the two permission tables were compared only where the MODE edge was
+  PERMITTED.**  `the_two_edges_are_not_the_same_table` looked at mode-edge rows with a
+  non-null floor, so a derivation in which the mode edge refused everything the rail edge
+  permitted -- which is a very large difference -- registered as "the same table".  A
+  refusal is a value; the comparison is over all sixteen values per edge now, sentinels
+  included, and the rows where they disagree are reported.
+* **`R12-N02`: three F6/F12 controls had stopped controlling.**  A better pass pair alone,
+  a 0 C ambient alone and a narrowed `IBAT_OCP` band each used to flip a verdict and none
+  of them does any more, because the binding limit moved.  A control that has stopped
+  flipping is not a control: each is re-aimed at what it can still measure -- the two
+  perturbations must MOVE the supported set, and the OCP limit is proved to be checked at
+  all by moving it far enough to bite -- and the fact that the declared wider band no
+  longer binds anywhere is recorded as its own reported clause rather than left implicit.
+  The connector-rating control is re-aimed the same way: it asks about the DECLARED pair,
+  which is the state the product publishes, and the FULL pair's -0.98 % is retained as the
+  reported reason the declared pair exists.
+
+### 10. WHAT IS NOT CLAIMED
+
+No first-article measurement has been taken.  `C-BAT-PATH-01` is the measurement of record
+for every itemised path resistance including the new board-copper and ground-return terms;
+`C-CHG-01` for the USB source contract at `U11` pin 10; `C-THERM-01` for `R_SYS` and the
+internal-air rise; `C-BAT-GATE-01` for the pass pair's declared temperature coefficient;
+`C-DISP-01` for the panel's declared 50 mA; `C-MCU-01` for the ESP32-S3 totals.  The
+Molex document archived here is Rev A1 and the product page cites Rev A6; every row the
+design depends on agrees between them and the discrepancy is on the record.  The NFC
+front end's physical field state after an MCU reset is UNKNOWN-but-bounded, not proven.
+The Demo's sustained thermal envelope remains an explicit OPERATOR rule: there is no
+calibrated die-temperature measurement on this board and no uncalibrated thermal shedding
+has been invented for it.
+
+
 ## D-792 — **ROUND-11 CONVERGENCE: TWO FILES THAT DESCRIBED TWO DIFFERENT BOARDS, A CHARGER STATE THAT CANNOT PHYSICALLY EXIST, AND A PERMISSION DERIVED FROM THE WRONG PRE-STATE**
 
     authority  board c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907

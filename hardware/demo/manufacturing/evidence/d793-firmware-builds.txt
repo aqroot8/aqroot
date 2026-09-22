@@ -1,0 +1,20 @@
+=== CLEAN esp32-s3-aqroot ===
+Environment      Status    Duration
+---------------  --------  ------------
+esp32-s3-aqroot  SUCCESS   00:00:25.818
+========================= 1 succeeded in 00:00:25.818 =========================
+=== CLEAN wokwi ===
+Environment    Status    Duration
+-------------  --------  ------------
+wokwi          SUCCESS   00:00:25.527
+========================= 1 succeeded in 00:00:25.527 =========================
+=== CLEAN esp32-s3-aqroot-dm ===
+Environment         Status    Duration
+------------------  --------  ------------
+esp32-s3-aqroot-dm  SUCCESS   00:00:25.828
+========================= 1 succeeded in 00:00:25.828 =========================
+=== CLEAN aqroot-demo ===
+Environment    Status    Duration
+-------------  --------  ------------
+aqroot-demo    SUCCESS   00:00:04.443
+========================= 1 succeeded in 00:00:04.443 =========================

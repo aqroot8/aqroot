@@ -89,8 +89,8 @@ namespace aqroot {
 // and any rail already on is shed.
 // ===========================================================================
 constexpr float kAccessoryRetentionFloorV = 3.20f;
-constexpr float kAccessorySingleRailFloorV = 3.95f;
-constexpr float kAccessoryDualRailFloorV = 3.95f;
+constexpr float kAccessorySingleRailFloorV = 3.85f;
+constexpr float kAccessoryDualRailFloorV = 3.85f;
 
 // ===========================================================================
 // D-792 / R11-04.  TWO SCALARS CANNOT CARRY THIS ANSWER, SO THERE IS A TABLE.
@@ -189,13 +189,13 @@ struct AccessoryPermissionRow {
 // The RAIL edge.  Pre-state: these modes, accessory idle.
 inline const AccessoryPermissionRow &accessoryRailEdgeRow(unsigned bits) {
   static const AccessoryPermissionRow kRailRows[8] = {
-      {3.65f, 3.65f},  // 0  no optional mode
-      {3.75f, 3.75f},  // 1  Wi-Fi / BLE TX
-      {3.70f, 3.70f},  // 2  audio at the capped level
+      {3.80f, 3.80f},  // 0  no optional mode
+      {kAccessoryNotPermittedV, kAccessoryNotPermittedV},  // 1  Wi-Fi / BLE TX
+      {3.85f, 3.85f},  // 2  audio at the capped level
       {kAccessoryNotPermittedV, kAccessoryNotPermittedV},  // 3  Wi-Fi + audio
-      {3.70f, 3.70f},  // 4  sub-GHz TX
+      {kAccessoryNotPermittedV, kAccessoryNotPermittedV},  // 4  sub-GHz TX
       {kAccessoryNotPermittedV, kAccessoryNotPermittedV},  // 5  Wi-Fi + sub-GHz
-      {3.75f, 3.75f},  // 6  audio + sub-GHz
+      {kAccessoryNotPermittedV, kAccessoryNotPermittedV},  // 6  audio + sub-GHz
       {kAccessoryNotPermittedV, kAccessoryNotPermittedV},  // 7  all three
   };
   return kRailRows[bits & 7u];
@@ -205,13 +205,13 @@ inline const AccessoryPermissionRow &accessoryRailEdgeRow(unsigned bits) {
 // idle -- a higher pre-read, therefore a higher floor.
 inline const AccessoryPermissionRow &accessoryModeEdgeRow(unsigned bits) {
   static const AccessoryPermissionRow kModeRows[8] = {
-      {3.65f, 3.65f},  // 0  no optional mode
-      {3.95f, 3.95f},  // 1  Wi-Fi / BLE TX
-      {3.75f, 3.75f},  // 2  audio at the capped level
+      {3.80f, 3.80f},  // 0  no optional mode
+      {kAccessoryNotPermittedV, kAccessoryNotPermittedV},  // 1  Wi-Fi / BLE TX
+      {kAccessoryNotPermittedV, kAccessoryNotPermittedV},  // 2  audio at the capped level
       {kAccessoryNotPermittedV, kAccessoryNotPermittedV},  // 3  Wi-Fi + audio
-      {3.80f, 3.80f},  // 4  sub-GHz TX
+      {kAccessoryNotPermittedV, kAccessoryNotPermittedV},  // 4  sub-GHz TX
       {kAccessoryNotPermittedV, kAccessoryNotPermittedV},  // 5  Wi-Fi + sub-GHz
-      {3.80f, 3.80f},  // 6  audio + sub-GHz
+      {kAccessoryNotPermittedV, kAccessoryNotPermittedV},  // 6  audio + sub-GHz
       {kAccessoryNotPermittedV, kAccessoryNotPermittedV},  // 7  all three
   };
   return kModeRows[bits & 7u];
@@ -331,5 +331,98 @@ inline AccessoryBatteryAction accessoryRetentionAction(bool vcell_valid,
   }
   return AccessoryBatteryAction::Keep;
 }
+
+// ===========================================================================
+// D-793 / R12-08.  A DUTY AVERAGE IS NOT AN INSTANTANEOUS PERMISSION BOUND,
+// SO THE BURSTS ARE SERIALISED.
+//
+// ROUND-12, IN ITS OWN WORDS: "D-792 uses sustained duty allowance for SD/NFC/
+// IR bursts while permission/retention transitions occur on much shorter
+// electrical timescales.  Astra constructed a credible quiet-pre-read ->
+// accessory enable + burst -> post-read below retention case.  Separate
+// thermal averaging from instantaneous electrical permission.  Enumerate
+// actual peak/burst pre/post transitions and maximum burst durations, OR
+// enforce a clear scheduling restriction in firmware."
+//
+// The canonical ledger carries a microSD write at 100 mA for 50 % of a minute,
+// the NFC field at 100 mA for 25 % and an IR burst at 50 mA for 10 %.  Those
+// duty averages -- 80 mA in total -- are the right model for HEAT and the
+// wrong one for a PERMISSION EDGE: the pre-read is taken in a quiet moment and
+// the settled recheck lands about 400 ms later, and a logging write, a card
+// tap or a key repeat can begin anywhere in between.  Charged as a coincident
+// sum the three peaks add 170 mA at that instant and cost FOUR of the sixteen
+// permission rows -- every accessory state with the amplifier driving.
+//
+// THIS CLASS IS THE ALTERNATIVE R12-08 OFFERS, AND IT IS CHEAPER THAN THE
+// ROWS.  At most ONE bursty peripheral may be active at a time, so the ruling
+// instantaneous delta is the worst SINGLE burst -- 75 mA -- rather than the
+// sum.  The restriction is unconditional rather than conditional on a rail
+// being live, deliberately: a rule that engages only while a rail is on
+// cannot say anything about the ordering in which a rail is enabled DURING
+// two already-running bursts, and an unconditional rule is sound under every
+// ordering.  Nothing a user does with the card, the tag reader or the IR
+// blaster ALONE is restricted; only overlapping two of them is, and that is
+// not a published capability.
+//
+// `demo_feature_contract` F12 derives the permission table at the SERIALISED
+// delta only if it can find this arbiter in the shipped firmware AND find the
+// production call sites going through it.  Otherwise it derives at the full
+// coincident 170 mA and the table tightens.  The restriction is therefore
+// pinned to the code that implements it rather than asserted in a comment.
+// ===========================================================================
+enum class BurstLoad : unsigned char {
+  None = 0,
+  MicroSdWrite,
+  NfcField,
+  IrTransmit,
+};
+
+inline const char *burstLoadName(BurstLoad which) {
+  switch (which) {
+    case BurstLoad::MicroSdWrite: return "microSD write";
+    case BurstLoad::NfcField: return "NFC field";
+    case BurstLoad::IrTransmit: return "IR transmit";
+    default: return "none";
+  }
+}
+
+class BurstArbiter {
+ public:
+  BurstArbiter() : active_(BurstLoad::None) {}
+
+  BurstLoad active() const { return active_; }
+
+  // REFUSES while ANY bursty load holds the arbiter -- including the same one,
+  // for the same re-entrancy reason `SpiBusB::select` refuses a repeat select:
+  // a nested hold would release at the inner scope's exit and leave the outer
+  // scope believing it still owned the slot.
+  bool begin(BurstLoad which) {
+    if (which == BurstLoad::None) return false;
+    if (active_ != BurstLoad::None) return false;
+    active_ = which;
+    return true;
+  }
+
+  void end(BurstLoad which) {
+    if (active_ != which) return;
+    active_ = BurstLoad::None;
+  }
+
+  // RAII, so a scope cannot forget to release.
+  class Hold {
+   public:
+    Hold(BurstArbiter &arbiter, BurstLoad which)
+        : arbiter_(arbiter), which_(which), ok_(arbiter.begin(which)) {}
+    ~Hold() { if (ok_) arbiter_.end(which_); }
+    bool ok() const { return ok_; }
+   private:
+    BurstArbiter &arbiter_;
+    BurstLoad which_;
+    bool ok_;
+  };
+
+ private:
+  BurstLoad active_;
+};
 
 }  // namespace aqroot

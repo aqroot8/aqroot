@@ -1,102 +1,127 @@
 {
-  "decision": "D-781",
-  "status": "FROZEN_FOR_FIRST_FIVE",
-  "interface": "Molex Micro-Lock Plus 2.0 wire-to-wire, single-row tin, 2 circuits",
-  "product_spec": {
-    "document": "5055700003-PS",
-    "revision": "A6",
-    "approved_date": "2025-04-25",
-    "source_url": "https://www.molex.com/content/dam/molex/molex-dot-com/products/automated/en-us/productspecificationpdf/505/505570/5055700003-PS-000.pdf",
-    "rated_current_A_by_AWG": {
-      "22": 3.4,
-      "24": 3.0,
-      "26": 2.6
-    },
-    "temperature_rise_limit_C": 30,
-    "temperature_rise_limit_basis": "section 6.1.5, temperature rise AT MAXIMUM RATED CURRENT: 30 C MAX.  The rated current above is therefore a TEMPERATURE-RISE figure, not a safety limit.",
-    "reference_derating_2_circuit_A_by_AWG": {
-      "22": 4.7,
-      "24": 3.9,
-      "26": 2.9
-    },
-    "reference_derating_basis": "section 4.3 reference derating for 2 circuits.  AQROOT RULES at the section 4.2 rated current, which is stricter; this row is what bounds an accessory OVERCURRENT excursion, and it is read from the archived transcription vendor/MOLEX/micro-lock-plus-5055700003-PS-A6.txt rather than asserted.",
-    "ambient_C": [
-      -40,
-      105
-    ],
-    "free_wire_before_bundling_min_mm": 35
+ "decision": "D-781",
+ "status": "FROZEN_FOR_FIRST_FIVE",
+ "interface": "Molex Micro-Lock Plus 2.0 wire-to-wire, single-row tin, 2 circuits",
+ "product_spec": {
+  "document": "5055700003-PS",
+  "revision": "A6",
+  "approved_date": "2025-04-25",
+  "source_url": "https://www.molex.com/content/dam/molex/molex-dot-com/products/automated/en-us/productspecificationpdf/505/505570/5055700003-PS-000.pdf",
+  "rated_current_A_by_AWG": {
+   "22": 3.4,
+   "24": 3.0,
+   "26": 2.6
   },
-  "board_side": {
-    "wire_AWG": 26,
-    "wire_type": "UL 10002",
-    "precrimp_red": "Molex 2175012101, 75 mm, 26 AWG, female-to-pigtail",
-    "precrimp_black": "Molex 2175011101, 75 mm, 26 AWG, female-to-pigtail",
-    "receptacle_housing": "5055700201",
-    "board_land": "J4 legacy 2.00 mm PTH pair; NO JST header fitted",
-    "nominal_drill_mm": 0.75,
-    "required_finished_hole_min_mm": 0.7,
-    "factory_tinned_tip_max_mm": 0.65,
-    "solder_pads": {
-      "J4.1": "BAT_CONNECTOR_P / red",
-      "J4.2": "GND / black"
-    },
-    "assembly": "insert the factory pre-crimped female contacts into 5055700201 and retain the factory 75 mm pigtail/free-tip preparation for the first five; do NOT cut/re-strip/re-tin before the J4 fit check because that would void the drawing's free-tip diameter basis. Verify one exact factory tinned tip passes freely through an actual >=0.70 mm finished J4 barrel with no strand shaving or force, then insert the tinned conductors from the rear (B.Cu), apply solder and inspect barrel fill from the front (F.Cu), trim only as required, and keep the front-side conductive profile <=0.50 mm. If shortening is ever required, the new stripped/tinned end becomes a new workmanship qualification and must re-pass diameter/free-fit/strand inspection before use."
+  "temperature_rise_limit_C": 30,
+  "temperature_rise_limit_basis": "section 6.1.5, temperature rise AT MAXIMUM RATED CURRENT: 30 C MAX.  The rated current above is therefore a TEMPERATURE-RISE figure, not a safety limit.",
+  "reference_derating_2_circuit_A_by_AWG": {
+   "22": 4.7,
+   "24": 3.9,
+   "26": 2.9
   },
-  "strain_relief": {
-    "material": "DOWSIL 3145 RTV MIL-A-46146 Adhesive/Sealant, gray",
-    "process": "after solder joints pass visual/profile inspection and cleaning, form a relaxed rear-side service loop and apply a non-flowing fillet over the insulated red/black pigtails onto clean B.Cu solder mask; begin the adhesive beyond the inspected solder fillets so joints remain inspectable, bond both insulated leads to the PCB for at least 8 mm of length, and do not allow cured adhesive, wire or hard solder-wick transition to bear on the LiPo pouch or coax",
-    "cure": "D-789 / D788-17 -- ONE CONDITION-CONTROLLED PROCESS HOLD, and the conditions are part of it.  APPLY AND CURE AT 25 +/- 5 C and 40-70 % RH, inside DOWSIL's own published 30-80 % RH cure window with margin; a moisture-cure RTV held outside that window is not on any published cure curve.  BEAD THICKNESS <= 1.0 mm: these adhesives cure from the exposed surface inward at 0.25 inch per seven days (Dow), so a 1.0 mm bead reaches its substrate in about 1.1 days and a thicker one does not.  THREE DISTINCT STATES, and they are not interchangeable: (1) TACK-FREE, published at 78 minutes at 25 C -- a TYPICAL, so the gate is a passed tack-free check and not the clock; (2) HANDLING STRENGTH, no earlier than 4 h AND after a passed tack-free check, sufficient to move the board but NOT to load the joint; (3) FULL PROCESS HOLD, >= 72 h at the stated conditions before ANY pull test, thermal test, enclosure retention test or shipment -- 72 h is the TOP of Dow's own 24-72 h window for '>90 percent of full physical properties', not the bottom.  Do not accelerate with heat while the lead is under tension.",
-    "disconnect_instruction": "release and grip the two Micro-Lock housings; never disconnect by pulling either wire bundle",
-    "service_loop": "preserve >=35 mm free wire from each housing before tie/bundle per Molex product specification and leave enough relaxed board-side loop that mating force is not transferred into J4 solder barrels",
-    "manufacturer": "Dow",
-    "primary_source_url": "https://www.dow.com/en-us/pdp.dowsil-3145-rtv-mil-a-46146-adhesive-sealant.01059548z.html",
-    "primary_source_basis": "DOWSIL 3145 RTV MIL-A-46146 gray product information, ARCHIVED at hardware/demo/kicad/aqroot-demo/vendor/DOW/dowsil-3145-rtv-mil-a-46146-gray-11-1832-01-0323.pdf: one-part moisture-cure RTV, non-flow, PWB/wired-lead use, room-temperature alkoxy cure, TACK-FREE TIME AT 25 C = 78 MINUTES.  D-789 / D788-17 CORRECTED THIS LINE: it previously read 'tack-free 55 min at 50% RH' and attributed it to a Dow product page, a figure the archived datasheet does not contain.  See cure, cure_source and cure_corrects.",
-    "archived_tds": "hardware/demo/kicad/aqroot-demo/vendor/DOW/dowsil-3145-rtv-mil-a-46146-gray-11-1832-01-0323.pdf",
-    "archived_tds_sha256": "905af2ec4eafd4fe54fe748cab36450a121b4b04cedc375120299baefb38e115",
-    "cure_source": "DOWSIL 3145 RTV MIL-A-46146 gray product information, archived at hardware/demo/kicad/aqroot-demo/vendor/DOW/dowsil-3145-rtv-mil-a-46146-gray-11-1832-01-0323.pdf: 'Tack-free Time at 25 C ... minutes 78'; 'generally cured at room temperature and in an environment of 30 to 80 percent relative humidity'; 'Greater than 90 percent of full physical properties should be attained within 24 to 72 hours'; 'handled in much shorter times of about 10 to 120 minutes'; 'cure from the exposed surface inward at a rate of 0.25 inch per seven days'; 'Mild heat below 60 C may be used to increase through-put'.",
-    "cure_corrects": "D-788 and earlier carried 'tack-free 55 min at 50% RH' attributed to a Dow product page and, in the now-retired ACC_3V3 reinforcement record, 'tack-free 30 min at 25 C / 50 % RH; handling strength 4 h'.  NEITHER MATCHES THE ARCHIVED DATASHEET, which publishes 78 minutes at 25 C and no 30-minute or 55-minute figure at all.  Round-8 (D788-17) reproduced the contradiction.  There is now ONE hold, it cites the archived document, and it separates tack-free from handling from cure.",
-    "adhesion_qualification": "C-ADH-01, once per adhesive lot and before the first production bead: apply a representative bead to a scrap board carrying the SAME soldermask and to a scrap length of the SAME lead insulation, hold it to the full 72 h process hold at the stated conditions, then peel it and record the result.  DOWSIL publishes adhesion data for substrate families, not for this soldermask or this insulation, so the adhesion this process relies on is MEASURED rather than assumed.  NOTE: the PTFE-insulated conductor that used to need this qualification was the ACC_3V3 reinforcement lead, and D-789 retired it; the leads bonded here are the Molex 26 AWG pre-crimps, whose insulation is the one to test."
-  },
-  "battery_side": {
-    "battery": "Adafruit Product 328, 3.7 V 2500 mAh",
-    "factory_lead_AWG": 26,
-    "factory_lead_insulation_OD_mm": "MEASURE_EACH_INCOMING_PACK",
-    "terminal_allowed_insulation_OD_mm": [
-      0.9,
-      1.5
-    ],
-    "first_five_target_insulation_OD_mm": [
-      0.96,
-      1.5
-    ],
-    "plug_housing": "2137192021",
-    "male_terminal": "2137201000",
-    "hand_crimp_tool": "Molex 213309-5900",
-    "retermination": "replace factory JST-PH housing/contacts with Micro-Lock Plus plug; one conductor at a time; preserve red=BAT+ and black=GND; measure insulation OD before stripping and reject/rework the connector plan if outside the terminal/tool range"
-  },
-  "controlling_rating": {
-    "wire_AWG": 26,
-    "rated_current_A": 2.6,
-    "basis": "5055700003-PS A6 section 4.2; both sides are 26 AWG, so the mated harness rating is 2.6 A",
-    "reference_derating_2_circuit_A": 2.9,
-    "d792_conforming_vs_fault": "D-792 / R11-02.  The CONFORMING battery current -- each accessory rail alone at its full published budget, or both together at the declared simultaneous 220 mA + 170 mA pair, with the internal +3V3 peak envelope -- is 2.1597 A, INSIDE the 2.6 A rated current by 20.4 %.  An accessory OVERCURRENT can reach 2.7536 A, which is 5.9 % ABOVE the rated current and INSIDE the section 4.3 two-circuit reference derating value of 2.9 A.  That excursion is a NAMED BOUNDED EXCEPTION: it is a fault and not an operating state, the rated current it exceeds is a 30 C rise figure, and it is bounded below the latching LTC4368 breaker (3.9604 A) and the F1 one-shot fuse (5 A).  MEASURED at C-BAT-PATH-01 and C-THERM-01."
-  },
-  "polarity": {
-    "cavity_1": "BAT+ / red / J4.1",
-    "cavity_2": "GND / black / J4.2"
-  },
-  "acceptance": [
-    "board side uses exact Molex factory pre-crimped leads 2175012101 red and 2175011101 black, 75 mm, 26 AWG UL 10002; no hand-crimped board-side contact",
-    "before soldering all five boards, verify the stripped conductor of one 217501 26 AWG lead passes freely through an actual finished J4 0.75 mm PTH without strand shaving or force",
-    "measure both battery lead insulation ODs on every incoming Adafruit 328 pack before retermination; terminal specification is 0.90-1.50 mm and the 213309-5900 tool IPC-optimum range is 0.96-1.50 mm; do not crimp an out-of-range lead",
-    "battery-side 2137201000 crimps use Molex 213309-5900 or an equivalently qualified production process and are visually inspected for conductor/insulation capture",
-    "minimum battery-side crimp pull-out: AWG26 19.6 N per Molex product/application tooling specification",
-    "verify cavity polarity with DMM before first mate and after every battery retermination",
-    "strain-relieve the board pigtail exactly per the frozen DOWSIL 3145 process above; maintain >=35 mm free wire from each housing before tie/bundle; disconnect by gripping/releasing housings only, never by pulling wires",
-    "front-side J4 conductor is trimmed flush and insulated under the display per the existing display-shadow rule",
-    "first article: run published worst-case concurrent Demo load and record connector/lead temperature rise; target <30 C rise",
-    "first article C-BAT-PATH-01: measure the COMPLETE cell-to-BAT_PROTECTED_P DC resistance, cold and after a thermal soak, and itemise it against the aqroot_power_model.HARNESS_ITEMS table -- both conductor pairs, both mated contacts, the four crimps and the two J4 barrels.  The D-792 model bounds it at 132.282 mOhm hot and aged for the harness alone and 249.782 mOhm for the whole fixed series path; a measured value above either is a model failure and must be reported before any further build",
-    "first article: with an accessory drawing the ACC_5V limiter's maximum, record the connector and lead temperature rise at the 2.7536 A fault excursion as well as at the conforming load; the rated-current exception above is accepted only if the measured rise stays inside the 30 C figure"
+  "reference_derating_basis": "section 4.3 reference derating for 2 circuits.  AQROOT RULES at the section 4.2 rated current, which is stricter; this row is what bounds an accessory OVERCURRENT excursion, and it is read from the archived transcription vendor/MOLEX/micro-lock-plus-5055700003-PS-A6.txt rather than asserted.",
+  "ambient_C": [
+   -40,
+   105
   ],
-  "design_intent": "Restores full internal RF/NFC/IR availability with both accessory rails enabled; no protected battery copper moved. Factory pre-crimped board leads remove a first-five hand-crimp variable."
+  "free_wire_before_bundling_min_mm": 35,
+  "archived_primary_pdf": "hardware/demo/kicad/aqroot-demo/vendor/MOLEX/molex-5055700003-PS-A1.pdf",
+  "archived_primary_pdf_sha256": "0218c6300aa4e4b4906e7607b7e033ece51c2adc6439ae8be90ce8e659942440",
+  "archived_primary_revision": "A1",
+  "revision_discrepancy": "D-793 / R12-01.  D-792 recorded this document as not retrievable from this environment and stood DECLARED allowances in for its contact-resistance rows.  It retrieved at D-793 through the Internet Archive snapshot 20231101174835 of the same molex.com URL and is archived beside the transcription.  The retrieved copy is REVISION A1 (initial release) and the product page cites A6: every row this repository already depended on -- rated current, derating reference, ambient range, 6.1.5 temperature rise, 6.2.2 crimp pull-out, section 10 free-wire length -- is present and IDENTICAL in it.  The rows below are read from the A1 copy and are the ones the release RULES at.",
+  "contact_resistance_mOhm": {
+   "initial_mated_max": 20.0,
+   "initial_mated_basis": "section 6.1.1: 20 milliohms MAX, mated, dry circuit 20 mV / 10 mA MAX, with the WIRE CONDUCTOR RESISTANCE SUBTRACTED (JIS C5402-2-1), at the paragraph-8 measuring point.  The conductor is itemised separately in aqroot_power_model.",
+   "crimped_portion_max": 5.0,
+   "crimped_portion_basis": "section 6.1.4: 5 milliohms MAX on the crimped portion, dry circuit.  D-792 carried 1 mOhm per crimp as a declared allowance; the manufacturer publishes five times that, and this harness has FOUR crimped terminations.",
+   "post_durability_and_environmental_max": 40.0,
+   "post_durability_and_environmental_basis": "40 milliohms MAX Contact Resistance, stated identically after EVERY durability and environmental exposure the specification defines: 6.2.6 repeated insertion/withdrawal (30 cycles), 6.2.7 vibration, 6.2.8 mechanical shock (50 G), 6.3.1 temperature cycling, 6.3.2 heat resistance (105 C, 96 h), 6.3.3 cold resistance, 6.3.4 humidity (60 C, 90-95 % RH, 96 h), 6.3.5 salt spray, 6.3.6 SO2 and 6.3.7 NH3.  THIS IS THE FIGURE THE RELEASE RULES AT.  The battery path crosses TWO mated contact pairs, one per conductor.",
+   "measurement_of_record": "C-BAT-PATH-01"
+  },
+  "durability_cycles": 30,
+  "durability_cycles_basis": "section 4.5, tin plated: 30 cycles."
+ },
+ "board_side": {
+  "wire_AWG": 26,
+  "wire_type": "UL 10002",
+  "precrimp_red": "Molex 2175012101, 75 mm, 26 AWG, female-to-pigtail",
+  "precrimp_black": "Molex 2175011101, 75 mm, 26 AWG, female-to-pigtail",
+  "receptacle_housing": "5055700201",
+  "board_land": "J4 legacy 2.00 mm PTH pair; NO JST header fitted",
+  "nominal_drill_mm": 0.75,
+  "required_finished_hole_min_mm": 0.7,
+  "factory_tinned_tip_max_mm": 0.65,
+  "solder_pads": {
+   "J4.1": "BAT_CONNECTOR_P / red",
+   "J4.2": "GND / black"
+  },
+  "assembly": "insert the factory pre-crimped female contacts into 5055700201 and retain the factory 75 mm pigtail/free-tip preparation for the first five; do NOT cut/re-strip/re-tin before the J4 fit check because that would void the drawing's free-tip diameter basis. Verify one exact factory tinned tip passes freely through an actual >=0.70 mm finished J4 barrel with no strand shaving or force, then insert the tinned conductors from the rear (B.Cu), apply solder and inspect barrel fill from the front (F.Cu), trim only as required, and keep the front-side conductive profile <=0.50 mm. If shortening is ever required, the new stripped/tinned end becomes a new workmanship qualification and must re-pass diameter/free-fit/strand inspection before use."
+ },
+ "strain_relief": {
+  "material": "DOWSIL 3145 RTV MIL-A-46146 Adhesive/Sealant, gray",
+  "process": "after solder joints pass visual/profile inspection and cleaning, form a relaxed rear-side service loop and apply a non-flowing fillet over the insulated red/black pigtails onto clean B.Cu solder mask; begin the adhesive beyond the inspected solder fillets so joints remain inspectable, bond both insulated leads to the PCB for at least 8 mm of length, and do not allow cured adhesive, wire or hard solder-wick transition to bear on the LiPo pouch or coax",
+  "cure": "D-789 / D788-17 -- ONE CONDITION-CONTROLLED PROCESS HOLD, and the conditions are part of it.  APPLY AND CURE AT 25 +/- 5 C and 40-70 % RH, inside DOWSIL's own published 30-80 % RH cure window with margin; a moisture-cure RTV held outside that window is not on any published cure curve.  BEAD THICKNESS <= 1.0 mm: these adhesives cure from the exposed surface inward at 0.25 inch per seven days (Dow), so a 1.0 mm bead reaches its substrate in about 1.1 days and a thicker one does not.  THREE DISTINCT STATES, and they are not interchangeable: (1) TACK-FREE, published at 78 minutes at 25 C -- a TYPICAL, so the gate is a passed tack-free check and not the clock; (2) HANDLING STRENGTH, no earlier than 4 h AND after a passed tack-free check, sufficient to move the board but NOT to load the joint; (3) FULL PROCESS HOLD, >= 72 h at the stated conditions before ANY pull test, thermal test, enclosure retention test or shipment -- 72 h is the TOP of Dow's own 24-72 h window for '>90 percent of full physical properties', not the bottom.  Do not accelerate with heat while the lead is under tension.",
+  "disconnect_instruction": "release and grip the two Micro-Lock housings; never disconnect by pulling either wire bundle",
+  "service_loop": "preserve >=35 mm free wire from each housing before tie/bundle per Molex product specification and leave enough relaxed board-side loop that mating force is not transferred into J4 solder barrels",
+  "manufacturer": "Dow",
+  "primary_source_url": "https://www.dow.com/en-us/pdp.dowsil-3145-rtv-mil-a-46146-adhesive-sealant.01059548z.html",
+  "primary_source_basis": "DOWSIL 3145 RTV MIL-A-46146 gray product information, ARCHIVED at hardware/demo/kicad/aqroot-demo/vendor/DOW/dowsil-3145-rtv-mil-a-46146-gray-11-1832-01-0323.pdf: one-part moisture-cure RTV, non-flow, PWB/wired-lead use, room-temperature alkoxy cure, TACK-FREE TIME AT 25 C = 78 MINUTES.  D-789 / D788-17 CORRECTED THIS LINE: it previously read 'tack-free 55 min at 50% RH' and attributed it to a Dow product page, a figure the archived datasheet does not contain.  See cure, cure_source and cure_corrects.",
+  "archived_tds": "hardware/demo/kicad/aqroot-demo/vendor/DOW/dowsil-3145-rtv-mil-a-46146-gray-11-1832-01-0323.pdf",
+  "archived_tds_sha256": "905af2ec4eafd4fe54fe748cab36450a121b4b04cedc375120299baefb38e115",
+  "cure_source": "DOWSIL 3145 RTV MIL-A-46146 gray product information, archived at hardware/demo/kicad/aqroot-demo/vendor/DOW/dowsil-3145-rtv-mil-a-46146-gray-11-1832-01-0323.pdf: 'Tack-free Time at 25 C ... minutes 78'; 'generally cured at room temperature and in an environment of 30 to 80 percent relative humidity'; 'Greater than 90 percent of full physical properties should be attained within 24 to 72 hours'; 'handled in much shorter times of about 10 to 120 minutes'; 'cure from the exposed surface inward at a rate of 0.25 inch per seven days'; 'Mild heat below 60 C may be used to increase through-put'.",
+  "cure_corrects": "D-788 and earlier carried 'tack-free 55 min at 50% RH' attributed to a Dow product page and, in the now-retired ACC_3V3 reinforcement record, 'tack-free 30 min at 25 C / 50 % RH; handling strength 4 h'.  NEITHER MATCHES THE ARCHIVED DATASHEET, which publishes 78 minutes at 25 C and no 30-minute or 55-minute figure at all.  Round-8 (D788-17) reproduced the contradiction.  There is now ONE hold, it cites the archived document, and it separates tack-free from handling from cure.",
+  "adhesion_qualification": "C-ADH-01, once per adhesive lot and before the first production bead: apply a representative bead to a scrap board carrying the SAME soldermask and to a scrap length of the SAME lead insulation, hold it to the full 72 h process hold at the stated conditions, then peel it and record the result.  DOWSIL publishes adhesion data for substrate families, not for this soldermask or this insulation, so the adhesion this process relies on is MEASURED rather than assumed.  NOTE: the PTFE-insulated conductor that used to need this qualification was the ACC_3V3 reinforcement lead, and D-789 retired it; the leads bonded here are the Molex 26 AWG pre-crimps, whose insulation is the one to test."
+ },
+ "battery_side": {
+  "battery": "Adafruit Product 328, 3.7 V 2500 mAh",
+  "factory_lead_AWG": 26,
+  "factory_lead_insulation_OD_mm": "MEASURE_EACH_INCOMING_PACK",
+  "terminal_allowed_insulation_OD_mm": [
+   0.9,
+   1.5
+  ],
+  "first_five_target_insulation_OD_mm": [
+   0.96,
+   1.5
+  ],
+  "plug_housing": "2137192021",
+  "male_terminal": "2137201000",
+  "hand_crimp_tool": "Molex 213309-5900",
+  "retermination": "replace factory JST-PH housing/contacts with Micro-Lock Plus plug; one conductor at a time; preserve red=BAT+ and black=GND; measure insulation OD before stripping and reject/rework the connector plan if outside the terminal/tool range"
+ },
+ "controlling_rating": {
+  "wire_AWG": 26,
+  "rated_current_A": 2.6,
+  "basis": "5055700003-PS A6 section 4.2; both sides are 26 AWG, so the mated harness rating is 2.6 A",
+  "reference_derating_2_circuit_A": 2.9,
+  "d792_conforming_vs_fault": "D-792 / R11-02.  The CONFORMING battery current -- each accessory rail alone at its full published budget, or both together at the declared simultaneous 220 mA + 170 mA pair, with the internal +3V3 peak envelope -- is 2.1597 A, INSIDE the 2.6 A rated current by 20.4 %.  An accessory OVERCURRENT can reach 2.7536 A, which is 5.9 % ABOVE the rated current and INSIDE the section 4.3 two-circuit reference derating value of 2.9 A.  That excursion is a NAMED BOUNDED EXCEPTION: it is a fault and not an operating state, the rated current it exceeds is a 30 C rise figure, and it is bounded below the latching LTC4368 breaker (3.9604 A) and the F1 one-shot fuse (5 A).  MEASURED at C-BAT-PATH-01 and C-THERM-01."
+ },
+ "polarity": {
+  "cavity_1": "BAT+ / red / J4.1",
+  "cavity_2": "GND / black / J4.2"
+ },
+ "acceptance": [
+  "board side uses exact Molex factory pre-crimped leads 2175012101 red and 2175011101 black, 75 mm, 26 AWG UL 10002; no hand-crimped board-side contact",
+  "before soldering all five boards, verify the stripped conductor of one 217501 26 AWG lead passes freely through an actual finished J4 0.75 mm PTH without strand shaving or force",
+  "measure both battery lead insulation ODs on every incoming Adafruit 328 pack before retermination; terminal specification is 0.90-1.50 mm and the 213309-5900 tool IPC-optimum range is 0.96-1.50 mm; do not crimp an out-of-range lead",
+  "battery-side 2137201000 crimps use Molex 213309-5900 or an equivalently qualified production process and are visually inspected for conductor/insulation capture",
+  "minimum battery-side crimp pull-out: AWG26 19.6 N per Molex product/application tooling specification",
+  "verify cavity polarity with DMM before first mate and after every battery retermination",
+  "strain-relieve the board pigtail exactly per the frozen DOWSIL 3145 process above; maintain >=35 mm free wire from each housing before tie/bundle; disconnect by gripping/releasing housings only, never by pulling wires",
+  "front-side J4 conductor is trimmed flush and insulated under the display per the existing display-shadow rule",
+  "first article: run published worst-case concurrent Demo load and record connector/lead temperature rise; target <30 C rise",
+  "first article C-BAT-PATH-01: measure the COMPLETE cell-to-BAT_PROTECTED_P DC resistance, cold and after a thermal soak, and itemise it against the aqroot_power_model.HARNESS_ITEMS table -- both conductor pairs, both mated contacts, the four crimps and the two J4 barrels.  The D-792 model bounds it at 132.282 mOhm hot and aged for the harness alone and 249.782 mOhm for the whole fixed series path; a measured value above either is a model failure and must be reported before any further build",
+  "first article: with an accessory drawing the ACC_5V limiter's maximum, record the connector and lead temperature rise at the 2.7536 A fault excursion as well as at the conforming load; the rated-current exception above is accepted only if the measured rise stays inside the 30 C figure"
+ ],
+ "design_intent": "Restores full internal RF/NFC/IR availability with both accessory rails enabled; no protected battery copper moved. Factory pre-crimped board leads remove a first-five hand-crimp variable.",
+ "itemised_path_resistance_mOhm": {
+  "harness_hot_and_aged_max": 177.478,
+  "cell_to_bat_protected_p_fixed_series_max": 355.204,
+  "what": "D-793 / R12-01.  The harness figure is the pack's own two UL 26 AWG factory leads, the two Molex 75 mm pre-crimps, TWO mated contact pairs at the 40 mOhm post-environmental criterion, FOUR crimps at the 5 mOhm published maximum and two J4 solder barrels, all of the metal at the same declared 65 K hot rise.  The fixed series figure adds the pack's DC source resistance, F1 at its declared tolerance corner, R75 at its 1 % HIGH corner (10.100 mOhm), the MEASURED J4 -> F1 -> Q2 -> Q3 -> R75 board copper and the GROUND RETURN.  Derived by hardware/demo/manufacturing/aqroot_power_model.py; measured at C-BAT-PATH-01.",
+  "superseded": {
+   "d791_harness_mOhm": 54.0,
+   "d792_harness_mOhm": 132.282,
+   "d792_fixed_series_mOhm": 249.782
+  }
+ }
 }

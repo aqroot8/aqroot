@@ -167,5 +167,115 @@ inline DeviceIdentity probeSt25r3916(SpiBusB &bus) {
   return id;
 }
 
+// ===========================================================================
+// D-793 / R12-03.  QUIESCING THE TRANSCEIVERS, BEFORE ANYTHING IS PERMITTED.
+//
+// ROUND-12: "On every relevant boot/warm-reset/recovery path, explicitly
+// quiesce/reset and verify CC1101 before permitting accessory power or any
+// second transmitter.  If physical state cannot be confirmed, represent it as
+// UNKNOWN/pessimistic and refuse conflicting permissions."
+//
+// U7 and U8 sit on +3V3.  An MCU reset does not touch that rail, so whatever
+// the previous image left them doing they are still doing.  Neither
+// `SpiBusB::transmitting_` nor `DemoBringupApp::subghz_tx_` can know that --
+// both are C++ members and both are zero after a reset -- and parking a chip
+// select changes nothing about a PA that is already keyed.
+//
+// WHAT EACH PART'S OWN SEMANTICS SUPPORT:
+//
+//   CC1101   SIDLE (strobe 0x36) leaves TX/RX for IDLE; SRES (strobe 0x30,
+//            BURST CLEAR -- the trap `probeCc1101` documents) resets the whole
+//            chip.  MARCSTATE (0x35, BURST SET, so header 0xF5) reads the main
+//            radio control state machine, and 0x01 is IDLE.  So the quiesce is
+//            ORDERED and then VERIFIED from the part's own register.
+//   SX1262   SetStandby(0x80) with 0x00 selects STDBY_RC; GetStatus (0xC0)
+//            returns a status byte whose bits [6:4] are the chip mode, 0x02
+//            STBY_RC and 0x03 STBY_XOSC.  BUSY must be low before and after.
+//   ST25R3916  DELIBERATELY NOT TOUCHED.  This repository holds no datasheet
+//            for it and D-742 is the standing reminder of what a decode
+//            carried from memory costs; a guessed register write could
+//            ENERGISE a field rather than quiet one.  Its field is carried in
+//            the canonical ledger as a bounded-duty allowance inside the
+//            ALWAYS-ON set, so a retained field is already inside every floor
+//            in the permission table.  Reported as UNKNOWN, not asserted.
+// ===========================================================================
+struct RadioQuiesce {
+  bool cc1101_confirmed = false;
+  uint8_t cc1101_marcstate = 0xFF;
+  bool sx1262_confirmed = false;
+  uint8_t sx1262_status = 0xFF;
+  bool nfc_field_state_is_unknown = true;   // see above; bounded, not proven
+  bool ok() const { return cc1101_confirmed && sx1262_confirmed; }
+};
+
+inline bool cc1101Quiesce(SpiBusB &bus, uint8_t *marcstate_out) {
+  const uint8_t kSidle = 0x36;
+  const uint8_t kSres = 0x30;          // BURST CLEAR -- the strobe, not PARTNUM
+  const uint8_t kReadBurst = 0xC0;
+  const uint8_t kMarcstate = 0x35;
+  const uint8_t kMarcstateIdle = 0x01;
+
+  SPI.beginTransaction(SPISettings(4000000, MSBFIRST, SPI_MODE0));
+  SpiBusB::Hold hold(bus, SpiBDevice::Cc1101);
+  if (!hold.ok()) {
+    SPI.endTransaction();
+    return false;
+  }
+  // The part holds SO high until its crystal is stable; its own access
+  // sequence is to wait for the fall before the first header byte.
+  uint32_t deadline = millis() + 10;
+  while (digitalRead(AQROOT_PIN_SPI_B_MISO) == HIGH && millis() < deadline) {
+  }
+  SPI.transfer(kSidle);                // leave TX/RX
+  SPI.transfer(kSres);                 // and reset the part outright
+  // SRES holds SO high again until the reset completes.
+  deadline = millis() + 10;
+  while (digitalRead(AQROOT_PIN_SPI_B_MISO) == HIGH && millis() < deadline) {
+  }
+  SPI.transfer(uint8_t(kReadBurst | kMarcstate));
+  const uint8_t marc = SPI.transfer(0x00);
+  SPI.endTransaction();
+  if (marcstate_out) *marcstate_out = marc;
+  return (marc & 0x1F) == kMarcstateIdle;
+}
+
+inline bool sx1262Quiesce(SpiBusB &bus, uint8_t *status_out) {
+  if (!sx1262WaitBusy()) return false;
+  SPI.beginTransaction(SPISettings(8000000, MSBFIRST, SPI_MODE0));
+  {
+    SpiBusB::Hold hold(bus, SpiBDevice::Sx1262);
+    if (!hold.ok()) {
+      SPI.endTransaction();
+      return false;
+    }
+    SPI.transfer(0x80);                // SetStandby
+    SPI.transfer(0x00);                // STDBY_RC
+  }
+  SPI.endTransaction();
+  if (!sx1262WaitBusy()) return false;
+  uint8_t status = 0xFF;
+  SPI.beginTransaction(SPISettings(8000000, MSBFIRST, SPI_MODE0));
+  {
+    SpiBusB::Hold hold(bus, SpiBDevice::Sx1262);
+    if (!hold.ok()) {
+      SPI.endTransaction();
+      return false;
+    }
+    SPI.transfer(0xC0);                // GetStatus
+    status = SPI.transfer(0x00);
+  }
+  SPI.endTransaction();
+  if (status_out) *status_out = status;
+  const uint8_t chip_mode = uint8_t((status >> 4) & 0x07);
+  return chip_mode == 0x02 || chip_mode == 0x03;   // STBY_RC / STBY_XOSC
+}
+
+inline RadioQuiesce quiesceRadios(SpiBusB &bus) {
+  RadioQuiesce r;
+  r.cc1101_confirmed = cc1101Quiesce(bus, &r.cc1101_marcstate);
+  r.sx1262_confirmed = sx1262Quiesce(bus, &r.sx1262_status);
+  return r;
+}
+
 }  // namespace aqroot
 #endif  // ARDUINO

@@ -36,6 +36,7 @@
 #include <vector>
 
 #include "Arduino.h"
+#include "SPI.h"
 #include "Wire.h"
 
 #include "aqroot_demo_board.h"
@@ -190,6 +191,109 @@ class Board : public aqroot_hal::I2cModel {
 
 Board g_board;
 
+// ===========================================================================
+// D-793 / R12-03.  THE INDEPENDENTLY RETAINED CC1101.
+//
+// ROUND-12, IN ITS OWN WORDS: "Add real-image/real-driver host test with an
+// independently retained CC1101 stub: keyed before MCU reset, retained
+// through setup, then verify SRES/SIDLE/quiesce occurs before load authority
+// and TX arbitration become permissive."
+//
+// The stub is constructed BEFORE `setup()` and is not owned by the image, so
+// the image's construction -- which is what an MCU reset is -- cannot clear
+// it.  It starts in TX, exactly as a radio keyed by the previous image would
+// be, and it only leaves TX when it is actually STROBED.  `ignores_strobes`
+// is the negative control: a part that does not quiesce must leave the image
+// reporting UNKNOWN and refusing accessory power, not reporting success.
+//
+// Header byte on this part is {R/W, BURST, addr[5:0]}.  A write with BURST
+// clear and addr 0x30 is SRES; 0x36 is SIDLE.  0xC0 | 0x35 is a burst READ of
+// MARCSTATE, whose value is 0x13 in TX and 0x01 in IDLE.
+class Cc1101Stub : public aqroot_hal::SpiModel {
+ public:
+  bool transmitting = true;          // RETAINED from before the MCU reset
+  bool ignores_strobes = false;      // the negative control
+  bool sx1262_answers_standby = true;
+  int sidle_strobes = 0;
+  int sres_strobes = 0;
+  int marcstate_reads = 0;
+  int marcstate_reads_before_quiesce = 0;
+  int tx_permission_questions = 0;
+
+  uint8_t transfer(uint8_t out) override {
+    const auto &r = aqroot_hal::recorder();
+    const bool cc = r.pin_low[AQROOT_PIN_CC1101_CS_N];
+    const bool sx = r.pin_low[AQROOT_PIN_SX1262_CS_N];
+    if (cc) return cc1101(out);
+    if (sx) return sx1262(out);
+    return 0x3F;                     // the NFC part answers with a plausible id
+  }
+
+ private:
+  uint8_t cc1101(uint8_t out) {
+    if (pending_marcstate_) {
+      pending_marcstate_ = false;
+      ++marcstate_reads;
+      if (transmitting) ++marcstate_reads_before_quiesce;
+      return transmitting ? 0x13 : 0x01;
+    }
+    if (out == 0x36) {                       // SIDLE
+      ++sidle_strobes;
+      if (!ignores_strobes) transmitting = false;
+      return 0x00;
+    }
+    if (out == 0x30) {                       // SRES -- BURST CLEAR
+      ++sres_strobes;
+      if (!ignores_strobes) transmitting = false;
+      return 0x00;
+    }
+    if (out == uint8_t(0xC0 | 0x35)) {       // burst read of MARCSTATE
+      pending_marcstate_ = true;
+      return 0x00;
+    }
+    if (out == uint8_t(0xC0 | 0x30)) {       // burst read of PARTNUM
+      pending_partnum_ = true;
+      return 0x00;
+    }
+    if (pending_partnum_) { pending_partnum_ = false; return 0x00; }
+    if (out == uint8_t(0xC0 | 0x31)) { pending_version_ = true; return 0x00; }
+    if (pending_version_) { pending_version_ = false; return 0x14; }
+    return 0x00;
+  }
+
+  uint8_t sx1262(uint8_t out) {
+    if (pending_status_) { pending_status_ = false; return sx_status_(); }
+    if (out == 0xC0) { pending_status_ = true; return sx_status_(); }
+    if (out == 0x80) { standby_ = true; return 0x00; }
+    if (out == 0x1D) { pending_reg_ = 3; return 0x00; }
+    if (pending_reg_ > 0) {
+      --pending_reg_;
+      if (pending_reg_ == 0) return 0x14;    // the sync-word MSB the probe wants
+      return 0x00;
+    }
+    return 0x00;
+  }
+
+  uint8_t sx_status_() const {
+    if (!sx1262_answers_standby || !standby_) return uint8_t(0x00 << 4);
+    return uint8_t(0x02 << 4);               // STBY_RC
+  }
+
+  bool pending_marcstate_ = false;
+  bool pending_partnum_ = false;
+  bool pending_version_ = false;
+  bool pending_status_ = false;
+  bool standby_ = false;
+  int pending_reg_ = 0;
+};
+
+Cc1101Stub *g_radio = nullptr;
+// Every scenario gets a HEALTHY radio pair by default -- one that answers the
+// quiesce -- because a board whose radios cannot be quiesced refuses accessory
+// power by design, and the other scenarios are about something else.  D-793 /
+// R12-03's own scenarios install their own stub over this one.
+Cc1101Stub g_healthy_radio;
+
 // Reset the image between scenarios.  `setup()` re-initialises every static
 // the image owns that matters here, because the app object's flags are
 // reconciled from the PHYSICAL latch on every `afterAccessoryChange()`.
@@ -201,6 +305,17 @@ void rig(const char *keys = "") {
   // A healthy board: the CC1101 has released SO and the SX1262 is not busy.
   aqroot_hal::recorder().pin_level[AQROOT_PIN_SPI_B_MISO] = LOW;
   aqroot_hal::recorder().pin_level[AQROOT_PIN_SX1262_BUSY] = LOW;
+  g_healthy_radio = Cc1101Stub();
+  g_radio = &g_healthy_radio;
+  aqroot_hal::spiModel() = &g_healthy_radio;
+}
+
+// D-793 / R12-03.  Same rig, plus a radio that was ALREADY TRANSMITTING when
+// the MCU reset.  The stub outlives `setup()` because it is not the image's.
+void rigWithRetainedRadio(Cc1101Stub &radio, const char *keys = "") {
+  rig(keys);
+  g_radio = &radio;
+  aqroot_hal::spiModel() = &radio;
 }
 
 void press(const char *keys) {
@@ -807,6 +922,125 @@ int main() {
     claim("no dim PWM before the full-duty prime interval",
           first_dim != UINT64_MAX
           && first_dim - t0 >= kBacklightStartupPrimeUs);
+  }
+
+  // =========================================================================
+  // D-793 / R12-03.  A RETAINED CC1101 TRANSMIT STATE ACROSS AN MCU RESET.
+  // =========================================================================
+  {
+    Cc1101Stub radio;                      // keyed BEFORE the reset
+    rigWithRetainedRadio(radio);
+    claim("the radio really is transmitting before the image starts",
+          radio.transmitting);
+    setup();
+
+    claim("setup STROBES the CC1101 out of TX (SIDLE)",
+          radio.sidle_strobes >= 1);
+    claim("...and resets it (SRES, BURST CLEAR -- not a PARTNUM read)",
+          radio.sres_strobes >= 1);
+    claim("...and the retained transmit state is actually gone",
+          !radio.transmitting);
+    claim("...and the quiesce is VERIFIED from MARCSTATE, not assumed",
+          radio.marcstate_reads >= 1);
+    claim("...and the verifying read happened AFTER the strobes, so no "
+          "MARCSTATE was read while the part was still keyed",
+          radio.marcstate_reads_before_quiesce == 0);
+    claim("the image reports the quiesce on the console",
+          rec().consoleHas("radios quiesced after MCU reset"));
+    // The whole point: the quiesce precedes anything that could authorise a
+    // load.  The console is ordered, so the ordering is checkable.
+    size_t quiesce_line = SIZE_MAX, gauge_line = SIZE_MAX;
+    for (size_t i = 0; i < rec().console.size(); ++i) {
+      if (quiesce_line == SIZE_MAX &&
+          rec().console[i].find("radios quiesced after MCU reset")
+          != std::string::npos) {
+        quiesce_line = i;
+      }
+      if (gauge_line == SIZE_MAX &&
+          rec().console[i].find("MAX17048 U14 hibernate disabled")
+          != std::string::npos) {
+        gauge_line = i;
+      }
+    }
+    claim("the quiesce precedes the gauge qualification, which is the first "
+          "thing that can lead to an accessory permission",
+          quiesce_line != SIZE_MAX && gauge_line != SIZE_MAX
+          && quiesce_line < gauge_line);
+
+    // ...and with the quiesce CONFIRMED the accessory path is no longer
+    // refused for radio reasons: the floor it is judged against is a real
+    // derived floor, not the NOT-PERMITTED sentinel.
+    press("3");
+    pump(2);
+    bool sentinel_refusal = false;
+    for (const auto &l : rec().console) {
+      if (l.find("ACC_3V3_SW REFUSED") != std::string::npos
+          && l.find("floor 99.00") != std::string::npos) {
+        sentinel_refusal = true;
+      }
+    }
+    claim("a confirmed quiesce does not leave the accessory rail refused by "
+          "the sub-GHz sentinel", !sentinel_refusal);
+  }
+
+  // ---- NEGATIVE CONTROL: a part that does NOT quiesce. --------------------
+  {
+    Cc1101Stub radio;
+    radio.ignores_strobes = true;          // the strobes land and change nothing
+    rigWithRetainedRadio(radio);
+    setup();
+    claim("a CC1101 that ignores the strobes is still transmitting",
+          radio.transmitting);
+    claim("...and the image does NOT report a confirmed quiesce",
+          !rec().consoleHas("[ok] radios quiesced after MCU reset"));
+    claim("...and says the physical transmit state is UNKNOWN",
+          rec().consoleHas("radio quiesce: NOT CONFIRMED"));
+    press("3");
+    pump(2);
+    bool sentinel_refusal = false;
+    for (const auto &l : rec().console) {
+      if (l.find("ACC_3V3_SW REFUSED") != std::string::npos
+          && l.find("floor 99.00") != std::string::npos) {
+        sentinel_refusal = true;
+      }
+    }
+    claim("...and accessory power is REFUSED BY NAME, not granted against a "
+          "load the board may actually be carrying",
+          rec().consoleHas("ACCESSORY REFUSED: the physical transmit state"));
+    claim("...and the rail is physically still OFF",
+          !bit(g_board.u3_output, AQROOT_U3_ACC_3V3_EN));
+    claim("...and the sentinel floor is what the refusal quotes",
+          sentinel_refusal || rec().consoleHas("ACCESSORY REFUSED"));
+  }
+
+  // ---- NEGATIVE CONTROL: the SX1262 half. ---------------------------------
+  {
+    Cc1101Stub radio;
+    radio.sx1262_answers_standby = false;
+    rigWithRetainedRadio(radio);
+    setup();
+    claim("an SX1262 that will not confirm STANDBY blocks the quiesce too",
+          rec().consoleHas("radio quiesce: NOT CONFIRMED"));
+  }
+
+  // ---- LIVENESS: a board that failed once must be able to recover. --------
+  {
+    Cc1101Stub radio;
+    radio.ignores_strobes = true;
+    rigWithRetainedRadio(radio);
+    setup();
+    claim("the failed quiesce is reported", rec().consoleHas(
+        "radio quiesce: NOT CONFIRMED"));
+    radio.ignores_strobes = false;         // the part starts answering
+    const int sres_before = radio.sres_strobes;
+    for (int i = 0; i < 8 && radio.transmitting; ++i) {
+      delay(kRadioQuiescePeriodMs + 10);
+      loop();
+    }
+    claim("loop() retries the quiesce rather than sitting with an unknown "
+          "radio state forever", radio.sres_strobes > sres_before);
+    claim("...and the retained transmit state is cleared on the retry",
+          !radio.transmitting);
   }
 
   std::printf("\n%s -- %d failure(s)\n", failures ? "FAIL" : "PASS", failures);

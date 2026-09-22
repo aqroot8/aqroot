@@ -61,6 +61,10 @@ constexpr uint32_t kAccessorySettledRecheckMs = 400;
 constexpr uint32_t kExpanderRecoveryPeriodMs = 250;
 constexpr uint32_t kGaugeRequalPeriodMs = 1000;
 constexpr uint32_t kBatteryGuardPeriodMs = 500;
+// D-793 / R12-03.  How often a board that could not confirm the radio quiesce
+// retries it.  Liveness: an unconfirmed radio state refuses accessory power,
+// so a board that gave up would refuse it forever.
+constexpr uint32_t kRadioQuiescePeriodMs = 250;
 
 // What `releaseExpanderResetLines()` could prove.  D-788 / R7-D787-08 made the
 // diagnostic honest; D788-06 makes it EXECUTABLE.
@@ -112,12 +116,78 @@ class DemoBringupApp : public AccessoryLoadAuthority {
   // =========================================================================
   bool amplifierCountsAsOn() const { return !amplifierConfirmed(false); }
 
+  // =========================================================================
+  // D-793 / R12-03.  A RETAINED TRANSMIT STATE SURVIVES AN MCU RESET AND THE
+  // SOFTWARE MODEL OF IT DOES NOT.
+  //
+  // ROUND-12, IN ITS OWN WORDS: "Astra reproduced retained physical CC1101
+  // transmit state while software resets its arbiter/mode state to NONE.  U7
+  // stays powered; CS parking is not a radio reset."
+  //
+  // It reproduces exactly.  `SpiBusB::transmitting_` and `subghz_tx_` are both
+  // zeroed by construction, and construction is what an MCU reset does.  U7
+  // (CC1101) and U8 (SX1262) are supplied from +3V3, which an MCU reset does
+  // not interrupt, so an `STX` issued by the image that died is still keying
+  // the PA while this object reports no transmitter and hands the permission
+  // table a mode set the board is not in.  That is the SAME defect class as
+  // D-766's powered PCAL9535A latches, one subsystem further out.
+  //
+  // THE DIRECTION IS PESSIMISTIC AND THAT IS THE WHOLE POINT.  Until the boot
+  // path has quiesced both transceivers and CONFIRMED it from their own
+  // status registers, `subGhzTransmitting()` reads TRUE.  The permission table
+  // refuses every accessory combination with a sub-GHz transmitter keyed, so
+  // an unconfirmed radio state refuses accessory power rather than granting it
+  // against a load the board may actually be carrying.
+  //
+  // THE NFC FRONT END IS TREATED DIFFERENTLY, ON PURPOSE.  R12-03 says "do not
+  // blindly add resets without primary-device semantics", and this repository
+  // holds NO ST25R3916 datasheet -- D-742 is the standing reminder of what a
+  // decode carried from memory costs.  A register write invented here could
+  // energise a field rather than quiet one.  What can be said without a
+  // datasheet is bounded and sufficient: the NFC field is carried in the
+  // canonical ledger as a BOUNDED-DUTY allowance inside the ALWAYS-ON set, so
+  // a field left on by a dead image is already inside every floor in the
+  // permission table.  It is reported as UNKNOWN and it is not a load the
+  // model has failed to charge for.
+  // =========================================================================
+  bool radiosQuiesced() const { return radios_quiesced_; }
+  bool radioPhysicalStateIsKnown() override { return radios_quiesced_; }
+  void noteRadiosQuiesced(bool confirmed) {
+    radios_quiesced_ = confirmed;
+    if (!confirmed) {
+      log_("radio quiesce: NOT CONFIRMED -- the physical transmit state of "
+           "U7/U8 is UNKNOWN.  Sub-GHz TX is treated as KEYED and accessory "
+           "power is refused until a confirmed quiesce.");
+    }
+  }
+
   AccessoryLoadState accessoryLoadState() const {
     AccessoryLoadState s;
     s.wifi_tx = wifi_tx_;
     s.amplifier_on = amplifierCountsAsOn();
-    s.subghz_tx = subghz_tx_;
+    // PESSIMISTIC WHILE UNKNOWN -- see the block above.  `subghz_tx_` alone
+    // would read the reset value of a variable as a fact about a powered
+    // radio.
+    s.subghz_tx = subghz_tx_ || !radios_quiesced_;
     return s;
+  }
+
+  // ---- D-793 / R12-08.  THE BURST ARBITER, AND THE ONE WAY THROUGH IT. ----
+  BurstArbiter &burstArbiter() { return burst_; }
+
+  // Every production burst call site goes through this.  It logs the refusal,
+  // because a burst that silently does not happen is indistinguishable from a
+  // broken peripheral on a bring-up console.
+  bool burstAllowed(BurstLoad which, const char *what) {
+    if (which == BurstLoad::None) return false;
+    if (burst_.active() == BurstLoad::None) return true;
+    char line[224];
+    snprintf(line, sizeof(line),
+             "%s REFUSED: %s is already drawing its burst and this revision "
+             "serialises them (D-793 / R12-08); retry when it finishes",
+             what, burstLoadName(burst_.active()));
+    log_(line);
+    return false;
   }
 
   int accessoryRailsOn() const {
@@ -198,6 +268,21 @@ class DemoBringupApp : public AccessoryLoadAuthority {
   // fail-closed and may not be hidden behind a blocking reconfiguration.
   bool accessoryBatteryAllows(bool other_rail_on, float *volts = nullptr,
                               float *floor = nullptr) {
+    // D-793 / R12-03.  NO ACCESSORY POWER WHILE THE RADIO STATE IS UNKNOWN.
+    //
+    // The pessimistic mode set below already makes every sub-GHz row of the
+    // permission table refuse, but that makes a SAFETY property depend on the
+    // NUMBERS in a generated table.  Round-12 asks for the permission itself
+    // to be refused, so it is refused HERE, by name, and the table refusal is
+    // the second line of defence rather than the only one.
+    if (!radios_quiesced_) {
+      log_("ACCESSORY REFUSED: the physical transmit state of U7/U8 is "
+           "UNKNOWN after this reset and has not been quiesced; a retained "
+           "transmit is a load this permission cannot account for");
+      if (volts) *volts = 0.0f;
+      if (floor) *floor = kAccessoryNotPermittedV;
+      return false;
+    }
     if (!gauge_.activeReady()) {
       if (acc3v3_ || acc5v_ || expanders_.safeShutdownPending() ||
           !configureFuelGaugeActiveMode()) {
@@ -623,6 +708,11 @@ class DemoBringupApp : public AccessoryLoadAuthority {
     // re-applied rather than assumed to have survived.  The display is no
     // longer up, whatever the caller last thought.
     display_up_ = false;
+    // D-793 / R12-03.  RECOVERY RE-ASSERTS AND RE-RELEASES U2.P01, WHICH IS
+    // THE SX1262's RESET, SO THE RADIO STATE THIS OBJECT BELIEVED IS NO
+    // LONGER PROVEN.  Invalidating it here is the liveness half of the rule:
+    // `loop()` re-quiesces and only a CONFIRMED quiesce re-permits.
+    radios_quiesced_ = false;
     if (disp_reset_intent_.want) disp_reset_intent_.pending = true;
     if (amp_intent_.pending || amp_intent_.want) {
       amp_intent_.pending = !amplifierConfirmed(amp_intent_.want);
@@ -747,6 +837,11 @@ class DemoBringupApp : public AccessoryLoadAuthority {
   // `wifi_tx_` by whatever brings the radio up.
   bool subghz_tx_ = false;
   bool wifi_tx_ = false;
+  // D-793 / R12-03: FALSE until a confirmed quiesce.  The reset value is the
+  // pessimistic one deliberately.
+  bool radios_quiesced_ = false;
+  // D-793 / R12-08.
+  BurstArbiter burst_;
   uint32_t last_recovery_ms_ = 0;
   uint32_t last_gauge_requal_ms_ = 0;
   uint32_t last_battery_guard_ms_ = 0;

@@ -39,6 +39,7 @@ sys.path.insert(0, str(MFG))
 import routing_ledger as rl                                  # noqa: E402
 import audit_rail_ampacity as ara                            # noqa: E402
 import aqroot_power_model as apm                              # noqa: E402
+import aqroot_power_oracle as apo                             # noqa: E402
 
 DRU = rl.PROJECT / "aqroot-Beta-v2.kicad_dru"
 POWER_POLICY = ROOT / "Firmware/src/hw/aqroot_accessory_power_policy.h"
@@ -1095,7 +1096,7 @@ UL2367_ILIM_RANGE = (0.066, 2.46)
 # CONTACTS ON EACH RAIL SHARE THE RAIL LIMIT - they do not double it ... This
 # must appear in accessory-facing documentation in these words."  A number the
 # product PUBLISHES is a number the hardware must GUARANTEE.
-PUBLISHED_RAIL_BUDGET_A = {"ACC_3V3": 0.400, "ACC_5V": 0.300}
+PUBLISHED_RAIL_BUDGET_A = dict(apm.PUBLISHED_RAIL_BUDGET_A)
 # --------------------------------------------------------------------------
 # D-792 / R11-04 -- THE DECLARED SIMULTANEOUS PAIR.
 #
@@ -1117,7 +1118,10 @@ PUBLISHED_RAIL_BUDGET_A = {"ACC_3V3": 0.400, "ACC_5V": 0.300}
 # SAME critical cell voltage the single-rail permission already reaches, rounded
 # DOWN onto a 10 mA grid -- and then REFUSES if this constant differs from what
 # it derived.  It is stated here because F6 needs it before F12 runs.
-DECLARED_DUAL_RAIL_BUDGET_A = {"ACC_3V3": 0.220, "ACC_5V": 0.170}
+# D-793 / Fable R12: the canonical model owns it.  This alias exists only so
+# the call sites below keep reading, and F12 asserts it equals the DERIVED
+# pair -- which is what D-792's comment claimed and no code did.
+DECLARED_DUAL_RAIL_BUDGET_A = dict(apm.DECLARED_DUAL_RAIL_BUDGET_A)
 DECLARED_DUAL_RAIL_BASIS = (
     "D-792 / R11-04.  Solved by F12 at the critical cell OCV of the worse "
     "single-rail configuration in the lightest internal state, at the top of "
@@ -1451,8 +1455,8 @@ FLOOR_GRID_V = 0.05
 # function stays pure for its own mutation controls and for
 # `battery_pack_contract`, which calls it with no floors at all.  `main()`
 # always parses the real constants out of `aqroot_accessory_power_policy.h`.
-NORMAL_SINGLE_VBAT_FLOOR = 3.95         # the published ENVELOPE of the D-792
-NORMAL_DUAL_VBAT_FLOOR = 3.95           # permission table, one and two rails
+NORMAL_SINGLE_VBAT_FLOOR = 3.85         # the published ENVELOPE of the D-793
+NORMAL_DUAL_VBAT_FLOOR = 3.85           # permission table, one and two rails
 NORMAL_RETENTION_FLOOR = 3.20           # RETAIN a rail already on
 VBAT_CORNER = 3.0                      # fault-envelope 1S Li-ion corner
 # D-774 SWEEP.  Every other physical constant in this file now cites a primary
@@ -2511,14 +2515,28 @@ CAP_DERATE_EXCEPTIONS = {
 # purchased part, not merely the same LCSC code.  Manufacturer spelling is
 # normalized only through explicit aliases observed in the frozen BOM/cache;
 # package comes from the KiCad footprint's EIA size and must match the record.
-_CAP_MFR_ALIASES = {
-    "murata": "murataelectronics",
-}
-
-
+# D-793 / R12-07.  ONE NORMALISER, ONE ALIAS TABLE.
+#
+# ROUND-12, IN ITS OWN WORDS: "Consolidate manufacturer normalization into one
+# narrow reviewed alias table used by F8/F13/other identity gates."
+#
+# There were TWO.  F8 folded a manufacturer name with `_norm_cap_mfr`, which
+# stripped every non-alphanumeric character and consulted a two-entry private
+# dictionary `{"murata": "murataelectronics"}`; F13 folded the same names with
+# `canonical_manufacturer`, which folds case, commas and trailing legal forms
+# and consults the twenty-odd-company `MFR_ALIASES` table.  So "Murata
+# Electronics Co., Ltd." and "Murata Electronics" were one company to F13 and
+# two to F8, and an alias added to one gate did not reach the other -- which
+# is R11-09's defect in the OTHER gate, one round later.
+#
+# `_norm_cap_mfr` is now a thin wrapper on `canonical_manufacturer`, defined
+# below, so there is exactly one fold and exactly one table.  It is defined
+# lazily because `canonical_manufacturer` needs `MFR_ALIASES`, which is
+# declared further down this file.
 def _norm_cap_mfr(name):
-    key = re.sub(r"[^a-z0-9]+", "", (name or "").casefold())
-    return _CAP_MFR_ALIASES.get(key, key)
+    if not name:
+        return ""
+    return canonical_manufacturer(name) or ""
 
 
 def _bom_cap_package(footprint):
@@ -2662,6 +2680,11 @@ CANONICAL_DC_NETS = {
 # A cross-hierarchy alias may exist only with a reason written down.  It is
 # EMPTY on this board and the clause below is what keeps it that way.
 PROVEN_DC_ALIASES = {}
+# D-793 / R12-07.  THE EXACT GROUND NETS, BY FULL NAME.  A pad on one of these
+# carries no DC stress and is skipped; a pad on anything else -- including a
+# net whose LEAF is spelled `GND` -- is examined like any other node.  There is
+# exactly one ground net on this board and it is spelled `GND` at the root.
+CANONICAL_GROUND_NETS = frozenset({"GND"})
 
 
 def judge_canonical_dc_map(board, net_max_dc, canonical=None, aliases=None):
@@ -2759,7 +2782,27 @@ def judge_capacitor_derating(board, dnp_refs, net_max_dc, exceptions=None,
         for pad in fp.Pads():
             net = net_rewrite.get(pad.GetNetname(), pad.GetNetname())
             leaf = net.rsplit("/", 1)[-1]
-            if leaf == "GND" or not leaf:
+            # D-793 / R12-07.  THE SKIP WAS KEYED BY LEAF NAME, WHICH IS THE
+            # EXACT DEFECT D-788 / R7-D787-07 REMOVED FROM THE LINE BELOW IT.
+            #
+            # ROUND-12, IN ITS OWN WORDS: "F8 skips/accepts a leaf named GND
+            # before proving exact canonical net identity; /ALIEN/GND mutation
+            # stays green."
+            #
+            # It reproduces: `leaf == "GND"` is true of `/ALIEN/GND`, of
+            # `/03_SPI_A_DISPLAY_SD/GND` and of any hierarchy at all, so a pad
+            # moved onto a net this repository has never established was
+            # simply not examined.  D-788 took the `else leaf` fallback out of
+            # the DC lookup one line later and left this one standing.
+            #
+            # The skip is now keyed by the EXACT canonical net.  An unknown
+            # GND-like leaf falls THROUGH to the DC lookup, is not in
+            # CANONICAL_DC_NETS, and is therefore UNESTABLISHED -- which fails
+            # closed and demands a named non-DC proof, exactly as any other
+            # unknown node does.
+            if not leaf:
+                continue
+            if net in CANONICAL_GROUND_NETS:
                 continue
             # R6-E03: non-DC evidence is bound to the complete canonical net.
             # D-788 / R7-D787-07: SO IS THE DC EVIDENCE.  The bound is looked up
@@ -3051,7 +3094,11 @@ MFR_ALIASES = (
      "analog devices inc./maxim integrated",
      "analog devices inc/maxim integrated"),
     ("stmicroelectronics", "st microelectronics", "stmicro"),
-    ("nxp semiconductors", "nxp"),
+    # D-793 / R12-07: `nxp semicon` is the spelling the LCSC record prints
+    # and it is a MID-WORD truncation, which the tightened prefix rule no
+    # longer accepts implicitly.  A legitimate distributor spelling belongs in
+    # this table, reviewed, rather than in a character-count heuristic.
+    ("nxp semiconductors", "nxp", "nxp semicon"),
     ("vishay", "vishay intertech", "vishay siliconix",
      "vishay intertechnology"),
     ("yageo", "yageo corporation"),
@@ -3121,10 +3168,73 @@ def fold_manufacturer(name):
     return re.sub(r"\s+", " ", key).strip()
 
 
+def _word_boundary_truncation_rule(table=None):
+    """D-793 / R12-07.  A truncation is accepted only when it ends on a WORD
+    BOUNDARY of the canonical name and leaves at least two whole words.
+
+    Built over a LOCAL table, so the claim tests the RULE rather than which
+    spellings happen to be reviewed into `MFR_ALIASES`.
+    """
+    table = {"acme micro devices": "acme micro devices"} if table is None \
+        else table
+    saved = dict(MFR_CANONICAL)
+    try:
+        MFR_CANONICAL.clear()
+        MFR_CANONICAL.update(table)
+        word_boundary = canonical_manufacturer("acme micro")
+        mid_word = canonical_manufacturer("acme micro dev")
+        too_short = canonical_manufacturer("acme")
+        one_word = canonical_manufacturer("acmemicro")
+        return bool(word_boundary == "acme micro devices"
+                    and mid_word == "acme micro dev"
+                    and too_short == "acme"
+                    and one_word == "acmemicro")
+    finally:
+        MFR_CANONICAL.clear()
+        MFR_CANONICAL.update(saved)
+
+
+def _ambiguous_truncation_is_refused(table=None):
+    """D-793 / R12-07.  A prefix that two different canonical names share
+    must resolve to NEITHER of them.
+
+    Built over a local two-company table so the claim does not depend on which
+    companies happen to be in `MFR_ALIASES` this week.
+    """
+    table = {"acme micro devices": "acme micro devices",
+             "acme micro systems": "acme micro systems"} if table is None \
+        else table
+    saved = dict(MFR_CANONICAL)
+    try:
+        MFR_CANONICAL.clear()
+        MFR_CANONICAL.update(table)
+        shared = canonical_manufacturer("acme micro")
+        exact = canonical_manufacturer("acme micro devices")
+        return shared == "acme micro" and exact == "acme micro devices"
+    finally:
+        MFR_CANONICAL.clear()
+        MFR_CANONICAL.update(saved)
+
+
 MFR_CANONICAL = {}
 for _group in MFR_ALIASES:
     for _name in _group:
         MFR_CANONICAL[fold_manufacturer(_name)] = _group[0]
+
+
+# D-793 / R12-07.  THE TRUNCATION RULE, TIGHTENED.
+#
+# Round-12 asks that "legitimate legal spellings (e.g. Samsung Electro-
+# Mechanics Co., Ltd.) must pass; near-match/counterfeit/cross-manufacturer
+# names must fail".  The legal-form fold above is what makes the first half
+# work.  The second half needs the PREFIX rule to be narrow: `startswith` on a
+# bare character count would fold "Murata Elec" into "murata electronics" and
+# would equally fold a name that merely happens to share a prefix.  A
+# truncation is only accepted when it ends on a WORD BOUNDARY of the canonical
+# name and leaves at least two whole words, so a distributor's truncated
+# column still matches and a name that continues differently does not.
+MFR_TRUNCATION_MIN_CHARS = 8
+MFR_TRUNCATION_MIN_WORDS = 2
 
 
 def canonical_manufacturer(name):
@@ -3135,11 +3245,24 @@ def canonical_manufacturer(name):
     key = fold_manufacturer(name)
     if key in MFR_CANONICAL:
         return MFR_CANONICAL[key]
-    # A distributor truncation: accept a source brand that is a PREFIX of a
-    # known canonical name, which is how LCSC prints long company names.
+    hits = set()
     for known, canon in MFR_CANONICAL.items():
-        if known.startswith(key) and len(key) >= 8:
-            return canon
+        if known == key or not known.startswith(key):
+            continue
+        if len(key) < MFR_TRUNCATION_MIN_CHARS:
+            continue
+        if len(key.split()) < MFR_TRUNCATION_MIN_WORDS:
+            continue
+        rest = known[len(key):]
+        if rest and not rest.startswith(" "):
+            continue                   # mid-word: not a truncation, a
+                                       # different name that starts the same
+        hits.add(canon)
+    # An ambiguous truncation is NOT a match: it names two companies, and
+    # picking one of them is how a cross-manufacturer collision becomes an
+    # agreement.
+    if len(hits) == 1:
+        return next(iter(hits))
     return key
 
 
@@ -5076,7 +5199,8 @@ IBAT_OCP_CONDITION_SOURCE = (
 
 def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
                        budget=None, ambient_C=None, pass_pair=None,
-                       ocp_min_A=None, margin=None):
+                       ocp_min_A=None, margin=None, board_forward=None,
+                       burst_delta_A=None):
     """D-791 / D790-A03.  The whole network, cell to load, every declared state.
 
     Pure over its arguments.  `paths_ohm` is the LIVE measured set
@@ -5099,7 +5223,17 @@ def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
     # `aqroot_power_model`, not a one-line allowance.  D-792 / R11-01: the
     # pass-pair temperature law is an explicit argument, not a captured alpha.
     pack_dc = apm.PACK_DC_OHM
-    up_fixed = apm.upstream_fixed_ohm("max")
+    # D-793 / R12-01: the four J4 -> R75 board-copper segments and the ground
+    # return are IN the fixed series path now.  `board_forward` is the live
+    # measured set; None falls back to the module's last-measured defaults so
+    # this function stays pure for its own mutation controls.
+    up_fixed = apm.upstream_fixed_ohm("max", board_forward)
+    # D-793 / R12-08: the INSTANTANEOUS electrical delta a bursty consumer can
+    # add at the moment a permission transition is evaluated.  The sustained
+    # states below carry the duty-AVERAGED allowance, which is the right model
+    # for heat and the wrong one for a permission edge.
+    burst_delta_A = (apm.burst_transition_delta_A() if burst_delta_A is None
+                     else burst_delta_A)
     r25 = spec["rds_on_max_at_that_row_ohm"]
     hot_ratio = spec["rds_on_hot_ratio"]
     drive = ltc4368_gate_drive_min_V(VBAT_CORNER)
@@ -5140,8 +5274,9 @@ def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
             p_int = (node * nxt - (i3 * v_3v3_V + i5 * v_acc5v_V)
                      + nxt * nxt * r_up)
             air_next = amb + r_sys_K * p_int
-            tj_pp = air_next + 5.0 + spec["theta_jl_max_C_per_W"] * (
-                2 * nxt * nxt * r_ch)
+            tj_pp = (air_next + spec["land_above_internal_air_K"]
+                     + spec["theta_jl_max_C_per_W"] * (
+                         2 * nxt * nxt * r_ch))
             r_next = apm.channel_ohm(tj_pp, hot_ratio, spec)
             if (abs(nxt - amps) < 1e-11 and abs(r_next - r_ch) < 1e-13
                     and abs(air_next - air) < 1e-9):
@@ -5157,7 +5292,8 @@ def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
                  + amps * amps * r_up)
         air = amb + r_sys_K * p_int
         tj_bq = air + theta_ja * (amps * amps * ron_bat)
-        tj_pp = air + 5.0 + spec["theta_jl_max_C_per_W"] * (2 * amps * amps * r_ch)
+        tj_pp = (air + spec["land_above_internal_air_K"]
+                 + spec["theta_jl_max_C_per_W"] * (2 * amps * amps * r_ch))
         # Q2 is the package with THREE channels plus R75 between its common
         # source and the LTC4368's VOUT, so it has the smaller VGS.
         vgs = drive - amps * ((spec["channels_in_series"] - 1) * r_ch
@@ -5221,8 +5357,8 @@ def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
                 i_u21 = p21 / (q["vsys_V"] - i_u21 * r_trunk)
             trunk_W = i_u21 * i_u21 * r_trunk
         delivered = i3 * v_3v3_V + i5 * v_acc5v_V
-        tj_pp = q["internal_air_C"] + 5.0 + spec["theta_jl_max_C_per_W"] * (
-            2 * amps * amps * r_ch)
+        tj_pp = (q["internal_air_C"] + spec["land_above_internal_air_K"]
+                 + spec["theta_jl_max_C_per_W"] * (2 * amps * amps * r_ch))
         return dict(
             kvl_node_V=q["node_V"] - (cell_V - amps * r_up),
             kvl_vsys_V=q["vsys_V"] - (cell_V - amps * (r_up + r_bat)),
@@ -5235,6 +5371,18 @@ def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
             thermal_air_C=q["internal_air_C"]
             - (q["ambient_C"] + r_sys_K * q["internal_W"]),
             junction_C=tj_pp - q["pass_pair_junction_C"])
+
+    # D-793 / R12-08.  THE FOUR LIMITS THAT ACT IN MICROSECONDS AND THE TWO
+    # THAT ACT IN MINUTES.  `ELECTRICAL_LIMITS` are checked on the
+    # INSTANTANEOUS state -- the one with the worst coincident burst present.
+    # The junction and the internal air are thermal integrals of a minute-
+    # scale time constant and are checked on the SUSTAINED, duty-averaged
+    # state; charging them for a 200 ms burst would be arithmetic, not physics.
+    ELECTRICAL_LIMITS = ("node_above_buvlo", "vsys_above_u12_floor",
+                         "inside_the_ocp_margin",
+                         "pass_pair_meets_its_conduction_row")
+    THERMAL_LIMITS = ("junction_inside_the_operating_maximum",
+                      "air_inside_the_pouch_window")
 
     def limits(s):
         if s is None:
@@ -5255,6 +5403,13 @@ def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
     def supported(s):
         v = limits(s)
         return all(v.values())
+
+    def electrically_supported(s):
+        """The instantaneous subset only -- R12-08."""
+        v = limits(s)
+        if not v.get("has_an_operating_point"):
+            return False
+        return all(v[k] for k in ELECTRICAL_LIMITS)
 
     def lowest_cell(i3, i5, i_int):
         top = solve(CELL_MAX_OCV_V, i3, i5, i_int)
@@ -5330,12 +5485,29 @@ def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
         return None if s is None else s
 
     def post_is_acceptable(cell, i3, i5, i_int, amb=None):
-        """The firmware's own retention rule, applied to the SETTLED state
-        with the gauge reading adversely LOW, plus every hardware limit."""
+        """The firmware's own retention rule plus every hardware limit, on
+        BOTH timescales -- D-793 / R12-08.
+
+        The SUSTAINED state (bursty lines at their duty average) has to clear
+        all seven limits, which is what the thermal ones can be asked about.
+        The INSTANTANEOUS state -- the same state with the worst coincident
+        microSD + NFC + IR burst present -- has to clear the four ELECTRICAL
+        limits AND the firmware's own retention read, because the post-enable
+        recheck can land inside a burst and that is Astra's reproduced
+        quiet-pre-read -> enable + burst -> post-read-below-retention case.
+        """
         s = solve(cell, i3, i5, i_int, amb)
         if s is None or not supported(s):
             return False, s
-        return bool(s["node_V"] - gauge >= retention_grid - 1e-12), s
+        if s["node_V"] - gauge < retention_grid - 1e-12:
+            return False, s
+        if burst_delta_A <= 0.0:
+            return True, s
+        b = solve(cell, i3, i5, i_int + burst_delta_A, amb)
+        if b is None or not electrically_supported(b):
+            return False, s
+        s["instantaneous_with_worst_burst"] = b
+        return bool(b["node_V"] - gauge >= retention_grid - 1e-12), s
 
 
     # ======================================================================
@@ -6016,20 +6188,81 @@ def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
                                        delivered_out_W=delivered_W)
         return r["junction_with_charge_folded_back_C"], r
 
+    def charge_is_supplementing(system_W):
+        """True when ANY ruling source class puts the part in SUPPLEMENT.
+
+        D-793 / R12-02.  The supplement onset is a DISCONTINUITY, not a knee:
+        SYS collapses from the input-FET-held value to the cell, the input
+        FET's drop triples and the junction steps tens of kelvin in one
+        millivolt of load.  A published ceiling that sits above it -- or that
+        ROUNDS UP across it -- is not a ceiling at all.
+        """
+        _, r = charge_junction_at(system_W)
+        return any(c["mode"] == "SUPPLEMENT" for c in r["corners"].values()
+                   if c.get("source_rules"))
+
     _tj_max = ara.PACKAGE_JUNCTION["tj_operating_max_C"]
-    _lo, _hi = 0.0, charge_system_W
+    # ---- (a) the junction-limited ceiling --------------------------------
+    _lo, _hi = 0.0, max(charge_system_W, 8.0)
     if charge_junction_at(_hi)[0] <= _tj_max:
-        charge_W_ceiling = _hi
+        tj_ceiling_W = _hi
     elif charge_junction_at(_lo)[0] > _tj_max:
-        charge_W_ceiling = 0.0
+        tj_ceiling_W = 0.0
     else:
-        for _ in range(80):
+        for _ in range(120):
             _mid = 0.5 * (_lo + _hi)
             if charge_junction_at(_mid)[0] <= _tj_max:
                 _lo = _mid
             else:
                 _hi = _mid
-        charge_W_ceiling = _lo
+        tj_ceiling_W = _lo
+    # ---- (b) the supplement discontinuity --------------------------------
+    _lo, _hi = 0.0, max(charge_system_W, 8.0)
+    if not charge_is_supplementing(_hi):
+        cliff_W = _hi
+    elif charge_is_supplementing(1e-6):
+        cliff_W = 0.0
+    else:
+        for _ in range(120):
+            _mid = 0.5 * (_lo + _hi)
+            if charge_is_supplementing(_mid):
+                _hi = _mid
+            else:
+                _lo = _mid
+        cliff_W = _lo
+    raw_ceiling_W = min(tj_ceiling_W, cliff_W)
+    # ---- (c) the PUBLISHED figure, rounded DOWN, with a guardband --------
+    #
+    # ROUND-12, IN ITS OWN WORDS: "Current published charge-time load ceiling
+    # 4.063 W rounds UP across a solver branch boundary from exact
+    # 4.06293325 W ... Define a CONSERVATIVE published ceiling with explicit
+    # criterion and guardband; never round upward across a discontinuity."
+    #
+    # BOTH HALVES REPRODUCE.  D-792 bisected for the junction limit, got
+    # 4.06293325 W and PRINTED 4.063 W, and the exact solver at 4.063 W is in
+    # a different branch with a 155.4 C junction -- past TSHUT, let alone past
+    # the 125 C operating maximum.  The published number was 39.6 K of
+    # junction on the wrong side of a cliff, bought by `round(..., 6)`.
+    #
+    # It cannot happen again by construction: the published figure is the raw
+    # ceiling reduced by a DECLARED guardband and then FLOORED onto a 0.05 W
+    # grid, and the clauses below evaluate the real solver AT the published
+    # number and over a dense scan below it.
+    CHARGE_CEILING_GUARDBAND = 0.05
+    CHARGE_CEILING_GRID_W = 0.05
+    charge_W_ceiling = (math.floor(raw_ceiling_W
+                                   * (1.0 - CHARGE_CEILING_GUARDBAND)
+                                   / CHARGE_CEILING_GRID_W + 1e-12)
+                        * CHARGE_CEILING_GRID_W)
+    _tj_at_ceiling, _r_at_ceiling = charge_junction_at(charge_W_ceiling)
+    _scan = [i * charge_W_ceiling / 200.0 for i in range(1, 201)]
+    _scan_bad = [round(w, 6) for w in _scan
+                 if charge_junction_at(w)[0] > _tj_max
+                 or charge_is_supplementing(w)]
+    # How big the cliff actually is, reported so the guardband is not an
+    # adjective.
+    _below = charge_junction_at(cliff_W * (1.0 - 1e-9))[0] if cliff_W else None
+    _above = charge_junction_at(cliff_W * (1.0 + 1e-6))[0] if cliff_W else None
     # Which (state, accessory configuration) pairs fit under the ceiling.
     charge_permitted, charge_refused = [], []
     for _st in states:
@@ -6044,30 +6277,66 @@ def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
                         junction_with_charge_folded_back_C=_tj,
                         mode=_r["mode"],
                         internal_air_C=_r["internal_air_C"],
+                        inside_the_published_ceiling=bool(
+                            _sys_W <= charge_W_ceiling + 1e-12),
                         charge_ambient_ceiling_C=_r[
                             "charge_ambient_ceiling_C"])
-            (charge_permitted if _tj <= _tj_max
+            (charge_permitted if (_tj <= _tj_max
+                                  and _sys_W <= charge_W_ceiling + 1e-12)
              else charge_refused).append(_row)
     charge_ceiling = dict(
         tj_operating_max_C=_tj_max,
         ambient_C=ambient_C,
         system_W_ceiling=round(charge_W_ceiling, 6),
+        junction_limited_ceiling_W=round(tj_ceiling_W, 6),
+        supplement_discontinuity_W=round(cliff_W, 6),
+        raw_ceiling_W=round(raw_ceiling_W, 6),
+        guardband=CHARGE_CEILING_GUARDBAND,
+        grid_W=CHARGE_CEILING_GRID_W,
+        binding_criterion=("the supplement discontinuity"
+                           if cliff_W <= tj_ceiling_W
+                           else "TI's junction operating maximum"),
+        discontinuity_junction_step_K=(
+            None if (_below is None or _above is None)
+            else round(_above - _below, 3)),
+        junction_at_the_published_ceiling_C=_tj_at_ceiling,
+        mode_at_the_published_ceiling=_r_at_ceiling["mode"],
+        ruling_source_class_at_the_published_ceiling=_r_at_ceiling.get(
+            "ruling_source_class"),
+        source_contract=apm.usb_source_contract(),
+        the_published_ceiling_is_below_the_raw_one=bool(
+            charge_W_ceiling < raw_ceiling_W - 1e-12),
+        the_published_ceiling_is_inside_the_junction_maximum=bool(
+            _tj_at_ceiling <= _tj_max),
+        no_ruling_corner_supplements_at_the_published_ceiling=bool(
+            not charge_is_supplementing(charge_W_ceiling)),
+        dense_scan_points=len(_scan),
+        dense_scan_violations=_scan_bad,
+        the_whole_range_below_the_ceiling_is_clean=bool(not _scan_bad),
+        d792_published_W=4.063,
+        d792_was_above_its_own_raw_ceiling=True,
+        d792_junction_at_its_published_number_C=155.436,
         reference_state_system_W=round(charge_system_W, 6),
         the_reference_state_is_inside_it=bool(
             charge_system_W <= charge_W_ceiling + 1e-9),
         permitted_while_charging=charge_permitted,
         refused_while_charging=charge_refused,
+        every_permitted_row_is_inside_the_published_ceiling=bool(all(
+            r["inside_the_published_ceiling"] for r in charge_permitted)),
         the_quiet_state_with_no_accessory_is_permitted=bool(any(
             r["state"] == "display_only" and r["load"] == "no_accessory"
             for r in charge_permitted)),
         there_is_no_vbus_present_signal=True,
         why="TREG folds back the CHARGE current and nothing else.  The SYSTEM "
             "load crosses the same package through a LINEAR input FET, and "
-            "once it exceeds the input current limit the battery supplements "
-            "through the BATFET as well.  This is the largest sustained system "
-            "power for which the half TREG cannot reach stays inside TI's "
-            "operating maximum -- a DERIVED, SUPERVISED restriction, not a "
-            "reliance on TSHUT.",
+            "once it exceeds what the source can deliver the battery "
+            "supplements through the BATFET as well -- a DISCONTINUITY, "
+            "because a constant-power load into a current-limited source has "
+            "no stable point between the input-held node and the cell.  The "
+            "published ceiling is the lower of TI's junction maximum and "
+            "that discontinuity, reduced by a declared guardband and floored "
+            "onto a 0.05 W grid, and it is a DERIVED, SUPERVISED restriction "
+            "rather than a reliance on TSHUT.",
         measurement_of_record="C-THERM-01 and C-PWR-CHARGE-01")
     out = dict(
         cell=dict(CELL), cell_max_ocv_V=CELL_MAX_OCV_V,
@@ -6131,6 +6400,27 @@ def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
         out["the_full_published_pair_is_refused"]["ok"])
     out["published_accessory_budgets_are_unchanged"] = bool(
         abs(i3b - 0.400) < 1e-12 and abs(i5b - 0.300) < 1e-12)
+    # ---- D-793 / Fable R12.  THE CONSTANT AND THE DERIVATION, COMPARED.
+    #
+    # D-792 wrote, beside `DECLARED_DUAL_RAIL_BUDGET_A`, that F12 "REFUSES if
+    # this constant differs from what it derived".  No code did that: the
+    # constant was hand-typed outside the canonical model and nothing joined
+    # the two.  A stated rule that never runs is a defect this programme has
+    # hit before, and Fable named this instance of it.  The values live in
+    # `aqroot_power_model` now, tagged POLICY_BUDGET, and this is the clause.
+    out["the_declared_pair_constant_equals_the_derivation"] = dict(
+        published=dict(apm.DECLARED_DUAL_RAIL_BUDGET_A),
+        derived=dict(ACC_3V3=round(dual_i3, 6), ACC_5V=round(dual_i5, 6)),
+        enforcement=apm.DECLARED_PAIR_ENFORCEMENT,
+        ok=bool(abs(apm.DECLARED_DUAL_RAIL_BUDGET_A["ACC_3V3"] - dual_i3)
+                < 1e-9
+                and abs(apm.DECLARED_DUAL_RAIL_BUDGET_A["ACC_5V"] - dual_i5)
+                < 1e-9),
+        why="the canonical model PUBLISHES the pair and F12 DERIVES it; a "
+            "release in which the two differ is a release whose product-"
+            "facing contract is not the one the physics supports.")
+    out["the_declared_pair_constant_equals_the_derivation_ok"] = bool(
+        out["the_declared_pair_constant_equals_the_derivation"]["ok"])
     # THE ANTI-VACUITY CLAUSE.  A floor the node cannot reach authorises
     # nothing and refuses everything, which is what D790-A03 found.
     top_none = solve(CELL_MAX_OCV_V, 0.0, 0.0,
@@ -6308,10 +6598,27 @@ def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
         # product has to be chargeable at all -- and that the ambient at which
         # the internal air reaches the pouch's own charge window is positive
         # for every state the product declares chargeable.
+        # D-793 / R12-02 adds the five clauses that make the PUBLISHED number
+        # safe rather than merely derived: it is strictly below the raw
+        # ceiling (never rounded up across the discontinuity), the real solver
+        # at that exact number is inside TI's junction maximum, no ruling
+        # source class supplements there, a 200-point scan of everything
+        # BELOW it is clean, and the enumerated permitted set agrees with the
+        # scalar instead of quietly exceeding it.
         ok=bool(charge_ceiling["system_W_ceiling"] > 0.0
                 and charge_ceiling[
                     "the_quiet_state_with_no_accessory_is_permitted"]
                 and charge_ceiling["permitted_while_charging"]
+                and charge_ceiling[
+                    "the_published_ceiling_is_below_the_raw_one"]
+                and charge_ceiling[
+                    "the_published_ceiling_is_inside_the_junction_maximum"]
+                and charge_ceiling[
+                    "no_ruling_corner_supplements_at_the_published_ceiling"]
+                and charge_ceiling[
+                    "the_whole_range_below_the_ceiling_is_clean"]
+                and charge_ceiling[
+                    "every_permitted_row_is_inside_the_published_ceiling"]
                 and all(r["charge_ambient_ceiling_C"] > 0.0
                         for r in charge_ceiling["permitted_while_charging"])))
     out["the_charge_regime_is_bounded_in_the_half_treg_cannot_reach_ok"] = bool(
@@ -6324,8 +6631,268 @@ def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
         and out["the_full_published_pair_is_refused_ok"]
         and out["the_operating_points_satisfy_their_own_equations_ok"]
         and out["the_residual_check_refuses_a_state_that_is_not_a_solution_ok"]
-        and out["the_d790_declared_state_is_refused_ok"])
+        and out["the_d790_declared_state_is_refused_ok"]
+        and out["the_declared_pair_constant_equals_the_derivation_ok"])
     return out["ok"], out
+
+
+# ==========================================================================
+# F14 -- THE INDEPENDENT ORACLE (D-793 / R12-04).
+#
+# ROUND-12, AS A RELEASE BLOCKER: "Astra halved canonical charger package heat
+# and all F1-F13 still passed.  Astra removed the 5V-first transition;
+# completeness Boolean became false but final verdict remained PASS.  This is
+# a release blocker: the canonical model cannot be its own oracle."
+#
+# `aqroot_power_oracle` is the second implementation.  It imports nothing from
+# `aqroot_power_model`, `audit_rail_ampacity` or this file; everything it
+# needs arrives as DATA.  This clause assembles that data, runs the audit, and
+# then runs the SIX MUTATIONS R12-04 names -- each of which must fail, for the
+# reason it is named for.
+# ==========================================================================
+ORACLE_REQUIRED_MUTATIONS = (
+    "halve_the_charger_package_heat",
+    "delete_the_energy_oracle",
+    "remove_the_5v_first_transition",
+    "discard_the_failed_post_states",
+    "reverse_the_gauge_error_direction",
+    "omit_the_return_path",
+)
+
+
+def _oracle_scalars(ambient_C=None):
+    return dict(
+        cu_tc_per_K=CU_TC_PER_K, cu_hot_rise_K=CU_HOT_RISE_K,
+        rho_cu_ohm_m=apo.PRIMITIVES and 1.72e-8,
+        eta_u12=ETA_U12, eta_u21=ETA_U21,
+        gauge_verr_V=GAUGE_VERR_V, gauge_lsb_V=GAUGE_LSB_V,
+        buvlo_bound_V=BUVLO_BOUND_V, u12_vin_floor_V=U12_VIN_FLOOR,
+        theta_ja_C_per_W=ara.PACKAGE_JUNCTION["theta_ja_C_per_W"],
+        tj_operating_max_C=ara.PACKAGE_JUNCTION["tj_operating_max_C"],
+        r_sys_K_per_W=ara.system_thermal_resistance_K_per_W(),
+        ambient_C=(ara.AMBIENT_DESIGN_MAX_C if ambient_C is None
+                   else ambient_C))
+
+
+def _oracle_charger_states():
+    """A set of solved charger states that EXERCISES every branch.
+
+    The powers are chosen to straddle the DPPM -> INPUT_LIMITED -> SUPPLEMENT
+    progression on every ruling source class, so the completeness invariant
+    has something real to be true of.
+    """
+    out = []
+    for w in (0.5, 1.0, 2.0, 3.0, 3.6, 4.0, 4.5, 5.65):
+        for ilim in ("max", "min"):
+            for cls in apm.USB_SOURCE_CLASSES:
+                st = apm.charger_state(w, apm.BQ25185["vbatreg_V"] - 1.0,
+                                       ilim, vbus_V=cls["vbus_V"],
+                                       path_ohm=cls["path_ohm"],
+                                       source_key=cls["key"])
+                if st is not None:
+                    out.append(st)
+    return out
+
+
+def _oracle_network_states(cell_net, pass_pair=None, board_forward=None):
+    spec = PASS_PAIR if pass_pair is None else pass_pair
+    fixed = apm.upstream_fixed_ohm("max", board_forward)
+    rows = []
+    for st in cell_net["states"]:
+        for load, v in st["loads"].items():
+            for where in ("at_a_full_cell", "at_the_lowest_supported_cell"):
+                s = v.get(where)
+                if not s or "raw" not in s:
+                    continue
+                q = s["raw"]
+                rows.append(dict(
+                    key="%s/%s/%s" % (st["key"], load, where),
+                    cell_V=q["cell_V"], amps=q["amps"], node_V=q["node_V"],
+                    fixed_ohm=fixed, channels=spec["channels_in_series"],
+                    channel_ohm=q["channel_ohm"]))
+    return rows
+
+
+def _oracle_transitions(cell_net):
+    """The named transitions plus every permission-table row, flattened."""
+    df = cell_net["derived_floors"]
+    out, rejected = [], []
+    for tr in df["transitions"]:
+        out.append(dict(
+            kind="named",
+            transition=tr["transition"], state=tr["state"],
+            post_node_V=tr.get("post_node_V"),
+            pre_node_V=tr.get("pre_node_V"),
+            floor_V=tr.get("required_reported_floor_V"),
+            pre_ceiling_V=None,
+            retention_floor_V=df["retention_floor_gridded_V"],
+            permitted=tr.get("post_node_V") is not None))
+    for edge in ("rail_edge_table", "mode_edge_table"):
+        for row in df[edge]:
+            entry = dict(
+                kind="table",
+                transition="%s/bits%d/rails%d" % (edge, row["mode_bits"],
+                                                  row["rails"]),
+                state=",".join(row["modes"]) or "(none)",
+                post_node_V=None, floor_V=row.get("floor_gridded_V"),
+                pre_ceiling_V=row.get("pre_state_reported_ceiling_V"),
+                retention_floor_V=df["retention_floor_gridded_V"],
+                permitted=bool(row["permitted"]))
+            if not row["permitted"]:
+                rejected.append(entry)
+            out.append(entry)
+    # ---- D-793 / R12-04.  THE SEEDED CANARY. --------------------------
+    #
+    # "Seed at least one deliberately failing post-state so inclusion/
+    # completeness cannot pass vacuously."  Twenty-six rows are refused on
+    # this candidate, but a future board on which every combination happened
+    # to be permitted would make the inclusion invariant true by accident.
+    # `d790_declared` is the state D-791 retired -- both radios transmitting
+    # beside the amplifier and both accessory rails -- and F12 already
+    # requires it to stay refused.  It is named HERE so the rejection set is
+    # never empty by construction, and if it ever started passing this clause
+    # would say so rather than going quiet.
+    canary = None
+    for st in cell_net["states"]:
+        if st["key"] != "d790_declared":
+            continue
+        v = st["loads"].get("acc_3v3_only") or {}
+        canary = dict(
+            kind="table", transition="seeded_canary/d790_declared",
+            state="d790_declared", post_node_V=None, floor_V=None,
+            pre_ceiling_V=None,
+            retention_floor_V=df["retention_floor_gridded_V"],
+            permitted=bool(v.get("supported")),
+            why="a DELIBERATELY failing post-state, so the rejection set "
+                "cannot be empty by accident and the inclusion invariant "
+                "cannot pass vacuously")
+    if canary is not None:
+        out.append(canary)
+        if not canary["permitted"]:
+            rejected.append(canary)
+    return out, rejected
+
+
+def judge_independent_oracle(cell_net, board_forward=None, ambient_C=None):
+    scalars = _oracle_scalars(ambient_C)
+    registry = apm.registry()
+    charger_states = _oracle_charger_states()
+    transitions, rejected = _oracle_transitions(cell_net)
+    network = _oracle_network_states(cell_net, board_forward=board_forward)
+    canonical_path = apm.upstream_fixed_ohm("max", board_forward)
+    board_20C = sum((board_forward or {}).get(x["key"], x["ohm_20C"])
+                    for x in apm.BOARD_FORWARD_SEGMENTS)
+    ok, rep = apo.audit(registry, scalars, charger_states, transitions,
+                        rejected, board_20C, canonical_path, network)
+
+    # ---- THE MUTATIONS.  Each must be CAUGHT, for its own reason. ---------
+    def _mut_halve_package_heat():
+        bad = [dict(st) for st in charger_states]
+        for st in bad:
+            st["package_W"] = st["package_W"] * 0.5
+            st["package_W_treg_cannot_reduce"] = (
+                st["package_W_treg_cannot_reduce"] * 0.5)
+        o, _ = apo.audit(registry, scalars, bad, transitions, rejected,
+                         board_20C, canonical_path, network)
+        return o
+
+    def _mut_delete_energy_oracle():
+        """Ablate the energy accounting and watch Astra's mutation get through.
+
+        D-792's `energy_balance` compared `p_in + p_from_cell - p_sys -
+        p_stored` with `p_diss`, which was DEFINED as that expression three
+        lines earlier: the check was `0 == 0`, and that is exactly what let a
+        halved canonical package heat pass the whole F1-F13 suite.
+
+        This mutation proves the replacement is load-bearing rather than
+        decorative: the SAME halved-package state set is REFUSED while the
+        energy accounting is present and ACCEPTED once it is removed.  A
+        version of this oracle that watched the package heat with nothing but
+        a tautology would fail this claim.
+        """
+        bad = [dict(st) for st in charger_states]
+        for st in bad:
+            st["package_W"] = round(st["package_W"] * 0.5, 6)
+            st["package_W_treg_cannot_reduce"] = round(
+                st["package_W_treg_cannot_reduce"] * 0.5, 6)
+        with_term, _ = apo.audit(registry, scalars, bad, transitions,
+                                 rejected, board_20C, canonical_path, network)
+        without_term, _ = apo.audit(registry, scalars, bad, transitions,
+                                    rejected, board_20C, canonical_path,
+                                    network, without_energy_oracle=True)
+        # CAUGHT means: refused with the accounting, and NOT refused without.
+        return bool(with_term or not without_term)
+
+    def _mut_remove_5v_first():
+        bad = [t for t in transitions
+               if t["transition"] not in ("first_rail_5v",
+                                          "second_rail_3v3")]
+        o, _ = apo.audit(registry, scalars, charger_states, bad, rejected,
+                         board_20C, canonical_path, network)
+        return o
+
+    def _mut_discard_failed_post_states():
+        o, _ = apo.audit(registry, scalars, charger_states, transitions, [],
+                         board_20C, canonical_path, network)
+        return o
+
+    def _mut_reverse_gauge_error():
+        """A post-read charged in the OPTIMISTIC direction: the settled node
+        is credited with the gauge error instead of being charged it."""
+        bad = []
+        g = scalars["gauge_verr_V"] + scalars["gauge_lsb_V"]
+        for t in transitions:
+            t2 = dict(t)
+            if t2.get("post_node_V") is not None and t2.get("permitted"):
+                # a state that only survives when the sign is inverted
+                t2["post_node_V"] = (scalars["buvlo_bound_V"]
+                                     + t2["retention_floor_V"]) * 0.5 - g
+            bad.append(t2)
+        o, _ = apo.audit(registry, scalars, charger_states, bad, rejected,
+                         board_20C, canonical_path, network)
+        return o
+
+    def _mut_omit_return_path():
+        o, _ = apo.audit(registry, scalars, charger_states, transitions,
+                         rejected, board_20C,
+                         canonical_path - apm.gnd_return_ohm(), network)
+        return o
+
+    muts = {
+        "halve_the_charger_package_heat": _mut_halve_package_heat,
+        "delete_the_energy_oracle": _mut_delete_energy_oracle,
+        "remove_the_5v_first_transition": _mut_remove_5v_first,
+        "discard_the_failed_post_states": _mut_discard_failed_post_states,
+        "reverse_the_gauge_error_direction": _mut_reverse_gauge_error,
+        "omit_the_return_path": _mut_omit_return_path,
+    }
+    caught = {}
+    for name in ORACLE_REQUIRED_MUTATIONS:
+        caught[name] = bool(not muts[name]())
+    rep["mutations_caught"] = caught
+    rep["every_required_mutation_is_caught"] = bool(all(caught.values()))
+    rep["required_mutations"] = list(ORACLE_REQUIRED_MUTATIONS)
+    rep["mutation_reasons"] = {
+        "halve_the_charger_package_heat":
+            "the terminal-power balance no longer equals the internal loss "
+            "sum -- the identity D-792 compared with itself",
+        "delete_the_energy_oracle":
+            "without the terminal-vs-internal term nothing watches the "
+            "package heat at all, which is exactly what Astra exploited",
+        "remove_the_5v_first_transition":
+            "the completeness invariant refuses a derivation that enumerates "
+            "only one rail order, and it is a VERDICT term now",
+        "discard_the_failed_post_states":
+            "an empty rejection set makes the inclusion check vacuous",
+        "reverse_the_gauge_error_direction":
+            "a granted enable settles below the retention floor it is judged "
+            "against",
+        "omit_the_return_path":
+            "the independently summed source path no longer equals the "
+            "canonical one",
+    }
+    rep["ok"] = bool(ok and rep["every_required_mutation_is_caught"])
+    return rep["ok"], rep
 
 
 # --------------------------------------------------------------------------
@@ -6804,6 +7371,73 @@ def main():
 
     live_ohms = {k: _live_series_ohm(k) for k in NORMAL_PATHS}
 
+    # D-793 / R12-01.  THE FOUR J4 -> R75 BOARD-COPPER SEGMENTS, MEASURED.
+    # They are upstream of `R75.2` and therefore of everything the downstream
+    # ledger prices, so nothing is double-counted; and they were in NO model
+    # before D-793.
+    def _live_segment_ohm(seg):
+        nodes, edges = ara.build_graph(board, seg["net"])
+        src = [ara.pad_key(pad_index[r]) for r in seg["src"] if r in pad_index]
+        snk = [ara.pad_key(pad_index[r]) for r in seg["snk"] if r in pad_index]
+        if not src or not snk:
+            return float("inf")
+        path, _ = ara.widest_bottleneck(nodes, edges, src, snk, 2.6)
+        if not path:
+            return float("inf")
+        return sum(ara.RHO_CU * e["length_mm"] / e["area_mm2"] for e in path
+                   if e["kind"] != "pad" and e["area_mm2"])
+
+    live_board_forward = {seg["key"]: _live_segment_ohm(seg)
+                          for seg in apm.BOARD_FORWARD_SEGMENTS}
+
+    # ---- D-793 / R12-08.  THE SERIALISED BURST DELTA IS PINNED TO THE CODE
+    # THAT IMPLEMENTS IT.
+    #
+    # The permission table may be derived at the worst SINGLE burst (75 mA)
+    # instead of the coincident sum of all three (170 mA) ONLY if the shipped
+    # firmware actually serialises them.  A restriction asserted in a comment
+    # is what this programme keeps finding, so it is READ here: the arbiter
+    # class, its refusal, and a `BurstArbiter::Hold` on each production burst
+    # call site.  If any of it is absent the model falls back to the full
+    # coincident delta and the table tightens by itself.
+    _pol_txt = (POWER_POLICY.read_text(encoding="utf-8", errors="replace")
+                if POWER_POLICY.exists() else "")
+    _main_cpp = ROOT / "Firmware/src/demo/main.cpp"
+    _main_txt = (_main_cpp.read_text(encoding="utf-8", errors="replace")
+                 if _main_cpp.exists() else "")
+    _arbiter_class = bool(
+        "class BurstArbiter" in _pol_txt
+        and "enum class BurstLoad" in _pol_txt
+        and "if (active_ != BurstLoad::None) return false;" in _pol_txt)
+    _hold_rx = (r"BurstArbiter::Hold\s+burst\(g_app\.burstArbiter\(\),"
+                r"\s*BurstLoad::%s\);")
+    _arbiter_sites = {
+        "microSD": bool(re.search(_hold_rx % "MicroSdWrite", _main_txt)),
+        "IR": bool(re.search(_hold_rx % "IrTransmit", _main_txt)),
+    }
+    # ...and there must be no UNARBITRATED call to either burst entry point.
+    _unarbitrated = []
+    for _name, _call in (("microSD", "probeSdCard()"), ("IR", "irSelfTest()")):
+        _idx = _main_txt.find(_call)
+        if _idx < 0:
+            _unarbitrated.append("%s: no production call site at all" % _name)
+            continue
+        if _main_txt.count(_call) != 1:
+            _unarbitrated.append("%s: %d call sites; exactly one is expected"
+                                 % (_name, _main_txt.count(_call)))
+            continue
+        _window = _main_txt[max(0, _idx - 700):_idx]
+        if "BurstArbiter::Hold" not in _window:
+            _unarbitrated.append("%s: the call site takes no arbiter hold"
+                                 % _name)
+    burst_arbiter_proven = bool(_arbiter_class and all(_arbiter_sites.values())
+                                and not _unarbitrated)
+    burst_delta_A = apm.burst_transition_delta_A(
+        serialised=burst_arbiter_proven)
+    board_forward_within_bounds = all(
+        live_board_forward[seg["key"]] <= seg["bound_ohm"] + 1e-12
+        for seg in apm.BOARD_FORWARD_SEGMENTS)
+
     # D-787 / R6-A01.  THE TRAVELER NAMES PADS; THE BOARD DECIDES WHAT THEY
     # ARE ON.  F6 already checks that the reinforcement record names TP12.1,
     # J5.3 and J5.22 and bounds each finished path.  Nothing checked that those
@@ -6843,7 +7477,37 @@ def main():
     cell_net_ok, cell_net = judge_cell_to_load(
         live_ohms, _no["v_3v3_used_V"], _no["v_acc5v_used_V"],
         _no["accessory_switch_ron_ohm"]["ACC_3V3"],
-        _no["accessory_switch_ron_ohm"]["ACC_5V"])
+        _no["accessory_switch_ron_ohm"]["ACC_5V"],
+        board_forward=live_board_forward, burst_delta_A=burst_delta_A)
+    cell_net["burst_serialisation"] = dict(
+        ruling_delta_A=burst_delta_A,
+        serialised=burst_arbiter_proven,
+        unserialised_delta_A=apm.burst_transition_delta_A(serialised=False),
+        arbiter_class_is_in_the_shipped_policy_header=_arbiter_class,
+        production_call_sites_take_a_hold=_arbiter_sites,
+        unarbitrated_call_sites=_unarbitrated,
+        subsets=apm.burst_subsets(),
+        policy=apm.BURST_COINCIDENCE_POLICY,
+        why="D-793 / R12-08.  The sustained ledger carries the three bursty "
+            "lines at their duty AVERAGE, which is the right model for heat "
+            "and the wrong one for a permission edge: the pre-read is taken "
+            "in a quiet moment and the settled recheck lands 400 ms later, "
+            "and a logging write, a card tap or a key repeat can begin "
+            "anywhere in between.  The four ELECTRICAL limits and the "
+            "firmware's own retention read are therefore evaluated with the "
+            "worst reachable burst PRESENT; the junction and the internal "
+            "air stay on the duty-averaged model, because a 200 ms burst "
+            "does not move a minute-scale thermal integral.")
+    cell_net_ok = cell_net_ok and burst_arbiter_proven
+    cell_net["upstream"]["board_forward_measured_off_the_board"] = dict(
+        segments=apm.board_forward_itemisation(live_board_forward),
+        every_segment_is_inside_its_ceiling=board_forward_within_bounds,
+        hot_total_ohm=apm.board_forward_ohm(live_board_forward),
+        why="D-793 / R12-01.  J4.1 -> F1.1 -> Q2 drain -> Q3 drain -> R75.1.  "
+            "All four are UPSTREAM of R75.2, so none of them is "
+            "double-counted against the BAT_PROTECTED_P -> SYS term measured "
+            "separately.  D-792's source-path model contained none of them.")
+    cell_net_ok = cell_net_ok and board_forward_within_bounds
     cell_net["firmware_policy"] = dict(
         file=str(POWER_POLICY.relative_to(ROOT)) if POWER_POLICY.exists() else None,
         retention_floor_V=policy_retention,
@@ -6909,12 +7573,18 @@ def main():
     # AND THE TWO EDGES MUST NOT HAVE BEEN COLLAPSED.  If the mode edge ever
     # equalled the rail edge everywhere, one of them would be wrong: the whole
     # point is that a mode is entered from a lighter pre-state.
-    _edges_differ = any(
-        r["derived_one_rail_V"] is not None
-        and next((q["derived_one_rail_V"] for q in _table_rows
-                  if q["edge"] == "rail" and q["mode_bits"] == r["mode_bits"]),
-                 None) != r["derived_one_rail_V"]
-        for r in _table_rows if r["edge"] == "mode")
+    # D-793: the comparison is over ALL SIXTEEN values per edge, SENTINELS
+    # INCLUDED.  D-792's version only looked at mode-edge rows that were
+    # PERMITTED, so a derivation in which the mode edge refused everything the
+    # rail edge permitted -- which is a very large difference -- registered as
+    # "the same table".  A refusal is a value.
+    _rail_vec = {(r["mode_bits"], k): r["derived_%s" % k]
+                 for r in _table_rows if r["edge"] == "rail"
+                 for k in ("one_rail_V", "two_rails_V")}
+    _mode_vec = {(r["mode_bits"], k): r["derived_%s" % k]
+                 for r in _table_rows if r["edge"] == "mode"
+                 for k in ("one_rail_V", "two_rails_V")}
+    _edges_differ = bool(_rail_vec and _mode_vec and _rail_vec != _mode_vec)
     cell_net["firmware_permission_table_equals_the_derivation"] = dict(
         file=str(POWER_POLICY.relative_to(ROOT)) if POWER_POLICY.exists() else None,
         rows=_table_rows,
@@ -6925,6 +7595,10 @@ def main():
         refused_rows=sum(1 for r in _table_rows
                          if r["derived_one_rail_V"] is None),
         the_two_edges_are_not_the_same_table=_edges_differ,
+        edges_compared_over_all_values_including_sentinels=True,
+        rows_where_the_edges_disagree=sorted(
+            "bits%d/%s" % (k[0], k[1]) for k in _rail_vec
+            if _rail_vec.get(k) != _mode_vec.get(k)),
         ok=bool(_table_ok and math.isfinite(policy_sentinel)
                 and policy_sentinel > 5.1199 and _edges_differ),
         why="the firmware consults the TABLES, so the TABLES are pinned -- all "
@@ -6992,7 +7666,13 @@ def main():
     _cc = cell_net["the_charge_regime_is_bounded_in_the_half_treg_cannot_reach"][
         "load_ceiling"]
     _need["charge_system_W_ceiling"] = "**%.3f W**" % _cc["system_W_ceiling"]
-    _heaviest = max(_cc["permitted_while_charging"], key=lambda r: r["system_W"])
+    _heaviest = (max(_cc["permitted_while_charging"],
+                     key=lambda r: r["system_W"])
+                 if _cc["permitted_while_charging"] else None)
+    if _heaviest is None:
+        raise SystemExit("F12: no state is permitted while charging at all; "
+                         "the charge-time ceiling has collapsed and that is "
+                         "a design failure, not a documentation one")
     _need["charge_heaviest_permitted_state"] = "`%s` + `%s`" % (
         _heaviest["state"], _heaviest["load"])
     _need["charge_junction_folded_back"] = "**%.1f \u00b0C**" % _heaviest[
@@ -7001,10 +7681,23 @@ def main():
         "charge_ambient_ceiling_C"]
     # ...and the DECLARED SIMULTANEOUS PAIR, which is the new product contract.
     _dp = df["declared_simultaneous_pair"]
+    # D-793: the FULL pair may now be unsupported at EVERY ambient in the
+    # declared envelope, so the required sentence is a different one and every
+    # document that carries it has to carry whichever is true.  ONE string,
+    # formatted once, consumed by all three normative documents.
+    _FULL_PAIR_AMBIENT = (
+        "**%.1f \u00b0C**" % _dp["full_pair_ambient_ceiling_C"]
+        if _dp["full_pair_ambient_ceiling_C"] is not None
+        else "**not supported at any ambient in the declared 0\u201340 "
+             "\u00b0C envelope**")
     _need["declared_simultaneous_pair"] = "**%d mA** + **%d mA**" % (
         round(_dp["acc_3v3_A"] * 1000), round(_dp["acc_5v_A"] * 1000))
-    _need["full_pair_ambient_ceiling"] = "**%.1f \u00b0C**" % _dp[
-        "full_pair_ambient_ceiling_C"]
+    # D-793: the FULL pair may now be unsupported at EVERY ambient in the
+    # declared envelope, so the required sentence is a different one and the
+    # document has to carry whichever is true.  A `%.1f` on None was a crash,
+    # which is the honest failure mode, but the contract has to be able to
+    # STATE the stronger restriction rather than only the weaker one.
+    _need["full_pair_ambient_ceiling"] = _FULL_PAIR_AMBIENT
     # Each state's cell floor is quoted for the SIMULTANEOUS load the product
     # publishes -- the declared pair -- and the FULL pair's refusal is a
     # separate, explicit statement.
@@ -7057,8 +7750,7 @@ def main():
                                     % df["enable_second_rail_floor_gridded_V"],
         "declared_simultaneous_pair": "**%d mA + %d mA**" % (
             round(_dp["acc_3v3_A"] * 1000), round(_dp["acc_5v_A"] * 1000)),
-        "full_pair_ambient_ceiling": "**%.1f \u00b0C**"
-                                     % _dp["full_pair_ambient_ceiling_C"],
+        "full_pair_ambient_ceiling": _FULL_PAIR_AMBIENT,
         "internal_3v3_peak_envelope": "**%.6f A**" % apm.peak_A(),
         "harness_itemised_max": "**%.3f m\u03a9**"
                                 % (_up["harness_hot_aged_max_ohm"] * 1000.0),
@@ -7089,6 +7781,10 @@ def main():
         cell_net["published_policy_is_printed_in_the_fab_handoff"]["ok"])
     cell_net_ok = cell_net_ok and cell_net[
         "published_policy_is_printed_in_the_fab_handoff_ok"]
+    # ---- D-793 / R12-04.  THE INDEPENDENT ORACLE, OVER THE SAME DATA. ----
+    oracle_ok, oracle = judge_independent_oracle(
+        cell_net, board_forward=live_board_forward)
+
     cell_net_ok = cell_net_ok and cell_net["firmware_constants_equal_the_derivation_ok"]
     cell_net_ok = cell_net_ok and cell_net[
         "firmware_permission_table_equals_the_derivation_ok"]
@@ -7197,6 +7893,252 @@ def main():
     cell_net_ok = cell_net_ok and cell_net[
         "published_policy_is_consistent_in_the_first_article_procedure_ok"]
 
+    # ======================================================================
+    # D-793 / R12-06.  A SEMANTIC STALE-VALUE SCAN OVER EVERY NORMATIVE
+    # DOCUMENT, NOT A TOKEN-PRESENCE TEST.
+    #
+    # ROUND-12, IN ITS OWN WORDS: "Current normative docs still contain
+    # multiple generations of accessory floors / 1.78k values ... Historical
+    # values may remain only in clearly fenced historical/superseded sections.
+    # Add semantic stale-value/documentation checks for all active operating
+    # numbers, not only token presence."
+    #
+    # Every clause above this one asks whether the CURRENT value is PRESENT.
+    # None of them asks whether a RETIRED one is also present, stated as if it
+    # were current -- which is how `AQROOT_DEMO_FAB_HANDOFF.md` came to carry
+    # three generations of accessory floor at D-792 and how the first-article
+    # plan came to send a technician to a retired bench point at D-791.
+    #
+    # The instrument is R10-N04's, generalised: the number is bound to the
+    # CLAIM rather than to the line, the unit of scan is a whitespace-
+    # normalised SENTENCE (these documents hard-wrap), and a sentence carrying
+    # an explicit supersession marker is exempt.  A decision number is NOT a
+    # marker and neither is the word "was" -- both were tried at D-791 and both
+    # silently exempted the worst sentence in the file.
+    # ======================================================================
+    _NORM_FENCE = _FA_FENCE
+    _cc_ceiling = cell_net[
+        "the_charge_regime_is_bounded_in_the_half_treg_cannot_reach"][
+            "load_ceiling"]
+
+    # THE PATTERNS ARE WIDENED FOR THIS SCAN, AND THE REASON IS A REAL MISS.
+    #
+    # R10-N04's own claim patterns use `[^.]{0,40}` to keep a number bound to
+    # its claim WITHIN one clause.  Applied to a specification they miss the
+    # thing they are looking for: "…ceiling of 4.063 W at 40 C ambient, with a
+    # supervised external-ambient ceiling of 27.7 C at the heaviest permitted
+    # charging state" contains a decimal point between the number and the word
+    # that identifies it, so `[^.]` stops before it ever gets there.  The unit
+    # of scan is ALREADY a sentence, so the character class is redundant as
+    # well as harmful: these use `.` and a longer reach.
+    _NORM_FLOOR_CLAIMS = (
+        re.compile(r"(\d\.\d{2})\s*V\**.{0,60}?"
+                   r"(?:single-rail|dual-rail|retention)(?:-rail)?\s*floor",
+                   re.I),
+        re.compile(r"(?:single-rail|dual-rail|retention)(?:-rail)?\s*floor"
+                   r".{0,60}?(\d\.\d{2})\s*V", re.I),
+        re.compile(r"(\d\.\d{2})\s*V\**\s*(?:single-rail|dual-rail)\b",
+                   re.I),
+        re.compile(r"(?:first-rail|second-rail)\s*(?:enable\s*)?"
+                   r".{0,30}?(\d\.\d{2})\s*V", re.I),
+    )
+
+    def _norm_families():
+        _pair = df["declared_simultaneous_pair"]
+        _cc = _cc_ceiling
+        return (
+            dict(key="accessory_floor",
+                 what="the enable and retention floors the firmware carries",
+                 allowed={"%.2f" % df["retention_floor_gridded_V"],
+                          "%.2f" % df["enable_first_rail_floor_gridded_V"],
+                          "%.2f" % df["enable_second_rail_floor_gridded_V"]}
+                 | {"%.2f" % v for r in df["rail_edge_table"] + df[
+                     "mode_edge_table"] for v in (r["floor_gridded_V"],)
+                    if v is not None},
+                 patterns=_FA_CLAIMS + _NORM_FLOOR_CLAIMS),
+            dict(key="charge_time_ceiling",
+                 what="the supervised charge-time system-power ceiling",
+                 allowed={"%.3f" % _cc["system_W_ceiling"]},
+                 patterns=(
+                     re.compile(r"(\d\.\d{3})\s*W\**.{0,140}?charg", re.I),
+                     re.compile(r"charg.{0,140}?(\d\.\d{3})\s*W", re.I))),
+            dict(key="declared_pair",
+                 what="the declared simultaneous accessory pair",
+                 allowed={"%d" % round(_pair["acc_3v3_A"] * 1000),
+                          "%d" % round(_pair["acc_5v_A"] * 1000),
+                          "400", "300"},
+                 patterns=(
+                     re.compile(r"declared simultaneous pair.{0,80}?"
+                                r"(\d{3})\s*mA", re.I),
+                     re.compile(r"(\d{3})\s*mA\**\s*\+\s*\**"
+                                r"\d{3}\s*mA.{0,80}?simultaneous", re.I))),
+            dict(key="upstream_series",
+                 what="the itemised cell-to-BAT_PROTECTED_P series resistance",
+                 allowed={"%.3f" % (_up["fixed_series_max_ohm"] * 1000.0),
+                          "%.3f" % (_up["harness_hot_aged_max_ohm"] * 1000.0)},
+                 patterns=(
+                     re.compile(r"(\d{2,3}\.\d{3})\s*m(?:\u03a9|Ohm)"
+                                r".{0,100}?(?:fixed series|series path|series "
+                                r"resistance|harness)", re.I),
+                     re.compile(r"(?:fixed series|series path|series "
+                                r"resistance|harness).{0,100}?"
+                                r"(\d{2,3}\.\d{3})\s*m(?:\u03a9|Ohm)",
+                                re.I))),
+            dict(key="p3v3_peak_envelope",
+                 what="the internal +3V3 peak current envelope",
+                 allowed={"%.6f" % apm.peak_A()},
+                 patterns=(
+                     re.compile(r"(\d\.\d{6})\s*A.{0,100}?peak envelope",
+                                re.I),
+                     re.compile(r"peak envelope.{0,100}?(\d\.\d{6})\s*A",
+                                re.I),
+                     re.compile(r"`?\+3V3`?\s*peak.{0,60}?"
+                                r"(\d\.\d{6})\s*A", re.I))),
+        )
+
+    NORMATIVE_DOCS = (
+        "docs/full-beta-v2/DEVICE_SPEC.md",
+        "docs/full-beta-v2/AQROOT_DEMO_FAB_HANDOFF.md",
+        "docs/full-beta-v2/CURRENT_STATE.md",
+        "docs/full-beta-v2/assembly/FIRST_FIVE_ASSEMBLY_PLAN.md",
+        "hardware/demo/fab/aqroot-Demo-FAB-NOTES.md",
+    )
+
+    # A FENCE IS A BLOCK PROPERTY AS WELL AS A SENTENCE PROPERTY.
+    #
+    # R10-N04's instrument was per-SENTENCE, which is right for a procedure
+    # written as a list of steps and wrong for a specification written as
+    # SECTIONS: a whole `### D-792 ...  *(HISTORICAL -- superseded by ...)*`
+    # block is marked no-longer-true by its own heading, and demanding the
+    # word again in every sentence under it would turn a correct document into
+    # a keyword-stuffed one.  A heading that carries a supersession marker
+    # fences everything under it, up to the next heading at the same or a
+    # shallower level.  A heading that does NOT is no shelter at all.
+    _HEADING = re.compile(r"^\s*>*\s*(#{1,6})\s+(.*)$")
+
+    def _norm_blocks(text):
+        """[(fenced, block text)] -- the document split at markdown headings,
+        including headings inside a blockquote, with each block tagged by
+        whether its own heading (or any enclosing heading) is fenced."""
+        blocks, stack, cur, cur_fenced = [], [], [], False
+        for line in text.splitlines():
+            m = _HEADING.match(line)
+            if not m:
+                cur.append(line)
+                continue
+            blocks.append((cur_fenced, "\n".join(cur)))
+            level = len(m.group(1))
+            fenced = any(f in m.group(2) for f in _NORM_FENCE)
+            while stack and stack[-1][0] >= level:
+                stack.pop()
+            inherited = any(f for _, f in stack)
+            stack.append((level, fenced))
+            cur, cur_fenced = [line], bool(fenced or inherited)
+        blocks.append((cur_fenced, "\n".join(cur)))
+        return blocks
+
+    def _norm_scan(text, families):
+        found = []
+        for fenced, block in _norm_blocks(text):
+            if fenced:
+                continue
+            flat = re.sub(r"\s+", " ", block)
+            for sent in re.split(r"(?<=[.;:])\s+", flat):
+                if any(f in sent for f in _NORM_FENCE):
+                    continue
+                for fam in families:
+                    hits = sorted({t for rx in fam["patterns"]
+                                   for t in rx.findall(sent)})
+                    for tok in hits:
+                        if tok not in fam["allowed"]:
+                            found.append(dict(family=fam["key"], quoted=tok,
+                                              what=fam["what"],
+                                              sentence=sent.strip()[:220]))
+        return found
+
+    _norm_fams = _norm_families()
+    _norm_rows, _norm_bad = [], []
+    for _rel in NORMATIVE_DOCS:
+        _f = ROOT / _rel
+        _txt = (_f.read_text(encoding="utf-8", errors="replace")
+                if _f.exists() else "")
+        _hits = _norm_scan(_txt, _norm_fams) if _txt else []
+        _norm_rows.append(dict(document=_rel, exists=bool(_txt),
+                               stale_claims=_hits))
+        if not _txt:
+            _norm_bad.append("%s is missing" % _rel)
+        _norm_bad.extend("%s: %s claims %r" % (_rel, h["family"], h["quoted"])
+                         for h in _hits)
+    cell_net["no_normative_document_states_a_retired_operating_value"] = dict(
+        documents=_norm_rows,
+        families={f["key"]: dict(what=f["what"], allowed=sorted(f["allowed"]))
+                  for f in _norm_fams},
+        fence_tokens=list(_NORM_FENCE),
+        problems=_norm_bad,
+        fencing="a markdown heading carrying a supersession marker fences "
+                "every block under it up to the next heading at the same or a "
+                "shallower level; inside an UNFENCED block the unit is the "
+                "sentence, and a sentence carrying a marker is exempt.  A "
+                "heading that does not carry one is no shelter at all.",
+        ok=not _norm_bad,
+        method="R12-06.  Every other documentation clause asks whether the "
+               "CURRENT value is present; this one asks whether a RETIRED one "
+               "is also present and stated as if it were current.  The number "
+               "is bound to the CLAIM rather than to the line, the unit of "
+               "scan is a whitespace-normalised sentence because these "
+               "documents hard-wrap, and only an explicit supersession marker "
+               "exempts a sentence -- a decision number does not, and neither "
+               "does the word 'was'.")
+    # ---- AND IT HAS TO BITE.  A scan with no negative control is not a
+    # scan; this programme has been caught twice by a fence that exempted the
+    # worst sentence in a file.  Three controls, over the REAL documents:
+    #   1  strip the supersession markers from the D-792 historical heading in
+    #      CURRENT_STATE and the whole block's retired figures must surface;
+    #   2  put a retired floor back into an UNFENCED sentence and it must be
+    #      caught;
+    #   3  a document that is simply ABSENT must be refused, not skipped.
+    _cs = ROOT / "docs/full-beta-v2/CURRENT_STATE.md"
+    _cs_txt = (_cs.read_text(encoding="utf-8", errors="replace")
+               if _cs.exists() else "")
+    _defenced = []
+    for _line in _cs_txt.splitlines():
+        if _line.startswith("> # **D-792 "):
+            for _f in _NORM_FENCE:
+                _line = _line.replace(_f, "x" * len(_f))
+        _defenced.append(_line)
+    _ctrl_defenced = _norm_scan("\n".join(_defenced), _norm_fams)
+    _ctrl_injected = _norm_scan(
+        "The current single-rail floor is 3.55 V and the current charge-time "
+        "ceiling is 4.063 W.", _norm_fams)
+    _ctrl_current = _norm_scan(
+        "The current single-rail floor is %.2f V and the current charge-time "
+        "ceiling is %.3f W."
+        % (df["enable_first_rail_floor_gridded_V"],
+           _cc_ceiling["system_W_ceiling"]), _norm_fams)
+    _ctrl_fenced = _norm_scan(
+        "The RETIRED single-rail floor was 3.55 V and the retired charge-time "
+        "ceiling was 4.063 W.", _norm_fams)
+    cell_net["no_normative_document_states_a_retired_operating_value"][
+        "controls_refused"] = dict(
+        a_defenced_historical_heading_exposes_its_retired_figures=bool(
+            len(_ctrl_defenced) >= 4),
+        an_unfenced_retired_floor_or_ceiling_is_caught=bool(
+            len(_ctrl_injected) >= 2),
+        the_current_values_are_not_flagged=bool(not _ctrl_current),
+        an_explicitly_fenced_sentence_is_exempt=bool(not _ctrl_fenced))
+    cell_net["no_normative_document_states_a_retired_operating_value"][
+        "control_detail"] = dict(
+        defenced_findings=_ctrl_defenced[:8],
+        injected_findings=_ctrl_injected)
+    cell_net["no_normative_document_states_a_retired_operating_value_ok"] = (
+        bool(cell_net[
+            "no_normative_document_states_a_retired_operating_value"]["ok"])
+        and all(cell_net[
+            "no_normative_document_states_a_retired_operating_value"][
+                "controls_refused"].values()))
+    cell_net_ok = cell_net_ok and cell_net[
+        "no_normative_document_states_a_retired_operating_value_ok"]
+
     # ---- F12's own controls.  Every one of them has to REFUSE. -----------
     def _cell(**over):
         return judge_cell_to_load(
@@ -7230,12 +8172,26 @@ def main():
         f12a_the_d790_refusal_is_physics_not_a_hard_coded_verdict=bool(
             not _cell(pass_pair=_better_pair, ambient_C=0.0)[1][
                 "the_d790_declared_state_is_refused_ok"]),
-        f12a2_a_better_pass_pair_alone_flips_it=bool(
-            not _cell(pass_pair=_better_pair)[1][
-                "the_d790_declared_state_is_refused_ok"]),
-        f12a3_a_cool_ambient_alone_flips_it=bool(
-            not _cell(ambient_C=0.0)[1][
-                "the_d790_declared_state_is_refused_ok"]),
+        # D-793 RE-AIMS THE TWO SINGLE-AXIS CONTROLS, AND THE RE-AIM IS ITSELF
+        # THE FINDING.  At D-792 a better pass pair ALONE, or a 0 C ambient
+        # ALONE, each flipped the `d790_declared` verdict.  With R12-01's
+        # completed source path and R12-05's corrected module total neither
+        # does on its own any more -- both together still do, which is what
+        # `f12a` above proves.  A control that has stopped flipping is not a
+        # control, so each axis is now required to MOVE the answer: the
+        # supported set of `d790_declared` must CHANGE when that axis moves,
+        # which is a measurement of the physics on that axis and cannot be
+        # satisfied by a hard-coded verdict.
+        f12a2_a_better_pass_pair_alone_moves_the_supported_set=bool(
+            [st for st in _cell(pass_pair=_better_pair)[1]["states"]
+             if st["key"] == "d790_declared"]
+            != [st for st in cell_net["states"]
+                if st["key"] == "d790_declared"]),
+        f12a3_a_cool_ambient_alone_moves_the_supported_set=bool(
+            [st for st in _cell(ambient_C=0.0)[1]["states"]
+             if st["key"] == "d790_declared"]
+            != [st for st in cell_net["states"]
+                if st["key"] == "d790_declared"]),
         # ...and a materially worse pass pair must take the REFERENCE state
         # down with it.
         f12b_refuses_a_pass_pair_that_cannot_carry_the_reference_state=bool(
@@ -7243,9 +8199,24 @@ def main():
         # ...and a BATOCP band at TI's stated 18 % rather than the declared
         # wider one must CHANGE the answer somewhere, or the assumption is
         # decorative.
-        f12c_the_declared_wider_ocp_band_is_load_bearing=bool(
-            _cell(ocp_min_A=IBAT_OCP_TYP_A * (1 - IBAT_OCP_STATED_ACCURACY))[1][
-                "states"] != cell_net["states"]),
+        # D-793: THE OCP BAND IS NO LONGER THE BINDING LIMIT ANYWHERE, AND
+        # THE CONTROL SAYS SO RATHER THAN QUIETLY PASSING.
+        #
+        # D-792 asked whether narrowing the DECLARED band back to TI's stated
+        # 18 % changed any state.  With the corrected source path the binding
+        # limit in every state is the operating point or the node, never the
+        # battery current, so that perturbation now changes nothing -- which
+        # would have made the control vacuous.  What must still be true is
+        # that the OCP limit is CHECKED at all, and the control proves it by
+        # moving the limit far enough to bite: at a 1.5 A OCP minimum the
+        # derivation must produce a different answer.  The narrower-band
+        # comparison is retained BESIDE it as a reported fact.
+        f12c_the_ocp_limit_is_checked_at_all=bool(
+            _cell(ocp_min_A=1.5)[1]["states"] != cell_net["states"]),
+        f12c2_the_declared_wider_band_no_longer_binds_anywhere=bool(
+            _cell(ocp_min_A=IBAT_OCP_TYP_A
+                  * (1 - IBAT_OCP_STATED_ACCURACY))[1]["states"]
+            == cell_net["states"]),
         # ...and a floor the node cannot reach must be caught.  Doubling the
         # upstream copper drops the node without changing the floors' basis.
         f12d_refuses_an_unattainable_floor=bool(
@@ -7704,6 +8675,64 @@ def main():
     env["panel_module_datasheet_is_archived_ok"] = bool(
         env["panel_module_datasheet_is_archived"]["ok"])
     env_ok = env_ok and env["panel_module_datasheet_is_archived_ok"]
+
+    # ---- D-793 / R12-01.  THE MOLEX SPECIFICATION IS IN THE TREE, AND IT IS
+    # HASHED FOR THE SAME REASON THE PANEL'S IS.
+    #
+    # D-792 DECLARED the aged contact and crimp allowances because the document
+    # "is not retrievable from this environment".  It is; it retrieved through
+    # the Internet Archive's 2023-11-01 snapshot of the same molex.com URL and
+    # it publishes 40 mOhm MAX after every durability and environmental
+    # exposure, 20 mOhm MAX initial with the conductor SUBTRACTED, and 5 mOhm
+    # MAX on a crimped portion.  Three ruling values now rest on it, so the
+    # citation has to be a fact about the tree rather than a sentence about a
+    # past fetch -- which is exactly what R11-N01 found when the panel's
+    # "HTTP 403" sentence turned out to be about the environment.
+    _mx_pdf = (ROOT / "hardware/demo/kicad/aqroot-demo/vendor/MOLEX"
+               / "molex-5055700003-PS-A1.pdf")
+    _mx_expect = ("0218c6300aa4e4b4906e7607b7e033ece51c2adc6439ae8be90ce8e659"
+                  "942440")
+    _mx_actual = (hashlib.sha256(_mx_pdf.read_bytes()).hexdigest()
+                  if _mx_pdf.exists() else None)
+    _mx_txt = (ROOT / "hardware/demo/kicad/aqroot-demo/vendor/MOLEX"
+               / "molex-5055700003-PS-A1.txt")
+    _mx_rows = _mx_txt.read_text(encoding="utf-8", errors="replace") \
+        if _mx_txt.exists() else ""
+    _mx_flat = re.sub(r"\s+", " ", _mx_rows)
+    env["molex_connector_specification_is_archived"] = dict(
+        path=str(_mx_pdf.relative_to(ROOT)) if _mx_pdf.exists() else None,
+        expected_sha256=_mx_expect, actual_sha256=_mx_actual,
+        revision_retrieved="A1",
+        revision_on_the_product_page="A6",
+        revision_discrepancy_is_recorded=True,
+        # The three rows three ruling values rest on, READ OUT of the archived
+        # rendering rather than quoted from a comment.
+        rows_read=dict(
+            initial_contact_20mOhm=bool(
+                "20 milliohms MAX." in _mx_flat),
+            crimped_portion_5mOhm=bool("5 milliohms MAX." in _mx_flat),
+            post_environmental_40mOhm=bool(
+                _mx_flat.count("40 milliohms") >= 8)),
+        values_that_rest_on_it=dict(
+            contact_aged_max_ohm=apm.CONTACT_AGED_MAX_OHM,
+            contact_initial_max_ohm=apm.CONTACT_INITIAL_MAX_OHM,
+            crimp_max_ohm=apm.CRIMP_MAX_OHM),
+        ok=bool(_mx_actual == _mx_expect
+                and "20 milliohms MAX." in _mx_flat
+                and "5 milliohms MAX." in _mx_flat
+                and _mx_flat.count("40 milliohms") >= 8
+                and abs(apm.CONTACT_AGED_MAX_OHM - 0.040) < 1e-12
+                and abs(apm.CONTACT_INITIAL_MAX_OHM - 0.020) < 1e-12
+                and abs(apm.CRIMP_MAX_OHM - 0.005) < 1e-12),
+        why="D-792 recorded this document as unobtainable and DECLARED the "
+            "contact and crimp terms on that basis.  It is obtainable.  The "
+            "hash and the three parsed rows are here so a ruling value cannot "
+            "drift away from the document it is read from, and so that "
+            "'unobtainable' cannot mean 'not fetched from here' a fourth "
+            "time.")
+    env["molex_connector_specification_is_archived_ok"] = bool(
+        env["molex_connector_specification_is_archived"]["ok"])
+    env_ok = env_ok and env["molex_connector_specification_is_archived_ok"]
     env["p3v3_internal_budget"] = budget
     env["internal_3v3_A"] = I_INTERNAL
     env["every_fitted_p3v3_consumer_is_budgeted"] = budget[
@@ -7925,10 +8954,30 @@ def main():
         _env_policy_control(
             "f6ae_refuses_a_rating_from_the_wrong_connector_family",
             connection=_wrong_evidence),
-        ("f6af_full_path_bound_concurrency_has_positive_rating_margin",
-         min(v["cases"]["both_published_full_internal"][
+        # D-793 / R12-01 RE-AIMS THIS AT THE STATE THE PRODUCT PUBLISHES.
+        #
+        # D-792 asked whether BOTH rails at their FULL published budgets, with
+        # every internal subsystem at once, stayed inside the Micro-Lock Plus
+        # AWG26 rating.  With the corrected source path and the corrected
+        # module total that case is **-0.98 %** on the live basis -- and it is
+        # no longer a state a conforming user can reach: F12 refuses the FULL
+        # simultaneous pair at every attainable cell voltage and the published
+        # simultaneous contract is the DECLARED pair.  Asking a connector
+        # question about an unreachable state is the shape of defect this
+        # programme keeps finding; the question is asked about the DECLARED
+        # pair instead, and the full-pair figure is RETAINED AND REPORTED
+        # beside it so the size of the change is visible rather than removed.
+        ("f6af_declared_pair_concurrency_has_positive_rating_margin",
+         min(v["cases"]["both_declared_pair_full_internal"][
              "margin_to_the_published_rating_pct"]
              for v in env["battery_connection"]["bases"].values()) > 0),
+        # ...and the FULL pair really is over the rating, which is WHY the
+        # published simultaneous contract is the declared pair.  A control
+        # that could not tell the two apart would prove nothing.
+        ("f6af2_the_full_pair_is_over_the_connector_rating_and_is_refused",
+         min(v["cases"]["both_published_full_internal"][
+             "margin_to_the_published_rating_pct"]
+             for v in env["battery_connection"]["bases"].values()) < 0),
     )))
 
     # D-779.  "A hiccup that auto-retries" was half of SLUSF65B 6.3.7.3.  The
@@ -8406,7 +9455,63 @@ def main():
          and canonical_manufacturer("Molex LLC")
          != canonical_manufacturer("JST Co., Ltd.")
          and canonical_manufacturer("Vishay Intertechnology")
-         != canonical_manufacturer("Viking Tech Corporation"))))
+         != canonical_manufacturer("Viking Tech Corporation")),
+        # ---- D-793 / R12-07.  ONE NORMALISER, PROVED TO BE ONE. -----------
+        #
+        # F8 had its own two-entry fold and F13 had the alias table, so an
+        # alias added to one did not reach the other -- R11-09's defect in the
+        # other gate.  `_norm_cap_mfr` IS `canonical_manufacturer` now, and
+        # these claims are what keeps it that way.
+        ("f13l_f8_and_f13_fold_manufacturer_names_identically",
+         all(_norm_cap_mfr(n) == (canonical_manufacturer(n) or "")
+             for n in ("Murata", "Murata Electronics",
+                       "Murata Electronics Co., Ltd.",
+                       "Samsung Electro-Mechanics Co., Ltd.",
+                       "Samsung Electro-Mechanics", "Yageo Corporation",
+                       "Vishay Intertechnology", "PUI Audio, Inc.",
+                       "onsemi", "ON Semiconductor", "Texas Instruments",
+                       "TI", "Diodes Incorporated", "Diodes Inc"))),
+        # LEGITIMATE LEGAL SPELLINGS PASS -- the half R12-07 names explicitly.
+        ("f13m_legal_spellings_are_one_company_in_both_gates",
+         _norm_cap_mfr("Samsung Electro-Mechanics Co., Ltd.")
+         == _norm_cap_mfr("Samsung Electro-Mechanics")
+         and _norm_cap_mfr("Murata Electronics Co., Ltd.")
+         == _norm_cap_mfr("Murata")
+         and _norm_cap_mfr("Yageo Corporation") == _norm_cap_mfr("Yageo")),
+        # ...AND COUNTERFEIT SUFFIXES, NEAR MATCHES AND CROSS-MANUFACTURER
+        # COLLISIONS FAIL.  A trailing legal form is dropped; a trailing
+        # anything ELSE is a different company.
+        ("f13n_a_counterfeit_suffix_is_a_different_company",
+         _norm_cap_mfr("Samsung Electro-Mechanics Counterfeit Ltd")
+         != _norm_cap_mfr("Samsung Electro-Mechanics")
+         and _norm_cap_mfr("Murata Electronics International")
+         != _norm_cap_mfr("Murata Electronics")
+         and _norm_cap_mfr("Vishay Intertechnology Trading")
+         != _norm_cap_mfr("Vishay Intertechnology")),
+        ("f13o_a_near_match_is_not_a_match",
+         _norm_cap_mfr("Samsung Electronics")
+         != _norm_cap_mfr("Samsung Electro-Mechanics")
+         and _norm_cap_mfr("Viking Tech") != _norm_cap_mfr("Vishay")
+         and _norm_cap_mfr("Diodes Zetex") != _norm_cap_mfr("Diodes Inc")),
+        # A TRUNCATION IS ACCEPTED ONLY ON A WORD BOUNDARY, so a distributor's
+        # short column still matches and a name that continues differently
+        # does not.
+        ("f13p_a_truncation_must_end_on_a_word_boundary",
+         _word_boundary_truncation_rule()),
+        # AN AMBIGUOUS TRUNCATION NAMES TWO COMPANIES AND IS THEREFORE NOT A
+        # MATCH -- picking one of them is how a collision becomes an
+        # agreement.
+        ("f13q_an_ambiguous_truncation_resolves_to_neither_company",
+         canonical_manufacturer(
+             "zz ambiguous", ) == "zz ambiguous"
+         and _ambiguous_truncation_is_refused()),
+        # ...and the fold is still NOT a similarity metric: it folds case,
+        # spacing, commas and a trailing legal form, and nothing else.
+        ("f13r_the_fold_touches_nothing_but_case_space_comma_legal_form",
+         fold_manufacturer("  Bourns ,  INC.  ") == "bourns"
+         and fold_manufacturer("Wurth Elektronik") == "wurth elektronik"
+         and fold_manufacturer("W\u00fcrth Elektronik")
+         != fold_manufacturer("Wurth Elektronik"))))
 
     # ---- D-789 / F-N01 + R8-N01: the battery pass pair --------------------
     _bat_rail = next((r for r in ara.RAILS
@@ -8840,6 +9945,28 @@ def main():
                      net_max_dc=sbs.NET_MAX_DC,
                      net_rewrite={"/01_POWER_TREE/BQ25185_SYS":
                                   "/ALIEN/BQ25185_SYS"}),
+        # ---- D-793 / R12-07.  THE SAME SHAPE, ON THE GROUND SKIP.
+        # `leaf == "GND"` was true of any hierarchy, so a pad moved onto a net
+        # this repository has established nothing about was not examined at
+        # all.  The skip is keyed by the EXACT canonical net now, so every one
+        # of these must refuse.
+        _cap_control("f8v_refuses_a_pad_on_an_alien_hierarchy_gnd",
+                     net_max_dc=sbs.NET_MAX_DC,
+                     net_rewrite={"GND": "/ALIEN/GND"}),
+        _cap_control("f8w_refuses_a_gnd_leaf_under_a_real_sheet",
+                     net_max_dc=sbs.NET_MAX_DC,
+                     net_rewrite={"GND": "/01_POWER_TREE/GND"}),
+        # ONE KNOWN TERMINAL AND ONE UNKNOWN ONE IS STILL UNKNOWN.  Rewriting
+        # only the ground side leaves every decoupling capacitor with a
+        # perfectly good rail on one pad and an unestablished node on the
+        # other, which is exactly the case a leaf-keyed skip waved through.
+        _cap_control("f8x_refuses_one_known_terminal_and_one_unknown_one",
+                     net_max_dc=sbs.NET_MAX_DC,
+                     net_rewrite={"GND": "/UNVERIFIED/GND"}),
+        # ...and the frozen board, whose ground really is `GND`, still passes.
+        ("f8y_the_frozen_board_passes_the_exact_ground_rule",
+         judge_capacitor_derating(board, sch_dnp,
+                                  net_max_dc=sbs.NET_MAX_DC)[0]),
         # A canonical entry for a net that is NOT on this board is a stale
         # declaration and must refuse rather than sit there.
         _cap_control("f8p_refuses_a_canonical_dc_entry_for_an_absent_net",
@@ -9128,6 +10255,29 @@ def main():
                if k not in ("ok", "method")},
             source_method=src["method"],
             controls_refused=src_controls),
+        "F14_an_independent_oracle_re_derives_what_the_model_claims": dict(
+            ok=oracle_ok,
+            method="D-793 / R12-04, which Round-12 states as a release "
+                   "blocker: 'Astra halved canonical charger package heat and "
+                   "all F1-F13 still passed.  Astra removed the 5V-first "
+                   "transition; completeness Boolean became false but final "
+                   "verdict remained PASS.  The canonical model cannot be its "
+                   "own oracle.'  BOTH REPRODUCE, and the cause is one "
+                   "defect twice: D-792's `energy_balance` invariant compared "
+                   "an expression with ITSELF (`p_diss` was defined as the "
+                   "very expression it was checked against), and F12's "
+                   "verdict was a conjunction that did not include the "
+                   "completeness Boolean.  `aqroot_power_oracle` is a second, "
+                   "SMALL implementation that imports nothing from the "
+                   "canonical model, solves nothing, and re-derives what a "
+                   "solved state claims from primitives: the terminal-power "
+                   "balance against the sum of the internal loss elements, "
+                   "every charger branch inequality, the itemised source "
+                   "path, the pass-pair drop, the permission edge and the "
+                   "post-enable retention.  Completeness is a VERDICT term, "
+                   "and the six mutations R12-04 names are run on every "
+                   "release run and must each be caught.",
+            **{k: v for k, v in oracle.items() if k != "ok"}),
         "F3_approved_nc_exactly_as_scoped": dict(
             ok=(set(nc["observed"]) == EXPECTED_NC
                 and not nc["missing"] and not nc["unexpected"]),

@@ -172,6 +172,12 @@ struct Rig {
   Rig() {
     g_log.clear();
     aqroot_hal::recorder().reset();
+    // D-793 / R12-03.  These scenarios are about the GAUGE and the EXPANDER
+    // callers, so they start from a board whose radios have been quiesced.
+    // The refusal an UNQUIESCED board produces has its own claims at the end
+    // of this file and its own real-image scenarios in
+    // `test_production_image.cpp`.
+    app.noteRadiosQuiesced(true);
   }
   bool bringUp() {
     const bool ok = expanders.begin(bus);
@@ -235,16 +241,20 @@ int main() {
     // The floors themselves, reached through the production caller.
     Rig r;
     r.bringUp();
-    r.bus.vcell_counts = uint16_t(3.70f / Max17048Guard::kVcellLsbV);
-    claim("3.70 V permits a single rail", r.app.accessoryBatteryAllows(false));
-    claim("3.70 V permits the second rail too, because the D-792 dual floor "
+    r.bus.vcell_counts = uint16_t(3.82f / Max17048Guard::kVcellLsbV);
+    claim("3.82 V permits a single rail", r.app.accessoryBatteryAllows(false));
+    claim("3.82 V permits the second rail too, because the D-793 dual floor "
           "is the DERATED pair and not two full budgets",
           r.app.accessoryBatteryAllows(true));
     // D-792 / R11-04.  ASTRA'S REPRODUCED CASE, THROUGH THE PRODUCTION CALLER.
     // D-791's own `kAccessorySingleRailFloorV` was 3.55 V and the image granted
-    // at it; the corrected floor is 3.65 V and the caller has to refuse.
+    // at it; the D-793 floor is 3.80 V and the caller has to refuse both it and
+    // D-792's own 3.65 V.
     r.bus.vcell_counts = uint16_t(3.55f / Max17048Guard::kVcellLsbV);
     claim("R11-04: a reported 3.55 V no longer enables a rail",
+          !r.app.accessoryBatteryAllows(false));
+    r.bus.vcell_counts = uint16_t(3.65f / Max17048Guard::kVcellLsbV);
+    claim("...and neither does D-792's own 3.65 V",
           !r.app.accessoryBatteryAllows(false));
     r.bus.vcell_counts = 0xFFFF;
     claim("the all-ones VCELL code is refused",
@@ -285,6 +295,11 @@ int main() {
     claim("a healthy board reports the amplifier OFF",
           !r.app.accessoryLoadState().amplifier_on);
     claim("the 3.3 V rail goes on", r.app.handleAccessoryConsole('3'));
+    claim("...and goes off again, so the amplifier write below is taken on a "
+          "quiet board -- at D-793 every MODE edge with a rail live is "
+          "refused, and a refusal that never reaches the bus cannot void a "
+          "shadow",
+          r.app.handleAccessoryConsole('3') && !r.app.acc3v3());
     r.bus.fail_address = AQROOT_EXP_U2_ADDR;
     (void)r.app.setAmplifierIntent(true);      // NACKs; U2's shadow is now void
     claim("a NACKed U2 write leaves the output shadow UNKNOWN",
@@ -292,28 +307,30 @@ int main() {
     claim("...and an UNKNOWN amplifier latch counts as ON, not as OFF",
           r.app.accessoryLoadState().amplifier_on);
     r.bus.fail_address = -1;
-    r.bus.vcell_counts = uint16_t(3.70f / Max17048Guard::kVcellLsbV);
-    claim("...so a 3.70 V pack that would permit a quiet second rail refuses "
-          "it while the amplifier state is unknown",
-          !r.app.accessoryBatteryAllows(true));
+    r.bus.vcell_counts = uint16_t(3.82f / Max17048Guard::kVcellLsbV);
+    claim("...so a 3.82 V pack that would permit a quiet FIRST rail refuses "
+          "it while the amplifier state is unknown, because the amplifier's "
+          "own rail-edge floor is 3.85 V",
+          !r.app.accessoryBatteryAllows(false));
+    r.bus.vcell_counts = uint16_t(3.86f / Max17048Guard::kVcellLsbV);
+    claim("...and 3.86 V, which clears that floor, permits it again",
+          r.app.accessoryBatteryAllows(false));
   }
   {
     Rig r;
     r.bringUp();
-    // 3.70 V is above the quiet single-rail floor (3.65 V) and BELOW the
-    // amplifier one (3.75 V), so the rail may go on and the mode may not.
-    r.bus.vcell_counts = uint16_t(3.70f / Max17048Guard::kVcellLsbV);
-    claim("the 3.3 V rail goes on at 3.70 V", r.app.handleAccessoryConsole('3'));
+    // 3.82 V is above the quiet single-rail floor (3.80 V); at D-793 EVERY
+    // mode edge with a rail live is refused, so the rail may go on and no mode
+    // may be entered -- on a full pack either.
+    r.bus.vcell_counts = uint16_t(3.82f / Max17048Guard::kVcellLsbV);
+    claim("the 3.3 V rail goes on at 3.82 V", r.app.handleAccessoryConsole('3'));
     claim("...and is retained", r.app.acc3v3());
-    // 3.70 V clears the quiet rail-edge floor (3.65 V) and misses the
-    // amplifier MODE-edge floor (3.75 V): the rail may go on, the mode may not.
-    claim("the amplifier is REFUSED at 3.70 V with a rail live",
+    claim("the amplifier is REFUSED at 3.82 V with a rail live",
           !r.app.setAmplifierIntent(true));
     claim("...and the refusal leaves the amplifier OFF, not pending-on",
           !r.app.accessoryLoadState().amplifier_on);
     claim("...and says so", logHas("AMP_SD_MODE enable REFUSED"));
-    claim("a sub-GHz transmit is REFUSED at 3.70 V with a rail live -- its "
-          "mode-edge floor is 3.80 V",
+    claim("a sub-GHz transmit is REFUSED at 3.82 V with a rail live",
           !r.app.subGhzTransmitPermitted());
     claim("...and the app still reports no sub-GHz transmission",
           !r.app.subGhzTransmitting());
@@ -330,17 +347,19 @@ int main() {
     claim("...and the log says there is no attainable VCELL rather than "
           "quoting a floor",
           logHas("NO attainable VCELL"));
-    claim("...and Wi-Fi ALONE raises the rail floor to 3.95 V rather than "
-          "refusing outright",
-          r.app.accessoryBatteryAllows(true));
-    r.bus.vcell_counts = uint16_t(3.70f / Max17048Guard::kVcellLsbV);
-    claim("...so a 3.70 V pack that would permit a quiet rail refuses it with "
-          "Wi-Fi active -- the Wi-Fi rail-edge floor is 3.75 V",
+    claim("...and Wi-Fi ALONE now REFUSES an accessory rail outright, on a "
+          "nearly full pack -- new at D-793 and it is the cost of the "
+          "corrected source path",
+          !r.app.accessoryBatteryAllows(true));
+    r.bus.vcell_counts = uint16_t(3.82f / Max17048Guard::kVcellLsbV);
+    claim("...so a 3.82 V pack that would permit a quiet rail refuses it with "
+          "Wi-Fi active",
           !r.app.accessoryBatteryAllows(true));
     r.bus.vcell_counts = uint16_t(4.10f / Max17048Guard::kVcellLsbV);
     r.app.noteWifiRadioActive(false);
-    claim("with Wi-Fi off again, sub-GHz is permitted at 4.10 V",
-          r.app.subGhzTransmitPermitted());
+    claim("with Wi-Fi off again and a rail live, sub-GHz is still refused at "
+          "4.10 V, because its own mode edge is refused",
+          !r.app.subGhzTransmitPermitted());
   }
 
   // =========================================================================
@@ -616,6 +635,101 @@ int main() {
           !logHas("hardware state CONFIRMED"));
     claim("...it reports the hardware state as pending/unknown",
           logHas("PENDING/UNKNOWN"));
+  }
+
+  // =========================================================================
+  // D-793 / R12-03.  AN UNQUIESCED RADIO REFUSES ACCESSORY POWER, BY NAME.
+  // =========================================================================
+  {
+    // FIRST, THE DEFAULT.  `Rig` calls `noteRadiosQuiesced(true)` so the other
+    // scenarios are about something else; the value a FRESHLY CONSTRUCTED app
+    // holds is the one an MCU reset produces, and it must be the pessimistic
+    // one.  A default of `true` is the mutation this claim exists to catch.
+    BoardBus bus0;
+    DemoExpanders expanders0;
+    Max17048Guard gauge0{AQROOT_I2C_ADDR_FUEL_GAUGE};
+    App fresh{bus0, expanders0, gauge0, &recordLine};
+    claim("a FRESHLY CONSTRUCTED app has NOT quiesced the radios",
+          !fresh.radiosQuiesced());
+    claim("...and therefore reports sub-GHz TX as KEYED",
+          fresh.accessoryLoadState().subghz_tx);
+    claim("...and refuses to answer the bus's keying question",
+          !fresh.radioPhysicalStateIsKnown());
+  }
+  {
+    // AND A WARM-RESET RECOVERY INVALIDATES IT, because that path re-asserts
+    // and re-releases U2.P01 -- the SX1262's reset -- so whatever this object
+    // believed about the radios is no longer proven.
+    Rig r;
+    r.bus.bus_down = true;
+    claim("R12-03 recovery model: a down bus does not bring the expanders up",
+          !r.bringUp());
+    r.app.noteRadiosQuiesced(true);
+    claim("the rig starts from a confirmed quiesce", r.app.radiosQuiesced());
+    r.bus.bus_down = false;
+    aqroot_hal::recorder().clock_us += 1000ull * 1000ull;
+    claim("the loop recovers them", r.app.serviceExpanderRecovery());
+    claim("...and the radio state is INVALIDATED by the recovery, because "
+          "U2.P01 is the SX1262's reset and it was just re-asserted",
+          !r.app.radiosQuiesced());
+    claim("...so accessory power is refused again until a fresh quiesce",
+          !r.app.accessoryBatteryAllows(false));
+  }
+  {
+    Rig r;
+    r.app.noteRadiosQuiesced(false);
+    claim("R12-03 model: the expanders come up", r.bringUp());
+    claim("the mode set reads sub-GHz TX as KEYED while the physical state "
+          "is unknown", r.app.accessoryLoadState().subghz_tx);
+    claim("...even though nothing has called noteSubGhzTransmitting",
+          !r.app.subGhzTransmitting());
+    claim("the accessory permission is REFUSED",
+          !r.app.accessoryBatteryAllows(false));
+    claim("...by name, not by a floor comparison",
+          logHas("ACCESSORY REFUSED: the physical transmit state"));
+    claim("...and the console rail key does not energise the rail",
+          r.app.handleAccessoryConsole('3') && !r.app.acc3v3());
+    r.app.noteRadiosQuiesced(true);
+    claim("a confirmed quiesce clears the pessimistic mode",
+          !r.app.accessoryLoadState().subghz_tx);
+    claim("...and the permission is asked properly again",
+          r.app.accessoryBatteryAllows(false));
+  }
+
+  // =========================================================================
+  // D-793 / R12-08.  THE BURST ARBITER SERIALISES, AND THE CALL SITE LOGS.
+  // =========================================================================
+  {
+    Rig r;
+    claim("R12-08 model: the expanders come up", r.bringUp());
+    claim("a burst is allowed when nothing holds the arbiter",
+          r.app.burstAllowed(BurstLoad::MicroSdWrite, "microSD test"));
+    {
+      BurstArbiter::Hold hold(r.app.burstArbiter(), BurstLoad::MicroSdWrite);
+      claim("the hold is taken", hold.ok());
+      claim("a SECOND bursty load is refused while the first holds",
+            !r.app.burstAllowed(BurstLoad::NfcField, "NFC read"));
+      claim("...and the refusal names the load that is holding",
+            logHas("microSD write is already drawing its burst"));
+      claim("the IR path is refused on the same rule",
+            !r.app.burstAllowed(BurstLoad::IrTransmit, "IR test"));
+      claim("a nested hold on the SAME load is refused, so an inner scope "
+            "cannot release the outer one's slot",
+            !BurstArbiter::Hold(r.app.burstArbiter(),
+                                BurstLoad::MicroSdWrite).ok());
+    }
+    claim("the RAII scope released the arbiter",
+          r.app.burstArbiter().active() == BurstLoad::None);
+    claim("...and the next burst is allowed again",
+          r.app.burstAllowed(BurstLoad::NfcField, "NFC read"));
+    claim("BurstLoad::None is never a valid hold",
+          !r.app.burstArbiter().begin(BurstLoad::None));
+    claim("burstLoadName is not a stub",
+          std::strcmp(burstLoadName(BurstLoad::NfcField), "NFC field") == 0
+          && std::strcmp(burstLoadName(BurstLoad::IrTransmit),
+                         "IR transmit") == 0
+          && std::strcmp(burstLoadName(BurstLoad::MicroSdWrite),
+                         "microSD write") == 0);
   }
 
   std::printf("\n%s -- %d failure(s)\n", failures ? "FAIL" : "PASS", failures);

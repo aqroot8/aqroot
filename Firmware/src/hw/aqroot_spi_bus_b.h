@@ -56,6 +56,15 @@ class AccessoryLoadAuthority {
   virtual bool subGhzTransmitPermitted() = 0;
   // Told on both edges so the authority's own mode state follows the hardware.
   virtual void noteSubGhzTransmitting(bool on) = 0;
+  // D-793 / R12-03.  MAY A TRANSMITTER BE KEYED AT ALL YET?
+  //
+  // `transmitting_` below is a SOFTWARE variable and an MCU reset zeroes it.
+  // U7 and U8 are on the +3V3 rail, which an MCU reset does not interrupt, so
+  // a CC1101 left in TX by the image that just died is STILL TRANSMITTING
+  // while this object says nothing is.  Parking a chip select is not a radio
+  // reset.  Until the boot path has quiesced the transceivers and CONFIRMED
+  // it, the physical state is UNKNOWN and no transmitter may be keyed.
+  virtual bool radioPhysicalStateIsKnown() = 0;
 };
 
 class ChipSelects {
@@ -112,6 +121,17 @@ class SpiBusB {
   bool beginTransmit(SpiBDevice device) {
     if (device == SpiBDevice::None) return false;
     if (transmitting_ != SpiBDevice::None) return false;
+    // D-793 / R12-03.  THE PHYSICAL STATE HAS TO BE KNOWN FIRST.
+    //
+    // `transmitting_` is zeroed by construction, which is what an MCU reset
+    // does to it.  The radios are not reset by an MCU reset -- they stay
+    // powered -- so a retained TX is invisible to this object until the boot
+    // path has proven otherwise.  Asked BEFORE the permission question,
+    // because "may a second transmitter be keyed" is meaningless while it is
+    // unknown whether a first one already is.
+    if (authority_ != nullptr && !authority_->radioPhysicalStateIsKnown()) {
+      return false;
+    }
     // D-792 / R11-04: the accessory permission's mode edge.  Asked BEFORE the
     // keyed state is recorded, so a refusal leaves the bus exactly as it was.
     if (isSubGhz(device) && authority_ != nullptr &&

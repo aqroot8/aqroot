@@ -65,41 +65,100 @@ This module is PURE: it loads no board, reads no file and imports nothing from
 import math
 
 # ==========================================================================
-# 1.  THE TAGGING FRAMEWORK -- R11-06 AND CONVERGENCE REQUIREMENT 5.
+# 1.  THE TAGGING FRAMEWORK -- R11-06, AND R12-05'S SEMANTIC ROLES.
+#
+# D-792 made provenance MECHANICAL: every engineering input carries a tag and
+# `audit_tags()` refuses a release in which a `TYPICAL` rules.  Round-12 found
+# the half of the idea that was missing, and it found it with a concrete
+# instance:
+#
+#     "ESP32 500 mA supply-capability recommendation is an engineering budget,
+#      not a guaranteed maximum instantaneous module current."
+#
+# It is exactly right.  Espressif's Table 6-2 `IVDD` row is a RECOMMENDED
+# OPERATING CONDITION on the POWER SUPPLY -- "current delivered by external
+# power supply, MIN 0.5 A" -- and D-792 used it as the module's own maximum
+# draw, then DERIVED the Wi-Fi TX increment by subtracting the baseline from
+# it.  The tag was `GUARANTEED_ROC`, which is in `RULING_TAGS`, so the old
+# audit passed: the tag string was in the enum and nothing asked what the
+# value was being used AS.
+#
+# R12-05, IN ITS OWN WORDS: "Release logic must reject category misuse, not
+# just validate that the tag string is in an enum."  So every registered value
+# now also carries a ROLE -- what it is used as -- and the audit is a MATRIX
+# over (role, tag) rather than a membership test:
+#
+#   DEVICE_BOUND        a bound on what a DEVICE does (its current, its
+#                       resistance, its voltage).  A recommendation about the
+#                       supply is NOT one of these, and neither is a typical.
+#   SUPPLY_REQUIREMENT  a requirement on what THIS BOARD must be able to
+#                       deliver.  An ROC belongs here and nowhere else.
+#   POLICY_BUDGET       a number this programme PUBLISHES as a product
+#                       contract (400 mA, 300 mA).  It is not a datasheet
+#                       claim and must not pretend to be one.
+#   REPORTED            printed, never ruled on.  Any tag may be reported.
 # ==========================================================================
 GUARANTEED_MAX = "GUARANTEED_MAX"
 GUARANTEED_MIN = "GUARANTEED_MIN"
 GUARANTEED_ROC = "GUARANTEED_ROC"
-TYPICAL = "TYPICAL"
+TYPICAL = "TYPICAL"                       # == R12-05's DATASHEET_TYPICAL
+DATASHEET_TYPICAL = TYPICAL               # R12-05 spells it this way
+RECOMMENDED_CAPABILITY = "RECOMMENDED_CAPABILITY"
 DECLARED_ESTIMATE = "DECLARED_ESTIMATE"
+DECLARED_ENGINEERING_BOUND = "DECLARED_ENGINEERING_BOUND"
 DERIVED = "DERIVED"
 MEASURED_PENDING = "MEASURED_PENDING"
+MEASURED_FIRST_ARTICLE = "MEASURED_FIRST_ARTICLE"
 TAGS = (GUARANTEED_MAX, GUARANTEED_MIN, GUARANTEED_ROC, TYPICAL,
-        DECLARED_ESTIMATE, DERIVED, MEASURED_PENDING)
-# The tags a RULING bound may carry.  A TYPICAL may be reported and may seed a
-# declared widening; it may never BE the bound.  This is the rule D-789 and
-# D-790 both applied by hand to VBUVLO and to IBAT_OCP and that R11-06 asks to
-# be made mechanical.
-RULING_TAGS = (GUARANTEED_MAX, GUARANTEED_MIN, GUARANTEED_ROC,
-               DECLARED_ESTIMATE, DERIVED)
+        RECOMMENDED_CAPABILITY, DECLARED_ESTIMATE,
+        DECLARED_ENGINEERING_BOUND, DERIVED, MEASURED_PENDING,
+        MEASURED_FIRST_ARTICLE)
+
+DEVICE_BOUND = "DEVICE_BOUND"
+SUPPLY_REQUIREMENT = "SUPPLY_REQUIREMENT"
+POLICY_BUDGET = "POLICY_BUDGET"
+REPORTED = "REPORTED"
+ROLES = (DEVICE_BOUND, SUPPLY_REQUIREMENT, POLICY_BUDGET, REPORTED)
+
+# THE MATRIX.  Which tags may carry which role.  `REPORTED` accepts every tag
+# by construction, which is what makes it safe to keep a typical in the
+# registry at all.
+ROLE_ALLOWS = {
+    DEVICE_BOUND: (GUARANTEED_MAX, GUARANTEED_MIN, DERIVED,
+                   DECLARED_ESTIMATE, MEASURED_FIRST_ARTICLE),
+    SUPPLY_REQUIREMENT: (GUARANTEED_ROC, DECLARED_ENGINEERING_BOUND,
+                         DERIVED, MEASURED_FIRST_ARTICLE),
+    POLICY_BUDGET: (DECLARED_ENGINEERING_BOUND, DERIVED),
+    REPORTED: TAGS,
+}
+# Retained for the D-792 spelling: `ruling=True` with no explicit role means
+# DEVICE_BOUND, which is what every D-792 call site meant.
+RULING_TAGS = ROLE_ALLOWS[DEVICE_BOUND]
 
 _REGISTRY = []
 
 
 def tag(key, value, kind, source, condition=None, measurement_of_record=None,
-        widened_from=None, ruling=True):
+        widened_from=None, ruling=True, role=None):
     """Register an engineering input and return its VALUE.
 
-    `ruling=True` means the number is used somewhere a bound is required, and
-    `audit_tags()` then refuses a `TYPICAL`.  `ruling=False` marks a value that
-    is only REPORTED.
+    `role` is what the number is USED AS -- see the matrix above.  It defaults
+    to `DEVICE_BOUND` when `ruling` is true and `REPORTED` when it is not,
+    which is exactly what every D-792 call site meant, so the default
+    behaviour is unchanged and only the call sites that were MISCLASSIFIED
+    have to say so.
     """
     if kind not in TAGS:
         raise ValueError("unknown tag %r" % (kind,))
+    if role is None:
+        role = DEVICE_BOUND if ruling else REPORTED
+    if role not in ROLES:
+        raise ValueError("unknown role %r" % (role,))
     _REGISTRY.append(dict(
         key=key, value=value, tag=kind, source=source, condition=condition,
         measurement_of_record=measurement_of_record,
-        widened_from=widened_from, used_as_a_ruling_bound=bool(ruling)))
+        widened_from=widened_from, role=role,
+        used_as_a_ruling_bound=bool(role != REPORTED)))
     return value
 
 
@@ -107,26 +166,45 @@ def registry():
     return [dict(r) for r in _REGISTRY]
 
 
+def _role_of(r):
+    return r.get("role") or (DEVICE_BOUND if r.get("used_as_a_ruling_bound")
+                             else REPORTED)
+
+
 def audit_tags(entries=None):
-    """Release-time check: no TYPICAL may be used as a ruling bound.
+    """Release-time check: the (role, tag) MATRIX, not a membership test.
 
     `entries` defaults to this module's own registry.  It is an ARGUMENT so a
     gate can run the same rule over a deliberately-poisoned list and prove the
     refusal is real -- R11-06 asks for the rule to be mechanical, and a rule
-    with no negative control is not yet mechanical.
+    with no negative control is not yet mechanical.  R12-05 adds the second
+    half: a TYPICAL is not the only category error, and an ROC used as a
+    device bound is the one that actually shipped.
     """
     reg = _REGISTRY if entries is None else list(entries)
-    bad = [r for r in reg
-           if r["used_as_a_ruling_bound"] and r["tag"] not in RULING_TAGS]
+    bad = []
+    for r in reg:
+        role = _role_of(r)
+        if role not in ROLES:
+            bad.append(dict(r, why="unknown role %r" % (role,)))
+        elif r["tag"] not in ROLE_ALLOWS[role]:
+            bad.append(dict(r, why="a %s may not carry the role %s"
+                                   % (r["tag"], role)))
     return dict(
         entries=len(reg),
-        ruling_entries=sum(1 for r in reg if r["used_as_a_ruling_bound"]),
+        ruling_entries=sum(1 for r in reg if _role_of(r) != REPORTED),
         by_tag={t: sum(1 for r in reg if r["tag"] == t) for t in TAGS},
+        by_role={x: sum(1 for r in reg if _role_of(r) == x) for x in ROLES},
+        role_matrix={k: list(v) for k, v in ROLE_ALLOWS.items()},
         invalid_ruling_use=[dict(r) for r in bad],
-        rule="a value tagged TYPICAL may be REPORTED but may never be a "
-             "ruling bound; a typical is widened into a DECLARED_ESTIMATE "
-             "with a stated basis and a first-article measurement, and the "
-             "widening is recorded in `widened_from`",
+        rule="every registered value carries a ROLE as well as a TAG, and the "
+             "(role, tag) pair must be in ROLE_ALLOWS.  A TYPICAL and a "
+             "RECOMMENDED_CAPABILITY may be REPORTED and may seed a declared "
+             "widening; neither may be a bound of any kind.  A GUARANTEED_ROC "
+             "is a requirement on the SUPPLY and may never be a DEVICE_BOUND "
+             "-- R12-05's ESP32 IVDD instance.  A POLICY_BUDGET is this "
+             "programme's own published contract and may not be tagged as a "
+             "datasheet guarantee.",
         ok=not bad)
 
 # ==========================================================================
@@ -518,14 +596,38 @@ BL_STRING_CURRENT_BASIS = (
 #
 # HOW THE SPLIT AVOIDS DOUBLE-COUNTING, WHICH IS THE OTHER HALF OF R11-02.
 # The module is ONE supply consumer, so it gets ONE total, and the total is
-# Espressif's 500 mA.  That total is DECOMPOSED into
+# DECOMPOSED into
 #
 #       baseline  (always on, no radio transmitting)
 #     + increment (what a transmitting radio adds)
-#     = 500 mA exactly, by construction
+#     = the transmitting total, by construction
 #
 # so the baseline can never be omitted from a sustained state and the increment
 # can never be added on top of a number that already contained it.
+#
+# D-793 / R12-05.  WHAT THE TOTAL MAY NOT BE, AND WHAT D-792 MADE IT.
+# D-792 set the transmitting total to Espressif's Table 6-2 `IVDD` row --
+# 500 mA -- and derived the increment as 500 mA less the baseline.  Round-12:
+#
+#     "ESP32 500 mA supply-capability recommendation is an engineering budget,
+#      not a guaranteed maximum instantaneous module current."
+#
+# That row is a RECOMMENDED OPERATING CONDITION on the EXTERNAL SUPPLY.  It
+# says what this board must be able to DELIVER; it says nothing about what the
+# module may DRAW, and using it as a draw bound is a category error that the
+# `audit_tags()` role matrix now refuses outright.  The transmitting total is
+# therefore built the same way the baseline is -- out of Espressif's own
+# published CURRENT rows, at the same declared widening:
+#
+#     (modem-sleep worst row + flash access + declared PSRAM allowance
+#      + the worst published RF transmit peak) x the declared widening
+#
+# It comes out ABOVE 500 mA, which is the honest direction: Table 6-4's RF
+# rows are measured with the peripherals disabled and the CPU idle, so adding
+# the busiest modem-sleep row to a transmit peak deliberately overlaps the
+# two rather than assuming they never coincide.  The 500 mA row keeps its job
+# -- it is now checked as a SUPPLY REQUIREMENT against what the +3V3 rail can
+# actually deliver to U1 -- and it no longer bounds the load.
 #
 # THE BASELINE ITSELF IS A TYPICAL WIDENED INTO A DECLARED BOUND, AND SAYS SO.
 # Espressif publishes Modem-sleep current as TYP with no MIN/MAX column at all.
@@ -541,6 +643,10 @@ BL_STRING_CURRENT_BASIS = (
 MCU_MODULE = dict(
     reference="U1",
     part="ESP32-S3-WROOM-1-N16R8",
+    # D-793 / R12-05: role SUPPLY_REQUIREMENT.  This is what the BOARD must be
+    # able to deliver to U1, and `demo_feature_contract` checks it against the
+    # rail's own capability.  It is NOT a bound on the module's draw and the
+    # audit matrix refuses it as one.
     supply_requirement_A=tag(
         "mcu.ivdd_supply_requirement_A", 0.500, GUARANTEED_ROC,
         "Espressif ESP32-S3-WROOM-1 & WROOM-1U datasheet v1.8 Table 6-2 "
@@ -548,9 +654,11 @@ MCU_MODULE = dict(
         "external power supply' MIN 0.5 A, VDD33 3.0/3.3/3.6 V.  Archived at "
         "hardware/demo/kicad/aqroot-demo/vendor/Espressif/"
         "esp32-s3-wroom-1-datasheet.pdf.",
-        condition="the supply capability the manufacturer requires for this "
-                  "module; it bounds every CPU/flash/PSRAM/radio combination "
-                  "at once and is LARGER than any single published mode"),
+        condition="a REQUIREMENT ON THE SUPPLY, not a bound on the module: "
+                  "'current delivered by external power supply', MIN.  "
+                  "D-792 used it as the module's own maximum draw; R12-05 is "
+                  "the finding and the role matrix is the refusal.",
+        role=SUPPLY_REQUIREMENT),
     modem_sleep_worst_row_A=tag(
         "mcu.modem_sleep_240MHz_dual_128bit_periph_on_A", 0.1079, TYPICAL,
         "Espressif v1.8 Table 6-6 Current Consumption in Modem-sleep Mode, "
@@ -585,13 +693,23 @@ MCU_MODULE = dict(
         measurement_of_record="C-MCU-01"),
     typ_to_bound_widening=tag(
         "mcu.typ_to_bound_widening", 1.20, DECLARED_ESTIMATE,
-        "DECLARED.  Espressif publishes Modem-sleep current as TYP with no "
-        "MIN/MAX column anywhere in the datasheet, and this programme does "
-        "not use a typical as a limit (D-789, D-790, and R11-06).  A +20 % "
-        "carry on the summed typicals is the declared widening; it is "
-        "measured at first article and the module total it feeds is in any "
-        "case capped by Espressif's own 500 mA supply requirement.",
+        "DECLARED.  Espressif publishes Modem-sleep current and the RF peak "
+        "rows as TYP/Peak with no MIN/MAX column anywhere in the datasheet, "
+        "and this programme does not use a typical as a limit (D-789, D-790, "
+        "R11-06, and now R12-05).  A +20 % carry on the summed published rows "
+        "is the declared widening, measured at first article.",
         measurement_of_record="C-MCU-01"),
+    # D-793 / R12-05.  THE RULING RF ROW, TAGGED AND NAMED.  Table 6-4/6-5
+    # publish a Peak column and no MIN/MAX, so the row is REPORTED and the
+    # declared widening above is what turns the sum into a bound.
+    rf_tx_peak_row_A=tag(
+        "mcu.rf_tx_peak_80211b_20p5dBm_A", 0.355, TYPICAL,
+        "Espressif v1.8 Table 6-4 Current Consumption in RF modes, "
+        "802.11b at 20.5 dBm, Peak column: 355 mA.  The worst published "
+        "transmit row for this module; BLE at 20 dBm is 344 mA and Wi-Fi RX "
+        "is 97 mA.  No MIN or MAX column is published for any of them.",
+        condition="3.3 V, 25 C, peripherals disabled and CPU idle",
+        ruling=False),
     rf_rows_A=dict(wifi_80211b_20p5dBm=0.355, ble_20dBm=0.344,
                    wifi_rx=0.097),
     rf_rows_source="Espressif v1.8 Table 6-4 and Table 6-5, Peak column.",
@@ -608,15 +726,39 @@ MCU_BASELINE_A = tag(
     condition="the module with no radio transmitting; ALWAYS ON",
     widened_from="Espressif Table 6-6 typicals",
     measurement_of_record="C-MCU-01")
+# D-793 / R12-05.  THE TRANSMITTING TOTAL, BUILT FROM CURRENT ROWS.
+MCU_TX_TOTAL_A = tag(
+    "mcu.tx_total_A",
+    round((MCU_MODULE["modem_sleep_worst_row_A"]
+           + MCU_MODULE["flash_access_A"]
+           + MCU_MODULE["psram_allowance_A"]
+           + MCU_MODULE["rf_tx_peak_row_A"])
+          * MCU_MODULE["typ_to_bound_widening"], 6),
+    DERIVED,
+    "(107.9 mA modem-sleep worst row + 10 mA flash access + 20 mA declared "
+    "PSRAM allowance + 355 mA Table 6-4 802.11b transmit peak) x 1.20 "
+    "declared widening.  DELIBERATELY OVERLAPPING: Table 6-4's RF rows are "
+    "rated with the peripherals disabled and the CPU idle, so summing them "
+    "with the busiest modem-sleep row charges the module for both at once "
+    "rather than assuming they never coincide.",
+    condition="the module with a radio transmitting; the PEAK, not a "
+              "sustained average",
+    widened_from="Espressif Table 6-4 and 6-6 published rows",
+    measurement_of_record="C-MCU-01")
 MCU_RF_TX_INCREMENT_A = tag(
     "mcu.rf_tx_increment_A",
-    round(MCU_MODULE["supply_requirement_A"] - MCU_BASELINE_A, 6),
+    round(MCU_TX_TOTAL_A - MCU_BASELINE_A, 6),
     DERIVED,
-    "Espressif's own 500 mA supply requirement LESS the always-on baseline, "
-    "so the module's total in a transmitting state is exactly the number the "
-    "manufacturer requires the supply to deliver and the baseline is neither "
-    "omitted nor counted twice.",
+    "the transmitting total LESS the always-on baseline, so baseline + "
+    "increment is exactly the transmitting total and neither is omitted nor "
+    "counted twice.  D-792 derived this from Espressif's 500 mA SUPPLY "
+    "requirement instead; R12-05 is why it no longer does.",
     condition="added when the Wi-Fi/BLE radio is transmitting")
+# The supply requirement is now a REQUIREMENT this board must meet, and the
+# gap between it and what the module can actually draw is REPORTED so nobody
+# can read 500 mA as a load bound again.
+MCU_SUPPLY_HEADROOM_A = round(
+    MCU_MODULE["supply_requirement_A"] - MCU_TX_TOTAL_A, 6)
 
 
 # ==========================================================================
@@ -794,6 +936,181 @@ def bursty_time_averaged_A():
                      for x in LOAD_LEDGER if x["kind"] == BURSTY), 6)
 
 
+# ==========================================================================
+# D-793.  THE TWO PUBLISHED ACCESSORY BUDGETS AND THE DECLARED PAIR LIVE HERE.
+#
+# Fable's Round-12 complementary item, in its own words: "DECLARED_DUAL_RAIL_
+# BUDGET_A hand-typed outside canonical model: move policy budget/meaning into
+# canonical source or generated artifact; ensure firmware/docs consume the same
+# authority."
+#
+# It is right, and the comment beside the D-792 constant made it worse: it
+# said F12 "REFUSES if this constant differs from what it derived", and no
+# code did that.  A stated rule that never runs is a defect this programme has
+# now hit several times.  The values live HERE, tagged `POLICY_BUDGET`,
+# because that is what they are -- numbers this product PUBLISHES, not
+# datasheet guarantees -- and `audit_tags()` refuses a POLICY_BUDGET dressed
+# up as a manufacturer claim.  `demo_feature_contract` F12 now ASSERTS that
+# the declared pair it derives equals the pair published here.
+# ==========================================================================
+PUBLISHED_RAIL_BUDGET_A = dict(
+    ACC_3V3=tag("policy.acc_3v3_published_budget_A", 0.400,
+                DECLARED_ENGINEERING_BOUND,
+                "D-098, 2026-08-23: 'First five boards: ACC_3V3_SW = 400 mA "
+                "TOTAL'.  Preserved explicitly by the D-788 Option A owner "
+                "decision.  The two duplicated contacts SHARE the rail limit; "
+                "they do not double it.",
+                role=POLICY_BUDGET),
+    ACC_5V=tag("policy.acc_5v_published_budget_A", 0.300,
+               DECLARED_ENGINEERING_BOUND,
+               "D-098, 2026-08-23: 'ACC_5V_SW = 300 mA TOTAL'.  Preserved "
+               "explicitly by the D-788 Option A owner decision.",
+               role=POLICY_BUDGET))
+DECLARED_DUAL_RAIL_BUDGET_A = dict(
+    ACC_3V3=tag("policy.declared_pair_acc_3v3_A", 0.220,
+                DECLARED_ENGINEERING_BOUND,
+                "D-792 / R11-04, re-derived unchanged at D-793.  SOLVED by "
+                "demo_feature_contract F12 as the largest proportional "
+                "derating of the two published budgets that the firmware's "
+                "own retention rule holds at the same critical cell voltage "
+                "the single-rail permission already reaches, at the top of "
+                "the declared ambient envelope, rounded DOWN onto a 10 mA "
+                "grid.  F12 REFUSES if this value differs from what it "
+                "derives -- which at D-792 was a sentence and not a clause.",
+                role=POLICY_BUDGET),
+    ACC_5V=tag("policy.declared_pair_acc_5v_A", 0.170,
+               DECLARED_ENGINEERING_BOUND,
+               "the 5 V half of the same solved pair.",
+               role=POLICY_BUDGET))
+DECLARED_PAIR_ENFORCEMENT = (
+    "IT IS AN OPERATOR / POLICY LIMIT, NOT A CURRENT MEASUREMENT.  This board "
+    "has NO current sense on either accessory rail and the firmware cannot "
+    "see how much an accessory draws.  What the firmware enforces is the "
+    "PERMISSION and the RETENTION: a rail is only enabled when the gauge's "
+    "reported VCELL clears the permission table's floor for the mode set the "
+    "board is in, and a live rail is SHED when the reported VCELL falls below "
+    "kAccessoryRetentionFloorV -- the 5 V rail FIRST, because shedding it "
+    "restores the node and leaves the 3.3 V rail delivering its full "
+    "published budget.  ON OVERLOAD, in order: an accessory drawing beyond "
+    "the declared pair pulls the node down, the settled recheck sheds the 5 V "
+    "rail, and if the node is still low every accessory rail goes off.  "
+    "Beyond that the HARDWARE acts and the firmware is not involved -- U20 "
+    "and U22 current-limit at their programmed points, then the BQ25185's "
+    "recoverable BATOCP, then the latching LTC4368 breaker, then F1's "
+    "one-shot fuse, in that order, which demo_feature_contract F6 proves is "
+    "the order every reachable state actually meets.  The declared pair is a "
+    "contract with the ACCESSORY DESIGNER about what the port supports; it is "
+    "not a thing the board measures.")
+
+
+# D-793 / R12-08.  A DUTY AVERAGE IS NOT AN INSTANTANEOUS PERMISSION BOUND.
+#
+# ROUND-12, IN ITS OWN WORDS: "D-792 uses sustained duty allowance for SD/NFC/
+# IR bursts while permission/retention transitions occur on much shorter
+# electrical timescales.  Astra constructed a credible quiet-pre-read ->
+# accessory enable + burst -> post-read below retention case."
+#
+# It is right, and the mechanism is exactly the one R11-04 already found once.
+# The three BURSTY lines enter every sustained state at their duty-averaged
+# value -- 50 mA of microSD, 25 mA of NFC field, 5 mA of IR, 80 mA in total.
+# Their PEAKS are 100 + 100 + 50 = 250 mA.  A permission is granted on a
+# pre-read taken in a quiet moment and re-checked about 400 ms later, and a
+# logging write, a card tap or a key repeat can begin anywhere in between.
+# The permission edge therefore has to be judged with the burst PEAK present,
+# not its minute-average.
+#
+# THE TWO MODELS ARE NOW SEPARATE AND BOTH ARE KEPT:
+#
+#   THERMAL / SUSTAINED   duty-averaged.  A 100 mA burst at 25 % of a minute
+#                         really does deposit 25 mA of average heat, and the
+#                         enclosure's thermal time constant is minutes.  The
+#                         junction, the internal air and the ambient ceilings
+#                         all stay on this model.
+#   INSTANTANEOUS         the peak, for the electrical limits that act in
+#                         microseconds -- the node against VBUVLO, VSYS
+#                         against U12's input floor, the battery current
+#                         against IBAT_OCP, the pass pair's VGS against its
+#                         conduction row -- and for the firmware's own
+#                         retention read.
+#
+# THE DELTA IS ENUMERATED, NOT ASSUMED.  Every subset of the bursty lines is
+# priced, because nothing in this product forbids a card tap during a logging
+# write, and the RULING delta is the worst subset the firmware does not
+# prevent.  If a future firmware serialises them, the restriction goes here
+# and the ruling subset shrinks; it is not assumed away.
+# ==========================================================================
+# THE FIRMWARE RESTRICTION R12-08 OFFERS AS THE ALTERNATIVE, AND THIS DESIGN
+# TAKES IT.  Round-12: "Enumerate actual peak/burst pre/post transitions and
+# maximum burst durations, OR enforce a clear scheduling restriction in
+# firmware."  Unserialised, the three bursts together add 170 mA at the
+# permission edge and cost four of the sixteen permission rows -- including
+# every accessory state with the audio amplifier driving.  Serialised they add
+# 75 mA and those rows come back.  The restriction is NARROW (it applies only
+# while an accessory rail is live), it is implementable (all three are
+# firmware-driven peripherals), and it is PROVEN rather than assumed: the
+# permission table may only be derived at the serialised delta if
+# `demo_feature_contract` can show `BurstArbiter` in the shipped firmware and
+# `Firmware/test/` can show it refusing.
+BURST_COINCIDENCE_POLICY = (
+    "WHILE AN ACCESSORY RAIL IS LIVE the firmware's BurstArbiter permits at "
+    "most ONE of {microSD write burst, NFC field, IR transmit} at a time, so "
+    "the ruling instantaneous delta is the worst SINGLE burst rather than the "
+    "sum of all three.  With no accessory rail live there is no permission "
+    "edge to protect and the arbiter does not engage, so nothing a user does "
+    "with the card, the tag reader or the IR blaster alone is restricted.  "
+    "R12-08 offers this restriction as the alternative to charging the full "
+    "coincident sum, and it is taken because charging the sum costs four "
+    "permission rows -- every accessory state with the amplifier driving -- "
+    "for a coincidence the firmware can simply not create.")
+# The subsets a serialising arbiter can leave reachable: at most one bursty
+# line at a time.
+SERIALISED_BURST_SUBSETS = tuple(
+    [()] + [(x["key"],) for x in LOAD_LEDGER if x["kind"] == BURSTY])
+
+
+def burst_subsets():
+    """Every coincident combination of the bursty lines, priced.
+
+    `delta_A` is the amount by which the INSTANTANEOUS draw exceeds what the
+    sustained state already carries for the same lines.
+    """
+    lines = [x for x in LOAD_LEDGER if x["kind"] == BURSTY]
+    out = []
+    for bits in range(1 << len(lines)):
+        sel = [lines[i] for i in range(len(lines)) if bits & (1 << i)]
+        out.append(dict(
+            keys=[x["key"] for x in sel],
+            peak_A=round(sum(x["mA"] for x in sel) / 1000.0, 6),
+            already_carried_A=round(
+                sum(x["mA"] * x["duty"] for x in sel) / 1000.0, 6),
+            delta_A=round(sum(x["mA"] * (1.0 - x["duty"])
+                              for x in sel) / 1000.0, 6),
+            max_burst_s=[dict(key=x["key"], window_s=x["window_s"],
+                              duty=x["duty"],
+                              max_continuous_s=round(x["duty"] * x["window_s"],
+                                                     3))
+                         for x in sel]))
+    return out
+
+
+def burst_transition_delta_A(allowed=None, serialised=True):
+    """The RULING instantaneous delta for a permission/retention edge.
+
+    `allowed` is the set of subsets a firmware scheduling restriction permits,
+    as a list of key-tuples.  `serialised=False` charges EVERY subset, which
+    is what the model must do if the firmware arbiter cannot be proven -- and
+    `demo_feature_contract` passes `serialised=False` unless it can show the
+    arbiter in the shipped image and a host test refusing without it.
+    """
+    subs = burst_subsets()
+    if allowed is None and serialised:
+        allowed = SERIALISED_BURST_SUBSETS
+    if allowed is not None:
+        keys = {tuple(sorted(k)) for k in allowed}
+        subs = [x for x in subs if tuple(sorted(x["keys"])) in keys]
+    return round(max(x["delta_A"] for x in subs), 6)
+
+
 def sustained_optional():
     """The observable MODES a sustained state may name."""
     return {x["mode"]: round(x["mA"] / 1000.0, 6)
@@ -857,15 +1174,42 @@ def ledger_is_partitioned():
 # flows when the node sags by a known amount -- I = (V_cell - V_node) / R -- the
 # MINIMUM is, because a smaller resistance means more current for the same sag.
 #
-# WHAT IS PRIMARY AND WHAT IS DECLARED IS MARKED ON EVERY LINE.  The Molex
-# 5055700003-PS product specification is not retrievable from this environment
-# (the fetch attempts are recorded in evidence/d792-vendor-fetch-attempts.json)
-# and the transcription this repository holds carries rated current, crimp
-# pull-out and ambient range but no contact-resistance row.  The contact terms
-# are therefore DECLARED at the values a 2.00 mm wire-to-wire connector family
-# of this class publishes -- 20 mOhm initial and 30 mOhm after environmental
-# conditioning -- and this contract RULES at the AGED figure.  All of them are
-# MEASURED at first article: `C-BAT-PATH-01`.
+# D-793 / R12-01.  THE MOLEX DOCUMENT IS IN THE TREE NOW, AND IT IS WORSE
+# THAN THE DECLARATION IT REPLACES.
+#
+# D-792 recorded 5055700003-PS as "not retrievable from this environment" and
+# DECLARED the contact terms at 20 mOhm initial / 30 mOhm aged on that basis.
+# Round-12 says Molex primary evidence supports a 40 mOhm post-durability /
+# post-environment criterion.  It does.  The document retrieved at D-793
+# through the Internet Archive's 2023-11-01 snapshot of the same molex.com URL
+# and is archived at vendor/MOLEX/molex-5055700003-PS-A1.pdf; every row this
+# repository had already transcribed is present and identical in it, and three
+# rows it had NEVER seen are:
+#
+#   6.1.1  Contact Resistance                     20 milliohms MAX
+#          mated, dry circuit, WIRE CONDUCTOR RESISTANCE SUBTRACTED -- so the
+#          figure is the contact pair alone and the conductor is counted
+#          separately, which is exactly how this itemisation is built
+#   6.1.4  Contact Resistance on crimped portion   5 milliohms MAX
+#          D-792 carried 1 mOhm per crimp as a declared allowance.  The
+#          manufacturer publishes FIVE times that.
+#   6.2.6/6.2.7/6.2.8 and 6.3.1..6.3.7           40 milliohms MAX
+#          the SAME criterion after 30 insertion cycles, after vibration,
+#          after 50 G shock, after temperature cycling, after 96 h at 105 C,
+#          after 96 h at -40 C, after 96 h at 60 C/90-95 % RH, after 48 h
+#          salt spray, after SO2 and after NH3.  This is the number an aged
+#          contact in a hand-assembled first-five harness has to be held to,
+#          and it is the one this model now RULES at.
+#
+# THIS IS THE THIRD TIME IN THIS PROGRAMME THAT "UNOBTAINABLE" HAS MEANT "NOT
+# FETCHED FROM HERE" (D-751's EastRising 403, R11-N01's retrieval of the same
+# document, and now this).  The three contact/crimp terms move from
+# DECLARED_ESTIMATE to GUARANTEED_MAX and the path gets 45 mOhm longer.
+# C-BAT-PATH-01 remains the measurement of record for all of them.
+#
+# REVISION, RECORDED RATHER THAN SMOOTHED: the retrieved copy is Rev A1 and
+# the product page cites Rev A6.  Every row the design already depended on is
+# identical between them.
 # ==========================================================================
 CU_TC_PER_K = 0.00393
 CU_HOT_RISE_K = 65.0
@@ -888,29 +1232,40 @@ AWG26_STRANDED_MAX_OHM_PER_M = tag(
     condition="20 C", measurement_of_record="C-BAT-PATH-01",
     widened_from="the computed solid-conductor value 0.13425 ohm/m")
 CONTACT_INITIAL_MAX_OHM = tag(
-    "path.microlock_contact_initial_max_ohm", 0.020, DECLARED_ESTIMATE,
-    "DECLARED.  Molex 5055700003-PS Rev A6 is not retrievable from this "
-    "environment (evidence/d792-vendor-fetch-attempts.json) and the "
-    "transcription archived at vendor/MOLEX/micro-lock-plus-5055700003-PS-"
-    "A6.txt carries rated current, crimp pull-out, ambient range and free-"
-    "wire length but no low-level contact-resistance row.  20 mOhm is the "
-    "initial LLCR maximum a 2.00 mm wire-to-wire connector family of this "
-    "class publishes.",
+    "path.microlock_contact_initial_max_ohm", 0.020, GUARANTEED_MAX,
+    "Molex 5055700003-PS section 6.1.1 Contact Resistance: 20 milliohms MAX, "
+    "mated, measured by dry circuit at 20 mV MAX / 10 mA MAX with the wire "
+    "conductor resistance SUBTRACTED (JIS C5402-2-1), at the paragraph-8 "
+    "measuring point.  Archived at vendor/MOLEX/molex-5055700003-PS-A1.pdf.  "
+    "D-792 carried this as a DECLARED_ESTIMATE because the document had not "
+    "been retrieved.",
+    condition="initial, as-mated.  The conductor is NOT in this figure and "
+              "is itemised separately below.",
     measurement_of_record="C-BAT-PATH-01", ruling=False)
 CONTACT_AGED_MAX_OHM = tag(
-    "path.microlock_contact_aged_max_ohm", 0.030, DECLARED_ESTIMATE,
-    "DECLARED, and this is the figure this contract RULES at.  The same "
-    "connector class publishes a post-environmental LLCR maximum 50 % above "
-    "the initial one; R11-07 asks explicitly for 'hot-aged effects'.  The "
-    "battery path crosses TWO mated contacts, one per conductor.",
+    "path.microlock_contact_aged_max_ohm", 0.040, GUARANTEED_MAX,
+    "Molex 5055700003-PS: 40 milliohms MAX Contact Resistance is the "
+    "requirement after EVERY durability and environmental exposure the "
+    "specification defines -- 6.2.6 repeated insertion/withdrawal (30 "
+    "cycles), 6.2.7 vibration, 6.2.8 mechanical shock (50 G), 6.3.1 "
+    "temperature cycling, 6.3.2 heat resistance (105 C, 96 h), 6.3.3 cold "
+    "resistance, 6.3.4 humidity (60 C, 90-95 % RH, 96 h), 6.3.5 salt spray, "
+    "6.3.6 SO2 and 6.3.7 NH3.  THIS IS THE FIGURE THIS MODEL RULES AT, and "
+    "D-793 raised it from D-792's declared 30 mOhm.  The battery path crosses "
+    "TWO mated contacts, one per conductor.",
+    condition="after durability/environmental conditioning; the criterion an "
+              "aged first-five harness must still meet",
     measurement_of_record="C-BAT-PATH-01",
-    widened_from="the 20 mOhm initial figure")
+    widened_from="the 20 mOhm section 6.1.1 initial figure")
 CRIMP_MAX_OHM = tag(
-    "path.crimp_max_ohm", 0.001, DECLARED_ESTIMATE,
-    "DECLARED.  Four crimped terminations are in the path: two Molex factory "
-    "board-side crimps and two 2137201000 battery-side crimps made to the "
-    "213309-5900 process BATTERY_HARNESS freezes.  1 mOhm each is a "
-    "conservative carry for a gas-tight crimp on 26 AWG.",
+    "path.crimp_max_ohm", 0.005, GUARANTEED_MAX,
+    "Molex 5055700003-PS section 6.1.4 'Contact Resistance on crimped "
+    "portion': 5 milliohms MAX, measured by dry circuit at 20 mV MAX / "
+    "10 mA MAX on the applicable wire.  Four crimped terminations are in the "
+    "path: two Molex factory board-side crimps and two 2137201000 "
+    "battery-side crimps made to the 213309-5900 process BATTERY_HARNESS "
+    "freezes.  D-792 DECLARED 1 mOhm each; the manufacturer publishes five "
+    "times that, and R12-01 asks for the crimps to be itemised properly.",
     measurement_of_record="C-BAT-PATH-01")
 SOLDER_JOINT_MAX_OHM = tag(
     "path.j4_solder_joint_max_ohm", 0.001, DECLARED_ESTIMATE,
@@ -939,11 +1294,50 @@ FUSE_MAX_OHM = tag(
     "published in this repository; 20 mOhm is a declared allowance for a 5 A "
     "thin-film fuse.",
     measurement_of_record="C-BAT-PATH-01")
+# D-793 / R12-01, IN ITS OWN WORDS: "Exact fitted 10 mOhm R75 1 % high corner
+# is 10.1 mOhm; do not tag 10.0 mOhm as guaranteed max."  D-792's condition
+# string SAID "at its 1 % high corner" and its VALUE was the nominal.  Both
+# corners are now computed from the nominal and the tolerance so the sentence
+# and the number cannot disagree again.
+R75_NOMINAL_OHM = tag(
+    "path.r75_sense_nominal_ohm", 0.010, GUARANTEED_MAX,
+    "the fitted 10 mOhm LTC4368 sense element's nominal value, D-771.",
+    condition="nominal; the corners below are what the model uses",
+    ruling=False)
+R75_TOLERANCE = tag(
+    "path.r75_sense_tolerance", 0.01, GUARANTEED_MAX,
+    "the fitted part is a 1 % tolerance sense resistor (D-771).",
+    condition="1 %", ruling=False)
 R75_OHM = tag(
-    "path.r75_sense_ohm", 0.010, GUARANTEED_MAX,
-    "the fitted 10 mOhm LTC4368 sense element at its 1 % high corner, D-771.",
-    condition="1 % tolerance part; the high end is used for drop and "
-              "dissipation and the low end for a current bound")
+    "path.r75_sense_max_ohm", round(0.010 * 1.01, 6), GUARANTEED_MAX,
+    "the fitted 10 mOhm 1 % LTC4368 sense element at its HIGH corner: "
+    "10.000 x 1.01 = 10.100 mOhm.  The high end is what a drop, a "
+    "dissipation and a source-resistance question need.",
+    condition="1 % high corner",
+    widened_from="the 10.000 mOhm nominal")
+R75_MIN_OHM = tag(
+    "path.r75_sense_min_ohm", round(0.010 * 0.99, 6), GUARANTEED_MIN,
+    "the same part at its LOW corner, 9.900 mOhm -- the end a CURRENT bound "
+    "needs, because a smaller sense resistor trips the breaker later.",
+    condition="1 % low corner")
+# D-793 / R12-01 asks for F1's tolerance explicitly.  Littelfuse does not
+# publish a cold-resistance row for the 0466005 at all, so the 20 mOhm above
+# is a declared allowance and the TOLERANCE on it is declared too.  A +/-25 %
+# spread on a thin-film fuse element is generous; the HIGH end is the one a
+# source-resistance question uses and it is what `upstream_fixed_ohm("max")`
+# carries.
+FUSE_TOLERANCE = tag(
+    "path.f1_fuse_tolerance", 0.25, DECLARED_ESTIMATE,
+    "DECLARED.  Littelfuse publishes no cold-resistance row for the 0466005, "
+    "so neither the value nor its spread is a datasheet number; +/-25 % is a "
+    "generous carry on a 5 A nano2 element.  R12-01 asks for 'F1 tolerance' "
+    "to be itemised rather than assumed away.",
+    measurement_of_record="C-BAT-PATH-01")
+FUSE_MAX_TOL_OHM = tag(
+    "path.f1_fuse_max_tol_ohm", round(0.020 * 1.25, 6), DECLARED_ESTIMATE,
+    "the declared 20 mOhm allowance at its declared +25 % high corner.",
+    widened_from="the 20 mOhm declared allowance",
+    measurement_of_record="C-BAT-PATH-01")
 
 # The itemisation.  `hot` marks a term the 65 K internal rise is applied to --
 # every metallic conductor and contact in the path, which is all of them
@@ -1020,6 +1414,120 @@ def harness_itemisation():
     return rows
 
 
+# ==========================================================================
+# D-793 / R12-01.  THE TWO HALVES OF THE PATH D-792 DID NOT HAVE AT ALL.
+#
+# Round-12 asks for the COMPLETE source path, and names the terms:
+#
+#     "cell/PCM DC source resistance, battery leads, both conductors, both
+#      contact pairs, crimps, board-side pigtail, J4 joint, F1 tolerance,
+#      R75 tolerance, Q2/Q3 hot RDS(on), J4->F1->FET->R75 copper, return
+#      path, temperature and aging."
+#
+# Every one of those was in the D-792 model EXCEPT the last three clauses:
+# the BOARD COPPER between J4 and R75, and the GROUND RETURN.  The forward
+# board copper is real and it is not small -- 35.1 mOhm at 20 C, measured --
+# and it sat in no model at all, because F6/F12 start their downstream ledger
+# at `BAT_PROTECTED_P` and the upstream ledger stopped at the J4 barrel.
+#
+# "Do not double-count protected-node copper already modeled downstream" --
+# and nothing here does.  The downstream ledger's first term is `R75.2 ->
+# U11.2`; the four segments below are all UPSTREAM of `R75.2`.
+#
+# THE FORWARD SEGMENTS ARE MEASURED OFF THE LIVE BOARD.  This module is pure,
+# so the numbers below are the last measured set and are the DEFAULT;
+# `demo_feature_contract.main()` re-measures all four with the same
+# widest-bottleneck walk it uses for the downstream paths and passes them in.
+# A live measurement above its ceiling FAILS rather than being absorbed.
+BOARD_FORWARD_SEGMENTS = (
+    dict(key="j4_to_f1", net="/01_POWER_TREE/BAT_CONNECTOR_P",
+         src=("J4.1",), snk=("F1.1",),
+         ohm_20C=0.0048788, bound_ohm=0.0080,
+         what="J4.1 -> F1.1, the battery pigtail barrel to the fuse"),
+    dict(key="f1_to_q2", net="/01_POWER_TREE/BAT_RAW",
+         src=("F1.2",), snk=("Q2.7", "Q2.8"),
+         ohm_20C=0.0063270, bound_ohm=0.0100,
+         what="F1.2 -> Q2 drain, BAT_RAW"),
+    dict(key="q2_to_q3", net="/01_POWER_TREE/BAT_MID",
+         src=("Q2.5", "Q2.6"), snk=("Q3.7", "Q3.8"),
+         ohm_20C=0.0093938, bound_ohm=0.0140,
+         what="Q2 source -> Q3 drain, the BAT_MID link between the two "
+              "back-to-back packages"),
+    dict(key="q3_to_r75", net="/01_POWER_TREE/BAT_SENSE",
+         src=("Q3.5", "Q3.6"), snk=("R75.1",),
+         ohm_20C=0.0145199, bound_ohm=0.0200,
+         what="Q3 source -> R75.1, BAT_SENSE"),
+)
+
+
+def board_forward_ohm(measured=None, hot=True):
+    """J4.1 -> R75.1 board copper, hot.  `measured` is {key: ohm at 20 C}."""
+    k = CU_HOT_FACTOR if hot else 1.0
+    tot = 0.0
+    for seg in BOARD_FORWARD_SEGMENTS:
+        tot += (measured or {}).get(seg["key"], seg["ohm_20C"])
+    return round(tot * k, 6)
+
+
+def board_forward_itemisation(measured=None):
+    return [dict(key=x["key"], net=x["net"],
+                 src=list(x["src"]), snk=list(x["snk"]),
+                 ohm_20C=(measured or {}).get(x["key"], x["ohm_20C"]),
+                 bound_ohm=x["bound_ohm"],
+                 hot_ohm=round((measured or {}).get(x["key"], x["ohm_20C"])
+                               * CU_HOT_FACTOR, 6),
+                 measured_live=bool(measured and x["key"] in measured),
+                 what=x["what"])
+            for x in BOARD_FORWARD_SEGMENTS]
+
+
+# ---- THE GROUND RETURN.  A SHEET, SO IT IS ITEMISED AS ONE. --------------
+# The return from the system ground reference to `J4.2` is carried by the two
+# SOLID GND planes this board's own stackup declares -- In1 and In4, both
+# 0.0152 mm -- in parallel, plus the outer GND pours, plus the J4.2 barrel.
+# A track-graph walk cannot price a pour (this is the same reason
+# `P3V3_DELIVERY`'s source and return terms are declared), so it is priced by
+# SHEET RESISTANCE over a DECLARED square count, and the square count carries
+# a stated widening over the geometric estimate.
+RHO_CU_OHM_M = 1.72e-8
+INNER_CU_THICKNESS_M = tag(
+    "path.inner_copper_thickness_m", 15.2e-6, GUARANTEED_MAX,
+    "the board's own stackup: In1..In4 are 0.0152 mm (0.5 oz), F.Cu and B.Cu "
+    "are 0.035 mm (1 oz).  JLC06161H-7628, declared in the .kicad_pcb "
+    "stackup and checked by keepout_stackup_contract.",
+    condition="0.5 oz inner copper", ruling=False)
+GND_PLANE_SHEET_OHM_PER_SQ = tag(
+    "path.gnd_plane_sheet_ohm_per_square", round(
+        RHO_CU_OHM_M / INNER_CU_THICKNESS_M / 2.0, 9), DERIVED,
+    "1.72e-8 ohm.m / 15.2 um = 1.1316 mOhm per square for ONE 0.5 oz inner "
+    "plane; In1 and In4 are both solid GND and in parallel, so 0.5658 mOhm "
+    "per square.  The F.Cu and B.Cu GND pours are IGNORED, which is "
+    "conservative.",
+    condition="20 C, two 0.5 oz planes in parallel")
+GND_RETURN_SQUARES = tag(
+    "path.gnd_return_squares", 12.0, DECLARED_ESTIMATE,
+    "DECLARED.  J4 sits at (7.0, 35.0) and the SYS/+3V3 converter cluster at "
+    "(67.5..69.6, 77.8..97.6) on a 72 x 148 mm outline, so the return runs "
+    "about 88 mm.  Spread over an effective 20 mm of plane width that is 4.4 "
+    "squares; 12 is carried -- a 2.7x widening -- to cover the necks the "
+    "battery-pouch and antenna keepouts put in the planes and the fact that "
+    "the current does not enter the plane as a uniform sheet.",
+    widened_from="the 4.4-square geometric estimate",
+    measurement_of_record="C-BAT-PATH-01")
+GND_RETURN_BARREL_OHM = tag(
+    "path.gnd_return_barrel_ohm", 0.002, DECLARED_ESTIMATE,
+    "DECLARED.  The J4.2 plated through-hole barrel plus the plane vias at "
+    "the load end.  2 mOhm for the whole set.",
+    measurement_of_record="C-BAT-PATH-01")
+
+
+def gnd_return_ohm(squares=None, hot=True):
+    sq = GND_RETURN_SQUARES if squares is None else squares
+    k = CU_HOT_FACTOR if hot else 1.0
+    return round((sq * GND_PLANE_SHEET_OHM_PER_SQ + GND_RETURN_BARREL_OHM)
+                 * k, 6)
+
+
 PACK_DC_OHM = round(PACK_AC_IMPEDANCE_MAX_OHM * PACK_DC_MULTIPLIER, 6)
 PACK_OWNERSHIP = (
     "THE 35 mOhm OWNS THE CELL AND THE PROTECTION BOARD, AND NOTHING ELSE.  "
@@ -1035,18 +1543,30 @@ PACK_OWNERSHIP = (
     "JST-PHR-2 housing is NOT in the path: D-781 reterminates it away.")
 
 
-def upstream_fixed_ohm(which="max"):
-    """Cell EMF -> BAT_PROTECTED_P, EXCLUDING the pass-pair channels.
+def upstream_fixed_ohm(which="max", board=None, squares=None):
+    """Cell EMF -> BAT_PROTECTED_P and back, EXCLUDING the pass-pair channels.
 
-    pack (cell + PCM, DC) + harness + F1 + R75.
+    pack (cell + PCM, DC) + harness + J4->F1 copper + F1 + F1->Q2 copper
+    + Q2->Q3 copper + Q3->R75 copper + R75 + the GROUND RETURN.
+
+    D-793 / R12-01 added the last three of those; the four AO4800 channels are
+    solved self-consistently by the network because their resistance depends
+    on the current they carry.  Nothing here is downstream of `R75.2`, so
+    nothing is double-counted against the `BAT_PROTECTED_P -> SYS` term F12
+    measures separately.
     """
     if which == "min":
         return round(PACK_AC_IMPEDANCE_MAX_OHM * 1.0 + harness_ohm("min")
-                     + FUSE_MAX_OHM * 0.5 + R75_OHM * 0.99, 6)
-    return round(PACK_DC_OHM + harness_ohm("max") + FUSE_MAX_OHM + R75_OHM, 6)
+                     + FUSE_MAX_OHM * 0.5 * (1.0 - FUSE_TOLERANCE)
+                     + R75_MIN_OHM
+                     + board_forward_ohm(board, hot=False)
+                     + gnd_return_ohm(squares, hot=False) * 0.5, 6)
+    return round(PACK_DC_OHM + harness_ohm("max") + FUSE_MAX_TOL_OHM
+                 + R75_OHM + board_forward_ohm(board)
+                 + gnd_return_ohm(squares), 6)
 
 
-def upstream_report():
+def upstream_report(board=None, squares=None):
     return dict(
         pack_ac_impedance_max_ohm=PACK_AC_IMPEDANCE_MAX_OHM,
         pack_ac_to_dc_multiplier=PACK_DC_MULTIPLIER,
@@ -1056,18 +1576,41 @@ def upstream_report():
         harness_hot_aged_max_ohm=harness_ohm("max"),
         harness_cold_initial_min_ohm=harness_ohm("min"),
         harness_max_was_before_d792_ohm=0.054,
-        fuse_ohm=FUSE_MAX_OHM, r75_ohm=R75_OHM,
+        harness_max_was_at_d792_ohm=0.132282,
+        contact_aged_max_ohm=CONTACT_AGED_MAX_OHM,
+        contact_initial_max_ohm=CONTACT_INITIAL_MAX_OHM,
+        crimp_max_ohm=CRIMP_MAX_OHM,
+        contact_terms_are_primary_now=True,
+        contact_terms_source="Molex 5055700003-PS sections 6.1.1, 6.1.4 and "
+                             "6.2.6/6.2.7/6.2.8/6.3.1-6.3.7, archived at "
+                             "vendor/MOLEX/molex-5055700003-PS-A1.pdf",
+        fuse_ohm=FUSE_MAX_OHM, fuse_tolerance=FUSE_TOLERANCE,
+        fuse_max_with_tolerance_ohm=FUSE_MAX_TOL_OHM,
+        r75_nominal_ohm=R75_NOMINAL_OHM, r75_tolerance=R75_TOLERANCE,
+        r75_ohm=R75_OHM, r75_min_ohm=R75_MIN_OHM,
+        board_forward_segments=board_forward_itemisation(board),
+        board_forward_hot_ohm=board_forward_ohm(board),
+        board_forward_was_before_d793_ohm=0.0,
+        gnd_return_ohm=gnd_return_ohm(squares),
+        gnd_return_squares=(GND_RETURN_SQUARES if squares is None
+                            else squares),
+        gnd_return_sheet_ohm_per_square=GND_PLANE_SHEET_OHM_PER_SQ,
+        gnd_return_barrel_ohm=GND_RETURN_BARREL_OHM,
+        gnd_return_was_before_d793_ohm=0.0,
+        gnd_return_sensitivity={
+            ("%gx" % k): gnd_return_ohm(GND_RETURN_SQUARES * k)
+            for k in (1.0, 2.0, 4.0)},
         conductor_ohm_per_m_stranded_max=AWG26_STRANDED_MAX_OHM_PER_M,
         conductor_ohm_per_m_solid_computed=AWG26_SOLID_OHM_PER_M,
         hot_rise_K=CU_HOT_RISE_K, hot_factor=CU_HOT_FACTOR,
-        fixed_series_max_ohm=upstream_fixed_ohm("max"),
-        fixed_series_min_ohm=upstream_fixed_ohm("min"),
+        fixed_series_max_ohm=upstream_fixed_ohm("max", board, squares),
+        fixed_series_min_ohm=upstream_fixed_ohm("min", board, squares),
         measurement_of_record="C-BAT-PATH-01",
         what="everything between the cell's own electromotive force and "
-             "BAT_PROTECTED_P except the four AO4800 channels, which the "
-             "network solves self-consistently because their resistance "
-             "depends on the current they carry.  ALL of it dissipates "
-             "INSIDE the enclosure.")
+             "BAT_PROTECTED_P, AND BACK, except the four AO4800 channels, "
+             "which the network solves self-consistently because their "
+             "resistance depends on the current they carry.  ALL of it "
+             "dissipates INSIDE the enclosure.")
 
 
 # ==========================================================================
@@ -1168,6 +1711,38 @@ PASS_PAIR = dict(
     body_diode_continuous_A=2.5,
     qg_max_nC=7.0,
     theta_jl_max_C_per_W=40.0,
+    # D-793, Fable Round-12: "Pass-FET thermal basis thetaJL + board-above-air
+    # assumption: document source/meaning and keep first-article C-BAT-GATE-01
+    # measurement; do not mislabel as measured junction bound."
+    #
+    # WHAT THE 40 C/W IS.  AOS Rev 6.1 publishes RthetaJL -- junction to LEAD
+    # -- as 40 C/W MAX steady state, and RthetaJA as 62.5 C/W for a 10 s pulse
+    # and 90 C/W steady state on their reference board.  The network uses the
+    # JUNCTION-TO-LEAD figure deliberately: the AO4800's drain leads sit on
+    # this board's own copper, so what the junction is referenced to is the
+    # LAND, not open still air.  A RthetaJA on a vendor reference board is a
+    # different thermal environment and is REPORTED here, never ruled on.
+    #
+    # WHAT THE +5 K IS, AND IT IS AN ASSUMPTION.  The land is taken as 5 K
+    # ABOVE the enclosure's internal air.  That is a DECLARED allowance for
+    # the local rise of the drain copper over the bulk of the board, not a
+    # measurement, and it is stated here rather than buried in an expression.
+    # It is small because the same copper carries the whole battery current
+    # and is already charged for its own I^2R in the internal-air term; it is
+    # NOT a claim that the junction has been measured.  C-BAT-GATE-01 is the
+    # measurement of record for both this and the hot-resistance ratio.
+    land_above_internal_air_K=tag(
+        "pass_pair.land_above_internal_air_K", 5.0, DECLARED_ESTIMATE,
+        "DECLARED.  The AO4800's drain lands are charged 5 K above the "
+        "enclosure's internal air before RthetaJL is applied.  The junction "
+        "figure this produces is a MODELLED bound, not a measured one.",
+        measurement_of_record="C-BAT-GATE-01"),
+    theta_basis=(
+        "RthetaJL 40 C/W MAX steady state (junction to LEAD) is what rules, "
+        "because the leads sit on this board's copper.  RthetaJA 62.5 C/W at "
+        "10 s and 90 C/W steady state are the vendor REFERENCE-BOARD figures "
+        "in open still air and are reported only.  The land is taken 5 K "
+        "above the enclosure's internal air as a DECLARED allowance."),
     theta_ja_10s_C_per_W=62.5,
     theta_ja_steady_C_per_W=90.0,
     source="Alpha & Omega Semiconductor AO4800 Rev 6.1 (August 2023), "
@@ -1368,20 +1943,127 @@ USB_VBUS_MIN_V = tag(
     "usb.vbus_source_min_V", 4.75, GUARANTEED_MIN,
     "USB 2.0 specification table 7-7, the low end of the same row.  It is the "
     "corner that decides whether the charger can hold VSYS_REG at all.")
-USB_PATH_MAX_OHM = tag(
-    "usb.cable_and_board_max_ohm", 0.200, DECLARED_ESTIMATE,
-    "DECLARED: the cable, both mated USB connector pairs and the board's own "
-    "VBUS copper to U11's VIN pin.  0.200 ohm is a pessimistic carry for a "
-    "compliant 2 m USB cable with 28 AWG power conductors plus two mated "
-    "receptacles; the board's own VBUS run is a fraction of it.  R11-03 asks "
-    "for 'source/cable drop and U11-pin VIN' explicitly.",
+# ==========================================================================
+# D-793 / R12-02.  THE ADAPTER AND CABLE ARE A CONTRACT, NOT A CONSTANT.
+#
+# ROUND-12, IN ITS OWN WORDS: "Qualify the USB adapter/cable contract at U11
+# VIN.  Do not assume 0.20 ohm covers arbitrary long/28-AWG cables."
+#
+# D-792 carried ONE declared 0.200 ohm figure and called it pessimistic for a
+# 2 m 28 AWG cable.  It is not: 2 m of 28 AWG is 0.2126 ohm/m per conductor
+# and the loop is two conductors, so that cable ALONE is about 0.85 ohm --
+# more than four times the declared number.  And the charge-time ceiling is
+# SENSITIVE to it, because the supplement cliff moves down about 99 mW for
+# every 100 mOhm of source path.
+#
+# SO THE SOURCE IS AN ENUMERATED SET OF CLASSES, each with its own conductor
+# arithmetic, and the release rules over the WORST QUALIFIED one while
+# REPORTING the unqualified one.  The qualification itself is a published,
+# measurable acceptance criterion at U11's VIN pin -- `usb_source_contract()`
+# below -- not an adjective about the cable.
+# ==========================================================================
+AWG24_STRANDED_MAX_OHM_PER_M = tag(
+    "usb.awg24_stranded_max_ohm_per_m", 0.0918, DECLARED_ESTIMATE,
+    "DECLARED.  24 AWG is 0.205 mm2 and 0.0842 ohm/m solid at 20 C; the "
+    "stranded appliance-wire maximum is carried at the same 9 % margin this "
+    "model uses for 26 AWG.",
+    condition="20 C", ruling=False)
+AWG28_STRANDED_MAX_OHM_PER_M = tag(
+    "usb.awg28_stranded_max_ohm_per_m", 0.2320, DECLARED_ESTIMATE,
+    "DECLARED.  28 AWG is 0.0810 mm2 and 0.2126 ohm/m solid at 20 C, carried "
+    "at the same 9 % stranded margin.",
+    condition="20 C", ruling=False)
+USB_MATED_PAIR_OHM = tag(
+    "usb.mated_receptacle_pair_ohm", 0.030, DECLARED_ESTIMATE,
+    "DECLARED, 30 mOhm per mated USB connector pair.  A USB 2.0 cable "
+    "assembly has two of them (the adapter end and the board end).  No "
+    "contact-resistance row is published for the fitted receptacle, so this "
+    "is measured at first article.",
     measurement_of_record="C-CHG-01")
-USB_PATH_MIN_OHM = tag(
-    "usb.cable_and_board_min_ohm", 0.050, DECLARED_ESTIMATE,
-    "DECLARED: a short 20 AWG cable.  The MINIMUM path resistance is the "
-    "corner that leaves the most voltage at U11's VIN pin and therefore the "
-    "most heat in its input FET.",
+USB_BOARD_COPPER_OHM = tag(
+    "usb.board_vbus_copper_ohm", 0.020, DECLARED_ESTIMATE,
+    "DECLARED.  J3's VBUS contacts through R35 to U11's VIN pin, on the "
+    "board.  audit_rail_ampacity measures USB_VBUS_RAW and USB_VBUS_CHG "
+    "directly and both are well under this; it is carried high because the "
+    "charge-time ceiling is what depends on it.",
     measurement_of_record="C-CHG-01")
+
+
+def _usb_path(awg_ohm_per_m, length_m, pairs=2):
+    return round(2.0 * length_m * awg_ohm_per_m
+                 + pairs * USB_MATED_PAIR_OHM + USB_BOARD_COPPER_OHM, 6)
+
+
+# key, vbus at the adapter, path to U11 VIN, whether the release RULES on it.
+USB_SOURCE_CLASSES = (
+    dict(key="short_low_loss", vbus_V=5.25,
+         path_ohm=_usb_path(AWG24_STRANDED_MAX_OHM_PER_M, 0.5),
+         rules=True,
+         what="0.5 m of 24 AWG at the HIGH end of the USB VBUS band.  This "
+              "is the corner that leaves the most voltage at U11's VIN pin "
+              "and therefore the MOST HEAT in its linear input FET."),
+    dict(key="nominal_1m", vbus_V=4.75,
+         path_ohm=_usb_path(AWG24_STRANDED_MAX_OHM_PER_M, 1.0),
+         rules=True,
+         what="1 m of 24 AWG at the low end of the VBUS band -- the cable "
+              "this product is shipped with."),
+    dict(key="worst_qualified", vbus_V=4.75,
+         path_ohm=_usb_path(AWG24_STRANDED_MAX_OHM_PER_M, 2.0),
+         rules=True,
+         what="2 m of 24 AWG at the low end of the VBUS band.  THE WORST "
+              "CABLE THE PUBLISHED CONTRACT ADMITS, and the class that "
+              "decides the charge-time ceiling."),
+    dict(key="unqualified_28awg_2m", vbus_V=4.75,
+         path_ohm=_usb_path(AWG28_STRANDED_MAX_OHM_PER_M, 2.0),
+         rules=False,
+         what="2 m of 28 AWG -- a cheap phone cable, OUTSIDE the published "
+              "contract.  REPORTED so the cost of ignoring the contract is a "
+              "number, not a warning."),
+)
+USB_QUALIFIED_MAX_OHM = tag(
+    "usb.qualified_source_path_max_ohm",
+    max(c["path_ohm"] for c in USB_SOURCE_CLASSES if c["rules"]),
+    DECLARED_ENGINEERING_BOUND,
+    "the worst source path the PUBLISHED charging contract admits: 2 m of "
+    "24 AWG power conductors, two mated USB pairs and the board's own VBUS "
+    "copper.  This is the number the charge-time ceiling is derived at, and "
+    "it is a CONTRACT -- see usb_source_contract().",
+    role=POLICY_BUDGET)
+USB_VBUS_MAX_V = tag(
+    "usb.vbus_source_max_V", 5.25, GUARANTEED_MAX,
+    "USB 2.0 specification table 7-7: VBUS at a high-power host/hub port is "
+    "4.75 V minimum to 5.25 V maximum.  The MAXIMUM is the corner that costs "
+    "the most heat in the BQ25185's input FET, because that element drops "
+    "VIN - VSYS.")
+USB_VBUS_MIN_V = tag(
+    "usb.vbus_source_min_V", 4.75, GUARANTEED_MIN,
+    "USB 2.0 specification table 7-7, the low end of the same row.  It is the "
+    "corner that decides whether the charger can hold VSYS_REG at all.")
+USB_PATH_MAX_OHM = USB_QUALIFIED_MAX_OHM
+USB_PATH_MIN_OHM = min(c["path_ohm"] for c in USB_SOURCE_CLASSES)
+
+
+def usb_source_contract(ichg_A=None):
+    """The PUBLISHED, MEASURABLE acceptance criterion for a charging source.
+
+    An adjective about a cable cannot be checked at first article; a voltage
+    at a named pin can.  The contract is: with the charger drawing its
+    programmed input current, the potential at U11's VIN pin must be at or
+    above the figure below.  C-CHG-01 measures it.
+    """
+    i = BQ25185["ilim_max_A"] if ichg_A is None else ichg_A
+    return dict(
+        measured_at="U11 pin 10 (VIN), referenced to U11's GND pad",
+        at_input_current_A=i,
+        min_vin_pin_V=round(USB_VBUS_MIN_V - i * USB_QUALIFIED_MAX_OHM, 4),
+        qualified_source_path_max_ohm=USB_QUALIFIED_MAX_OHM,
+        classes=[dict(c) for c in USB_SOURCE_CLASSES],
+        operator_rule="charge from the supplied adapter and cable, or from a "
+                      "USB 2.0 source and a cable with 24 AWG or heavier "
+                      "power conductors no longer than 2 m.  A 28 AWG 2 m "
+                      "cable is OUTSIDE this contract and lowers the "
+                      "charge-time system-power ceiling.",
+        measurement_of_record="C-CHG-01")
 
 BQ25185 = dict(
     reference="U11", part="BQ25185", package="DLH0010A",
@@ -1427,97 +2109,124 @@ BQ25185 = dict(
 
 
 def charger_state(p_sys_W, vbat, ilim_corner="max", vbus_corner="max",
-                  spec=None, treg_folds_charge_to_zero=False):
+                  spec=None, treg_folds_charge_to_zero=False,
+                  vbus_V=None, path_ohm=None, source_key=None):
     """ONE physically consistent BQ25185 operating point.  Pure.
 
-    `ilim_corner` and `vbus_corner` each select ONE end of ONE band and the
-    whole state is solved at it -- R11-03's "use one consistent input-current
-    corner per solved state".
+    D-793 / R12-02 rebuilt the branch solving.  Every branch now closes its
+    OWN coupled equations to machine precision rather than to a damped
+    iteration, and the non-trivial ones have closed forms:
+
+      SYS_REG / DPPM   the input holds SYS at VSYS_REG and the CHARGE current
+                       folds back first.  Explicit.
+      INPUT_LIMITED    the input FET is fully on and SYS is wherever the
+                       source and the FET can hold it against a CONSTANT-
+                       POWER load.  That is a quadratic, not an iteration:
+
+                           VSYS^2 - VBUS.VSYS + P.(Rpath + Ron_in) = 0
+
+                       and the STABLE root is the high one.  A negative
+                       discriminant means no operating point exists above the
+                       cell at all, which is exactly the condition under
+                       which the BATFET must take over.
+      SUPPLEMENT       the BATFET conducts and SYS sits BELOW the cell.
+                       Solved by bisection on VSYS of the residual
+
+                           r(VSYS) = VBAT - (P/VSYS - IIN(VSYS)).Ron_bat - VSYS
+
+                       with IIN itself solved against the source:
+
+                           IIN = min(ILIM, (VBUS - VSYS)/(Rpath + Ron_in))
+
+                       so the source, the input FET, the BATFET and the load
+                       all close simultaneously.
+      DISCHARGE        no adapter.
+
+    `vbus_V` / `path_ohm` name a SOURCE CLASS explicitly (R12-02's "qualify
+    the USB adapter/cable contract at U11 VIN").  The `*_corner` strings are
+    retained and map onto the extreme classes so every D-792 call site keeps
+    working.
     """
     s = BQ25185 if spec is None else spec
     ilim = s["ilim_max_A"] if ilim_corner == "max" else s["ilim_min_A"]
-    if vbus_corner == "max":
-        vbus, path = USB_VBUS_MAX_V, USB_PATH_MIN_OHM
+    if vbus_V is None or path_ohm is None:
+        if vbus_corner == "max":
+            vbus, path = USB_VBUS_MAX_V, USB_PATH_MIN_OHM
+        else:
+            vbus, path = USB_VBUS_MIN_V, USB_PATH_MAX_OHM
     else:
-        vbus, path = USB_VBUS_MIN_V, USB_PATH_MAX_OHM
+        vbus, path = vbus_V, path_ohm
     ron_in = s["ron_in_max_ohm"]
     ron_bat = s["ron_bat_max_ohm"] * s["ron_bat_vbat_allowance"]
     vsys_reg = s["vsys_reg_V"] * (1.0 - s["vsys_reg_accuracy"])
     ichg_max = 0.0 if treg_folds_charge_to_zero else s["ichg_A"]
+    r_src = path + ron_in
 
-    def at_vsys(vsys):
-        return p_sys_W / vsys
-
-    # ---- try SYS_REG / DPPM: the input holds SYS at its regulation point ---
     mode = None
-    vsys = vsys_reg
-    i_sys = at_vsys(vsys)
-    i_chg = max(0.0, min(ichg_max, ilim - i_sys))
-    i_in = i_sys + i_chg
     i_supp = 0.0
-    v_pin = vbus - i_in * path
-    if i_in <= ilim + 1e-12 and v_pin - i_in * ron_in >= vsys - 1e-12:
+
+    # ---- 1. SYS_REG / DPPM.  SYS held at its regulation point. ------------
+    #
+    # The CHARGE current folds back FIRST -- that is what DPPM, VINDPM and
+    # TREG all do -- so the question at this node is how much input current
+    # the source can deliver while still holding VSYS_REG, and whether that
+    # covers the system load.  D-792 asked only whether the FULL charge
+    # current fitted, which made a lightly-loaded weak source fall all the way
+    # to SUPPLEMENT with no DPPM step in between.
+    vsys = vsys_reg
+    i_sys = p_sys_W / vsys
+    i_source_cap = (vbus - vsys_reg) / r_src        # holds VSYS_REG exactly
+    i_in_avail = min(ilim, max(0.0, i_source_cap))
+    if i_in_avail >= i_sys - 1e-12:
+        i_chg = max(0.0, min(ichg_max, i_in_avail - i_sys))
+        i_in = i_sys + i_chg
+        v_pin = vbus - i_in * path
         mode = "SYS_REG" if i_chg >= ichg_max - 1e-12 else "DPPM"
     else:
-        # ---- the input cannot hold VSYS_REG.  It is current limited. -------
-        i_in = ilim
+        # ---- 2. INPUT_LIMITED: the quadratic, solved exactly. -------------
         i_chg = 0.0
-        # INPUT_LIMITED: SYS falls to whatever the input FET can hold, with
-        # the whole input current going to the system.  Valid only while that
-        # node stays ABOVE the cell -- otherwise the BATFET conducts.
-        for _ in range(400):
-            v_pin = vbus - i_in * path
-            vsys_try = min(vsys_reg, v_pin - i_in * ron_in)
-            if vsys_try <= 0.1:
-                vsys_try = 0.1
-            i_need = at_vsys(vsys_try)
-            if i_need <= ilim + 1e-12:
-                i_in = i_need
-            else:
-                i_in = ilim
-            if abs(vsys_try - vsys) < 1e-12:
-                vsys = vsys_try
-                break
-            vsys = 0.5 * vsys + 0.5 * vsys_try
-        i_sys = at_vsys(vsys)
-        if vsys >= vbat - 1e-12 and i_sys <= ilim + 1e-9:
+        disc = vbus * vbus - 4.0 * p_sys_W * r_src
+        vsys_il = (0.5 * (vbus + math.sqrt(disc)) if disc >= 0.0 else None)
+        if (vsys_il is not None and vsys_il >= vbat - 1e-12
+                and vsys_il <= vsys_reg + 1e-12
+                and p_sys_W / vsys_il <= ilim + 1e-9):
             mode = "INPUT_LIMITED"
-            i_supp = 0.0
-        else:
-            # ---- SUPPLEMENT.  The BATFET conducts BAT -> SYS, so VSYS is
-            # BELOW the cell by the BATFET drop.  Solve the fixed point.
-            mode = "SUPPLEMENT"
-            i_in = ilim
-            i_chg = 0.0
-            i_supp = 0.0
-            for _ in range(2000):
-                vsys_try = vbat - i_supp * ron_bat
-                if vsys_try <= 0.2:
-                    return None
-                i_sys_try = at_vsys(vsys_try)
-                nxt = max(0.0, i_sys_try - i_in)
-                if abs(nxt - i_supp) < 1e-13:
-                    i_supp = nxt
-                    break
-                i_supp = 0.6 * i_supp + 0.4 * nxt
-            vsys = vbat - i_supp * ron_bat
-            i_sys = at_vsys(vsys)
+            vsys = vsys_il
+            i_sys = p_sys_W / vsys
+            i_in = i_sys
             v_pin = vbus - i_in * path
-            if v_pin - i_in * ron_in < vsys:
-                # the input FET is fully on and cannot even hold this node:
-                # the whole load is on the battery and the adapter contributes
-                # only what its own drop allows.
-                i_in = max(0.0, (v_pin - vsys) / ron_in)
-                for _ in range(2000):
-                    vsys_try = vbat - i_supp * ron_bat
-                    i_sys_try = at_vsys(vsys_try)
-                    nxt = max(0.0, i_sys_try - i_in)
-                    if abs(nxt - i_supp) < 1e-13:
-                        i_supp = nxt
-                        break
-                    i_supp = 0.6 * i_supp + 0.4 * nxt
-                vsys = vbat - i_supp * ron_bat
-                i_sys = at_vsys(vsys)
+        else:
+            # ---- 3. SUPPLEMENT: bisect the coupled residual. --------------
+            mode = "SUPPLEMENT"
+
+            def _i_in_at(vs):
+                return max(0.0, min(ilim, (vbus - vs) / r_src))
+
+            def _resid(vs):
+                return vbat - (p_sys_W / vs - _i_in_at(vs)) * ron_bat - vs
+
+            lo, hi = 1e-3, vbat
+            if _resid(hi) >= 0.0:
+                # The BATFET does not need to conduct at this node at all.
+                # That means the branch selection above was wrong for this
+                # point, and a solver that cannot place a point must say so
+                # rather than return an inconsistent one.
+                return None
+            for _ in range(400):
+                mid = 0.5 * (lo + hi)
+                if _resid(mid) >= 0.0:
+                    lo = mid
+                else:
+                    hi = mid
+            vs = 0.5 * (lo + hi)
+            if vs <= 0.2:
+                return None
+            vsys = vs
+            i_in = _i_in_at(vsys)
+            i_sys = p_sys_W / vsys
+            i_supp = max(0.0, i_sys - i_in)
+            i_chg = 0.0
+            v_pin = vbus - i_in * path
 
     v_pin = vbus - i_in * path
     # ---- the dissipation, priced as the PHYSICS and not as a resistor ------
@@ -1528,10 +2237,20 @@ def charger_state(p_sys_W, vbat, ilim_corner="max", vbus_corner="max",
     p_in = vbus * i_in                      # what leaves the source
     p_stored = vbat * i_chg
     p_from_cell = vbat * i_supp
+    p_cable = i_in * i_in * path
+    # D-793 / R12-02 + R12-04.  THE TERMINAL-POWER BALANCE IS AN INDEPENDENT
+    # ORACLE NOW.  D-792 DEFINED `total_dissipation_W` as
+    # `p_in + p_from_cell - p_sys - p_stored` and then "checked" energy
+    # balance by asserting that same expression equals it -- which is 0 = 0.
+    # The check that means something is that the TERMINAL balance equals the
+    # sum of the INTERNAL loss elements, computed from different quantities:
+    #     P_in + VBAT.I_supp - P_sys - VBAT.I_chg  ==  P_pkg + I_in^2.Rpath
     p_diss_total = p_in + p_from_cell - p_sys_W - p_stored
+    p_loss_sum = p_pkg + p_cable
     return dict(
         mode=mode,
         ilim_corner=ilim_corner, vbus_corner=vbus_corner,
+        source_key=source_key,
         ilim_A=ilim, vbus_source_V=vbus, path_ohm=path,
         vin_pin_V=round(v_pin, 6),
         vsys_V=round(vsys, 6), vbat_V=round(vbat, 6),
@@ -1542,18 +2261,29 @@ def charger_state(p_sys_W, vbat, ilim_corner="max", vbus_corner="max",
         input_fet_resistive_only_W=round(i_in * i_in * ron_in, 6),
         charge_fet_W=round(p_charge_fet, 6),
         batfet_W=round(p_batfet, 6),
+        cable_W=round(p_cable, 6),
         package_W=round(p_pkg, 6),
         package_W_treg_cannot_reduce=round(p_input_fet + p_batfet, 6),
         source_W=round(p_in, 6), stored_W=round(p_stored, 6),
         from_cell_W=round(p_from_cell, 6),
         total_dissipation_W=round(p_diss_total, 6),
+        internal_loss_sum_W=round(p_loss_sum, 6),
+        terminal_vs_loss_residual_W=round(p_diss_total - p_loss_sum, 12),
+        raw=dict(vsys=vsys, i_in=i_in, i_sys=i_sys, i_chg=i_chg,
+                 i_supp=i_supp, v_pin=v_pin, vbus=vbus, path=path,
+                 ron_in=ron_in, ron_bat=ron_bat, ilim=ilim,
+                 vsys_reg=vsys_reg, p_sys=p_sys_W, vbat=vbat),
         invariants=charger_invariants(
             i_in, i_supp, i_sys, i_chg, vsys, vbat, v_pin, ron_in,
-            p_in, p_from_cell, p_sys_W, p_stored, p_diss_total))
+            p_in, p_from_cell, p_sys_W, p_stored, p_diss_total,
+            mode=mode, ilim=ilim, vsys_reg=vsys_reg, ron_bat=ron_bat,
+            path=path, vbus=vbus, p_loss_sum=p_loss_sum))
 
 
 def charger_invariants(i_in, i_supp, i_sys, i_chg, vsys, vbat, v_pin, ron_in,
-                       p_in, p_from_cell, p_sys_W, p_stored, p_diss):
+                       p_in, p_from_cell, p_sys_W, p_stored, p_diss,
+                       mode=None, ilim=None, vsys_reg=None, ron_bat=None,
+                       path=None, vbus=None, p_loss_sum=None):
     eps = 1e-6
     inv = dict(
         kcl_at_sys=bool(abs(i_in + i_supp - i_sys - i_chg) < 1e-6),
@@ -1566,11 +2296,43 @@ def charger_invariants(i_in, i_supp, i_sys, i_chg, vsys, vbat, v_pin, ron_in,
         kvl_input_fet_drop_is_non_negative=bool(v_pin >= vsys - 1e-9),
         input_fet_drop_is_at_least_resistive=bool(
             (v_pin - vsys) >= i_in * ron_in - 1e-6 or i_in <= eps),
-        energy_balance=bool(abs(p_in + p_from_cell - p_sys_W - p_stored
-                                - p_diss) < 1e-6),
         dissipation_is_non_negative=bool(p_diss >= -1e-9),
         every_current_is_non_negative=bool(
             min(i_in, i_supp, i_sys, i_chg) >= -1e-9))
-    inv["ok"] = all(v for k, v in inv.items()
-                    if isinstance(v, bool))
+    # ---- D-793 / R12-02.  THE INVARIANTS D-792 DID NOT HAVE. --------------
+    # `energy_balance` used to compare the definition of p_diss with itself.
+    # The real statement is that the TERMINAL balance and the INTERNAL loss
+    # sum agree -- two different sets of quantities, one identity.
+    if p_loss_sum is not None:
+        inv["energy_balance"] = bool(abs(p_diss - p_loss_sum) < 1e-9)
+        inv["energy_residual_W"] = round(p_diss - p_loss_sum, 12)
+    else:
+        inv["energy_balance"] = bool(
+            abs(p_in + p_from_cell - p_sys_W - p_stored - p_diss) < 1e-6)
+    # The LOAD really is a constant-power load at the solved node.
+    inv["load_is_constant_power"] = bool(abs(vsys * i_sys - p_sys_W) < 1e-6)
+    # Every branch must satisfy its OWN defining condition.  This is what
+    # R12-02 means by "enforce branch inequalities": a state that is labelled
+    # SUPPLEMENT but whose input could have held SYS is not a solution.
+    if mode is not None and None not in (ilim, vsys_reg, ron_bat, path, vbus):
+        r_src = path + ron_in
+        if mode in ("SYS_REG", "DPPM"):
+            inv["branch_condition"] = bool(
+                abs(vsys - vsys_reg) < 1e-9 and i_in <= ilim + 1e-9
+                and v_pin - i_in * ron_in >= vsys - 1e-9)
+        elif mode == "INPUT_LIMITED":
+            inv["branch_condition"] = bool(
+                i_chg <= eps and i_supp <= eps
+                and vsys <= vsys_reg + 1e-9 and vsys >= vbat - 1e-9
+                and i_in <= ilim + 1e-9
+                and abs(vsys - (vbus - i_in * r_src)) < 1e-6)
+        elif mode == "SUPPLEMENT":
+            inv["branch_condition"] = bool(
+                i_chg <= eps and vsys <= vbat + 1e-9
+                and abs(vsys - (vbat - i_supp * ron_bat)) < 1e-6
+                and (i_in >= ilim - 1e-9
+                     or abs(i_in - (vbus - vsys) / r_src) < 1e-6))
+        else:
+            inv["branch_condition"] = True
+    inv["ok"] = all(v for k, v in inv.items() if isinstance(v, bool))
     return inv

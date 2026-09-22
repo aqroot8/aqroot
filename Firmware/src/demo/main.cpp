@@ -165,6 +165,30 @@ static void releaseExpanderResetLines() {
   report("reset lines released (U2 P00/P01/P04)", r.ok(), detail);
 }
 
+// D-793 / R12-03.  BEFORE ANYTHING IS PERMITTED, THE RADIOS ARE QUIESCED.
+//
+// U7 and U8 stay powered across an MCU reset, so a transmit this image did not
+// start may still be running.  `DemoBringupApp` treats the state as KEYED
+// until this returns a CONFIRMED quiesce, which refuses accessory power and
+// refuses keying a second transmitter -- the pessimistic direction, for the
+// same reason D-783 made the expander latch pessimistic.
+static bool bringUpSpiBAndQuiesceRadios() {
+  g_selects.begin();
+  SPI.begin(AQROOT_PIN_SPI_B_SCK, AQROOT_PIN_SPI_B_MISO, AQROOT_PIN_SPI_B_MOSI,
+            -1);
+  const RadioQuiesce q = quiesceRadios(g_spi_b);
+  g_app.noteRadiosQuiesced(q.ok());
+  char detail[176];
+  snprintf(detail, sizeof(detail),
+           "CC1101 MARCSTATE=0x%02X (%s), SX1262 status=0x%02X (%s), NFC field "
+           "state UNKNOWN-but-bounded (carried as a duty allowance)",
+           q.cc1101_marcstate, q.cc1101_confirmed ? "IDLE" : "NOT IDLE",
+           q.sx1262_status, q.sx1262_confirmed ? "STANDBY" : "NOT STANDBY");
+  report("radios quiesced after MCU reset (U7 SRES/SIDLE, U8 SetStandby)",
+         q.ok(), detail);
+  return q.ok();
+}
+
 static void probeRadios() {
   g_selects.begin();
   SPI.begin(AQROOT_PIN_SPI_B_SCK, AQROOT_PIN_SPI_B_MISO, AQROOT_PIN_SPI_B_MOSI,
@@ -276,6 +300,13 @@ void setup() {
 
   scanI2c();
   releaseExpanderResetLines();
+
+  // D-793 / R12-03.  AFTER the expander reset release -- U2.P01 is the
+  // SX1262's reset, so the part cannot answer before it -- and BEFORE the
+  // gauge qualification, the console loop, or anything that could enable an
+  // accessory rail.  Until this confirms, `g_app` reports sub-GHz TX as KEYED
+  // and every accessory permission is refused.
+  (void)bringUpSpiBAndQuiesceRadios();
 
   probeI2cDevice("BMI270 U4 chip id", AQROOT_I2C_ADDR_IMU, 0x00, 0x24, true);
   // INTERNAL_STATUS.message[3:0]: 0 = not initialised, 1 = init_ok.  The BMI270
@@ -457,6 +488,19 @@ void loop() {
   // the subsequent VCELL permission both succeed.  D-789 / D788-04: the
   // condition AND the period live in `DemoBringupApp`, which a host test runs.
   (void)g_app.backgroundGaugeRequalification();
+  // D-793 / R12-03.  LIVENESS.  A board that failed to quiesce once would
+  // otherwise sit with an unknown radio state forever and refuse accessory
+  // power with no way back -- the same shape as the expander recovery retry.
+  if (!g_app.radiosQuiesced()) {
+    static uint32_t last_quiesce = 0;
+    static bool quiesce_retry_started = false;
+    const uint32_t now = millis();
+    if (!quiesce_retry_started || now - last_quiesce >= kRadioQuiescePeriodMs) {
+      quiesce_retry_started = true;
+      last_quiesce = now;
+      (void)bringUpSpiBAndQuiesceRadios();
+    }
+  }
   g_app.periodicBatteryGuard();
   // D-790 / D789-A09: any non-accessory command whose write did not land is
   // retried here until the physical latch confirms it.
@@ -507,6 +551,13 @@ void loop() {
       case 's': printStatus(); break;
       case 'd': {
         if (!g_app.blockingDemoTestAllowed("microSD test")) break;
+        // D-793 / R12-08: at most ONE bursty peripheral at a time, so the
+        // permission table can be derived at the worst SINGLE burst instead
+        // of the coincident sum of all three.
+        if (!g_app.burstAllowed(BurstLoad::MicroSdWrite, "microSD test")) break;
+        BurstArbiter::Hold burst(g_app.burstArbiter(),
+                                 BurstLoad::MicroSdWrite);
+        if (!burst.ok()) break;
         // The ONLY test on this board that proves SPI-A MISO: R112 is DNP, so
         // the display SDO never reaches the MCU and the card is the sole reader.
         const SdProbeResult sd = probeSdCard();
@@ -540,6 +591,10 @@ void loop() {
       }
       case 'x': {
         if (!g_app.blockingDemoTestAllowed("IR test")) break;
+        // D-793 / R12-08: the same serialisation the microSD path takes.
+        if (!g_app.burstAllowed(BurstLoad::IrTransmit, "IR test")) break;
+        BurstArbiter::Hold burst(g_app.burstArbiter(), BurstLoad::IrTransmit);
+        if (!burst.ok()) break;
         const IrSelfTest ir = irSelfTest();
         Serial.printf("IR  %u/%u samples low during a 38 kHz burst -- %s\n",
                       ir.low_samples, ir.total_samples,

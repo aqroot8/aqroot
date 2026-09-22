@@ -1314,9 +1314,10 @@ def fab13(pkg, manifest):
 # handed the right PDF from the wrong board revision.  The exporter now embeds
 # those facts and this clause reads the RELEASED PDFs back, rather than trusting
 # the generator source that was supposed to write them.
-def _fab14_survey(pkg, manifest, text_override=None):
+def _fab14_survey(pkg, manifest, text_override=None, cto_override=None):
     block = manifest.get("assembly_drawings") or {}
     problems, rows = [], {}
+    identity = {}
     board_sha = sha256(BOARD)
     release = block.get("release")
     if block.get("board_sha256") != board_sha:
@@ -1339,6 +1340,55 @@ def _fab14_survey(pkg, manifest, text_override=None):
         problems.append(
             "assembly drawings carry release %r but the current release is %r "
             "(newest CHANGELOG entry)" % (release, expected_release))
+    # D-793 / R12-06.  ONE DOCUMENT CANNOT VOUCH FOR ITSELF.
+    #
+    # Round-12: "Current assembly PDFs still say RELEASE D-791 ... Add gates
+    # that machine-read release identity from PDFs/notes and compare to
+    # current marker/HEAD release."
+    #
+    # BOTH HALVES REPRODUCE, AND THE SECOND ONE EXPLAINS THE FIRST.  The clause
+    # above compares the PDF's printed label with the newest CHANGELOG heading,
+    # which is a real check -- but D-792 shipped WITHOUT A CHANGELOG ENTRY, so
+    # both sides of that comparison said `D-791` and it passed.  A release is
+    # marked in TWO places in this repository and they must agree: the release
+    # CHANGELOG and `CTO_DECISIONS.md`.  A release that forgets either one
+    # cannot print its own identity on a drawing a fabricator reads.
+    cto = ROOT / "docs/full-beta-v2/CTO_DECISIONS.md"
+    newest_decision = None
+    cto_text = (cto_override if cto_override is not None
+                else (cto.read_text(encoding="utf-8", errors="replace")
+                      if cto.is_file() else None))
+    if cto_text is not None:
+        for line in cto_text.splitlines():
+            if not line.startswith("## "):
+                continue
+            m = re.search(r"\bD-(\d{3})\b", line)
+            if m:
+                newest_decision = "D-%s" % m.group(1)
+                break
+    if newest_decision is None:
+        problems.append("CTO_DECISIONS.md carries no '## ... D-NNN ...' "
+                        "heading, so the current release cannot be identified")
+    elif expected_release and newest_decision != expected_release:
+        problems.append(
+            "the release CHANGELOG's newest entry is %r but CTO_DECISIONS' "
+            "newest decision is %r -- a release that is marked in only one of "
+            "the two places prints the PREVIOUS release's label on its "
+            "assembly drawings (R12-06)"
+            % (expected_release, newest_decision))
+    identity = dict(
+        printed_release=release,
+        newest_changelog_entry=expected_release,
+        newest_cto_decision=newest_decision,
+        release_marker_sources_agree=bool(
+            newest_decision and expected_release
+            and newest_decision == expected_release),
+        why="R12-06.  A release is marked in TWO places -- the release "
+            "CHANGELOG and CTO_DECISIONS -- and the assembly drawings' label "
+            "is DERIVED from the first.  D-792 shipped without a CHANGELOG "
+            "entry, so both sides of the older comparison said D-791 and it "
+            "passed while the drawings carried the previous release's "
+            "identity.")
     if not block.get("pin1_polarity_note"):
         problems.append("manifest does not declare pin-1/polarity note")
     if not block.get("manual_assembly_note"):
@@ -1387,11 +1437,11 @@ def _fab14_survey(pkg, manifest, text_override=None):
             problems.append("%s assembly identification/orientation is incomplete" % side)
         rows[side] = dict(file=meta.get("file"), checks=checks,
                           critical_refs=list(want["critical"]))
-    return rows, problems
+    return rows, problems, identity
 
 
 def fab14(pkg, manifest):
-    rows, problems = _fab14_survey(pkg, manifest)
+    rows, problems, identity = _fab14_survey(pkg, manifest)
 
     # NON-VACUITY: alter the extracted release text, not the PDF file.  Each
     # mutation removes one load-bearing fact and the same survey must refuse it.
@@ -1429,9 +1479,18 @@ def fab14(pkg, manifest):
         bad_manifest["assembly_drawings"]["sides"]["top"]["centered"] = False
         controls["unsafe_assembly_plot_scale_is_refused"] = bool(
             _fab14_survey(pkg, bad_manifest)[1])
+        # D-793 / R12-06.  THE TWO RELEASE MARKERS MUST AGREE, and the control
+        # is the exact D-792 situation: a release that updates CTO_DECISIONS
+        # and forgets the CHANGELOG prints the PREVIOUS release's label.
+        controls["a_release_marked_in_only_one_place_is_refused"] = bool(
+            _fab14_survey(pkg, manifest, cto_override="## D-999 - a decision "
+                          "the release CHANGELOG has never heard of\n")[1])
+        controls["a_cto_decisions_with_no_decision_heading_is_refused"] = bool(
+            _fab14_survey(pkg, manifest, cto_override="no headings here\n")[1])
     return dict(ok=(not problems and bool(controls) and all(controls.values())),
                 release=(manifest.get("assembly_drawings") or {}).get("release"),
                 board_sha256=sha256(BOARD), drawings=rows,
+                release_identity=identity,
                 controls_refused=controls, problems=problems)
 
 

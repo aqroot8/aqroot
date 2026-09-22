@@ -154,7 +154,7 @@ POWER_POLICY_CONTROLS = [
     # the single one stops anticipating the second rail's own load step.
     ("the published dual-rail envelope drops below the single-rail one",
      "aqroot_accessory_power_policy.h",
-     "constexpr float kAccessoryDualRailFloorV = 3.95f;",
+     "constexpr float kAccessoryDualRailFloorV = 3.85f;",
      "constexpr float kAccessoryDualRailFloorV = 3.65f;"),
     # ---- D-792 / R11-04.  THE PERMISSION TABLE HAS TO BITE. ----------------
     # Every one of these compiles, and every one of them is a way the table
@@ -163,7 +163,7 @@ POWER_POLICY_CONTROLS = [
     # the replacement not being decorative.
     ("the first-rail floor is put back to D-791's reproduced 3.55 V",
      "aqroot_accessory_power_policy.h",
-     "      {3.65f, 3.65f},  // 0  no optional mode",
+     "      {3.80f, 3.80f},  // 0  no optional mode",
      "      {3.55f, 3.55f},  // 0  no optional mode"),
     ("a REFUSED mode combination is encoded as a high floor instead of a "
      "refusal, so a full pack authorises it",
@@ -172,25 +172,8 @@ POWER_POLICY_CONTROLS = [
      "      {4.15f, 4.15f},  // 5  Wi-Fi + sub-GHz"),
     ("the amplifier's own load stops raising the floor",
      "aqroot_accessory_power_policy.h",
-     "      {3.75f, 3.75f},  // 2  audio at the capped level",
-     "      {3.65f, 3.65f},  // 2  audio at the capped level"),
-    ("the mode bits are transposed, so the table is indexed by the wrong "
-     "mode set",
-     "aqroot_accessory_power_policy.h",
-     """  return (s.wifi_tx ? 1u : 0u) | (s.amplifier_on ? 2u : 0u) |
-         (s.subghz_tx ? 4u : 0u);""",
-     """  return (s.wifi_tx ? 4u : 0u) | (s.amplifier_on ? 2u : 0u) |
-         (s.subghz_tx ? 1u : 0u);"""),
-    ("the refusal sentinel stops refusing and becomes a comparison a caller "
-     "can pass",
-     "aqroot_accessory_power_policy.h",
-     """inline bool accessoryCombinationPermitted(const AccessoryLoadState &modes,
-                                          int rails_after) {
-  return accessoryEnableFloor(modes, rails_after) < kAccessoryNotPermittedV;""",
-     """inline bool accessoryCombinationPermitted(const AccessoryLoadState &modes,
-                                          int rails_after) {
-  (void)modes; (void)rails_after;
-  return true;"""),
+     "      {3.85f, 3.85f},  // 2  audio at the capped level",
+     "      {3.80f, 3.80f},  // 2  audio at the capped level"),
     ("the MODE edge's own refusal predicate stops refusing",
      "aqroot_accessory_power_policy.h",
      """inline bool accessoryModeEntryPermitted(const AccessoryLoadState &modes_after,
@@ -233,6 +216,29 @@ POWER_POLICY_CONTROLS = [
      """  return vcell_valid && vcellIsPlausible(vcell)
          && vcell >= accessoryModeEntryFloor(after, rails_on);""",
      """  (void)vcell_valid; (void)vcell;
+  return true;"""),
+    # D-793 RE-AIMED THIS.  D-792 swapped Wi-Fi with sub-GHz, and under the
+    # D-793 table both of those rows are the SAME refusal sentinel, so the
+    # swap became an EQUIVALENT MUTANT -- unobservable, and therefore not a
+    # control.  Swapping Wi-Fi with the AMPLIFIER is observable in both
+    # directions: a board with the amplifier on looks up a refusal, and a
+    # board transmitting Wi-Fi looks up a 3.85 V floor it must not have.
+    ("the mode bits are transposed, so the table is indexed by the wrong "
+     "mode set",
+     "aqroot_accessory_power_policy.h",
+     """  return (s.wifi_tx ? 1u : 0u) | (s.amplifier_on ? 2u : 0u) |
+         (s.subghz_tx ? 4u : 0u);""",
+     """  return (s.wifi_tx ? 2u : 0u) | (s.amplifier_on ? 1u : 0u) |
+         (s.subghz_tx ? 4u : 0u);"""),
+    ("the refusal sentinel stops refusing and becomes a comparison a caller "
+     "can pass",
+     "aqroot_accessory_power_policy.h",
+     """inline bool accessoryCombinationPermitted(const AccessoryLoadState &modes,
+                                          int rails_after) {
+  return accessoryEnableFloor(modes, rails_after) < kAccessoryNotPermittedV;""",
+     """inline bool accessoryCombinationPermitted(const AccessoryLoadState &modes,
+                                          int rails_after) {
+  (void)modes; (void)rails_after;
   return true;"""),
     ("unreadable VCELL fails open instead of shedding active rails",
      "aqroot_accessory_power_policy.h",
@@ -400,6 +406,41 @@ PRODUCTION_TIMING_CONTROLS = [
 # `DemoBringupApp` over a recording bus with a physical output-latch model and
 # drives the real methods.
 PRODUCTION_CALLER_CONTROLS = [
+    # ---- D-793 / R12-03.  THE RETAINED RADIO STATE, WHICH AN MCU RESET
+    # CANNOT SEE.  Every one of these compiles, and every one is a way the
+    # image could go back to believing a powered transceiver is idle because
+    # a C++ member says so.
+    ("the radio state is assumed KNOWN at construction, which is exactly "
+     "what an MCU reset makes it",
+     "aqroot_demo_bringup_app.h",
+     "  bool radios_quiesced_ = false;",
+     "  bool radios_quiesced_ = true;"),
+    ("the mode set stops reading an unquiesced radio as KEYED",
+     "aqroot_demo_bringup_app.h",
+     "    s.subghz_tx = subghz_tx_ || !radios_quiesced_;",
+     "    s.subghz_tx = subghz_tx_;"),
+    ("the accessory permission stops refusing while the physical radio "
+     "state is unknown",
+     "aqroot_demo_bringup_app.h",
+     "    if (!radios_quiesced_) {",
+     "    if (radios_quiesced_ && false) {"),
+    ("a warm-reset recovery stops invalidating the radio state it can no "
+     "longer vouch for",
+     "aqroot_demo_bringup_app.h",
+     "    radios_quiesced_ = false;\n    if (disp_reset_intent_.want)",
+     "    if (disp_reset_intent_.want)"),
+    # ---- D-793 / R12-08.  THE BURST ARBITER.  The permission table may be
+    # derived at the worst SINGLE burst only because the firmware serialises
+    # them; these are the ways that could stop being true.
+    ("the burst arbiter admits a second concurrent bursty load",
+     "aqroot_accessory_power_policy.h",
+     "    if (active_ != BurstLoad::None) return false;\n    active_ = which;",
+     "    active_ = which;"),
+    ("the arbiter's RAII hold stops releasing, so one burst wedges every "
+     "later one",
+     "aqroot_accessory_power_policy.h",
+     "    ~Hold() { if (ok_) arbiter_.end(which_); }",
+     "    ~Hold() { }"),
     # --- D788-04: the outer gauge caller -----------------------------------
     ("the outer gauge caller early-returns and leaves the tested helper dead",
      "aqroot_demo_bringup_app.h",
@@ -550,6 +591,34 @@ PRODUCTION_CALLER_CONTROLS = [
 # and the console dispatch over a host Arduino core and a physical-latch board
 # model.
 PRODUCTION_IMAGE_CONTROLS = [
+    # ---- D-793 / R12-03, AT THE IMAGE LEVEL.  These are the mutations the
+    # RETAINED-CC1101 scenarios in `test_production_image.cpp` exist to catch:
+    # each one compiles, and each one puts the image back to believing a
+    # powered transceiver is idle because a C++ member says so.
+    ("the image never quiesces the radios at boot",
+     "demo/main.cpp",
+     "  (void)bringUpSpiBAndQuiesceRadios();",
+     "  (void)0;"),
+    ("the image quiesces but reports the result as CONFIRMED regardless",
+     "demo/main.cpp",
+     "  g_app.noteRadiosQuiesced(q.ok());",
+     "  g_app.noteRadiosQuiesced(true);"),
+    ("the CC1101 quiesce accepts ANY MARCSTATE at or above IDLE, which is "
+     "every state including TX",
+     "aqroot_demo_radios.h",
+     "  return (marc & 0x1F) == kMarcstateIdle;",
+     "  return (marc & 0x1F) >= kMarcstateIdle;"),
+    ("the CC1101 quiesce issues the RESET STROBE as a PARTNUM read -- the "
+     "burst-bit trap probeCc1101 documents, which identifies instead of "
+     "resetting",
+     "aqroot_demo_radios.h",
+     "  SPI.transfer(kSres);                 // and reset the part outright",
+     "  SPI.transfer(uint8_t(kReadBurst | kSres));"),
+    ("the loop stops retrying a failed quiesce, so a board that missed it "
+     "once refuses accessory power forever",
+     "demo/main.cpp",
+     "  if (!g_app.radiosQuiesced()) {",
+     "  if (false) {"),
     # --- D-792 / R11-04: the SPI-B transmit gate is never attached.  The image
     # still builds, still runs, still probes both radios -- and every future TX
     # path silently loses the accessory permission's mode edge.
@@ -749,6 +818,15 @@ PRODUCTION_IMAGE_CONTROLS = [
 
 
 BUS_CONTROLS = [
+    # ---- D-793 / R12-03.  `transmitting_` is a C++ member and an MCU reset
+    # zeroes it; U7 and U8 stay powered.  Until the boot path has proven the
+    # physical state, NO transmitter may be keyed -- the NFC front end
+    # included, which is exempt from the LOAD rule and not from this one.
+    ("the bus stops asking whether the physical radio state is known before "
+     "keying a transmitter",
+     "aqroot_spi_bus_b.h",
+     "    if (authority_ != nullptr && !authority_->radioPhysicalStateIsKnown()) {",
+     "    if (authority_ == nullptr && false) {"),
     ("the bus accepts a second concurrent chip select",
      "aqroot_spi_bus_b.h",
      "    if (selected_ != SpiBDevice::None) return false;",

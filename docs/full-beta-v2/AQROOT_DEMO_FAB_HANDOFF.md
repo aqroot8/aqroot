@@ -2,19 +2,19 @@
 
 
 
-> # **STATUS: D-792 ROUND-11 CONVERGENCE CORRECTION — EXTERNAL-REVIEW TARGET, BOARD AUTHORITY `c8eabd43` (2026-09-22).**
+> # **STATUS: D-793 ROUND-12 FULL-CONVERGENCE CORRECTION — EXTERNAL-REVIEW TARGET, BOARD AUTHORITY `c8eabd43` (2026-09-22).**
 >
-> **D-792 supersedes D-791, which Round-11 external review REJECTED.  THIS IS A
+> **D-793 supersedes D-792, which Round-12 external review REJECTED.  THIS IS A
 > REVIEW TARGET, NOT A FABRICATION AUTHORIZATION — DO NOT ORDER.  Both published
 > per-rail accessory budgets — 400 mA on the switched 3.3 V rail and 300 mA on
 > the 5 V rail, each deliverable ALONE — are UNCHANGED.**
 >
-> Astra graded the D-791 target **C — DO NOT ORDER** with 4 high, 3 medium and
-> 3 low findings plus sourcing shortages; Fable graded B on verified scope and
-> declared its own review INCOMPLETE.  Astra's reproduced counterexamples control.
+> Astra graded the D-792 target **C — DO NOT ORDER** with eight findings; Fable
+> graded B on verified scope and declared its own review INCOMPLETE.  Astra's
+> reproduced counterexamples control.
 > **No mandatory copper respin was established, and none is made here: NO copper,
 > NO net, NO footprint, NO placement, NO part value and NO protected-copper
-> object moves at D-792.**  Connectivity is unchanged at **174 retained / 173
+> object moves at D-793.**  Connectivity is unchanged at **174 retained / 173
 > connected / one owner-approved `U11.3` open / zero unapproved**.
 >
 > This is a CONVERGENCE release.  What changes is the verification architecture
@@ -22,77 +22,103 @@
 >
 > ### The one finding a fabricator should read first
 >
-> **`R11-02`: the load ledger had no processor line at all.**  A Demo holding its
-> display at full brightness with no radio transmitting was modelled as drawing
-> **nothing** for the ESP32-S3 driving it.  Two files also described two
-> different boards: the backlight converter's input was SOLVED at 233.13 mA in
-> `demo_feature_contract` and TYPED at 211.58 mA in `audit_rail_ampacity`, and
-> the typed copy ruled the whole cell-to-load network.  There is now **ONE
-> canonical model** — `hardware/demo/manufacturing/aqroot_power_model.py` — that
-> every gate, every document value and the firmware policy table are derived
-> from.  Nothing is typed twice.
+> **`R12-01`: the Molex connector specification retrieved, and its own numbers
+> are worse than the allowances that stood in for them.**  D-792 recorded
+> `5055700003-PS` as not obtainable and DECLARED 30 mΩ for an aged mated
+> contact and 1 mΩ per crimp.  The document is in the tree now: **20 mΩ MAX**
+> initial contact resistance with the conductor subtracted (§6.1.1), **5 mΩ
+> MAX** on the crimped portion (§6.1.4), and **40 mΩ MAX** after every
+> durability and environmental exposure the specification defines (§6.2.6–6.2.8
+> and §6.3.1–6.3.7).  That is the third time in this programme that
+> "unobtainable" has meant "not fetched from here".
 >
-> ### The five corrections that move published numbers
+> ### The corrections that move published numbers
 >
-> * **`R11-02` — the canonical `+3V3` ledger.**  A **165.48 mA** ESP32-S3
->   baseline (CPU, flash and in-package PSRAM) enters every state, and the
->   Wi-Fi/BLE line becomes the INCREMENT over it so baseline + increment is
->   exactly Espressif's own 500 mA supply requirement.  The internal `+3V3` peak
->   envelope moves 1.1653 A → **1.310554 A**.
-> * **`R11-07` — the battery path is an itemisation, not an allowance.**  D-791
->   carried one 54 mΩ number for the harness.  Every conductor, mated contact,
->   crimp and solder barrel is now itemised with its own length, count,
->   provenance tag and basis: **132.282 mΩ** hot and aged, and the
->   cell-to-`BAT_PROTECTED_P` fixed series resistance is **249.782 mΩ** against
->   D-791's 124 mΩ.
-> * **`R11-03` — the charger model held a physically impossible state.**  D-791
->   could put `SYS` at 4.41 V while a 3.2 V battery "supplemented" into it.
->   There is now an explicit BQ25185 mode solver with KCL, KVL and energy balance
->   as hard invariants, and the input path is priced as the LINEAR pass element
->   it is instead of as a resistor.
-> * **`R11-04` — the accessory permission was derived from the wrong pre-state.**
->   Round-11 enabled the 5 V rail at D-791's own 3.55 V constant and watched the
->   retention rule shed it.  An idle plugged-in accessory holds the node near open
->   circuit and that is the reading the permission is granted on.
-> * **`R11-10` — the backlight inductor's DCR was a typical.**  Coilcraft
->   publishes **57.4 mΩ** MAXIMUM for the fitted XFL4020-472MEC and the model
->   carried the 52.2 mΩ typical from the distributor record.  The ruling value is
->   the manufacturer maximum: **57.4 mΩ**.
+> * **`R12-01` — the source path is complete now.**  The three contact terms
+>   above are the manufacturer's, and two terms that were in NO model at all
+>   are added: the MEASURED `J4.1 → F1 → Q2 → Q3 → R75.1` board copper, and the
+>   ground return through the two solid `In1`/`In4` planes.  `R75`'s 1 % HIGH
+>   corner is **10.100 mΩ**, not the nominal its own condition string claimed;
+>   `F1` carries a declared tolerance.  The itemised harness is
+>   **177.478 mΩ** hot and aged and the whole fixed series path, forward and
+>   return, is **355.204 mΩ**.
+> * **`R12-05` — Espressif's 500 mA is a requirement on the SUPPLY.**  Table
+>   6-2's `IVDD` row is a Recommended Operating Condition on the external power
+>   supply and D-792 used it as the module's own maximum draw.  The
+>   transmitting total is built from published CURRENT rows instead — the
+>   107.9 mA modem-sleep worst row, the note-3 10 mA flash allowance, a
+>   declared 20 mA for in-package PSRAM and the 355 mA Table 6-4 transmit peak
+>   Espressif rates at a 100 % duty cycle — giving 591.5 mA.  The internal
+>   `+3V3` peak envelope is **1.402034 A** and the `P3V3_MAIN` ampacity audit
+>   current rises to 2.25 A.
+> * **`R12-02` — the published charge-time ceiling rounded UP across a branch
+>   discontinuity.**  D-792's bisection produced 4.06293325 W and the document
+>   printed a now-RETIRED 4.063 W; at exactly that number the solver is in the
+>   supplement regime and the junction is 155.4 °C.  The ceiling is rounded DOWN onto a
+>   0.05 W grid with a declared guardband now, and the charging CABLE is a
+>   published, measurable contract.
+> * **`R12-03` — a radio can still be transmitting after an MCU reset.**  `U7`
+>   and `U8` stay powered; parking a chip select is not a radio reset.  The
+>   boot path quiesces both and VERIFIES it from their own status registers,
+>   and until it does the firmware treats sub-GHz TX as KEYED and refuses
+>   accessory power.
+> * **`R12-08` — a duty average is not an instantaneous permission bound.**  The
+>   firmware serialises the microSD, NFC and IR bursts so a permission edge is
+>   judged against the worst SINGLE burst instead of the sum of all three.
+> * **`R12-04` — the canonical model cannot be its own oracle.**  A second,
+>   structurally independent equation module re-derives what every solved state
+>   claims, completeness is a HARD verdict term, and six named mutations must
+>   each be caught on every release run.
+> * **RETAINED FROM D-792, unchanged and still ruling:** the backlight
+>   inductor's DCR is Coilcraft's published MAXIMUM for the fitted
+>   XFL4020-472MEC, **57.4 mΩ**, not the 52.2 mΩ typical the distributor record
+>   prints.
 >
 > ### What an assembler and a test technician must use
 >
 > **THE ACCESSORY VCELL FLOORS MOVED AGAIN, AND SO DID THE BENCH POINTS.**  The
 > firmware constants are now retention **3.20 V**, first-rail enable
-> **3.95 V** and second-rail enable **3.95 V**, and those two enable numbers are
-> the
-> published ENVELOPE of a mode-indexed permission table with **two arrival
+> **3.85 V** and second-rail enable **3.85 V**, and those two enable numbers are
+> the published ENVELOPE of a mode-indexed permission table with **two arrival
 > edges** — enabling a rail, and entering a high-load mode while a rail is
 > already live.  `FIRST_FIVE_ASSEMBLY_PLAN` §7b's `C-PWR-TRANSIENT-01` accessory
-> step now reads **`≈4.15 V` and `≈4.00 V`** pre-enable for the dual case and
-> **`≈3.70 V`** for the single case, with the LOADED node required to stay above
-> **3.20 V** at every point.  **Do not run the D-791 or D-790 points; they no
-> longer correspond to a permission the firmware grants.**
+> step reads its pre-enable points from those floors, with the LOADED node
+> required to stay above **3.20 V** at every point.  **Do not run the D-792,
+> D-791 or D-790 points; they no longer correspond to a permission the firmware
+> grants.**
 >
-> **THERE IS A DECLARED SIMULTANEOUS PAIR, AND IT IS NEW PRODUCT-FACING TEXT.**
+> **THE ACCESSORY WINDOW IS NARROWER THAN IT WAS AT D-792 AND A FIRST-ARTICLE
+> TECHNICIAN WILL SEE IT.**  Four of the sixteen mode/rail combinations are
+> permitted, against ten at D-792: an accessory rail may be enabled with no
+> optional mode running, or with the audio amplifier driving, and not while
+> either radio transmits.  The cause is the corrected source path, the corrected
+> module total and the burst-aware permission edge — not a change to the board.
+> The recommended fix is a **REV-B** rewiring of the pass pair; see
+> `CTO_DECISIONS.md` D-793 section 0.
+>
+> **THERE IS A DECLARED SIMULTANEOUS PAIR, AND IT IS PRODUCT-FACING TEXT.**
 > Each rail alone is unchanged at its published budget.  Drawn AT THE SAME TIME
-> the declared pair is **220 mA + 170 mA**.  At the top of the declared 0…40 °C
-> envelope the FULL pair settles the node 44 mV below the firmware's own
-> retention criterion; it is supported at an ambient of **33.0 °C** or below.
+> the declared pair is **220 mA + 170 mA**.  The FULL pair is
+> **not supported at any ambient in the declared 0–40 °C envelope**.
 > This is an accessory-facing contract, not an assembly step, and it is in
 > DEVICE_SPEC §6.3a.
 >
-> **CHARGING IS A SUPERVISED OPERATION AND NOW HAS TWO NUMBERS.**  Priced as a
-> linear element, the BQ25185's input FET puts the junction above TI's operating
-> maximum at the sustained reference state's own load — the part would reach
-> `TSHUT`, which is protection acting as control.  The derived charge-time
-> system power ceiling is **4.063 W** at 40 °C ambient; the heaviest combination
-> under it is `display_subghz` + `ACC_3V3` alone, at a junction of **111.3 °C**.
-> The fitted pouch publishes **0…40 °C for CHARGE** against 0…60 °C for
-> discharge and the cell sits in the internal air, so the derived external-ambient
-> ceiling for charging at that state is **27.7 °C**.  **This board has no
-> VBUS-present signal on any readable pin, so firmware cannot enforce either
-> number** — `battery_pack_contract` **B8**'s supervised first-five charging is
-> what carries them.
+> **CHARGING IS A SUPERVISED OPERATION, HAS TWO NUMBERS, AND NOW HAS A CABLE
+> CONTRACT.**  Priced as a linear element, the BQ25185's input FET puts the
+> junction above TI's operating maximum at the sustained reference state's own
+> load — the part would reach `TSHUT`, which is protection acting as control.
+> The derived charge-time system power ceiling is **3.600 W** at 40 °C ambient;
+> the heaviest combination under it is `display_wifi` with no accessory, at a
+> junction of **104.4 °C**.  The fitted pouch publishes **0…40 °C for CHARGE**
+> against 0…60 °C for discharge and the cell sits in the internal air, so the
+> derived external-ambient ceiling for charging at that state is **24.5 °C**.
+> **Charge from the supplied adapter and cable, or from a USB 2.0 source and a
+> cable with 24 AWG or heavier power conductors no longer than 2 m** — at most
+> 0.4472 Ω of source path, which is at least **4.2581 V** at `U11` pin 10 at the
+> programmed 1.1 A input limit and is measured as `C-CHG-01`.  **This board has
+> no VBUS-present signal on any readable pin, so firmware cannot enforce any of
+> it** — `battery_pack_contract` **B8**'s supervised first-five charging is what
+> carries them.
 >
 > ### What a fabricator and an assembler must still do
 >
@@ -927,8 +953,9 @@
 > > switched rails cannot coincide with a sub-GHz transmit, the NFC field or an
 > > IR burst.  It is the same shape as D-775's VCELL condition and is in
 > > DEVICE_SPEC §6.3a's mandatory accessory-facing wording.  **The alternative
-> > considered and rejected was a 4.16 V dual-rail floor, which would have
-> > deleted the simultaneous capability in all but name.**  The permanent fix —
+> > considered and rejected — this whole D-777 block is HISTORICAL — was a
+> > 4.16 V dual-rail floor, which would have deleted the simultaneous
+> > capability in all but name.**  The permanent fix —
 > > JST `B2B-XH-A`, 3 A, confirmed live, `C158012` — is **deferred to REV-B**
 > > because it needs an owner protected-copper exception on `BAT_CONNECTOR_P`,
 > > grows the courtyard against a 0.52 mm gap to `C60`, moves a part already

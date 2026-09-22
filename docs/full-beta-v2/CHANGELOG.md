@@ -1,3 +1,90 @@
+## D-793 — 2026-09-22 — ROUND-12 FULL CONVERGENCE: A CONNECTOR SPECIFICATION THAT WAS IN THE ARCHIVE ALL ALONG, A CEILING THAT ROUNDED UP ACROSS A CLIFF, A RADIO STILL TRANSMITTING AFTER THE RESET, AND A MODEL THAT WAS ITS OWN ORACLE
+
+Round-12 external review **REJECTED D-792**.  Astra graded it **C — DO NOT ORDER**
+with eight findings and no unconditional copper respin established; Fable graded B on
+verified scope and declared its own review INCOMPLETE.  Astra's reproduced
+counterexamples control.  **`R12-01`…`R12-08` are closed here, plus every Fable
+complementary residual and `R12-N01`/`R12-N02` found at this closeout.**
+
+**NO COPPER.**  No copper, no net, no footprint, no placement, no part value and no
+protected-copper object moves.  Board sha256 unchanged; KiCad DRC and schematic parity
+byte-identical to the reviewed D-792 baseline.  `hardware/beta-v2` untouched.
+
+**THE THEME IS THAT A MODEL CANNOT GRADE ITSELF.**  D-792's `energy_balance` invariant
+compared `p_in + p_from_cell - p_sys - p_stored` against `p_diss`, and `p_diss` had been
+DEFINED as that expression three lines earlier: the check was `0 == 0`.  Astra halved the
+canonical charger package heat and the whole F1–F13 suite passed, then removed the
+5 V-first transition and watched the verdict stay PASS while the completeness Boolean went
+false.  `aqroot_power_oracle.py` is the answer — a second, structurally independent
+implementation that imports nothing from the canonical model, re-derives what a solved
+state claims from primitives, makes completeness a HARD verdict term, and catches six
+named mutations on every release run.
+
+* **`R12-01`** the Molex `5055700003-PS` specification RETRIEVED and is archived.  Its
+  own rows are worse than the allowances that stood in for them: 40 mΩ MAX aged contact
+  resistance (§6.2.6–6.2.8, §6.3.1–6.3.7) against a declared 30, and 5 mΩ MAX on a
+  crimped portion (§6.1.4) against a declared 1.  Add the MEASURED `J4 → R75` board
+  copper and the ground return — neither in any model — and the fixed series path goes
+  **249.782 → 355.204 mΩ**.  `R75`'s 1 % high corner is **10.100 mΩ**, not the nominal
+  its own condition string claimed.
+* **`R12-02`** the published charge-time ceiling ROUNDED UP across a branch
+  discontinuity: 4.06293325 W printed as 4.063 W, where the solver is in SUPPLEMENT and
+  the junction is 155.4 °C.  The step is 30.9 K.  The ceiling is **3.600 W**, floored
+  onto a 0.05 W grid with a declared guardband and verified by a 200-point scan, and the
+  charging cable is a published measurable contract at `U11` pin 10.
+* **`R12-03`** `U7`/`U8` stay powered across an MCU reset, so a retained transmit is
+  invisible to a software arbiter that zeroes itself.  The boot path quiesces both and
+  VERIFIES it; until it does, accessory power is refused BY NAME and no transmitter may
+  be keyed.  Proved with an independently retained CC1101 stub against the real image.
+* **`R12-04`** the independent oracle, completeness as a verdict, and six mutations.
+* **`R12-05`** Espressif's 500 mA `IVDD` row is a requirement on the SUPPLY; the module
+  total is built from published CURRENT rows instead and the `+3V3` peak envelope is
+  **1.402034 A**.  Provenance is a (role, tag) MATRIX now, and its first run caught
+  exactly that instance.
+* **`R12-06`** a semantic stale-value scan over every normative document, bound to the
+  CLAIM rather than to the line.
+* **`R12-07`** F8's ground skip was keyed by LEAF name, so `/ALIEN/GND` was never
+  examined; and there were TWO manufacturer normalisers.  Both closed.
+* **`R12-08`** a duty average is not an instantaneous permission bound.  The firmware
+  SERIALISES the three bursty peripherals and the permission edge is judged with a burst
+  present.
+
+**PRODUCT-FACING:** the per-rail budgets and the declared simultaneous pair do not move.
+The accessory permission WINDOW narrows to four of sixteen mode/rail combinations and the
+first-rail floor moves 3.65 → 3.80 V; the FULL 400 + 300 pair is not supported at any
+ambient in the declared envelope.  Escalated in CTO_DECISIONS D-793 §0 with a
+recommendation and four costed alternatives.  **REVIEW TARGET, NOT A FABRICATION
+AUTHORIZATION.  DO NOT ORDER.**
+
+
+## D-792 — 2026-09-22 — ROUND-11 CONVERGENCE: TWO FILES THAT DESCRIBED TWO DIFFERENT BOARDS, A CHARGER STATE THAT CANNOT PHYSICALLY EXIST, AND A PERMISSION DERIVED FROM THE WRONG PRE-STATE
+
+Round-11 external review **REJECTED D-791**.  Astra graded it **C — DO NOT ORDER** (4
+high, 3 medium, 3 low plus sourcing shortages, no mandatory copper respin); Fable graded
+B on verified scope and declared its own review INCOMPLETE.  `R11-01`…`R11-07` and
+`R11-10` are closed there, plus `R11-08`/`R11-09`, every Fable complementary residual and
+`R11-N01`.
+
+**NO COPPER.**  Board sha256 unchanged at `c8eabd43`; DRC and parity byte-identical to
+the reviewed D-791 baseline.
+
+**ONE CANONICAL MODEL: `hardware/demo/manufacturing/aqroot_power_model.py`.**  The
+backlight converter's input current was SOLVED at 233.13 mA in `demo_feature_contract`
+and TYPED at 211.58 mA in `audit_rail_ampacity`, and the typed copy ruled the whole
+cell-to-load network.  Nothing is typed twice now.  `R11-01` the pass-pair thermal law is
+an explicit solver argument; `R11-02` a 165.48 mA ESP32-S3 baseline enters every state;
+`R11-03` a BQ25185 physical-mode solver with KCL, KVL and energy balance as invariants,
+and a DERIVED charge-time load ceiling; `R11-04` a mode-indexed permission TABLE with two
+arrival edges and the DECLARED SIMULTANEOUS PAIR of 220 mA + 170 mA; `R11-05` the fab
+handoff is read by a gate; `R11-06` machine-readable provenance tagging; `R11-07` the
+itemised battery path; `R11-10` the inductor DCR at its manufacturer maximum.
+
+**THIS CHANGELOG ENTRY WAS MISSING UNTIL D-793 (`R12-06`).**  The assembly drawings'
+release label is DERIVED from the newest heading here, so a release without an entry
+prints the PREVIOUS release's label on its title block — which is exactly what
+Round-12 observed, and why D-793 adds a clause requiring the derived label to match the
+newest CTO decision as well.
+
 ## D-791 — 2026-09-21 — ROUND-10 CORRECTION: A FLOOR THE NODE COULD NEVER REACH, A LOSS MODEL THAT WAS ONLY A CONDUCTION MODEL, AND THREE CALL SITES THAT COULD STILL UNDO THEMSELVES
 
 Round-10 external review **REJECTED D-790**.  Fable passed the design for

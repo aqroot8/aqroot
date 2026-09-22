@@ -317,14 +317,14 @@ discards exactly the DC term the 3.300 V and 3.000 V thresholds are stated
 against; and the accessory step was written to run at **3.20 V and 3.05 V** of
 pack voltage, where a release image **refuses to enable an accessory rail at
 all** (the derived VCELL policy refuses a FIRST accessory rail below
-**3.95 V** and a SECOND below **3.95 V**).
+**3.85 V** and a SECOND below **3.85 V**).
 Half the matrix was therefore unexecutable and the other half could not
 support its own acceptance.  *(The two figures in that parenthesis are the
-CURRENT D-792 envelopes; the D-788-era procedure quoted values that have been
-REPLACED twice since.)*
+CURRENT D-793 envelopes; the D-788-era procedure quoted values that have been
+REPLACED three times since.)*
 
-> **D-792 / `R11-04` RE-BASED THIS SECTION AGAIN, AND IT IS THE THIRD TIME THIS
-> PROCEDURE HAS GONE STALE THE SAME WAY.**  D-788's sentence above named the
+> **D-793 / `R12-01` + `R12-05` + `R12-08` RE-BASED THIS SECTION AGAIN, AND IT
+> IS THE FOURTH TIME THIS PROCEDURE HAS GONE STALE THE SAME WAY.**  D-788's sentence above named the
 > long-RETIRED **3.50 V single-rail / 3.85 V dual-rail** pair; D-791 REPLACED it
 > with **3.55 V / 3.65 V** because the node could not hold 3.85 V at the
 > published load; and Round-11 then reproduced a production-image case that
@@ -334,7 +334,7 @@ REPLACED twice since.)*
 > that high reading is what the permission is granted on.
 >
 > **THE CURRENT FLOORS, DERIVED BY `demo_feature_contract` F12, ARE:
-> 3.20 V retention, 3.95 V to enable a first rail and 3.95 V to enable a
+> 3.20 V retention, 3.85 V to enable a first rail and 3.85 V to enable a
 > second.**  Both enable numbers are now the published ENVELOPE of a
 > mode-indexed permission table, and the bench points below are chosen from
 > them.  A stale floor here is worse than a stale sentence in a specification,
@@ -410,21 +410,21 @@ the retention floor.  So bring the pack to a reading above the enable floor with
 the rail still OFF, then enable `ACC_3V3_SW` into a 400 mA load and **hot
 disconnect** it at the J5 mating interface, ten times, at
 
-- **`≈4.15 V`** and **`≈4.00 V`** at `BAT_PROTECTED_P` read with the accessory
+- **`≈4.10 V`** and **`≈3.90 V`** at `BAT_PROTECTED_P` read with the accessory
   rails OFF and NO optional mode running, the 5 V rail then ALSO brought up so
   that the pair is at the **declared simultaneous 220 mA + 170 mA** — both
-  readings above the **3.95 V** dual-rail floor;
-- **`≈3.70 V`** read with the accessory rails OFF and no optional mode running,
+  readings above the **3.85 V** dual-rail floor;
+- **`≈3.82 V`** read with the accessory rails OFF and no optional mode running,
   the 3.3 V rail alone at its full published 400 mA.  This point is ABOVE the
-  quiet rail-edge floor and BELOW the **3.95 V** single-rail floor, so it also
-  confirms two refusals a technician can see: bringing the Wi-Fi radio up here
-  is refused, and so is energising the audio amplifier.
+  quiet rail-edge floor and BELOW the **3.85 V** single-rail floor, so it also
+  confirms two refusals a technician can see: bringing either radio up here is
+  refused, and so is energising the audio amplifier.
 
 At every point the LOADED node must stay above the **3.20 V** retention floor.
 A rail that is authorised and then sheds is a **FAILURE of this step**, not a
 property of it: every floor is derived from the LIGHTEST pre-state — the adverse
 one, because an idle plugged-in accessory reads high — and anticipates its own
-rail's node step, **0.6972 V** for a first rail and **0.6847 V** for a second,
+rail's node step, **0.5625 V** for a first rail and **0.5553 V** for a second,
 exactly so that the load a permission authorises cannot take the node below the
 number that authorised it.  *(That is `R10-N01`, Round-11 reproduced it at
 D-791's own constant as `R11-04`, and this step is where it would be seen on a
@@ -446,9 +446,23 @@ STAYS up, which is precisely what `R10-N01` found being decided at the wrong
 number — and it was the constant the prohibition did not cover.)*
 *(D-792 / `R11-04`: the prohibition now also covers the two GENERATED tables
 `kRailRows` and `kModeRows` in the same header.  All thirty-two of their values
-are pinned row by row by F12, sentinels included, and six of them are explicit
-REFUSALS rather than floors — a build that turned a refusal into a large number
-would read as a restriction and behave as a rail that never turns on.)*
+are pinned row by row by F12, sentinels included, and a build that turned a
+refusal into a large number would read as a restriction and behave as a rail
+that never turns on.)*
+*(D-793 / `R12-01` + `R12-05` + `R12-08`: **TWELVE** of the thirty-two values
+are explicit REFUSALS now, against six at D-792.  An accessory rail may be
+enabled with no optional mode running or with the audio amplifier driving, and
+**not while either radio transmits**; entering ANY high-load mode while a rail
+is live is refused.  Nothing about the board changed — the cause is the
+completed source path, the corrected ESP32-S3 transmitting total and a
+permission edge judged with a burst present.  A technician who sees the
+refusals on the console is seeing the design, not a fault; the recommended fix
+is the REV-B pass-pair rewiring in `CTO_DECISIONS.md` D-793 §0.)*
+*(D-793 / `R12-03`: the console also refuses accessory power outright, by name,
+until the boot path has QUIESCED `U7`/`U8` and confirmed it from their own
+status registers — `radios quiesced after MCU reset` must read `[ok]` before
+any accessory step in this procedure is run.  `U7` and `U8` stay powered across
+an MCU reset, so a transmit this image did not start may still be running.)*
 
 ### Acceptance
 
@@ -496,6 +510,11 @@ text stays where it is.
 | **`C-FW-ABORT-01`** | on the assembled board, with the console: request the 1 kHz tone while `AMP_SD_MODE`'s write is made to NACK (pull the expander's I2C or hold `SDA` during the transaction), then **watch `U2.P05` and the speaker for 30 s**.  The amplifier must never energise after the aborted command — D-790 left an ON intent that the main loop's deferred retry would honour with no tone and no matching OFF.  Repeat with the display test: after a NACKed `DISP_RST_N` release, confirm the console does NOT report the panel up, and that when the release finally lands the image **re-runs the ILI9488 initialisation** before it does | `Firmware/test/test_production_image.cpp`, `checks/firmware_hw_map_contract.py` H6 | D-791 / `D790-A06` + `D790-A07` |
 | **`C-WARM-IMAGE-01`** | with both accessory rails ON, force a warm MCU reset (`EN` pulse, NOT a power cycle — the PCAL9535As must stay powered) while holding the internal I2C bus down; confirm the console reports the safety state as PENDING/UNKNOWN and **never** claims the rails are off, and that the accessory latches are still physically ON.  Release the bus and confirm the loop ALONE turns both rails off and reports recovery, with no console input | `Firmware/test/test_production_image.cpp` (the same scenario, on the host), `checks/firmware_hw_map_contract.py` H6 | D-791 / `D790-A05` + Fable `V-04` |
 | **J4 fit / pull / thermal** | battery pigtail hole fit, retention and thermal acceptance | [`BATTERY_HARNESS.json`](BATTERY_HARNESS.json), §6 | D-781 / D-782 |
+| **`C-BAT-PATH-01`** | the COMPLETE cell-to-`BAT_PROTECTED_P` path resistance, itemised and measured against the model's own terms: the pack's DC source resistance, both conductor pairs, **both mated Micro-Lock Plus contact pairs**, all four crimps, both `J4` solder barrels, `F1`, `R75`, the `J4 → F1 → Q2 → Q3 → R75` board copper and the **ground return**.  Cold and after a hot soak.  The model RULES at **355.204 mΩ** for the whole fixed series path and **177.478 mΩ** for the harness alone, with the contact terms at Molex's own published **40 mΩ** post-environmental criterion; this test is what replaces those with measurements | `hardware/demo/manufacturing/aqroot_power_model.py` `upstream_report()`, `checks/demo_feature_contract.py` F12 | D-792 / `R11-07`, completed at D-793 / `R12-01` |
+| **`C-CHG-01`** | the USB SOURCE CONTRACT, at the pin it is defined at.  With the charger drawing its programmed **1.1 A** input limit, measure the potential at **`U11` pin 10 (`VIN`)** referenced to `U11`'s GND pad: it must be **at or above 4.2581 V** with the supplied adapter and cable.  Repeat with a deliberately poor cable (2 m, 28 AWG) and RECORD the value — it is expected to fail the contract, and that is the point: the charge-time ceiling is derived at the QUALIFIED source path and the published operator rule is *24 AWG or heavier, no longer than 2 m* | `hardware/demo/manufacturing/aqroot_power_model.py` `usb_source_contract()`, `checks/demo_feature_contract.py` F12 | D-793 / `R12-02` |
+| **`C-MCU-01`** | the ESP32-S3-WROOM-1-N16R8's own `+3V3` draw: the **baseline** with no radio transmitting, and the **total while transmitting** at full TX power.  The model carries a DERIVED **165.48 mA** baseline and a DERIVED **591.5 mA** transmitting total, both built from Espressif's published CURRENT rows at a declared 1.20 widening.  Espressif's 500 mA `IVDD` row is a REQUIREMENT ON THE SUPPLY and is NOT what the module may draw; this test is what replaces the derivation with a measurement | `hardware/demo/manufacturing/aqroot_power_model.py` `MCU_MODULE`, `checks/demo_feature_contract.py` F6 | D-792 / `R11-02`, re-based at D-793 / `R12-05` |
+| **`C-PWR-CHARGE-01`** | the charge regime at its published ceiling: with an adapter attached and the system held at **3.600 W**, record `VIN` at `U11` pin 10, `VSYS`, the input current, the charge current and any BATFET supplement current, and the package temperature.  The model puts the junction at **104.4 °C** there with every ruling source class in DPPM and NO supplement.  **A SUPPLEMENT AT OR BELOW THE PUBLISHED CEILING IS A FAILURE OF THIS TEST**, because the whole ceiling exists to stay below that discontinuity | `hardware/demo/manufacturing/aqroot_power_model.py` `charger_state()`, `checks/demo_feature_contract.py` F12 | D-792 / `R11-03`, re-based at D-793 / `R12-02` |
+| **`C-RADIO-QUIESCE-01`** | on the assembled board: key the CC1101 into continuous transmit from the console, then force a **warm MCU reset** (`EN` pulse, NOT a power cycle — `U7` and `U8` must stay powered).  The boot console must print **`[ok] radios quiesced after MCU reset`** with `MARCSTATE = 0x01`, and the sub-GHz carrier must be gone on a spectrum analyser or a field-strength probe BEFORE the gauge qualification line appears.  Repeat with the SX1262.  Then repeat the CC1101 case with the part's SPI held off (pull `CC1101_CS_N` high through a resistor) and confirm the console says the state is **UNKNOWN** and that the accessory rail keys are **REFUSED by name** | `Firmware/test/test_production_image.cpp` (the same scenario, on the host, with an independently retained stub), `checks/firmware_hw_map_contract.py` H6 | D-793 / `R12-03` |
 
 **None of these is optional and none of them is a PCB-fabrication item.**  They
 are assembly and bring-up acceptance, and they are outstanding on every one of

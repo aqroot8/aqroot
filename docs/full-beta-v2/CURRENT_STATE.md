@@ -72,7 +72,96 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
-> # **D-792 ROUND-11 CONVERGENCE CORRECTION — CURRENT EXTERNAL-REVIEW TARGET**
+> # **D-793 ROUND-12 FULL-CONVERGENCE CORRECTION — CURRENT EXTERNAL-REVIEW TARGET**
+>
+> **THIS IS A REVIEW TARGET, NOT A FABRICATION AUTHORIZATION. DO NOT ORDER.**
+> Round-12 external review REJECTED D-792.  Astra graded it **C — DO NOT ORDER**
+> with eight findings; Fable graded B on verified scope and declared its own
+> review INCOMPLETE and not usable for order authorization.  Astra's reproduced
+> counterexamples control.  **No mandatory copper respin was established and none
+> is made here: no copper, no net, no footprint, no placement, no part value and
+> no protected-copper object moves at D-793.**  Connectivity is unchanged at
+> **174 retained / 173 connected / one owner-approved `U11.3` open / zero
+> unapproved**.
+>
+> **`R12-01`…`R12-08` are closed here, plus every Fable complementary residual
+> and `R12-N01`/`R12-N02` found at this closeout.**
+>
+> **THE THEME OF ROUND-12 IS THAT A MODEL CANNOT GRADE ITSELF.**  Round-8 was a
+> proof stretched past its evidence; Round-9 a number read at the wrong
+> condition; Round-10 a model that never asked whether its own answer was
+> reachable; Round-11 an architecture in which the same quantity could exist
+> twice.  Round-12 is the one where the CHECKING APPARATUS is the defect.
+> D-792's `energy_balance` invariant compared `p_in + p_from_cell - p_sys -
+> p_stored` against `p_diss`, and `p_diss` had been DEFINED as that expression
+> three lines earlier — the check was `0 == 0`.  Astra halved the canonical
+> charger package heat and the whole F1–F13 suite passed; it then removed the
+> 5 V-first transition, watched the completeness Boolean go false, and watched
+> the verdict stay PASS.
+>
+> **THE ANSWER IS A SECOND, STRUCTURALLY INDEPENDENT ORACLE:
+> `hardware/demo/manufacturing/aqroot_power_oracle.py`.**  It imports nothing
+> from the canonical model, solves nothing, and re-derives what a solved state
+> claims from primitives.  Its primitives are a CHECKSUM of the canonical
+> registry rather than a competing copy, completeness is a HARD VERDICT TERM,
+> and six named mutations must each be caught on every release run.
+>
+> ### THE PRODUCT-FACING CONSEQUENCES, IN ONE PLACE
+>
+> * **The per-rail accessory budgets do NOT move.**  `ACC_3V3_SW` = 400 mA TOTAL
+>   and `ACC_5V_SW` = 300 mA TOTAL, each deliverable ALONE, remain exactly what
+>   D-098 published and what the D-788 owner decision preserved.  The DECLARED
+>   SIMULTANEOUS PAIR does not move either: **220 mA + 170 mA**.
+> * **The accessory permission WINDOW narrows, and this is the owner-visible
+>   item.**  Four of the sixteen mode/rail combinations are permitted, against
+>   ten at D-792: a rail may be enabled with no optional mode running or with the
+>   audio amplifier driving, and not while either radio transmits.  The FULL
+>   400 + 300 pair is **not supported at any ambient in the declared 0–40 °C
+>   envelope**.  **It is escalated in CTO_DECISIONS D-793 section 0 with a
+>   recommendation and four costed alternatives; it does not block the review
+>   target.**  Nothing about the board changed — the cause is `R12-01`'s
+>   completed source path (249.782 → **355.204 mΩ**), `R12-05`'s corrected
+>   module total (`+3V3` peak 1.310554 → **1.402034 A**) and `R12-08`'s
+>   burst-aware permission edge.
+> * **The accessory VCELL floors move to retention 3.20 V / first-rail 3.85 V /
+>   second-rail 3.85 V**, and those two enable numbers remain the published
+>   ENVELOPE of a mode-indexed permission table with TWO arrival edges.
+> * **Charging is bounded by a derived system-power ceiling of 3.600 W** at 40 °C
+>   ambient — D-792 published 4.063 W, which its own bisection had produced as
+>   4.06293325 W and then ROUNDED UP across a branch discontinuity where the
+>   junction is 155.4 °C.  The supervised external-ambient ceiling at the
+>   heaviest permitted charging state is 24.5 °C, and **the charging cable is now
+>   a published, measurable contract**: 24 AWG or heavier, no longer than 2 m,
+>   which is at least 4.2581 V at `U11` pin 10 at the programmed 1.1 A input
+>   limit.  This board has no VBUS-present signal on any readable pin, so
+>   firmware cannot enforce any of it.
+> * **A radio can still be transmitting after an MCU reset, and the firmware now
+>   knows it.**  `U7`/`U8` stay powered; the boot path quiesces both and VERIFIES
+>   it from their own status registers, and until it does, accessory power is
+>   refused BY NAME and no transmitter may be keyed.
+> * **The three bursty peripherals are SERIALISED while any of them runs.**  A
+>   permission edge is judged with a burst present, not with a duty average.
+>
+> ### **THE THREE GATES, KEPT APART ON PURPOSE**
+>
+> A reader who sees "all contracts green" and concludes "orderable" has been
+> misled by the layout of the evidence rather than by any claim in it.
+>
+> | gate | what it covers | D-793 status |
+> |---|---|---|
+> | **PRE-ORDER ANALYTICAL** | every derivation, model, contract, negative control, host test and document-consistency clause in this repository | **CLOSED on this target.**  19/19 standing contracts, F1–F14, H1–H8, 8/8 host tests with every negative control caught, 4/4 PlatformIO environments, KiCad DRC and schematic parity byte-identical to the reviewed D-792 baseline, protected copper identical, fab package PASS. |
+> | **FAB / CAM ACCEPTANCE** | the manufacturer's own written acceptance of the Gerbers, drills, stackup, impedance, via-in-pad and mask-dam process, and of the named bounded exceptions in `.kicad_dru` §5 | **PENDING.**  Nothing in this repository can close it.  B01–B14 remain outstanding. |
+> | **FIRST-ARTICLE VALIDATION** | physical measurement on assembled hardware | **PENDING.**  C01–C21 remain outstanding, and D-793 adds `C-CHG-01` (the USB source contract measured at `U11` pin 10) to the D-792 set: `C-BAT-PATH-01`, `C-THERM-01`, `C-BAT-GATE-01`, `C-DISP-01`, `C-MCU-01`, `C-PWR-CHARGE-01`. |
+>
+> **PROCUREMENT is a fourth, separate gate and it is also PENDING:** nine fitted
+> groups are short on the live sweep and `Q2`/`Q3` needs an authorised genuine
+> allocation.  **ANALYTICAL CLOSURE IS NOT ORDER AUTHORIZATION.**
+>
+> The enclosure maximum-tolerance CAD/dry-fit remains separate physical evidence,
+> and the NFC antenna-side shunt still has no dedicated CAD site — it remains an
+> explicit first-article tuning/rework risk.
+
+> # **D-792 ROUND-11 CONVERGENCE CORRECTION**  *(HISTORICAL — superseded by the D-793 block above.  Its canonical-model architecture, its permission-table shape, its provenance tagging and its itemised battery path all STAND; the following are RETIRED and no longer current — its **3.65 V / 3.95 V** floors, its **249.782 mΩ** series path, its **132.282 mΩ** harness, its **1.310554 A** `+3V3` peak, its **4.063 W** charge ceiling, its **33.0 °C** full-pair ambient and its **27.7 °C** charge-ambient ceiling.)*
 >
 > **THIS IS A REVIEW TARGET, NOT A FABRICATION AUTHORIZATION. DO NOT ORDER.**
 > Round-11 external review REJECTED D-791.  Astra graded it **C — DO NOT ORDER**
@@ -691,8 +780,10 @@
 >
 > The corrected full-concurrency model re-derives the dual loaded-VCELL
 > requirement to **3.8094 V**, gridded upward to a firmware policy floor of
-> **3.85 V**; the single-rail requirement is **3.1671 V**, so the retained
-> **3.50 V** single-rail policy stays conservative. At 3.85 V the live published
+> **3.85 V**; the single-rail requirement is **3.1671 V**, so the RETIRED
+> **3.50 V** single-rail policy of the day stayed conservative — every number in
+> this paragraph is SUPERSEDED and the current floors are D-793's, in the block
+> at the top of this file. At 3.85 V the live published
 > dual-rail case is **2.2487 A** with **12.25%** margin to the 2.5625 A OCP
 > minimum; the path-bound battery-harness case is **2.2701 A**, still inside the
 > Molex AWG26 **2.6 A** rating. Older `3.80 V`, `R101 = 2.37 kOhm`, `176 kOhm`,
@@ -1073,7 +1164,8 @@
 >     ampacity         all_ok, and the method self-check now PARSES the
 >                      .kicad_dru table it always claimed to re-derive
 >     features         F1-F8 PASS (F6 TWENTY-SIX controls incl. D-775's five --
->                      the old single floor, the first draft's asserted 3.75 V,
+>                      RETIRED floors, the old single floor and the first
+>                      draft's asserted 3.75 V, both no longer current;
 >                      a single-rail floor under its own requirement and either
 >                      live path past its ceiling; F7 five references and ten controls,
 >                      F8 four controls -- 76 fitted

@@ -128,8 +128,13 @@ RAILS = (
          src=("J3.A4", "J3.B4", "J3.A9", "J3.B9"), snk=("R35.1",), amps=1.10,
          basis="same charger input current, upstream of the R35 0 R link"),
     dict(name="BAT_PROTECTED_P", net="/01_POWER_TREE/BAT_PROTECTED_P",
-         src=("R75.2", "R75.4"), snk=("U11.2",), amps=2.60,
-         basis="D-791 / D790-A03: the PEAK electrical envelope at the lowest "
+         src=("R75.2", "R75.4"), snk=("U11.2",), amps=2.70,
+         basis="D-793 / R12-05 + R12-08 re-based this from 2.60 A: the "
+               "corrected ESP32-S3 transmitting total and the burst-aware "
+               "permission edge move the peak envelope to 2.6554 A "
+               "path-bound, and 2.70 A is the routing/thermal design current "
+               "with explicit margin.  HISTORICAL: "
+               "D-791 / D790-A03: the PEAK electrical envelope at the lowest "
                "node voltage the firmware policy permits a rail to be RETAINED "
                "at.  D-790 read 2.35 A off the 3.85 V dual floor; that floor "
                "was a node voltage the node cannot reach, and the derived "
@@ -204,7 +209,7 @@ RAILS = (
                "entirely inside D-780's wider taper, and it described a neck "
                "the board does not have."),
     dict(name="BQ25185_SYS", net="/01_POWER_TREE/BQ25185_SYS",
-         src=("U11.1",), snk=("U12.1",), amps=2.60,
+         src=("U11.1",), snk=("U12.1",), amps=2.70,
          basis="D-787 / R6-E07: the pour feeding the full fitted system is "
                "qualified at the same 2.35 A corrected sustained normal "
                "envelope as BAT_PROTECTED_P; local boost ripple/inductor peak "
@@ -359,8 +364,28 @@ RAILS = (
     # package land nothing can be laid wider on -- the same class of residual
     # as U11.2 (see .kicad_dru section 5e).
     dict(name="P3V3_MAIN", net="+3V3",
-         src=("U12.4", "U12.5"), snk=("U20.2",), amps=2.12,
-         basis="D-792 / R11-02 re-based this from 2.00 A.  The canonical "
+         src=("U12.4", "U12.5"), snk=("U20.2",), amps=2.25,
+         basis="D-793 / R12-05 re-based this from 2.12 A.  Espressif's "
+               "Table 6-2 IVDD row -- 500 mA MIN 'delivered by external power "
+               "supply' -- is a RECOMMENDED OPERATING CONDITION ON THE "
+               "SUPPLY, and D-792 used it as the module's own maximum draw "
+               "and derived the Wi-Fi TX increment by subtracting the "
+               "baseline from it.  The canonical model now builds the "
+               "transmitting total out of Espressif's own CURRENT rows -- "
+               "107.9 mA modem-sleep worst row + 10 mA flash + 20 mA declared "
+               "PSRAM + the 355 mA Table 6-4 802.11b transmit peak, all at "
+               "the declared 1.20 widening, and Espressif states in its own "
+               "words that 'TX current consumption is rated at a 100 % duty "
+               "cycle' -- which is 591.5 mA, ABOVE the 500 mA supply "
+               "requirement.  The fitted internal +3V3 peak envelope moves "
+               "1.3106 -> 1.4021 A and the audit current is that envelope "
+               "plus U20's worst programmed limiter corner: 1.4021 + 0.8049 "
+               "= 2.2070 A, rounded UP to 2.25 A.  Everything the D-792 "
+               "entry below says about WHAT this current is -- a FAULT "
+               "COINCIDENCE judged against the TPS63020's own average switch "
+               "current limit rather than against TI's 2 A headline -- is "
+               "unchanged.  HISTORICAL: D-792 / R11-02 re-based this from "
+               "2.00 A.  The canonical "
                "ledger's ESP32-S3 baseline -- 165.5 mA of CPU, flash and "
                "in-package PSRAM that NO load table in this programme "
                "contained -- moved the fitted internal +3V3 peak envelope from "
@@ -828,13 +853,21 @@ def charge_regime_junction(system_W, ambient_C=None, spec=None, system=None,
     r_sys = system_thermal_resistance_K_per_W(system)
     vbat = apm.BQ25185["vbatreg_V"] - 1.0      # a mid-charge cell, 3.2 V
 
+    # D-793 / R12-02.  THE SOURCE IS AN ENUMERATED CONTRACT, NOT TWO CORNERS.
+    # Every ILIM corner is solved against every QUALIFIED source class, and
+    # the unqualified class is solved too and REPORTED so the cost of
+    # charging from a cable outside the published contract is a number.
     corners = {}
     for ilim_corner in ("max", "min"):
-        for vbus_corner in ("max", "min"):
-            st = apm.charger_state(system_W, vbat, ilim_corner, vbus_corner)
+        for cls in apm.USB_SOURCE_CLASSES:
+            st = apm.charger_state(system_W, vbat, ilim_corner,
+                                   vbus_V=cls["vbus_V"],
+                                   path_ohm=cls["path_ohm"],
+                                   source_key=cls["key"])
             if st is None:
                 continue
-            key = "ilim_%s__vbus_%s" % (ilim_corner, vbus_corner)
+            st = dict(st, source_rules=cls["rules"], source_what=cls["what"])
+            key = "ilim_%s__%s" % (ilim_corner, cls["key"])
             p_internal = (st["source_W"] + st["from_cell_W"]
                           - st["stored_W"] - delivered_out_W)
             air = ambient_C + r_sys * p_internal
@@ -846,15 +879,36 @@ def charge_regime_junction(system_W, ambient_C=None, spec=None, system=None,
                       junction_at_full_charge_current_C=round(
                           air + spec["theta_ja_C_per_W"] * st["package_W"], 3))
             corners[key] = st
-    worst = max(corners.values(),
+    ruling = [v for v in corners.values() if v.get("source_rules")]
+    worst = max(ruling or list(corners.values()),
                 key=lambda s: s["junction_with_charge_folded_back_C"])
+    unqualified = [v for v in corners.values() if not v.get("source_rules")]
+    worst_unqualified = (max(unqualified,
+                             key=lambda s: s[
+                                 "junction_with_charge_folded_back_C"])
+                         if unqualified else None)
     air = worst["internal_air_C"]
     p_internal = worst["internal_W"]
     return dict(
         ambient_C=ambient_C, system_W=round(system_W, 6),
         system_A=worst["system_A"],
         corners=corners,
-        ruling_corner="%s / %s" % (worst["ilim_corner"], worst["vbus_corner"]),
+        ruling_corner="%s / %s" % (worst["ilim_corner"],
+                                   worst.get("source_key")
+                                   or worst["vbus_corner"]),
+        ruling_source_class=worst.get("source_key"),
+        source_contract=apm.usb_source_contract(),
+        outside_the_published_cable_contract=(
+            None if worst_unqualified is None else dict(
+                source_class=worst_unqualified.get("source_key"),
+                path_ohm=worst_unqualified["path_ohm"],
+                mode=worst_unqualified["mode"],
+                junction_with_charge_folded_back_C=worst_unqualified[
+                    "junction_with_charge_folded_back_C"],
+                what=worst_unqualified.get("source_what"),
+                why="REPORTED, not ruled on.  A cable outside the published "
+                    "contract is an operator condition, and this is what it "
+                    "costs at this system load.")),
         mode=worst["mode"],
         ilim_band_A=[apm.BQ25185["ilim_min_A"], apm.BQ25185["ilim_max_A"]],
         input_current_A=worst["input_A"],
@@ -1174,12 +1228,33 @@ DISCHARGE_SYSTEM = dict(
 # and the maximum it sums to is 132.3 mOhm.
 UPSTREAM_LOSS = dict(
     r75_ohm=apm.R75_OHM,
-    r75_basis="the fitted 10 mOhm LTC4368 sense element, D-771",
-    fuse_ohm=apm.FUSE_MAX_OHM,
+    r75_basis="the fitted 10 mOhm 1 % LTC4368 sense element at its HIGH "
+              "corner, 10.100 mOhm (D-793 / R12-01: D-792 carried the "
+              "nominal under a condition string that said 'high corner')",
+    fuse_ohm=apm.FUSE_MAX_TOL_OHM,
     fuse_basis="DECLARED: the fitted 0466005 5 A nano2 element's cold "
                "resistance is not published in this repository; 20 mOhm is a "
-               "declared allowance for a 5 A thin-film fuse and is MEASURED "
-               "at first article",
+               "declared allowance for a 5 A thin-film fuse, carried at its "
+               "declared +25 % tolerance corner (D-793 / R12-01), and "
+               "MEASURED at first article",
+    # D-793 / R12-01.  THE BOARD COPPER AND THE RETURN, WHICH WERE IN NO
+    # MODEL AT ALL.
+    board_forward_ohm=apm.board_forward_ohm(),
+    board_forward_items=apm.board_forward_itemisation(),
+    board_forward_basis="J4.1 -> F1.1 -> Q2 drain -> Q3 drain -> R75.1, "
+                        "measured off the live board with the same "
+                        "widest-bottleneck walk the downstream paths use and "
+                        "carried at the same 65 K hot rise.  All four "
+                        "segments are UPSTREAM of R75.2, so none of them is "
+                        "double-counted against the BAT_PROTECTED_P -> SYS "
+                        "term",
+    gnd_return_ohm=apm.gnd_return_ohm(),
+    gnd_return_basis="the two solid 0.5 oz In1/In4 GND planes in parallel at "
+                     "0.5658 mOhm per square over a DECLARED 12 squares, "
+                     "plus a declared 2 mOhm of barrels, hot.  A track graph "
+                     "cannot price a pour, so this is a sheet calculation "
+                     "with a stated widening over the 4.4-square geometric "
+                     "estimate",
     harness_ohm=apm.harness_ohm("max"),
     harness_basis="D-792 / R11-07: ITEMISED in aqroot_power_model -- the "
                   "785060 pack's own two UL 26 AWG factory leads, the two "
@@ -1203,8 +1278,8 @@ UPSTREAM_LOSS = dict(
     # the node sags by a known amount -- I = (V_cell - V_node) / R -- the
     # MINIMUM is, because a smaller resistance means more current for the
     # same sag.
-    r75_min_ohm=apm.R75_OHM * 0.99,
-    fuse_min_ohm=apm.FUSE_MAX_OHM * 0.5,
+    r75_min_ohm=apm.R75_MIN_OHM,
+    fuse_min_ohm=apm.FUSE_MAX_OHM * 0.5 * (1.0 - apm.FUSE_TOLERANCE),
     pcm_min_ohm=0.0,
     harness_min_ohm=apm.harness_ohm("min"),
     min_basis="R75 at its 1 % low corner; the fuse at half its declared "
@@ -1218,14 +1293,15 @@ UPSTREAM_LOSS = dict(
 
 
 def upstream_series_ohm(pass_pair_ohm_per_channel=0.0, spec=None, channels=4,
-                        which="max"):
-    """D-791 / D790-A03.  Cell -> BAT_PROTECTED_P, at either declared end."""
+                        which="max", board=None):
+    """D-791 / D790-A03.  Cell -> BAT_PROTECTED_P and back, either end.
+
+    D-793 / R12-01: `board` is the live {segment key: ohm at 20 C} set the
+    contract measures off the board for the four J4 -> R75 copper segments.
+    """
     spec = UPSTREAM_LOSS if spec is None else spec
-    if which == "min":
-        fixed = apm.upstream_fixed_ohm("min")
-    else:
-        fixed = apm.upstream_fixed_ohm("max")
-    return fixed + channels * pass_pair_ohm_per_channel
+    return (apm.upstream_fixed_ohm("min" if which == "min" else "max", board)
+            + channels * pass_pair_ohm_per_channel)
 
 
 def upstream_loss_W(amps, pass_pair_ohm_per_channel=0.0, spec=None,
