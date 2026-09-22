@@ -1,0 +1,207 @@
+{
+ "beta_v2_untouched": true,
+ "board": "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_changes": [],
+ "board_sha256": "c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907",
+ "branch": "aqroot-demo",
+ "closed_here": {
+  "astra_round_11": [
+   "R11-01",
+   "R11-02",
+   "R11-03",
+   "R11-04",
+   "R11-05",
+   "R11-06",
+   "R11-07",
+   "R11-10"
+  ],
+  "fable_complementary": [
+   "superseded thresholds/values isolated below explicit HISTORICAL banners",
+   "AO4800 embedded symbol cache re-checked: no stale name present",
+   "post-recovery amplifier-intent reconciliation: production-caller test plus three negative controls",
+   "Demo sustained thermal envelope kept as an explicit OPERATOR rule; no uncalibrated die-temperature shedding invented",
+   "NFC antenna-side shunt tuning/rework risk retained explicitly",
+   "Q10 manufacturer identity re-verified live: Jiangsu Changjing Electronics Technology"
+  ],
+  "found_by_this_closeout": [
+   "R11-N01"
+  ],
+  "verifier_items": [
+   "R11-08",
+   "R11-09"
+  ]
+ },
+ "content_commit": "3024065ca1df6a7e5575c951b10ed7a600ca0453",
+ "convergence_architecture": {
+  "charger_state_machine": "aqroot_power_model.charger_state, with KCL, KVL and energy balance as hard invariants",
+  "generated_normative_values": [
+   "docs/full-beta-v2/DEVICE_SPEC.md",
+   "docs/full-beta-v2/AQROOT_DEMO_FAB_HANDOFF.md",
+   "docs/full-beta-v2/assembly/FIRST_FIVE_ASSEMBLY_PLAN.md"
+  ],
+  "independent_calculation_path": "F12 the_operating_points_satisfy_their_own_equations: 46 solved states re-checked against KVL, power balance, energy balance and both thermal relations with plain arithmetic, worst residual 1.5e-11, and a 1 mV perturbation proved to break it",
+  "one_canonical_model": "hardware/demo/manufacturing/aqroot_power_model.py",
+  "provenance_tagging": "aqroot_power_model.tag()/audit_tags(), gated by F6 and proved against a poisoned registry",
+  "sensitivity_is_live": "F10 hot_ratio_sensitivity (monotone in both directions, crossing ratio derived) and F12 f12a/f12a2/f12a3",
+  "three_gates_kept_apart": [
+   "PRE-ORDER ANALYTICAL: CLOSED on this target",
+   "FAB/CAM ACCEPTANCE: PENDING",
+   "FIRST-ARTICLE VALIDATION: PENDING",
+   "PROCUREMENT: PENDING"
+  ],
+  "transition_proof": "demo_feature_contract F12: two arrival edges, 8 mode sets x 2 rail counts, 32 pinned values, 534 swept states, zero invariant violations"
+ },
+ "decision": "D-792",
+ "manifest": "hardware/demo/fab/MANIFEST.json",
+ "manifest_sha256": "9203b020f64f4607492384f9a17f82dd3510c35733e3c48ed68aaf0c82d13078",
+ "no_copper_change": "no copper, no net, no footprint, no placement, no part value and no protected-copper object moved.  The board sha256 is identical to the reviewed D-791 target; the only file added under hardware/demo/kicad is an archived vendor datasheet.",
+ "order_status": "HOLD -- REVIEW TARGET, NOT A FABRICATION AUTHORIZATION.  DO NOT ORDER.  Manufacturer/CAM written acceptance, first-article physical qualification and procurement all remain outstanding and are NOT closed by this release.",
+ "owner_decision_open": false,
+ "owner_visible_item": {
+  "blocks_this_review_target": false,
+  "recommendation": "accept the declared pair for the first five and schedule the Rev-B pass-pair rewiring: the four AO4800 channels are in SERIES where the LTC4368's function needs one back-to-back pair, and paralleling the two packages would take the pass pair from about 292 mOhm hot to about 73 mOhm and restore the full simultaneous pair outright.",
+  "what": "the DECLARED SIMULTANEOUS PAIR.  Each accessory rail alone is unchanged at its full published budget; drawn at the same time the pair is 220 mA + 170 mA, and the FULL pair holds at an ambient of 33.0 C or below.",
+  "where": "docs/full-beta-v2/CTO_DECISIONS.md, D-792 section 0",
+  "why_not": "the D-788 Option A approval protects the per-rail current capability, which is unchanged, and delegated the exact release figures to the final candidate.  The charter requires a recommendation with costed alternatives rather than a bare escalation, and section 0 carries four."
+ },
+ "parent_rejected_by_round_11": "02a90a9a0acb4b2b2431d1c1051a8a0023229351",
+ "post_commit_verification": {
+  "battery_pack_contract": {
+   "board_sha256": "c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907",
+   "verdict": "PASS"
+  },
+  "contract_regression": {
+   "all_contracts_pass": true,
+   "all_ran": true,
+   "baseline": "d791",
+   "contracts_run": 19,
+   "contracts_with_substantive_difference": [
+    "population",
+    "demo_feature",
+    "firmware_hw_map",
+    "battery_pack"
+   ],
+   "emitted_baseline": "d792",
+   "why_a_substantive_difference_is_expected": "D-792 is a CONVERGENCE release: it deliberately changes the verification architecture, so four reports legitimately differ from the D-791 baseline -- population gained POP5, demo_feature gained the canonical model and the two-edge permission table, firmware_hw_map gained host claims and controls, and battery_pack split its connector verdict into a conforming case and a named bounded fault exception.  D-791 stood in exactly this position against D-790's baseline.  `all_contracts_pass` and `all_children_exited_zero` are both true."
+  },
+  "demo_feature_contract": {
+   "board_sha256": "c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907",
+   "verdict": "PASS"
+  },
+  "fab_package_contract": {
+   "board_sha256": "c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907",
+   "verdict": "PASS"
+  },
+  "firmware_hw_map_contract": {
+   "board_sha256": "c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907",
+   "verdict": "PASS"
+  },
+  "kicad_drc_and_schematic_parity": {
+   "errors": 17,
+   "identical_to_the_reviewed_d791_baseline": true,
+   "items": 462
+  },
+  "platformio": {
+   "all_success": true,
+   "environments": [
+    "esp32-s3-aqroot",
+    "wokwi",
+    "esp32-s3-aqroot-dm",
+    "aqroot-demo"
+   ]
+  },
+  "population_contract": {
+   "board_sha256": "c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907",
+   "verdict": "PASS"
+  },
+  "protected_copper": {
+   "board_sha256": null,
+   "verdict": "PASS"
+  },
+  "rail_ampacity": {
+   "all_ok": true,
+   "rails": {
+    "ACC_3V3_SW": {
+     "accepted_reason": "D-771 / .kicad_dru section 5f, the SAME model and the SAME two planes section 5c already rests on.  The rail leaves U20 on In2.Cu at 0.400 mm, where IPC-2221B's INTERNAL curve asks 1.436 mm for 0.849 A and returns 82.1 K.  That curve is an isolated coupon in still air; In2.Cu on THIS board sits 0.4000 mm of core from the In1.Cu GND plane and 0.2028 mm of prepreg from the In3.Cu +3V3 plane, and the plane-coupled rise derived from those two distances is 2.29 K for 0.162 W over the whole rail.  THE ELECTRICAL COST IS ACCEPTED WITH ITS NUMBER: 224 mOhm, which is 190 mV at the limiter's worst case and 90 mV at D-098's PUBLISHED 400 mA -- the figure an accessory actually sees.  With U20's own 68 mOhm max RON that is 117 mV at the published budget, leaving the Community Port above 3.18 V against a 3.135 V -5 % floor.  Length is bounded at 76.0 mm against 73.3 used, so a re-route cannot grow it silently.",
+     "conduction_bounded_accepted_rise_K": 2.58,
+     "design_amps": 0.849,
+     "ipc_isolated_coupon_worst_rise_K": 82.1,
+     "verdict": "OK_WITH_DECLARED_EXCEPTION"
+    },
+    "ACC_5V_SW": {
+     "accepted_reason": "D-771, re-measured at D-773 / .kicad_dru section 5f.  Same model on In3.Cu, whose own declared stackup puts it 0.2028 mm of prepreg from In2.Cu and 0.4000 mm of core from the In4.Cu GND plane: IPC-2221B asks 0.939 mm and returns 38.5 K, the plane-coupled rise derived from those two distances is 1.24 K, and the rail dissipates 0.043 W.  In2.Cu is a ROUTING layer rather than a solid plane, so that side of the model is optimistic -- but the In4 side ALONE, at 0.4000 mm, still gives 3.7 K, and the track runs inside In3's own +3V3 pour at 0.250 mm lateral clearance, a heat path this model ignores entirely.  111 mOhm, 69 mV at the limiter's worst case and 33 mV at D-098's PUBLISHED 300 mA.  Length bounded at 41.0 mm against 38.6 used.",
+     "conduction_bounded_accepted_rise_K": 1.32,
+     "design_amps": 0.608,
+     "ipc_isolated_coupon_worst_rise_K": 38.5,
+     "verdict": "OK_WITH_DECLARED_EXCEPTION"
+    },
+    "BAT_PROTECTED_P": {
+     "accepted_reason": "U11 DLH0010A pin-2 land is 0.200 mm tall; nothing wider can land on it.  Licensed by the .kicad_dru pad-escape neck rule and bounded here to 1.2 mm of MEASURED 0.200 mm copper plus 3.0 mm of the 0.600 mm taper out of it.  D-789 / D788-03 replaced the 6.0 mm of 0.200 mm this exception used to license: that was the width ATTRIBUTE of a track whose copper lies entirely inside D-780's wider taper, and it described a neck the board does not have.",
+     "conduction_bounded_accepted_rise_K": 2.82,
+     "design_amps": 2.6,
+     "ipc_isolated_coupon_worst_rise_K": 173.1,
+     "verdict": "OK_WITH_DECLARED_EXCEPTION"
+    },
+    "BQ25185_SYS": {
+     "accepted_reason": null,
+     "conduction_bounded_accepted_rise_K": null,
+     "design_amps": 2.6,
+     "ipc_isolated_coupon_worst_rise_K": null,
+     "verdict": "POUR_DELIVERED"
+    },
+    "P3V3_MAIN": {
+     "accepted_reason": null,
+     "conduction_bounded_accepted_rise_K": null,
+     "design_amps": 2.12,
+     "ipc_isolated_coupon_worst_rise_K": null,
+     "verdict": "POUR_DELIVERED"
+    },
+    "SYS_TO_ACC5V_BOOST": {
+     "accepted_reason": "D-750 / .kicad_dru section 5c.  The SYS trunk's three In2 legs run 0.800 mm, where IPC-2221B's INTERNAL curve asks 1.585 mm for 0.925 A and returns a 31.8 K rise.  That curve is an isolated coupon in still air and IPC-2152 superseded it; the PLANE-COUPLED rise this file derives from the board's own declared stackup -- In2 between In1 across 0.4000 mm of core and In3 across 0.2028 mm of prepreg -- is derived below from the rail's OWN current rather than quoted, and the dissipation is reported beside it.  The ELECTRICAL cost is accepted with its number: 183 mOhm and 203 mV at the enforced ACC_5V maximum, against a TPS61023 input range of 0.5-5.5 V.",
+     "conduction_bounded_accepted_rise_K": 1.1,
+     "design_amps": 1.11,
+     "ipc_isolated_coupon_worst_rise_K": 48.2,
+     "verdict": "OK_WITH_DECLARED_EXCEPTION"
+    },
+    "SYS_TO_NFC5V_BOOST": {
+     "accepted_reason": "D-750 / .kicad_dru section 5c, same trunk and same derivation as SYS_TO_ACC5V_BOOST; at 0.86 A the IPC-2221B internal rise is 27.0 K and the plane-coupled rise is 0.59 K.",
+     "conduction_bounded_accepted_rise_K": 0.66,
+     "design_amps": 0.86,
+     "ipc_isolated_coupon_worst_rise_K": 27.0,
+     "verdict": "OK_WITH_DECLARED_EXCEPTION"
+    },
+    "USB_VBUS_CHG": {
+     "accepted_reason": "D-743, re-derived at D-751 / .kicad_dru section 5a: IPC-2221B's internal k describes an isolated coupon in still air, and it is superseded by IPC-2152.  This board's In2.Cu is not an isolated coupon: its own declared stackup puts it 0.4000 mm of core from the In1.Cu GND plane and 0.2028 mm of prepreg from the In3.Cu +3V3 plane, and the plane-coupled rise computed from those distances is 1.45 K against the 66.5 K the isolated-coupon curve returns.  Measured alternatives are exhausted: no corridor exists on any layer at any width (screen_widest_corridor, 3 layers) and in-place widening is worth under 5 % (w/d743/widen_plan.py, 25 segments).  The ELECTRICAL cost is accepted with its number: 216 mOhm and 237 mV at 1.1 A, which D-750's charge-timer margin is computed against.",
+     "conduction_bounded_accepted_rise_K": 1.63,
+     "design_amps": 1.1,
+     "ipc_isolated_coupon_worst_rise_K": 66.5,
+     "verdict": "OK_WITH_DECLARED_EXCEPTION"
+    },
+    "USB_VBUS_RAW": {
+     "accepted_reason": null,
+     "conduction_bounded_accepted_rise_K": null,
+     "design_amps": 1.1,
+     "ipc_isolated_coupon_worst_rise_K": 5.4,
+     "verdict": "OK"
+    }
+   },
+   "verdict": "PASS",
+   "what_worst_rise_K_is": "R6-E07: `worst_rise_K` is an IPC-2152 ISOLATED-COUPON figure and is NOT a predicted board temperature.  Where it is large it belongs to a PACKAGE LAND that no copper can be laid wider on, and the accepted figure beside it -- `worst_accepted_conduction_bounded_rise_K` -- is the conduction-bounded rise for that same geometry.  First-article thermography (C-THERM-01) remains the measurement of record and nothing here claims it has been taken."
+  },
+  "routing_ledger": {
+   "board_sha256": "c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907",
+   "connectivity": {
+    "approved_unrouted_edges": 1,
+    "connected_retained_nets": 173,
+    "open_retained_nets": 1,
+    "raw_board_ratsnest": 17,
+    "retained_multi_pad_nets": 174,
+    "retained_open_edges": 1,
+    "unapproved_open_edges": 0,
+    "unapproved_open_retained_nets": 0
+   },
+   "verdict": "PASS"
+  }
+ },
+ "schema": 1
+}
