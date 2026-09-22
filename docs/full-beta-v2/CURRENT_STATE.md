@@ -72,7 +72,86 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
-> # **D-791 ROUND-10 CORRECTION — CURRENT EXTERNAL-REVIEW TARGET**
+> # **D-792 ROUND-11 CONVERGENCE CORRECTION — CURRENT EXTERNAL-REVIEW TARGET**
+>
+> **THIS IS A REVIEW TARGET, NOT A FABRICATION AUTHORIZATION. DO NOT ORDER.**
+> Round-11 external review REJECTED D-791.  Astra graded it **C — DO NOT ORDER**
+> with 4 high, 3 medium and 3 low findings plus sourcing shortages; Fable graded
+> B on verified scope and declared its own review INCOMPLETE and not usable for
+> order authorization.  Astra's reproduced counterexamples control.  **No
+> mandatory copper respin was established and none is made here: no copper, no
+> net, no footprint, no placement, no part value and no protected-copper object
+> moves at D-792.**  Connectivity is unchanged at **174 retained / 173 connected
+> / one owner-approved `U11.3` open / zero unapproved**.
+>
+> **`R11-01`…`R11-07` and `R11-10` are closed here, plus `R11-08`/`R11-09` and
+> every Fable complementary verifier/documentation residual.**
+>
+> **THE THEME OF ROUND-11 IS TWO FILES DESCRIBING TWO DIFFERENT BOARDS.**
+> Round-8 was a proof stretched past its evidence; Round-9 was a number read at
+> the wrong condition; Round-10 was a model that never asked whether its own
+> answer was reachable; Round-11 is an ARCHITECTURE in which the same physical
+> quantity could exist twice and drift.  The backlight converter's input was
+> SOLVED at 233.13 mA in `demo_feature_contract` and TYPED at 211.58 mA in
+> `audit_rail_ampacity`, and the typed copy ruled the whole cell-to-load network,
+> every derived VCELL floor and every thermal state.  The response is therefore
+> ARCHITECTURAL, not a patch:
+>
+> **ONE CANONICAL MODEL: `hardware/demo/manufacturing/aqroot_power_model.py`.**
+> One `+3V3` load ledger with every line classified BASELINE / INCREMENTAL /
+> BURSTY, so the peak budget, the sustained always-on set, the optional-mode set
+> and the bounded-duty allowances are all VIEWS of one list.  One itemised
+> cell-to-`BAT_PROTECTED_P` source resistance.  One pass-pair model whose
+> temperature law is an explicit solver input.  One BQ25185 physical-mode solver
+> with KCL, KVL and energy balance as hard invariants.  Every engineering input
+> carries a machine-readable provenance tag, and a release in which a value
+> tagged TYPICAL is used where a bound is required is REFUSED by a gate.
+>
+> ### THE PRODUCT-FACING CONSEQUENCES, IN ONE PLACE
+>
+> * **The per-rail accessory budgets do NOT move.**  `ACC_3V3_SW` = 400 mA TOTAL
+>   and `ACC_5V_SW` = 300 mA TOTAL, each deliverable ALONE, remain exactly what
+>   D-098 published and what the D-788 owner decision preserved.
+> * **There is a NEW published figure: the DECLARED SIMULTANEOUS PAIR, 220 mA +
+>   170 mA.**  It is solved, not chosen.  With `R11-07`'s itemised battery path
+>   and `R11-02`'s processor baseline, the FULL pair drawn at the same time
+>   settles the node 44 mV below the firmware's own retention criterion at the
+>   top of the declared 0…40 °C envelope.  The full pair IS supported at an
+>   ambient of 33.0 °C or below, and the per-state derating table is published in
+>   DEVICE_SPEC §6.3a.  **This is an owner-visible change and it is escalated in
+>   CTO_DECISIONS D-792 section 0 with a recommendation; it does not block the
+>   review target.**
+> * **The accessory VCELL floors move to retention 3.20 V / first-rail 3.95 V /
+>   second-rail 3.95 V**, and those two enable numbers are now the published
+>   ENVELOPE of a mode-indexed permission table with TWO arrival edges.
+> * **Charging is bounded by a derived system-power ceiling of 4.063 W** at 40 °C
+>   ambient, with a supervised external-ambient ceiling of 27.7 °C at the
+>   heaviest permitted charging state.  This board has no VBUS-present signal on
+>   any readable pin, so firmware cannot enforce either number.
+> * **The first-article accessory bench points move again.**  `≈4.15 V` and
+>   `≈4.00 V` pre-enable for the dual case, `≈3.70 V` for the single case.
+>
+> ### **THE THREE GATES, KEPT APART ON PURPOSE (D-792 convergence requirement 8)**
+>
+> Round-11 asked for these to stop being one paragraph, because a reader who sees
+> "all contracts green" and concludes "orderable" has been misled by the layout of
+> the evidence rather than by any claim in it.
+>
+> | gate | what it covers | D-792 status |
+> |---|---|---|
+> | **PRE-ORDER ANALYTICAL** | every derivation, model, contract, negative control, host test and document-consistency clause in this repository | **CLOSED on this target.**  19/19 standing contracts, F1–F13, H1–H8, 8/8 host tests with every negative control caught, 4/4 PlatformIO environments, KiCad DRC and schematic parity byte-identical to the reviewed D-791 baseline, protected copper identical, fab package PASS. |
+> | **FAB / CAM ACCEPTANCE** | the manufacturer's own written acceptance of the Gerbers, drills, stackup, impedance, via-in-pad and mask-dam process, and of the named bounded exceptions in `.kicad_dru` §5 | **PENDING.**  Nothing in this repository can close it.  B01–B14 remain outstanding. |
+> | **FIRST-ARTICLE VALIDATION** | physical measurement on assembled hardware | **PENDING.**  C01–C21 remain outstanding, and D-792 adds measurements of record: `C-BAT-PATH-01` (the complete itemised battery-path resistance, cold and hot-soaked), `C-THERM-01` (R_SYS and the internal-air rise), `C-BAT-GATE-01` (the pass pair's declared temperature coefficient and the IBAT_OCP band), `C-DISP-01` (the panel's declared 50 mA and the backlight converter's declared loss terms), `C-MCU-01` (the ESP32-S3 baseline), `C-PWR-CHARGE-01` (the charge-regime junction and the load ceiling). |
+>
+> **PROCUREMENT is a fourth, separate gate and it is also PENDING:** nine fitted
+> groups are short on the live sweep and `Q2`/`Q3` needs an authorised genuine
+> allocation.  **ANALYTICAL CLOSURE IS NOT ORDER AUTHORIZATION.**
+>
+> The enclosure maximum-tolerance CAD/dry-fit remains separate physical evidence,
+> and the NFC antenna-side shunt still has no dedicated CAD site — it remains an
+> explicit first-article tuning/rework risk.
+
+> # **D-791 ROUND-10 CORRECTION**  *(HISTORICAL — superseded by the D-792 block above.  Its `AO4800` closure, its `R97` 1.87 kΩ value, its corrected manufacturer fields, its retired reinforcement lead and its image-level host test all STAND; its **3.55 V / 3.65 V** VCELL floors, its **1.1653 A** internal `+3V3` budget, its **54 mΩ** harness allowance, its **2.81 V** published Community-Port minimum, its **1.9702 A** `U12` compound case, its **30.0 °C** charge-ambient ceiling, its **52.2 mΩ** inductor DCR and its 4.41 V-supplement charge model do NOT.)*
 >
 > **THIS IS A REVIEW TARGET, NOT A FABRICATION AUTHORIZATION. DO NOT ORDER.**
 > **NO OWNER DECISION IS OPEN.** The D-788 Option A approval of 2026-09-20 stands and

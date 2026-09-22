@@ -1,0 +1,36 @@
+=== CLEAN esp32-s3-aqroot ===
+Merged 2 ELF sections
+Successfully created esp32s3 image.
+========================= [SUCCESS] Took 25.47 seconds =========================
+
+Environment      Status    Duration
+---------------  --------  ------------
+esp32-s3-aqroot  SUCCESS   00:00:25.473
+========================= 1 succeeded in 00:00:25.473 =========================
+=== CLEAN wokwi ===
+Merged 2 ELF sections
+Successfully created esp32s3 image.
+========================= [SUCCESS] Took 25.30 seconds =========================
+
+Environment    Status    Duration
+-------------  --------  ------------
+wokwi          SUCCESS   00:00:25.300
+========================= 1 succeeded in 00:00:25.300 =========================
+=== CLEAN esp32-s3-aqroot-dm ===
+Merged 2 ELF sections
+Successfully created esp32s3 image.
+========================= [SUCCESS] Took 25.57 seconds =========================
+
+Environment         Status    Duration
+------------------  --------  ------------
+esp32-s3-aqroot-dm  SUCCESS   00:00:25.575
+========================= 1 succeeded in 00:00:25.575 =========================
+=== CLEAN aqroot-demo ===
+Merged 2 ELF sections
+Successfully created esp32s3 image.
+========================= [SUCCESS] Took 4.40 seconds =========================
+
+Environment    Status    Duration
+-------------  --------  ------------
+aqroot-demo    SUCCESS   00:00:04.401
+========================= 1 succeeded in 00:00:04.401 =========================

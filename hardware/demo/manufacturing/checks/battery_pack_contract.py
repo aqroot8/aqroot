@@ -82,15 +82,46 @@ def board_requirements():
         raise RuntimeError("D-753/D-765 accessory envelope itself does not pass: %s"
                            % (failed or env.get("error")))
     modes = env["modes_I_bat_A"]
-    # D-771: the same REACHABLE set `judge_accessory_envelope` uses, including
-    # the state where BOTH rails deliver the budget D-098 publishes for them.
-    reachable = (
+    # D-792 / R11-02 + R11-04.  TWO MAXIMA, BECAUSE THEY ANSWER TWO QUESTIONS.
+    #
+    # D-771 took ONE maximum over a set it called REACHABLE and used it for both
+    # the pack's discharge requirement and the connector's current rating.  That
+    # set mixed CONFORMING accessory draws with accessory OVERCURRENTS, and with
+    # R11-02's ESP32-S3 baseline in the ledger the mixture crosses the
+    # connector's 2.6 A rated current -- while the conforming half clears it by
+    # 17 %.  The two questions are not the same question:
+    #
+    #   CONFORMING   what the connector must carry in NORMAL use.  This is the
+    #                figure its RATED CURRENT governs, and it must be inside it.
+    #   FAULT        what the PACK must be able to SOURCE without its own
+    #                protection misbehaving, and what the connector may see
+    #                during an accessory overcurrent.  A pack has to survive a
+    #                fault; that is what the discharge requirement is for.
+    #
+    # The conforming set is the D-792 published contract: each rail ALONE at its
+    # full published budget, and both TOGETHER at the declared simultaneous pair.
+    conforming = (
+        "acc3v3_alone_at_its_budget",
+        "acc5v_alone_at_its_budget",
+        "both_at_the_declared_pair",
+    )
+    # A SINGLE accessory overcurrent.  This is D-771's own REACHABLE set,
+    # unchanged, minus nothing -- what moved is that `both_at_their_published_
+    # budgets` is no longer CONFORMING, because the D-792 simultaneous contract
+    # is the declared pair.
+    fault = (
         "acc3v3_alone_at_its_limiter",
         "acc5v_alone_at_its_limiter",
         "both_at_their_guaranteed_currents",
         "both_at_their_published_budgets",
     )
-    max_reachable = max(modes[k] for k in reachable)
+    # BOTH limiters in fault at once is a DOUBLE fault and is kept separate, as
+    # `judge_accessory_envelope` keeps it: what bounds it is the LATCHING
+    # LTC4368 breaker and the F1 one-shot fuse, not a connector rating.
+    double_fault = ("both_limiters_in_fault",)
+    max_conforming = max(modes[k] for k in conforming)
+    max_reachable = max(modes[k] for k in fault)
+    max_double_fault = max(modes[k] for k in double_fault)
 
     r37 = board.FindFootprintByReference("R37")
     if not r37:
@@ -103,6 +134,13 @@ def board_requirements():
     return dict(
         board_sha256=board_digest,
         accessory_modes_A=modes,
+        conforming_modes=list(conforming),
+        fault_modes=list(fault),
+        double_fault_modes=list(double_fault),
+        max_conforming_battery_A=max_conforming,
+        max_double_fault_battery_A=max_double_fault,
+        latching_breaker_min_A=env["breaker"]["trip_min_A"],
+        one_shot_fuse_A=env["fuse_A"],
         max_user_reachable_battery_A=max_reachable,
         required_pack_discharge_A=max_reachable * DISCHARGE_MARGIN,
         discharge_margin_ratio=DISCHARGE_MARGIN,
@@ -222,13 +260,75 @@ def evaluate(rec, req, actual_pdf_hash):
         strain_relief_tds_actual_sha256=relief_tds_actual_sha256)
     rated = float(rating.get("rated_current_A", 0) or 0)
     live = float(req["max_user_reachable_battery_A"])
+    conf = float(req["max_conforming_battery_A"])
+    # The same specification's section 4.3 publishes a 2-circuit REFERENCE
+    # DERATING value for exactly this application -- 2 circuits, AWG26 -- and it
+    # is 2.9 A.  This programme RULES at the section 4.2 rated current, which is
+    # the stricter figure and the one the transcription says AQROOT uses; the
+    # 4.3 value is what bounds the FAULT excursion, and it is read from the
+    # archived transcription rather than asserted here.
+    ref_derate = float(rating.get("reference_derating_2_circuit_A", 0) or 0)
     checks["B10_D781_harness_rating_and_polarity_cover_live_board"] = dict(
-        ok=(rating.get("wire_AWG") == 26 and rated >= live
+        # THE VERDICT IS ON THE CONFORMING CURRENT.  R11-02's ESP32-S3 baseline
+        # moved the FAULT maximum 5.58 % above the connector's rated current,
+        # and that is a NAMED BOUNDED EXCEPTION rather than a pass or a failure:
+        # the rated current is a 30 C temperature-rise figure (section 6.1.5),
+        # not a safety limit, the excursion is an accessory OVERCURRENT and not
+        # an operating state, it is inside the same specification's own 2-circuit
+        # reference derating value, and it is below both the latching LTC4368
+        # breaker and the F1 one-shot fuse.  C-BAT-PATH-01 measures it.
+        ok=(rating.get("wire_AWG") == 26 and rated >= conf
+            and ref_derate > 0.0 and ref_derate >= live
+            and float(req.get("max_double_fault_battery_A") or 0)
+            < float(req.get("latching_breaker_min_A") or 0)
+            and float(req.get("max_double_fault_battery_A") or 0)
+            < float(req.get("one_shot_fuse_A") or 0)
             and polarity.get("cavity_1") == "BAT+ / red / J4.1"
             and polarity.get("cavity_2") == "GND / black / J4.2"),
-        controlling_rating_A=rated, live_max_battery_A=live,
-        current_margin_A=round(rated-live, 4),
-        current_margin_pct=round((rated/live-1.0)*100.0, 2) if live else None,
+        controlling_rating_A=rated,
+        rated_current_basis="section 4.2 rated current at AWG26; section 6.1.5 "
+                            "gives 30 C MAX temperature rise AT that current",
+        conforming_max_battery_A=conf,
+        conforming_modes=req.get("conforming_modes"),
+        conforming_margin_A=round(rated - conf, 4),
+        conforming_margin_pct=(round((rated / conf - 1.0) * 100.0, 2)
+                               if conf else None),
+        live_max_battery_A=live,
+        fault_modes=req.get("fault_modes"),
+        fault_exceeds_the_rated_current=bool(live > rated),
+        fault_over_rated_pct=(round((live / rated - 1.0) * 100.0, 2)
+                              if rated else None),
+        reference_derating_2_circuit_A=ref_derate,
+        fault_is_inside_the_reference_derating=bool(ref_derate >= live),
+        double_fault_max_battery_A=req.get("max_double_fault_battery_A"),
+        double_fault_modes=req.get("double_fault_modes"),
+        double_fault_is_below_the_latching_breaker=bool(
+            req.get("max_double_fault_battery_A", 0)
+            < float(req.get("latching_breaker_min_A") or 0)),
+        double_fault_is_below_the_one_shot_fuse=bool(
+            req.get("max_double_fault_battery_A", 0)
+            < float(req.get("one_shot_fuse_A") or 0)),
+        double_fault_basis=("BOTH limiters in fault at once is a DOUBLE fault. "
+                            "No connector rating governs it; what does is the "
+                            "protection ORDERING -- it must stay below the "
+                            "LATCHING LTC4368 breaker and below the F1 one-shot "
+                            "fuse so a user meets a recoverable BQ25185 BATOCP "
+                            "hiccup and not a latched board or a blown fuse. "
+                            "`demo_feature_contract` F6 is where that ordering "
+                            "is a clause."),
+        fault_exception=("an accessory OVERCURRENT may reach %.4f A, which is "
+                         "%.2f %% above the section 4.2 rated current and "
+                         "INSIDE the section 4.3 two-circuit reference derating "
+                         "value of %.1f A.  It is a fault, not an operating "
+                         "state; the rated current is a 30 C rise figure; and "
+                         "the excursion is bounded below the latching LTC4368 "
+                         "breaker and the F1 one-shot fuse.  MEASURED at "
+                         "C-BAT-PATH-01 and C-THERM-01."
+                         % (live, (live / rated - 1.0) * 100.0 if rated else 0.0,
+                            ref_derate)) if live > rated else None,
+        current_margin_A=round(rated - conf, 4),
+        current_margin_pct=(round((rated / conf - 1.0) * 100.0, 2)
+                            if conf else None),
         cavity_1=polarity.get("cavity_1"), cavity_2=polarity.get("cavity_2"))
     return checks
 

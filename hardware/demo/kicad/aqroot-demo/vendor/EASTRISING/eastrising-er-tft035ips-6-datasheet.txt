@@ -1,0 +1,2321 @@
+TFT LCD Display Datasheet ER-TFT035IPS-6
+
+EastRising
+buydisplay.com
+
+ER-TFT035IPS-6
+TFT LCD Display Datasheet
+ISO9001
+Registered Company
+
+sira
+
+CERTIFICATION
+
+011
+3B
+
+EastRising Technology Co., Limited
+
+Attention:
+A. Some specifications of IC are not listed in this datasheet. Please refer to the IC datasheet for more details.
+B. The related documents for interfacing, demo code, IC datasheet are all available, please download from our web.
+C. Please pay more attention to “INSPECTION CRITERIA” in this datasheet. We assume you already agree with these criterions
+when you place an order with us. No more recommendations.
+
+REV
+
+Description
+
+Release Date
+
+1.0
+
+Preliminary Release
+
+Dec-15-2022
+
+2.0
+
+Backlight Update
+
+Aug-18-2025
+
+URL: www.buydisplay.com
+
+Document Name: ER-TFT035IPS-6_Datasheet
+
+Page: 1 of 24
+
+EastRising
+
+TFT LCD Display Datasheet ER-TFT035IPS-6
+
+buydisplay.com
+
+CONTENTS
+1. ORDER INFORMATION - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 04
+1.1 Order Number - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+04
+
+1.2 Image - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+04
+
+2. SPECIFICATION - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 05
+2.1 Display Specification - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 05
+2.2 Mechanical Specification - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 05
+2.3 Electrical Specification - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -- - - - - - - - - - - - -
+
+05
+
+2.4 Optical Specification - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+05
+
+3. OUTLINE DRAWING
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 06
+
+3.1 ER-TFT035IPS-6 with No Touch Panel Outline Drawing - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+06
+
+3.2 ER-TFT035IPS-6 with Resistive Touch Panel Outline Drawing - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+07
+
+3.3 ER-TFT035IPS-6 with Capacitive Touch Panel Outline Drawing- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 08
+
+4. ELECTRICAL SPEC - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 09
+4.1 Pin Configuration for LCD - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 10
+4.2 Absolute Maximum Ratings - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 11
+4.3 Electrical Characteristics - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 11
+4.4 Backlight Characteristics - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 11
+
+5. INSPECTION CRITERIA
+
+-----------------------------------------------------
+
+12
+
+5.1 Acceptable Quality Level - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 12
+5.2 Definition of Lot - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 12
+5.3 Condition of Cosmetic Inspection - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 12
+5.4 Module Cosmetic Criteria - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+13
+
+5.5 Screen Cosmetic Criteria (Non-Operating) - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 15
+5.6 Screen Cosmetic Criteria (Operating) - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 16
+
+6. PRECAUTIONS FOR USING - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 18
+6.1 Handling Precautions - - - - - - - - -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 18
+6.2 Power Supply Precautions- - - - - - - - - - -
+
+---------------------------------------------
+
+18
+
+6.3 Operating Precautions- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+19
+
+6.4 Mechanical/Environmental Precautions - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 19
+6.5 Storage Precautions - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+19
+
+6.6 Others- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 19
+
+URL: www.buydisplay.com
+
+Document Name: ER-TFT035IPS-6_Datasheet
+
+Page: 2 of 24
+
+EastRising
+
+TFT LCD Display Datasheet ER-TFT035IPS-6
+
+buydisplay.com
+
+7.USING LCD MODULES - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 20
+7.1 Liquid Crystal Display Modules - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 20
+7.2 Installing LCD Modules - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+20
+
+7.3 Precaution for Handling LCD Modules - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 20
+7.4 Electro-Static Discharge Control- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 21
+7.5 Precaution for Soldering to EastRising LCM- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+21
+
+7.6 Precaution for Operation - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+21
+
+7.7 Limited Warranty - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 22
+7.8 Return Policy - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+22
+
+8. IMAGE STICKING - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 23
+8.1 What is Image Sticking? - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+23
+
+8.2 What causes Image Sticking? - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 23
+8.3 How to Avoid Image Sticking? - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+24
+
+8.4 How to Fix the Image Sticking? - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 24
+8.5 Is Image Sticking Covered by EastRising RMA Warranty？- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+URL: www.buydisplay.com
+
+Document Name: ER-TFT035IPS-6_Datasheet
+
+Page: 3 of 24
+
+24
+
+EastRising
+
+TFT LCD Display Datasheet ER-TFT035IPS-6
+
+buydisplay.com
+
+1. ORDERING INFORMATION
+1.1 Order Number
+Order Number
+
+Description
+
+ER-TFT035IPS-6
+
+3.5 ”IPS TFT LCD Display
+
+ER-TP035-8
+
+3.5 ”Resistive Touch Panel
+
+ER-TPC035-6
+
+3.5 ”Capacitive Touch Panel with Controller
+
+1.2 Image
+
+← ER-TFT035IPS-6 with No Touch Panel
+
+ER-TFT035IPS-6 with Resistive Touch Panel →
+
+← ER-TFT035IPS-6 with Capacitive Touch Panel
+
+URL: www.buydisplay.com
+
+Document Name: ER-TFT035IPS-6_Datasheet
+
+Page: 4 of 24
+
+EastRising
+
+TFT LCD Display Datasheet ER-TFT035IPS-6
+
+buydisplay.com
+
+2. SPECIFICATION
+2.1 Display Specification
+Item
+
+Standard Value
+
+Unit
+
+Display Format
+
+320x480
+
+Pixels
+
+Display Connector
+
+FPC
+
+--
+
+FPC Connector
+
+50 Pin 0.5mm Pitch Bottom Contact ZIF Connector
+
+--
+
+Operating Temperature
+
+-20 ~ +70
+
+℃
+
+Storage Temperature
+
+-30 ~ +80
+
+℃
+
+Touch Panel Optional
+
+Yes
+
+--
+
+Sunlight Readable
+
+No
+
+--
+
+Item
+
+Standard Value
+
+Unit
+
+Diagonal Size
+
+3.5
+
+Inch
+
+Outline Dimension with FPC Folded
+
+54.50(W)x83.00(H)x2.3(T)
+
+mm
+
+Visual Area
+
+49.96(W)x74.44(H)
+
+mm
+
+Active Area
+
+48.96(W)x73.44(H)
+
+mm
+
+Dot Pitch
+
+0.153x0.153
+
+mm
+
+Item
+
+Standard Value
+
+Unit
+
+IC Package
+
+COG
+
+--
+
+Controller
+
+ILI9488
+
+--
+
+Interface
+
+8080 8-bit/9-bit/16-bit Parall,3/4-Wire SPI,RGB.
+
+--
+
+Response Time (Typ)
+
+20
+
+MS
+
+Item
+
+Standard Value
+
+Unit
+
+LCD Type
+
+IPS
+
+--
+
+Viewing Angle Range
+
+Left:80 , Right:80 , Up:80 , Down:80
+
+Deg
+
+Colors
+
+65K/262K/16.7M
+
+--
+
+Contrast Ratio (Typ)
+
+500:1
+
+--
+
+Brightness (Typ)
+
+220
+
+cd/m2
+
+2.2 Mechanical Specification
+
+2.3 Electrical Specification
+
+2.4 Optical Specification
+
+URL: www.buydisplay.com
+
+Document Name: ER-TFT035IPS-6_Datasheet
+
+Page: 5 of 24
+
+2±0.3
+
+URL: www.buydisplay.com
+
+8.7
+
+199
+
+LCD A,A 73.44
+
+50
+
+14.41
+
+25.5±0.15
+
+24.5±0.03
+
+W0.35±0.03
+
+buydisplay.com
+
+1
+
+ER-TFT035IPS-6
+
+ALL
+
+1
+
+13.7
+
+K6K5K4K3K2K1A
+K6K5K4K3K2K1A
+
+320(H)XRGBX480(V) Dots
+
+2.27±0.3
+2.77±0.3
+
+LED-A
+
+0.3
+
+30.7±0.5
+
+Document Name: ER-TFT035IPS-6_Datasheet
+U=2.9-3.2V , I=120mA
+
+LED-K2
+
+LED-K1
+
+25.5±0.15
+
+DWN
+
+CHK
+
+APP
+JIM
+
+APPROVALS
+
+DESCRIPTION
+
+DESIGN
+JIM
+JIM
+DATE
+
+Aug-18-25
+
+DATE
+
+DO NOT SCALE THIS DRAWING.
+
+ER-TFT035IPS-6
+
+MODEL NUMBER :
+
+PROJECTION
+
+SHEET:
+
+SCALE:
+N.T.S.
+
+GENERAL TOL.
+
+1
+
+Email: sales@buydisplay.com
+UNITS
+MM
+
+Aug-18-2025
+
+Feb-22-2022
+
+旭 日 东 方 科 技 有 限 公 司
+
+FPC+PI补强=0.3±0.03MM
+
+1'ST DEGIN
+Backlight Update
+
+EASTRISING TECHNOLOGY CO.,LTD
+
+50
+
+Web: www.buydisplay.com
+
+buydisplay.com
+
+EastRising
+
+1
+
+5±0.3
+
+1.Unit: mm
+2.BL=Backlight
+3.VA=Visual Area
+4.AA=Active Area
+
+2.5±0.3
+
+3.5"TFT
+
+LCD A,A 48.96
+
+REV
+A
+B
+
+EastRising
+TFT LCD Display Datasheet ER-TFT035IPS-6
+
+buydisplay.com
+
+3. OUTLINE DRAWING
+
+3.1 ER-TFT035IPS-6 with No Touch Panel Outline Drawing
+
+4.59
+
+3.5
+
+26.11
+
+11.7
+
+Page: 6 of 24
+
+2.77±0.3
+
+LCD A,A 48.96
+
+2.5±0.3
+
+1.35±0.3
+
+URL: www.buydisplay.com
+
+3.5"TFT
+
+1.95±0.3
+
+RTP A,A 74.29
+
+LCD A,A 73.44
+
+1.8±0.3
+
+RTP ICON/V,A74.94
+
+8.7
+
+XL
+
+PIN1
+
+199
+
+50
+
+14.41
+
+25.5±0.15
+
+24.5±0.03
+
+W0.35±0.03
+
+buydisplay.com
+
+1
+
+ER-TFT035IPS-6
+
+PIN4
+
+YD
+
+ALL
+
+1
+
+13.7
+
+K6K5K4K3K2K1A
+K6K5K4K3K2K1A
+
+XR
+
+320(H)XRGBX480(V) Dots
+
+LED-A
+
+26.11
+
+11.7
+
+SILVER WIRE 77.89
+
+RTP OD 82.34±0.2
+
+30.7±0.5
+
+BL OD 83±0.2
+
+Document Name: ER-TFT035IPS-6_Datasheet
+LED-K2
+
+LED-K1
+
+U=2.9-3.2V , I=120mA
+
+0.3
+
+3.45±0.2MM
+
+DWN
+
+CHK
+
+APP
+JIM
+
+APPROVALS
+
+50
+
+FPC+PI补强=0.3±0.03MM
+
+DESIGN
+JIM
+JIM
+DATE
+
+Aug-18-25
+
+DATE
+
+DO NOT SCALE THIS DRAWING.
+
+ER-TFT035IPS-6
+
+MODEL NUMBER :
+
+PROJECTION
+
+SHEET:
+
+SCALE:
+N.T.S.
+
+GENERAL TOL.
+
+1
+
+Email: sales@buydisplay.com
+
+EASTRISING TECHNOLOGY CO.,LTD
+UNITS
+MM
+
+Aug-18-2025
+
+Feb-22-2025
+
+旭 日 东 方 科 技 有 限 公 司
+
+25.5±0.15
+
+Web: www.buydisplay.com
+
+buydisplay.com
+
+EastRising
+
+1
+
+DESCRIPTION
+1'ST DEGIN
+Backlight Update
+
+5±0.3
+
+1.Unit: mm
+2.BL=Backlight
+3.VA=Visual Area
+4.AA=Active Area
+5.RTP= Resistive Touch Panel
+
+2.27±0.3
+
+RTP A,A 49.96
+
+YU
+
+2.07±0.3
+
+0.22±0.3
+1.57±0.3
+
+SILVER WIRE 51.36
+
+RTP ICON/V,A50.36
+
+REV
+A
+B
+
+EastRising
+TFT LCD Display Datasheet ER-TFT035IPS-6
+
+buydisplay.com
+
+3.2 ER-TFT035IPS-6 with Resistive Touch Panel Outline Drawing
+
+4.59
+
+3.5
+
+Page: 7 of 24
+
+3.26±0.2
+
+URL: www.buydisplay.com
+
+LCD A,A 73.44
+
+14.41
+
+1.26±0.4
+
+50
+
+INT
+SCL
+VCC
+SDA GND
+RESET
+
+25.5±0.15
+
+1
+
+13.7
+
+K6K5K4K3K2K1A
+K6K5K4K3K2K1A
+
+LED-A
+
+26.11
+
+11.7
+
+30±0.5
+
+Document Name: ER-TFT035IPS-6_Datasheet
+0.3
+
+LED-K2
+
+LED-K1
+
+U=2.9-3.2V , I=120mA
+
+1.50 MAX
+
+DWN
+
+CHK
+
+APP
+
+1
+
+JIM
+
+FPC+PI补强=0.3±0.03MM
+
+DATE
+Feb-22-2025
+
+ER-TFT035IPS-6
+
+MODEL NUMBER :
+
+Aug-08-25 DO NOT SCALE THIS DRAWING.
+
+DATE
+
+PROJECTION
+
+SHEET:
+
+SCALE:
+N.T.S.
+
+GENERAL TOL.
+
+1
+
+Email: sales@buydisplay.com
+UNITS
+MM
+
+Aug-18-2025
+
+旭 日 东 方 科 技 有 限 公 司
+
+25.5±0.15
+
+50
+
+1.02±0.4
+
+DESIGN
+JIM
+JIM
+
+EASTRISING TECHNOLOGY CO.,LTD
+Web: www.buydisplay.com
+
+buydisplay.com
+
+EastRising
+
+APPROVALS
+
+1.02±0.4
+
+5±0.3
+
+24.5±0.03
+
+W0.35±0.03
+
+buydisplay.com
+
+ER-TFT035IPS-6
+
+1
+
+3.95±0.25MM
+
+0.7±0.4
+
+1.Unit: mm
+2.BL=Backlight
+3.VA=Visual Area
+4.AA=Active Area
+5.CTP=Capacitive Touch Panel
+
+8.7
+
+199
+
+ALL
+
+320(H)XRGBX480(V) Dots
+
+3.29±0.2
+3.79±0.4
+
+DESCRIPTION
+1'ST DEGIN
+Backlight Update
+
+1.26±0.4
+
+TYPE
+
+3.76±0.4
+
+3.5"TFT
+
+LCD A,A 48.96
+
+1.02±0.4
+
+REV
+A
+B
+
+EastRising
+TFT LCD Display Datasheet ER-TFT035IPS-6
+
+buydisplay.com
+
+3.3 ER-TFT035IPS-6 with Capacitive Touch Panel Outline Drawing
+
+3.89
+
+3.5
+
+Page: 8 of 24
+
+TFT LCD Display Datasheet ER-TFT035IPS-6
+
+EastRising
+buydisplay.com
+
+4. ELECTRICAL SPEC
+4.1 Pin Configuration for LCD
+Pin
+No
+
+Pin Name
+
+Descriptions
+
+1
+
+LEDA
+
+Anode for LED backlighting
+
+2
+
+LEDK
+
+Cathode for LED backlighting
+
+3
+
+LEDK
+
+Cathode for LED backlighting
+
+4~6
+
+NC
+
+NO Connect
+
+7
+
+IM0
+
+8
+
+IM1
+
+9
+
+IM2
+
+10
+
+RESET
+
+Reset Pin. Initialize the chip with a low input.
+
+11
+
+VSYNC
+
+Frame Synchronizing Signal For RGB Interface. Fix to DGND level when not in use.
+
+12
+
+HSYNC
+
+Line Synchronizing Signal For RGB Interface. Fix to DGND level when not in use.
+
+13
+
+DOTCLK
+
+Dot Clock Signal For RGB Interface. Fix to DGND level when not in use.
+
+14
+
+DE
+
+Data Enable Signal For RGB Interface. Fix to DGND level when not in use.
+
+15-32
+
+DB17-DB0
+
+33
+
+SDO
+
+34
+
+SDA
+
+35
+
+RD
+
+Select Interface Mode ;Note1
+
+DATA BUS. Fix to DGND level when not in use.
+Serial Output Signal. Leave the pin open when not in use.
+Serial Interface : Serial input or serial data input/output bi-direction pin.
+Fix to DGND level when not in use.
+Parallel interface：Read execution control pin. Fix to IOVCC when not in use.
+Parallel interface：Write execution control pin ;
+
+36
+
+WRX(SCL)
+
+Serial interface :SCL pin as Serial Clock when operates in the serial interface
+Fix to IOVCC when not in use.
+
+37
+
+D/CX
+
+Data/Command Selection pin. Fix to IOVCC when not in use.
+
+38
+
+CSX
+
+Chip Select Signal. Fix to IOVCC when not in use.
+
+39
+
+TE
+
+40
+
+VDDI
+
+Low voltage power supply for interface logic logic circuits (1.65~3.3V)
+
+41
+
+VDDI
+
+Low voltage power supply for interface logic logic circuits (1.65~3.3V)
+
+42
+
+VCI
+
+High voltage power supply for analog circuit blocks (2.5~3.3V)
+
+43
+
+GND
+
+Ground
+
+44
+
+XR(X+)/SCL
+
+Resistive touch panel output/ Capacitive touch SCL signal,I2C interface.
+
+45
+
+YD(Y+)/SDA
+
+Resistive touch panel output/ Capacitive touch SDA signal, I2C interface
+
+Tearing effect out pin synchronize MPU to frame writing.
+Leave the pin open when not in use.
+
+URL: www.buydisplay.com
+
+Document Name: ER-TFT035IPS-6_Datasheet
+
+Page: 9 of 24
+
+TFT LCD Display Datasheet ER-TFT035IPS-6
+
+EastRising
+buydisplay.com
+46
+
+XL(X-)/IRQ
+
+Resistive touch panel output /Capacitive touch pen interrupt signal when low.
+
+47
+
+YU(Y-)/RST
+
+Resistive touch panel output/ Capacitive touch reset signal when low.
+
+48
+
+GND
+
+Ground
+
+49
+
+GND
+
+Ground
+
+50
+
+GND
+
+Ground
+
+Note 1: Select the MCU interface Mode
+IM2
+
+IM1
+
+IM0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+MCU-Interface Mode
+
+Pin in use
+Register/Content
+
+GRAM
+
+8080 MCU 18-bit Bus Interface
+
+D[7:0]
+
+D[17:0],WRX,RDX,CSX,D/CX
+
+1
+
+8080 MCU 9-bit Bus Interface
+
+D[7:0]
+
+D[8:0],WRX,RDX,CSX,D/CX
+
+1
+
+0
+
+8080 MCU 16-bit Bus Interface
+
+D[7:0]
+
+D[15:0],WRX,RDX,CSX,D/CX
+
+0
+
+1
+
+1
+
+8080 MCU 8-bit Bus Interface
+
+D[7:0]
+
+D[7:0],WRX,RDX,CSX,D/CX
+
+1
+
+0
+
+1
+
+3-wire 9-bit data Serial Interface I
+
+SCL,SDA/SDO,CSX
+
+1
+
+1
+
+1
+
+4-wire 8-bit data Serial Interface I
+
+SCL,SDA/SDO,D/CX,CSX
+
+URL: www.buydisplay.com
+
+Document Name: ER-TFT035IPS-6_Datasheet
+
+Page: 10 of 24
+
+TFT LCD Display Datasheet ER-TFT035IPS-6
+
+EastRising
+buydisplay.com
+
+4.2 Absolute Maximum Ratings
+Item
+
+Symbol
+
+Min
+
+Typ
+
+Max
+
+Unit
+
+Supply Voltage for logic
+
+VCC
+
+-0.3
+
+-
+
++4.6
+
+V
+
+Supply Voltage for logic
+
+IOVCC
+
+-0.3
+
+-
+
++4.6
+
+Input Signal voltage
+
+Vin
+
+-0.3
+
+-
+
+IOVCC+0.3
+
+Logic Output Voltage
+
+Vout
+
+-0.3
+
+-
+
+IOVCC+0.3
+
+Humidity
+
+RH
+
+-
+
+V
+
+90%(Max60°C)
+
+RH
+
+4.3 Electrical Characteristics
+Item
+
+Symbol
+
+Min
+
+Typ
+
+Max
+
+Unit
+
+Power Supply Voltage
+
+VCI
+
+2.5
+
+2.8
+
+3.3
+
+V
+
+Power Supply for Logic
+
+VDDI
+
+1.65
+
+2.8
+
+3.3
+
+V
+
+Input Voltage'H'Level
+
+VIH
+
+0.7VDDI
+
+-
+
+VDDI
+
+V
+
+Input Voltage'L'Level
+
+VIL
+
+-0.3
+
+-
+
+0.3VDDI
+
+V
+
+Output Voltage'H'level
+
+VOH
+
+0.8VDDI
+
+-
+
+VDDI
+
+V
+
+Output Voltage'L'level
+
+VCL
+
+0
+
+-
+
+0.2VDDI
+
+V
+
+4.4 Backlight Characteristics
+Item
+
+Symbol
+
+Condition
+
+Min
+
+Typ
+
+Max
+
+Unit
+
+Supply Voltage
+
+Vf
+
+If=120mA
+
+-
+
+3.0
+
+3.2
+
+V
+
+110
+
+120
+
+-
+
+-
+
+Forward
+
+Normal
+
+lpn
+
+Current
+
+Dimming
+
+lpd
+
+LED Life Time
+
+URL: www.buydisplay.com
+
+-
+
+6-chip Parallel
+Lf=90 mA
+
+30K
+
+mA
+Hrs
+
+Ta = 25 ℃
+
+Document Name: ER-TFT035IPS-6_Datasheet
+
+Page: 11 of 24
+
+TFT LCD Display Datasheet ER-TFT035IPS-6
+
+EastRising
+buydisplay.com
+
+5. INSPECTION CRITERIA
+5.1 Acceptable Quality Level
+Each lot should satisfy the quality level defined as follows
+Partition
+
+AQL
+
+Definition
+
+A. Major
+
+0.4%
+
+Functional defective as product
+
+B. Minor
+
+1.5%
+
+Satisfy all functions as product but not satisfy cosmetic standard
+
+5.2 Definition of Lot
+One lot means the delivery quantity to customer at one time.
+
+5.3 Condition of Cosmetic Inspection
+◆ INSPECTION AND TEST
+-FUNCTION TEST
+-APPEARANCE INSPECTION
+-PACKING SPECIFICTION
+◆ INSPECTION CONDITION
+- Put under the lamp (20W) at a distance 100mm from
+- Tilt upright 45 degree by the front (back) to inspect LCD appearance.
+◆ AQL INSPECTION LEVEL
+- SAMPLING METHOD: MIL-STD-105D
+- SAMPLING PLAN: SINGLE
+- MAJOR DEFECT: 0.4% (MAJOR)
+- MINOR DEFECT: 1.5% (MINOR)
+- GENERAL LEVEL: II/NORMAL
+
+URL: www.buydisplay.com
+
+Document Name: ER-TFT035IPS-6_Datasheet
+
+Page: 12 of 24
+
+EastRising
+
+TFT LCD Display Datasheet ER-TFT035IPS-6
+
+buydisplay.com
+
+5.4 Module Cosmetic Criteria
+No.
+
+Item
+
+Judgment Criterion
+
+Partition
+
+1
+
+Difference in Spec.
+
+None allowed
+
+Major
+
+2
+
+Pattern Peeling
+
+No substrate pattern peeling and floating
+
+Major
+
+3
+
+Soldering Defects
+
+No soldering missing
+
+Major
+
+No soldering bridge
+
+Major
+
+No cold soldering
+
+Minor
+
+4
+
+Resist Flaw on Substrate
+
+Invisible copper foil(￠0.5mm or more)on substrate pattern
+
+Minor
+
+5
+
+Accretion of Metallic
+
+No soldering dust
+
+Minor
+
+Foreign Matter
+
+No accretion of metallic foreign matters(Not exceed￠0.2mm)
+
+6
+
+Stain
+
+No stain to spoil cosmetic badly
+
+Minor
+
+7
+
+Plate Discoloring
+
+No plate fading, rusting and discoloring
+
+Minor
+Minor
+
+Solder Amount
+1.Lead Parts
+
+a. Soldering side of PCB
+Solder to form a’Filet’all around the lead.
+Solder should not hide the lead form perfectly.(too much)
+b.Components side
+(In case of ‘Through Hole PCB’)
+Solder to reach the Components
+side of PCB
+8
+
+Minor
+
+2.Flat Packages
+
+Either‘toe’(A) or ‘heal’ (B) of
+the lead to be covered by Filet’.
+A
+
+B
+
+Lead form to be assume over
+solder.
+3.Chips
+
+Minor
+
+(3/2) H≧h≧(1/2)H
+h
+
+URL: www.buydisplay.com
+
+H
+
+Document Name: ER-TFT035IPS-6_Datasheet
+
+Page: 13 of 24
+
+EastRising
+
+TFT LCD Display Datasheet ER-TFT035IPS-6
+
+buydisplay.com
+9
+
+Backlight Defects
+
+1.Light fails or flickers.(Major)
+2. Color and luminance do not correspond to specifications.
+
+See
+list
+
+(Major)
+3.Exceeds standards for display’s blemishes, foreign matter,
+
+←
+
+dark lines or scratches.(Minor)
+10
+
+PCB Defects
+
+Oxidation or contamination on connectors.*
+2. Wrong parts, missing parts, or parts not in specification.*
+3.Jumpers set incorrectly.(Minor)
+
+See
+
+4.Solder(if any)on bezel, LED pad, zebra pad, or screw hole
+
+list
+
+pad is not smooth.(Minor)
+
+←
+
+*Minor if display functions correctly. Major if the display fails.
+11
+
+Soldering Defects
+
+1. Unmelted solder paste.
+
+Minor
+
+2. Cold solder joints, missing solder connections, or oxidation.*
+3. Solder bridges causing short circuits.*
+4. Residue or solder balls.
+5. Solder flux is black or brown.
+*Minor if display functions correctly. Major if the display fails.
+
+URL: www.buydisplay.com
+
+Document Name: ER-TFT035IPS-6_Datasheet
+
+Page: 14 of 24
+
+EastRising
+
+TFT LCD Display Datasheet ER-TFT035IPS-6
+
+buydisplay.com
+
+5.5 Screen Cosmetic Criteria (Non-Operating)
+No.
+
+Defect
+
+Judgment Criterion
+
+Partition
+
+1
+
+Spots
+
+In accordance with Screen Cosmetic Criteria (Operating) No.1.
+
+Minor
+
+2
+
+Lines
+
+In accordance with Screen Cosmetic Criteria (Operation) No.2.
+
+Minor
+
+3
+
+Bubbles in Polarizer
+
+Minor
+Size: d mm
+d≦0.3
+
+4
+
+Scratch
+
+Acceptable Qty in active area
+Disregard
+
+0.3<d≦1.0
+
+3
+
+1.0<d≦1.5
+
+1
+
+1.5<d
+
+0
+
+In accordance with spots and lines operating cosmetic criteria, When the light
+
+Minor
+
+reflects on the panel surface, the scratches are not to be remarkable.
+5
+
+Allowable density
+
+Above defects should be separated more than 30mm each other.
+
+Minor
+
+6
+
+Coloration
+
+Not to be noticeable coloration in the viewing area of the LCD panels.
+
+Minor
+
+Back-lit type should be judged with back-lit on state only.
+7
+
+Contamination
+
+URL: www.buydisplay.com
+
+Not to be noticeable.
+
+Document Name: ER-TFT035IPS-6_Datasheet
+
+Minor
+
+Page: 15 of 24
+
+TFT LCD Display Datasheet ER-TFT035IPS-6
+
+EastRising
+buydisplay.com
+
+5.6 Screen Cosmetic Criteria (Operating)
+No.
+1
+
+Defect
+Spots
+
+Judgment Criterion
+
+Partition
+
+A) Clear
+
+Minor
+Size:d mm
+
+Acceptable Qty in active area
+Disregard
+
+d≦0.1
+0.1<d≦0.2
+
+6
+
+0.2<d≦0.3
+
+2
+
+0.3<d
+
+0
+
+Note: Including pin holes and defective dots which must be within one pixel
+Size.
+Unclear
+Size:d mm
+
+Acceptable Qty in active area
+Disregard
+
+d≦0.2
+
+2
+
+Lines
+
+A)
+
+0.2<d≦0.5
+
+6
+
+0.5<d≦0.7
+
+2
+
+0.7<d
+
+0
+Minor
+
+Clear
+
+(0)
+
+8
+
+L 5.0
+2.0
+
+(6)
+0.02
+
+See No.1
+0.05
+
+W
+
+0.1
+
+Note: () – Acceptable Qty in active area
+L - Length (mm)
+W -Width(mm)
+∞-Disregard
+B) Unclear
+(0)
+
+8
+
+L 10.0
+(6)
+
+2.0
+0.05
+
+0.3
+
+0.5
+
+See No.1
+W
+
+Clear’ = The shade and size are not changed by Vo.
+Unclear’= The shade and size are changed by Vo.
+
+URL: www.buydisplay.com
+
+Document Name: ER-TFT035IPS-6_Datasheet
+
+Page: 16 of 24
+
+EastRising
+
+TFT LCD Display Datasheet ER-TFT035IPS-6
+
+buydisplay.com
+
+No.
+
+Defect
+
+Judgment Criterion
+
+Partition
+
+3
+
+Rubbing line
+
+Not to be noticeable.
+
+Minor
+
+4
+
+Allowable density
+
+Above defects should be separated more than 10mm each other.
+
+Minor
+
+5
+
+Rainbow
+
+Not to be noticeable.
+
+Minor
+
+6
+
+Dot size
+
+To be 95%~105%of the dot size (Typ.) in drawing.
+
+Minor
+
+Partial defects of each dot (ex.pin-hole) should be treated as spot.
+(see Screen Cosmetic Criteria (Operating) No.1)
+7
+
+Brightness
+
+Brightness Uniformity must be BMAX/BMIN≦2
+
+(only back-lit
+
+- BMAX : Max.value by measure in 5 points
+
+Module)
+
+- BMIN : Min.value by measure in 5 points
+
+Minor
+
+Divide active area into 4 vertically and horizontally.
+Measure 5 points shown in the following figure.
+
+8
+
+Contrast
+
+Contrast Uniformity must be BmAX/BMIN≦2
+
+Uniformity
+
+Measure 5 points shown in the following figure.
+
+Minor
+
+Dashed lines divide active area into 4 vertically and horizontally.
+Measuring points are located at the inter-sections of dashed line.
+
+Note: BMAX – Max.value by measure in 5 points.
+BMIN – Min.value by measure in 5 points.
+O – Measuring points in ￠10mm.
+Note:
+(1) Size: d=(long length + short length)/2
+(2) The limit samples for each item have priority.
+(3) Complexed defects are defined item by item, but if the number of defects is defined in above table, the total number should
+not exceed 10.
+
+URL: www.buydisplay.com
+
+Document Name: ER-TFT035IPS-6_Datasheet
+
+Page: 17 of 24
+
+EastRising
+
+TFT LCD Display Datasheet ER-TFT035IPS-6
+
+buydisplay.com
+
+(4) In case of ‘concentration’, even the spots or the lines of ‘disregarded’ size should not be allowed. Following three
+situations should be treated as ‘concentration’.
+-7 or over defects in circle of ￠5mm.
+-10 or over defects in circle of ￠10mm
+-20 or over defects in circle of ￠20mm
+
+6. PRECAUTIONS FOR USING
+6.1 Handling Precautions
+◆ This device is susceptible to Electro-Static Discharge (ESD) damage. Observe Anti-Static precautions.
+◆ EastRising display panel is made of glass. Do not subject it to a mechanical shock by dropping it or impact.
+◆ If EastRising display panel is damaged and the liquid crystal substance leaks out, be sure not to get any in your mouth. If the
+substance contacts your skin or clothes, wash it off using soap and water.
+◆ Do not apply excessive force to the EastRising display surface or the adjoining areas since this may cause the color tone to
+vary.
+◆ The polarizer covering the EastRising display surface of the LCD module is soft and easily scratched. Handle this polarizer
+carefully.
+◆ If EastRising display surface becomes contaminated, breathe on the surface and gently wipe it with a soft dry cloth. If it is
+heavily contaminated, moisten cloth with one of the following Isopropyl or alcohol.
+◆ Solvents other than those above-mentioned may damage the polarizer. Especially, do not use the Water.
+◆ Exercise care to minimize corrosion of the electrode. Corrosion of the electrodes is accelerated by water droplets, moisture
+condensation or a current flow in a high-humidity environment.
+◆ Install the EastRising LCD Module by using the mounting holes. When mounting the LCD module make sure it is free of
+twisting, warping and distortion. In particular, do not forcibly pull or bend the cable or the backlight cable.
+◆ Do not attempt to disassemble or process EastRising LCD module.
+◆ NC terminal should be open. Do not connect anything.
+◆ If the logic circuit power is off, do not apply the input signals.
+◆ To prevent destruction of the elements by static electricity, be careful to maintain an optimum work environment.
+-Be sure to ground the body when handling EastRising LCD modules.
+-Tools required for assembling, such as soldering irons, must be properly grounded.
+-To reduce the amount of static electricity generated, do not conduct assembling and other work under dry conditions.
+-The LCD module is coated with a film to protect the display surface. Exercise care when peeling off this protective film since
+static electricity may be generated.
+
+6.2 Power Supply Precautions
+◆ Identify and, at all times, observe absolute maximum ratings for both logic and LC drivers. Note that there is some variance
+38B524619
+
+between models.
+◆ Prevent the application of reverse polarity to VDD and VSS, however briefly.
+◆ Use a clean power source free from transients. Power-up conditions are occasionally jolting and may exceed the maximum
+ratings of EastRising modules.
+◆ The VDD power of EastRising module should also supply the power to all devices that may access the display. Don’t allow
+the data bus to be driven when the logic supply to the module is turned off.
+
+URL: www.buydisplay.com
+
+Document Name: ER-TFT035IPS-6_Datasheet
+
+Page: 18 of 24
+
+EastRising
+
+TFT LCD Display Datasheet ER-TFT035IPS-6
+
+buydisplay.com
+
+6.3 Operating Precautions
+◆ DO NOT plug or unplug EastRising module when the system is powered up.
+345B29
+
+◆ Minimize the cable length between EastRising module and host MPU.
+◆ For models with backlights, do not disable the backlight by interrupting the HV line. Unload inverters produce voltage
+extremes that may arc within a cable or at the display.
+◆ Operate EastRising module within the limits of the modules temperature specifications.
+
+6.4 Mechanical/Environmental Precautions
+◆ Improper soldering is the major cause of module difficulty. Use of flux cleaner is not recommended as they may seep under
+350B47
+
+the electrometric connection and cause display failure.
+◆ Mount EastRising module so that it is free from torque and mechanical stress.
+◆ Surface of the LCD panel should not be touched or scratched. The display front surface is an easily scratched, plastic
+polarizer. Avoid contact and clean only when necessary with soft, absorbent cotton dampened with petroleum benzene.
+◆ Always employ anti-static procedure while handling EastRising module.
+◆ Prevent moisture build-up upon the module and observe the environmental constraints for storage tem
+◆ Do not store in direct sunlight
+◆ If leakage of the liquid crystal material should occur, avoid contact with this material, particularly ingestion. If the body or
+clothing becomes contaminated by the liquid crystal material, wash thoroughly with water and soap.
+
+6.5 Storage Precautions
+When storing the LCD modules, avoid exposure to direct sunlight or to the light of fluorescent lamps.
+Keep EastRising modules in bags (avoid high temperature / high humidity and low temperatures below 0 ºC.
+Whenever possible, EastRising LCD modules should be stored in the same conditions in which they were shipped from our
+company.
+
+6.6 Others
+Liquid crystals solidify under low temperature (below the storage temperature range) leading to defective orientation or the
+36B057
+
+generation of air bubbles (black or white). Air bubbles may also be generated if the module is subject to a low temperature.
+If EastRising LCD modules have been operating for a long time showing the same display patterns, the display patterns may
+remain on the screen as ghost images and a slight contrast irregularity may also appear. A normal operating status can be
+regained by suspending use for some time. It should be noted that this phenomenon does not adversely affect performance
+reliability.
+To minimize the performance degradation of the LCD modules resulting from destruction caused by static electricity etc.,
+exercise care to avoid holding the following sections when handling the modules.
+-Exposed area of the printed circuit board.
+
+69B3845
+
+-Terminal electrode sections.
+
+362B
+
+URL: www.buydisplay.com
+
+Document Name: ER-TFT035IPS-6_Datasheet
+
+Page: 19 of 24
+
+EastRising
+
+TFT LCD Display Datasheet ER-TFT035IPS-6
+
+buydisplay.com
+
+7. USING LCD MODULES
+7.1 Liquid Crystal Display Modules
+EastRising LCD is composed of glass and polarizer. Pay attention to the following items when handling.
+◆ Please keep the temperature within specified range for use and storage. Polarization degradation, bubble generation or
+polarizer peel-off may occur with high temperature and high humidity.
+◆ Do not touch, push or rub the exposed polarizers with anything harder than an HB pencil lead (glass, tweezers, etc.).
+◆ N-hexane is recommended for cleaning the adhesives used to attach front/rear polarizers and reflectors made of organic
+substances which will be damaged by chemicals such as acetone, toluene, ethanol and isopropyl alcohol.
+◆ When EastRising display surface becomes dusty, wipe gently with absorbent cotton or other soft material like chamois
+soaked in petroleum benzin. Do not scrub hard to avoid damaging the display surface.
+◆ Wipe off saliva or water drops immediately, contact with water over a long period of time may cause deformation or color
+fading.
+◆ Avoid contacting oil and fats.
+◆ Condensation on the surface and contact with terminals due to cold will damage, stain or dirty the polarizers. After products
+are tested at low temperature they must be warmed up in a container before coming is contacting with room temperature
+air.
+◆ Do not put or attach anything on EastRising display area to avoid leaving marks on.
+◆ Do not touch the display with bare hands. This will stain the display area and degradate insulation between terminals (some
+cosmetics are determinated to the polarizers).
+◆ As glass is fragile. It tends to become or chipped during handling especially on the edges. Please avoid dropping.
+
+7.2 Installing LCD Modules
+◆ Cover the surface with a transparent protective plate to protect the polarizer and LC cell.
+384B17259
+
+◆ When assembling the LCM into other equipment, the spacer to the bit between the LCM and the fitting
+plate should have enough height to avoid causing stress to the module surface, refer to the individual specifications for
+measurements. The measurement tolerance should be±0.1mm.
+
+7.3 Precaution for Handling LCD Modules
+Since EastRising LCM has been assembled and adjusted with a high degree of precision; avoid applying excessive shocks to the
+module or making any alterations or modifications to it.
+◆ Do not alter, modify or change the shape of the tab on the metal frame.
+◆ Do not make extra holes on the printed circuit board, modify its shape or change the positions of components to be
+attached.
+◆ Do not damage or modify the pattern writing on the printed circuit board.
+◆ Absolutely do not modify the zebra rubber strip (conductive rubber) or heat seal connector.
+◆ Except for soldering the interface, do not make any alterations or modifications with a soldering iron.
+◆ Do not drop, bend or twist EastRising LCM.
+
+URL: www.buydisplay.com
+
+Document Name: ER-TFT035IPS-6_Datasheet
+
+Page: 20 of 24
+
+EastRising
+
+TFT LCD Display Datasheet ER-TFT035IPS-6
+
+buydisplay.com
+
+7.4 Electro-Static Discharge Control
+Since this module uses a CMOS LSI, the same careful attention should be paid to electrostatic discharge as for an ordinary
+CMOS IC.
+◆ Make certain that you are grounded when handing LCM.
+◆ Before remove LCM from its packing case or incorporating it into a set, be sure the module and your body have the same
+electric potential.
+◆ When soldering the terminal of LCM, make certain the AC power source for the soldering iron does not leak.
+◆ When using an electric screwdriver to attach LCM, the screwdriver should be of ground potentiality to minimize as much as
+possible any transmission of electromagnetic waves produced sparks coming from the commutator of the motor.
+◆ As far as possible make the electric potential of your work clothes and that of the work bench the ground potential.
+◆ To reduce the generation of static electricity be careful that the air in the work is not too dried. A relative humidity of 50%-60%
+is recommended.
+
+7.5 Precaution for Soldering to EastRising LCM
+◆ Observe the following when soldering lead wire, connector cable and etc. to the LCM.
+-Soldering iron temperature : 280℃±10℃
+-Soldering time: 3-4 sec.
+-Solder: eutectic solder.
+If soldering flux is used, be sure to remove any remaining flux after finishing to soldering operation. (This does not apply in the
+case of a non-halogen type of flux.) It is recommended that you protect the LCD surface with a cover during soldering to
+prevent any damage due to flux spatters.
+◆ When soldering the electroluminescent panel and PC board, the panel and board should not be detached more than three
+times. This maximum number is determined by the temperature and time conditions mentioned above, though there may be
+some variance depending on the temperature of the soldering iron.
+◆ When remove the electroluminescent panel from the PC board, be sure the solder has completely melted, the soldered pad
+on the PCs board could be damaged.
+
+7.6 Precaution for Operation
+◆ Driving the EastRising LCD in the voltage above the limit shortens its life.
+413B07
+
+◆ Response time is greatly delayed at temperature below the operating temperature range. However, this does not mean the
+LCD will be out of the order. It will recover when it returns to the specified temperature range.
+◆ If EastRising display area is pushed hard during operation, the display will become abnormal. However, it will return to
+normal if it is turned off and then back on.
+◆ Condensation on terminals can cause an electrochemical reaction disrupting the terminal circuit. Therefore, it must be used
+under the relative condition of 40℃, 50% RH.
+◆ When turning the power on, input each signal after the positive/negative voltage becomes stable.
+
+URL: www.buydisplay.com
+
+Document Name: ER-TFT035IPS-6_Datasheet
+
+Page: 21 of 24
+
+EastRising
+
+TFT LCD Display Datasheet ER-TFT035IPS-6
+
+buydisplay.com
+
+7.7 Limited Warranty
+Unless agreed between EastRising and customer, EastRising will replace or repair any of its LCD modules which are found to be
+49B163
+
+functionally defective when inspected in accordance with EastRising LCD acceptance standards (copies available upon request)
+for a period of one year from date of shipments. Cosmetic/visual defects must be returned to EastRising within 90 days of
+shipment. Confirmation of such date shall be based on freight documents. The warranty liability of EastRising limited to repair
+and/or replacement on the terms set forth above. EastRising will not be responsible for any subsequent or consequential
+events.
+
+7.8 Return Policy
+No warranty can be granted if the precautions stated above have been disregarded. The typical examples of violations are:
+2B4196
+
+-Broken LCD glass.
+-PCB eyelet damaged or modified.
+-PCB conductors damaged.
+-Circuit modified in any way, including addition of components.
+-PCB tampered with by grinding, engraving or painting varnish.
+-Soldering to or modifying the bezel in any manner.
+Module repairs will be invoiced to the customer upon mutual agreement. Modules must be returned with sufficient
+description of the failures or defects. Any connectors or cable installed by the customer must be removed completely
+without damaging the PCB eyelet’s, conductors and terminals.
+
+URL: www.buydisplay.com
+
+Document Name: ER-TFT035IPS-6_Datasheet
+
+Page: 22 of 24
+
+EastRising
+
+TFT LCD Display Datasheet ER-TFT035IPS-6
+
+buydisplay.com
+
+8. IMAGE STICKING
+8.1 What is Image Sticking?
+If you remain a fixed image on LCD Display for a long period of time, you may experience a phenomenon called Image
+Sticking. Image Sticking - sometimes also called “image retention” or “ghosting”- is a phenomenon where a faint outline
+of a previously displayed image remains visible on the screen when the image is changed. It can occur at variable levels of
+intensity depending on the specific image makeup, as well as the amount of time the core image elements are allowed to
+remain unchanged on the screen. In POS applications, for example, a button menu which remains fixed, or in which the
+“frame” elements (core image) remain fixed and the buttons may change, may be susceptible to image sticking. It is
+important to note that if the screen is used exclusively for this application, the user may never notice this phenomenon since
+the screen never displays other content. `It is only when an image other than the “retained” image is shown on the screen
+that this issue becomes evident. Image sticking is different that the “burn-in” effect commonly associated with phosphor
+based devices.
+
+8.2 What causes Image Sticking?
+Image sticking is an intrinsic behavior of LCD displays due to the susceptibility to polarization of the interior materials (liquid
+crystals) when used under static, charged conditions (continuously displaying the same image). The individual liquid crystals
+in an LCD panel have unique electrical properties. Displaying a fixed pattern - such as the POS menu described above – over
+prolonged periods can cause a parasitic charge build-up (polarization) within the liquid crystals which affects the crystals’
+optical properties and ultimately prevents the liquid crystal from returning to its normal, relaxed state when the pattern is
+finally changed. This effect takes place at a cellular level within the LCD, and the effect can cause charged crystal alignment at
+the bottom or top of a crystal cell in the “z” axis, or even crystal migration to the edges of a cell, again based on their
+polarity. These conditions can cause image sticking over an entire area, or at boundaries of distinct color change respectively.
+In either case, when the liquid crystals in the pixels and sub-pixels utilized to display the static image are polarized such that
+they can not return fully to their “relaxed” state upon deactivation, the result is a faint, visible, retained image on the panel
+upon presentation of a new, different image. The actual rate of image retention depends on variation factors such as the
+specific image, how long it is displayed unchanged, the temperature within the panel and even the specific panel brand due
+to manufacturing differences amongst panel manufacturers.
+
+URL: www.buydisplay.com
+
+Document Name: ER-TFT035IPS-6_Datasheet
+
+Page: 23 of 24
+
+EastRising
+
+TFT LCD Display Datasheet ER-TFT035IPS-6
+
+buydisplay.com
+
+8.3 How to Avoid Image Sticking?
+- Try not to operate the LCD with a “fixed” image on the screen for more than 2 hours.
+- If you are operating the monitor in an elevated temperature environment and with a displayed image which is
+contrary to the recommendations in “For Software Developers” below, image stick can occur in as little as 30 minutes.
+Adjust your screen saver settings accordingly.
+- Power down the unit during prolonged periods of inactivity such as the hours a store is closed or a shift during which the
+piece of equipment isn’t used.
+- Use a screensaver with a black or medium gray background that is automatically set to come on if the device is inactive for
+more than 5-10 minutes.
+- Avoid placing the monitor in poorly ventilated areas or in areas that will create excess heat around the monitor for software
+developers.
+- In defining the icons, buttons, or windows in the screen, try to utilize block patterns instead of distinct lines as borders for
+dividing the display into distinct areas.
+- If it is necessary to display a static image, try to use colors that are symmetric to the middle grey level at the boundary of
+two different colors, and slightly shift the borders line once in a while.
+- Try to utilize medium gray hues for those areas that will have prolonged display times or remain static as other menu
+elements change.
+
+8.4 How to Fix the Image Sticking?
+Unlike the usually irreversible “burn-in” effects commonly associated with direct view phosphor display devices such as
+CRTs, an image retained on an LCD display can be reversed – often to a point of total invisibility. However, the severity of the
+underlying causes (as described above) of the image retained on a specific display, as well as the variation factors (see “For
+Software Developers” above) under which the retained image was created, will dictate the final level of retention reversal.
+One way to erase a retained image on a panel is to run the screen (monitor “on”) in an “all black” pattern for 4-6 hours.
+It is also helpful to do this in an elevated temperature environment of approximately 35º to 50ºC. Again, utilizing a dynamic
+screen saver with an all black background during prolonged idle display periods is a good way to avoid image retention
+issues.
+
+8.5 Is Image Sticking Covered by EastRising RMA Warranty?
+Image sticking is a phenomenon inherent to LCD Display technology itself, and as such, the occurrence of this “ghosting”
+effect is considered normal operation by the manufacturers of the LCD display modules which are integrated into today’s
+monitor solutions. EastRising does not warrant any display against the occurrence of image sticking. We strongly advise that
+you follow the operating recommendations listed above to avoid the occurrence of this phenomenon.
+
+That's the end of the datasheet.
+
+URL: www.buydisplay.com
+
+Document Name: ER-TFT035IPS-6_Datasheet
+
+Page: 24 of 24
+
+

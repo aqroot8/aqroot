@@ -317,25 +317,33 @@ discards exactly the DC term the 3.300 V and 3.000 V thresholds are stated
 against; and the accessory step was written to run at **3.20 V and 3.05 V** of
 pack voltage, where a release image **refuses to enable an accessory rail at
 all** (the derived VCELL policy refuses a FIRST accessory rail below
-**3.55 V** and a SECOND below **3.65 V**).
+**3.95 V** and a SECOND below **3.95 V**).
 Half the matrix was therefore unexecutable and the other half could not
-support its own acceptance.
+support its own acceptance.  *(The two figures in that parenthesis are the
+CURRENT D-792 envelopes; the D-788-era procedure quoted values that have been
+REPLACED twice since.)*
 
-> **D-791 / `R10-N04` RE-BASED THIS SECTION ONTO THE THIRD FLOOR, AND IT IS THE
-> SECOND TIME THIS PROCEDURE HAS GONE STALE THE SAME WAY.**  The sentence above
-> named the now-RETIRED **3.50 V single-rail / 3.85 V dual-rail** pair, and the
-> accessory step below chose its bench voltages from it.
-> D-791 / `D790-A03` retired that pair because:
-> the node could not hold 3.85 V at the published load, so the floors are now
-> DERIVED by `demo_feature_contract` **F12** as a **triple** —
-> **3.20 V retention**, **3.55 V** to enable a first rail and **3.65 V** to
-> enable a second — and D-790's pair is REPLACED.  A stale floor here is worse
-> than a stale sentence in a specification, because this text tells a technician
-> which pack voltage to set: the old points were chosen to sit above floors that
-> no longer exist.  **F12 now reads this file**, requires all three derived
-> floors to appear formatted from the computed values, and refuses any unfenced
-> sentence that calls some other voltage a single-rail, dual-rail or retention
-> floor — so the next move of the derivation cannot leave this procedure behind.
+> **D-792 / `R11-04` RE-BASED THIS SECTION AGAIN, AND IT IS THE THIRD TIME THIS
+> PROCEDURE HAS GONE STALE THE SAME WAY.**  D-788's sentence above named the
+> long-RETIRED **3.50 V single-rail / 3.85 V dual-rail** pair; D-791 REPLACED it
+> with **3.55 V / 3.65 V** because the node could not hold 3.85 V at the
+> published load; and Round-11 then reproduced a production-image case that
+> enabled a rail at D-791's own **3.55 V** and watched the retention rule shed
+> it — because that floor had been derived from the wrong PRE-STATE.  An
+> accessory that is plugged in and IDLE holds the node near open circuit, and
+> that high reading is what the permission is granted on.
+>
+> **THE CURRENT FLOORS, DERIVED BY `demo_feature_contract` F12, ARE:
+> 3.20 V retention, 3.95 V to enable a first rail and 3.95 V to enable a
+> second.**  Both enable numbers are now the published ENVELOPE of a
+> mode-indexed permission table, and the bench points below are chosen from
+> them.  A stale floor here is worse than a stale sentence in a specification,
+> because this text tells a technician which pack voltage to set: the old points
+> were chosen to sit above floors that no longer exist.  **F12 reads this file**,
+> requires all three derived floors to appear formatted from the computed values,
+> and refuses any unfenced sentence that calls some other voltage a single-rail,
+> dual-rail or retention floor — so the next move of the derivation cannot leave
+> this procedure behind.
 
 ### How it is acquired
 
@@ -402,20 +410,25 @@ the retention floor.  So bring the pack to a reading above the enable floor with
 the rail still OFF, then enable `ACC_3V3_SW` into a 400 mA load and **hot
 disconnect** it at the J5 mating interface, ten times, at
 
-- **`≈4.15 V`** and **`≈3.75 V`** at `BAT_PROTECTED_P` read with the accessory
-  rails OFF, the 5 V rail then ALSO brought up at its published 300 mA — both
-  above the **3.65 V** dual-rail floor;
-- **`≈3.60 V`** read with the accessory rails OFF, the 3.3 V rail alone — above
-  the **3.55 V** single-rail floor and below the dual floor, so this point also
-  confirms that the 5 V rail is refused there.
+- **`≈4.15 V`** and **`≈4.00 V`** at `BAT_PROTECTED_P` read with the accessory
+  rails OFF and NO optional mode running, the 5 V rail then ALSO brought up so
+  that the pair is at the **declared simultaneous 220 mA + 170 mA** — both
+  readings above the **3.95 V** dual-rail floor;
+- **`≈3.70 V`** read with the accessory rails OFF and no optional mode running,
+  the 3.3 V rail alone at its full published 400 mA.  This point is ABOVE the
+  quiet rail-edge floor and BELOW the **3.95 V** single-rail floor, so it also
+  confirms two refusals a technician can see: bringing the Wi-Fi radio up here
+  is refused, and so is energising the audio amplifier.
 
 At every point the LOADED node must stay above the **3.20 V** retention floor.
 A rail that is authorised and then sheds is a **FAILURE of this step**, not a
-property of it: each enable floor is derived to anticipate its own rail's node
-step — **0.3476 V** for the first rail and **0.4537 V** for the second — exactly
-so that the load a permission authorises cannot take the node below the number
-that authorised it.  *(That is `R10-N01`, and this step is where it would be
-seen on a bench.)*
+property of it: every floor is derived from the LIGHTEST pre-state — the adverse
+one, because an idle plugged-in accessory reads high — and anticipates its own
+rail's node step, **0.6972 V** for a first rail and **0.6847 V** for a second,
+exactly so that the load a permission authorises cannot take the node below the
+number that authorised it.  *(That is `R10-N01`, Round-11 reproduced it at
+D-791's own constant as `R11-04`, and this step is where it would be seen on a
+bench.)*
 
 **THE FLOORS ARE NOT A TEST INCONVENIENCE AND MAY NOT BE OVERRIDDEN TO MAKE
 THIS TABLE SQUARE.**  If the worst-case accessory transient below the enable
@@ -431,6 +444,11 @@ obvious one — and `firmware_hw_map_contract` H6 catches an edit to them.
 `kAccessoryRetentionFloorV` is the one that decides whether an authorised rail
 STAYS up, which is precisely what `R10-N01` found being decided at the wrong
 number — and it was the constant the prohibition did not cover.)*
+*(D-792 / `R11-04`: the prohibition now also covers the two GENERATED tables
+`kRailRows` and `kModeRows` in the same header.  All thirty-two of their values
+are pinned row by row by F12, sentinels included, and six of them are explicit
+REFUSALS rather than floors — a build that turned a refusal into a large number
+would read as a restriction and behave as a rail that never turns on.)*
 
 ### Acceptance
 

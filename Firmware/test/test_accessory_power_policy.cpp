@@ -7,8 +7,15 @@
 #include "max17048_guard.h"
 
 using aqroot::AccessoryBatteryAction;
+using aqroot::AccessoryLoadState;
+using aqroot::accessoryCombinationPermitted;
 using aqroot::accessoryEnableAllowed;
 using aqroot::accessoryEnableFloor;
+using aqroot::accessoryLoadBits;
+using aqroot::accessoryModeEntryAllowed;
+using aqroot::accessoryModeEntryFloor;
+using aqroot::accessoryModeEntryPermitted;
+using aqroot::kAccessoryNotPermittedV;
 using aqroot::accessoryRetentionAction;
 using aqroot::kAccessoryDualRailFloorV;
 using aqroot::kAccessoryRetentionFloorV;
@@ -86,40 +93,156 @@ int main() {
   // boundary claims below are the values it publishes.
   claim("the retention floor is the derived 3.20 V",
         kAccessoryRetentionFloorV == 3.20f);
-  claim("the first-rail ENABLE floor is the derived 3.55 V",
-        kAccessorySingleRailFloorV == 3.55f);
-  claim("the second-rail ENABLE floor is the derived 3.65 V",
-        kAccessoryDualRailFloorV == 3.65f);
-  claim("the dual enable floor is strictly above the single one",
-        kAccessoryDualRailFloorV > kAccessorySingleRailFloorV);
-  claim("every enable floor is strictly ABOVE the retention floor, because an "
-        "enable has to anticipate a load step a retention does not",
+  claim("the published single-rail envelope is the derived 3.95 V",
+        kAccessorySingleRailFloorV == 3.95f);
+  claim("the published dual-rail envelope is the derived 3.95 V",
+        kAccessoryDualRailFloorV == 3.95f);
+  claim("the dual envelope is never below the single one",
+        kAccessoryDualRailFloorV >= kAccessorySingleRailFloorV);
+  claim("every enable envelope is strictly ABOVE the retention floor, because "
+        "an enable has to anticipate a load step a retention does not",
         kAccessorySingleRailFloorV > kAccessoryRetentionFloorV
         && kAccessoryDualRailFloorV > kAccessoryRetentionFloorV);
-  claim("first rail uses the single floor", accessoryEnableFloor(false) == 3.55f);
-  claim("second rail uses the dual floor", accessoryEnableFloor(true) == 3.65f);
+
+  // =======================================================================
+  // D-792 / R11-04.  THE PERMISSION TABLE, AND THE COUNTEREXAMPLE IT KILLS.
+  //
+  // Round-11 drove the production image from a reported 3.55 V -- D-791's own
+  // `kAccessorySingleRailFloorV` -- enabled the 5 V rail and watched the
+  // retention rule shed it.  The floors below are derived from the LIGHTEST
+  // pre-state, which is the adverse one, and they are indexed by the
+  // observable mode set.  The first claim IS Astra's case.
+  // =======================================================================
+  const AccessoryLoadState kQuiet;                       // no optional mode
+  AccessoryLoadState amp;      amp.amplifier_on = true;
+  AccessoryLoadState subghz;   subghz.subghz_tx = true;
+  AccessoryLoadState wifi;     wifi.wifi_tx = true;
+  AccessoryLoadState amp_subghz;  amp_subghz.amplifier_on = true;
+                                  amp_subghz.subghz_tx = true;
+  AccessoryLoadState wifi_amp;    wifi_amp.wifi_tx = true;
+                                  wifi_amp.amplifier_on = true;
+  AccessoryLoadState wifi_subghz; wifi_subghz.wifi_tx = true;
+                                  wifi_subghz.subghz_tx = true;
+  AccessoryLoadState all_three;   all_three.wifi_tx = true;
+                                  all_three.amplifier_on = true;
+                                  all_three.subghz_tx = true;
+
+  claim("R11-04 REGRESSION: D-791's own 3.55 V no longer enables a rail",
+        !accessoryEnableAllowed(true, 3.55f, false, kQuiet));
+  claim("...and the reason is the floor, which is now 3.65 V",
+        accessoryEnableFloor(kQuiet, 1) == 3.65f);
+
+  claim("the bit order is Wi-Fi, amplifier, sub-GHz",
+        accessoryLoadBits(kQuiet) == 0u && accessoryLoadBits(wifi) == 1u
+        && accessoryLoadBits(amp) == 2u && accessoryLoadBits(subghz) == 4u
+        && accessoryLoadBits(all_three) == 7u);
+
+  // ---- THE RAIL EDGE: the mode set does not change across the transition.
+  claim("rail edge, quiet: one rail at 3.65 V",
+        accessoryEnableFloor(kQuiet, 1) == 3.65f);
+  claim("rail edge, quiet: two rails at 3.65 V",
+        accessoryEnableFloor(kQuiet, 2) == 3.65f);
+  claim("rail edge, amplifier on: 3.70 V",
+        accessoryEnableFloor(amp, 1) == 3.70f);
+  claim("rail edge, sub-GHz keyed: 3.70 V",
+        accessoryEnableFloor(subghz, 1) == 3.70f);
+  claim("rail edge, amplifier + sub-GHz: 3.75 V",
+        accessoryEnableFloor(amp_subghz, 1) == 3.75f);
+  claim("rail edge, Wi-Fi TX: 3.75 V",
+        accessoryEnableFloor(wifi, 1) == 3.75f);
+  // ---- THE MODE EDGE: entered from a LIGHTER pre-state, so it reads higher
+  // and the floor is higher.  This is the half D-791 had no word for.
+  claim("mode edge, entering the amplifier: 3.75 V",
+        accessoryModeEntryFloor(amp, 1) == 3.75f);
+  claim("mode edge, keying sub-GHz: 3.80 V",
+        accessoryModeEntryFloor(subghz, 1) == 3.80f);
+  claim("mode edge, bringing Wi-Fi up: 3.95 V",
+        accessoryModeEntryFloor(wifi, 1) == 3.95f);
+  claim("THE TWO EDGES DIFFER, and the mode edge is never the lower of them "
+        "-- a single collapsed table would either be unsound or unreachable",
+        accessoryModeEntryFloor(amp, 1) >= accessoryEnableFloor(amp, 1)
+        && accessoryModeEntryFloor(subghz, 1) >= accessoryEnableFloor(subghz, 1)
+        && accessoryModeEntryFloor(wifi, 1) > accessoryEnableFloor(wifi, 1));
+  claim("a heavier mode set never has a LOWER rail-edge floor",
+        accessoryEnableFloor(kQuiet, 1) <= accessoryEnableFloor(amp, 1)
+        && accessoryEnableFloor(amp, 1) <= accessoryEnableFloor(amp_subghz, 1));
+  claim("no permitted floor exceeds the published single-rail envelope",
+        accessoryEnableFloor(amp_subghz, 1) <= kAccessorySingleRailFloorV
+        && accessoryModeEntryFloor(wifi, 1) <= kAccessorySingleRailFloorV);
+
+  // THE SIX REFUSALS.  These are NOT high floors: no attainable VCELL makes
+  // the settled state survive its own retention criterion, so they are
+  // refused explicitly at EVERY cell voltage including a full pack.
+  claim("Wi-Fi + amplifier is NOT PERMITTED with any accessory rail",
+        !accessoryCombinationPermitted(wifi_amp, 1)
+        && !accessoryCombinationPermitted(wifi_amp, 2));
+  claim("Wi-Fi + sub-GHz is NOT PERMITTED with any accessory rail",
+        !accessoryCombinationPermitted(wifi_subghz, 1)
+        && !accessoryCombinationPermitted(wifi_subghz, 2));
+  claim("all three modes is NOT PERMITTED with any accessory rail",
+        !accessoryCombinationPermitted(all_three, 1)
+        && !accessoryCombinationPermitted(all_three, 2));
+  claim("a refusal is refused ON A FULL PACK, not merely at a low one",
+        !accessoryEnableAllowed(true, 4.20f, false, wifi_subghz)
+        && !accessoryEnableAllowed(true, 4.20f, true, all_three));
+  claim("a refused combination reports the sentinel rather than a number a "
+        "caller could compare its way past, on BOTH edges",
+        accessoryEnableFloor(wifi_subghz, 1) >= kAccessoryNotPermittedV
+        && accessoryModeEntryFloor(wifi_subghz, 1) >= kAccessoryNotPermittedV);
+  claim("...and both edges agree about which combinations are refused",
+        !accessoryModeEntryPermitted(wifi_amp, 1)
+        && !accessoryModeEntryPermitted(wifi_subghz, 2)
+        && !accessoryModeEntryPermitted(all_three, 1));
+  claim("the sentinel is above the all-ones code, so a stuck bus cannot "
+        "clear it either",
+        kAccessoryNotPermittedV > kVcellAllOnesV);
+  claim("an out-of-range rail count is refused",
+        !accessoryCombinationPermitted(kQuiet, 0)
+        && !accessoryCombinationPermitted(kQuiet, 3));
 
   // ---- enable permission -------------------------------------------------
   claim("unreadable VCELL refuses a first enable",
-        !accessoryEnableAllowed(false, 4.2f, false));
+        !accessoryEnableAllowed(false, 4.2f, false, kQuiet));
   claim("unreadable VCELL refuses a second enable",
-        !accessoryEnableAllowed(false, 4.2f, true));
-  claim("first rail accepted exactly at 3.55 V",
-        accessoryEnableAllowed(true, 3.55f, false));
-  claim("first rail refused just below 3.55 V",
-        !accessoryEnableAllowed(true, 3.54f, false));
-  claim("second rail refused at 3.60 V, below the derived dual enable floor",
-        !accessoryEnableAllowed(true, 3.60f, true));
+        !accessoryEnableAllowed(false, 4.2f, true, kQuiet));
+  claim("first rail accepted exactly at 3.65 V",
+        accessoryEnableAllowed(true, 3.65f, false, kQuiet));
+  claim("first rail refused just below 3.65 V",
+        !accessoryEnableAllowed(true, 3.64f, false, kQuiet));
   claim("second rail refused just below 3.65 V",
-        !accessoryEnableAllowed(true, 3.64f, true));
+        !accessoryEnableAllowed(true, 3.64f, true, kQuiet));
   claim("second rail accepted exactly at 3.65 V",
-        accessoryEnableAllowed(true, 3.65f, true));
-  claim("a single rail is still allowed at 3.60 V, between the enable floors",
-        accessoryEnableAllowed(true, 3.60f, false));
+        accessoryEnableAllowed(true, 3.65f, true, kQuiet));
+  claim("with the amplifier on, 3.69 V is no longer enough",
+        !accessoryEnableAllowed(true, 3.69f, false, amp));
+  claim("...and 3.70 V is",
+        accessoryEnableAllowed(true, 3.70f, false, amp));
   claim("NO rail may be ENABLED at the retention floor itself -- the step the "
         "enable has to anticipate has not happened yet",
-        !accessoryEnableAllowed(true, kAccessoryRetentionFloorV, false)
-        && !accessoryEnableAllowed(true, kAccessoryRetentionFloorV, true));
+        !accessoryEnableAllowed(true, kAccessoryRetentionFloorV, false, kQuiet)
+        && !accessoryEnableAllowed(true, kAccessoryRetentionFloorV, true,
+                                   kQuiet));
+
+  // ---- THE MODE EDGE.  The same transition, walked in the other order. ----
+  claim("with NO rail on, every mode combination is allowed -- the guard is "
+        "about the accessory tree and nothing else",
+        accessoryModeEntryAllowed(true, 3.30f, 0, all_three)
+        && accessoryModeEntryAllowed(false, 0.0f, 0, wifi_subghz));
+  claim("entering the amplifier with one rail live needs the MODE-EDGE floor, "
+        "which is above the rail-edge one",
+        !accessoryModeEntryAllowed(true, 3.74f, 1, amp)
+        && accessoryModeEntryAllowed(true, 3.75f, 1, amp)
+        && accessoryEnableAllowed(true, 3.74f, false, amp));
+  claim("keying sub-GHz with one rail live needs the sub-GHz floor",
+        !accessoryModeEntryAllowed(true, 3.75f, 1, subghz)
+        && accessoryModeEntryAllowed(true, 3.80f, 1, subghz));
+  claim("a mode entry that reaches a REFUSED combination is refused on a full "
+        "pack",
+        !accessoryModeEntryAllowed(true, 4.20f, 1, wifi_subghz));
+  claim("an unreadable gauge refuses a mode entry while a rail is live",
+        !accessoryModeEntryAllowed(false, 4.20f, 1, amp));
+  claim("the all-ones code refuses a mode entry",
+        !accessoryModeEntryAllowed(true, kVcellAllOnesV, 1, amp));
 
   // ---- retention ---------------------------------------------------------
   claim("no rail on and no reading is not an action",
@@ -135,9 +258,9 @@ int main() {
   // authorised at the dual ENABLE floor was shed by the very next settled
   // recheck, because the load step it had just caused took the node below the
   // number that authorised it.  Retention is judged at the RETENTION floor.
-  claim("a pair authorised at the dual enable floor survives the load step it "
-        "causes",
-        accessoryRetentionAction(true, kAccessoryDualRailFloorV - 0.40f,
+  claim("a pair authorised at the dual enable envelope survives the load step "
+        "it causes",
+        accessoryRetentionAction(true, kAccessoryDualRailFloorV - 0.70f,
                                  true, true)
             == AccessoryBatteryAction::Keep);
   claim("dual rails just above the retention floor are retained",
@@ -178,9 +301,9 @@ int main() {
   claim("a zero reading is not plausible", !vcellIsPlausible(0.0f));
   claim("a normal cell IS plausible", vcellIsPlausible(3.85f));
   claim("the all-ones code cannot enable a first rail",
-        !accessoryEnableAllowed(true, kVcellAllOnesV, false));
+        !accessoryEnableAllowed(true, kVcellAllOnesV, false, kQuiet));
   claim("the all-ones code cannot enable a second rail",
-        !accessoryEnableAllowed(true, kVcellAllOnesV, true));
+        !accessoryEnableAllowed(true, kVcellAllOnesV, true, kQuiet));
   claim("the all-ones code SHEDS a rail that is already on",
         accessoryRetentionAction(true, kVcellAllOnesV, true, false)
             == AccessoryBatteryAction::ShedAll);

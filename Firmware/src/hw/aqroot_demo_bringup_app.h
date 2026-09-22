@@ -46,6 +46,7 @@
 #include "aqroot_demo_expanders.h"
 #include "aqroot_demo_gauge_bringup.h"
 #include "aqroot_demo_timing_policy.h"
+#include "aqroot_spi_bus_b.h"
 #include "max17048_guard.h"
 
 namespace aqroot {
@@ -76,7 +77,7 @@ struct ResetReleaseReport {
 // `Bus` is an `I2cBus` that also offers `reopen(uint32_t)` and
 // `setClock(uint32_t)`.  `Log` is anything callable with a `const char *`.
 template <typename Bus, typename Log>
-class DemoBringupApp {
+class DemoBringupApp : public AccessoryLoadAuthority {
  public:
   DemoBringupApp(Bus &bus, DemoExpanders &expanders, Max17048Guard &gauge,
                  Log log)
@@ -85,6 +86,93 @@ class DemoBringupApp {
   bool acc3v3() const { return acc3v3_; }
   bool acc5v() const { return acc5v_; }
   bool accessoryI2c() const { return accessory_i2c_; }
+
+  // =========================================================================
+  // D-792 / R11-04.  THE OBSERVABLE HIGH-LOAD MODE SET, AS THE PERMISSION
+  // TABLE INDEXES IT.
+  //
+  // The table in `aqroot_accessory_power_policy.h` is indexed by which of
+  // three modes is ON, so this class has to be able to say which.  Two of the
+  // three it OWNS -- the amplifier through its own intent, and a keyed sub-GHz
+  // transmitter through the `AccessoryLoadAuthority` hook `SpiBusB` calls.  The
+  // third, the Wi-Fi/BLE radio, is not brought up by this bring-up image at
+  // all; `noteWifiRadioActive` exists so the path that eventually does bring it
+  // up cannot do so without telling the permission rule, and
+  // `wifiActivationPermitted` is the guard it has to ask first.
+  //
+  // THE AMPLIFIER READING IS FAIL-CLOSED, AND THE DIRECTION IS THE WHOLE
+  // POINT.  It counts as ON unless U2's physical output shadow CONFIRMS it
+  // OFF.  `amplifierConfirmed(true)` would have been the natural spelling and
+  // it is the wrong one: that predicate is false BOTH when the amplifier is
+  // off AND when the shadow is unknown -- which is exactly the state a NACKed
+  // write leaves behind, and exactly the state in which the amplifier may
+  // already be energised.  Reading an unknown latch as OFF would understate
+  // the load and hand the permission table a mode set the board is not in.
+  // D-783's whole finding is that the optimistic direction is the wrong one.
+  // =========================================================================
+  bool amplifierCountsAsOn() const { return !amplifierConfirmed(false); }
+
+  AccessoryLoadState accessoryLoadState() const {
+    AccessoryLoadState s;
+    s.wifi_tx = wifi_tx_;
+    s.amplifier_on = amplifierCountsAsOn();
+    s.subghz_tx = subghz_tx_;
+    return s;
+  }
+
+  int accessoryRailsOn() const {
+    return (acc3v3_ ? 1 : 0) + (acc5v_ ? 1 : 0);
+  }
+
+  // The mode edge, in ONE place, so the amplifier path, the sub-GHz path and
+  // the Wi-Fi path cannot drift apart.  `what` names the mode for the log.
+  bool modeEntryAllowed(const AccessoryLoadState &after, const char *what) {
+    const int rails = accessoryRailsOn();
+    if (rails <= 0) return true;
+    float v = 0.0f;
+    const bool read = readFuelCellVoltage(&v);
+    if (accessoryModeEntryAllowed(read, v, rails, after)) return true;
+    const float required = accessoryModeEntryFloor(after, rails);
+    char line[224];
+    if (required >= kAccessoryNotPermittedV) {
+      snprintf(line, sizeof(line),
+               "%s REFUSED: with %d accessory rail(s) live this mode "
+               "combination has NO attainable VCELL -- disable an accessory "
+               "rail first (D-792 permission table)",
+               what, rails);
+    } else if (!read) {
+      snprintf(line, sizeof(line),
+               "%s REFUSED: MAX17048 VCELL unreadable and %d accessory "
+               "rail(s) are live; mode entry is fail-closed",
+               what, rails);
+    } else {
+      snprintf(line, sizeof(line),
+               "%s REFUSED: VCELL %.3f V below the %.2f V floor this mode "
+               "needs with %d accessory rail(s) live (D-792 permission table)",
+               what, double(v), double(required), rails);
+    }
+    log_(line);
+    return false;
+  }
+
+  // ---- `AccessoryLoadAuthority`, called by `SpiBusB::beginTransmit`. -------
+  bool subGhzTransmitPermitted() override {
+    AccessoryLoadState after = accessoryLoadState();
+    after.subghz_tx = true;
+    return modeEntryAllowed(after, "sub-GHz TX");
+  }
+  void noteSubGhzTransmitting(bool on) override { subghz_tx_ = on; }
+  bool subGhzTransmitting() const { return subghz_tx_; }
+
+  // ---- The Wi-Fi/BLE radio.  No production caller in this image yet; the
+  // guard exists so the one that arrives cannot skip it.
+  bool wifiActivationPermitted() {
+    AccessoryLoadState after = accessoryLoadState();
+    after.wifi_tx = true;
+    return modeEntryAllowed(after, "Wi-Fi / BLE radio");
+  }
+  void noteWifiRadioActive(bool on) { wifi_tx_ = on; }
+  bool wifiRadioActive() const { return wifi_tx_; }
 
   // -------------------------------------------------------------------------
   // D788-04.  THE OUTER GAUGE CALLER.
@@ -114,16 +202,22 @@ class DemoBringupApp {
       if (acc3v3_ || acc5v_ || expanders_.safeShutdownPending() ||
           !configureFuelGaugeActiveMode()) {
         if (volts) *volts = 0.0f;
-        if (floor) *floor = accessoryEnableFloor(other_rail_on);
+        if (floor) {
+          *floor = accessoryEnableFloor(accessoryLoadState(),
+                                        other_rail_on ? 2 : 1);
+        }
         return false;
       }
     }
     float v = 0.0f;
     const bool read = readFuelCellVoltage(&v);
-    const float required = accessoryEnableFloor(other_rail_on);
+    // D-792 / R11-04: the floor is a TABLE lookup on the observable mode set
+    // and the rail count, not a scalar that cannot see what else is on.
+    const AccessoryLoadState modes = accessoryLoadState();
+    const float required = accessoryEnableFloor(modes, other_rail_on ? 2 : 1);
     if (volts) *volts = v;
     if (floor) *floor = required;
-    return accessoryEnableAllowed(read, v, other_rail_on);
+    return accessoryEnableAllowed(read, v, other_rail_on, modes);
   }
 
   // -------------------------------------------------------------------------
@@ -337,6 +431,17 @@ class DemoBringupApp {
   // Take the amplifier out of shutdown, or put it back.  `on == false` is the
   // safety-relevant direction and is the one that must never be lost.
   bool setAmplifierIntent(bool on) {
+    // D-792 / R11-04.  THE MODE EDGE.  Energising the amplifier while an
+    // accessory rail is live is the same transition as enabling the rail,
+    // walked in the other order, and it is judged by the same rule against the
+    // mode set that will exist AFTERWARDS.  Only the ON direction is gated:
+    // turning the amplifier OFF can never make a state worse and must never be
+    // refusable.
+    if (on) {
+      AccessoryLoadState after = accessoryLoadState();
+      after.amplifier_on = true;
+      if (!modeEntryAllowed(after, "AMP_SD_MODE enable")) return false;
+    }
     amp_intent_.want = on;
     const bool acked = expanders_.setAmplifier(bus_, on);
     const bool confirmed = acked && amplifierConfirmed(on);
@@ -637,6 +742,11 @@ class DemoBringupApp {
   bool recovery_started_ = false;
   bool requal_started_ = false;
   bool guard_started_ = false;
+  // D-792 / R11-04: the two high-load modes this class does not own the latch
+  // for.  `subghz_tx_` is driven by `SpiBusB` through `AccessoryLoadAuthority`;
+  // `wifi_tx_` by whatever brings the radio up.
+  bool subghz_tx_ = false;
+  bool wifi_tx_ = false;
   uint32_t last_recovery_ms_ = 0;
   uint32_t last_gauge_requal_ms_ = 0;
   uint32_t last_battery_guard_ms_ = 0;

@@ -38,6 +38,7 @@ ROOT = HERE.parents[3]
 sys.path.insert(0, str(MFG))
 import routing_ledger as rl                                  # noqa: E402
 import audit_rail_ampacity as ara                            # noqa: E402
+import aqroot_power_model as apm                              # noqa: E402
 
 DRU = rl.PROJECT / "aqroot-Beta-v2.kicad_dru"
 POWER_POLICY = ROOT / "Firmware/src/hw/aqroot_accessory_power_policy.h"
@@ -1096,6 +1097,35 @@ UL2367_ILIM_RANGE = (0.066, 2.46)
 # product PUBLISHES is a number the hardware must GUARANTEE.
 PUBLISHED_RAIL_BUDGET_A = {"ACC_3V3": 0.400, "ACC_5V": 0.300}
 # --------------------------------------------------------------------------
+# D-792 / R11-04 -- THE DECLARED SIMULTANEOUS PAIR.
+#
+# THE PER-RAIL BUDGETS ABOVE DO NOT MOVE.  `ACC_3V3_SW` = 400 mA TOTAL and
+# `ACC_5V_SW` = 300 mA TOTAL, each deliverable ON ITS OWN, remain exactly what
+# D-098 published and what the D-788 owner decision preserved.  What D-792 has
+# to state, because the corrected model says so, is what the two rails may draw
+# AT THE SAME TIME.
+#
+# R11-07's itemised battery path (249.8 mOhm where D-791 carried 124 mOhm) and
+# R11-02's missing ESP32-S3 baseline (165.5 mA in EVERY state) together cost
+# about 0.34 V of node at the dual-rail current.  At the top of the declared
+# 0..40 C ambient envelope, in the lightest internal state, the FULL pair now
+# settles the node at 3.1763 V -- inside every one of the seven hardware limits
+# and 44 mV BELOW the retention criterion the firmware itself applies.
+#
+# THIS PAIR IS SOLVED, NOT CHOSEN.  F12 derives it as the largest proportional
+# derating of the two published budgets that the retention rule holds at the
+# SAME critical cell voltage the single-rail permission already reaches, rounded
+# DOWN onto a 10 mA grid -- and then REFUSES if this constant differs from what
+# it derived.  It is stated here because F6 needs it before F12 runs.
+DECLARED_DUAL_RAIL_BUDGET_A = {"ACC_3V3": 0.220, "ACC_5V": 0.170}
+DECLARED_DUAL_RAIL_BASIS = (
+    "D-792 / R11-04.  Solved by F12 at the critical cell OCV of the worse "
+    "single-rail configuration in the lightest internal state, at the top of "
+    "the declared ambient envelope, rounded DOWN onto a 10 mA grid.  The "
+    "per-rail budgets are UNCHANGED and each is deliverable alone; this is the "
+    "pair that may be drawn at once.  The FULL pair is retained everywhere as "
+    "a reported negative control.")
+# --------------------------------------------------------------------------
 # D-788 / R7-D787-01 -- THE PUBLISHED COMMUNITY-PORT MINIMUM, RESTATED.
 #
 # D-787 published 3.135 V, which is 3.3 V -5 %.  D-788 proves from the fitted
@@ -1421,8 +1451,8 @@ FLOOR_GRID_V = 0.05
 # function stays pure for its own mutation controls and for
 # `battery_pack_contract`, which calls it with no floors at all.  `main()`
 # always parses the real constants out of `aqroot_accessory_power_policy.h`.
-NORMAL_SINGLE_VBAT_FLOOR = 3.55         # ENABLE the first rail
-NORMAL_DUAL_VBAT_FLOOR = 3.65           # ENABLE the second rail
+NORMAL_SINGLE_VBAT_FLOOR = 3.95         # the published ENVELOPE of the D-792
+NORMAL_DUAL_VBAT_FLOOR = 3.95           # permission table, one and two rails
 NORMAL_RETENTION_FLOOR = 3.20           # RETAIN a rail already on
 VBAT_CORNER = 3.0                      # fault-envelope 1S Li-ion corner
 # D-774 SWEEP.  Every other physical constant in this file now cites a primary
@@ -1984,302 +2014,21 @@ BOOST_FB = dict(
                          vovp_V=(5.5, 5.7, 6.0)),
     })
 # --------------------------------------------------------------------------
-# D-790 / D789-A11 -- THE DISPLAY LINE WAS AN INHERITED SUBTOTAL, NOT A BOUND.
+# D-792 -- THE BACKLIGHT CONVERTER MODEL MOVED TO THE CANONICAL POWER MODEL.
 #
-# The `+3V3` budget below carried ONE line for "display logic + backlight at
-# maximum", 181 mA, cited as "FBV2-COMM-001 internal subtotal, retained".  It
-# was never derived from this board's backlight circuit, and Round-9 showed it
-# is not even large enough for the BACKLIGHT ALONE: Astra's own sensitivity put
-# the converter's input at about 191 mA before a milliamp of panel logic.
-#
-# SO THE BACKLIGHT IS NOW SOLVED, FROM PUBLISHED MAXIMA ONLY, AND THE PANEL
-# LOGIC IS A SEPARATE, DECLARED LINE THAT SAYS SO.
-#
-# THE LED SETPOINT IS THE CONVERTER'S, NOT A NOMINAL.  `U17` regulates `FB` to
-# `VREF` across `R69`, so
-#       I_LED(max) = VREF(max) / R69(min) = 0.220 V / (1.87 x 0.99) = 118.835 mA
-# against the panel's own 120 mA maximum (D-079).  The boost node it has to
-# reach is the sum of everything in series with the six parallel LEDs:
-#       V_LED_BOOST = I_LED x R_ballast(max) + VF_LED(max)
-#                   + I_LED x RDS(on)_Q11(max) + VREF(max)
-# -- `R70..R73` are four 33 R 1 % in parallel, `VF_LED` is D-079's 3.2 V upper
-# end, and `Q11` is the fitted SQ2364EES at its ONLY published low-gate
-# conduction row.  That is 4.439311 V and 527.5 mW out of the converter.
-#
-# AND THE INPUT CURRENT IS BOUNDED THREE WAYS, WORST WINS.  TI publishes no
-# efficiency TABLE for this part -- only an "up to 90 %" headline, which is a
-# CEILING on efficiency and therefore a FLOOR on input current, exactly the
-# wrong direction for a budget.  So the converter's own conduction losses are
-# computed from the guaranteed maxima --
-#
-#   * `RDS(on)` of the internal NFET, 0.7 ohm MAX (SNVSA40B EC)
-#   * the inductor's DCR, 52.2 mOhm for the fitted Coilcraft XFL4020-472MEC
-#     (live distributor record per D-096, evidence/jlc-live/)
-#   * `D8`'s forward drop, 710 mV at 200 mA for the fitted onsemi NSR0240HT1G
-#     (live record); this node runs at 119 mA and VF rises monotonically with
-#     IF, so the 200 mA figure is a BOUND here
-#   * the quiescent current, 0.45 mA MAX, and the ripple at the MINIMUM
-#     published switching frequency (0.75 MHz) into the MINIMUM inductance
-#     (4.7 uH -20 %), which is the worst RMS case
-#
-# -- under BOTH a continuous-conduction and a discontinuous-conduction
-# treatment, and the bound is the WORST of {CCM, DCM, the TI headline}.  At the
-# declared worst-case converter input the answer is about 211.6 mA and the
-# implied efficiency is 83.1 %, which is BELOW TI's own headline -- the model
-# is not allowed to claim more than the part is advertised to do.
-#
-# THE INPUT VOLTAGE IS DECLARED AND THEN MACHINE-CHECKED.  A lower input costs
-# more input current, so the constant below must be AT OR BELOW the rail's own
-# heavy-load minimum less the declared plane allowance at the full envelope.
-# `f6q_declared_backlight_input_is_at_or_below_the_modelled_rail` proves it
-# every run rather than leaving the two to drift.
+# R11-02's finding is that this model was SOLVED here and TYPED into
+# `audit_rail_ampacity`, and when D-791 moved the solved figure the typed copy
+# did not follow.  It now lives in `aqroot_power_model` and BOTH files import
+# it, so there is exactly one copy in the repository.  The names below are
+# re-exported because this contract's own clauses, its controls and its
+# mutation tests all reference them.
 # --------------------------------------------------------------------------
-BACKLIGHT_BOOST = dict(
-    refs=("U17", "L3", "D8", "Q11", "R69", "R70", "R71", "R72", "R73", "J1"),
-    vref_max_V=0.220,
-    sense_ohm=1.87, sense_tol=0.01,
-    ballast_ohm=33.0, ballast_tol=0.01, ballast_count=4,
-    vf_led_max_V=3.2,
-    q11_rds_on_max_ohm=0.245,
-    sw_rds_on_max_ohm=0.7,
-    inductor_H=4.7e-6, inductor_tol=0.20, inductor_dcr_ohm=0.0522,
-    fsw_min_Hz=0.75e6,
-    diode_vf_max_V=0.710,
-    iq_max_A=0.45e-3,
-    headline_efficiency=0.90,
-    panel_led_max_A=0.120,
-    # ---- D-791 / D790-A04.  THE LOSSES D-790's 211.58 mA LEFT OUT ---------
-    #
-    # Round-10 is right that the D-790 model is a CONDUCTION model wearing a
-    # loss model's name.  Four terms were missing and each of them is added
-    # below with its own declared basis, because not one of them is published
-    # for these exact parts:
-    #
-    #   1  THE DIODE Vf WAS TAKEN AT THE AVERAGE, NOT THE PEAK.  onsemi
-    #      publishes ONE point for the NSR0240HT1G -- 710 mV at 200 mA -- and
-    #      this converter's inductor peak is about 430 mA, more than twice it.
-    #      The conduction loss is bounded by Vf(i_peak) x I_avg, which is an
-    #      upper bound on the integral whatever the curve does in between.
-    #   2  SWITCHING TRANSITION LOSS.  TI publishes no rise/fall time for the
-    #      TPS61169's internal switch.
-    #   3  OUTPUT-CAPACITANCE AND GATE-DRIVE LOSS.  Neither is published.
-    #   4  INDUCTOR CORE LOSS AND HOT DCR.  Coilcraft publishes the 52.2 mOhm
-    #      DCR at room temperature and an AC-loss CURVE this repository cannot
-    #      read numerically.
-    #
-    # AND THE FREQUENCY IS TAKEN AT BOTH ENDS, WHICH IS THE POINT.  Conduction
-    # and ripple are worst at the MINIMUM published switching frequency, which
-    # is what D-790 already used; switching losses are worst at the MAXIMUM.
-    # Charging each term at its own worst end is conservative and is stated
-    # rather than implied.
-    fsw_max_Hz=1.5e6,
-    diode_vf_at_peak_V=0.900,
-    diode_vf_at_peak_basis=(
-        "DECLARED.  onsemi publishes a single NSR0240HT1G forward point, "
-        "710 mV at 200 mA, and this converter's inductor peak is about "
-        "430 mA.  0.900 V is a deliberately pessimistic carry for a 40 V "
-        "Schottky at roughly 2x its published point, and the loss is charged "
-        "as Vf(peak) x I_average, which bounds the integral whatever the "
-        "curve does between the two.  MEASURED at C-DISP-01."),
-    diode_average_rating_A=0.250,
-    diode_surge_rating_A=1.0,
-    switch_transition_s=20e-9,
-    switch_transition_basis=(
-        "DECLARED: TI SNVSA40B publishes no rise or fall time for the "
-        "TPS61169's internal switch.  20 ns TOTAL is a conservative carry for "
-        "an integrated 0.7 ohm switch at this current, charged at the MAXIMUM "
-        "published switching frequency."),
-    switch_coss_F=50e-12,
-    switch_coss_basis=(
-        "DECLARED: no output capacitance is published.  50 pF is a "
-        "conservative carry for a switch of this RDS(on) class."),
-    gate_drive_W=0.0005,
-    gate_drive_basis=(
-        "DECLARED: the TPS61169's gate driver is internal and its charge is "
-        "not published separately from IQ.  0.5 mW is carried in addition to "
-        "the published 0.45 mA IQ rather than assumed to be inside it."),
-    core_loss_fraction_of_dcr=0.30,
-    core_loss_basis=(
-        "DECLARED: Coilcraft publishes an AC-loss curve for the XFL4020 "
-        "family that this repository cannot read numerically.  Core loss is "
-        "carried at 30 % of the winding's own copper loss, which is a "
-        "conservative ratio for a moulded composite inductor at this ripple "
-        "and frequency."),
-    dcr_hot_factor=round(1.0 + 0.00393 * 65.0, 6),
-    dcr_hot_basis=(
-        "the winding is copper and the published 52.2 mOhm is a room-"
-        "temperature figure; the same 65 K hot rise and 0.393 %/K coefficient "
-        "this contract charges every other conductor is applied to it."),
-    source=(
-        "TI SNVSA40B (TPS61169), archived vendor/TI/tps61169.pdf: VREF "
-        "188/204/220 mV at duty 100 %, RDS(on) 0.35/0.7 ohm, IQ_VIN 0.45 mA "
-        "MAX, fSW 0.75/1.2/1.5 MHz, 'Up to 90% efficiency'.  Coilcraft "
-        "XFL4020-472MEC DCR 52.2 mOhm and onsemi NSR0240HT1G VF 710 mV at "
-        "200 mA, both from the committed live distributor records this "
-        "repository reads under D-096.  Vishay 75975 Rev B (SQ2364EES) "
-        "RDS(on) 0.245 ohm MAX at VGS = 1.5 V.  Panel LED string: D-079's six "
-        "parallel LEDs at 2.9-3.2 V, 120 mA panel maximum."),
-    # A LOWER INPUT COSTS MORE INPUT CURRENT, so this is a declared FLOOR on
-    # U17's own VIN and the clause below proves the rail model never goes under
-    # it.  3.069408 V heavy-load rail minimum less about 49 mV of declared
-    # plane allowance at the full +3V3 envelope, rounded DOWN.
-    declared_converter_vin_V=3.000,
-    declared_converter_vin_basis=(
-        "the rail's heavy-load minimum less the SAME declared 25 mOhm hot "
-        "plane allowance F6 charges the accessory source side, carrying the "
-        "whole +3V3 envelope, rounded DOWN onto a 10 mV grid"))
-# The panel side.  ILI Technology's ILI9488 datasheet publishes NO active-mode
-# supply current -- only Sleep-in (100 uA) and Deep Standby (1 uA) -- and the
-# EastRising module specification is not obtainable from this environment, so
-# this line is a DECLARED ALLOWANCE and is labelled one.  It covers the
-# panel's VCI analog/charge-pump/source-driver side, its IOVCC logic side at
-# the SPI rate, and the FT6236 touch controller that shares the same FPC.  It
-# is roughly 2x what a 3.5 in ILI9488 module of this class consumes, and
-# `C-DISP-01` first-article measurement is the measurement of record.
-PANEL_LOGIC_DECLARED_mA = 50.0
+BACKLIGHT_BOOST = apm.BACKLIGHT_BOOST
+_switching_W = apm._switching_W
+backlight_converter_input = apm.backlight_converter_input
+BACKLIGHT_INPUT = apm.BACKLIGHT_INPUT
+PANEL_LOGIC_DECLARED_mA = apm.PANEL_LOGIC_DECLARED_mA
 BACKLIGHT_LEDGER_TOKENS = ("C-DISP-01",)
-
-
-def _switching_W(v_switch_V, i_peak_A, fsw_Hz, spec):
-    """D-791 / D790-A04.  Transition + Coss + gate-drive loss, all DECLARED.
-
-    Pure.  Every term is a declared allowance because TI publishes none of
-    them for the TPS61169's integrated switch; each carries its own basis
-    string in `BACKLIGHT_BOOST` and each is measured at `C-DISP-01`.
-    """
-    transition = 0.5 * v_switch_V * i_peak_A * spec.get(
-        "switch_transition_s", 0.0) * fsw_Hz
-    coss = 0.5 * spec.get("switch_coss_F", 0.0) * v_switch_V * v_switch_V * fsw_Hz
-    return transition + coss + spec.get("gate_drive_W", 0.0)
-
-
-def backlight_converter_input(vin_V, spec=None):
-    """D-790 / D789-A11.  Worst-case TPS61169 input current, three ways.
-
-    Pure; returns the arithmetic and the bound.  The bound is the WORST of a
-    CCM treatment, a DCM treatment and TI's own 'up to 90 %' headline, because
-    no single one of the three may be the one that flatters the answer.
-    """
-    s = BACKLIGHT_BOOST if spec is None else spec
-    i_led = s["vref_max_V"] / (s["sense_ohm"] * (1.0 - s["sense_tol"]))
-    r_ballast = s["ballast_ohm"] * (1.0 + s["ballast_tol"]) / s["ballast_count"]
-    v_out = (i_led * r_ballast + s["vf_led_max_V"]
-             + i_led * s["q11_rds_on_max_ohm"] + s["vref_max_V"])
-    p_out = v_out * i_led
-    v_d = v_out + s["diode_vf_max_V"]
-    l_min = s["inductor_H"] * (1.0 - s["inductor_tol"])
-    fs = s["fsw_min_Hz"]
-    # D-791 / D790-A04.  Conduction at the MINIMUM frequency (worst RMS),
-    # switching at the MAXIMUM (worst transition and Coss loss), and the
-    # winding's DCR carried hot.
-    fs_hi = s.get("fsw_max_Hz", fs)
-    dcr = s["inductor_dcr_ohm"] * s.get("dcr_hot_factor", 1.0)
-    rds, iq = s["sw_rds_on_max_ohm"], s["iq_max_A"]
-    vf_peak = s.get("diode_vf_at_peak_V", s["diode_vf_max_V"])
-
-    # A spec whose output node no longer sits ABOVE the input is not a boost
-    # at all; the model says so rather than raising.  Only the mutation
-    # controls can reach this, and they only need the answer to MOVE.
-    if v_d <= vin_V:
-        degenerate = p_out / vin_V
-        return dict(
-            converter_vin_V=round(vin_V, 6),
-            led_current_max_A=round(i_led, 6),
-            led_current_is_inside_the_panel_maximum=bool(
-                i_led <= s["panel_led_max_A"]),
-            panel_led_max_A=s["panel_led_max_A"],
-            ballast_max_ohm=round(r_ballast, 6),
-            led_boost_max_V=round(v_out, 6),
-            output_power_W=round(p_out, 6),
-            not_a_boost="the modelled output node is at or below the input",
-            bound_A=round(degenerate, 6), bound_from="degenerate",
-            model_efficiency_is_under_the_headline=True,
-            source=s["source"])
-
-    # --- continuous conduction, solved for the self-consistent input current
-    i_ccm = p_out / (0.8 * vin_V)
-    d_ccm = ripple = p_ccm = 0.0
-    for _ in range(400):
-        a = vin_V - i_ccm * (dcr + rds)
-        b = v_d - vin_V + i_ccm * dcr
-        d_ccm = b / (a + b)
-        ripple = a * d_ccm / (l_min * fs)
-        irms2 = i_ccm * i_ccm + ripple * ripple / 12.0
-        i_pk_ccm = i_ccm + ripple / 2.0
-        p_ccm = (p_out + irms2 * d_ccm * rds + irms2 * dcr
-                 + vf_peak * i_led + vin_V * iq
-                 + _switching_W(v_d, i_pk_ccm, fs_hi, s)
-                 + s.get("core_loss_fraction_of_dcr", 0.0) * irms2 * dcr)
-        nxt = p_ccm / vin_V
-        if abs(nxt - i_ccm) < 1e-13:
-            i_ccm = nxt
-            break
-        i_ccm = 0.5 * i_ccm + 0.5 * nxt
-
-    # --- discontinuous conduction, from the charge the output actually needs
-    t = 1.0 / fs
-    d_dcm = math.sqrt(2.0 * l_min * (v_d - vin_V) * i_led / (vin_V ** 2 * t))
-    d2 = vin_V * d_dcm / (v_d - vin_V)
-    i_pk = vin_V * d_dcm * t / l_min
-    irms2_l = i_pk * i_pk * (d_dcm + d2) / 3.0
-    irms2_sw = i_pk * i_pk * d_dcm / 3.0
-    p_dcm = (p_out + irms2_sw * rds + irms2_l * dcr
-             + vf_peak * i_led + vin_V * iq
-             + _switching_W(v_d, i_pk, fs_hi, s)
-             + s.get("core_loss_fraction_of_dcr", 0.0) * irms2_l * dcr)
-    i_dcm = p_dcm / vin_V
-
-    i_headline = p_out / (s["headline_efficiency"] * vin_V)
-    bound = max(i_ccm, i_dcm, i_headline)
-    which = ("ccm" if bound == i_ccm else
-             ("dcm" if bound == i_dcm else "ti_headline"))
-    return dict(
-        converter_vin_V=round(vin_V, 6),
-        led_current_max_A=round(i_led, 6),
-        led_current_is_inside_the_panel_maximum=bool(
-            i_led <= s["panel_led_max_A"]),
-        panel_led_max_A=s["panel_led_max_A"],
-        ballast_max_ohm=round(r_ballast, 6),
-        led_boost_max_V=round(v_out, 6),
-        output_power_W=round(p_out, 6),
-        ccm=dict(input_A=round(i_ccm, 6), duty=round(d_ccm, 6),
-                 ripple_pp_A=round(ripple, 6),
-                 efficiency=round(p_out / p_ccm, 6)),
-        dcm=dict(input_A=round(i_dcm, 6), duty=round(d_dcm, 6),
-                 peak_A=round(i_pk, 6), efficiency=round(p_out / p_dcm, 6)),
-        ti_headline=dict(input_A=round(i_headline, 6),
-                         efficiency=s["headline_efficiency"]),
-        bound_A=round(bound, 6),
-        bound_from=which,
-        # D-791 / D790-A04: the terms D-790's model did not have, itemised so
-        # a reviewer can see each one's size and its declared basis.
-        declared_loss_terms=dict(
-            diode_vf_at_peak_V=vf_peak,
-            diode_vf_published_point="710 mV at 200 mA",
-            diode_peak_current_A=round(i_pk, 6),
-            diode_average_current_A=round(i_led, 6),
-            diode_average_is_inside_its_rating=bool(
-                i_led <= s.get("diode_average_rating_A", 1e9)),
-            diode_peak_is_inside_its_published_surge=bool(
-                i_pk <= s.get("diode_surge_rating_A", 1e9)),
-            switching_W_at_fsw_max=round(
-                _switching_W(v_d, i_pk, fs_hi, s), 8),
-            fsw_min_Hz=fs, fsw_max_Hz=fs_hi,
-            dcr_hot_ohm=round(dcr, 6),
-            core_loss_fraction_of_dcr=s.get("core_loss_fraction_of_dcr"),
-            bases=[s.get(k) for k in (
-                "diode_vf_at_peak_basis", "switch_transition_basis",
-                "switch_coss_basis", "gate_drive_basis", "core_loss_basis",
-                "dcr_hot_basis") if s.get(k)]),
-        # The model may not claim a better efficiency than the part is
-        # advertised to reach; if it ever did, the headline would be the bound.
-        model_efficiency_is_under_the_headline=bool(
-            min(p_out / p_ccm, p_out / p_dcm) <= s["headline_efficiency"]),
-        source=s["source"])
-
-
-BACKLIGHT_INPUT = backlight_converter_input(
-    BACKLIGHT_BOOST["declared_converter_vin_V"])
 # D-791 / D790-A13.  WHAT Q11 HAS TO SUSTAIN IS DERIVED, NOT REMEMBERED.
 #
 # This was `0.109`, D-079's LED setpoint, hand-written in 2023.  The current
@@ -2290,14 +2039,8 @@ BACKLIGHT_INPUT = backlight_converter_input(
 # `VGS = 2.396 V` and `0.109 A` beside live arithmetic that had already moved
 # to 1.945526 V and 118.8354 mA.  The constant is now the derivation, and the
 # narrative is FORMATTED FROM THE COMPUTED VALUES so it cannot drift again.
-BL_STRING_CURRENT_A = round(
-    BACKLIGHT_BOOST["vref_max_V"]
-    / (BACKLIGHT_BOOST["sense_ohm"] * (1.0 - BACKLIGHT_BOOST["sense_tol"])), 7)
-BL_STRING_CURRENT_BASIS = (
-    "DERIVED: VREF(max) 220 mV over R69 at its -1 % corner, which is the "
-    "largest current the TPS61169's feedback loop can regulate the string to.  "
-    "D-790 / D789-A11 solves the same number for the converter's input "
-    "current; this is the load Q11 conducts.")
+BL_STRING_CURRENT_A = apm.BL_STRING_CURRENT_A
+BL_STRING_CURRENT_BASIS = apm.BL_STRING_CURRENT_BASIS
 
 # --------------------------------------------------------------------------
 # D-772 -- THE INTERNAL +3V3 LOAD WAS A HAND-WRITTEN CONSTANT, AND IT WAS LOW.
@@ -2341,72 +2084,19 @@ BL_STRING_CURRENT_BASIS = (
 # D-779 reads SLUSF65B 6.3.7.3's other half, where 4-7 consecutive trips in a
 # 2 s window leave the BATFET off until a valid VIN is connected.
 # --------------------------------------------------------------------------
-P3V3_INTERNAL_BUDGET = (
-    dict(line="Wi-Fi / BLE TX, the worst RF condition the module publishes",
-         mA=355.0, refs=("U1",),
-         cite="Espressif ESP32-S3-WROOM-1 datasheet v1.8 Table 6-4, archived at "
-              "vendor/Espressif/: 355 mA PEAK, 802.11b 1 Mbps @20.5 dBm, and "
-              "the table states TX current is rated at 100 % duty.  Table 6-5's "
-              "worst BLE row is 344 mA and is NOT added -- one radio inside one "
-              "module cannot transmit twice at once"),
-    dict(line="sub-GHz TX, the worse of the two shared-bus radios",
-         mA=140.0, refs=("U7", "U8"),
-         cite="Ebyte E22-M series user manual, archived at vendor/Ebyte/: "
-              "emission current 100-140 mA instantaneous @22 dBm for the fitted "
-              "E22-900M22S.  The E07-400M10S CC1101 is 35 mA (its own manual "
-              "v1.3).  ONLY THE WORSE OF THE TWO is counted, because the Demo "
-              "scope holds them to one TX at a time on the shared SPI-B bus -- "
-              "but it is ADDED TO the Wi-Fi line and not substituted for it"),
-    # D-790 / D789-A11.  WAS ONE INHERITED 181 mA LINE FOR BOTH.  It is now
-    # two, and the backlight half is DERIVED rather than retained.
-    dict(line="display backlight converter input, at the worst LED setpoint",
-         mA=round(BACKLIGHT_INPUT["bound_A"] * 1000.0, 4),
-         refs=("U17", "L3", "D8", "Q11", "R69", "R70", "R71", "R72", "R73"),
-         cite="D-790 / D789-A11: SOLVED by backlight_converter_input() from "
-              "published maxima only -- VREF 220 mV over R69 at -1 %, the "
-              "panel's 3.2 V VF upper end, Q11's only published conduction "
-              "row, the TPS61169's 0.7 ohm switch and 0.45 mA IQ, the fitted "
-              "inductor's 52.2 mOhm DCR and D8's 710 mV bound, at the minimum "
-              "published switching frequency into the minimum inductance.  "
-              "The bound is the worst of a CCM treatment, a DCM treatment and "
-              "TI's own 'up to 90 %' headline.  The old 181 mA covered the "
-              "backlight AND the panel and was smaller than the backlight "
-              "alone"),
-    dict(line="display panel logic + touch controller (DECLARED allowance)",
-         mA=PANEL_LOGIC_DECLARED_mA, refs=("J1",),
-         cite="DECLARED, and labelled as declared: ILI Technology's ILI9488 "
-              "datasheet publishes only Sleep-in 100 uA and Deep Standby "
-              "1 uA and NO active-mode supply current, and the EastRising "
-              "ER-TFT035IPS-6 module specification is not obtainable here.  "
-              "Covers the panel's VCI analog/charge-pump/source-driver side, "
-              "its IOVCC logic side, and the FT6236 touch controller on the "
-              "same FPC; about 2x what a 3.5 in ILI9488 module of this class "
-              "draws.  C-DISP-01 first-article measurement is the "
-              "measurement of record"),
-    dict(line="audio at the capped level", mA=120.0, refs=("U5",),
-         cite="FBV2-COMM-001 internal subtotal, retained; D-161 records the "
-              "MAX98357A's 230 mA PEAKS separately as locally supplied"),
-    dict(line="microSD write", mA=100.0, refs=("J2",),
-         cite="FBV2-COMM-001 internal subtotal, retained"),
-    dict(line="NFC front end, field on", mA=100.0, refs=("U9",),
-         cite="D-205: DS12484 Rev 3 Table 121 gives I_AL-AM = 26 mA MAX for the "
-              "IC with all blocks active and D-134's first-build network draws "
-              "about 60 mA at the driver, so the +3V3 allocation with the field "
-              "on is 100 mA.  THIS LINE IS THE ONE THE 823 mA FIGURE WAS "
-              "MISSING: U9 was DNP when FBV2-COMM-001 was written and D-192 "
-              "fitted it.  D-205's own guard rail stands -- a C_s move to 270 pF "
-              "would draw about 257 mA and requires this budget to be re-run"),
-    dict(line="IR transmitter, burst average", mA=50.0, refs=("D1", "Q1", "R24"),
-         cite="D-155 / FBV2-S1-007: the 150 mA peaks are supplied by C12 22 uF "
-              "and not by the rail, so the rail sees the burst average"),
-    dict(line="touch + housekeeping (both expanders and the IMU)",
-         mA=13.0, refs=("U2", "U3", "U4"),
-         cite="FBV2-COMM-001 internal subtotal, retained"),
-    dict(line="front RGB at white", mA=4.2, refs=("D13",),
-         cite="FBV2-S1-008 / D-184's re-derivation"),
-)
-# THE SUM, NOT AN ASSERTION.  Was a hand-written 1.0.
-I_INTERNAL = round(sum(x["mA"] for x in P3V3_INTERNAL_BUDGET) / 1000.0, 4)
+# D-792 / R11-02.  THIS TABLE IS NOW A VIEW OF THE CANONICAL LEDGER.
+#
+# It was a second load table beside `audit_rail_ampacity`'s sustained one, and
+# the two disagreed about the backlight by 21.55 mA and about the processor by
+# the whole processor.  `aqroot_power_model.LOAD_LEDGER` is the one list; the
+# PEAK budget is every line at its peak, and the sustained always-on set, the
+# optional-mode set and the bounded-duty allowances are the other views of the
+# same list.  D-792 also corrects the module line itself (N-01): it read
+# 355 mA, Espressif's Table 6-4 RF peak, for a module whose Table 6-2
+# Recommended Operating Conditions require the external supply to deliver
+# 500 mA MIN.
+P3V3_INTERNAL_BUDGET = apm.peak_budget()
+I_INTERNAL = apm.peak_A()
 I_INTERNAL_PUBLISHED_WAS = 1.0          # the constant D-772 replaced
 
 # --------------------------------------------------------------------------
@@ -2594,6 +2284,37 @@ FUSE_A = 5.0                           # F1 0466005 one-shot
 # from the fitted part's own datasheet, archived under vendor/.
 U12_IOUT_A = 2.0          # SLVSAA7 Features: "Output current for VIN > 2.5 V,
 U12_VIN_FLOOR = 2.5       # VOUT = 3.3 V: 2 A"
+# D-792 / R11-02.  U12 IS NOW JUDGED THE WAY U21 ALREADY WAS.
+#
+# R11-02's missing ESP32-S3 baseline added 165.5 mA to the +3V3 peak envelope,
+# and the D-791 clause compared `internal_peak + the ACCESSORY LIMITER'S FAULT
+# MAXIMUM` against the 2 A Features headline.  It passed by 10 mA, which is not
+# a margin, and it now fails by 116 mA.  Two things were wrong with the
+# comparison and neither is the new baseline:
+#
+#   * IT MIXED A CONFORMING LOAD WITH A FAULT ONE.  `ilim_max` is the current a
+#     SHORTED accessory draws before U20 trips; the published budget is what a
+#     conforming one draws.  The 2 A guaranteed figure is the right bound for
+#     the conforming case and the wrong one for a fault excursion.
+#   * IT USED THE HEADLINE INSTEAD OF THE DEVICE.  "2 A" is TI's Features line
+#     across the whole recommended VIN range.  The DEVICE limit is the average
+#     switch current limit, and SLVSAA7's EC table gives it a MIN column --
+#     which is exactly how this contract already bounds U21.  At this board's
+#     3.0 V cell corner that bound is far above the headline.
+#
+# So the clause now asks BOTH questions, with the fault excursion bounded by
+# the device's own protection rather than by a marketing figure.
+U12_ISW_MIN_A = 3.5        # SLVSAA7 EC: ISW average switch current limit,
+U12_FSW_MIN_HZ = 2.2e6     # MIN 3500 / TYP 4000 / MAX 4500 mA; f 2200 kHz MIN
+U12_L_H, U12_L_TOL = 1.5e-6, 0.20      # L1, 1.5 uH, at the same declared -20 %
+U12_LIMIT_SOURCE = (
+    "TI SLVSAA7 (TPS63020) Electrical Characteristics: ISW 'Average switch "
+    "current limit' 3500 / 4000 / 4500 mA at VIN = VINA = 3.6 V, TA = 25 C, "
+    "and f 'Oscillator frequency' 2200 / 2400 / 2600 kHz.  Section 7.3.2 "
+    "reduces the limit below VIN = 2.3 V, which is BELOW this contract's 3.0 V "
+    "cell corner.  The fitted inductor is L1 = 1.5 uH, carried at the same "
+    "declared -20 % corner this contract charges L4.  Archived at "
+    "vendor/TI/ti-tps63020-slvsaa7-DSJ0010A.pdf.")
 U21_ILIM_VALLEY_MIN = 2.7  # SLVSF14B EC: ILIM_SW valley current limit, MIN
 U21_L_H, U21_L_TOL = 1.0e-6, 0.20      # L4 Wurth 74438357010 WE-MAPI, 1 uH
 U21_FSW_HZ = 1.0e6                     # SLVSF14B EC: fSW 1.0 MHz, VIN > 1.5 V
@@ -3364,18 +3085,54 @@ MFR_ALIASES = (
     ("cctc", "cctc (chaozhou three-circle)"),
     ("lrc", "leshan radio company"),
 )
+# D-792 / R11-09.  A CORPORATE SUFFIX IS NOT A DIFFERENT COMPANY.
+#
+# ROUND-11, IN ITS OWN WORDS: "manufacturer canonicalizer rejects legitimate
+# PUI Audio, Inc. vs PUI Audio spelling.  Add a narrow tested alias without
+# weakening contradiction detection."
+#
+# It reproduces.  The alias table carried `pui audio inc`; the live distributor
+# record prints `PUI Audio, Inc.`, and the fold kept the comma and the trailing
+# period, so the two never met and F13 read a genuine agreement as a
+# CONTRADICTION.  The fix is DELIBERATELY NARROW: a trailing legal-form token --
+# `Inc`, `Corp`, `Ltd`, `LLC`, `GmbH`, `Co`, with or without a period, with or
+# without a preceding comma -- is dropped, and commas are dropped everywhere.
+# Nothing else about the name is touched, so two DIFFERENT companies remain
+# different: the contradiction detector loses no power, which is the half of
+# R11-09 that matters.  Both sides of the comparison are folded by the SAME
+# function, so the alias table cannot drift out of the fold's reach again.
+_LEGAL_FORMS = ("inc", "incorporated", "corp", "corporation", "co", "company",
+                "llc", "ltd", "limited", "gmbh", "ag", "kg", "bv", "nv",
+                "plc", "sa", "srl", "spa", "pte", "pty", "kk")
+
+
+def fold_manufacturer(name):
+    """Case, spacing, commas and TRAILING LEGAL FORMS only."""
+    key = re.sub(r"\s+", " ", (name or "").strip().casefold())
+    key = key.replace("co., ltd.", " ").replace("co.,ltd", " ")
+    key = key.replace(",", " ")
+    key = re.sub(r"\s+", " ", key).strip(" .")
+    # Repeatedly, because "Foo Co., Ltd." leaves two of them behind.
+    for _ in range(4):
+        m = re.match(r"^(.*?)\s+(%s)\.?$" % "|".join(_LEGAL_FORMS), key)
+        if not m or not m.group(1).strip():
+            break
+        key = m.group(1).strip(" .")
+    return re.sub(r"\s+", " ", key).strip()
+
+
 MFR_CANONICAL = {}
 for _group in MFR_ALIASES:
     for _name in _group:
-        MFR_CANONICAL[_name] = _group[0]
+        MFR_CANONICAL[fold_manufacturer(_name)] = _group[0]
 
 
 def canonical_manufacturer(name):
-    """Fold case, spacing and punctuation, then apply the alias table."""
+    """Fold case, spacing, commas and trailing legal forms, then apply the
+    alias table."""
     if not name:
         return None
-    key = re.sub(r"\s+", " ", (name or "").strip().casefold())
-    key = key.replace("co., ltd.", "").replace("co.,ltd", "").strip(" ,.")
+    key = fold_manufacturer(name)
     if key in MFR_CANONICAL:
         return MFR_CANONICAL[key]
     # A distributor truncation: accept a source brand that is a PREFIX of a
@@ -4007,6 +3764,10 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
 
     a3, a5 = rails["ACC_3V3"], rails["ACC_5V"]
     modes = dict(
+        acc3v3_alone_at_its_budget=ibat(a3["published_budget_A"], 0.0),
+        acc5v_alone_at_its_budget=ibat(0.0, a5["published_budget_A"]),
+        both_at_the_declared_pair=ibat(DECLARED_DUAL_RAIL_BUDGET_A["ACC_3V3"],
+                                       DECLARED_DUAL_RAIL_BUDGET_A["ACC_5V"]),
         acc3v3_alone_at_its_limiter=ibat(a3["ilim_max"], 0.0),
         acc5v_alone_at_its_limiter=ibat(0.0, a5["ilim_max"]),
         both_at_their_guaranteed_currents=ibat(a3["ilim_min"], a5["ilim_min"]),
@@ -4052,10 +3813,34 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
     # published maximum at once, cannot hiccup the charger.  On a unit whose
     # BATOCP sits at the bottom of its band, it can -- and that is the
     # protection acting on a non-conforming load, which is what it is for.
-    CONFORMING = ("both_at_their_guaranteed_currents",
-                  "both_at_their_published_budgets")
+    # ---- D-792 / R11-04.  THE SIMULTANEOUS CONTRACT MOVED, SO THE SET DID.
+    #
+    # D-791's conforming set was "both rails at their guaranteed limiter
+    # currents" and "both rails at their FULL published budgets".  Two Round-11
+    # corrections make the second of those a state the network REFUSES: with
+    # R11-07's itemised battery path and R11-02's ESP32-S3 baseline, the FULL
+    # pair drawn simultaneously has NO operating point that survives the
+    # firmware's own retention criterion at any attainable cell voltage.  F12
+    # derives a DECLARED SIMULTANEOUS PAIR instead -- 220 mA + 170 mA -- and
+    # that is the contract a conforming accessory obeys.  The per-rail budgets
+    # are UNCHANGED and each is deliverable alone, so both single-rail cases are
+    # in the conforming set at their FULL published budgets.
+    #
+    # THE FULL SIMULTANEOUS PAIR IS NOT DELETED; IT IS RECLASSIFIED, AND IT IS
+    # STILL BOUND.  It moves to the overcurrent set, where it must land in the
+    # RECOVERABLE protection -- below the latching LTC4368 breaker and below the
+    # F1 one-shot fuse -- so an accessory pair that ignores the published
+    # simultaneous contract meets a BQ25185 BATOCP hiccup and not a latched
+    # board.  "Both at their guaranteed limiter currents" moves with it for the
+    # same reason: 428 mA on the 3.3 V rail is ABOVE the 400 mA that rail
+    # publishes, so it was never a conforming draw in the first place.
+    CONFORMING = ("acc3v3_alone_at_its_budget",
+                  "acc5v_alone_at_its_budget",
+                  "both_at_the_declared_pair")
     ACCESSORY_OVERCURRENT = ("acc3v3_alone_at_its_limiter",
                              "acc5v_alone_at_its_limiter",
+                             "both_at_their_guaranteed_currents",
+                             "both_at_their_published_budgets",
                              "both_limiters_in_fault")
     REACHABLE = CONFORMING
     # D-771.  The floor a reachable state must stay under is the LOWEST trip
@@ -4187,7 +3972,15 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
         d["protection_ordering_at_both_bands"][
             "ordered_at_the_declared_wider_band"])
     # ---- D-771 CLAUSE 3: the converters can source what the limiters allow --
+    # The CONFORMING worst case and the FAULT coincidence, separately.
+    u12_conforming = I_INTERNAL + a3["published_budget_A"]
     u12_load = I_INTERNAL + a3["ilim_max"]
+    # U12's own switch-current bound at the cell corner, by the same method
+    # this contract already applies to U21.
+    u12_duty = 1.0 - (VBAT_CORNER * ETA_U12 / V_3V3)
+    u12_ripple = (VBAT_CORNER * u12_duty) / (U12_L_H * (1 - U12_L_TOL)
+                                             * U12_FSW_MIN_HZ)
+    u12_switch_limited = (1.0 - u12_duty) * (U12_ISW_MIN_A - u12_ripple / 2.0)
     # TPS61023 SLVSF14B equation 1, at the cell corner, with the inductor at
     # its unlucky -20 % corner (larger ripple) and the valley limit at its MIN.
     duty = 1.0 - (VBAT_CORNER * ETA_U21 / V_ACC5V)
@@ -4196,7 +3989,29 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
     d["converter_capability_A"] = dict(
         u12_part="TPS63020", u12_rated_A=U12_IOUT_A,
         u12_vin_floor_V=U12_VIN_FLOOR, u12_worst_case_load_A=round(u12_load, 4),
-        u12_ok=(VBAT_CORNER > U12_VIN_FLOOR and u12_load <= U12_IOUT_A),
+        u12_conforming_worst_case_A=round(u12_conforming, 4),
+        u12_conforming_is_inside_the_guaranteed_output=bool(
+            u12_conforming <= U12_IOUT_A),
+        u12_fault_coincidence_A=round(u12_load, 4),
+        u12_fault_coincidence_exceeds_the_guaranteed_output=bool(
+            u12_load > U12_IOUT_A),
+        u12_duty=round(u12_duty, 4),
+        u12_ripple_A=round(u12_ripple, 4),
+        u12_switch_limited_capability_A=round(u12_switch_limited, 4),
+        u12_fault_coincidence_is_inside_the_devices_own_limit=bool(
+            u12_load <= u12_switch_limited),
+        u12_limit_source=U12_LIMIT_SOURCE,
+        u12_what_the_fault_coincidence_means=(
+            "`ilim_max` is the current a SHORTED accessory draws before U20's "
+            "limiter removes it, not a conforming load.  Coinciding it with "
+            "the internal PEAK envelope is a fault excursion: it is outside "
+            "TI's 2 A Features figure and inside the device's own average "
+            "switch current limit at this cell corner, so U12 does not enter "
+            "current limit and the rail does not collapse.  What clears the "
+            "excursion is U20, whose own limit is what `ilim_max` IS."),
+        u12_ok=(VBAT_CORNER > U12_VIN_FLOOR
+                and u12_conforming <= U12_IOUT_A
+                and u12_load <= u12_switch_limited),
         u21_part="TPS61023", u21_duty=round(duty, 4),
         u21_ripple_A=round(d_ripple, 4),
         u21_capability_A=round(u21_capability, 4),
@@ -4205,6 +4020,48 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
         method="U12 from SLVSAA7's own Features figure at VIN > 2.5 V; U21 "
                "from SLVSF14B equation 1 with ILIM_SW at its EC MINIMUM and "
                "L4 at its -20 % corner")
+    # ---- D-792 / R11-06 + CONVERGENCE REQUIREMENT 5.  EVERY ENGINEERING
+    # INPUT CARRIES A MACHINE-READABLE PROVENANCE TAG, AND A TYPICAL MAY NOT
+    # RULE.
+    #
+    # ROUND-11, IN ITS OWN WORDS: "Tag source values as guaranteed / max /
+    # typical / declared estimate.  Do not allow a typical/interpolated value to
+    # masquerade as a guaranteed bound."
+    #
+    # THE PROBLEM IS REAL AND THIS PROGRAMME HAS HIT IT THREE TIMES.  D-789
+    # found the LTC4368's 50 mV and the TPS61023's 0.6 V VREF being used as
+    # limits when both are TYPICALS; D-790 found `VBUVLO` and `IBAT_OCP` being
+    # ruled on at typicals with no MIN/MAX column; R11-10 found the backlight
+    # inductor's DCR taken at 52.2 mOhm typical when the manufacturer publishes
+    # a 57.4 mOhm MAXIMUM.  Each was caught by a human reading a datasheet.
+    # `aqroot_power_model.tag()` attaches provenance to a value at the point of
+    # definition and `audit_tags()` REFUSES a release in which a value tagged
+    # TYPICAL is used where a bound is required -- so the fourth instance is
+    # caught by a gate instead of by a reviewer.
+    _tags = apm.audit_tags()
+    d["engineering_input_provenance"] = dict(
+        _tags, registry=apm.registry(),
+        ruling_tags=list(apm.RULING_TAGS),
+        why="a TYPICAL may be REPORTED and may SEED a declared widening; it "
+            "may never BE the bound.  A DECLARED_ESTIMATE may rule, because it "
+            "carries a stated basis, a widening factor and a first-article "
+            "measurement of record -- which is what makes it an engineering "
+            "allowance rather than a guess.")
+    d["no_typical_is_used_as_a_ruling_bound"] = bool(
+        not _tags["invalid_ruling_use"])
+    d["every_ruling_input_carries_a_provenance_tag"] = bool(
+        _tags["ruling_entries"] > 0
+        and all(r["tag"] in apm.TAGS for r in apm.registry()))
+    # ...and the rule is proved to REFUSE, over a deliberately poisoned copy of
+    # the same registry, so the tagging is mechanical rather than decorative.
+    _poisoned = apm.registry() + [dict(
+        key="control.a_typical_used_as_a_bound", value=1.0, tag=apm.TYPICAL,
+        source="NEGATIVE CONTROL", condition=None,
+        measurement_of_record=None, widened_from=None,
+        used_as_a_ruling_bound=True)]
+    d["the_provenance_rule_refuses_a_typical_bound"] = bool(
+        apm.audit_tags(_poisoned)["invalid_ruling_use"])
+
     # ---- D-787 / R6-A01: main +3V3 delivery is an explicit contract -------
     d["p3v3_setpoint"] = p3v3
     d["p3v3_divider_parts_have_a_published_temperature_coefficient"] = (
@@ -4226,6 +4083,9 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
         for k, (i3, i5) in dict(
             acc3v3_alone_at_its_limiter=(a3["ilim_max"], 0.0),
             acc5v_alone_at_its_limiter=(0.0, a5["ilim_max"]),
+            both_at_the_declared_pair=(
+                DECLARED_DUAL_RAIL_BUDGET_A["ACC_3V3"],
+                DECLARED_DUAL_RAIL_BUDGET_A["ACC_5V"]),
             both_at_their_guaranteed_currents=(a3["ilim_min"], a5["ilim_min"]),
             both_at_their_published_budgets=(a3["published_budget_A"],
                                              a5["published_budget_A"]),
@@ -4330,9 +4190,14 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
     def grid_up(v):
         return math.ceil(v / FLOOR_GRID_V - 1e-9) * FLOOR_GRID_V
 
+    i3_dual = DECLARED_DUAL_RAIL_BUDGET_A["ACC_3V3"]
+    i5_dual = DECLARED_DUAL_RAIL_BUDGET_A["ACC_5V"]
+    # D-792 / R11-04: the SIMULTANEOUS case is the DECLARED PAIR.  The FULL
+    # pair is retained below as a reported negative control, exactly as F12
+    # retains it in its own concurrency table.
     LOADS = (("acc3v3_published", i3_pub, 0.0),
              ("acc5v_published", 0.0, i5_pub),
-             ("both_published", i3_pub, i5_pub))
+             ("both_declared_pair", i3_dual, i5_dual))
     bases, requirement = {}, {}
     # D-791 / D790-A10.  THE OCP MINIMUM THE *FLOOR* IS COORDINATED WITH IS
     # THE DECLARED WIDER BAND, not the one TI states at a single current and
@@ -4355,8 +4220,10 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
             return hi
 
         single = max(_req(i3, i5, NORMAL_OCP_MARGIN_MIN, sustained_internal_A)
-                     for name, i3, i5 in LOADS if name != "both_published")
-        dual = _req(i3_pub, i5_pub, NORMAL_OCP_MARGIN_MIN, sustained_internal_A)
+                     for name, i3, i5 in LOADS
+                     if name != "both_declared_pair")
+        dual = _req(i3_dual, i5_dual, NORMAL_OCP_MARGIN_MIN,
+                    sustained_internal_A)
         bases[basis] = dict(
             series_ohm={k: round(v, 6) for k, v in m.items()},
             sustained_internal_3v3_A=sustained_internal_A,
@@ -4365,17 +4232,20 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
             required_dual_rail_floor_V=round(dual, 4),
             zero_margin_single_rail_floor_V=round(
                 max(_req(i3, i5, 0.0, sustained_internal_A)
-                    for name, i3, i5 in LOADS if name != "both_published"), 4),
+                    for name, i3, i5 in LOADS
+                    if name != "both_declared_pair"), 4),
             zero_margin_dual_rail_floor_V=round(
-                _req(i3_pub, i5_pub, 0.0, sustained_internal_A), 4),
+                _req(i3_dual, i5_dual, 0.0, sustained_internal_A), 4),
             # RETAINED AND LABELLED: what the PEAK +3V3 envelope would need at
             # this node.  F12 proves the node cannot be there, which is why it
             # is reported rather than enforced.
             peak_envelope_single_rail_floor_V=round(
                 max(_req(i3, i5, NORMAL_OCP_MARGIN_MIN, I_INTERNAL)
-                    for name, i3, i5 in LOADS if name != "both_published"), 4),
+                    for name, i3, i5 in LOADS
+                    if name != "both_declared_pair"), 4),
             peak_envelope_dual_rail_floor_V=round(
-                _req(i3_pub, i5_pub, NORMAL_OCP_MARGIN_MIN, I_INTERNAL), 4),
+                _req(i3_dual, i5_dual, NORMAL_OCP_MARGIN_MIN,
+                     I_INTERNAL), 4),
             peak_envelope_floor_is_reported_not_enforced=(
                 "the node voltage the PEAK +3V3 envelope would need to stay "
                 "inside the OCP margin.  D-790 enforced it as the firmware "
@@ -4509,6 +4379,11 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
         ("no_accessory", 0.0, 0.0, I_INTERNAL, "single"),
         ("acc3v3_published", i3_pub, 0.0, I_INTERNAL, "single"),
         ("acc5v_published", 0.0, i5_pub, I_INTERNAL, "single"),
+        ("both_declared_pair_full_internal", i3_dual, i5_dual, I_INTERNAL,
+         "dual"),
+        # RETAINED as a reported negative reference: the FULL pair, which the
+        # D-792 network refuses, is what the legacy 2 A JST-PH comparison below
+        # is made against.
         ("both_published_full_internal", i3_pub, i5_pub, I_INTERNAL, "dual"))
     conn_cases, conn_within = {}, (rating is not None)
     for basis, ohms in (("live", live_ohms), ("path_bound", bound_ohms)):
@@ -4517,7 +4392,11 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
             floor = dual_floor if which == "dual" else single_floor
             cur = battery_current(m, floor, i3, i5, iint=iint)[0]
             inside = bool(rating is not None and cur <= rating + 1e-9)
-            conn_within = conn_within and inside
+            # The FULL pair is a REPORTED negative reference, not a permitted
+            # state: F12 refuses it and the published simultaneous contract is
+            # the declared pair.  It does not gate the connector verdict.
+            if name != "both_published_full_internal":
+                conn_within = conn_within and inside
             rows[name] = dict(vcell_V=round(floor,4), internal_3v3_A=round(iint,4),
                 acc3v3_A=i3, acc5v_A=i5, connection_A=round(cur,4),
                 margin_to_the_published_rating_pct=(round((rating-cur)/rating*100,2)
@@ -4527,7 +4406,7 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
             connection_A=full["connection_A"], legacy_rating_A=2.0,
             would_pass=full["connection_A"] <= 2.0,
             note="negative reference: the D-777 JST-PH connection is not adequate here")
-        req=_required_internal(m,dual_floor,i3_pub,i5_pub,rating) if rating else float("nan")
+        req=_required_internal(m,dual_floor,i3_dual,i5_dual,rating) if rating else float("nan")
         conn_cases[basis]=dict(cases=rows,
             required_internal_3v3_ceiling_A=(round(req,6) if req==req else None))
     req_ceiling=min(v["required_internal_3v3_ceiling_A"] for v in conn_cases.values()) if rating else None
@@ -4602,11 +4481,17 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
     # already carrying the load.  The two ENABLE floors are above it by
     # construction -- each is the retention floor plus the step its own rail
     # will cause -- and the ordering is asserted rather than assumed.
+    # D-792 / R11-04: the two ENABLE numbers are now the published ENVELOPE of
+    # a TABLE, and the dual envelope may legitimately EQUAL the single one --
+    # the dual case is the DERATED pair, which is a lighter load than one rail
+    # at its full published budget, so nothing forces it strictly higher.  What
+    # must still hold is that neither is below the retention floor and that the
+    # retention floor satisfies the OCP coordination requirement derived here.
     d["firmware_floors_meet_the_derived_requirement"] = bool(
         retention_floor >= req_single_grid - 1e-9
         and retention_floor >= req_dual_grid - 1e-9
         and single_floor > retention_floor
-        and dual_floor > single_floor)
+        and dual_floor >= single_floor)
     d["normal_operation"]["firmware_retention_floor_V"] = retention_floor
     d["normal_operation"]["floor_roles"] = (
         "retention: the node is already carrying the load.  single/dual "
@@ -4650,6 +4535,9 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
           and d["recoverable_trip_is_ordered_below_the_latching_breaker"]
           and d["protection_ordering_survives_the_declared_wider_band"]
           and d["converters_can_source_their_worst_case_rail"]
+          and d["no_typical_is_used_as_a_ruling_bound"]
+          and d["every_ruling_input_carries_a_provenance_tag"]
+          and d["the_provenance_rule_refuses_a_typical_bound"]
           and d["p3v3_divider_parts_have_a_published_temperature_coefficient"]
           and d["p3v3_reinforcement_is_exact_and_bounded"]
           and d["p3v3_delivers_the_published_connector_minimum"]
@@ -4737,58 +4625,11 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
 #   * `VGS` MAXIMUM: the part is +/-12 V and the LTC4368's own maximum at the
 #     row AT OR ABOVE this board's `BAT_RAW` maximum -- the `VIN = 5 V` row --
 #     is 10.8 V.  Inside, on two published numbers, and checked here.
-LTC4368_GATE_DRIVE_ROWS_V = {2.5: 3.0, 5.0: 7.2, 12.0: 10.0}
-# The same table's MAXIMA, which is what bounds the FET's own VGS rating.
-LTC4368_GATE_DRIVE_MAX_ROWS_V = {2.5: 5.5, 5.0: 10.8, 12.0: 13.1}
-LTC4368_GATE_SOURCE = (
-    "ADI LTC4368 Rev C Electrical Characteristics, GATE section, dVGATE "
-    "'Gate Drive (GATE - VOUT)', the `l` rows guaranteed over the full "
-    "operating temperature range: 3 / 4 / 5.5 V at VIN = 2.5 V, 7.2 / 8.7 / "
-    "10.8 V at VIN = 5 V, 10 / 11 / 13.1 V at VIN = 12 to 60 V.  Archived at "
-    "hardware/demo/kicad/aqroot-demo/vendor/ADI/"
-    "adi-ltc4368-revC-farnell-2243878.pdf.")
-# The board's own BAT_RAW maximum: a 1S pack at the BQ25185's VBATREG 4.2 V
-# plus its +0.5 % accuracy.  The VGS-maximum bound is the published row AT OR
-# ABOVE this, which is the VIN = 5 V row.
-BAT_RAW_MAX_V = 4.221
-PASS_PAIR = dict(
-    references=("Q2", "Q3"),
-    locked_mpn="AO4800",
-    locked_lcsc="C17098",
-    locked_manufacturer="Alpha & Omega Semiconductor",
-    retired_mpn="NTMD4820NR2G",
-    vgs_th_max_V=1.5, vgs_th_min_V=0.7,
-    vgs_abs_max_V=12.0,
-    rds_on_lowest_published_vgs_V=2.5,
-    rds_on_max_at_that_row_ohm=0.050,
-    # The datasheet's own 25 -> 125 C ratio, taken at the row where AOS
-    # publishes both temperatures.  DECLARED where it is applied to the 2.5 V
-    # row, because AOS does not publish that row hot.
-    rds_on_hot_ratio=0.040 / 0.027,
-    rds_on_hot_ratio_basis=(
-        "AOS Rev 6.1 RDS(on) at VGS = 10 V, ID = 6.9 A: 27 mOhm MAX at "
-        "TJ = 25 C and 40 mOhm MAX at TJ = 125 C.  Applied to the VGS = 2.5 V "
-        "row as a DECLARED allowance -- AOS publishes that row only at 25 C -- "
-        "and it is conservative in direction, because near threshold a falling "
-        "VGS(th) partly offsets the mobility loss"),
-    vbr_dss_min_V=30.0,
-    id_continuous_25C_A=6.9, id_continuous_70C_A=5.8,
-    body_diode_continuous_A=2.5,
-    qg_max_nC=7.0,
-    theta_jl_max_C_per_W=40.0,
-    source="Alpha & Omega Semiconductor AO4800 Rev 6.1 (August 2023), "
-           "archived vendor/AOS/aos-ao4800-rev6p1-2023-08.pdf: VDS 30 V; "
-           "VGS +/-12 V; VGS(th) 0.7 / 1.1 / 1.5 V at VDS = VGS, "
-           "ID = 250 uA; RDS(on) 17.8 / 27 mOhm at VGS = 10 V and 40 mOhm at "
-           "TJ = 125 C, 19 / 32 mOhm at VGS = 4.5 V, and 24 / 50 mOhm AT "
-           "VGS = 2.5 V, ID = 5 A; ID 6.9 A at 25 C and 5.8 A at 70 C; body "
-           "diode IS 2.5 A continuous MAX; Qg 7 nC MAX; RthetaJL steady-state "
-           "40 C/W MAX.  Pinout 1 = S2, 2 = G2, 3 = S1, 4 = G1, 5/6 = D1, "
-           "7/8 = D2 -- the standard dual SO-8 map this board already wires, "
-           "with both sources on one net and both gates on another, so the "
-           "channel labelling is immaterial and no copper moves.",
-    sense_resistor_ohm=0.010,
-    channels_in_series=4)
+LTC4368_GATE_DRIVE_ROWS_V = apm.LTC4368_GATE_DRIVE_ROWS_V
+LTC4368_GATE_DRIVE_MAX_ROWS_V = apm.LTC4368_GATE_DRIVE_MAX_ROWS_V
+LTC4368_GATE_SOURCE = apm.LTC4368_GATE_SOURCE
+BAT_RAW_MAX_V = apm.BAT_RAW_MAX_V
+PASS_PAIR = apm.PASS_PAIR
 PASS_PAIR_LEDGER_TOKENS = (
     "AO4800",
     "C17098",
@@ -4796,57 +4637,32 @@ PASS_PAIR_LEDGER_TOKENS = (
     "RETIRED",
     "NTMD4820NR2G",
     "dual N-channel in the SOIC-8 dual-MOSFET pinout",
-    "live authorised stock \u2265 **100**",
+    "live authorised stock ≥ **100**",
 )
 # The AOS part's marketplace re-marks, which purchasing may NOT substitute.
 PASS_PAIR_REFUSED_SOURCES = ("VBsemi", "HXY", "UMW", "JSMSEMI", "MSKSEMI",
                              "TECH PUBLIC")
-
-
-def ltc4368_gate_drive_min_V(vin_V, rows=None):
-    """The guaranteed minimum gate drive at an arbitrary VIN.
-
-    Monotone in VIN across every published row, so the bound is the row AT OR
-    BELOW it.  Below the lowest row there is nothing to bound it with and the
-    function REFUSES rather than defaulting.
-    """
-    rows = LTC4368_GATE_DRIVE_ROWS_V if rows is None else rows
-    chosen = None
-    for v in sorted(rows):
-        if v <= vin_V:
-            chosen = v
-    return None if chosen is None else rows[chosen]
-
-
-def ltc4368_gate_drive_max_V(vin_V, rows=None):
-    """The guaranteed MAXIMUM, which is what bounds the FET's VGS rating.
-
-    Same monotonicity, opposite direction: the bound is the published row AT
-    OR ABOVE the input, with no interpolation.
-    """
-    rows = LTC4368_GATE_DRIVE_MAX_ROWS_V if rows is None else rows
-    chosen = None
-    for v in sorted(rows, reverse=True):
-        if v >= vin_V:
-            chosen = v
-    return None if chosen is None else rows[chosen]
+ltc4368_gate_drive_min_V = apm.ltc4368_gate_drive_min_V
+ltc4368_gate_drive_max_V = apm.ltc4368_gate_drive_max_V
 
 
 def judge_pass_pair_gate(design_amps, vin_min_V, spec=None, rows=None,
                          ambient_C=None, internal_air_C=None,
-                         sustained_amps=None):
-    """D-790 / D789-A01.  The whole four-channel model, solved self-consistently.
+                         sustained_amps=None, ruling_ratio=None):
+    """D-792 / R11-01.  The four-channel model, solved self-consistently, with
+    the TEMPERATURE LAW AS AN EXPLICIT SOLVER INPUT.
 
-    Pure.  The channel resistance sets the source offsets, the offsets set
-    VGS, VGS selects the conduction row, the dissipation sets the junction
-    temperature and the junction temperature moves the resistance again.
+    Pure.  `aqroot_power_model.solve_pass_pair` takes the 25 -> 125 C
+    resistance ratio as an ARGUMENT, so every corner this clause advertises
+    actually moves the arithmetic.  D-791's version captured the coefficient
+    before the sensitivity could change it and printed three identical cases.
     """
     spec = PASS_PAIR if spec is None else spec
     drive = ltc4368_gate_drive_min_V(vin_min_V, rows)
     drive_max = ltc4368_gate_drive_max_V(BAT_RAW_MAX_V)
+    ruling_ratio = (spec["rds_on_hot_ratio"] if ruling_ratio is None
+                    else ruling_ratio)
     r25 = spec["rds_on_max_at_that_row_ohm"]
-    alpha = (spec["rds_on_hot_ratio"] - 1.0) / 100.0
-    r75 = spec["sense_resistor_ohm"]
     out = dict(
         references=list(spec["references"]), locked_mpn=spec["locked_mpn"],
         locked_lcsc=spec.get("locked_lcsc"),
@@ -4864,7 +4680,8 @@ def judge_pass_pair_gate(design_amps, vin_min_V, spec=None, rows=None,
         vgs_abs_max_V=spec["vgs_abs_max_V"],
         rds_on_lowest_published_vgs_V=spec["rds_on_lowest_published_vgs_V"],
         rds_on_max_at_that_row_ohm=r25,
-        rds_on_hot_ratio=round(spec["rds_on_hot_ratio"], 6),
+        rds_on_hot_ratio=round(ruling_ratio, 6),
+        rds_on_hot_ratio_published=spec["rds_on_hot_ratio_published"],
         rds_on_hot_ratio_basis=spec["rds_on_hot_ratio_basis"],
         refused_marketplace_sources=list(PASS_PAIR_REFUSED_SOURCES),
         topology=("BAT_RAW -[Q2]- Q2_CS -[Q2]- BAT_MID -[Q3]- Q3_CS -[Q3]- "
@@ -4878,84 +4695,28 @@ def judge_pass_pair_gate(design_amps, vin_min_V, spec=None, rows=None,
                                  "LTC4368 gate-drive row; nothing bounds it")
         return False, out
 
-    def solve(amps, air_C):
-        """Self-consistent channel resistance, VGS and junction temperature."""
-        r = r25
-        tj = air_C
-        for _ in range(400):
-            # RthetaJL against the local board, which the enclosure model puts
-            # a declared 5 K above the internal air.
-            tj = air_C + 5.0 + spec["theta_jl_max_C_per_W"] * (2 * amps * amps * r)
-            nxt = r25 * (1.0 + alpha * (tj - 25.0))
-            if abs(nxt - r) < 1e-13:
-                r = nxt
-                break
-            r = 0.5 * r + 0.5 * nxt
-        per = {}
-        for ref, n in (("Q2", 3), ("Q3", 1)):
-            vgs = drive - amps * (n * r + r75)
-            per[ref] = dict(
-                channels_above_vout=n,
-                source_offset_V=round(amps * (n * r + r75), 6),
-                worst_case_vgs_V=round(vgs, 6),
-                margin_over_vgs_th_max_mV=round(
-                    (vgs - spec["vgs_th_max_V"]) * 1000, 3),
-                is_guaranteed_enhanced=bool(vgs > spec["vgs_th_max_V"]),
-                margin_to_the_lowest_published_conduction_row_mV=round(
-                    (vgs - spec["rds_on_lowest_published_vgs_V"]) * 1000, 3),
-                meets_a_published_conduction_row=bool(
-                    vgs >= spec["rds_on_lowest_published_vgs_V"]))
-        return dict(
-            amps=amps, internal_air_C=round(air_C, 3),
-            channel_ohm_hot=round(r, 6),
-            junction_C=round(tj, 3),
-            package_dissipation_W=round(2 * amps * amps * r, 6),
-            pass_pair_dissipation_W=round(4 * amps * amps * r, 6),
-            pass_pair_drop_V=round(amps * (4 * r + r75), 6),
-            per_device=per,
-            every_device_is_guaranteed_enhanced=all(
-                d["is_guaranteed_enhanced"] for d in per.values()),
-            every_device_meets_a_published_conduction_row=all(
-                d["meets_a_published_conduction_row"] for d in per.values()))
-
     air_peak = 40.0 if internal_air_C is None else internal_air_C
+
+    def solve(amps, air_C, ratio=None):
+        return apm.solve_pass_pair(amps, air_C,
+                                   ruling_ratio if ratio is None else ratio,
+                                   spec, drive)
+
     out["peak_case"] = solve(design_amps, air_peak)
     if sustained_amps is not None:
         out["sustained_case"] = solve(sustained_amps, air_peak)
     ruling = out.get("sustained_case") or out["peak_case"]
     out["ruling_case"] = ("sustained" if "sustained_case" in out else "peak")
     out["ruling"] = ruling
+    _rule_amps = sustained_amps if sustained_amps is not None else design_amps
 
     # ---- D-791 / D790-A01.  THE CURRENT AT WHICH THE CONDUCTION ROW RUNS OUT.
-    #
-    # Round-10's point is not that the sustained case fails -- it does not --
-    # but that D-790 RULED at the sustained envelope while its own PEAK case
-    # sat 7.9 mV under the AO4800's lowest published RDS(on) row, and said
-    # nothing about what that means.  A threshold voltage is not an
-    # ampere-conduction guarantee, and neither is silence.
-    #
-    # So the boundary is DERIVED and PUBLISHED: the largest current at which
-    # the worst package's VGS is still at or above the lowest row AOS
-    # characterises, solved self-consistently with the temperature.  Above it
-    # the part is still ENHANCED -- VGS clears VGS(th) MAX by more than a volt
-    # at every current in this envelope -- but its RDS(on) is no longer a
-    # published number, and this contract says so instead of ruling there.
-    def conduction_ceiling(air_C):
-        row = spec["rds_on_lowest_published_vgs_V"]
-        lo, hi = 0.0, 8.0
-        for _ in range(200):
-            mid = 0.5 * (lo + hi)
-            if solve(mid, air_C)["per_device"]["Q2"]["worst_case_vgs_V"] >= row:
-                lo = mid
-            else:
-                hi = mid
-        return lo
-
-    ceiling = conduction_ceiling(air_peak)
+    ceiling = apm.conduction_ceiling_A(air_peak, drive, ruling_ratio, spec)
     out["guaranteed_conduction_ceiling_A"] = round(ceiling, 6)
     out["guaranteed_conduction_ceiling"] = dict(
         internal_air_C=round(air_peak, 3),
         lowest_published_row_V=spec["rds_on_lowest_published_vgs_V"],
+        hot_ratio_used=round(ruling_ratio, 6),
         ceiling_A=round(ceiling, 6),
         sustained_envelope_A=sustained_amps,
         peak_envelope_A=design_amps,
@@ -4984,49 +4745,112 @@ def judge_pass_pair_gate(design_amps, vin_min_V, spec=None, rows=None,
             "this repository cannot read.  The peak electrical envelope is a "
             "short-time-constant question (ampacity, protection ordering, the "
             "J4 connector rating) and is treated as one."),
-        theta_ja_10s_C_per_W=62.5,
-        theta_ja_steady_C_per_W=90.0)
+        theta_ja_10s_C_per_W=spec["theta_ja_10s_C_per_W"],
+        theta_ja_steady_C_per_W=spec["theta_ja_steady_C_per_W"])
 
-    # ---- D-791 / D790-A01.  THE HOT RATIO IS DECLARED, SO IT GETS A
-    # SENSITIVITY RATHER THAN A FOOTNOTE.
+    # ======================================================================
+    # D-792 / R11-01.  THE SENSITIVITY THAT USED TO BE INERT, AND THE THREE
+    # THINGS IT NOW HAS TO DO.
     #
-    # `rds_on_hot_ratio` is AOS's own 25 -> 125 C ratio at the VGS = 10 V row,
-    # carried to the VGS = 2.5 V row where AOS publishes only 25 C.  D-790
-    # declared it and argued it is conservative in direction.  That argument
-    # is retained and it is no longer the only thing standing between the
-    # model and the answer: the same solve is run with NO temperature
-    # coefficient at all and with a deliberately pessimistic one, and the
-    # ruling conclusion has to survive the pessimistic end.
-    def _with_ratio(ratio, amps, air_C):
-        alt = dict(spec, rds_on_hot_ratio=ratio)
-        saved = spec["rds_on_hot_ratio"]
-        try:
-            spec["rds_on_hot_ratio"] = ratio
-            return solve(amps, air_C)
-        finally:
-            spec["rds_on_hot_ratio"] = saved
-
-    _rule_amps = sustained_amps if sustained_amps is not None else design_amps
+    #   1  MOVE.  Each corner is solved with the ratio PASSED IN, and the
+    #      clause asserts the answers are DISTINCT and ORDERED -- a higher
+    #      coefficient must give a higher channel resistance, a hotter
+    #      junction and a SMALLER VGS.  D-791's three cases were byte-
+    #      identical and nothing could see it.
+    #   2  CROSS.  The clause derives the ratio at which the ruling case
+    #      falls to the AO4800's lowest published conduction row, so the
+    #      distance between the declared coefficient and the cliff is a
+    #      NUMBER.  A control that only asserts "it still passes" cannot
+    #      distinguish a 1 % margin from a 100 % one.
+    #   3  RULE.  The verdict is taken at the DECLARED RULING RATIO, which is
+    #      the published 1.4815 widened to 1.60, and that Boolean is a term
+    #      of `ok`.  D-791's pessimistic Boolean was not.
+    #
+    # THE 2x CASE ASTRA REPRODUCED IS KEPT AND REPORTED, AND IT IS HONEST
+    # ABOUT WHAT IT IS.  At a 25 -> 125 C ratio of 2.0 the ruling case does
+    # NOT hold the conduction row -- that is Astra's 2.461 V, and with the
+    # correct solver this file reproduces it instead of hiding it.  2.0 is the
+    # coefficient of a drift-limited high-voltage MOSFET, where RDS(on)
+    # follows the bulk mobility as T^2.4; it is not the coefficient of a 30 V
+    # trench part, and AOS MEASURES 1.4815 on this die.  The ruling bound is
+    # 1.60 and the crossing ratio is published beside it.
+    # ======================================================================
+    cases = {}
+    for name, ratio in (("at_no_temperature_coefficient", 1.0),
+                        ("at_the_published_ratio",
+                         spec["rds_on_hot_ratio_published"]),
+                        ("at_the_declared_ruling_ratio", ruling_ratio),
+                        ("at_a_pessimistic_2x_ratio", 2.0)):
+        cases[name] = solve(_rule_amps, air_peak, ratio)
+    order = [cases["at_no_temperature_coefficient"],
+             cases["at_the_published_ratio"],
+             cases["at_the_declared_ruling_ratio"],
+             cases["at_a_pessimistic_2x_ratio"]]
+    crossing = apm.hot_ratio_at_which_the_row_is_lost(
+        _rule_amps, air_peak, drive, spec)
     out["hot_ratio_sensitivity"] = dict(
-        declared_ratio=round(spec["rds_on_hot_ratio"], 6),
+        published_ratio=round(spec["rds_on_hot_ratio_published"], 6),
+        declared_ruling_ratio=round(ruling_ratio, 6),
         basis=spec["rds_on_hot_ratio_basis"],
-        at_no_temperature_coefficient=_with_ratio(1.0, _rule_amps, air_peak),
-        at_the_declared_ratio=ruling,
-        at_a_pessimistic_2x_ratio=_with_ratio(2.0, _rule_amps, air_peak),
-        the_ruling_case_survives_a_pessimistic_ratio=bool(
-            _with_ratio(2.0, _rule_amps, air_peak)["per_device"]["Q2"][
-                "worst_case_vgs_V"]
-            >= spec["rds_on_lowest_published_vgs_V"]),
+        cases=cases,
+        the_ruling_conclusion_holds_at_the_declared_ratio=bool(
+            cases["at_the_declared_ruling_ratio"][
+                "every_device_meets_a_published_conduction_row"]
+            and cases["at_the_declared_ruling_ratio"][
+                "every_device_is_guaranteed_enhanced"]),
+        ratio_at_which_the_conduction_row_is_lost=crossing,
+        margin_on_the_coefficient=(
+            None if crossing is None
+            else round(crossing / ruling_ratio, 6)),
+        margin_on_the_published_coefficient=(
+            None if crossing is None
+            else round(crossing / spec["rds_on_hot_ratio_published"], 6)),
+        # ---- THE METAMORPHIC CONTROLS.  R11-01: "Add metamorphic/negative
+        # controls proving the output moves in the expected direction and
+        # crosses the criterion when it should."
+        the_channel_resistance_is_strictly_increasing_in_the_ratio=bool(
+            all(order[i]["channel_ohm_hot"] < order[i + 1]["channel_ohm_hot"]
+                for i in range(len(order) - 1))),
+        the_junction_is_strictly_increasing_in_the_ratio=bool(
+            all(order[i]["junction_C"] < order[i + 1]["junction_C"]
+                for i in range(len(order) - 1))),
+        the_worst_vgs_is_strictly_decreasing_in_the_ratio=bool(
+            all(order[i]["per_device"]["Q2"]["worst_case_vgs_V"]
+                > order[i + 1]["per_device"]["Q2"]["worst_case_vgs_V"]
+                for i in range(len(order) - 1))),
+        the_cases_are_not_identical=bool(
+            len({c["channel_ohm_hot"] for c in cases.values()})
+            == len(cases)),
+        a_ratio_above_the_crossing_is_refused=bool(
+            crossing is not None
+            and not solve(_rule_amps, air_peak, crossing * 1.02)[
+                "every_device_meets_a_published_conduction_row"]),
+        a_ratio_below_the_crossing_is_accepted=bool(
+            crossing is not None
+            and solve(_rule_amps, air_peak, crossing * 0.98)[
+                "every_device_meets_a_published_conduction_row"]),
+        what_the_2x_case_means=(
+            "REPORTED, NOT RULED ON.  A 25 -> 125 C RDS(on) ratio of 2.0 is "
+            "the drift-limited behaviour of a high-voltage MOSFET, whose "
+            "resistance follows the bulk mobility as about T^2.4; a 30 V "
+            "trench part's resistance is dominated by the channel and the "
+            "package, and AOS MEASURES 1.4815 on this die between its own "
+            "two published temperature rows.  Round-11 reproduced the 2x "
+            "case as a counterexample to D-791's INERT sensitivity, and it "
+            "is reproduced here with the corrected solver rather than "
+            "argued away: at 2.0 the ruling case does not hold the "
+            "conduction row.  The ruling bound is the DECLARED 1.60 and the "
+            "crossing ratio is published above, so the size of the "
+            "dependency is a number."),
         measurement_of_record="C-BAT-GATE-01",
         why="a DECLARED coefficient that the verdict depends on is an "
-            "assumption wearing a datasheet's clothes.  The ruling conclusion "
-            "is required to hold at 2x the declared ratio, which is well "
-            "beyond anything a trench MOSFET shows between 25 and 125 C.")
+            "assumption wearing a datasheet's clothes.  D-791 said so and "
+            "then captured the coefficient before its own sensitivity could "
+            "change it, so all three advertised corners returned the same "
+            "arithmetic.  The law is a solver argument now and the controls "
+            "above fail if it ever stops being one.")
 
-    # ---- D-791 / D790-A01.  THE GATE DRIVE OVER THE WHOLE CELL RANGE.
-    # BAT_RAW moves from the pack's discharge cut-off to the charger's own
-    # regulation maximum, and the guaranteed drive is the LTC4368 row at or
-    # below it at every point in that range.  Printed rather than asserted.
+    # ---- THE GATE DRIVE OVER THE WHOLE CELL RANGE -------------------------
     out["bat_raw_sweep"] = [
         dict(bat_raw_V=round(v, 3),
              guaranteed_gate_drive_V=ltc4368_gate_drive_min_V(v, rows),
@@ -5035,8 +4859,6 @@ def judge_pass_pair_gate(design_amps, vin_min_V, spec=None, rows=None,
         for v in (2.75, 3.0, 3.3, 3.6, 3.85, 4.0, 4.221)]
     out["gate_drive_is_the_same_row_across_the_whole_cell_range"] = bool(
         len({r["guaranteed_gate_drive_V"] for r in out["bat_raw_sweep"]}) == 1)
-    # The VGS the part actually has to survive is the gate drive's own
-    # MAXIMUM at zero current, bounded by the row AT OR ABOVE BAT_RAW's max.
     out["vgs_maximum_bound_V"] = drive_max
     out["vgs_maximum_is_inside_the_parts_rating"] = bool(
         drive_max is not None and drive_max <= spec["vgs_abs_max_V"])
@@ -5055,8 +4877,9 @@ def judge_pass_pair_gate(design_amps, vin_min_V, spec=None, rows=None,
     out["body_diode_note"] = (
         "IS 2.5 A continuous MAX.  In forward conduction the channel is on "
         "and the parallel body diode sees only the channel drop -- about "
-        "120 mV at the sustained envelope, far below its own forward voltage "
-        "-- so it carries no meaningful current.")
+        "%.0f mV at the ruling envelope, far below its own forward voltage "
+        "-- so it carries no meaningful current."
+        % (ruling["channel_ohm_hot"] * ruling["amps"] * 1000.0))
     out["consequence"] = (
         "a higher pass-pair resistance costs a larger drop from the pack and "
         "more heat in two SOIC-8s, and the D789-A02 enclosure model carries "
@@ -5072,7 +4895,19 @@ def judge_pass_pair_gate(design_amps, vin_min_V, spec=None, rows=None,
         ruling["every_device_is_guaranteed_enhanced"]
         and ruling["every_device_meets_a_published_conduction_row"]
         and out["vgs_maximum_is_inside_the_parts_rating"]
-        and out["current_is_inside_the_parts_rating"])
+        and out["current_is_inside_the_parts_rating"]
+        # D-792 / R11-01: the declared corner is a TERM OF THE VERDICT now.
+        and out["hot_ratio_sensitivity"][
+            "the_ruling_conclusion_holds_at_the_declared_ratio"]
+        and out["hot_ratio_sensitivity"]["the_cases_are_not_identical"]
+        and out["hot_ratio_sensitivity"][
+            "the_channel_resistance_is_strictly_increasing_in_the_ratio"]
+        and out["hot_ratio_sensitivity"][
+            "the_worst_vgs_is_strictly_decreasing_in_the_ratio"]
+        and out["hot_ratio_sensitivity"][
+            "a_ratio_above_the_crossing_is_refused"]
+        and out["hot_ratio_sensitivity"][
+            "a_ratio_below_the_crossing_is_accepted"])
     return out["ok"], out
 
 
@@ -5260,22 +5095,31 @@ def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
     r_trunk = paths_ohm["sys_to_u21"] * k_cu
     r_a3 = paths_ohm["acc_3v3_sw"] * k_cu + ron_a3_ohm
     r_a5 = paths_ohm["acc_5v_sw"] * k_cu + ron_a5_ohm
-    pack_dc = CELL["published_impedance_ohm"] * CELL["dc_multiplier"]
-    up_fixed = (pack_dc + ara.UPSTREAM_LOSS["harness_ohm"]
-                + ara.UPSTREAM_LOSS["fuse_ohm"] + spec["sense_resistor_ohm"])
+    # D-792 / R11-07: the cell-side series resistance is the ITEMISED path in
+    # `aqroot_power_model`, not a one-line allowance.  D-792 / R11-01: the
+    # pass-pair temperature law is an explicit argument, not a captured alpha.
+    pack_dc = apm.PACK_DC_OHM
+    up_fixed = apm.upstream_fixed_ohm("max")
     r25 = spec["rds_on_max_at_that_row_ohm"]
-    alpha = (spec["rds_on_hot_ratio"] - 1.0) / 100.0
+    hot_ratio = spec["rds_on_hot_ratio"]
     drive = ltc4368_gate_drive_min_V(VBAT_CORNER)
     r_sys_K = ara.system_thermal_resistance_K_per_W()
     theta_ja = ara.PACKAGE_JUNCTION["theta_ja_C_per_W"]
     ron_bat = RON_BAT_MAX_OHM * RON_BAT_VBAT_ALLOWANCE
 
-    def solve(cell_V, i3, i5, i_int):
-        """One self-consistent operating point, or None if there is none."""
+    def solve(cell_V, i3, i5, i_int, amb=None):
+        """One self-consistent operating point, or None if there is none.
+
+        `amb` is the EXTERNAL ambient.  It defaults to the top of the declared
+        prototype envelope, which is what every verdict is taken at; it is an
+        argument so the AMBIENT CEILING of a state can be DERIVED rather than
+        asserted, and so the sensitivity of the answer to it is a number.
+        """
+        amb = ambient_C if amb is None else amb
         p12 = ((i_int + i3) * v_3v3_V + i3 * i3 * r_a3) / ETA_U12
         p21 = ((i5 * v_acc5v_V + i5 * i5 * r_a5) / ETA_U21) if i5 else 0.0
         amps = (p12 + p21) / cell_V
-        r_ch, air = r25, ambient_C + 10.0
+        r_ch, air = r25, amb + 10.0
         for _ in range(3000):
             r_up = up_fixed + spec["channels_in_series"] * r_ch
             vsys = cell_V - amps * (r_up + r_bat)
@@ -5295,10 +5139,10 @@ def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
             node = cell_V - nxt * r_up
             p_int = (node * nxt - (i3 * v_3v3_V + i5 * v_acc5v_V)
                      + nxt * nxt * r_up)
-            air_next = ambient_C + r_sys_K * p_int
+            air_next = amb + r_sys_K * p_int
             tj_pp = air_next + 5.0 + spec["theta_jl_max_C_per_W"] * (
                 2 * nxt * nxt * r_ch)
-            r_next = r25 * (1.0 + alpha * (tj_pp - 25.0))
+            r_next = apm.channel_ohm(tj_pp, hot_ratio, spec)
             if (abs(nxt - amps) < 1e-11 and abs(r_next - r_ch) < 1e-13
                     and abs(air_next - air) < 1e-9):
                 amps, r_ch, air = nxt, r_next, air_next
@@ -5311,7 +5155,7 @@ def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
         vsys = cell_V - amps * (r_up + r_bat)
         p_int = (node * amps - (i3 * v_3v3_V + i5 * v_acc5v_V)
                  + amps * amps * r_up)
-        air = ambient_C + r_sys_K * p_int
+        air = amb + r_sys_K * p_int
         tj_bq = air + theta_ja * (amps * amps * ron_bat)
         tj_pp = air + 5.0 + spec["theta_jl_max_C_per_W"] * (2 * amps * amps * r_ch)
         # Q2 is the package with THREE channels plus R75 between its common
@@ -5319,14 +5163,78 @@ def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
         vgs = drive - amps * ((spec["channels_in_series"] - 1) * r_ch
                               + spec["sense_resistor_ohm"])
         return dict(
-            cell_V=round(cell_V, 6), amps=round(amps, 6),
+            cell_V=round(cell_V, 6), ambient_C=round(amb, 3),
+            amps=round(amps, 6),
             node_V=round(node, 6), vsys_V=round(vsys, 6),
             channel_ohm_hot=round(r_ch, 6),
             upstream_series_ohm=round(r_up, 6),
             internal_W=round(p_int, 6), internal_air_C=round(air, 3),
             bq25185_junction_C=round(tj_bq, 3),
             pass_pair_junction_C=round(tj_pp, 3),
-            worst_vgs_V=round(vgs, 6))
+            worst_vgs_V=round(vgs, 6),
+            # UNROUNDED, for the independent residual check below.  Every field
+            # above is rounded for the report, and a residual taken against a
+            # rounded value measures the rounding rather than the solution --
+            # which would need a per-field tolerance and would look exactly
+            # like a fudge factor.  These are the raw converged values, so ONE
+            # tight tolerance is enough and it means what it says.
+            raw=dict(cell_V=cell_V, ambient_C=amb, amps=amps, node_V=node,
+                     vsys_V=vsys, channel_ohm=r_ch, internal_W=p_int,
+                     internal_air_C=air, pass_pair_junction_C=tj_pp))
+
+    # ======================================================================
+    # D-792 EXIT CRITERION: "Independent calculation path must not simply call
+    # the same solver functions being verified."
+    #
+    # `solve` is a FIXED-POINT ITERATION.  Re-running it proves nothing about
+    # whether its answer satisfies the equations it was iterating towards, and
+    # every clause in this contract that checks the network does so by calling
+    # it again.  `residuals()` is the independent path: it takes a SOLVED state
+    # and re-checks the defining equations with plain arithmetic -- no
+    # iteration, no `solve`, no shared code -- and reports how far each one
+    # misses.  It checks
+    #
+    #   KVL     node_V  ==  cell_V - amps * (up_fixed + n * r_ch)
+    #   KVL     vsys_V  ==  cell_V - amps * (up_fixed + n * r_ch + r_bat)
+    #   POWER   node_V * amps  ==  P(3V3 branch) + P(5V branch) + trunk loss
+    #   ENERGY  internal_W  ==  cell_V * amps - what leaves through J5
+    #   THERMAL r_ch  ==  channel_ohm(tj_pp) at the reported junction
+    #   THERMAL air  ==  ambient + R_SYS * internal_W
+    #
+    # A residual above the tolerance means the iteration converged to something
+    # that is not a solution of the network, which no amount of re-solving
+    # would ever have revealed.
+    # ======================================================================
+    def residuals(s, i3, i5, i_int):
+        if s is None or "raw" not in s:
+            return None
+        q = s["raw"]
+        n = spec["channels_in_series"]
+        r_ch, amps, cell_V = q["channel_ohm"], q["amps"], q["cell_V"]
+        r_up = up_fixed + n * r_ch
+        p12 = ((i_int + i3) * v_3v3_V + i3 * i3 * r_a3) / ETA_U12
+        p21 = ((i5 * v_acc5v_V + i5 * i5 * r_a5) / ETA_U21) if i5 else 0.0
+        trunk_W = 0.0
+        if p21:
+            i_u21 = p21 / q["vsys_V"]
+            for _ in range(400):
+                i_u21 = p21 / (q["vsys_V"] - i_u21 * r_trunk)
+            trunk_W = i_u21 * i_u21 * r_trunk
+        delivered = i3 * v_3v3_V + i5 * v_acc5v_V
+        tj_pp = q["internal_air_C"] + 5.0 + spec["theta_jl_max_C_per_W"] * (
+            2 * amps * amps * r_ch)
+        return dict(
+            kvl_node_V=q["node_V"] - (cell_V - amps * r_up),
+            kvl_vsys_V=q["vsys_V"] - (cell_V - amps * (r_up + r_bat)),
+            # The BATFET is between the node the gauge reads and SYS, so the
+            # power the downstream converters draw is delivered AT SYS.
+            power_sys_W=q["vsys_V"] * amps - (p12 + p21 + trunk_W),
+            energy_internal_W=q["internal_W"]
+            - (q["node_V"] * amps - delivered + amps * amps * r_up),
+            thermal_channel_ohm=r_ch - apm.channel_ohm(tj_pp, hot_ratio, spec),
+            thermal_air_C=q["internal_air_C"]
+            - (q["ambient_C"] + r_sys_K * q["internal_W"]),
+            junction_C=tj_pp - q["pass_pair_junction_C"])
 
     def limits(s):
         if s is None:
@@ -5363,8 +5271,244 @@ def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
 
     always = sum(ara.SUSTAINED_ALWAYS_ON.values()) + ara.BURSTY_TIME_AVERAGED_A
     i3b, i5b = budget["ACC_3V3"], budget["ACC_5V"]
-    LOADS = (("both_rails", i3b, i5b), ("acc_3v3_only", i3b, 0.0),
+    # ======================================================================
+    # D-792 / R11-04.  THE ENABLE FLOORS ARE DERIVED FROM THE CRITERION THE
+    # FIRMWARE ACTUALLY APPLIES, ON EVERY TRANSITION, IN BOTH RAIL ORDERS.
+    #
+    # ROUND-11, IN ITS OWN WORDS: "Current transition derivation covers no-rail
+    # -> 3V3 -> both but omits 5V-first and 5V->3V3.  It used 3.15 V BUVLO
+    # instead of implemented 3.20 V retention in part of the sweep.  Astra
+    # reproduced a production-image case that enables 5V from a reported
+    # >= 3.55 V pre-read then immediately sheds after load sag."
+    #
+    # ALL THREE REPRODUCE, AND THE THIRD IS THE REAL ONE.  D-791 derived the
+    # enable floors as
+    #
+    #     enable = VBUVLO_bound + worst_node_step + gauge_error
+    #
+    # which guarantees the settled node stays above `VBUVLO`.  But the
+    # firmware does not compare the node against `VBUVLO`; it compares the
+    # gauge's REPORTED value against `kAccessoryRetentionFloorV`, which is
+    # `VBUVLO` plus the gauge error AGAIN and then gridded UP.  So a
+    # permission granted exactly at the enable floor could settle into a state
+    # the retention rule sheds on the next pass -- authorise, sag, shed,
+    # 400 ms later.  D-791 fixed "enable then shed" for the node and left it
+    # open for the criterion.
+    #
+    # AND THE ORDER MATTERS.  Only ONE order was swept: no rail -> 3V3 ->
+    # both.  The 5 V rail is the EXPENSIVE one -- 300 mA at 5.1654 V through a
+    # boost at 0.88 against 400 mA at 3.223 V through a buck-boost at 0.90 --
+    # so enabling it FIRST is a bigger node step than enabling the 3.3 V rail
+    # first, and its floor was never derived.
+    #
+    # WHAT REPLACES IT.  Every supported transition is enumerated, and for
+    # each one the floor is the FIXED POINT of the firmware's own rule with
+    # the gauge error charged in BOTH ADVERSE DIRECTIONS at once:
+    #
+    #   * the PRE read may be HIGH by the gauge error, so a reported E can
+    #     come from a node as low as E - g;
+    #   * the POST read may be LOW by the gauge error, so a node of N reports
+    #     as low as N - g;
+    #   * therefore E must satisfy: for the lowest cell OCV that could have
+    #     produced a reported E, the SETTLED post-transition node must report
+    #     at or above the retention floor AND satisfy every hardware limit.
+    #
+    # That is solved directly rather than approximated by a worst-case step,
+    # and the resulting invariant -- `every_granted_enable_survives_its_own_
+    # settled_state` -- is swept over the whole cell range afterwards, so it
+    # is a PROOF and not a construction.
+    # ======================================================================
+    def grid_up(v):
+        return math.ceil(v / FLOOR_GRID_V - 1e-9) * FLOOR_GRID_V
+
+    gauge = GAUGE_VERR_V + GAUGE_LSB_V
+    retention = BUVLO_BOUND_V + gauge
+    retention_grid = round(grid_up(retention), 4)
+
+    def node(cell, i3, i5, i_int, amb=None):
+        s = solve(cell, i3, i5, i_int, amb)
+        return None if s is None else s
+
+    def post_is_acceptable(cell, i3, i5, i_int, amb=None):
+        """The firmware's own retention rule, applied to the SETTLED state
+        with the gauge reading adversely LOW, plus every hardware limit."""
+        s = solve(cell, i3, i5, i_int, amb)
+        if s is None or not supported(s):
+            return False, s
+        return bool(s["node_V"] - gauge >= retention_grid - 1e-12), s
+
+
+    # ======================================================================
+    # D-792 / R11-04, PART 1.  THE DECLARED SIMULTANEOUS DUAL-RAIL PAIR.
+    #
+    # THE PUBLISHED PER-RAIL BUDGETS DO NOT MOVE: `ACC_3V3_SW` = 400 mA TOTAL
+    # and `ACC_5V_SW` = 300 mA TOTAL, each deliverable on its own.  What D-792
+    # has to state, because the corrected model says so, is the pair that may
+    # be drawn AT THE SAME TIME.
+    #
+    # D-791 answered that with a CELL FLOOR per state and stopped there.  Two
+    # Round-11 corrections move the answer:
+    #
+    #   R11-07  the cell-to-`BAT_PROTECTED_P` series resistance is 249.8 mOhm
+    #           itemised, not the 124 mOhm D-791 carried;
+    #   R11-02  the ESP32-S3 module's own baseline -- 165.5 mA of CPU, flash
+    #           and in-package PSRAM that no ledger contained -- is in EVERY
+    #           state.
+    #
+    # Together they cost about 0.34 V of node at the dual-rail current, and the
+    # consequence is precise rather than vague: at the TOP of the declared
+    # 0..40 C ambient envelope, in the LIGHTEST internal state, both rails at
+    # their full published budgets settle the node at 3.1763 V -- inside every
+    # one of the seven hardware limits, but 44 mV BELOW the retention criterion
+    # the firmware itself applies.  So the pair is derated, and the derating is
+    # SOLVED rather than chosen: the largest proportional scaling of the two
+    # published budgets that the retention rule will hold, in the lightest
+    # state, at the worst declared ambient, rounded DOWN onto a 10 mA grid.
+    #
+    # THE LIGHTEST STATE IS THE RIGHT ONE TO DERIVE IT AT because the other
+    # states are covered by the PERMISSION TABLE below, which refuses the
+    # second rail outright wherever the pair does not hold.  One number for the
+    # accessory designer, one table for the firmware.
+    # ======================================================================
+    MODE_NAMES = tuple(sorted(ara.SUSTAINED_OPTIONAL))
+
+    def i_int_of(modes):
+        return always + sum(ara.SUSTAINED_OPTIONAL[m] for m in modes)
+
+    I_INT_LIGHTEST = i_int_of(())
+
+    def largest_retainable_scale(i_int, amb=None):
+        """The largest k for which (400k, 300k) mA is RETAINABLE on a full
+        pack.  1.0 exactly when the full pair holds."""
+        if post_is_acceptable(CELL_MAX_OCV_V, i3b, i5b, i_int, amb)[0]:
+            return 1.0
+        lo, hi = 0.0, 1.0
+        for _ in range(60):
+            mid = 0.5 * (lo + hi)
+            if post_is_acceptable(CELL_MAX_OCV_V, i3b * mid, i5b * mid,
+                                  i_int, amb)[0]:
+                lo = mid
+            else:
+                hi = mid
+        return lo
+
+    # THE PAIR IS SOLVED AT THE CELL VOLTAGE THE SINGLE-RAIL PERMISSION ALREADY
+    # REACHES, NOT AT A FULL PACK.  Solving it at 4.221 V gives 390/290 mA and
+    # a permission floor of 4.00 V -- and the highest value the gauge can EVER
+    # report, with only the always-on set drawing, is 3.9953 V.  That is
+    # D790-A03's defect in a new place: a floor the node cannot reach is not a
+    # restriction, it is a rail that never turns on.  So the pair is derived
+    # against the SAME critical cell voltage the single-rail permission uses in
+    # the same state, which makes the contract one sentence -- both rails may be
+    # on wherever one rail may be, provided the combined draw stays inside the
+    # declared pair -- and makes the dual floor equal to the single floor by
+    # construction instead of by hope.
+    DUAL_GRID_A = 0.010
+    dual_target_cell = None
+    for _cfg, _post in (("acc_3v3_alone", (i3b, 0.0)),
+                        ("acc_5v_alone", (0.0, i5b))):
+        _c = None
+        if post_is_acceptable(CELL_MAX_OCV_V, _post[0], _post[1],
+                              I_INT_LIGHTEST)[0]:
+            _lo, _hi = CELL["discharge_cutoff_V"], CELL_MAX_OCV_V
+            for _ in range(90):
+                _mid = 0.5 * (_lo + _hi)
+                if post_is_acceptable(_mid, _post[0], _post[1],
+                                      I_INT_LIGHTEST)[0]:
+                    _hi = _mid
+                else:
+                    _lo = _mid
+            _c = _hi
+        if _c is not None:
+            dual_target_cell = _c if dual_target_cell is None else max(
+                dual_target_cell, _c)
+    dual_at = (CELL_MAX_OCV_V if dual_target_cell is None
+               else dual_target_cell)
+
+    def largest_retainable_scale_at(cell_V, i_int, amb=None):
+        if post_is_acceptable(cell_V, i3b, i5b, i_int, amb)[0]:
+            return 1.0
+        lo, hi = 0.0, 1.0
+        for _ in range(60):
+            mid = 0.5 * (lo + hi)
+            if post_is_acceptable(cell_V, i3b * mid, i5b * mid, i_int,
+                                  amb)[0]:
+                lo = mid
+            else:
+                hi = mid
+        return lo
+
+    dual_scale = largest_retainable_scale_at(dual_at, I_INT_LIGHTEST)
+    dual_i3 = (math.floor(i3b * dual_scale / DUAL_GRID_A + 1e-9)
+               * DUAL_GRID_A)
+    dual_i5 = (math.floor(i5b * dual_scale / DUAL_GRID_A + 1e-9)
+               * DUAL_GRID_A)
+    dual_declared = dict(
+        acc_3v3_A=round(dual_i3, 6), acc_5v_A=round(dual_i5, 6),
+        proportional_scale_solved=round(dual_scale, 6),
+        solved_at_cell_ocv_V=round(dual_at, 5),
+        solved_at_cell_basis=(
+            "the critical cell OCV of the WORSE single-rail configuration in "
+            "the lightest internal state -- the cell voltage the single-rail "
+            "permission floor already corresponds to -- so the dual-rail "
+            "permission does not require a pack voltage the gauge can never "
+            "report"),
+        grid_A=DUAL_GRID_A,
+        published_single_rail_A=dict(ACC_3V3=i3b, ACC_5V=i5b),
+        the_declared_pair_is_retainable=bool(post_is_acceptable(
+            dual_at, dual_i3, dual_i5, I_INT_LIGHTEST)[0]),
+        the_declared_pair_holds_on_a_full_pack=bool(post_is_acceptable(
+            CELL_MAX_OCV_V, dual_i3, dual_i5, I_INT_LIGHTEST)[0]),
+        the_full_pair_is_not=bool(not post_is_acceptable(
+            CELL_MAX_OCV_V, i3b, i5b, I_INT_LIGHTEST)[0]),
+        full_pair_scale_on_a_full_pack=round(
+            largest_retainable_scale(I_INT_LIGHTEST), 6),
+        full_pair_at_a_full_pack=solve(CELL_MAX_OCV_V, i3b, i5b,
+                                       I_INT_LIGHTEST),
+        # THE AMBIENT IS THE OTHER AXIS, AND IT IS DERIVED TOO.  The full pair
+        # is refused at 40 C and held at 30 C, so the ceiling is a number a
+        # human can observe rather than a capability that simply vanishes.
+        full_pair_ambient_ceiling_C=None,
+        per_state_scale_at_the_design_ambient={},
+        why="the published per-rail budgets are UNCHANGED and each is "
+            "deliverable alone; this is the pair that may be drawn AT ONCE, "
+            "solved at the top of the declared ambient envelope in the "
+            "lightest internal state and rounded DOWN onto a 10 mA grid.")
+    # The ambient at which the FULL pair becomes retainable, bisected on the
+    # declared 0..40 C envelope.
+    _alo, _ahi = 0.0, ara.AMBIENT_DESIGN_MAX_C
+    if post_is_acceptable(CELL_MAX_OCV_V, i3b, i5b, I_INT_LIGHTEST,
+                          _ahi)[0]:
+        dual_declared["full_pair_ambient_ceiling_C"] = round(_ahi, 2)
+    elif post_is_acceptable(CELL_MAX_OCV_V, i3b, i5b, I_INT_LIGHTEST,
+                            _alo)[0]:
+        for _ in range(50):
+            _amid = 0.5 * (_alo + _ahi)
+            if post_is_acceptable(CELL_MAX_OCV_V, i3b, i5b, I_INT_LIGHTEST,
+                                  _amid)[0]:
+                _alo = _amid
+            else:
+                _ahi = _amid
+        dual_declared["full_pair_ambient_ceiling_C"] = round(_alo, 2)
+    for _st in ara.SUSTAINED_STATES:
+        dual_declared["per_state_scale_at_the_design_ambient"][_st["key"]] = (
+            round(largest_retainable_scale(i_int_of(_st["modes"])), 6))
+
+    # THE PUBLISHED LOADS, AND ONE THAT IS NOT PUBLISHED ANY MORE.
+    #
+    # `both_rails` at the FULL published pair is retained as a REPORTED column
+    # and as a negative control: R11-02's missing processor baseline and
+    # R11-07's itemised battery path together cost about 0.34 V of node at that
+    # current, and it now settles 44 mV under the retention criterion at the
+    # top of the ambient envelope.  The pair the product PUBLISHES for
+    # simultaneous use is the derated one above, and that is the column the
+    # reference-state clause rules on.
+    LOADS = (("both_rails", i3b, i5b),
+             ("both_rails_at_the_declared_pair", dual_i3, dual_i5),
+             ("acc_3v3_only", i3b, 0.0),
              ("acc_5v_only", 0.0, i5b), ("no_accessory", 0.0, 0.0))
+    PUBLISHED_LOADS = ("both_rails_at_the_declared_pair", "acc_3v3_only",
+                       "acc_5v_only", "no_accessory")
     states, worst_sag_first, worst_sag_second = [], 0.0, 0.0
     for st in ara.SUSTAINED_STATES:
         i_int = always + sum(ara.SUSTAINED_OPTIONAL[m] for m in st["modes"])
@@ -5388,53 +5532,436 @@ def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
                     if floor_cell and floor_cell
                     <= CELL["discharge_cutoff_V"] + 1e-6 else []))
         states.append(row)
-        # THE LOAD STEP, WHICH IS WHAT AN *ENABLE* PERMISSION HAS TO ANTICIPATE.
-        # D-779 made the point and D-790 never quantified it: the permission is
-        # taken BEFORE the rail's load exists, so a floor compared against the
-        # UNLOADED node authorises a state the LOADED node will not sustain.
-        cell = BUVLO_BOUND_V
-        while cell <= CELL_MAX_OCV_V + 1e-9:
-            none_s = solve(cell, 0.0, 0.0, i_int)
-            a3_s = solve(cell, i3b, 0.0, i_int)
-            both_s = solve(cell, i3b, i5b, i_int)
-            if none_s and a3_s and supported(a3_s):
-                worst_sag_first = max(worst_sag_first,
-                                      none_s["node_V"] - a3_s["node_V"])
-            if a3_s and both_s and supported(both_s):
-                worst_sag_second = max(worst_sag_second,
-                                       a3_s["node_V"] - both_s["node_V"])
-            cell += 0.02
 
-    def grid_up(v):
-        return math.ceil(v / FLOOR_GRID_V - 1e-9) * FLOOR_GRID_V
+    # ======================================================================
+    # D-792 / R11-04, PART 2.  THE PERMISSION TABLE.
+    #
+    # ROUND-11, IN ITS OWN WORDS: "Current transition derivation covers no-rail
+    # -> 3V3 -> both but omits 5V-first and 5V->3V3.  It used 3.15 V BUVLO
+    # instead of implemented 3.20 V retention in part of the sweep.  Astra
+    # reproduced a production-image case that enables 5V from a reported
+    # >= 3.55 V pre-read then immediately sheds after load sag.  Enumerate both
+    # rail orders, all supported pre-load states, gauge error both adverse
+    # directions, settling, post-load retention, repeated requests and
+    # cooldown.  Hard invariant: if enable is granted, the settled newly-
+    # enabled state must remain above the actual retention criterion."
+    #
+    # ALL OF IT REPRODUCES, AND THE THIRD ITEM IS THE ROOT CAUSE OF THE OTHER
+    # TWO.  D-791 derived the second-rail floor with the FIRST rail already
+    # drawing its full published budget in the PRE state.  That is the wrong
+    # pre-state, and not by a little: an accessory that is PLUGGED IN AND IDLE
+    # holds the node near open circuit, the gauge reports that high value, the
+    # permission is granted on it, and the accessory then starts drawing.  The
+    # adverse pre-state is the LIGHTEST one, not the heaviest, because the
+    # pre-read is what the permission is granted on.  D-791 charged the gauge
+    # error in both directions and then handed the derivation a pre-state that
+    # cancelled the whole effect.  That is Astra's 3.55 V case exactly.
+    #
+    # AND A SCALAR PAIR OF FLOORS CANNOT CARRY THE ANSWER.  Whether a rail
+    # transition survives its own settled state depends on what else is ON:
+    # the amplifier, a keyed sub-GHz transmitter and the Wi-Fi/BLE radio are
+    # each a load of the same order as an accessory rail.  D-791 answered with
+    # two constants and a sentence asking the reader to observe the modes.  Two
+    # constants cannot refuse.  What replaces them is a TABLE indexed by the
+    # OBSERVABLE MODE SET and the RAIL COUNT, derived here and PINNED into
+    # `aqroot_accessory_power_policy.h`, and a firmware rule that consults it
+    # on BOTH edges: enabling a rail, and entering a mode while a rail is on.
+    #
+    # EVERY FLOOR IS DERIVED AGAINST THE SAME THREE ADVERSE CHOICES:
+    #   * the PRE state is the LIGHTEST reachable one -- no optional mode, no
+    #     accessory current -- so no arrival path can be granted on a
+    #     pre-read this floor did not anticipate;
+    #   * the gauge reads HIGH by its error on the pre read and LOW on the
+    #     post read, both at once;
+    #   * the POST state must satisfy the firmware's OWN retention criterion
+    #     and all seven hardware limits after settling, which makes a repeated
+    #     request idempotent: the state is settled, so the answer does not
+    #     change on the next pass and there is nothing for a cooldown to hide.
+    #
+    # A combination with NO cell voltage that survives is NOT_PERMITTED, and
+    # the firmware refuses it at every cell voltage rather than authorising it
+    # and shedding 400 ms later.
+    # ======================================================================
+    reported_ceiling = None
+    _top = node(CELL_MAX_OCV_V, 0.0, 0.0, I_INT_LIGHTEST)
+    if _top is not None:
+        reported_ceiling = round(_top["node_V"] + gauge, 6)
 
-    gauge = GAUGE_VERR_V + GAUGE_LSB_V
-    retention = BUVLO_BOUND_V + gauge
-    enable_first = BUVLO_BOUND_V + worst_sag_first + gauge
-    enable_second = BUVLO_BOUND_V + worst_sag_second + gauge
+    def critical_cell(post, i_post):
+        """The smallest cell OCV at which the POST state is acceptable, or
+        None if no attainable cell voltage is."""
+        if not post_is_acceptable(CELL_MAX_OCV_V, post[0], post[1],
+                                  i_post)[0]:
+            return None
+        lo, hi = CELL["discharge_cutoff_V"], CELL_MAX_OCV_V
+        for _ in range(90):
+            mid = 0.5 * (lo + hi)
+            if post_is_acceptable(mid, post[0], post[1], i_post)[0]:
+                hi = mid
+            else:
+                lo = mid
+        return hi
+
+    def permission_floor(post, i_post, i_pre=None):
+        """The reported pre-read at or above which arriving at `post` is sound.
+
+        `i_pre` is the internal current of the PRE state.  It is NOT always
+        `i_post`: a RAIL edge keeps the mode set and only changes the accessory
+        current, while a MODE edge is entered from a LIGHTER mode set and
+        therefore from a HIGHER pre-read.  Using the post state's own current
+        for a mode edge would under-state the floor and be UNSOUND; using the
+        absolutely lightest state for a rail edge over-states it into a floor
+        the node cannot reach, which is D790-A03.  Both edges are derived, each
+        from its own pre-state.
+
+        The accessory current of the pre-state is ZERO in both cases, because a
+        plugged-in IDLE accessory holds the node near open circuit and that is
+        the reading the permission is granted on -- R11-04's root cause.
+        """
+        i_pre = i_post if i_pre is None else i_pre
+        c = critical_cell(post, i_post)
+        if c is None:
+            return None, None, None
+        pre = node(c, 0.0, 0.0, i_pre)
+        top = node(CELL_MAX_OCV_V, 0.0, 0.0, i_pre)
+        if pre is None or top is None:
+            return None, c, None
+        return pre["node_V"] + gauge, c, top["node_V"] + gauge
+
+    def lightest_predecessor_current(modes):
+        """The internal current of the lightest state ONE STEP below `modes`.
+
+        For a mode edge the pre-state is `modes` minus the mode being entered,
+        and the adverse choice is the mode whose removal leaves the LIGHTEST
+        state -- the highest pre-read.  With no mode on there is nothing to
+        enter, so the state itself is the answer.
+        """
+        if not modes:
+            return i_int_of(())
+        return min(i_int_of(tuple(m for m in modes if m != drop))
+                   for drop in modes)
+
+    RAIL_CONFIGS = {
+        1: (("acc_3v3_alone", (i3b, 0.0)), ("acc_5v_alone", (0.0, i5b))),
+        2: (("both_rails_at_the_declared_pair", (dual_i3, dual_i5)),),
+    }
+    # ======================================================================
+    # TWO EDGES, TWO TABLES.  The arrival path decides the PRE-STATE, and the
+    # pre-state decides the floor, so one table cannot answer both questions.
+    #
+    #   RAIL EDGE   the mode set does not change; the accessory current does.
+    #               Pre-state = these modes, accessory idle.
+    #   MODE EDGE   the accessory rails are already live; the mode set grows.
+    #               Pre-state = the LIGHTEST mode set one step below, accessory
+    #               idle -- which reads HIGHER, so the floor is HIGHER.
+    #
+    # Collapsing them into one number means taking the larger, and D-790 has
+    # already shown what that costs: the rail-edge floor for a state with the
+    # Wi-Fi radio up would become a value the node cannot reach in that state,
+    # and the rail would simply never turn on with no diagnostic anywhere.  So
+    # both are derived, both are attainability-checked AGAINST THEIR OWN
+    # PRE-STATE, and both are pinned into the firmware.
+    # ======================================================================
+    def build_table(edge):
+        rows, table = [], {}
+        for bits in range(1 << len(MODE_NAMES)):
+            modes = tuple(MODE_NAMES[i] for i in range(len(MODE_NAMES))
+                          if bits & (1 << i))
+            i_int = i_int_of(modes)
+            i_pre = (i_int if edge == "rail"
+                     else lightest_predecessor_current(modes))
+            for rails in (1, 2):
+                worst = dict(floor=None, cfg=None, c=None, ceiling=None)
+                refused, unreachable = [], []
+                for cfg_name, post in RAIL_CONFIGS[rails]:
+                    req, c, ceiling = permission_floor(post, i_int, i_pre)
+                    if req is None:
+                        refused.append(cfg_name)
+                        continue
+                    if worst["floor"] is None or req > worst["floor"]:
+                        worst = dict(floor=req, cfg=cfg_name, c=c,
+                                     ceiling=ceiling)
+                if refused or worst["floor"] is None:
+                    gridded, permitted = None, False
+                else:
+                    gridded = round(grid_up(worst["floor"]), 4)
+                    # ATTAINABILITY, AGAINST THIS EDGE'S OWN PRE-STATE.  A
+                    # gridded floor above the highest value the gauge can
+                    # report in the pre-state authorises nothing, ever.
+                    permitted = bool(worst["ceiling"] is not None
+                                     and gridded <= worst["ceiling"] + 1e-12)
+                    if not permitted:
+                        unreachable.append(
+                            "gridded %.4f V exceeds the %.4f V ceiling of its "
+                            "own pre-state" % (gridded, worst["ceiling"]))
+                        gridded = None
+                rows.append(dict(
+                    edge=edge, mode_bits=bits, modes=list(modes), rails=rails,
+                    internal_3v3_A=round(i_int, 6),
+                    pre_state_internal_3v3_A=round(i_pre, 6),
+                    rail_configuration=worst["cfg"],
+                    configurations_with_no_attainable_cell_voltage=refused,
+                    unreachable=unreachable,
+                    pre_state_reported_ceiling_V=(
+                        None if worst["ceiling"] is None
+                        else round(worst["ceiling"], 6)),
+                    critical_cell_ocv_V=(None if worst["c"] is None
+                                         else round(worst["c"], 5)),
+                    required_reported_floor_V=(None if worst["floor"] is None
+                                               else round(worst["floor"], 6)),
+                    floor_gridded_V=gridded, permitted=permitted))
+                table[(bits, rails)] = gridded if permitted else None
+            # MONOTONIC BY CONSTRUCTION.  A two-rail state is only reachable
+            # THROUGH a one-rail state, so a dual floor below the single floor
+            # of the same mode set would be an unreachable graduation -- the
+            # same shape D-790's 3.85 V dual floor had.  The derated pair is
+            # lighter than one rail at its full published budget, so the raw
+            # dual floor legitimately comes out lower; it is raised so the
+            # sequence a user actually walks is the sequence that is proven.
+            one, two = table.get((bits, 1)), table.get((bits, 2))
+            if one is not None and two is not None and two < one:
+                table[(bits, 2)] = one
+                for r in rows:
+                    if (r["mode_bits"] == bits and r["rails"] == 2
+                            and r["edge"] == edge):
+                        r["floor_gridded_V"] = one
+                        r["raised_to_the_single_rail_floor"] = True
+            if one is None and two is not None:
+                table[(bits, 2)] = None
+                for r in rows:
+                    if (r["mode_bits"] == bits and r["rails"] == 2
+                            and r["edge"] == edge):
+                        r["floor_gridded_V"] = None
+                        r["permitted"] = False
+                        r["refused_because_no_single_rail_is_permitted"] = True
+        return rows, table
+
+    rail_rows, rail_table = build_table("rail")
+    mode_rows, mode_table = build_table("mode")
+    permission_rows = rail_rows + mode_rows
+    permission_table = rail_table
+
+    # ---- THE FOUR NAMED TRANSITIONS, KEPT FOR THE PUBLISHED NODE STEPS AND
+    # FOR ASTRA'S REPRODUCED COUNTEREXAMPLE.  These are the same four orders
+    # D-791 should have enumerated, now including 5 V FIRST and 5 V -> 3.3 V,
+    # and they are reported at the DECLARED pair so the step a user can
+    # actually cause is the step that is published.
+    TRANSITIONS = (
+        dict(key="first_rail_3v3", rank="first", pre=(0.0, 0.0),
+             post=(i3b, 0.0),
+             what="no accessory rail on -> the 3.3 V rail at its published "
+                  "400 mA budget"),
+        dict(key="first_rail_5v", rank="first", pre=(0.0, 0.0),
+             post=(0.0, i5b),
+             what="no accessory rail on -> the 5 V rail at its published "
+                  "300 mA budget.  NEVER DERIVED BEFORE D-792 (R11-04)"),
+        dict(key="second_rail_5v", rank="second", pre=(0.0, 0.0),
+             post=(dual_i3, dual_i5),
+             what="the 3.3 V rail already on -> both rails at the declared "
+                  "simultaneous pair, from the ADVERSE idle-accessory "
+                  "pre-read"),
+        dict(key="second_rail_3v3", rank="second", pre=(0.0, 0.0),
+             post=(dual_i3, dual_i5),
+             what="the 5 V rail already on -> both rails at the declared "
+                  "simultaneous pair.  NEVER DERIVED BEFORE D-792 (R11-04)"),
+    )
+    transition_rows, floor_by_rank = [], {"first": 0.0, "second": 0.0}
+    unsupported = []
+    for st in ara.SUSTAINED_STATES:
+        if st["key"] == "d790_declared":
+            continue               # the NEGATIVE control; it has no state
+        i_int = i_int_of(st["modes"])
+        for tr in TRANSITIONS:
+            req, c_star, _ceil = permission_floor(tr["post"], i_int,
+                                                  I_INT_LIGHTEST)
+            row = dict(state=st["key"], transition=tr["key"],
+                       rank=tr["rank"], what=tr["what"],
+                       internal_3v3_A=round(i_int, 6),
+                       critical_cell_ocv_V=(None if c_star is None
+                                            else round(c_star, 5)),
+                       required_reported_floor_V=(None if req is None
+                                                  else round(req, 6)))
+            if req is None:
+                unsupported.append(dict(state=st["key"],
+                                        transition=tr["key"]))
+            else:
+                floor_by_rank[tr["rank"]] = max(floor_by_rank[tr["rank"]], req)
+                pre = node(c_star, tr["pre"][0], tr["pre"][1],
+                           I_INT_LIGHTEST)
+                post = solve(c_star, tr["post"][0], tr["post"][1], i_int)
+                row.update(
+                    pre_node_V=pre["node_V"], post_node_V=post["node_V"],
+                    node_step_V=round(pre["node_V"] - post["node_V"], 6),
+                    post_reported_worst_V=round(post["node_V"] - gauge, 6))
+            transition_rows.append(row)
+
+    # ---- THE INVARIANT, SWEPT OVER THE WHOLE TABLE.  For every mode set and
+    # rail count the table PERMITS, every cell voltage at which the firmware
+    # WOULD grant the permission is checked against the settled post state.
+    # Because the pre-state used for the sweep is the same LIGHTEST one the
+    # floor was derived from, this is a proof over arrival paths and not over
+    # one chosen order.
+    violations, checked = [], 0
+    for row in permission_rows:
+        if not row["permitted"]:
+            continue
+        floor = row["floor_gridded_V"]
+        modes = tuple(row["modes"])
+        i_int = i_int_of(modes)
+        i_pre = row["pre_state_internal_3v3_A"]
+        for cfg_name, post in RAIL_CONFIGS[row["rails"]]:
+            cell = CELL["discharge_cutoff_V"]
+            while cell <= CELL_MAX_OCV_V + 1e-9:
+                pre = node(cell, 0.0, 0.0, i_pre)
+                if pre is not None and pre["node_V"] + gauge >= floor:
+                    checked += 1
+                    ok, ps = post_is_acceptable(cell, post[0], post[1], i_int)
+                    if not ok:
+                        violations.append(dict(
+                            edge=row["edge"],
+                            modes=list(modes), rails=row["rails"],
+                            configuration=cfg_name,
+                            cell_ocv_V=round(cell, 4),
+                            reported_pre_worst_V=round(
+                                pre["node_V"] + gauge, 6),
+                            floor_V=floor,
+                            post_node_V=(None if ps is None
+                                         else ps["node_V"]),
+                            post_reported_worst_V=(
+                                None if ps is None
+                                else round(ps["node_V"] - gauge, 6)),
+                            retention_floor_V=retention_grid))
+                cell += 0.01
+
+    # ---- AND THE REPRODUCED COUNTEREXAMPLE, AS A PERMANENT REGRESSION.
+    # Round-11: "Astra reproduced a production-image case that enables 5V from
+    # a reported >= 3.55 V pre-read then immediately sheds after load sag."
+    # D-791's constant was 3.55 V.  The clause below asks the CORRECTED
+    # derivation what that pre-read authorises, and requires that it is
+    # refused -- so the counterexample fails on D-791 and passes here for the
+    # reason it was raised, not because a string moved.
+    _astra_state = i_int_of(())
+    _astra_pre = node(3.55 - gauge, 0.0, 0.0, I_INT_LIGHTEST)
+    _astra_ok, _astra_post = post_is_acceptable(
+        CELL_MAX_OCV_V if _astra_pre is None else 3.55 - gauge,
+        0.0, i5b, _astra_state)
+    astra_r1104 = dict(
+        reported_pre_read_V=3.55,
+        d791_first_rail_floor_V=3.55,
+        the_settled_5v_state_would_be_acceptable=bool(_astra_ok),
+        settled_post=_astra_post,
+        d792_first_rail_floor_for_this_state_V=permission_table.get((0, 1)),
+        d792_refuses_it=bool(permission_table.get((0, 1)) is not None
+                             and permission_table[(0, 1)] > 3.55),
+        what="the pre-read D-791's own constant authorised, evaluated against "
+             "the corrected network.  `d792_refuses_it` is the regression: "
+             "the floor this round derives is ABOVE the value Astra granted "
+             "at, so the case cannot recur.")
+
+    # ---- THE TWO SCALAR CONSTANTS ARE NOW VIEWS OF THE TABLE.
+    #
+    # `kAccessorySingleRailFloorV` and `kAccessoryDualRailFloorV` do not
+    # disappear -- DEVICE_SPEC quotes them, `FIRST_FIVE_ASSEMBLY_PLAN` picks
+    # bench points from them and an operator needs ONE number per rail count.
+    # What changes is what they MEAN: each is the MOST DEMANDING floor the
+    # table permits for that rail count, so a state the table refuses is
+    # refused by the table and never by a scalar that happens to be high
+    # enough.  The firmware consults the TABLE; these are the published
+    # envelope of it.
+    def _worst_permitted(rails):
+        vals = [r["required_reported_floor_V"] for r in permission_rows
+                if r["rails"] == rails and r["permitted"]]
+        return max(vals) if vals else 0.0
+
+    def _worst_permitted_grid(rails):
+        vals = [r["floor_gridded_V"] for r in permission_rows
+                if r["rails"] == rails and r["permitted"]]
+        return round(max(vals), 4) if vals else 0.0
+
+    def _highest_pre_state_ceiling(rails):
+        vals = [r["pre_state_reported_ceiling_V"] for r in permission_rows
+                if r["rails"] == rails and r["permitted"]
+                and r["pre_state_reported_ceiling_V"] is not None]
+        return round(max(vals), 6) if vals else None
+
+    enable_first = _worst_permitted(1)
+    enable_second = _worst_permitted(2)
+    enable_first_grid = _worst_permitted_grid(1)
+    enable_second_grid = _worst_permitted_grid(2)
+    if enable_second_grid < enable_first_grid:
+        enable_second_grid = enable_first_grid
+    # `floor_by_rank` stays as the TRANSITION-derived cross-check: the table
+    # and the named-transition sweep are two independent paths to the same
+    # envelope, and a disagreement is a defect in one of them.
+    transitions_agree_with_the_table = bool(
+        round(grid_up(floor_by_rank["first"]), 4) == enable_first_grid)
+
+    def _worst_step(rank):
+        vals = [r["node_step_V"] for r in transition_rows
+                if r["rank"] == rank and r.get("node_step_V") is not None]
+        return round(max(vals), 6) if vals else None
+
     derived = dict(
         retention_floor_V=round(retention, 6),
-        retention_floor_gridded_V=round(grid_up(retention), 4),
+        retention_floor_gridded_V=retention_grid,
         enable_first_rail_floor_V=round(enable_first, 6),
-        enable_first_rail_floor_gridded_V=round(grid_up(enable_first), 4),
+        enable_first_rail_floor_gridded_V=enable_first_grid,
         enable_second_rail_floor_V=round(enable_second, 6),
-        enable_second_rail_floor_gridded_V=round(grid_up(enable_second), 4),
-        worst_first_rail_node_step_V=round(worst_sag_first, 6),
-        worst_second_rail_node_step_V=round(worst_sag_second, 6),
+        enable_second_rail_floor_gridded_V=enable_second_grid,
         gauge_error_charged_V=round(gauge, 6),
         gauge_error_source=GAUGE_ERROR_SOURCE,
+        # The worst node STEP of each rank, over every enumerated transition of
+        # that rank and every sustained state.  These are the numbers
+        # DEVICE_SPEC publishes and f12h rules on.
+        worst_first_rail_node_step_V=_worst_step("first"),
+        worst_second_rail_node_step_V=_worst_step("second"),
+        declared_simultaneous_pair=dual_declared,
+        worst_permitted_single_rail_floor_gridded_V=enable_first_grid,
+        worst_permitted_dual_rail_floor_gridded_V=enable_second_grid,
+        transition_sweep_agrees_with_the_table=transitions_agree_with_the_table,
+        transition_sweep_first_rail_floor_gridded_V=round(
+            grid_up(floor_by_rank["first"]), 4),
+        reported_vcell_ceiling_V=reported_ceiling,
+        permission_table=permission_rows,
+        rail_edge_table=rail_rows,
+        mode_edge_table=mode_rows,
+        permitted_combinations=sum(1 for r in permission_rows
+                                   if r["permitted"]),
+        refused_combinations=sum(1 for r in permission_rows
+                                 if not r["permitted"]),
+        mode_names=list(MODE_NAMES),
+        astra_r1104_counterexample=astra_r1104,
+        transitions=transition_rows,
+        transitions_without_an_operating_point=unsupported,
+        invariant_states_checked=checked,
+        invariant_violations=violations[:20],
+        invariant_violation_count=len(violations),
+        every_granted_enable_survives_its_own_settled_state=bool(
+            not violations),
+        both_rail_orders_are_enumerated=bool(
+            {t["key"] for t in TRANSITIONS}
+            == {"first_rail_3v3", "first_rail_5v", "second_rail_5v",
+                "second_rail_3v3"}),
+        the_pre_state_is_the_adverse_lightest_one=bool(
+            all(t["pre"] == (0.0, 0.0) for t in TRANSITIONS)),
+        the_criterion_is_the_implemented_retention_floor=True,
         method=(
-            "RETENTION is the hard node floor: the BQ25185's own VBUVLO bound, "
-            "below which the BATFET disconnects and the product powers down, "
-            "plus the MAX17048's positive voltage error and one quantisation "
-            "step, because the firmware compares a REPORTED value.  ENABLE is "
-            "that floor PLUS THE NODE STEP THE NEW LOAD WILL CAUSE, worst case "
-            "over every declared state and every cell voltage -- D-779 named "
-            "the problem ('the permission was taken before the load existed') "
-            "and D-790 never quantified it, so its 3.85 V dual floor both "
-            "failed to anticipate the step AND sat above the node's attainable "
-            "range.  The shed order is unchanged: the 5 V rail goes first, "
-            "which restores the node by the second-rail step."))
+            "RETENTION is the hard node floor: the BQ25185's own VBUVLO "
+            "bound, below which the BATFET disconnects and the product powers "
+            "down, plus the MAX17048's positive voltage error and one "
+            "quantisation step, because the firmware compares a REPORTED "
+            "value.  PERMISSION is a TABLE over the observable mode set and "
+            "the rail count, and each floor is the reported pre-read -- taken "
+            "in the LIGHTEST reachable pre-state, which is the adverse one "
+            "because an idle plugged-in accessory holds the node near open "
+            "circuit -- below which the SETTLED post state could report under "
+            "the retention floor or violate a hardware limit.  D-791 derived "
+            "two scalars from a LOADED pre-state in ONE rail order against "
+            "VBUVLO rather than against its own retention rule, and Round-11 "
+            "reproduced an enable-then-shed case at its 3.55 V constant.  The "
+            "swept invariant above is what makes that impossible rather than "
+            "unlikely.  The shed order is unchanged: the 5 V rail goes first, "
+            "which restores the node."))
 
     ref_key = ara.SUSTAINED_REFERENCE_KEY
     ref = next((s for s in states if s["key"] == ref_key), None)
@@ -5452,6 +5979,96 @@ def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
     charge_split = ara.charge_regime_junction(
         charge_system_W, ambient_C=ambient_C,
         delivered_out_W=i3b * v_3v3_V + i5b * v_acc5v_V)
+
+    # ======================================================================
+    # D-792 / R11-03.  THE CHARGE REGIME HAS A LOAD CEILING, AND IT IS DERIVED.
+    #
+    # ROUND-11, IN ITS OWN WORDS: "Recompute charger/thermal/ambient limits; do
+    # not rely on thermal shutdown as normal control."
+    #
+    # IT IS RIGHT, AND THE PHYSICAL SOLVER IS WHAT MADE IT VISIBLE.  D-791's
+    # arithmetic priced the input path as IIN^2 x RON_IN and got 0.569 W.  The
+    # BQ25185's input path is not a resistor; it is a LINEAR PASS ELEMENT, and
+    # while the device supplements it is dropping VIN - VSYS across it.  At the
+    # reference state's own 5.65 W the solver puts SYS at 3.05 V against a
+    # 5.195 V VIN pin and the input FET dissipates 2.36 W in a DLH package with
+    # a 68.3 C/W JEDEC theta-JA.  That is a 161 K rise: the part would reach
+    # TSHUT and stop, which is protection acting as control -- exactly what
+    # R11-03 says must not be the answer.
+    #
+    # SO THE ANSWER IS A CEILING, NOT A PASS MARK.  The largest sustained
+    # SYSTEM POWER for which the half TREG cannot reduce stays inside TI's
+    # operating maximum is SOLVED here, and the states the product may be in
+    # while an adapter is attached are enumerated against it.
+    #
+    # AND IT CANNOT BE A FIRMWARE RULE, WHICH IS WHY IT IS A PUBLISHED ONE.
+    # This board has NO VBUS-present signal on any MCU or expander pin (D-776's
+    # bench-only register records `/01_POWER_TREE/VBUS_PRESENT` as probed at
+    # TP31.1 and reaching no readable pad), so the firmware cannot know an
+    # adapter is attached and must not pretend to.  The restriction is
+    # therefore of the same kind as the pouch's own charge window: a SUPERVISED
+    # operating condition, published in DEVICE_SPEC and in the first-article
+    # procedure, alongside the supervised first-five charging `battery_pack_
+    # contract` B8 already requires.
+    # ======================================================================
+    def charge_junction_at(system_W, delivered_W=0.0):
+        r = ara.charge_regime_junction(system_W, ambient_C=ambient_C,
+                                       delivered_out_W=delivered_W)
+        return r["junction_with_charge_folded_back_C"], r
+
+    _tj_max = ara.PACKAGE_JUNCTION["tj_operating_max_C"]
+    _lo, _hi = 0.0, charge_system_W
+    if charge_junction_at(_hi)[0] <= _tj_max:
+        charge_W_ceiling = _hi
+    elif charge_junction_at(_lo)[0] > _tj_max:
+        charge_W_ceiling = 0.0
+    else:
+        for _ in range(80):
+            _mid = 0.5 * (_lo + _hi)
+            if charge_junction_at(_mid)[0] <= _tj_max:
+                _lo = _mid
+            else:
+                _hi = _mid
+        charge_W_ceiling = _lo
+    # Which (state, accessory configuration) pairs fit under the ceiling.
+    charge_permitted, charge_refused = [], []
+    for _st in states:
+        for _name in PUBLISHED_LOADS:
+            _i3, _i5 = next((a, b) for n, a, b in LOADS if n == _name)
+            _sys_W = ((_st["internal_3v3_A"] + _i3) * v_3v3_V / ETA_U12
+                      + (_i5 * v_acc5v_V / ETA_U21 if _i5 else 0.0))
+            _tj, _r = charge_junction_at(_sys_W,
+                                        _i3 * v_3v3_V + _i5 * v_acc5v_V)
+            _row = dict(state=_st["key"], load=_name,
+                        system_W=round(_sys_W, 6),
+                        junction_with_charge_folded_back_C=_tj,
+                        mode=_r["mode"],
+                        internal_air_C=_r["internal_air_C"],
+                        charge_ambient_ceiling_C=_r[
+                            "charge_ambient_ceiling_C"])
+            (charge_permitted if _tj <= _tj_max
+             else charge_refused).append(_row)
+    charge_ceiling = dict(
+        tj_operating_max_C=_tj_max,
+        ambient_C=ambient_C,
+        system_W_ceiling=round(charge_W_ceiling, 6),
+        reference_state_system_W=round(charge_system_W, 6),
+        the_reference_state_is_inside_it=bool(
+            charge_system_W <= charge_W_ceiling + 1e-9),
+        permitted_while_charging=charge_permitted,
+        refused_while_charging=charge_refused,
+        the_quiet_state_with_no_accessory_is_permitted=bool(any(
+            r["state"] == "display_only" and r["load"] == "no_accessory"
+            for r in charge_permitted)),
+        there_is_no_vbus_present_signal=True,
+        why="TREG folds back the CHARGE current and nothing else.  The SYSTEM "
+            "load crosses the same package through a LINEAR input FET, and "
+            "once it exceeds the input current limit the battery supplements "
+            "through the BATFET as well.  This is the largest sustained system "
+            "power for which the half TREG cannot reach stays inside TI's "
+            "operating maximum -- a DERIVED, SUPERVISED restriction, not a "
+            "reliance on TSHUT.",
+        measurement_of_record="C-THERM-01 and C-PWR-CHARGE-01")
     out = dict(
         cell=dict(CELL), cell_max_ocv_V=CELL_MAX_OCV_V,
         cell_max_ocv_basis=CELL_MAX_OCV_BASIS,
@@ -5492,7 +6109,26 @@ def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
         charge_regime=charge_split)
     # ---- the clauses ----------------------------------------------------
     out["the_reference_state_is_supported_on_every_published_load"] = bool(
-        ref and all(ref["loads"][n]["supported"] for n, _, _ in LOADS))
+        ref and all(ref["loads"][n]["supported"] for n in PUBLISHED_LOADS))
+    out["published_loads"] = list(PUBLISHED_LOADS)
+    out["the_full_pair_is_reported_and_not_published"] = dict(
+        column="both_rails",
+        supported_in_the_reference_state=bool(
+            ref and ref["loads"]["both_rails"]["supported"]),
+        declared_pair=derived["declared_simultaneous_pair"],
+        why="retained as a REPORTED column and as a standing negative "
+            "control.  If R11-02's processor baseline or R11-07's itemised "
+            "battery path were ever quietly reverted this column would start "
+            "passing again, and `the_full_published_pair_is_refused` below is "
+            "what notices.")
+    out["the_full_published_pair_is_refused"] = dict(
+        ok=bool(ref and not ref["loads"]["both_rails"]["supported"]),
+        what="the FULL 400 mA + 300 mA pair, simultaneously, in the published "
+             "reference state, at the top of the declared ambient envelope",
+        ambient_ceiling_C=derived["declared_simultaneous_pair"][
+            "full_pair_ambient_ceiling_C"])
+    out["the_full_published_pair_is_refused_ok"] = bool(
+        out["the_full_published_pair_is_refused"]["ok"])
     out["published_accessory_budgets_are_unchanged"] = bool(
         abs(i3b - 0.400) < 1e-12 and abs(i5b - 0.300) < 1e-12)
     # THE ANTI-VACUITY CLAUSE.  A floor the node cannot reach authorises
@@ -5506,13 +6142,97 @@ def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
     top_both = solve(CELL_MAX_OCV_V, i3b, i5b,
                      always + sum(ara.SUSTAINED_OPTIONAL[m]
                                   for m in (ref or {"modes": []})["modes"]))
+    # D-792 / R11-04.  ATTAINABILITY IS NOW PER ROW AND PER EDGE.
+    #
+    # D-791's version of this clause compared TWO scalars against the node in
+    # ONE reference state, and that is how a 3.95 V rail-edge floor for the
+    # Wi-Fi state came within 5 mV of shipping: the scalar was attainable in
+    # `display_subghz` and unreachable in the state it actually governed.  The
+    # table derivation already refuses a row whose gridded floor exceeds the
+    # highest value the gauge can report in that row's OWN pre-state; this
+    # clause is the independent restatement of it, plus the two published
+    # scalars and the retention floor.
+    _unreachable = [dict(edge=r["edge"], modes=r["modes"], rails=r["rails"],
+                         floor_V=r["floor_gridded_V"],
+                         pre_state_ceiling_V=r["pre_state_reported_ceiling_V"])
+                    for r in derived["permission_table"]
+                    if r["permitted"] and r["floor_gridded_V"] is not None
+                    and r["pre_state_reported_ceiling_V"] is not None
+                    and r["floor_gridded_V"]
+                    > r["pre_state_reported_ceiling_V"] + 1e-12]
+    # ---- THE INDEPENDENT PATH.  Residuals over a spread of solved states.
+    _res_rows, _res_worst = [], 0.0
+    for _st in states:
+        _i = _st["internal_3v3_A"]
+        for _name in PUBLISHED_LOADS:
+            _i3, _i5 = next((a, b) for n, a, b in LOADS if n == _name)
+            for _tag, _s in (("at_a_full_cell",
+                              _st["loads"][_name]["at_a_full_cell"]),
+                             ("at_the_lowest_supported_cell",
+                              _st["loads"][_name][
+                                  "at_the_lowest_supported_cell"])):
+                _r = residuals(_s, _i3, _i5, _i)
+                if _r is None:
+                    continue
+                _mx = max(abs(v) for v in _r.values())
+                _res_worst = max(_res_worst, _mx)
+                _res_rows.append(dict(state=_st["key"], load=_name, where=_tag,
+                                      worst_abs_residual=_mx, residuals=_r))
+    _RES_TOL = 1e-6
+    out["the_operating_points_satisfy_their_own_equations"] = dict(
+        method="the D-792 exit criterion that an independent calculation path "
+               "must not simply call the same solver.  `solve` is a FIXED-POINT "
+               "ITERATION; these residuals re-check the DEFINING EQUATIONS of "
+               "each solved state with plain arithmetic -- KVL at the "
+               "measurement node and at SYS, power balance at the node, energy "
+               "balance for the enclosure, the channel resistance against its "
+               "own junction temperature, and the internal air against the "
+               "system thermal resistance.  A converged answer that is not a "
+               "solution would show up here and nowhere else.",
+        tolerance=_RES_TOL,
+        states_checked=len(_res_rows),
+        worst_absolute_residual=_res_worst,
+        rows_over_tolerance=[r for r in _res_rows
+                             if r["worst_abs_residual"] > _RES_TOL],
+        sample=_res_rows[:4],
+        ok=bool(_res_rows and _res_worst <= _RES_TOL))
+    # ...and the residual check has to BITE, or it is decorative.  A solved
+    # state is perturbed by 1 mV at the measurement node -- a thousand times the
+    # tolerance and a tenth of a gauge LSB, so it is a change the report itself
+    # could not distinguish from noise -- and every equation that depends on the
+    # node must move outside tolerance.
+    _probe = None
+    for _st in states:
+        _probe = _st["loads"]["no_accessory"]["at_a_full_cell"]
+        if _probe:
+            break
+    _perturbed = None
+    if _probe and "raw" in _probe:
+        _perturbed = residuals(
+            dict(_probe, raw=dict(_probe["raw"],
+                                  node_V=_probe["raw"]["node_V"] + 0.001)),
+            0.0, 0.0, states[0]["internal_3v3_A"])
+    out["the_residual_check_refuses_a_state_that_is_not_a_solution"] = dict(
+        perturbation="node_V + 1 mV on a converged state",
+        residuals=_perturbed,
+        worst_absolute_residual=(max(abs(v) for v in _perturbed.values())
+                                 if _perturbed else None),
+        ok=bool(_perturbed
+                and max(abs(v) for v in _perturbed.values()) > _RES_TOL),
+        why="a residual check that could not fail would be the same class of "
+            "defect R11-01 found in the pass-fet sensitivity: a control whose "
+            "output does not depend on its input.")
+    out["the_residual_check_refuses_a_state_that_is_not_a_solution_ok"] = bool(
+        out["the_residual_check_refuses_a_state_that_is_not_a_solution"]["ok"])
+    out["the_operating_points_satisfy_their_own_equations_ok"] = bool(
+        out["the_operating_points_satisfy_their_own_equations"]["ok"])
     out["firmware_floors_are_attainable"] = dict(
-        why="a floor above the node's own attainable range can never be "
-            "cleared, so it authorises nothing and sheds everything -- on a "
-            "FULL pack.  D-790's 3.85 V dual floor was such a number and no "
-            "clause could see it.  Each floor is compared with the node the "
-            "network actually produces in the state that floor governs, at "
-            "the highest open-circuit voltage the charger can put on the pack.",
+        why="a floor above what the gauge can report in the state that floor "
+            "governs can never be cleared, so it authorises nothing and sheds "
+            "everything -- on a FULL pack.  D-790's 3.85 V dual floor was such "
+            "a number and no clause could see it; D-791 replaced it with a "
+            "clause that looked at ONE reference state, and D-792's two-edge "
+            "table needs every row checked against its OWN pre-state.",
         reference_state=ref_key,
         node_unloaded_at_a_full_cell_V=(top_none or {}).get("node_V"),
         node_with_the_first_rail_at_a_full_cell_V=(top_a3 or {}).get("node_V"),
@@ -5520,30 +6240,58 @@ def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
         enable_first_rail_floor_V=derived["enable_first_rail_floor_gridded_V"],
         enable_second_rail_floor_V=derived["enable_second_rail_floor_gridded_V"],
         retention_floor_V=derived["retention_floor_gridded_V"],
-        ok=bool(top_none and top_a3 and top_both
-                and top_none["node_V"]
-                >= derived["enable_first_rail_floor_gridded_V"]
-                and top_a3["node_V"]
-                >= derived["enable_second_rail_floor_gridded_V"]
-                and top_both["node_V"]
-                >= derived["retention_floor_gridded_V"]))
+        permitted_rows=sum(1 for r in derived["permission_table"]
+                           if r["permitted"]),
+        rows_with_an_unreachable_floor=_unreachable,
+        the_retention_floor_is_reachable_with_both_rails_live=bool(
+            top_both is not None
+            and top_both["node_V"] >= derived["retention_floor_gridded_V"]),
+        the_published_scalars_are_reachable_somewhere=bool(
+            derived["enable_first_rail_floor_gridded_V"]
+            <= (derived["reported_vcell_ceiling_V"] or 0.0) + 1e-12
+            and derived["enable_second_rail_floor_gridded_V"]
+            <= (derived["reported_vcell_ceiling_V"] or 0.0) + 1e-12),
+        ok=bool(not _unreachable
+                and derived["permitted_combinations"] > 0
+                and top_none is not None
+                and derived["enable_first_rail_floor_gridded_V"]
+                <= (derived["reported_vcell_ceiling_V"] or 0.0) + 1e-12
+                and derived["enable_second_rail_floor_gridded_V"]
+                <= (derived["reported_vcell_ceiling_V"] or 0.0) + 1e-12))
     out["firmware_floors_are_attainable_ok"] = bool(
         out["firmware_floors_are_attainable"]["ok"])
     # AND THE NEGATIVE CONTROL: D-790's own declared state must be REFUSED,
     # so this clause cannot go quiet the way the one it replaces did.
     d790 = next((s for s in states if s["key"] == "d790_declared"), None)
+    # D-792: THE SUBJECT OF THIS CONTROL IS THE PUBLISHED SIMULTANEOUS LOAD,
+    # NOT THE RETIRED FULL PAIR.  Reading it off the `both_rails` column would
+    # make it unfalsifiable: that column is refused BY CONSTRUCTION now -- the
+    # full pair has no retainable state in ANY internal mode set -- so a clause
+    # anchored there could never flip and `f12a` could never prove it measures
+    # anything.  D-790's declared state is refused because it cannot carry
+    # ACCESSORY POWER AT ALL, on any published load, and that is what is
+    # asserted.
     out["the_d790_declared_state_is_refused"] = dict(
         state=(d790 or {}).get("what"),
         internal_3v3_A=(d790 or {}).get("internal_3v3_A"),
         both_rails_supported=bool(
             d790 and d790["loads"]["both_rails"]["supported"]),
+        declared_pair_supported=bool(
+            d790 and d790["loads"]["both_rails_at_the_declared_pair"][
+                "supported"]),
+        any_published_accessory_load_supported=bool(
+            d790 and any(d790["loads"][n]["supported"]
+                         for n in PUBLISHED_LOADS if n != "no_accessory")),
         why="D-790 published this as the sustained reference state and "
             "computed 1.70 A for it from an ideal-source formula.  Solved "
-            "through the real network it has no operating point with both "
-            "published accessory budgets at any attainable cell voltage.  If "
-            "a future change ever makes it supportable this clause will say "
-            "so rather than silently passing.",
-        ok=bool(d790 and not d790["loads"]["both_rails"]["supported"]))
+            "through the real network it carries NO accessory load at any "
+            "attainable cell voltage -- not both budgets, not the declared "
+            "simultaneous pair, not either rail alone.  If a future change "
+            "ever makes it carry one this clause will say so rather than "
+            "silently passing.",
+        ok=bool(d790 and not d790["loads"]["both_rails"]["supported"]
+                and not any(d790["loads"][n]["supported"]
+                            for n in PUBLISHED_LOADS if n != "no_accessory")))
     out["the_d790_declared_state_is_refused_ok"] = bool(
         out["the_d790_declared_state_is_refused"]["ok"])
     # THE CHARGE REGIME IS A CLAUSE, NOT A PARAGRAPH.  What TREG cannot reduce
@@ -5552,9 +6300,20 @@ def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
     # positive -- a supervised condition a human can observe, which is what
     # D790-A02 asks a declared restriction to be.
     out["the_charge_regime_is_bounded_in_the_half_treg_cannot_reach"] = dict(
-        charge_split,
-        ok=bool(charge_split["the_unregulated_half_is_inside_the_operating_maximum"]
-                and charge_split["charge_ambient_ceiling_C"] > 0.0))
+        charge_split, load_ceiling=charge_ceiling,
+        # THE CLAUSE IS ABOUT THE CEILING, NOT ABOUT ONE STATE.  A pass mark at
+        # the reference state would have hidden R11-03's finding; a ceiling
+        # with an enumerated permitted set states it.  What must hold is that a
+        # ceiling EXISTS, that the quiet no-accessory state is under it -- the
+        # product has to be chargeable at all -- and that the ambient at which
+        # the internal air reaches the pouch's own charge window is positive
+        # for every state the product declares chargeable.
+        ok=bool(charge_ceiling["system_W_ceiling"] > 0.0
+                and charge_ceiling[
+                    "the_quiet_state_with_no_accessory_is_permitted"]
+                and charge_ceiling["permitted_while_charging"]
+                and all(r["charge_ambient_ceiling_C"] > 0.0
+                        for r in charge_ceiling["permitted_while_charging"])))
     out["the_charge_regime_is_bounded_in_the_half_treg_cannot_reach_ok"] = bool(
         out["the_charge_regime_is_bounded_in_the_half_treg_cannot_reach"]["ok"])
     out["ok"] = bool(
@@ -5562,6 +6321,9 @@ def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
         and out["the_reference_state_is_supported_on_every_published_load"]
         and out["published_accessory_budgets_are_unchanged"]
         and out["firmware_floors_are_attainable_ok"]
+        and out["the_full_published_pair_is_refused_ok"]
+        and out["the_operating_points_satisfy_their_own_equations_ok"]
+        and out["the_residual_check_refuses_a_state_that_is_not_a_solution_ok"]
         and out["the_d790_declared_state_is_refused_ok"])
     return out["ok"], out
 
@@ -6088,6 +6850,93 @@ def main():
         enable_first_rail_floor_V=policy_single,
         enable_second_rail_floor_V=policy_dual)
     df = cell_net["derived_floors"]
+    # ---- D-792 / R11-04.  THE PERMISSION TABLE IS PINNED, ROW BY ROW.
+    #
+    # The two scalars above are the published ENVELOPE of the table; the
+    # firmware consults the TABLE, so the table is what has to be pinned.  The
+    # header carries sixteen values as eight `{one_rail, two_rails}` rows, and
+    # each is compared to what the derivation above produced -- including the
+    # SENTINEL rows, because a refusal encoded as a large number is the
+    # D790-A03 defect wearing a new hat.  The parse is deliberately literal: a
+    # row that stops being parseable fails rather than being skipped.
+    _sent = re.search(r"kAccessoryNotPermittedV\s*=\s*([0-9.]+)f", policy_text)
+    policy_sentinel = float(_sent.group(1)) if _sent else float("nan")
+
+    def _parse_rows(array_name):
+        src = re.search(
+            r"static const AccessoryPermissionRow %s\[8\] = \{(.*?)\n  \};"
+            % array_name, policy_text, re.S)
+        out = []
+        if not src:
+            return out
+        for line in src.group(1).splitlines():
+            m = re.search(
+                r"\{\s*([A-Za-z0-9_.]+f?)\s*,\s*([A-Za-z0-9_.]+f?)\s*\}", line)
+            if not m:
+                continue
+
+            def val(tok):
+                if tok.startswith("kAccessoryNotPermittedV"):
+                    return None
+                return float(tok.rstrip("f"))
+            out.append((val(m.group(1)), val(m.group(2))))
+        return out
+
+    _edges = (("rail", "kRailRows", df["rail_edge_table"]),
+              ("mode", "kModeRows", df["mode_edge_table"]))
+    _table_rows, _table_ok, _parsed = [], True, {}
+    for _edge, _array, _derived in _edges:
+        _fw_rows = _parse_rows(_array)
+        _parsed[_array] = len(_fw_rows)
+        _table_ok = _table_ok and len(_fw_rows) == 8
+        _by_bits = {}
+        for _r in _derived:
+            _by_bits.setdefault(_r["mode_bits"], {})[_r["rails"]] = (
+                _r["floor_gridded_V"] if _r["permitted"] else None)
+        for _bits in range(8):
+            _d = _by_bits.get(_bits, {})
+            _fw = _fw_rows[_bits] if _bits < len(_fw_rows) else (None, None)
+            _row = dict(edge=_edge, array=_array, mode_bits=_bits,
+                        modes=[m for m in df["mode_names"]
+                               if _bits & (1 << df["mode_names"].index(m))],
+                        firmware_one_rail_V=_fw[0],
+                        derived_one_rail_V=_d.get(1),
+                        firmware_two_rails_V=_fw[1],
+                        derived_two_rails_V=_d.get(2),
+                        ok=bool(_fw[0] == _d.get(1) and _fw[1] == _d.get(2)))
+            _table_ok = _table_ok and _row["ok"]
+            _table_rows.append(_row)
+    # AND THE TWO EDGES MUST NOT HAVE BEEN COLLAPSED.  If the mode edge ever
+    # equalled the rail edge everywhere, one of them would be wrong: the whole
+    # point is that a mode is entered from a lighter pre-state.
+    _edges_differ = any(
+        r["derived_one_rail_V"] is not None
+        and next((q["derived_one_rail_V"] for q in _table_rows
+                  if q["edge"] == "rail" and q["mode_bits"] == r["mode_bits"]),
+                 None) != r["derived_one_rail_V"]
+        for r in _table_rows if r["edge"] == "mode")
+    cell_net["firmware_permission_table_equals_the_derivation"] = dict(
+        file=str(POWER_POLICY.relative_to(ROOT)) if POWER_POLICY.exists() else None,
+        rows=_table_rows,
+        rows_parsed=_parsed,
+        sentinel_V=policy_sentinel,
+        sentinel_is_above_the_all_ones_code=bool(
+            math.isfinite(policy_sentinel) and policy_sentinel > 5.1199),
+        refused_rows=sum(1 for r in _table_rows
+                         if r["derived_one_rail_V"] is None),
+        the_two_edges_are_not_the_same_table=_edges_differ,
+        ok=bool(_table_ok and math.isfinite(policy_sentinel)
+                and policy_sentinel > 5.1199 and _edges_differ),
+        why="the firmware consults the TABLES, so the TABLES are pinned -- all "
+            "thirty-two values, sentinels included, on both arrival edges.  A "
+            "refusal encoded as a large float would read as a restriction and "
+            "behave as a rail that never turns on, which is D790-A03 exactly; "
+            "and two edges collapsed into one table is either unsound (the "
+            "mode edge granted on a floor derived from a heavier pre-state) "
+            "or unreachable (the rail edge held to a floor its own pre-state "
+            "cannot report).")
+    cell_net["firmware_permission_table_equals_the_derivation_ok"] = bool(
+        cell_net["firmware_permission_table_equals_the_derivation"]["ok"])
     cell_net["firmware_constants_equal_the_derivation"] = dict(
         retention=dict(firmware=policy_retention,
                        derived=df["retention_floor_gridded_V"]),
@@ -6129,12 +6978,38 @@ def main():
                                  % df["worst_second_rail_node_step_V"],
         "reference_state": "`%s`" % cell_net["reference_state_key"],
     }
-    _need["charge_ambient_ceiling"] = "**%.1f \u00b0C**" % charge_split[
-        "charge_ambient_ceiling_C"]
-    _need["charge_junction_folded_back"] = "**%.1f \u00b0C**" % charge_split[
+    # ---- D-792 / R11-03 + R11-04.  WHAT THE DOCUMENT NOW HAS TO CARRY.
+    #
+    # D-791 required DEVICE_SPEC to print the charge regime's junction and
+    # ambient AT THE REFERENCE STATE, and with the physical solver in place
+    # that junction is 225.8 C -- a state the part cannot be in.  Publishing it
+    # as a headline would be publishing a thermal shutdown as an operating
+    # point, which is precisely what R11-03 forbids.  What the document must
+    # carry instead is the DERIVED CEILING and the state that sits under it:
+    # the heaviest permitted-while-charging combination, its junction, and the
+    # supervised ambient at which the internal air reaches the pouch's own
+    # charge window.
+    _cc = cell_net["the_charge_regime_is_bounded_in_the_half_treg_cannot_reach"][
+        "load_ceiling"]
+    _need["charge_system_W_ceiling"] = "**%.3f W**" % _cc["system_W_ceiling"]
+    _heaviest = max(_cc["permitted_while_charging"], key=lambda r: r["system_W"])
+    _need["charge_heaviest_permitted_state"] = "`%s` + `%s`" % (
+        _heaviest["state"], _heaviest["load"])
+    _need["charge_junction_folded_back"] = "**%.1f \u00b0C**" % _heaviest[
         "junction_with_charge_folded_back_C"]
+    _need["charge_ambient_ceiling"] = "**%.1f \u00b0C**" % _heaviest[
+        "charge_ambient_ceiling_C"]
+    # ...and the DECLARED SIMULTANEOUS PAIR, which is the new product contract.
+    _dp = df["declared_simultaneous_pair"]
+    _need["declared_simultaneous_pair"] = "**%d mA** + **%d mA**" % (
+        round(_dp["acc_3v3_A"] * 1000), round(_dp["acc_5v_A"] * 1000))
+    _need["full_pair_ambient_ceiling"] = "**%.1f \u00b0C**" % _dp[
+        "full_pair_ambient_ceiling_C"]
+    # Each state's cell floor is quoted for the SIMULTANEOUS load the product
+    # publishes -- the declared pair -- and the FULL pair's refusal is a
+    # separate, explicit statement.
     for _st in cell_net["states"]:
-        _b = _st["loads"]["both_rails"]
+        _b = _st["loads"]["both_rails_at_the_declared_pair"]
         _need["cell_floor_" + _st["key"]] = (
             "**%.3f V**" % _b["lowest_supported_cell_ocv_V"]
             if _b["supported"] else "**not supported**")
@@ -6153,7 +7028,70 @@ def main():
         cell_net["published_policy_is_printed_in_device_spec"]["ok"])
     cell_net_ok = cell_net_ok and cell_net[
         "published_policy_is_printed_in_device_spec_ok"]
+
+    # ---- D-792 / R11-05.  THE FAB NOTES ARE NORMATIVE PROSE TOO, AND NOTHING
+    # WAS READING THEM.
+    #
+    # ROUND-11, IN ITS OWN WORDS: "Current FAB notes still contain old accessory
+    # delivery numbers and old sustained/thermal claims.  Prefer generated
+    # normative values from canonical model outputs rather than hand-repeating
+    # calculated numbers."
+    #
+    # THE SHAPE IS THE ONE THIS PROGRAMME HAS NOW HIT THREE TIMES.  R7-N04 found
+    # a contract that lived only in a gate; D-789 / R8-N06 found one that lived
+    # only in a document; R10-N04 found the first-article procedure choosing
+    # bench voltages from floors that had been retired.  Each was fixed for ONE
+    # file.  `AQROOT_DEMO_FAB_HANDOFF.md` is the document a fabricator and an
+    # assembler actually read first, and no clause had ever looked at it.  It
+    # does now, with the same rule: every value below is FORMATTED FROM THE
+    # COMPUTED ONE, so a derivation that moves drags the handoff with it.
+    _fab_doc = ROOT / "docs/full-beta-v2/AQROOT_DEMO_FAB_HANDOFF.md"
+    _fab_txt = (_fab_doc.read_text(encoding="utf-8", errors="replace")
+                if _fab_doc.exists() else "")
+    _up = apm.upstream_report()
+    _fab_need = {
+        "retention_floor": "**%.2f V**" % df["retention_floor_gridded_V"],
+        "enable_first_rail_floor": "**%.2f V**"
+                                   % df["enable_first_rail_floor_gridded_V"],
+        "enable_second_rail_floor": "**%.2f V**"
+                                    % df["enable_second_rail_floor_gridded_V"],
+        "declared_simultaneous_pair": "**%d mA + %d mA**" % (
+            round(_dp["acc_3v3_A"] * 1000), round(_dp["acc_5v_A"] * 1000)),
+        "full_pair_ambient_ceiling": "**%.1f \u00b0C**"
+                                     % _dp["full_pair_ambient_ceiling_C"],
+        "internal_3v3_peak_envelope": "**%.6f A**" % apm.peak_A(),
+        "harness_itemised_max": "**%.3f m\u03a9**"
+                                % (_up["harness_hot_aged_max_ohm"] * 1000.0),
+        "upstream_fixed_max": "**%.3f m\u03a9**"
+                              % (_up["fixed_series_max_ohm"] * 1000.0),
+        "charge_system_W_ceiling": "**%.3f W**" % _cc["system_W_ceiling"],
+        "charge_junction_folded_back": "**%.1f \u00b0C**" % _heaviest[
+            "junction_with_charge_folded_back_C"],
+        "charge_ambient_ceiling": "**%.1f \u00b0C**" % _heaviest[
+            "charge_ambient_ceiling_C"],
+        "backlight_inductor_dcr_max": "**%.1f m\u03a9**" % (
+            apm.BACKLIGHT_BOOST["inductor_dcr_ohm"] * 1000.0),
+    }
+    _fab_missing = sorted(k for k, t in _fab_need.items()
+                          if t not in _fab_txt)
+    cell_net["published_policy_is_printed_in_the_fab_handoff"] = dict(
+        document=str(_fab_doc.relative_to(ROOT)),
+        required=_fab_need, missing=_fab_missing,
+        ok=bool(_fab_txt) and not _fab_missing,
+        method="R11-05.  The document a fabricator reads FIRST had never been "
+               "read by a gate.  Every value here is formatted from the "
+               "canonical model's own output, so the handoff cannot carry a "
+               "retired accessory-delivery figure or a retired thermal claim "
+               "as CURRENT text.  Historical values remain legal below an "
+               "explicit HISTORICAL banner; this clause is about the current "
+               "block.")
+    cell_net["published_policy_is_printed_in_the_fab_handoff_ok"] = bool(
+        cell_net["published_policy_is_printed_in_the_fab_handoff"]["ok"])
+    cell_net_ok = cell_net_ok and cell_net[
+        "published_policy_is_printed_in_the_fab_handoff_ok"]
     cell_net_ok = cell_net_ok and cell_net["firmware_constants_equal_the_derivation_ok"]
+    cell_net_ok = cell_net_ok and cell_net[
+        "firmware_permission_table_equals_the_derivation_ok"]
 
     # ---- R10-N04, FOUND AT THE D-791 CLOSEOUT.  THE PROCEDURE A TECHNICIAN
     # ACTUALLY EXECUTES QUOTES THESE FLOORS TOO, AND NOTHING READ IT.
@@ -6277,8 +7215,26 @@ def main():
         # a property of the PHYSICS, not a hard-coded verdict: give the board a
         # pass pair an order of magnitude better and the same state becomes
         # supportable, which proves the clause is measuring something.
+        # D-792 RE-AIMED THIS, AND THE RE-AIM IS THE FINDING.  A better pass
+        # pair ALONE no longer flips the refusal, because with R11-07's itemised
+        # battery path and R11-02's processor baseline the binding limit at
+        # D-790's declared state is no longer the pass pair at all -- it is the
+        # enclosure's internal air against the pouch's own discharge window.
+        # The subject is also corrected: the clause now asks whether the state
+        # can carry ANY published accessory load, not just the retired full
+        # pair -- a column that is refused by construction could never flip and
+        # would make this control unfalsifiable.  THREE perturbations are run,
+        # and each one flips the verdict on its own, which is what makes the
+        # refusal a measurement of the physics rather than a hard-coded verdict:
+        # a pass pair an order of magnitude better, a 0 C ambient, and both.
         f12a_the_d790_refusal_is_physics_not_a_hard_coded_verdict=bool(
+            not _cell(pass_pair=_better_pair, ambient_C=0.0)[1][
+                "the_d790_declared_state_is_refused_ok"]),
+        f12a2_a_better_pass_pair_alone_flips_it=bool(
             not _cell(pass_pair=_better_pair)[1][
+                "the_d790_declared_state_is_refused_ok"]),
+        f12a3_a_cool_ambient_alone_flips_it=bool(
+            not _cell(ambient_C=0.0)[1][
                 "the_d790_declared_state_is_refused_ok"]),
         # ...and a materially worse pass pair must take the REFERENCE state
         # down with it.
@@ -6309,10 +7265,26 @@ def main():
                     - GAUGE_VERR_V - GAUGE_LSB_V) < 1e-6),
         # ...and each ENABLE floor must genuinely anticipate its own rail's
         # node step rather than collapsing onto the retention floor.
+        #
+        # D-792 RE-AIMED THE SECOND HALF.  D-791 asserted that the SECOND-rail
+        # step is larger than the first, which was true when the second-rail
+        # post state was both rails at their FULL published budgets.  It is no
+        # longer: the second-rail post state is the DECLARED PAIR -- 220 mA +
+        # 170 mA -- which is a LIGHTER load than one rail at its full 400 mA, so
+        # the second step is legitimately the smaller of the two.  Asserting the
+        # old ordering would now be asserting an arithmetic accident.  What
+        # remains load-bearing is that BOTH steps are real, that neither has
+        # collapsed onto the retention floor, and that the two are DISTINCT --
+        # an identical pair would mean one of them was not being solved.
         f12h_each_enable_floor_anticipates_its_own_rail_step=bool(
             df["worst_first_rail_node_step_V"] > 0.05
-            and df["worst_second_rail_node_step_V"]
-            > df["worst_first_rail_node_step_V"]))
+            and df["worst_second_rail_node_step_V"] > 0.05
+            and abs(df["worst_second_rail_node_step_V"]
+                    - df["worst_first_rail_node_step_V"]) > 1e-6
+            and df["enable_first_rail_floor_gridded_V"]
+            > df["retention_floor_gridded_V"] + 0.05
+            and df["enable_second_rail_floor_gridded_V"]
+            > df["retention_floor_gridded_V"] + 0.05))
     cell_net_ok = cell_net_ok and all(cell_net_controls.values())
 
     # ---- D-787 / R6-E07: THE AMPACITY AUDIT'S DESIGN CURRENTS ARE A COPY --
@@ -6646,39 +7618,92 @@ def main():
 
     # ---- D-791 / D790-A04.  THE DECLARED PANEL ALLOWANCE GETS A SENSITIVITY.
     #
-    # Round-10 asks for an exact ER-TFT035IPS-6 / FT6236 active-current figure
-    # "if possible", and it is not: every fetch this environment can make
-    # returns 403 (recorded in evidence/d791-eastrising-fetch-attempts.json).
-    # What it asks for instead is "a defensible conservative allowance /
-    # sensitivity and bounded operating envelope".  The bounded envelope is
-    # F12's supported-concurrency table; this is the sensitivity.  It is
-    # REPORTED, not ruled on -- the point is that a reader can see how much of
-    # the answer rests on the declared line.
+    # Round-10 asked for an exact ER-TFT035IPS-6 / FT6236 active-current figure
+    # "if possible", and D-791 answered that the document could not be fetched:
+    # "HTTP 403 on every route tried".
+    #
+    # D-792 CORRECTS THAT, AND THE CORRECTION MAKES THE ALLOWANCE STRONGER
+    # RATHER THAN REMOVING IT.  The module datasheet retrieved with HTTP 200 at
+    # D-792 and is now archived in the repository.  Reading it is how this clause
+    # goes from "we could not obtain the document" -- a statement about this
+    # environment -- to "the manufacturer does not publish the number" -- a
+    # statement about the evidence.  Section 4.3's Electrical Characteristics
+    # table carries VCI 2.5/2.8/3.3 V and VDDI 1.65/2.8/3.3 V and no supply
+    # current at all, and section 4.4 gives the backlight string (Vf 3.2 V MAX
+    # at If = 120 mA, Ipn 110 MIN / 120 mA TYP) which the converter model now
+    # cites as PRIMARY.  The allowance therefore stands, as a DECLARED_ESTIMATE
+    # with a first-article measurement of record, and what Round-10 asked for
+    # instead -- "a defensible conservative allowance / sensitivity and bounded
+    # operating envelope" -- is below.  The bounded envelope is F12's
+    # supported-concurrency table; this is the sensitivity, taken against the
+    # CONFORMING bound because that is the one TI's 2 A figure governs.
     env["panel_logic_allowance_sensitivity"] = dict(
         declared_mA=PANEL_LOGIC_DECLARED_mA,
-        why_declared="ILI Technology's ILI9488 datasheet publishes Sleep-in "
-                     "100 uA and Deep Standby 1 uA and NO active-mode supply "
-                     "current; the EastRising module specification is not "
-                     "obtainable from this environment (HTTP 403 on every "
-                     "route tried, recorded in evidence/"
-                     "d791-eastrising-fetch-attempts.json)",
+        why_declared="the EastRising ER-TFT035IPS-6 module specification IS "
+                     "obtainable -- D-792 retrieved it with HTTP 200 and "
+                     "archived it, with the fetch recorded in evidence/"
+                     "d792-vendor-fetch-attempts.json -- and it publishes NO "
+                     "active-mode supply current for the panel: section 4.3 "
+                     "carries VCI 2.5/2.8/3.3 V and VDDI 1.65/2.8/3.3 V and "
+                     "nothing else.  ILI Technology's own ILI9488 datasheet "
+                     "publishes Sleep-in 100 uA and Deep Standby 1 uA and no "
+                     "active-mode current either.  D-791 recorded this "
+                     "document as unobtainable (HTTP 403); that was a "
+                     "statement about the environment and it was wrong.",
+        module_datasheet="hardware/demo/kicad/aqroot-demo/vendor/EASTRISING/"
+                         "eastrising-er-tft035ips-6-datasheet.pdf",
+        module_datasheet_sha256="28c07dae0c3ada133d0765167d38ae71b0f76fb9e94a1"
+                                "8c00d96bb77682334ac",
+        module_publishes_an_active_supply_current=False,
         cases={
             ("%.1fx" % k): dict(
                 panel_logic_mA=round(PANEL_LOGIC_DECLARED_mA * k, 4),
                 internal_3v3_A=round(
                     I_INTERNAL + PANEL_LOGIC_DECLARED_mA * (k - 1) / 1000.0, 6),
-                u12_worst_case_load_A=round(
+                u12_conforming_worst_case_A=round(
+                    I_INTERNAL + PANEL_LOGIC_DECLARED_mA * (k - 1) / 1000.0
+                    + env["rails_A"]["ACC_3V3"]["published_budget_A"], 6),
+                u12_fault_coincidence_A=round(
                     I_INTERNAL + PANEL_LOGIC_DECLARED_mA * (k - 1) / 1000.0
                     + env["rails_A"]["ACC_3V3"]["ilim_max"], 6),
+                # The sensitivity is taken against the CONFORMING bound, which
+                # is the one TI's 2 A figure governs; the fault coincidence is
+                # reported beside it and bounded by U12's own switch limit.
                 still_inside_u12_rating=bool(
                     I_INTERNAL + PANEL_LOGIC_DECLARED_mA * (k - 1) / 1000.0
-                    + env["rails_A"]["ACC_3V3"]["ilim_max"] <= U12_IOUT_A))
+                    + env["rails_A"]["ACC_3V3"]["published_budget_A"]
+                    <= U12_IOUT_A),
+                fault_coincidence_inside_the_devices_own_limit=bool(
+                    I_INTERNAL + PANEL_LOGIC_DECLARED_mA * (k - 1) / 1000.0
+                    + env["rails_A"]["ACC_3V3"]["ilim_max"]
+                    <= env["converter_capability_A"][
+                        "u12_switch_limited_capability_A"]))
             for k in (1.0, 1.5, 2.0)},
         measurement_of_record="C-DISP-01",
         note="the declared line is about 2x what a 3.5 in ILI9488 module of "
              "this class draws.  At 1.5x the derived envelope still closes; "
              "at 2x it does not, and that is exactly the size of the "
              "dependency C-DISP-01 exists to remove.")
+    # ...and the archived document is HASHED, so the citation cannot rot the way
+    # the "HTTP 403" sentence did.  A cited datasheet that is not in the tree, or
+    # is a different file, is a citation this repository cannot stand behind.
+    _mod_pdf = (ROOT / "hardware/demo/kicad/aqroot-demo/vendor/EASTRISING"
+                / "eastrising-er-tft035ips-6-datasheet.pdf")
+    _mod_expect = ("28c07dae0c3ada133d0765167d38ae71b0f76fb9e94a18c00d96bb77"
+                   "682334ac")
+    _mod_actual = (hashlib.sha256(_mod_pdf.read_bytes()).hexdigest()
+                   if _mod_pdf.exists() else None)
+    env["panel_module_datasheet_is_archived"] = dict(
+        path=str(_mod_pdf.relative_to(ROOT)),
+        expected_sha256=_mod_expect, actual_sha256=_mod_actual,
+        ok=bool(_mod_actual == _mod_expect),
+        why="D-791 recorded this document as unobtainable and derived a "
+            "DECLARED allowance on that basis.  It is obtainable; D-792 "
+            "retrieved and archived it.  The hash is here so the citation is a "
+            "fact about the tree rather than a sentence about a past fetch.")
+    env["panel_module_datasheet_is_archived_ok"] = bool(
+        env["panel_module_datasheet_is_archived"]["ok"])
+    env_ok = env_ok and env["panel_module_datasheet_is_archived_ok"]
     env["p3v3_internal_budget"] = budget
     env["internal_3v3_A"] = I_INTERNAL
     env["every_fitted_p3v3_consumer_is_budgeted"] = budget[
@@ -6806,13 +7831,27 @@ def main():
         return name, not ok
 
     env_controls.update(dict((
-        # f6v IS THE POLICY THE PRE-D-775 FIRMWARE SHIPPED: one 3.50 V floor
-        # for both rails, which at the published 400 + 300 mA leaves 0.36 % of
-        # margin to a RECOVERABLE charger trip on the live resistances and is
-        # NEGATIVE on the declared ceilings.
+        # f6v WAS "refuses one 3.50 V floor for both D-098 rails", and D-792
+        # RE-AIMED IT -- which is itself worth recording.  The two published
+        # enable numbers are now the ENVELOPE of a TABLE and they legitimately
+        # COINCIDE, because the two-rail case is the DERATED pair and therefore
+        # a lighter load than one rail at its full published budget.  A control
+        # that set `dual_floor = policy_single` had become the identity, and an
+        # identity mutation refuses nothing.  What F6 still owns about these two
+        # numbers is their ORDERING; their VALUES are pinned row by row against
+        # the derivation by F12's `firmware_permission_table_equals_the_
+        # derivation`, and by the six negative controls in
+        # `firmware_hw_map_contract`'s POWER_POLICY_CONTROLS.
         _env_policy_control(
-            "f6v_refuses_one_enable_floor_for_both_D098_rails",
-            dual_floor=policy_single),
+            "f6v_refuses_a_dual_envelope_below_the_single_one",
+            dual_floor=round(policy_single - FLOOR_GRID_V, 4)),
+        # ...and an enable envelope that collapses onto the retention floor,
+        # which is what D-790 shipped and what D-791's third constant exists to
+        # keep apart.
+        _env_policy_control(
+            "f6v2_refuses_an_enable_envelope_at_the_retention_floor",
+            single_floor=policy_retention,
+            dual_floor=policy_retention),
         # f6w WAS "refuses the first D-775 draft's asserted 3.75 V", and D-788
         # RE-AIMED IT TWICE -- which is itself the finding.  Capping the main
         # rail at the display's 3.3 V absolute maximum LOWERED the rail, which
@@ -7343,7 +8382,31 @@ def main():
          not judge_part_source_identity(_src_rows, exempt={})[0]),
         # ...and it is NARROW: exempting nothing else changes nothing.
         ("f13g_no_other_reference_is_exempt",
-         set(PART_SOURCE_EXEMPT) == {"J4"})))
+         set(PART_SOURCE_EXEMPT) == {"J4"}),
+        # ---- D-792 / R11-09.  THE LEGAL-FORM FOLD, AND ITS LIMITS. ---------
+        # Round-11 found the canonicaliser reading `PUI Audio, Inc.` -- the
+        # spelling the live distributor record prints -- as a DIFFERENT company
+        # from `PUI Audio`.  The fold now drops a trailing legal form and any
+        # comma, and NOTHING ELSE, so these four claims are the whole of it:
+        # the legitimate spelling agrees, the fold is not company-specific, a
+        # bare legal form is not a company, and two genuinely different
+        # manufacturers still contradict.
+        ("f13h_pui_audio_inc_is_the_same_company_as_pui_audio",
+         canonical_manufacturer("PUI Audio, Inc.")
+         == canonical_manufacturer("PUI Audio") == "pui audio"),
+        ("f13i_the_legal_form_fold_is_general_not_a_one_off_alias",
+         canonical_manufacturer("Bourns, Inc.") == "bourns"
+         and canonical_manufacturer("Molex LLC") == "molex"
+         and canonical_manufacturer("Coilcraft, Inc") == "coilcraft"),
+        ("f13j_a_bare_legal_form_is_not_folded_to_nothing",
+         canonical_manufacturer("Inc.") == "inc"),
+        ("f13k_two_different_manufacturers_still_contradict",
+         canonical_manufacturer("PUI Audio, Inc.")
+         != canonical_manufacturer("Panasonic Corporation")
+         and canonical_manufacturer("Molex LLC")
+         != canonical_manufacturer("JST Co., Ltd.")
+         and canonical_manufacturer("Vishay Intertechnology")
+         != canonical_manufacturer("Viking Tech Corporation"))))
 
     # ---- D-789 / F-N01 + R8-N01: the battery pass pair --------------------
     _bat_rail = next((r for r in ara.RAILS

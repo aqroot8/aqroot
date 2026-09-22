@@ -1,0 +1,41 @@
+{
+ "attempts": [
+  {
+   "detail": "The read operation timed out",
+   "key": "molex_5055700003_PS",
+   "outcome": "TimeoutError",
+   "status": null,
+   "url": "https://www.molex.com/content/dam/molex/molex-dot-com/products/automated/en-us/productspecificationpdf/505/505570/5055700003-PS-000.pdf",
+   "why": "Micro-Lock Plus 2.00 mm wire-to-wire product specification 5055700003-PS Rev A6: the document the archived transcription came from, re-fetched to look for a low-level contact-resistance (LLCR) row that the transcription does not carry."
+  },
+  {
+   "detail": "The read operation timed out",
+   "key": "molex_5055701001_PS",
+   "outcome": "TimeoutError",
+   "status": null,
+   "url": "https://www.molex.com/content/dam/molex/molex-dot-com/products/automated/en-us/productspecificationpdf/505/505570/5055701001-PS-000.pdf",
+   "why": "The wire-to-board sibling specification the Round-3 note quotes for a 2.6 A AWG26 rating; fetched to cross-check the LLCR question."
+  },
+  {
+   "detail": "HTTP Error 404: Not Found",
+   "key": "coilcraft_xfl4020",
+   "outcome": "HTTP_ERROR",
+   "status": 404,
+   "url": "https://www.coilcraft.com/getmedia/32b1a53e-e6c9-4f3d-8d63-4e05fb6dbbdf/xfl4020.pdf",
+   "why": "XFL4020 family datasheet: fetched to read the AC-loss curve numerically rather than carrying a declared 30 % core-loss fraction."
+  },
+  {
+   "bytes": 400000,
+   "content_type": "application/pdf",
+   "key": "eastrising_er_tft035ips6",
+   "outcome": "RETRIEVED",
+   "status": 200,
+   "url": "https://www.buydisplay.com/download/manual/ER-TFT035IPS-6_Datasheet.pdf",
+   "why": "ER-TFT035IPS-6 module specification: the active-mode supply current the panel allowance is DECLARED for."
+  }
+ ],
+ "decision": "D-792",
+ "rule": "a value this repository could not fetch is tagged DECLARED_ESTIMATE with a stated basis, a widening factor and a first-article measurement of record -- never GUARANTEED_MAX.",
+ "schema": 1,
+ "what_this_is": "every attempt this environment made to retrieve a PRIMARY vendor document that a D-792 DECLARED_ESTIMATE stands in place of.  A declared allowance is only honest if the attempt to replace it with a published number is on the record, and R11-06 asks for exactly that."
+}

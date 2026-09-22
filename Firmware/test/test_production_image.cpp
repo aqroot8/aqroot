@@ -247,6 +247,10 @@ int main() {
     claim("cold boot never commanded a QuickStart",
           (g_board.mode & Max17048Guard::kModeQuickStartMask) == 0);
     // ASTRA 5: the reset-release diagnostic must report from the latch.
+    // D-792 / R11-04.  THE GATE IS WIRED, AND THE IMAGE SAYS SO.
+    claim("setup() wires the SPI-B sub-GHz transmit gate to the app",
+          rec().consoleHas("[PASS] SPI-B sub-GHz transmit gate wired to the "
+                           "accessory permission table"));
     claim("the image reports the reset release as CONFIRMED",
           rec().consoleHas("CONFIRMED from U2 output latch"));
     claim("...and the three reset lines really are released",

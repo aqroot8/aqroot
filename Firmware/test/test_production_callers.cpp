@@ -235,12 +235,112 @@ int main() {
     // The floors themselves, reached through the production caller.
     Rig r;
     r.bringUp();
-    r.bus.vcell_counts = uint16_t(3.60f / Max17048Guard::kVcellLsbV);
-    claim("3.60 V permits a single rail", r.app.accessoryBatteryAllows(false));
-    claim("3.60 V refuses the second rail", !r.app.accessoryBatteryAllows(true));
+    r.bus.vcell_counts = uint16_t(3.70f / Max17048Guard::kVcellLsbV);
+    claim("3.70 V permits a single rail", r.app.accessoryBatteryAllows(false));
+    claim("3.70 V permits the second rail too, because the D-792 dual floor "
+          "is the DERATED pair and not two full budgets",
+          r.app.accessoryBatteryAllows(true));
+    // D-792 / R11-04.  ASTRA'S REPRODUCED CASE, THROUGH THE PRODUCTION CALLER.
+    // D-791's own `kAccessorySingleRailFloorV` was 3.55 V and the image granted
+    // at it; the corrected floor is 3.65 V and the caller has to refuse.
+    r.bus.vcell_counts = uint16_t(3.55f / Max17048Guard::kVcellLsbV);
+    claim("R11-04: a reported 3.55 V no longer enables a rail",
+          !r.app.accessoryBatteryAllows(false));
     r.bus.vcell_counts = 0xFFFF;
     claim("the all-ones VCELL code is refused",
           !r.app.accessoryBatteryAllows(false));
+  }
+  // =========================================================================
+  // D-792 / R11-04.  THE MODE EDGE, THROUGH THE PRODUCTION CALLERS.
+  //
+  // The permission table is indexed by the observable mode set, so the image
+  // has to (a) report the mode set it is actually in, (b) refuse a MODE it
+  // cannot afford while an accessory rail is live, and (c) refuse the rail once
+  // the mode is on.  All three are driven here rather than asserted.
+  // =========================================================================
+  {
+    Rig r;
+    r.bringUp();
+    r.bus.vcell_counts = uint16_t(4.10f / Max17048Guard::kVcellLsbV);
+    claim("with no rail on, the amplifier may be energised at 4.10 V",
+          r.app.setAmplifierIntent(true));
+    claim("...and the app now reports the amplifier as ON",
+          r.app.accessoryLoadState().amplifier_on);
+    claim("...and the 3.3 V rail is still permitted at 4.10 V with it on",
+          r.app.accessoryBatteryAllows(false));
+    claim("the amplifier goes back off", !r.app.setAmplifierIntent(false)
+          || !r.app.accessoryLoadState().amplifier_on);
+  }
+  {
+    // D-792 / R11-04.  AN UNKNOWN AMPLIFIER LATCH COUNTS AS ON.
+    //
+    // `amplifierConfirmed(true)` is false both when the amplifier is off and
+    // when U2's output shadow is UNKNOWN -- the state a NACKed write leaves --
+    // so reading the mode set through it would understate the load exactly when
+    // the amplifier may already be energised.  The reading is
+    // `!amplifierConfirmed(false)`, and this drives the difference.
+    Rig r;
+    r.bringUp();
+    r.bus.vcell_counts = uint16_t(4.10f / Max17048Guard::kVcellLsbV);
+    claim("a healthy board reports the amplifier OFF",
+          !r.app.accessoryLoadState().amplifier_on);
+    claim("the 3.3 V rail goes on", r.app.handleAccessoryConsole('3'));
+    r.bus.fail_address = AQROOT_EXP_U2_ADDR;
+    (void)r.app.setAmplifierIntent(true);      // NACKs; U2's shadow is now void
+    claim("a NACKed U2 write leaves the output shadow UNKNOWN",
+          !r.expanders.u2().outputShadowValid());
+    claim("...and an UNKNOWN amplifier latch counts as ON, not as OFF",
+          r.app.accessoryLoadState().amplifier_on);
+    r.bus.fail_address = -1;
+    r.bus.vcell_counts = uint16_t(3.70f / Max17048Guard::kVcellLsbV);
+    claim("...so a 3.70 V pack that would permit a quiet second rail refuses "
+          "it while the amplifier state is unknown",
+          !r.app.accessoryBatteryAllows(true));
+  }
+  {
+    Rig r;
+    r.bringUp();
+    // 3.70 V is above the quiet single-rail floor (3.65 V) and BELOW the
+    // amplifier one (3.75 V), so the rail may go on and the mode may not.
+    r.bus.vcell_counts = uint16_t(3.70f / Max17048Guard::kVcellLsbV);
+    claim("the 3.3 V rail goes on at 3.70 V", r.app.handleAccessoryConsole('3'));
+    claim("...and is retained", r.app.acc3v3());
+    // 3.70 V clears the quiet rail-edge floor (3.65 V) and misses the
+    // amplifier MODE-edge floor (3.75 V): the rail may go on, the mode may not.
+    claim("the amplifier is REFUSED at 3.70 V with a rail live",
+          !r.app.setAmplifierIntent(true));
+    claim("...and the refusal leaves the amplifier OFF, not pending-on",
+          !r.app.accessoryLoadState().amplifier_on);
+    claim("...and says so", logHas("AMP_SD_MODE enable REFUSED"));
+    claim("a sub-GHz transmit is REFUSED at 3.70 V with a rail live -- its "
+          "mode-edge floor is 3.80 V",
+          !r.app.subGhzTransmitPermitted());
+    claim("...and the app still reports no sub-GHz transmission",
+          !r.app.subGhzTransmitting());
+  }
+  {
+    Rig r;
+    r.bringUp();
+    r.bus.vcell_counts = uint16_t(4.10f / Max17048Guard::kVcellLsbV);
+    claim("the 3.3 V rail goes on at 4.10 V", r.app.handleAccessoryConsole('3'));
+    // Wi-Fi + sub-GHz is one of the six combinations with NO attainable VCELL.
+    r.app.noteWifiRadioActive(true);
+    claim("with Wi-Fi active, sub-GHz is refused even on a nearly full pack",
+          !r.app.subGhzTransmitPermitted());
+    claim("...and the log says there is no attainable VCELL rather than "
+          "quoting a floor",
+          logHas("NO attainable VCELL"));
+    claim("...and Wi-Fi ALONE raises the rail floor to 3.95 V rather than "
+          "refusing outright",
+          r.app.accessoryBatteryAllows(true));
+    r.bus.vcell_counts = uint16_t(3.70f / Max17048Guard::kVcellLsbV);
+    claim("...so a 3.70 V pack that would permit a quiet rail refuses it with "
+          "Wi-Fi active -- the Wi-Fi rail-edge floor is 3.75 V",
+          !r.app.accessoryBatteryAllows(true));
+    r.bus.vcell_counts = uint16_t(4.10f / Max17048Guard::kVcellLsbV);
+    r.app.noteWifiRadioActive(false);
+    claim("with Wi-Fi off again, sub-GHz is permitted at 4.10 V",
+          r.app.subGhzTransmitPermitted());
   }
 
   // =========================================================================
@@ -340,6 +440,69 @@ int main() {
           r.bus.set_clock_calls >= 1 && r.bus.last_clock_hz == AQROOT_I2C_RUN_HZ);
     claim("the retry requalified the fuel gauge", r.gauge.activeReady());
     claim("the retry said so on the console", logHas("RECOVERED"));
+  }
+  {
+    // =======================================================================
+    // FABLE / D-792.  RECOVERY REBUILDS A SAFE STATE, NOT A WANTED ONE, AND AN
+    // OUTSTANDING AMPLIFIER INTENT HAS TO BE RE-APPLIED.
+    //
+    // Fable found a mutation that dropped the reconciliation at the end of
+    // `serviceExpanderRecovery()`: the boot-safe latch turns AMP_SD_MODE off,
+    // the intent still said `want = true, pending = false`, and
+    // `serviceDeferredCommands()` therefore had nothing to do -- so the tone
+    // silently failed until the operator typed the next command.  Nothing
+    // proved the reconciliation ran.  This does.
+    // =======================================================================
+    Rig r;
+    r.bringUp();
+    r.bus.vcell_counts = uint16_t(4.10f / Max17048Guard::kVcellLsbV);
+    claim("the amplifier is energised and CONFIRMED",
+          r.app.setAmplifierIntent(true));
+    claim("...and U2's physical latch really holds it on",
+          Pcal9535a::bitOf(r.bus.u2_output, AQROOT_U2_AMP_SD_MODE));
+    claim("...with no intent outstanding", !r.app.amplifierIntentPending());
+
+    // A bus fault takes the expanders down.  The PCAL9535As are NOT reset by
+    // it, so the amplifier is still physically energised while the software
+    // has no confirmed picture of the latch.
+    r.bus.bus_down = true;
+    claim("a down bus takes the expanders out of the ready state",
+          !r.expanders.begin(r.bus) && !r.expanders.ready());
+    r.bus.bus_down = false;
+    delay(kExpanderRecoveryPeriodMs);
+    claim("recovery runs once the bus returns",
+          r.app.serviceExpanderRecovery());
+    // THE CLAIM FABLE'S MUTANT BREAKS.  Recovery wrote the boot-safe latch,
+    // which turns the amplifier OFF; the outstanding intent must have been
+    // re-marked pending and re-applied within the same call.
+    claim("recovery RE-APPLIED the outstanding amplifier intent",
+          Pcal9535a::bitOf(r.bus.u2_output, AQROOT_U2_AMP_SD_MODE));
+    claim("...and left nothing pending behind it",
+          !r.app.amplifierIntentPending());
+    claim("...and said so on the console",
+          logHas("AMP_SD_MODE intent CONFIRMED on retry"));
+  }
+  {
+    // ...and the SAFETY direction of the same reconciliation: an intent that
+    // was left OFF-pending by a NACK must be retired by the recovery rather
+    // than re-energising anything.
+    Rig r;
+    r.bringUp();
+    r.bus.vcell_counts = uint16_t(4.10f / Max17048Guard::kVcellLsbV);
+    r.bus.fail_address = AQROOT_EXP_U2_ADDR;
+    claim("an amplifier enable onto a NACKing U2 is not confirmed",
+          !r.app.setAmplifierIntent(true));
+    claim("...and leaves an OFF intent pending", r.app.amplifierIntentPending());
+    r.bus.fail_address = -1;
+    r.bus.bus_down = true;
+    claim("the expanders go not-ready", !r.expanders.begin(r.bus));
+    r.bus.bus_down = false;
+    delay(kExpanderRecoveryPeriodMs);
+    claim("recovery runs", r.app.serviceExpanderRecovery());
+    claim("recovery left the amplifier OFF", 
+          !Pcal9535a::bitOf(r.bus.u2_output, AQROOT_U2_AMP_SD_MODE));
+    claim("...and retired the pending OFF intent",
+          !r.app.amplifierIntentPending());
   }
   {
     // LIVENESS.  A board that gave up would sit with an unknown latch state

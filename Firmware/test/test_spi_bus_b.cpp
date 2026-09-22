@@ -106,6 +106,72 @@ int main() {
   }
 
 
+  // =========================================================================
+  // D-792 / R11-04.  THE ACCESSORY LOAD AUTHORITY.
+  //
+  // The canonical ledger carries a sub-GHz transmission as a 140 mA
+  // INCREMENTAL mode, and six of the sixteen mode/rail combinations in the
+  // D-792 permission table have no attainable VCELL at all.  A rule that lived
+  // only in the accessory-enable path would be half a rule, because the user
+  // reaches the same forbidden state by keying a transmitter while a rail is
+  // already live.  `beginTransmit` asks the authority, and these are the
+  // claims that make the question load-bearing rather than decorative.
+  // =========================================================================
+  {
+    struct Authority : aqroot::AccessoryLoadAuthority {
+      bool permit = true;
+      int asked = 0;
+      int notified_on = 0, notified_off = 0;
+      bool subGhzTransmitPermitted() override { ++asked; return permit; }
+      void noteSubGhzTransmitting(bool on) override {
+        if (on) ++notified_on; else ++notified_off;
+      }
+    };
+    RecordingSelects selects;
+    SpiBusB bus(selects);
+    Authority authority;
+    check("no authority is attached by default",
+          bus.accessoryLoadAuthority() == nullptr);
+    check("with no authority the bus refuses nothing extra",
+          bus.beginTransmit(SpiBDevice::Sx1262));
+    bus.endTransmit(SpiBDevice::Sx1262);
+
+    bus.setAccessoryLoadAuthority(&authority);
+    authority.permit = false;
+    check("a sub-GHz transmit is REFUSED when the authority refuses",
+          !bus.beginTransmit(SpiBDevice::Sx1262));
+    check("...and the authority was actually asked", authority.asked == 1);
+    check("...and a refusal leaves the bus exactly as it was",
+          bus.transmitting() == SpiBDevice::None);
+    check("...and the authority was NOT told a transmission started",
+          authority.notified_on == 0);
+    check("the OTHER sub-GHz radio is refused on the same rule",
+          !bus.beginTransmit(SpiBDevice::Cc1101) && authority.asked == 2);
+    check("the NFC field is EXEMPT: its field is already a bounded-duty "
+          "always-on allowance in the ledger, so gating it here would charge "
+          "it twice",
+          bus.beginTransmit(SpiBDevice::St25r3916) && authority.asked == 2);
+    bus.endTransmit(SpiBDevice::St25r3916);
+    check("...and ending an NFC transmit does not notify the authority either",
+          authority.notified_off == 0);
+
+    authority.permit = true;
+    check("a permitted sub-GHz transmit is keyed",
+          bus.beginTransmit(SpiBDevice::Sx1262));
+    check("...and the authority was told it started",
+          authority.notified_on == 1);
+    bus.endTransmit(SpiBDevice::Sx1262);
+    check("...and told it ended", authority.notified_off == 1);
+    check("...and an endTransmit for a device that was not keyed notifies "
+          "nothing", (bus.endTransmit(SpiBDevice::Cc1101), true)
+          && authority.notified_off == 1);
+    check("isSubGhz names the two radios and not the NFC front end",
+          SpiBusB::isSubGhz(SpiBDevice::Cc1101)
+          && SpiBusB::isSubGhz(SpiBDevice::Sx1262)
+          && !SpiBusB::isSubGhz(SpiBDevice::St25r3916)
+          && !SpiBusB::isSubGhz(SpiBDevice::None));
+  }
+
   {
     RecordingSelects selects;
     SpiBusB bus(selects);

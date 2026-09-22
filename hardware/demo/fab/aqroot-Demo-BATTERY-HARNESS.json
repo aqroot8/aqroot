@@ -13,6 +13,13 @@
       "26": 2.6
     },
     "temperature_rise_limit_C": 30,
+    "temperature_rise_limit_basis": "section 6.1.5, temperature rise AT MAXIMUM RATED CURRENT: 30 C MAX.  The rated current above is therefore a TEMPERATURE-RISE figure, not a safety limit.",
+    "reference_derating_2_circuit_A_by_AWG": {
+      "22": 4.7,
+      "24": 3.9,
+      "26": 2.9
+    },
+    "reference_derating_basis": "section 4.3 reference derating for 2 circuits.  AQROOT RULES at the section 4.2 rated current, which is stricter; this row is what bounds an accessory OVERCURRENT excursion, and it is read from the archived transcription vendor/MOLEX/micro-lock-plus-5055700003-PS-A6.txt rather than asserted.",
     "ambient_C": [
       -40,
       105
@@ -70,7 +77,9 @@
   "controlling_rating": {
     "wire_AWG": 26,
     "rated_current_A": 2.6,
-    "basis": "5055700003-PS A6 section 4.2; both sides are 26 AWG, so the mated harness rating is 2.6 A"
+    "basis": "5055700003-PS A6 section 4.2; both sides are 26 AWG, so the mated harness rating is 2.6 A",
+    "reference_derating_2_circuit_A": 2.9,
+    "d792_conforming_vs_fault": "D-792 / R11-02.  The CONFORMING battery current -- each accessory rail alone at its full published budget, or both together at the declared simultaneous 220 mA + 170 mA pair, with the internal +3V3 peak envelope -- is 2.1597 A, INSIDE the 2.6 A rated current by 20.4 %.  An accessory OVERCURRENT can reach 2.7536 A, which is 5.9 % ABOVE the rated current and INSIDE the section 4.3 two-circuit reference derating value of 2.9 A.  That excursion is a NAMED BOUNDED EXCEPTION: it is a fault and not an operating state, the rated current it exceeds is a 30 C rise figure, and it is bounded below the latching LTC4368 breaker (3.9604 A) and the F1 one-shot fuse (5 A).  MEASURED at C-BAT-PATH-01 and C-THERM-01."
   },
   "polarity": {
     "cavity_1": "BAT+ / red / J4.1",
@@ -85,7 +94,9 @@
     "verify cavity polarity with DMM before first mate and after every battery retermination",
     "strain-relieve the board pigtail exactly per the frozen DOWSIL 3145 process above; maintain >=35 mm free wire from each housing before tie/bundle; disconnect by gripping/releasing housings only, never by pulling wires",
     "front-side J4 conductor is trimmed flush and insulated under the display per the existing display-shadow rule",
-    "first article: run published worst-case concurrent Demo load and record connector/lead temperature rise; target <30 C rise"
+    "first article: run published worst-case concurrent Demo load and record connector/lead temperature rise; target <30 C rise",
+    "first article C-BAT-PATH-01: measure the COMPLETE cell-to-BAT_PROTECTED_P DC resistance, cold and after a thermal soak, and itemise it against the aqroot_power_model.HARNESS_ITEMS table -- both conductor pairs, both mated contacts, the four crimps and the two J4 barrels.  The D-792 model bounds it at 132.282 mOhm hot and aged for the harness alone and 249.782 mOhm for the whole fixed series path; a measured value above either is a model failure and must be reported before any further build",
+    "first article: with an accessory drawing the ACC_5V limiter's maximum, record the connector and lead temperature rise at the 2.7536 A fault excursion as well as at the conforming load; the rated-current exception above is accepted only if the measured rise stays inside the 30 C figure"
   ],
   "design_intent": "Restores full internal RF/NFC/IR availability with both accessory rails enabled; no protected battery copper moved. Factory pre-crimped board leads remove a first-five hand-crimp variable."
 }

@@ -1,3 +1,292 @@
+## D-792 — **ROUND-11 CONVERGENCE: TWO FILES THAT DESCRIBED TWO DIFFERENT BOARDS, A CHARGER STATE THAT CANNOT PHYSICALLY EXIST, AND A PERMISSION DERIVED FROM THE WRONG PRE-STATE**
+
+    authority  board c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907
+    parent     02a90a9a0acb4b2b2431d1c1051a8a0023229351 (D-791, REJECTED by Round-11)
+    scope      R11-01..R11-07 and R11-10 (Astra, reproduced), R11-08/R11-09
+               (verifier), and every Fable complementary verifier/documentation
+               residual
+    copper     NONE.  No copper, no net, no footprint, no placement, no part
+               value and no protected-copper object moves at D-792.
+    order      HOLD.  External-review target.  Manufacturer CAM and first-article
+               acceptance remain outstanding; nine fitted groups are SHORT on the
+               live sweep and Q2/Q3 is a tenth exact identity needing an
+               authorised distributor allocation.
+    owner      ONE OWNER-VISIBLE ITEM IS RAISED IN SECTION 0 BELOW.  It does not
+               block this review target: the per-rail budgets the D-788 Option A
+               approval protects are unchanged, and section 0 carries the
+               recommendation the charter requires rather than a bare request.
+
+Round-11 rejected D-791.  **Astra** graded it **C -- DO NOT ORDER**: 4 high, 3 medium,
+3 low plus sourcing shortages, with no mandatory copper respin established.  **Fable**
+graded B on verified scope and declared its own review INCOMPLETE and not usable alone
+for order authorization.  Astra's reproduced counterexamples control.
+
+**THE THEME IS AN ARCHITECTURE, NOT A NUMBER.**  Round-8 was a proof stretched past
+its evidence; Round-9 was a number read at the wrong condition; Round-10 was a model
+that never asked whether its own answer was reachable.  Round-11 is a repository in
+which the SAME PHYSICAL QUANTITY could exist twice and drift apart.  The backlight
+converter's input current was SOLVED by `demo_feature_contract` at 233.13 mA and TYPED
+into `audit_rail_ampacity` at 211.58 mA, and the typed copy is the one that ruled the
+whole cell-to-load network, every derived VCELL floor and every thermal state in this
+programme.  That is not a transcription slip; it is an architecture in which two files
+are allowed to describe different boards.
+
+### 0. THE ONE OWNER-VISIBLE ITEM: SIMULTANEOUS DUAL-RAIL ACCESSORY DRAW
+
+**THE PROBLEM.**  `ACC_3V3_SW` = 400 mA and `ACC_5V_SW` = 300 mA remain deliverable,
+each ON ITS OWN, and nothing about that changes.  What the corrected model says is
+that the two cannot both be at their full published budgets AT THE SAME TIME at the
+top of the declared 0..40 C ambient envelope: the settled node reaches 3.1763 V, which
+is inside every one of the seven hardware limits and **44 mV below the retention
+criterion the firmware itself applies**.  Two corrections put it there, and both are
+corrections to the MODEL rather than to the board:
+
+* `R11-07`: the cell-to-`BAT_PROTECTED_P` series resistance is **249.782 mOhm**
+  itemised -- two conductor pairs, two mated contacts at their aged LLCR maximum, four
+  crimps, two solder barrels, all of the metal at the same 65 K hot rise this programme
+  charges every other conductor -- where D-791 carried one 124 mOhm figure whose harness
+  term counted ONE pair of conductors and NO contacts.
+* `R11-02`: the `+3V3` ledger had **no processor line at all**.  165.48 mA of ESP32-S3
+  baseline now enters every state.
+
+**WHAT I HAVE DONE, AND IT IS NOT A CAPABILITY REMOVAL.**  D-792 publishes a DECLARED
+SIMULTANEOUS PAIR of **220 mA + 170 mA**, solved as the largest proportional derating
+that holds at the same critical cell voltage the single-rail permission already reaches.
+It also publishes the two other axes rather than hiding them: the FULL pair holds at an
+ambient of **33.0 C** or below, and the per-state simultaneous derating at 40 C is
+tabulated in DEVICE_SPEC 6.3a (98.1 % of the full pair in the lightest state, 83.7 % in
+the published reference state).  Drawing beyond the declared pair is not a hazard -- the
+5 V rail sheds first and the 3.3 V rail keeps its full 400 mA -- but it is outside the
+published contract, so `F6` moved it from the CONFORMING set to the ACCESSORY
+OVERCURRENT set, where it must still land in the RECOVERABLE protection and below both
+the latching LTC4368 breaker and the F1 one-shot fuse.  It does.
+
+**MY RECOMMENDATION: ACCEPT THE DECLARED PAIR FOR THE FIRST FIVE, AND SCHEDULE THE
+REV-B FIX I NAME BELOW.**  The first five are engineering prototypes; a 220 + 170 mA
+simultaneous accessory contract with a published ambient relaxation is an honest,
+derived, verifiable statement, and every Kickstarter-visible feature is retained.
+
+**THE ALTERNATIVES, COSTED.**
+
+1. **ACCEPT (recommended).**  Zero cost, zero schedule impact, no copper.  The
+   accessory-facing documentation states 400 mA and 300 mA per rail and 220 + 170 mA
+   together.  Risk: an accessory designer who reads only the per-rail numbers builds
+   something that makes the 5 V rail shed.  Mitigated by the published table and by the
+   graceful shed order.
+2. **HALVE THE DOMINANT RESISTANCE -- A REV-B COPPER CHANGE.**  The single largest term
+   in the battery path is the pass pair, and it is **four AO4800 channels in SERIES**:
+   `BAT_RAW -> Q2ch2 -> Q2_CS -> Q2ch1 -> BAT_MID -> Q3ch2 -> Q3_CS -> Q3ch1 ->
+   BAT_SENSE`.  That is TWO back-to-back blocking pairs in series, both driven from the
+   same `LTC_GATE` net, where the LTC4368's reverse/overvoltage function needs ONE.
+   Re-wiring `BAT_MID` so the two packages sit in PARALLEL instead of in series would
+   take the pass pair from about 292 mOhm hot to about 73 mOhm and restore the full
+   simultaneous pair outright, with a lower drop and less internal heat everywhere else
+   as a bonus.  It costs a PCB respin of the power-tree area and a full re-verification
+   pass, which is a Rev-B activity and not a first-five one.  **I recommend scheduling
+   it for REV-B regardless of the decision on item 1: it is the cheapest large
+   improvement available anywhere in this power tree.**
+3. **DEDICATED ACCESSORY REGULATOR.**  Already deferred to REV-B by the D-788 owner
+   decision.  Solves the voltage contract as well as the current one; costs board area,
+   BOM and a new qualification.  Not a first-five option.
+4. **REDUCE THE PUBLISHED PER-RAIL BUDGETS.**  Rejected.  The owner's D-788 decision
+   forbids reducing the 400 mA capability without a new decision, and nothing here
+   requires it: each rail alone still delivers its full budget.
+
+**WHAT I WOULD CHOOSE IF I WERE RESPONSIBLE FOR SHIPPING AQROOT:** option 1 for the
+first five, with option 2 written into the Rev-B scope as the pass-pair rewiring.
+
+### 1. R11-01 -- THE PASS-FET SENSITIVITY WAS INERT
+
+`demo_feature_contract` captured the AO4800 hot-resistance coefficient BEFORE the
+sensitivity cases could change it, so every "advertised" corner re-used the same
+number, and the pessimistic case's Boolean was not in the verdict.  The thermal law is
+now an EXPLICIT ARGUMENT of `aqroot_power_model.solve_pass_pair`, the ruling coefficient
+is a DECLARED 1.60 -- the published 25->125 C ratio of 1.481481 widened 24.6 % -- and the
+sensitivity is proved to MOVE: channel resistance strictly increasing in the ratio, worst
+VGS strictly decreasing, the cases pairwise distinct, and the crossing ratio at which the
+lowest published conduction row is lost DERIVED at **1.939636**.  Astra's independent
+2.461 V at a 2x ratio reproduces here as **2.484716 V**, and the 2x case is REPORTED and
+explicitly NOT RULED ON, with the physical argument for why a 30 V trench part does not
+behave like a drift-limited high-voltage one stated beside it.
+
+### 2. R11-02 -- ONE LEDGER
+
+`aqroot_power_model.LOAD_LEDGER` is the only `+3V3` load table in the repository.  Every
+line is classified BASELINE / INCREMENTAL / BURSTY, and the peak budget, the sustained
+always-on set, the optional-mode set and the bounded-duty allowances are VIEWS of it.
+`audit_rail_ampacity.SUSTAINED_ALWAYS_ON`, `SUSTAINED_OPTIONAL`, `BURSTY_ALLOWANCES`,
+`UPSTREAM_LOSS` and `PASS_PAIR_CHANNEL_OHM` are now derived from it rather than typed.
+The MCU line is Espressif's own Table 6-2 IVDD requirement split into a baseline and an
+increment, so baseline + increment is exactly 500 mA and neither is double-counted.
+Internal `+3V3` peak: **1.1653 A -> 1.310554 A**.
+
+`U12`'s verdict changed shape as a consequence, and the change is a correction rather
+than a relaxation.  D-791 compared `internal_peak + the ACCESSORY LIMITER'S FAULT
+MAXIMUM` against TI's 2 A Features headline and passed by 10 mA.  That mixed a
+conforming load with a fault one and used a marketing figure where the device has an EC
+table.  D-792 asks both questions: the CONFORMING worst case is **1.7106 A** against the
+2 A guaranteed output, and the FAULT COINCIDENCE of **2.1154 A** is bounded by the
+TPS63020's own average switch current limit, **2.8548 A** of output capability at this
+board's 3.0 V cell corner from SLVSAA7's 3500 mA MIN row.  `R97` stays at 1.87 kOhm.
+
+### 3. R11-03 -- A PHYSICAL CHARGER, AND A CHARGE-TIME LOAD CEILING
+
+D-791 computed VSYS, IIN, ICHG and ISUPP from four independent formulas and never asked
+whether they could coexist: it could hold `SYS` at 4.41 V while a 3.2 V battery
+"supplemented" into it, which a passive BATFET cannot do, and it priced the input path
+as `IIN^2 x RON_IN`.  `aqroot_power_model.charger_state` solves ONE mode with KCL, KVL
+and energy balance as HARD INVARIANTS, prices the input FET as the LINEAR pass element
+it is, and takes one consistent ILIM/VBUS corner per solved state.
+
+Priced correctly, the reference state's own 5.65 W puts the junction at 225.8 C -- the
+part would reach `TSHUT`, which is protection acting as control and is exactly what
+R11-03 says must not be the answer.  So the answer is a CEILING: the largest sustained
+system power for which the half `TREG` cannot reach stays inside TI's 125 C operating
+maximum is **4.063 W** at 40 C ambient, the permitted-while-charging set is enumerated,
+and the heaviest member is `display_subghz` + `ACC_3V3` alone at a junction of 111.3 C.
+**It cannot be a firmware rule**: this board has no VBUS-present signal on any readable
+MCU or expander pin, so the firmware cannot know an adapter is attached and must not
+pretend to.  It is a SUPERVISED condition of the same kind as the pouch's own charge
+window, published in DEVICE_SPEC and in the first-article procedure.
+
+### 4. R11-04 -- THE WRONG PRE-STATE, AND WHY TWO SCALARS CANNOT CARRY THE ANSWER
+
+Astra enabled the 5 V accessory rail from a reported **3.55 V** -- D-791's own
+`kAccessorySingleRailFloorV` -- and watched the retention rule shed it.  The cause was
+the PRE-STATE: D-791 derived the second-rail floor with the other rail already drawing
+its full budget, and **an accessory that is plugged in and IDLE holds the node near open
+circuit**.  That high reading is what the permission is granted on, so the adverse
+pre-state is the LIGHTEST one.
+
+Two scalars also cannot express the answer, because whether a transition survives its
+own settled state depends on what else is on.  `aqroot_accessory_power_policy.h` now
+carries a permission TABLE indexed by the observable mode set and the rail count, with
+**TWO ARRIVAL EDGES** -- a RAIL edge, whose pre-read is taken with those modes already
+running, and a MODE edge, entered from a mode set one step lighter and therefore from a
+higher pre-read.  Collapsing them would be either unsound or unreachable: the Wi-Fi
+state's rail-edge floor would become 3.95 V when the highest value the gauge can report
+in that state with the accessory idle is 3.8049 V, which is `D790-A03` again.  F12
+derives all thirty-two values, PINS them row by row including the six explicit REFUSALS,
+attainability-checks every row against its OWN pre-state ceiling, and sweeps the hard
+invariant over 534 states with zero violations.  The firmware consults the table on both
+edges: `accessoryEnableAllowed` for a rail and `accessoryModeEntryAllowed` for a mode,
+with the sub-GHz edge enforced inside `SpiBusB::beginTransmit` so a future TX path cannot
+bypass it.
+
+### 5. R11-05 -- THE DOCUMENT A FABRICATOR READS FIRST WAS READ BY NO GATE
+
+R7-N04 found a contract that lived only in a gate; R8-N06 found one that lived only in a
+document; R10-N04 found the first-article procedure choosing bench voltages from retired
+floors.  Each was fixed for ONE file.  `AQROOT_DEMO_FAB_HANDOFF.md` had never been read
+by a clause at all.  F12's new `published_policy_is_printed_in_the_fab_handoff` requires
+twelve current-facing values -- the three floors, the declared pair, the ambient
+ceilings, the peak envelope, the itemised harness and upstream resistances, the charge
+ceiling and junction, and the inductor DCR maximum -- to appear FORMATTED FROM THE
+COMPUTED VALUES.  Historical figures remain legal below an explicit HISTORICAL banner.
+
+### 6. R11-06 -- PROVENANCE IS MACHINE-READABLE NOW
+
+`aqroot_power_model.tag()` attaches provenance to a value at the point of definition --
+GUARANTEED_MAX / GUARANTEED_MIN / GUARANTEED_ROC / TYPICAL / DECLARED_ESTIMATE /
+DERIVED / MEASURED_PENDING -- and `audit_tags()` REFUSES a release in which a value
+tagged TYPICAL is used where a bound is required.  F6 runs it, reports the whole
+registry, and proves the rule refuses over a deliberately poisoned copy.  This
+programme has hit the underlying defect three times (the LTC4368's 50 mV and the
+TPS61023's 0.6 V at D-789, `VBUVLO` and `IBAT_OCP` at D-790, the inductor DCR at
+R11-10); the fourth instance is now caught by a gate instead of by a reviewer.  The
+compound `U12` margin R11-06 called thin is no longer thin: 290 mA on the conforming
+case and 739 mA on the fault coincidence, and the panel-allowance sensitivity closes at
+2x the declared 50 mA.
+
+### 7. R11-07 -- THE BATTERY PATH, ITEMISED
+
+Every conductor, mated contact, crimp and solder barrel, with its own length, count,
+provenance tag and basis: the pack's own two UL 26 AWG factory leads, the two Molex
+75 mm 26 AWG pre-crimps, TWO mated Micro-Lock Plus contact pairs at an aged LLCR
+maximum, four crimps and two J4 barrels, all of the metal at the same 65 K hot rise.
+**132.282 mOhm** hot and aged against D-791's 54 mOhm.  The pack's published 35 mOhm is
+an AC 1 kHz figure and is NOT treated as a DC source-resistance maximum: it is widened
+by a declared 2.5x, and the pessimistic reading of what it owns (the cell and the PCM
+only) is taken so the pack's own leads are counted separately.  A cold/initial MINIMUM
+is derived beside the maximum, because which end is conservative depends on whether the
+question is a voltage or a current.
+
+### 8. R11-08 / R11-09 AND THE FABLE RESIDUALS
+
+`population_contract` gains **POP5**: POP1-POP4 are all about the DNP flag and none of
+them asked whether a reference the schematic marks FITTED exists on the board at all, so
+deleting a fitted footprint left that contract green while `land_parity` failed.  The
+expected fitted set is now explicit, with declared OFF_BOARD (`LS1`), BOARD_ONLY
+(`BOSS1`/`BOSS2`) and NOT_PLACED (`J4`, `TP*`) registries checked in BOTH directions, so
+a stale declaration refuses as loudly as an undeclared absence.  `R11-09`: the
+manufacturer canonicaliser now folds a trailing legal form and any comma and nothing
+else, so `PUI Audio, Inc.` and `PUI Audio` are one company while two different companies
+still contradict -- four claims in F13 say exactly that.  Fable's post-recovery
+amplifier-intent reconciliation has a production-caller test and three negative
+controls; the AO4800 symbol cache was checked and carries no stale name.
+
+### 8a. R11-N01, FOUND AT THIS CLOSEOUT: "UNOBTAINABLE" WAS A STATEMENT ABOUT THE ENVIRONMENT
+
+While recording the D-792 vendor fetch attempts -- which exist because R11-06 asks a
+DECLARED allowance to show that the attempt to replace it with a published number is on
+the record -- the EastRising **ER-TFT035IPS-6 module datasheet retrieved with HTTP 200**.
+D-791 had recorded it as "not obtainable from this environment (HTTP 403 on every route
+tried)" and derived the panel's 50 mA allowance on that basis, in two files and in
+DEVICE_SPEC.  That is the same defect class as the one already in this repository's
+memory as *a 403 is not an unobtainable datasheet*, and it had gone one round unnoticed.
+
+**READING IT MADE THE ALLOWANCE STRONGER RATHER THAN REMOVING IT, WHICH IS THE POINT.**
+Section 4.3's Electrical Characteristics table publishes `VCI` 2.5/2.8/3.3 V and `VDDI`
+1.65/2.8/3.3 V and **no supply current at all**; ILI Technology's own ILI9488 datasheet
+publishes Sleep-in 100 uA and Deep Standby 1 uA and no active-mode figure either.  So
+the claim moves from "this environment could not fetch the document" to "the
+manufacturer does not publish the number", which is a statement about the EVIDENCE.  The
+50 mA stands as a DECLARED_ESTIMATE, F6 proves the derived envelope still closes at 2x
+it, and `C-DISP-01` remains the measurement of record.
+
+**AND IT PAID FOR ITSELF IN PRIMARY DATA.**  Section 4.4 Backlight Characteristics gives
+`Vf` **3.0 V TYP / 3.2 V MAX at If = 120 mA, 6-chip parallel**, forward current Normal
+`Ipn` **110 mA MIN / 120 mA TYP** with no MAX column, dimming at `Lf` = 90 mA, and a
+30 kh LED life at 25 C.  The backlight converter model now cites that as PRIMARY instead
+of D-079's transcription -- which it CONFIRMS -- and the 120 mA it is checked against is
+correctly labelled the top of the panel's own NORMAL band rather than an absolute
+maximum, with the clause it feeds one-sided: the converter's 118.835 mA setpoint must be
+INSIDE it.  The document is archived at
+`hardware/demo/kicad/aqroot-demo/vendor/EASTRISING/eastrising-er-tft035ips-6-datasheet.pdf`
+and F6 HASHES it, so the citation is a fact about the tree rather than a sentence about a
+past fetch.
+
+**ONE HONEST DISCREPANCY, RECORDED RATHER THAN SMOOTHED.**  D-751 read the SAME document
+through the Wayback Machine's 2025-01-09 snapshot and recorded `sha256
+f8822bd3a335c610fa1862de58173020e76ac6cdaf9da744a71e3a50a620a371`; the live 2026-09-22
+fetch archived here is `28c07dae…34ac`.  Both are 24-page PDFs of
+`ER-TFT035IPS-6_Datasheet` and the sections this repository cites agree, but they are not
+the same bytes -- either the vendor has re-issued the file or the snapshot differs at the
+byte level.  **The archived copy is the LIVE one and it is the one F6 hashes**; D-751's
+pin-1 conclusion rests on section 3.3, which is present and unchanged in the live copy.
+Nothing here re-opens that closure.  It is recorded because a hash that silently changed
+would be exactly the kind of thing this programme keeps finding a round later.
+
+The Molex `5055700003-PS` and `5055701001-PS` product specifications and the Coilcraft
+XFL4020 family datasheet were also re-attempted and did NOT retrieve (connection timeout
+and HTTP 404 respectively); the attempts are in
+`evidence/d792-vendor-fetch-attempts.json`, and the values that stand in for them --
+the mated-contact LLCR figures and the inductor's core-loss fraction -- remain
+DECLARED_ESTIMATE with first-article measurements of record.
+
+### 9. WHAT IS NOT CLAIMED
+
+No first-article measurement has been taken.  `C-BAT-PATH-01` is the measurement of
+record for every itemised path resistance and for both declared contact figures;
+`C-THERM-01` for R_SYS and the internal-air rise; `C-BAT-GATE-01` for the pass pair's
+declared temperature coefficient and the IBAT_OCP band; `C-DISP-01` for the panel's
+declared 50 mA and the backlight converter's declared loss terms; `C-MCU-01` for the
+ESP32-S3 baseline.  The NFC antenna-side shunt still has no dedicated CAD site and
+remains a first-article tuning/rework risk.  The Demo's sustained thermal envelope
+remains an explicit OPERATOR rule: there is no calibrated die-temperature measurement on
+this board and no uncalibrated thermal shedding has been invented for it.
+
+
 ## D-791 — **ROUND-10 CORRECTION: A FLOOR THE NODE COULD NEVER REACH, A LOSS MODEL THAT WAS ONLY A CONDUCTION MODEL, AND THREE CALL SITES THAT COULD STILL UNDO THEMSELVES**
 
     authority  board c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907

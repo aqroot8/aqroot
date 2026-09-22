@@ -234,6 +234,16 @@ static void runDisplayInitialisation() {
 void setup() {
   parkAllPins();
 
+  // D-792 / R11-04.  THE SPI-B TRANSMIT GATE IS WIRED BEFORE ANYTHING ELSE.
+  //
+  // `SpiBusB` refuses to key a sub-GHz transmitter that the D-792 accessory
+  // permission table does not allow in the present mode/rail state, and it asks
+  // `g_app` -- the one object that knows the accessory rail state and can read
+  // the gauge.  Set here, before the first `probe*()` takes a bus hold, so no
+  // code path can reach `beginTransmit` with no authority attached.
+  // `test_production_callers.cpp` proves this line exists.
+  g_spi_b.setAccessoryLoadAuthority(&g_app);
+
   // D-766 / round-2 review: a warm MCU reset does NOT reset the powered
   // PCAL9535As.  Safety therefore cannot wait for USB CDC, logging, an I2C scan
   // or peripheral discovery.  Recover/open the bus and write both complete
@@ -250,6 +260,13 @@ void setup() {
   Serial.printf("board_sha256 %s\n", AQROOT_DEMO_BOARD_SHA256);
   Serial.println("---------------------------------------------------------------");
   report("pins parked", true);
+  // D-792 / R11-04.  The SPI-B transmit gate is only a gate if it is WIRED, and
+  // a wiring that is only wired in a comment is what Round-8 through Round-11
+  // kept finding.  This line makes the attachment OBSERVABLE, so
+  // `test_production_image.cpp` can prove it from the console output and a
+  // negative control that deletes the call is CAUGHT rather than silent.
+  report("SPI-B sub-GHz transmit gate wired to the accessory permission table",
+         g_spi_b.accessoryLoadAuthority() == &g_app);
   report("i2c recovered/open at bring-up speed", i2c_open);
   report("PCAL9535A safe latches before console wait", expanders_safe);
   if (!expanders_safe) {

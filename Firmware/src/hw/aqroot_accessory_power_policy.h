@@ -53,20 +53,24 @@ namespace aqroot {
 //                               +/-20 mV/cell (D790-A14).  A reported 3.20 V
 //                               can be an actual 3.180 V.
 //
-//   kAccessorySingleRailFloorV  the floor to ENABLE the first accessory rail,
-//   kAccessoryDualRailFloorV    and to enable the SECOND one.  Each is the
-//                               retention floor PLUS THE NODE STEP THAT RAIL
-//                               WILL CAUSE, worst case over every declared
-//                               state and every cell voltage.  D-779 named
-//                               this exactly -- "the permission was taken
-//                               before the load existed" -- and D-790 never
-//                               quantified it, so its floors both failed to
-//                               anticipate the step and sat above the node's
-//                               attainable range at the same time.
+//   kAccessorySingleRailFloorV  the MOST DEMANDING floor the D-792 permission
+//   kAccessoryDualRailFloorV    table permits for one and for two accessory
+//                               rails.  These are the PUBLISHED ENVELOPE of
+//                               that table, quoted by DEVICE_SPEC and used to
+//                               pick the FIRST_FIVE_ASSEMBLY_PLAN bench
+//                               points; the firmware itself consults the
+//                               TABLE, because whether a transition survives
+//                               its own settled state depends on which
+//                               high-load modes are on.  D-779 named the
+//                               original defect exactly -- "the permission was
+//                               taken before the load existed" -- D-790 never
+//                               quantified it, D-791 quantified it from the
+//                               WRONG PRE-STATE, and Round-11 reproduced the
+//                               consequence at D-791's own 3.55 V constant.
 //
-// F12 FAILS if any constant here is below what it derives, if a floor is not
-// ATTAINABLE by the node in the state it governs, or if D-790's own declared
-// reference state ever starts passing.  The arithmetic re-runs from the live
+// F12 FAILS if any constant or table entry here differs from what it derives,
+// if a floor is not ATTAINABLE by the node in the state it governs, or if
+// D-790's own declared reference state ever starts passing.  The arithmetic re-runs from the live
 // board on every contract run, so a wider +3V3 budget, a different boost
 // setpoint, a re-routed BAT_PROTECTED_P, a new limiter setting or a different
 // pass pair all move the requirement and this file has to follow it.
@@ -74,18 +78,175 @@ namespace aqroot {
 // SHED ORDER AND WHAT THE USER STILL GETS, UNCHANGED.  Below the retention
 // floor with both rails live the 5 V rail sheds FIRST: it is the expensive one
 // (a boost, so pack current scales with 5.1654 V / 0.88), and shedding it
-// RESTORES the node by the second-rail step -- which is why the 3.3 V rail
-// then keeps delivering its full published 400 mA instead of going down with
-// it.  Both published budgets are UNCHANGED; what D-791 corrects is which
-// internal subsystems may be at maximum AT THE SAME TIME, which F12 derives
-// and DEVICE_SPEC publishes as observable modes.
+// RESTORES the node -- which is why the 3.3 V rail then keeps delivering its
+// full published 400 mA instead of going down with it.  The PER-RAIL published
+// budgets are UNCHANGED.  What D-791 began and D-792 finishes is stating which
+// internal subsystems may be at maximum AT THE SAME TIME, and what the two
+// rails may draw TOGETHER; F12 derives both and DEVICE_SPEC publishes them as
+// observable modes rather than as an unobservable current ceiling.
 //
 // UNREADABLE VCELL IS ALWAYS FAIL-CLOSED: no measurement means no permission,
 // and any rail already on is shed.
 // ===========================================================================
 constexpr float kAccessoryRetentionFloorV = 3.20f;
-constexpr float kAccessorySingleRailFloorV = 3.55f;
-constexpr float kAccessoryDualRailFloorV = 3.65f;
+constexpr float kAccessorySingleRailFloorV = 3.95f;
+constexpr float kAccessoryDualRailFloorV = 3.95f;
+
+// ===========================================================================
+// D-792 / R11-04.  TWO SCALARS CANNOT CARRY THIS ANSWER, SO THERE IS A TABLE.
+//
+// WHAT ROUND-11 REPRODUCED, AND WHY IT IS A ROOT CAUSE AND NOT A NUMBER.
+// Astra drove the production image from a reported VCELL of 3.55 V -- exactly
+// D-791's `kAccessorySingleRailFloorV` -- enabled the 5 V accessory rail, and
+// watched the node sag and the retention rule shed it.  D-791 derived that
+// 3.55 V with the OTHER rail already drawing its full published budget in the
+// PRE state.  That is the wrong pre-state, and it is wrong in the direction
+// that matters: an accessory which is PLUGGED IN AND IDLE holds the node near
+// open circuit, the gauge reports that high value, the permission is granted
+// on it, and the accessory then starts drawing.  The adverse pre-state is the
+// LIGHTEST one -- no optional mode, no accessory current -- because the
+// pre-read is what the permission is granted on.  Every floor below is derived
+// from that pre-state, with the gauge error charged HIGH on the pre read and
+// LOW on the post read at the same time.
+//
+// AND THE ANSWER DEPENDS ON WHAT ELSE IS ON.  The amplifier at its capped
+// level, a keyed sub-GHz transmitter and the Wi-Fi/BLE radio are each a load
+// of the same order as an accessory rail.  D-791 answered with two constants
+// and a paragraph asking the reader to observe the modes.  A paragraph cannot
+// refuse.  The table below is indexed by the OBSERVABLE MODE SET and the RAIL
+// COUNT, every entry is DERIVED by `demo_feature_contract.py` F12 from the
+// canonical power model, and F12 FAILS if any entry here differs from what it
+// derives -- including the sentinel entries.
+//
+// `kAccessoryNotPermittedV` IS NOT A LARGE FLOOR, IT IS A REFUSAL.  Six of the
+// sixteen combinations have NO attainable cell voltage at which the settled
+// state survives its own retention criterion at the top of the declared
+// 0..40 C ambient envelope.  Encoding those as a high number would be
+// D790-A03's defect again -- a floor the node cannot reach reads as a
+// restriction and behaves as a rail that never turns on, with no diagnostic.
+// They are refused explicitly and the log says which mode caused it.
+//
+// THE PUBLISHED PER-RAIL BUDGETS ARE UNCHANGED: `ACC_3V3_SW` = 400 mA TOTAL
+// and `ACC_5V_SW` = 300 mA TOTAL, each deliverable ALONE.  The two-rail rows
+// are derived at the DECLARED SIMULTANEOUS PAIR -- 220 mA on 3.3 V and 170 mA
+// on 5 V together -- which is itself solved, not chosen: it is the largest
+// proportional derating of the two budgets that holds at the same critical
+// cell voltage the single-rail permission already reaches, rounded DOWN onto a
+// 10 mA grid.  DEVICE_SPEC publishes both numbers and the per-state table.
+// ===========================================================================
+// No attainable VCELL authorises the combination.  Above the all-ones code so
+// a stuck bus cannot accidentally clear it, and `accessoryEnableAllowed`
+// refuses it explicitly rather than by comparison.
+constexpr float kAccessoryNotPermittedV = 99.0f;
+
+// The OBSERVABLE high-load modes, in the bit order the derivation sorts them
+// in: bit 0 Wi-Fi / BLE TX, bit 1 audio at the capped level, bit 2 sub-GHz TX.
+// The NFC field and a microSD write are NOT here: both are carried as
+// bounded-duty allowances inside the always-on set of the canonical ledger,
+// so they are already in every floor below.
+struct AccessoryLoadState {
+  bool wifi_tx = false;
+  bool amplifier_on = false;
+  bool subghz_tx = false;
+};
+
+inline unsigned accessoryLoadBits(const AccessoryLoadState &s) {
+  return (s.wifi_tx ? 1u : 0u) | (s.amplifier_on ? 2u : 0u) |
+         (s.subghz_tx ? 4u : 0u);
+}
+
+// TWO EDGES, TWO TABLES, AND THE REASON IS THE PRE-STATE.
+//
+// A floor is "the reported value below which the settled post state could
+// report under the retention floor".  That depends on what the gauge can
+// report BEFORE the change, and the two ways into the same state do not share
+// a pre-state:
+//
+//   RAIL EDGE   a rail is switched on.  The mode set does not change, so the
+//               pre-read is taken with THOSE modes running and the accessory
+//               idle.
+//   MODE EDGE   a mode is entered while rails are already live.  The pre-read
+//               is taken with the mode set ONE STEP LIGHTER, so it reads
+//               HIGHER, so the floor is HIGHER.
+//
+// Collapsing them means taking the larger, and D-790 has already shown what
+// that costs: the rail-edge floor for a state with the Wi-Fi radio up would
+// become 3.95 V, while the highest value the gauge can report in that state
+// with the accessory idle is 3.8049 V.  The rail would never turn on, and no
+// diagnostic anywhere would say why.  That is D790-A03 exactly, and it is why
+// there are two tables and why F12 attainability-checks each row against its
+// OWN pre-state ceiling.
+//
+// GENERATED VALUES -- derived by F12, pinned by F12, row by row and sentinel
+// by sentinel.  Index is the mode bits; `one_rail_V` is one accessory rail at
+// its full published budget, `two_rails_V` is both rails at the declared
+// simultaneous pair.
+struct AccessoryPermissionRow {
+  float one_rail_V;
+  float two_rails_V;
+};
+
+// The RAIL edge.  Pre-state: these modes, accessory idle.
+inline const AccessoryPermissionRow &accessoryRailEdgeRow(unsigned bits) {
+  static const AccessoryPermissionRow kRailRows[8] = {
+      {3.65f, 3.65f},  // 0  no optional mode
+      {3.75f, 3.75f},  // 1  Wi-Fi / BLE TX
+      {3.70f, 3.70f},  // 2  audio at the capped level
+      {kAccessoryNotPermittedV, kAccessoryNotPermittedV},  // 3  Wi-Fi + audio
+      {3.70f, 3.70f},  // 4  sub-GHz TX
+      {kAccessoryNotPermittedV, kAccessoryNotPermittedV},  // 5  Wi-Fi + sub-GHz
+      {3.75f, 3.75f},  // 6  audio + sub-GHz
+      {kAccessoryNotPermittedV, kAccessoryNotPermittedV},  // 7  all three
+  };
+  return kRailRows[bits & 7u];
+}
+
+// The MODE edge.  Pre-state: the lightest mode set one step below, accessory
+// idle -- a higher pre-read, therefore a higher floor.
+inline const AccessoryPermissionRow &accessoryModeEdgeRow(unsigned bits) {
+  static const AccessoryPermissionRow kModeRows[8] = {
+      {3.65f, 3.65f},  // 0  no optional mode
+      {3.95f, 3.95f},  // 1  Wi-Fi / BLE TX
+      {3.75f, 3.75f},  // 2  audio at the capped level
+      {kAccessoryNotPermittedV, kAccessoryNotPermittedV},  // 3  Wi-Fi + audio
+      {3.80f, 3.80f},  // 4  sub-GHz TX
+      {kAccessoryNotPermittedV, kAccessoryNotPermittedV},  // 5  Wi-Fi + sub-GHz
+      {3.80f, 3.80f},  // 6  audio + sub-GHz
+      {kAccessoryNotPermittedV, kAccessoryNotPermittedV},  // 7  all three
+  };
+  return kModeRows[bits & 7u];
+}
+
+inline float accessoryEdgeFloor(const AccessoryPermissionRow &row, int rails) {
+  if (rails == 1) return row.one_rail_V;
+  if (rails == 2) return row.two_rails_V;
+  return kAccessoryNotPermittedV;
+}
+
+// `rails_after` is how many accessory rails will be ON once the request is
+// granted: 1 or 2.  Anything else is refused.
+inline float accessoryEnableFloor(const AccessoryLoadState &modes,
+                                  int rails_after) {
+  return accessoryEdgeFloor(accessoryRailEdgeRow(accessoryLoadBits(modes)),
+                            rails_after);
+}
+
+inline float accessoryModeEntryFloor(const AccessoryLoadState &modes_after,
+                                     int rails_on) {
+  return accessoryEdgeFloor(
+      accessoryModeEdgeRow(accessoryLoadBits(modes_after)), rails_on);
+}
+
+inline bool accessoryCombinationPermitted(const AccessoryLoadState &modes,
+                                          int rails_after) {
+  return accessoryEnableFloor(modes, rails_after) < kAccessoryNotPermittedV;
+}
+
+inline bool accessoryModeEntryPermitted(const AccessoryLoadState &modes_after,
+                                        int rails_on) {
+  return accessoryModeEntryFloor(modes_after, rails_on)
+         < kAccessoryNotPermittedV;
+}
 
 // ===========================================================================
 // D-779.  AN I2C READ THAT SUCCEEDED IS NOT A MEASUREMENT.
@@ -114,14 +275,38 @@ inline bool vcellIsPlausible(float vcell) {
 
 enum class AccessoryBatteryAction { Keep, Shed5v, ShedAll };
 
-inline float accessoryEnableFloor(bool other_rail_on) {
-  return other_rail_on ? kAccessoryDualRailFloorV : kAccessorySingleRailFloorV;
+// THE RAIL EDGE.  `other_rail_on` says whether the OTHER accessory rail is
+// already live, so the request lands on the one-rail or the two-rail column.
+//
+// There is deliberately NO overload that omits the mode set.  D-791 had one,
+// and it is how the production image came to grant a permission the model
+// never derived for the state the board was actually in: a caller that does
+// not know its own modes must not be able to ask.
+inline bool accessoryEnableAllowed(bool vcell_valid, float vcell,
+                                   bool other_rail_on,
+                                   const AccessoryLoadState &modes) {
+  const int rails_after = other_rail_on ? 2 : 1;
+  if (!accessoryCombinationPermitted(modes, rails_after)) return false;
+  return vcell_valid && vcellIsPlausible(vcell)
+         && vcell >= accessoryEnableFloor(modes, rails_after);
 }
 
-inline bool accessoryEnableAllowed(bool vcell_valid, float vcell,
-                                   bool other_rail_on) {
+// THE MODE EDGE, AND IT IS THE HALF D-791 HAD NO WORD FOR.
+//
+// A permission granted in `display_only` says nothing about the state the user
+// reaches by pressing the tone key thirty seconds later.  Entering a high-load
+// mode while an accessory rail is live is the SAME transition as enabling the
+// rail, walked in the other order, and it has to be judged by the same rule
+// against the mode set that will exist AFTERWARDS.  With no rail on, every
+// mode combination is permitted -- the accessory tree is what the restriction
+// is about -- so the guard is transparent until it has something to protect.
+inline bool accessoryModeEntryAllowed(bool vcell_valid, float vcell,
+                                      int rails_on,
+                                      const AccessoryLoadState &after) {
+  if (rails_on <= 0) return true;
+  if (!accessoryModeEntryPermitted(after, rails_on)) return false;
   return vcell_valid && vcellIsPlausible(vcell)
-         && vcell >= accessoryEnableFloor(other_rail_on);
+         && vcell >= accessoryModeEntryFloor(after, rails_on);
 }
 
 // D-791 / D790-A03.  RETENTION IS JUDGED AT THE RETENTION FLOOR, NOT AT THE

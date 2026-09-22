@@ -445,13 +445,23 @@ CTO decisions (**P-11**, **P-12**).
 > 600–800 mA recommendation above was written against the `C` variant's 0.5 A
 > floor, which the `-Q1` retires.  What forced the setting up instead was D-098's
 > PUBLISHED budget: at 2.7 kΩ each rail **GUARANTEED only 0.277 A** against a
-> published 400 mA / 300 mA.  `R97` is now **1.78 kΩ (0.636 A typ, 0.428 A
+> published 400 mA / 300 mA.  `R97` was then **1.78 kΩ (0.636 A typ, 0.428 A
 > guaranteed)** — inside this note's own 600–800 mA recommendation — and `R101`
 > **2.32 kΩ (0.479 A typ, 0.322 A guaranteed)**, which is below it because the
 > 5 V rail costs 1.875 A of pack current per amp delivered and its worst case
 > already sits 5.6 % under `IBAT_OCP`'s minimum.  `F6` now also refuses a setting
 > that does not GUARANTEE its rail's published budget, and one its converter
 > cannot source.
+>
+> **BOTH SETTINGS HAVE SINCE MOVED AND THE VALUES IN THE PARAGRAPH ABOVE ARE
+> HISTORICAL (D-792, 2026-09-22).**  `R97` is **1.87 kΩ** (0.6032 A typ, **0.4058
+> A GUARANTEED**, 0.8049 A worst case) — D-791 moved it because D-790/`R9-N01`
+> retired the BRACKETED `ILIM` accuracy band as an estimate and put the ruling
+> band back to the WIDEST published ratio, which needs no inference between TI's
+> four published rows.  `R101` is **2.43 kΩ** (D-787).  The CURRENT accessory
+> envelope, including the D-792 DECLARED SIMULTANEOUS PAIR of 220 mA + 170 mA and
+> the mode-indexed VCELL permission table, is `DEVICE_SPEC.md` §6.3a; nothing in
+> this analysis document is a current product figure.
 
 ### Case 9 — Externally powered accessory while AQROOT is off
 

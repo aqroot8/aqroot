@@ -152,10 +152,88 @@ POWER_POLICY_CONTROLS = [
     # D-791 / D790-A03 re-aimed these at the THREE derived constants.  The
     # first is unchanged in intent -- a dual ENABLE floor that collapses onto
     # the single one stops anticipating the second rail's own load step.
-    ("dual-rail enable floor collapses onto the single-rail one",
+    ("the published dual-rail envelope drops below the single-rail one",
      "aqroot_accessory_power_policy.h",
-     "constexpr float kAccessoryDualRailFloorV = 3.65f;",
-     "constexpr float kAccessoryDualRailFloorV = 3.55f;"),
+     "constexpr float kAccessoryDualRailFloorV = 3.95f;",
+     "constexpr float kAccessoryDualRailFloorV = 3.65f;"),
+    # ---- D-792 / R11-04.  THE PERMISSION TABLE HAS TO BITE. ----------------
+    # Every one of these compiles, and every one of them is a way the table
+    # could be present and inert.  Round-11's finding was that D-791's two
+    # scalars were derived from the wrong pre-state; these controls are about
+    # the replacement not being decorative.
+    ("the first-rail floor is put back to D-791's reproduced 3.55 V",
+     "aqroot_accessory_power_policy.h",
+     "      {3.65f, 3.65f},  // 0  no optional mode",
+     "      {3.55f, 3.55f},  // 0  no optional mode"),
+    ("a REFUSED mode combination is encoded as a high floor instead of a "
+     "refusal, so a full pack authorises it",
+     "aqroot_accessory_power_policy.h",
+     "      {kAccessoryNotPermittedV, kAccessoryNotPermittedV},  // 5  Wi-Fi + sub-GHz",
+     "      {4.15f, 4.15f},  // 5  Wi-Fi + sub-GHz"),
+    ("the amplifier's own load stops raising the floor",
+     "aqroot_accessory_power_policy.h",
+     "      {3.75f, 3.75f},  // 2  audio at the capped level",
+     "      {3.65f, 3.65f},  // 2  audio at the capped level"),
+    ("the mode bits are transposed, so the table is indexed by the wrong "
+     "mode set",
+     "aqroot_accessory_power_policy.h",
+     """  return (s.wifi_tx ? 1u : 0u) | (s.amplifier_on ? 2u : 0u) |
+         (s.subghz_tx ? 4u : 0u);""",
+     """  return (s.wifi_tx ? 4u : 0u) | (s.amplifier_on ? 2u : 0u) |
+         (s.subghz_tx ? 1u : 0u);"""),
+    ("the refusal sentinel stops refusing and becomes a comparison a caller "
+     "can pass",
+     "aqroot_accessory_power_policy.h",
+     """inline bool accessoryCombinationPermitted(const AccessoryLoadState &modes,
+                                          int rails_after) {
+  return accessoryEnableFloor(modes, rails_after) < kAccessoryNotPermittedV;""",
+     """inline bool accessoryCombinationPermitted(const AccessoryLoadState &modes,
+                                          int rails_after) {
+  (void)modes; (void)rails_after;
+  return true;"""),
+    ("the MODE edge's own refusal predicate stops refusing",
+     "aqroot_accessory_power_policy.h",
+     """inline bool accessoryModeEntryPermitted(const AccessoryLoadState &modes_after,
+                                        int rails_on) {
+  return accessoryModeEntryFloor(modes_after, rails_on)
+         < kAccessoryNotPermittedV;""",
+     """inline bool accessoryModeEntryPermitted(const AccessoryLoadState &modes_after,
+                                        int rails_on) {
+  (void)modes_after; (void)rails_on;
+  return true;"""),
+    ("the two edges are collapsed into one table, so the mode edge is granted "
+     "on a floor derived from a heavier pre-state",
+     "aqroot_accessory_power_policy.h",
+     """  return accessoryEdgeFloor(
+      accessoryModeEdgeRow(accessoryLoadBits(modes_after)), rails_on);""",
+     """  return accessoryEdgeFloor(
+      accessoryRailEdgeRow(accessoryLoadBits(modes_after)), rails_on);"""),
+    # NOT the obvious mutation.  Simply DELETING the
+    # `accessoryCombinationPermitted` line is an EQUIVALENT mutant, because the
+    # refusal sentinel then falls through to `vcell >= 99.0f` and the
+    # plausibility band tops out at 4.50 V, so the combination is still
+    # refused.  The mutation that is NOT equivalent is the plausible REFACTOR
+    # that turns the refusal into a default -- and that is the one reproduced
+    # here, because it is the one a maintainer would actually write.
+    ("a refused combination is turned into a default floor it can pass",
+     "aqroot_accessory_power_policy.h",
+     """  if (!accessoryModeEntryPermitted(after, rails_on)) return false;
+  return vcell_valid && vcellIsPlausible(vcell)
+         && vcell >= accessoryModeEntryFloor(after, rails_on);""",
+     """  const float required = accessoryModeEntryPermitted(after, rails_on)
+                            ? accessoryModeEntryFloor(after, rails_on)
+                            : kAccessoryRetentionFloorV;
+  return vcell_valid && vcellIsPlausible(vcell) && vcell >= required;"""),
+    ("the mode edge is transparent while a rail is live",
+     "aqroot_accessory_power_policy.h",
+     "  if (rails_on <= 0) return true;",
+     "  if (rails_on >= 0) return true;"),
+    ("the mode edge ignores an unreadable gauge",
+     "aqroot_accessory_power_policy.h",
+     """  return vcell_valid && vcellIsPlausible(vcell)
+         && vcell >= accessoryModeEntryFloor(after, rails_on);""",
+     """  (void)vcell_valid; (void)vcell;
+  return true;"""),
     ("unreadable VCELL fails open instead of shedding active rails",
      "aqroot_accessory_power_policy.h",
      """  if (!vcell_valid || !vcellIsPlausible(vcell))
@@ -173,10 +251,11 @@ POWER_POLICY_CONTROLS = [
     # authorising it, every time, because the enable floor anticipates a load
     # step that has by then already happened.  That was D-790's behaviour and
     # it is what made the published dual-rail capability unreachable.
-    ("retention is judged at the ENABLE floor instead of the retention floor",
+    ("retention is judged at the ENABLE envelope instead of the retention "
+     "floor",
      "aqroot_accessory_power_policy.h",
      "  if (vcell < kAccessoryRetentionFloorV) {",
-     "  if (vcell < accessoryEnableFloor(rail3v3_on && rail5v_on)) {"),
+     "  if (vcell < kAccessorySingleRailFloorV) {"),
     ("the retention floor is pushed under the BQ25185's own VBUVLO bound",
      "aqroot_accessory_power_policy.h",
      "constexpr float kAccessoryRetentionFloorV = 3.20f;",
@@ -342,6 +421,65 @@ PRODUCTION_CALLER_CONTROLS = [
      "aqroot_demo_bringup_app.h",
      "      if (acc3v3_ || acc5v_ || expanders_.safeShutdownPending() ||",
      "      if (expanders_.safeShutdownPending() ||"),
+    # --- D-792 / R11-04: the mode set the permission is evaluated against ---
+    ("the accessory permission is evaluated against an EMPTY mode set, so the "
+     "state the board is actually in stops mattering",
+     "aqroot_demo_bringup_app.h",
+     "    const AccessoryLoadState modes = accessoryLoadState();",
+     "    const AccessoryLoadState modes;"),
+    ("the amplifier reading is optimistic, so an UNKNOWN U2 output latch "
+     "counts as OFF and the permission is granted on a mode set the board is "
+     "not in",
+     "aqroot_demo_bringup_app.h",
+     "  bool amplifierCountsAsOn() const { return !amplifierConfirmed(false); }",
+     "  bool amplifierCountsAsOn() const { return amplifierConfirmed(true); }"),
+    ("energising the amplifier stops consulting the mode edge",
+     "aqroot_demo_bringup_app.h",
+     """    if (on) {
+      AccessoryLoadState after = accessoryLoadState();
+      after.amplifier_on = true;
+      if (!modeEntryAllowed(after, "AMP_SD_MODE enable")) return false;
+    }""",
+     "    // mode edge removed"),
+    ("the mode edge is consulted and its refusal is ignored",
+     "aqroot_demo_bringup_app.h",
+     '      if (!modeEntryAllowed(after, "AMP_SD_MODE enable")) return false;',
+     '      (void)modeEntryAllowed(after, "AMP_SD_MODE enable");'),
+    ("the mode edge passes the mode set BEFORE the change instead of after",
+     "aqroot_demo_bringup_app.h",
+     """      AccessoryLoadState after = accessoryLoadState();
+      after.amplifier_on = true;""",
+     "      AccessoryLoadState after = accessoryLoadState();"),
+    ("the sub-GHz authority answers yes without asking the table",
+     "aqroot_demo_bringup_app.h",
+     """    AccessoryLoadState after = accessoryLoadState();
+    after.subghz_tx = true;
+    return modeEntryAllowed(after, "sub-GHz TX");""",
+     "    return true;"),
+    ("the mode edge stops being fail-closed when no rail is on... and also "
+     "when one is",
+     "aqroot_demo_bringup_app.h",
+     "    const int rails = accessoryRailsOn();\n    if (rails <= 0) return true;",
+     "    const int rails = accessoryRailsOn();\n    if (rails >= 0) return true;"),
+    # --- FABLE / D-792: post-recovery amplifier-intent reconciliation -------
+    # Recovery rebuilds a SAFE state, not a WANTED one.  Fable's mutation
+    # dropped the reconciliation and the tone silently failed until the next
+    # operator command, with nothing anywhere saying so.
+    ("recovery stops reconciling an outstanding amplifier intent",
+     "aqroot_demo_bringup_app.h",
+     """    if (amp_intent_.pending || amp_intent_.want) {
+      amp_intent_.pending = !amplifierConfirmed(amp_intent_.want);
+    }""",
+     "    // reconciliation removed"),
+    ("recovery reconciles the intent but never re-applies it",
+     "aqroot_demo_bringup_app.h",
+     """    (void)serviceDeferredCommands();
+    log_("I2C/expander safety state RECOVERED after incomplete boot");""",
+     '    log_("I2C/expander safety state RECOVERED after incomplete boot");'),
+    ("recovery marks the intent satisfied instead of testing the latch",
+     "aqroot_demo_bringup_app.h",
+     "      amp_intent_.pending = !amplifierConfirmed(amp_intent_.want);",
+     "      amp_intent_.pending = false;"),
     # --- D788-05: the backlight serial caller ------------------------------
     ("the serial dispatch carries a duplicate backlight ramp with a no-op hold",
      "aqroot_demo_bringup_app.h",
@@ -412,6 +550,17 @@ PRODUCTION_CALLER_CONTROLS = [
 # and the console dispatch over a host Arduino core and a physical-latch board
 # model.
 PRODUCTION_IMAGE_CONTROLS = [
+    # --- D-792 / R11-04: the SPI-B transmit gate is never attached.  The image
+    # still builds, still runs, still probes both radios -- and every future TX
+    # path silently loses the accessory permission's mode edge.
+    ("main never wires the SPI-B sub-GHz transmit gate to the app",
+     "demo/main.cpp",
+     "  g_spi_b.setAccessoryLoadAuthority(&g_app);",
+     "  // gate never wired"),
+    ("main wires the gate to nothing",
+     "demo/main.cpp",
+     "  g_spi_b.setAccessoryLoadAuthority(&g_app);",
+     "  g_spi_b.setAccessoryLoadAuthority(nullptr);"),
     # --- Astra 1: the periodic battery guard is made unreachable in loop()
     ("main's periodic battery guard is made unreachable",
      "demo/main.cpp",
@@ -612,6 +761,38 @@ BUS_CONTROLS = [
      "aqroot_spi_bus_b.h",
      "    ~Hold() { if (ok_) bus_.release(); }",
      "    ~Hold() {}"),
+    # ---- D-792 / R11-04.  THE SUB-GHZ MODE EDGE. --------------------------
+    ("a sub-GHz transmitter may be keyed without asking the accessory load "
+     "authority at all",
+     "aqroot_spi_bus_b.h",
+     """    if (isSubGhz(device) && authority_ != nullptr &&
+        !authority_->subGhzTransmitPermitted()) {
+      return false;
+    }""",
+     "    // gate removed"),
+    ("the authority is asked but its refusal is ignored",
+     "aqroot_spi_bus_b.h",
+     "        !authority_->subGhzTransmitPermitted()) {",
+     "        !authority_->subGhzTransmitPermitted() && false) {"),
+    ("the authority is never told a transmission started, so its mode set "
+     "goes stale",
+     "aqroot_spi_bus_b.h",
+     """    if (isSubGhz(device) && authority_ != nullptr) {
+      authority_->noteSubGhzTransmitting(true);
+    }""",
+     "    // notification removed"),
+    ("the authority is never told a transmission ENDED, so the mode set "
+     "sticks on and refuses everything afterwards",
+     "aqroot_spi_bus_b.h",
+     """    if (isSubGhz(device) && authority_ != nullptr) {
+      authority_->noteSubGhzTransmitting(false);
+    }""",
+     "    // notification removed"),
+    ("the NFC field is gated too, which charges its bounded-duty allowance "
+     "twice",
+     "aqroot_spi_bus_b.h",
+     "  static bool isSubGhz(SpiBDevice device) {\n    return device == SpiBDevice::Cc1101 || device == SpiBDevice::Sx1262;",
+     "  static bool isSubGhz(SpiBDevice device) {\n    return device != SpiBDevice::None;"),
 ]
 
 ORDER_CONTROLS = [

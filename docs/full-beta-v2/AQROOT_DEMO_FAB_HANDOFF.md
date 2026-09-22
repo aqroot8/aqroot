@@ -2,7 +2,127 @@
 
 
 
-> # **STATUS: D-791 ROUND-10 CORRECTION — EXTERNAL-REVIEW TARGET, BOARD AUTHORITY `c8eabd43` (2026-09-21).**
+> # **STATUS: D-792 ROUND-11 CONVERGENCE CORRECTION — EXTERNAL-REVIEW TARGET, BOARD AUTHORITY `c8eabd43` (2026-09-22).**
+>
+> **D-792 supersedes D-791, which Round-11 external review REJECTED.  THIS IS A
+> REVIEW TARGET, NOT A FABRICATION AUTHORIZATION — DO NOT ORDER.  Both published
+> per-rail accessory budgets — 400 mA on the switched 3.3 V rail and 300 mA on
+> the 5 V rail, each deliverable ALONE — are UNCHANGED.**
+>
+> Astra graded the D-791 target **C — DO NOT ORDER** with 4 high, 3 medium and
+> 3 low findings plus sourcing shortages; Fable graded B on verified scope and
+> declared its own review INCOMPLETE.  Astra's reproduced counterexamples control.
+> **No mandatory copper respin was established, and none is made here: NO copper,
+> NO net, NO footprint, NO placement, NO part value and NO protected-copper
+> object moves at D-792.**  Connectivity is unchanged at **174 retained / 173
+> connected / one owner-approved `U11.3` open / zero unapproved**.
+>
+> This is a CONVERGENCE release.  What changes is the verification architecture
+> and the numbers that come out of it.
+>
+> ### The one finding a fabricator should read first
+>
+> **`R11-02`: the load ledger had no processor line at all.**  A Demo holding its
+> display at full brightness with no radio transmitting was modelled as drawing
+> **nothing** for the ESP32-S3 driving it.  Two files also described two
+> different boards: the backlight converter's input was SOLVED at 233.13 mA in
+> `demo_feature_contract` and TYPED at 211.58 mA in `audit_rail_ampacity`, and
+> the typed copy ruled the whole cell-to-load network.  There is now **ONE
+> canonical model** — `hardware/demo/manufacturing/aqroot_power_model.py` — that
+> every gate, every document value and the firmware policy table are derived
+> from.  Nothing is typed twice.
+>
+> ### The five corrections that move published numbers
+>
+> * **`R11-02` — the canonical `+3V3` ledger.**  A **165.48 mA** ESP32-S3
+>   baseline (CPU, flash and in-package PSRAM) enters every state, and the
+>   Wi-Fi/BLE line becomes the INCREMENT over it so baseline + increment is
+>   exactly Espressif's own 500 mA supply requirement.  The internal `+3V3` peak
+>   envelope moves 1.1653 A → **1.310554 A**.
+> * **`R11-07` — the battery path is an itemisation, not an allowance.**  D-791
+>   carried one 54 mΩ number for the harness.  Every conductor, mated contact,
+>   crimp and solder barrel is now itemised with its own length, count,
+>   provenance tag and basis: **132.282 mΩ** hot and aged, and the
+>   cell-to-`BAT_PROTECTED_P` fixed series resistance is **249.782 mΩ** against
+>   D-791's 124 mΩ.
+> * **`R11-03` — the charger model held a physically impossible state.**  D-791
+>   could put `SYS` at 4.41 V while a 3.2 V battery "supplemented" into it.
+>   There is now an explicit BQ25185 mode solver with KCL, KVL and energy balance
+>   as hard invariants, and the input path is priced as the LINEAR pass element
+>   it is instead of as a resistor.
+> * **`R11-04` — the accessory permission was derived from the wrong pre-state.**
+>   Round-11 enabled the 5 V rail at D-791's own 3.55 V constant and watched the
+>   retention rule shed it.  An idle plugged-in accessory holds the node near open
+>   circuit and that is the reading the permission is granted on.
+> * **`R11-10` — the backlight inductor's DCR was a typical.**  Coilcraft
+>   publishes **57.4 mΩ** MAXIMUM for the fitted XFL4020-472MEC and the model
+>   carried the 52.2 mΩ typical from the distributor record.  The ruling value is
+>   the manufacturer maximum: **57.4 mΩ**.
+>
+> ### What an assembler and a test technician must use
+>
+> **THE ACCESSORY VCELL FLOORS MOVED AGAIN, AND SO DID THE BENCH POINTS.**  The
+> firmware constants are now retention **3.20 V**, first-rail enable
+> **3.95 V** and second-rail enable **3.95 V**, and those two enable numbers are
+> the
+> published ENVELOPE of a mode-indexed permission table with **two arrival
+> edges** — enabling a rail, and entering a high-load mode while a rail is
+> already live.  `FIRST_FIVE_ASSEMBLY_PLAN` §7b's `C-PWR-TRANSIENT-01` accessory
+> step now reads **`≈4.15 V` and `≈4.00 V`** pre-enable for the dual case and
+> **`≈3.70 V`** for the single case, with the LOADED node required to stay above
+> **3.20 V** at every point.  **Do not run the D-791 or D-790 points; they no
+> longer correspond to a permission the firmware grants.**
+>
+> **THERE IS A DECLARED SIMULTANEOUS PAIR, AND IT IS NEW PRODUCT-FACING TEXT.**
+> Each rail alone is unchanged at its published budget.  Drawn AT THE SAME TIME
+> the declared pair is **220 mA + 170 mA**.  At the top of the declared 0…40 °C
+> envelope the FULL pair settles the node 44 mV below the firmware's own
+> retention criterion; it is supported at an ambient of **33.0 °C** or below.
+> This is an accessory-facing contract, not an assembly step, and it is in
+> DEVICE_SPEC §6.3a.
+>
+> **CHARGING IS A SUPERVISED OPERATION AND NOW HAS TWO NUMBERS.**  Priced as a
+> linear element, the BQ25185's input FET puts the junction above TI's operating
+> maximum at the sustained reference state's own load — the part would reach
+> `TSHUT`, which is protection acting as control.  The derived charge-time
+> system power ceiling is **4.063 W** at 40 °C ambient; the heaviest combination
+> under it is `display_subghz` + `ACC_3V3` alone, at a junction of **111.3 °C**.
+> The fitted pouch publishes **0…40 °C for CHARGE** against 0…60 °C for
+> discharge and the cell sits in the internal air, so the derived external-ambient
+> ceiling for charging at that state is **27.7 °C**.  **This board has no
+> VBUS-present signal on any readable pin, so firmware cannot enforce either
+> number** — `battery_pack_contract` **B8**'s supervised first-five charging is
+> what carries them.
+>
+> ### What a fabricator and an assembler must still do
+>
+> **PURCHASING IS THE ONLY GATE LEFT THAT IS NOT ENGINEERING.**  Nine lines are
+> SHORT on the live sweep and need consignment — `J5`, `L4`, `L5`/`L6`, `MK1`,
+> `Q11`, `U18`, `U19`, `U2`/`U3`, `U9` — and `Q2`/`Q3` is a tenth exact identity
+> needing an authorised allocation without being short.  The **PROCUREMENT PLAN**
+> in [`assembly/SOURCING_LEDGER.md`](assembly/SOURCING_LEDGER.md) §4a carries the
+> attrition rule, the written no-substitution wording and the consignment
+> acceptance evidence each line must return.  **Confirm all ten before PCBA
+> payment.**
+>
+> ### **THE THREE GATES, KEPT APART ON PURPOSE (D-792 convergence requirement 8)**
+>
+> Round-11 asked for these to stop being one paragraph, because a reader who sees
+> "all contracts green" and concludes "orderable" has been misled by the layout of
+> the evidence rather than by any claim in it.
+>
+> | gate | what it covers | D-792 status |
+> |---|---|---|
+> | **PRE-ORDER ANALYTICAL** | every derivation, model, contract, negative control, host test and document-consistency clause in this repository | **CLOSED on this target.**  19/19 standing contracts, F1–F13, H1–H8, 8/8 host tests with every negative control caught, 4/4 PlatformIO environments, KiCad DRC and schematic parity byte-identical to the reviewed D-791 baseline, protected copper identical, fab package PASS. |
+> | **FAB / CAM ACCEPTANCE** | the manufacturer's own written acceptance of the Gerbers, drills, stackup, impedance, via-in-pad and mask-dam process, and of the named bounded exceptions in `.kicad_dru` §5 | **PENDING.**  Nothing in this repository can close it.  B01–B14 remain outstanding. |
+> | **FIRST-ARTICLE VALIDATION** | physical measurement on assembled hardware | **PENDING.**  C01–C21 remain outstanding, and D-792 adds measurements of record: `C-BAT-PATH-01` (the complete itemised battery-path resistance, cold and hot-soaked), `C-THERM-01` (R_SYS and the internal-air rise), `C-BAT-GATE-01` (the pass pair's declared temperature coefficient and the IBAT_OCP band), `C-DISP-01` (the panel's declared 50 mA and the backlight converter's declared loss terms), `C-MCU-01` (the ESP32-S3 baseline), `C-PWR-CHARGE-01` (the charge-regime junction and the load ceiling). |
+>
+> **PROCUREMENT is a fourth, separate gate and it is also PENDING:** nine fitted
+> groups are short on the live sweep and `Q2`/`Q3` needs an authorised genuine
+> allocation.  **ANALYTICAL CLOSURE IS NOT ORDER AUTHORIZATION.**
+
+
+> # **D-791 ROUND-10 CORRECTION — HISTORICAL, SUPERSEDED BY THE D-792 BLOCK ABOVE.  Its `AO4800` closure, its `R97` 1.87 kΩ value, its corrected manufacturer fields and its image-level host test STAND; its 3.55 V / 3.65 V VCELL floors, its 1.1653 A internal `+3V3` budget, its 54 mΩ harness allowance, its 1.9702 A `U12` compound case, its 30.0 °C charge-ambient ceiling and its 52.2 mΩ inductor DCR do NOT.**
 >
 > **D-791 supersedes D-790, which Round-10 external review REJECTED.  THIS IS A
 > REVIEW TARGET, NOT A FABRICATION AUTHORIZATION — DO NOT ORDER.  NO OWNER
