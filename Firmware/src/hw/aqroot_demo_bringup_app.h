@@ -418,6 +418,9 @@ class DemoBringupApp : public AccessoryLoadAuthority {
   // settle, and at every grant.  `force` skips the period (a grant must be
   // decided on a proof taken now).  A `Deferred` probe did not touch the part:
   // it restores the schedule so the probe stays DUE and proves nothing.
+  // D-797 / D797-08: and a grant that forced it REFUSES on it -- "proves
+  // nothing" is not "no news" -- while the confirmation it did not test is
+  // kept (see `logNfcGrantDeferred`).
   using NfcLivenessProbe = NfcLivenessResult (*)(uint8_t *identity);
   void setNfcLivenessProbe(NfcLivenessProbe probe) { nfc_probe_ = probe; }
   bool nfcLivenessProbeAttached() const { return nfc_probe_ != nullptr; }
@@ -447,6 +450,40 @@ class DemoBringupApp : public AccessoryLoadAuthority {
     return r;
   }
   uint32_t nfcLivenessProbes() const { return nfc_liveness_probes_; }
+
+  // ===========================================================================
+  // D-797 / D797-08 (Fable R16-03).  A DEFERRED PROBE AT A GRANT REFUSES THE
+  // GRANT AND KEEPS THE CONFIRMATION.
+  //
+  // "At rail/burst/session grants, a forced liveness probe returning Deferred
+  // must refuse the new grant while preserving prior confirmation state; do
+  // not treat Deferred as 'no news' for authorization."
+  //
+  // D-796 re-proved liveness at every grant but only ACTED on a `Lost`: the
+  // rail admission and the non-NFC burst then read `nfc_field_confirmed_off_`,
+  // which a `Deferred` probe leaves exactly as the last scheduled proof set
+  // it -- so a grant whose proof could not be TAKEN (SPI-B already selected
+  // by another transaction, or no probe attached) was decided on a proof up
+  // to a whole period old, which is the thing the forced probe exists to
+  // prevent.  (A field session also defers the probe, but it withdraws the
+  // confirmation first, so every grant already refuses it as UNKNOWN; that
+  // refusal is checked FIRST and keeps its own wording.)  The session request already refused
+  // anything but `Alive`; the other two grants now do the same, through
+  // this one sentence so they cannot drift apart.
+  //
+  // It is a refusal, NOT a revocation.  `Deferred` says nothing about the
+  // part -- the probe never touched it -- so the OFF confirmation, the
+  // schedule `serviceNfcLiveness` restored, the burst slot and every rail
+  // already live are left exactly as they were.  The operator retries.
+  void logNfcGrantDeferred(const char *what) {
+    char line[320];
+    snprintf(line, sizeof(line),
+             "%s REFUSED at the grant: the ST25R3916 liveness probe was "
+             "DEFERRED (SPI-B busy, or no probe attached), so no proof was "
+             "taken at the grant; the prior OFF confirmation is KEPT, not "
+             "revoked -- retry (D-797 / D797-08)", what);
+    log_(line);
+  }
 
   // A wait that keeps the liveness schedule: sliced, with an opportunity
   // before each slice, and ended on ELAPSED time rather than on the sum of
@@ -564,7 +601,13 @@ class DemoBringupApp : public AccessoryLoadAuthority {
     // D-796 / C-NFC-QUIESCE-01: a burst beside a possibly retained field is
     // the coincident sum the arbiter exists to refuse, so it too is decided
     // on a liveness proof taken now.
-    if (which != BurstLoad::NfcField) (void)serviceNfcLiveness(/*force=*/true);
+    //
+    // D-797 / D797-08: and a proof that could not be taken is no proof.  An
+    // NFC-field burst is only requested by `beginNfcFieldSession`, which has
+    // just proved `Alive` itself.
+    const NfcLivenessResult proof = (which != BurstLoad::NfcField)
+        ? serviceNfcLiveness(/*force=*/true)
+        : NfcLivenessResult::Alive;
     // D-795 / R14-02: UNKNOWN owns the slot even if a reset cleared the
     // arbiter or another holder released it -- the rule is the field state,
     // not the arbiter's bookkeeping of it.
@@ -575,6 +618,10 @@ class DemoBringupApp : public AccessoryLoadAuthority {
                "the burst slot until a liveness-qualified quiesce "
                "(D-795 / R14-02)", what);
       log_(unknown);
+      return false;
+    }
+    if (proof != NfcLivenessResult::Alive) {
+      logNfcGrantDeferred(what);
       return false;
     }
     if (burst_.active() == BurstLoad::None) return true;
@@ -595,7 +642,7 @@ class DemoBringupApp : public AccessoryLoadAuthority {
   // the Wi-Fi path cannot drift apart.  `what` names the mode for the log.
   bool modeEntryAllowed(const AccessoryLoadState &after, const char *what) {
     const int rails = accessoryRailsOn();
-    if (rails <= 0) return true;
+    if (rails <= 0) return chargingModeEntryAllowed(after, what);
     float v = 0.0f;
     const bool read = readFuelCellVoltageForAdmission(what);
     v = last_admission_vcell_;
@@ -618,6 +665,54 @@ class DemoBringupApp : public AccessoryLoadAuthority {
                "%s REFUSED: VCELL %.3f V below the %.2f V floor this mode "
                "needs with %d accessory rail(s) live (D-792 permission table)",
                what, double(v), double(required), rails);
+    }
+    log_(line);
+    return false;
+  }
+
+  // D-797 / D797-02.  THE MODE EDGE WITH NO ACCESSORY RAIL LIVE.
+  //
+  // With no rail on, the only hazard left is the charger: a BQ25185 that is
+  // SUPPLEMENTING absorbs the difference, and the firmware cannot see the
+  // adapter (D-776).  `accessoryChargingModeEntryFloor` says, per mode set,
+  // whether that is safe at every cell (0: no reading, today's behaviour, no
+  // gauge wait), at no reportable cell (refused), or above a reported floor
+  // -- and a floor is judged ONLY on a reading taken through the same
+  // admission reader the rail path uses: its own post-request window and the
+  // D797-08 liveness proof at the grant.  Fail-closed on an unreadable gauge.
+  bool chargingModeEntryAllowed(const AccessoryLoadState &after,
+                                const char *what) {
+    const float floor_v =
+        accessoryChargingModeEntryFloor(accessoryLoadBits(after));
+    char line[256];
+    if (floor_v >= kAccessoryNotPermittedV) {
+      snprintf(line, sizeof(line),
+               "%s REFUSED: no reported cell excludes an absorbing charger "
+               "supplement while charging (D-797 / D797-02)", what);
+      log_(line);
+      return false;
+    }
+    if (floor_v <= 0.0f) return accessoryModeEntryAllowed(false, 0.0f, 0, after);
+    // A gauge that is not qualified is qualified first, exactly as the rail
+    // enable edge does with no rail on (`accessoryBatteryAllows`); a failed
+    // qualification leaves the reader to return no reading (fail-closed).
+    if (!gauge_.activeReady() && !expanders_.safeShutdownPending()) {
+      (void)configureFuelGaugeActiveMode();
+    }
+    const bool read = readFuelCellVoltageForAdmission(what);
+    const float v = last_admission_vcell_;
+    if (accessoryModeEntryAllowed(read, v, 0, after)) return true;
+    if (!read) {
+      snprintf(line, sizeof(line),
+               "%s REFUSED: MAX17048 VCELL unreadable and this mode set needs "
+               "%.2f V while charging with no accessory rail live; mode entry "
+               "is fail-closed (D-797 / D797-02)",
+               what, double(floor_v));
+    } else {
+      snprintf(line, sizeof(line),
+               "%s REFUSED: VCELL %.3f V below the %.2f V charging floor this "
+               "mode set needs with no accessory rail live (D-797 / D797-02)",
+               what, double(v), double(floor_v));
     }
     log_(line);
     return false;
@@ -737,13 +832,20 @@ class DemoBringupApp : public AccessoryLoadAuthority {
     // answering at any point before the decision -- in the window, or in an
     // unpolled operator test before the key press -- is revoked HERE and the
     // admission is refused, rather than granted and shed a period later.
-    (void)serviceNfcLiveness(/*force=*/true);
+    const NfcLivenessResult proof = serviceNfcLiveness(/*force=*/true);
     if (!nfc_field_confirmed_off_) {
       char line[232];
       snprintf(line, sizeof(line),
                "%s REFUSED at the grant: the ST25R3916 field is not confirmed "
                "off by a live part (D-796 / C-NFC-QUIESCE-01)", label);
       log_(line);
+      last_admission_vcell_ = 0.0f;
+      return false;
+    }
+    // D-797 / D797-08: the field is still confirmed off, but by the LAST
+    // proof, not one taken at this grant.  Refuse; keep the confirmation.
+    if (proof != NfcLivenessResult::Alive) {
+      logNfcGrantDeferred(label);
       last_admission_vcell_ = 0.0f;
       return false;
     }

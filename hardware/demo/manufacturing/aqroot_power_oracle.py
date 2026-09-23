@@ -109,6 +109,8 @@ PRIMITIVES = {
     "bq.vbuvlo_typ_V": 3.0,
     "bq.vbuvlo_declared_tolerance": 0.05,
     "bq.vbuvlo_hys_max_V": 0.190,
+    # D-797 / D797-01: SLUSF65B EC TSHUT_RISING 150 C (TYP column), by hand.
+    "bq.tshut_rising_C": 150.0,
     # D-794 / R13-02.  THE FOUR CONTROL-LOOP THRESHOLDS, read off the same EC
     # table by hand.  Each is a DIFFERENT physical loop and the oracle checks
     # each branch against its own.
@@ -295,6 +297,7 @@ def oracle_treg_band():
 
 
 TREG_TOL_K = 0.05
+ORACLE_ABSORBING_REGIMES = ("SUPPLEMENT_ABSORBING", "TSHUT_PROTECTION_CYCLE")
 
 
 def thermal_label_problems(st):
@@ -345,11 +348,25 @@ def thermal_label_problems(st):
         if tj < treg - TREG_TOL_K:
             why.append("zero charge claimed by TREG with the junction "
                        "%.3f C below the threshold" % tj)
+    elif regime in ORACLE_ABSORBING_REGIMES:
+        # D-797 / D797-01, independently: a supplementing part carries no
+        # charge for TREG to fold and cannot lift its own SYS to the exit,
+        # so its junction is STATIC; at or above TSHUT_RISING the device's
+        # own protection -- "stops charging and shuts down VSYS" (SLUSF65B
+        # 6.3.7.6) -- is what acts, which is not an operating state.
+        if st["mode"] != "SUPPLEMENT":
+            why.append("an absorbing supplement regime on a %s state"
+                       % st["mode"])
+        if active:
+            why.append("TREG marked active on a supplement it cannot fold")
+        tshut = PRIMITIVES["bq.tshut_rising_C"]
+        if (regime == "TSHUT_PROTECTION_CYCLE") != (tj >= tshut):
+            why.append("the TSHUT label disagrees with the junction %.3f C "
+                       "against TSHUT_RISING %.1f C" % (tj, tshut))
     elif regime == "TREG_LIMIT_CYCLE_HOT_PHASE":
-        if st["mode"] not in CHARGER_BRANCHES_THAT_FOLD_CHARGE + (
-                "SUPPLEMENT",):
-            why.append("a limit-cycle hot phase that is neither DPPM-held "
-                       "nor supplementing")
+        if st["mode"] not in CHARGER_BRANCHES_THAT_FOLD_CHARGE:
+            why.append("a limit-cycle hot phase that is not DPPM-held (D-797:"
+                       " a supplement has no path out of the hot phase)")
         if tj < treg - TREG_TOL_K:
             why.append("a limit-cycle hot phase below TREG")
         lc = th.get("limit_cycle") or {}
@@ -359,7 +376,10 @@ def thermal_label_problems(st):
                        "a static TREG state existed and was not used")
     else:
         why.append("unknown thermal regime %r" % (regime,))
-    if regime != "NO_TREG" and not active:
+    if st["mode"] == "SUPPLEMENT" and regime not in ORACLE_ABSORBING_REGIMES:
+        why.append("a SUPPLEMENT state labelled %r: it is absorbing and TREG "
+                   "cannot act on it" % (regime,))
+    if regime not in ("NO_TREG",) + ORACLE_ABSORBING_REGIMES and not active:
         why.append("%s with the loop marked inactive" % regime)
     return why
 
@@ -627,6 +647,22 @@ def charger_branch_is_valid(st):
             bf != "connected" or vbat <= oracle_buvlo_band()[0] + 1e-9):
         why.append("supplement at or under VBUVLO: SLUSF65B 6.3.3 -- the "
                    "BATFET cannot supply SYS there")
+    # ---- D-797 / D797-01: EXIT IS JUDGED ON THE ACTUAL SYS ---------------
+    # Whether the input can carry the whole load with SYS AT the cell -- the
+    # node a supplementing part actually holds.  If it cannot, a part that
+    # was supplementing stays supplementing, whatever a BATFET-OFF node
+    # elsewhere would have done.
+    p_sys_ = st["system_W"]
+    i_in_at_vbat = max(0.0, min(cap, (vbus - vbat) / r_src))
+    # `system_W` is the PUBLIC field, rounded to 1e-6 W, so the comparison
+    # carries the same 5 uA tolerance as every other public-field inequality.
+    short_at_vbat = bool(bf == "connected"
+                         and p_sys_ / vbat > i_in_at_vbat + tol)
+    if st.get("previous_mode") == "SUPPLEMENT" and short_at_vbat \
+            and mode != "SUPPLEMENT":
+        why.append("the part was supplementing and the input cannot carry "
+                   "the load at SYS = VBAT: %s is not reachable from that "
+                   "history (the actual SYS cannot rise to the exit)" % mode)
     # ---- universal ------------------------------------------------------
     if i_in > cap + tol:
         why.append("the input current exceeds the binding input-side loop")
@@ -728,12 +764,13 @@ def charger_branch_is_valid(st):
         held = (vbus - vsys) / r_src
         if i_in < min(cap, held) - tol:
             why.append("the input is delivering less than it could")
-        if off_node is not None:
+        if not short_at_vbat and p_sys_ / vbat <= i_in_at_vbat - 1e-6:
+            why.append("SUPPLEMENT where the input carries the whole load at "
+                       "SYS = VBAT: no shortfall for the cell to supply")
+        if off_node is not None and st.get("previous_mode") != "SUPPLEMENT":
             if off_node > v_sup_enter + 1e-9:
-                if not (st.get("previous_mode") == "SUPPLEMENT"
-                        and off_node <= v_sup_exit + 1e-9):
-                    why.append("supplement entered with the BATFET-off node "
-                               "above VBAT - VBSUP1 and nothing to latch it")
+                why.append("supplement entered with the BATFET-off node "
+                           "above VBAT - VBSUP1 and nothing to latch it")
     # ---- D-796 / R15-01: every thermally-closed state, whatever its branch
     if isinstance(st.get("thermal"), dict):
         why += thermal_label_problems(st)
@@ -765,17 +802,31 @@ def _candidate(mode, vsys, i_in, i_chg, i_supp, p_sys, vbat, vbus, path,
 
 
 def independent_branches(p_sys, vbat, vbus, path, ilim, sweep, prev,
-                         ichg_corner, batfet="connected"):
+                         ichg_corner, batfet="connected", zero_program=False):
     """Every branch whose own candidate passes the oracle's inequalities.
 
     An EMPTY answer means no static state: with the BATFET open that is SYS
     collapse, and the canonical side must deliver a refusal there."""
+    return sorted({c["mode"] for c in independent_candidates(
+        p_sys, vbat, vbus, path, ilim, sweep, prev, ichg_corner, batfet,
+        zero_program)})
+
+
+def independent_candidates(p_sys, vbat, vbus, path, ilim, sweep, prev,
+                           ichg_corner, batfet="connected",
+                           zero_program=False):
+    """The surviving candidate STATES themselves (D-797 / D797-03), so a
+    boundary can be re-derived here -- heat and junction included -- rather
+    than accepted from the canonical evidence.  `zero_program` is the state
+    TREG leaves when it has folded the charge program to zero."""
     p = PRIMITIVES
     vsys_reg = p["bq.vsys_reg_V"] * 0.98
     ron_in = p["bq.ron_in_max_ohm"]
     ron_bat = p["bq.ron_bat_max_ohm"] * p["bq.ron_bat_vbat_allowance"]
     r_src = path + ron_in
     prog, _ = oracle_charge_program(vbat, ichg_corner)
+    if zero_program:
+        prog = 0.0
     v_dppm, v_sup_enter, v_sup_exit, v_vindpm = _oracle_thresholds(vbat,
                                                                    sweep)
     cap = min(ilim, max(0.0, (vbus - v_vindpm) / path))
@@ -783,7 +834,11 @@ def independent_branches(p_sys, vbat, vbus, path, ilim, sweep, prev,
     cands = []
 
     def _cand(*a):
-        return _candidate(*a, batfet=batfet)
+        c = _candidate(*a, batfet=batfet)
+        if zero_program:
+            c["controls"].update(treg_folds_charge_to_zero=True,
+                                 charge_loop="TREG")
+        return c
 
     def high_root(ichg):
         b = vbus - ichg * r_src
@@ -840,11 +895,16 @@ def independent_branches(p_sys, vbat, vbus, path, ilim, sweep, prev,
             i_supp = max(0.0, p_sys / vs - i_in)
             cands.append(_cand("SUPPLEMENT", vs, i_in, 0.0, i_supp,
                                     *args, off_for_sup))
-    valid = []
+    if zero_program:
+        # No program, no charging branch: with the charge folded to zero the
+        # part is NO_CHARGE or SUPPLEMENT (or has no state at all).
+        cands = [c for c in cands if c["mode"] in ("NO_CHARGE", "SUPPLEMENT")]
+    valid, by_mode = [], {}
     for c in cands:
         ok, _ = charger_branch_is_valid(c)
         if ok:
             valid.append(c["mode"])
+            by_mode.setdefault(c["mode"], c)
     # PRECEDENCE BETWEEN FAMILIES.  A charging branch that is physical
     # excludes the no-charge ones: the CC loop takes the input first and the
     # BATFET only conducts when nothing else can hold SYS.
@@ -852,8 +912,17 @@ def independent_branches(p_sys, vbat, vbus, path, ilim, sweep, prev,
                 "DPPM"}
     if charging & set(valid):
         valid = [v for v in valid if v in charging]
-    # The hysteresis band is the one place two candidates may BOTH be
-    # physical; the history decides, exactly as the part does.
+    # D-797 / D797-01.  RETENTION PRECEDES EVERYTHING.  A part that was
+    # supplementing, where the input cannot carry the load at SYS = VBAT,
+    # is still supplementing: no charge can flow below the cell, and the
+    # actual SYS cannot rise to the exit.  Checked from the oracle's own
+    # closed form, not from the candidate list.
+    if prev == "SUPPLEMENT" and batfet == "connected":
+        i_at_vbat = max(0.0, min(cap, (vbus - vbat) / r_src))
+        if p_sys / vbat > i_at_vbat + 5e-6:
+            return [by_mode["SUPPLEMENT"]] if "SUPPLEMENT" in valid else []
+    # Otherwise, where both a no-charge node and a supplement solution are
+    # physical, the history decides, exactly as the part does.
     if "NO_CHARGE" in valid and "SUPPLEMENT" in valid:
         valid = ["SUPPLEMENT"] if prev == "SUPPLEMENT" else ["NO_CHARGE"]
     # D-796 / D796-08: with the BATFET open, a NO_CHARGE node the CC loop
@@ -862,7 +931,46 @@ def independent_branches(p_sys, vbat, vbus, path, ilim, sweep, prev,
     if batfet != "connected" and valid == ["NO_CHARGE"] and prog > 0.0 \
             and off is not None and off > v_dppm + 1e-12:
         valid = []
-    return sorted(set(valid))
+    return [by_mode[m] for m in sorted(set(valid))]
+
+
+def candidate_heat(c):
+    """The terminal powers and package heat of an oracle candidate, from its
+    own currents and nodes -- the same three package elements
+    `charger_residuals` prices, written out again."""
+    v_pin = c["vbus_source_V"] - c["input_A"] * c["path_ohm"]
+    vsys, vbat = c["vsys_V"], c["vbat_V"]
+    pkg = (max(0.0, (v_pin - vsys) * c["input_A"])
+           + max(0.0, (vsys - vbat) * c["charge_A"])
+           + max(0.0, (vbat - vsys) * c["supplement_A"]))
+    return dict(package_W=pkg, source_W=c["vbus_source_V"] * c["input_A"],
+                from_cell_W=vbat * c["supplement_A"],
+                stored_W=vbat * c["charge_A"])
+
+
+def oracle_reachable(p_sys, vbat, cls, ilim, sweep, hist, batfet):
+    """D-797 / D797-01, independently: the states the part can be in at
+    `p_sys` from a cold start at the full program with this history.  A
+    SUPPLEMENT at the full program is absorbing -- it is the state; otherwise
+    TREG can fold the charge down to zero, and the zero-program state is the
+    one it cannot improve on.  None: no static state."""
+    full = independent_candidates(p_sys, vbat, cls["vbus_V"],
+                                  cls["path_ohm"], ilim, sweep, hist, "max",
+                                  batfet)
+    if len(full) == 1 and full[0]["mode"] == "SUPPLEMENT":
+        return full
+    zero = independent_candidates(p_sys, vbat, cls["vbus_V"],
+                                  cls["path_ohm"], ilim, sweep, hist, "max",
+                                  batfet, zero_program=True)
+    return zero if len(zero) == 1 else None
+
+
+def oracle_candidate_tj(c, th):
+    h = candidate_heat(c)
+    internal = (h["source_W"] + h["from_cell_W"] - h["stored_W"]
+                - th.get("delivered_out_W", 0.0))
+    return (th["ambient_C"] + th["r_sys_K_per_W"] * internal
+            + th["theta_ja_C_per_W"] * h["package_W"])
 
 
 def max_deliverable_W(vbat, vbus, path, ilim, sweep, batfet="connected"):
@@ -1298,7 +1406,9 @@ def expected_named_transitions():
 # multiset, and each point is either a solved state whose branch the oracle's
 # own elimination agrees with, or a refusal the oracle can re-check.
 # ==========================================================================
-EXPECTED_CHARGER_CELLS_V = (2.85, 3.2, 3.52, 3.7, 4.2, 4.221)
+# D-797 / D797-01: 3.4 V added -- Astra's retained-supplement cell, where the
+# BATFET-off node sits at 4.41 V while the supplementing SYS is under 3.4 V.
+EXPECTED_CHARGER_CELLS_V = (2.85, 3.2, 3.4, 3.52, 3.7, 4.2, 4.221)
 EXPECTED_CHARGER_POWERS_W = (0.0, 0.25, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.3,
                              3.6, 4.0, 4.5, 5.0, 5.65, 7.0,
                              # beyond what the input plus the BATFET can
@@ -1320,8 +1430,13 @@ REQUIRED_MODE_HISTORY_POPULATIONS = (
     ("VINDPM", None), ("DPPM", None), ("SUPPLEMENT", None),
     ("SUPPLEMENT", "SUPPLEMENT"), ("NO_CHARGE", None),
     ("NO_CHARGE", "NO_CHARGE"), ("SUPPLEMENT", "NO_CHARGE"))
-EXPECTED_REGIME_VBAT_GRID_V = (2.85, 3.0, 3.2, 3.4, 3.5, 3.52, 3.6, 3.8, 4.0,
-                               4.1, 4.2, 4.221)
+# D-797 / D797-02: 50 mV wide (firmware floors are read off it), plus 2.86 V --
+# the lowest cell at which the BATFET can be connected -- 3.52 V and 4.221 V.
+# Written out by hand so a narrowed canonical grid is a missing key.
+EXPECTED_REGIME_VBAT_GRID_V = (
+    2.85, 2.86, 2.9, 2.95, 3.0, 3.05, 3.1, 3.15, 3.2, 3.25, 3.3, 3.35, 3.4,
+    3.45, 3.5, 3.52, 3.55, 3.6, 3.65, 3.7, 3.75, 3.8, 3.85, 3.9, 3.95, 4.0,
+    4.05, 4.1, 4.15, 4.2, 4.221)
 EXPECTED_REGIME_SWEEP_FRACTIONS = (-1.0, -0.5, 0.0, 0.5, 1.0)
 EXPECTED_REGIME_HISTORIES = (None, "SUPPLEMENT")
 EXPECTED_REGIME_AMBIENTS_C = (0.0, 25.0, 40.0)
@@ -1612,6 +1727,30 @@ def charger_domain_problems(charger_states, charger_refusals):
         why.append("no point in the domain shows the VBSUP1/VBSUP2 "
                    "hysteresis deciding the branch: the history axis is not "
                    "exercised")
+    # ---- D-797 / D797-01: THE TWO ROUND-16 CLASSES MUST BE EXERCISED ------
+    # (a) Astra: a RETAINED supplement whose hypothetical BATFET-off node is
+    #     ABOVE the exit threshold -- exactly the state D-796 discarded.
+    # (b) Fable: a COLD-START supplement at a low cell, entered from the full
+    #     program, which the corrected physics makes absorbing.
+    retained_high_off = cold_low = 0
+    for st in charger_states:
+        c = st.get("controls") or {}
+        if st["mode"] != "SUPPLEMENT" or st.get("batfet") != "connected":
+            continue
+        off = c.get("batfet_off_comparator_node_V")
+        if st.get("previous_mode") == "SUPPLEMENT" and off is not None and \
+                off > c.get("supplement_exit_V", 1e9):
+            retained_high_off += 1
+        if st.get("previous_mode") is None and st["vbat_V"] <= 3.4 + 1e-9:
+            cold_low += 1
+    if not retained_high_off:
+        why.append("no point retains a SUPPLEMENT whose BATFET-off node is "
+                   "above the exit: the Round-16 retained-supplement class is "
+                   "not exercised")
+    if not cold_low:
+        why.append("no point enters SUPPLEMENT from a cold start at a cell at "
+                   "or under 3.4 V: the Round-16 low-cell absorbing class is "
+                   "not exercised")
     return why, dict(
         expected_points=len(expected_charger_keys()),
         solved=len(charger_states), refused=len(charger_refusals),
@@ -1621,6 +1760,8 @@ def charger_domain_problems(charger_states, charger_refusals):
                      for (m, h), n in sorted(pops.items(),
                                              key=lambda x: repr(x))},
         points_where_history_decides=latched,
+        retained_supplements_above_a_high_off_node=retained_high_off,
+        cold_start_supplements_at_or_under_3v4=cold_low,
         classifier_disagreements=disagreements,
         mislabelled_points=mislabelled)
 
@@ -1679,6 +1820,46 @@ def regime_row_problems(r, scalars):
                    "declared low end %.1f C" % (r["key"], th.get("treg_low_C"),
                                                 treg_low))
     want_state = dict(want, p_sys=None, hist=want["hist"], ichg="max")
+    # ---- D-797 / D797-03: EVERY BOUNDARY STATE IS BOUND TO THE EXACT
+    # SCALAR IT PROVES.  D-796 checked that each evidence state was the
+    # key's state at SOME power; a row whose published ceiling was inflated
+    # while its evidence stayed at the old, lower power passed.  Each label
+    # must now be PRESENT (a None value is allowed only where the physics
+    # says no state exists, and that is re-checked independently below), its
+    # raw AND summary system power must be the published scalar -- the `_at`
+    # state at it, the `_above` state at the declared probe offset
+    # p x (1 + 1e-7) + 1e-7 from the `_at` state's own raw power.
+    _bound = {"no_discharge": r.get("no_discharge_electrical_W"),
+              "treg_zero": r.get("treg_zero_unreachable_W"),
+              "junction": r.get("junction_boundary_W")}
+    for _fam, _scalar in _bound.items():
+        _at_l, _ab_l = _fam + "_at", _fam + "_above"
+        for _l in (_at_l, _ab_l):
+            if _l not in ev:
+                why.append("row %s: the boundary evidence %r is MISSING"
+                           % (r["key"], _l))
+        if _scalar is None:
+            why.append("row %s: the %s boundary scalar is not published"
+                       % (r["key"], _fam))
+            continue
+        _at, _ab = ev.get(_at_l), ev.get(_ab_l)
+        _p_at = None
+        if isinstance(_at, dict):
+            _p_at = (_at.get("raw") or {}).get("p_sys")
+            if _p_at is None or abs(_p_at - _scalar) > 6e-7 or \
+                    abs(float(_at.get("system_W", -1.0)) - _scalar) > 6e-7:
+                why.append("row %s: the %s state is solved at %r W (summary "
+                           "%r W), not at the published %.6f W it proves"
+                           % (r["key"], _at_l, _p_at, _at.get("system_W"),
+                              _scalar))
+        if isinstance(_ab, dict):
+            _p_ab = (_ab.get("raw") or {}).get("p_sys")
+            _base = _p_at if _p_at is not None else _scalar
+            if _p_ab is None or abs(_p_ab - (_base * (1.0 + 1e-7)
+                                             + 1e-7)) > 1e-9:
+                why.append("row %s: the %s state is at %r W, not at the "
+                           "declared probe offset above %.6f W"
+                           % (r["key"], _ab_l, _p_ab, _scalar))
     for label in ("no_discharge_at", "no_discharge_above", "treg_zero_at",
                   "treg_zero_above", "junction_at", "junction_above"):
         st = ev.get(label)
@@ -1693,11 +1874,24 @@ def regime_row_problems(r, scalars):
         if not ok or not dok:
             why.append("row %s: the %s state is not physical: %s"
                        % (r["key"], label, (w + dw)[:2]))
-        if label.startswith(("treg_zero", "junction")) and not (
-                (st.get("controls") or {}).get("treg_folds_charge_to_zero")
-                and st["charge_A"] <= 1e-12):
+        _zero = bool((st.get("controls") or {}).get(
+            "treg_folds_charge_to_zero") and st["charge_A"] <= 1e-12)
+        if label.startswith("treg_zero") and not _zero:
             why.append("row %s: the %s state is not the zero-charge state"
                        % (r["key"], label))
+        # D-797: junction evidence is the hottest REACHABLE state -- the
+        # zero-charge state, or an absorbing SUPPLEMENT reached at the full
+        # program.  WHICH one is not judged here: these states sit 1e-7 from
+        # the boundary, inside the two implementations' tolerances, and the
+        # supplement onset is often exactly that boundary.  The independent
+        # one-step-below / one-step-above search in
+        # `_independent_boundary_problems` decides it instead.
+        if label.startswith("junction") and not (
+                _zero or (st["mode"] == "SUPPLEMENT"
+                          and st["charge_A"] <= 1e-12)):
+            why.append("row %s: the %s state is %s -- neither the zero-charge "
+                       "state nor an absorbing supplement"
+                       % (r["key"], label, st["mode"]))
     tj_max = scalars["tj_operating_max_C"]
     nd_e = r.get("no_discharge_electrical_W")
     t0 = r.get("treg_zero_unreachable_W")
@@ -1800,6 +1994,144 @@ def regime_row_problems(r, scalars):
     if abs(r["ceiling_W"] - min(r["no_discharge_W"], r["junction_W"])) > 1e-6:
         why.append("regime row %s: the ceiling is not the lower of its two "
                    "limits" % r["key"])
+    why += _independent_boundary_problems(r, want, cls, th, scalars)
+    return why
+
+
+# The one-step probe for the independent boundary search: 0.01 % of the
+# boundary plus 0.1 mW either side.  The oracle's own inequalities carry
+# micro-amp tolerances, so a probe inside them would test the tolerance and
+# not the boundary.
+BOUNDARY_PROBE_REL = 1e-4
+BOUNDARY_PROBE_ABS = 1e-4
+
+
+def _independent_boundary_problems(r, want, cls, th, scalars):
+    """D-797 / D797-03.  THE CLAIM IS RECOMPUTED, NOT ACCEPTED.
+
+    For every published boundary of the row, the oracle solves its OWN
+    states one step below and one step above the scalar and requires the
+    physics to change there: below the no-discharge figure the part does not
+    supplement and above it it does (or, under the trip, collapses); below
+    the TREG-zero figure the zero-charge junction is under TREG's low end and
+    above it it is not; below the junction figure every reachable state is
+    inside 125 C and above it one is not.  An inflated figure -- even one
+    whose evidence and publication were edited to agree with it -- fails
+    here, because the state one step below it is already on the wrong side.
+    Enum labels that carry meaning are re-derived the same way."""
+    why = []
+    ilim = oracle_ilim(want["ilim"])
+    tj_max = scalars["tj_operating_max_C"]
+    treg_low = oracle_treg_band()[0]
+    unb = REGIME_JUNCTION_UNBOUNDED_W - 0.01
+
+    def below(x):
+        return x * (1.0 - BOUNDARY_PROBE_REL) - BOUNDARY_PROBE_ABS
+
+    def above(x):
+        return x * (1.0 + BOUNDARY_PROBE_REL) + BOUNDARY_PROBE_ABS
+
+    def modes(p, zero=False):
+        return [c["mode"] for c in independent_candidates(
+            p, want["vbat"], cls["vbus_V"], cls["path_ohm"], ilim,
+            want["sweep"], want["hist"], "max", want["batfet"], zero)]
+
+    def zero_tj(p):
+        c = independent_candidates(p, want["vbat"], cls["vbus_V"],
+                                   cls["path_ohm"], ilim, want["sweep"],
+                                   want["hist"], "max", want["batfet"], True)
+        return None if len(c) != 1 else oracle_candidate_tj(c[0], th)
+
+    def reach_tj(p):
+        rs = oracle_reachable(p, want["vbat"], cls, ilim, want["sweep"],
+                              want["hist"], want["batfet"])
+        return None if rs is None else max(oracle_candidate_tj(c, th)
+                                           for c in rs)
+    # ---- no-discharge (electrical) ----------------------------------------
+    nd = r.get("no_discharge_electrical_W")
+    if nd is not None:
+        if nd > 2 * BOUNDARY_PROBE_ABS:
+            m = modes(below(nd))
+            if not m or m == ["SUPPLEMENT"]:
+                why.append("row %s: one step BELOW the published no-discharge "
+                           "figure %.6f W the oracle finds %r" % (r["key"],
+                                                                  nd, m))
+        if nd < unb:
+            m = modes(above(nd))
+            if want["batfet"] == "connected" and m != ["SUPPLEMENT"]:
+                why.append("row %s: one step ABOVE the published no-discharge "
+                           "figure %.6f W the oracle finds %r, not SUPPLEMENT"
+                           % (r["key"], nd, m))
+            if want["batfet"] != "connected" and m:
+                why.append("row %s: one step above the input-carrying figure "
+                           "%.6f W a state still exists (%r)"
+                           % (r["key"], nd, m))
+        ev_at = (r.get("_evidence") or {}).get("no_discharge_at")
+        if (r.get("mode_at_no_discharge_ceiling")
+                != (ev_at or {}).get("mode", None)):
+            why.append("row %s: mode_at_no_discharge_ceiling %r is not the "
+                       "evidence's own mode" % (r["key"],
+                                                r.get("mode_at_no_discharge_"
+                                                      "ceiling")))
+    # ---- TREG-zero ----------------------------------------------------------
+    t0 = r.get("treg_zero_unreachable_W")
+    if t0 is not None:
+        if t0 > 2 * BOUNDARY_PROBE_ABS:
+            tj = zero_tj(below(t0))
+            if tj is None or tj >= treg_low:
+                why.append("row %s: one step BELOW the TREG-zero figure %.6f W "
+                           "the zero-charge junction is %r C, not under %.1f C"
+                           % (r["key"], t0, tj, treg_low))
+        if t0 < unb:
+            tj = zero_tj(above(t0))
+            if tj is not None and tj < treg_low:
+                why.append("row %s: one step ABOVE the TREG-zero figure %.6f W "
+                           "the zero-charge junction is still %.3f C"
+                           % (r["key"], t0, tj))
+    # ---- junction over the REACHABLE states --------------------------------
+    jb = r.get("junction_boundary_W")
+    if jb is not None:
+        if jb > 2 * BOUNDARY_PROBE_ABS:
+            tj = reach_tj(below(jb))
+            if tj is None or tj > tj_max + 1e-6:
+                why.append("row %s: one step BELOW the junction boundary "
+                           "%.6f W a reachable state is at %r C (max %.1f C)"
+                           % (r["key"], jb, tj, tj_max))
+        if r.get("junction_limited"):
+            if abs(r["junction_W"] - jb) > 1e-9:
+                why.append("row %s: the junction figure %.6f W is not its "
+                           "own boundary %.6f W" % (r["key"], r["junction_W"],
+                                                    jb))
+            tj = reach_tj(above(jb))
+            if r.get("junction_binding") == "junction" and (
+                    tj is None or tj <= tj_max):
+                why.append("row %s: one step ABOVE the junction figure "
+                           "%.6f W the reachable junction is %r C -- not the "
+                           "boundary" % (r["key"], jb, tj))
+            if r.get("junction_binding") == "no_operating_point_above" and \
+                    tj is not None:
+                why.append("row %s: 'no operating point above' but the oracle "
+                           "finds a reachable state there" % r["key"])
+            # the label of what lies above, re-derived
+            rs = oracle_reachable(above(jb), want["vbat"], cls, ilim,
+                                  want["sweep"], want["hist"], want["batfet"])
+            if rs:
+                c = rs[0]
+                ctj = oracle_candidate_tj(c, th)
+                lab = ("ZERO_CHARGE_ABOVE_TJ_MAX" if c["mode"] != "SUPPLEMENT"
+                       else "TSHUT_PROTECTION_CYCLE"
+                       if ctj >= PRIMITIVES["bq.tshut_rising_C"]
+                       else "SUPPLEMENT_ABSORBING")
+                if r.get("junction_above_regime") != lab:
+                    why.append("row %s: junction_above_regime %r, the oracle "
+                               "finds %r" % (r["key"],
+                                             r.get("junction_above_regime"),
+                                             lab))
+    binding = ("no_discharge" if r["no_discharge_W"] <= r["junction_W"]
+               else "junction")
+    if r.get("binding") != binding:
+        why.append("row %s: binding %r, the limits say %r"
+                   % (r["key"], r.get("binding"), binding))
     return why
 
 
@@ -1933,12 +2265,14 @@ def thermal_population_problems(thermal_states):
                      % (th.get("treg_C"), w["treg_C"]))
         ok, bw = charger_branch_is_valid(st)
         if not ok:
-            p += bw[:2]
+            p += bw[:4]
         if p:
             bad += 1
             if bad <= 8:
+                # D-797: every problem of the state, not the first two -- a
+                # wrong label behind a content mismatch is still a finding.
                 why.append("thermal state %s: %s" % (st.get("domain_key"),
-                                                     p[:2]))
+                                                     p[:8]))
     if bad > 8:
         why.append("... and %d more thermal states with problems" % (bad - 8))
     if not regimes.get("TREG_EQUILIBRIUM"):
@@ -1971,20 +2305,39 @@ def _multiset_problems(what, got, want):
     return why
 
 
-# The regime audit re-checks 3000 rows and their evidence; every F14 mutation
-# that does not touch the regime hands the SAME objects back.  Cached by
-# IDENTITY (strong references held, so an id is never reused) -- a mutated
-# regime is always a new object and is always re-audited.
+# D-797 / D797-04.  THE CACHE IS KEYED BY CONTENT, NEVER BY IDENTITY.
+#
+# ROUND-16 (Astra R16-02): D-796 cached the regime audit by Python object
+# IDENTITY, so a list that had PASSED once and was then mutated IN PLACE was
+# handed back its old PASS.  The regime audit re-checks thousands of rows and
+# every F14 mutation that does not touch the regime hands the same content
+# back, so a cache is still worth having -- keyed by a SHA-256 over a
+# deterministic serialisation of every argument, taken at LOOKUP time.  An
+# in-place edit changes the bytes, misses, and is re-audited.  Nothing is
+# kept but the digest and the verdict.
 _REGIME_CACHE = []
 
 
+def content_digest(*objs):
+    """SHA-256 of a deterministic serialisation of `objs`.  Pickle protocol 4
+    of the same content in the same insertion order is byte-identical; any
+    other difference can only cause a MISS, which is safe."""
+    import hashlib
+    import pickle
+    h = hashlib.sha256()
+    for o in objs:
+        h.update(pickle.dumps(o, protocol=4))
+    return h.hexdigest()
+
+
 def _regime_problems_cached(rows, published, scalars):
-    for r_, p_, s_, res in _REGIME_CACHE:
-        if r_ is rows and p_ is published and s_ == scalars:
+    key = content_digest(rows, published, dict(sorted(scalars.items())))
+    for k_, res in _REGIME_CACHE:
+        if k_ == key:
             return list(res[0]), dict(res[1])
     res = regime_problems(rows, published, scalars)
-    _REGIME_CACHE.append((rows, published, dict(scalars), res))
-    del _REGIME_CACHE[:-3]
+    _REGIME_CACHE.append((key, (list(res[0]), dict(res[1]))))
+    del _REGIME_CACHE[:-4]
     return list(res[0]), dict(res[1])
 
 

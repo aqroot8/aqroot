@@ -14,7 +14,29 @@
 
 ## 1. Authoritative HEAD
 
-> ### **D-796 REVIEW TARGET — THE EXACT FROZEN IDENTITY**
+> ### **D-797 REVIEW TARGET — THE EXACT FROZEN IDENTITY**
+>
+> | what | value |
+> |---|---|
+> | branch | `origin/aqroot-demo` |
+> | content commit | *recorded by the identity / post-commit verification commit that follows it* |
+> | identity / post-commit verification commit | *that commit — a commit cannot contain its own SHA, so the reviewable target is the PAIR* |
+> | board `aqroot-Beta-v2.kicad_pcb` sha256 | `c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907` |
+> | `hardware/demo/fab/MANIFEST.json` sha256 | *recorded in `evidence/d797-review-target.json`* |
+> | parent, REJECTED by Round-16 | `71030a55c572199bad8a9aecf0e008de09604e00` (D-796 identity) |
+>
+> The board sha256 is IDENTICAL to the reviewed D-796 target: **no copper moved**.
+> D-797 makes a supplementing charger's history part of the proof (a supplement is
+> ABSORBING, so the charging-safe power is a table by cell with a **2.700 W** universal
+> minimum), re-derives every published charger boundary in the oracle one step either
+> side, audits by content digest, pins every guarantee key's meaning in an independent
+> schema, classifies charge completion from measurement, binds the normative claims
+> symmetrically and table-aware, refuses a grant when the NFC liveness probe is
+> Deferred, and gives every first-article step an explicit outcome.  The full record is
+> `evidence/d797-review-target.json`.
+> **REVIEW TARGET, NOT A FABRICATION AUTHORIZATION.  DO NOT ORDER.**
+
+> ### **D-796 REVIEW TARGET — THE EXACT FROZEN IDENTITY**  *(**HISTORICAL** — REJECTED by Round-16)*
 >
 > | what | value |
 > |---|---|
@@ -141,7 +163,48 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
-> # **D-795 ROUND-14 FULL-CONVERGENCE CORRECTION — CURRENT EXTERNAL-REVIEW TARGET**
+> # **D-797 ROUND-16 FOCUSED-CONVERGENCE CORRECTION — CURRENT EXTERNAL-REVIEW TARGET**
+>
+> **THIS IS A REVIEW TARGET, NOT A FABRICATION AUTHORIZATION.  DO NOT ORDER.**  Round-16
+> external review REJECTED D-796: Astra and Fable Work both graded it **B — engineering
+> design acceptable after specific non-PCB pre-order corrections**, with no respin
+> established.  **No copper, net, footprint, placement, part value or protected-copper
+> object moves at D-797.**  Connectivity is unchanged at **174 retained / 173 connected /
+> one owner-approved `U11.3` open / zero unapproved**.  `D797-01`…`D797-10` are closed; the
+> full record is `CTO_DECISIONS.md` D-797.
+>
+> ### THE PRODUCT-FACING CONSEQUENCES, IN ONE PLACE
+>
+> * **Charging-safe power is a TABLE BY CELL.**  A supplementing charger carries no charge
+>   for thermal regulation to fold and cannot leave supplement while the load exceeds
+>   what the input carries at `SYS = VBAT`; on the high source corner that state reaches
+>   `TSHUT`.  The universal minimum is **2.700 W** at every cell, rising with the cell
+>   (the generated table is in DEVICE_SPEC, the fab handoff and `FIRST_FIVE_ASSEMBLY_PLAN`).
+>   D-796's universal 3.900 W is RETIRED.
+> * **Firmware:** with no accessory rail live, `audio` + `sub-GHz TX` needs a reported
+>   **3.60 V**; every Wi-Fi/BLE row is refused (no Wi-Fi caller ships).  A Deferred NFC
+>   liveness probe at a grant refuses that grant.
+> * **Supervised charging:** while charging, do not run an accessory rail with the adapter attached unless the pack is at or above **4.10 V**.
+>   The firmware cannot see the adapter; on battery every published budget is unchanged.
+> * **No published accessory capability moves.**  400 mA / 300 mA per rail, DECLARED AND
+>   QUALIFIED, the declared simultaneous pair 220 mA + 170 mA, retention 3.20 V and both
+>   enable envelopes 3.85 V; the quiet row **3.80 V** and the audio row **3.85 V**; the
+>   **1300 ms** post-request gauge window; charge only from the named Raspberry Pi 15W
+>   USB-C Power Supply (`KSA-15E-051300HU` or its regional variant) on its captive cable.
+> * **Charge completion** is a QUALIFICATION TARGET, classified from measurement by
+>   `C-PWR-CHARGE-02` (**TERMINATED** / **ACTIVE LIMITING** / **FAULT / UNCLASSIFIED** /
+>   **TIMER EXPIRY**).
+>
+> ### THE FOUR GATES
+>
+> | gate | status |
+> |---|---|
+> | **PRE-ORDER ANALYTICAL** | **CLOSED on this target** |
+> | **FAB / CAM ACCEPTANCE** | **PENDING** — B01–B14 in `assembly/RELEASE_ACCEPTANCE_REGISTER.json` and the fab notes |
+> | **FIRST-ARTICLE VALIDATION** | **PENDING** — FA01–FA10, enumerated in the same register and in `FIRST_FIVE_ASSEMBLY_PLAN` §7d |
+> | **PROCUREMENT** | **PENDING** — nine constrained fitted groups plus the AOS pass-pair allocation |
+
+> # **D-795 ROUND-14 FULL-CONVERGENCE CORRECTION — HISTORICAL, SUPERSEDED BY D-796 AND D-797 (its junction-safe 3.900 W and its C-THERM-01 charge record are RETIRED)**
 >
 > **THIS IS A REVIEW TARGET, NOT A FABRICATION AUTHORIZATION.  DO NOT ORDER.**  Round-14
 > external review REJECTED D-794: Astra **C — DO NOT ORDER** with seven findings, Fable

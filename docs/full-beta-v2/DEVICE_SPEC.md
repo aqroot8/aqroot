@@ -533,7 +533,7 @@ power/NFC review, and CTO decisions.
 > accessory rail is admitted while a radio transmits.  The voltage guarantee is
 > taken at the heavier sizing case so it covers every admitted state:
 >
-> | condition, at the J5 mating interface | guaranteed voltage |
+> | condition, at the J5 mating interface | voltage at the interface, F6 minimum |
 > |---|---|
 > | no load | **3.069408 V** |
 > | 400 mA, worst wiring, 5 V rail also at 300 mA (SIZING case) | **2.805637 V** |
@@ -835,7 +835,207 @@ power/NFC review, and CTO decisions.
 > fuse (`R10-N02`).
 >
 >
-> ### **D-796 — CHARGING WHILE RUNNING, CORRECTED: EVERY STATE HELD BY THE LOOP IT NAMES, NO SUPPLEMENT UNDER THE BUVLO TRIP, AND A NO-DISCHARGE TABLE THAT DOES NOT DEPEND ON AN AMBIGUOUS SENTENCE**
+> ### **D-797 — CHARGING WHILE RUNNING, CORRECTED: A SUPPLEMENT IS ABSORBING, SO THE CHARGING-SAFE POWER IS A TABLE BY CELL**
+>
+> **THE CHARGING SOURCE IS A NAMED PART.**  Charge the first five **only** from the
+> **Raspberry Pi 15W USB-C Power Supply**, part `KSA-15E-051300HU` (US; regional
+> variants `KSA-15E-051300HE` EU, `KSA-15E-051300HK` UK, `KSA-15E-051300HA` AU/NZ/CN,
+> `KSA-15E-051300HI` IN), on its own **captive 1.5 m 18 AWG** USB-C cable, ruled at
+> **4.743 V / 5.457 V** (5.1 V ±7 %, product brief archived under
+> `hardware/demo/kicad/aqroot-demo/vendor/RPI/`).  The acceptance criterion is at least
+> **4.6128 V** at `U11` pin 10 with the charger drawing its 1.1 A input limit
+> (`C-CHG-01`).  A computer port and every other adapter or cable are OUTSIDE the
+> first-five contract; the no-discharge table REPORTS two such classes so the cost of
+> leaving the contract is visible, and no figure from those columns is an acceptance
+> figure.
+>
+> **WHAT ROUND-16 FOUND (Astra `R16-01`, Fable `R16-01`).**  SLUSF65B §6.3.3: the battery
+> stops supplementing only when `SYS` rises back within `VBSUP2` of the cell.  While it
+> supplements, `SYS` is the cell less the BATFET drop and no charge flows, so thermal
+> regulation has nothing to fold; and with the input capped, a load above what the input
+> carries at `SYS = VBAT` (about `ILIM_min × VBAT`) cannot let `SYS` rise.  The supplement
+> is ABSORBING: reached from a cold start at the full program, or kept from any supplement
+> history, it lasts until the load falls or the source rises.  D-796 judged its exit on the
+> node a BATFET-off state would have and bounded the junction on the zero-charge state —
+> neither is the state the part is in.  On the high regulation corner the absorbing
+> supplement's static junction is above `TSHUT` (150 °C TYP): the device *"stops charging
+> and shuts down VSYS"* and powers up again below 135 °C (§6.3.7.6).  That is a PROTECTION
+> CYCLE — a brown-out and a reboot — never an operating state, and never counted as meeting
+> TI's 125 °C maximum.
+>
+> **CHARGING-SAFE SYSTEM POWER: A TABLE BY CELL, WHOSE UNIVERSAL MINIMUM IS **2.700 W** AT
+> EVERY CELL.**  Over every REACHABLE state and history — a cold start at the full
+> program, a retained supplement, both BATFET states wherever both exist, both regulation
+> corners of the named adapter, both `ILIM` corners, five points of the declared ±50 %
+> sweep of the four TYP-only thresholds, and 0 / 25 / 40 °C — the junction stays inside
+> 125 °C up to each row below; the universal minimum is reached at the lowest cell the
+> BATFET can be connected at.  Rows are guard-banded 5 % and floored onto 0.05 W; "at this
+> cell and above" is the minimum over every higher cell, because a charging cell only
+> rises.  Under the BUVLO trip a heavier load collapses SYS instead (a brown-out, not a
+> junction limit).  The second table is the firmware's charging mode-entry floor, used
+> with no accessory rail live:
+>
+> | cell voltage | BATFET | charging-safe at this cell | charging-safe at this cell and above | binds |
+> |---|---|---|---|---|
+> | 2.850 V | uvlo_open | **3.20 W** | **2.70 W** | input-carrying (under the BUVLO trip) |
+> | 2.860 V | connected / uvlo_open | **2.70 W** | **2.70 W** | reachable junction |
+> | 2.900 V | connected / uvlo_open | **2.70 W** | **2.70 W** | reachable junction |
+> | 2.950 V | connected / uvlo_open | **2.75 W** | **2.75 W** | reachable junction |
+> | 3.000 V | connected / uvlo_open | **2.80 W** | **2.80 W** | reachable junction |
+> | 3.050 V | connected / uvlo_open | **2.85 W** | **2.85 W** | reachable junction |
+> | 3.100 V | connected / uvlo_open | **2.90 W** | **2.90 W** | reachable junction |
+> | 3.150 V | connected / uvlo_open | **2.95 W** | **2.95 W** | reachable junction |
+> | 3.200 V | connected / uvlo_open | **3.00 W** | **3.00 W** | reachable junction |
+> | 3.250 V | connected / uvlo_open | **3.05 W** | **3.05 W** | reachable junction |
+> | 3.300 V | connected / uvlo_open | **3.10 W** | **3.10 W** | reachable junction |
+> | 3.350 V | connected | **3.15 W** | **3.15 W** | reachable junction |
+> | 3.400 V | connected | **3.20 W** | **3.20 W** | reachable junction |
+> | 3.450 V | connected | **3.25 W** | **3.25 W** | reachable junction |
+> | 3.500 V | connected | **3.30 W** | **3.30 W** | reachable junction |
+> | 3.520 V | connected | **3.30 W** | **3.30 W** | reachable junction |
+> | 3.550 V | connected | **3.35 W** | **3.35 W** | reachable junction |
+> | 3.600 V | connected | **3.40 W** | **3.40 W** | reachable junction |
+> | 3.650 V | connected | **3.45 W** | **3.45 W** | reachable junction |
+> | 3.700 V | connected | **3.45 W** | **3.45 W** | reachable junction |
+> | 3.750 V | connected | **3.50 W** | **3.50 W** | reachable junction |
+> | 3.800 V | connected | **3.55 W** | **3.55 W** | reachable junction |
+> | 3.850 V | connected | **3.60 W** | **3.60 W** | reachable junction |
+> | 3.900 V | connected | **3.65 W** | **3.65 W** | reachable junction |
+> | 3.950 V | connected | **3.70 W** | **3.70 W** | reachable junction |
+> | 4.000 V | connected | **3.75 W** | **3.75 W** | reachable junction |
+> | 4.050 V | connected | **3.80 W** | **3.80 W** | reachable junction |
+> | 4.100 V | connected | **3.85 W** | **3.85 W** | reachable junction |
+> | 4.150 V | connected | **3.90 W** | **3.90 W** | reachable junction |
+> | 4.200 V | connected | **3.95 W** | **3.95 W** | reachable junction |
+> | 4.221 V | connected | **3.95 W** | **3.95 W** | reachable junction |
+>
+> | mode set (no accessory rail live) | system power | cell floor while charging | firmware reported floor |
+> |---|---|---|---|
+> | no optional mode | 1.955 W | every cell | none needed |
+> | Wi-Fi / BLE TX | 3.481 W | 3.75 V | **NOT PERMITTED** |
+> | audio at the capped level | 2.385 W | every cell | none needed |
+> | Wi-Fi / BLE TX + audio at the capped level | 3.911 W | 4.20 V | **NOT PERMITTED** |
+> | sub-GHz TX | 2.457 W | every cell | none needed |
+> | Wi-Fi / BLE TX + sub-GHz TX | 3.982 W | none | **NOT PERMITTED** |
+> | audio at the capped level + sub-GHz TX | 2.887 W | 3.10 V | **3.60 V** |
+> | Wi-Fi / BLE TX + audio at the capped level + sub-GHz TX | 4.412 W | none | **NOT PERMITTED** |
+>
+> **WHY THE REPORTED FLOOR IS ABOVE THE CELL FLOOR.**  The MAX17048 reads
+> `BAT_PROTECTED_P`, which while charging sits ABOVE the cell by the charge current times
+> the itemised cell-to-node path.  The reported floor is therefore the cell floor plus the
+> largest charge current the lighter pre-state can carry times that path (pass pair at
+> 150 °C), plus the gauge's +20 mV error and one LSB, rounded up onto 50 mV.  `audio` +
+> `sub-GHz TX` needs a reported **3.60 V**; audio alone and sub-GHz alone are
+> charging-safe at every cell.  Every Wi-Fi/BLE row is refused: no reported value
+> excludes its absorbing supplement while charging, and this image has no Wi-Fi caller.
+>
+> **THE ACCESSORY RAILS WHILE CHARGING — A SUPERVISED-CHARGING RESTRICTION.**  Every
+> accessory-rail state lies above the universal minimum: the 3.3 V rail alone at
+> 3.388 W (cell floor 3.60 V), the 5 V rail alone at 3.716 W (cell floor 4.00 V), the
+> declared simultaneous pair at 3.741 W (cell floor 4.00 V) and the amplifier with the
+> 3.3 V rail at 3.818 W (cell floor 4.10 V).  The firmware cannot hold them there: it cannot tell charging from
+> discharging on this revision (no VBUS-present signal; `STAT2` unrouted by owner
+> decision), and a reported floor that covered the charge offset (4.15–4.60 V) is above
+> anything the gauge reports on battery (3.857–3.937 V), so the rails would never turn
+> on.  First-five charging is already a SUPERVISED condition (`battery_pack_contract`
+> **B8**), and the supervisor's rule for the rails is generated from the model: while
+> charging, do not run an accessory rail with the adapter attached unless the pack is at or above **4.10 V**.
+> Below that cell an accessory load can hold the charger in an absorbing supplement and,
+> on the high source corner, cycle it through `TSHUT` (a brown-out and a reboot — the
+> part's own protection, not an operating state).  On battery, and while charging at or
+> above that cell, every published rail budget is unchanged.  `C-PWR-CHARGE-01` step 7
+> measures the trap at 3.400 V; REV-B routes `STAT2` so the firmware can enforce it.
+>
+> **THE NO-DISCHARGE BOUNDARY IS A TABLE, AND EVERY ROW SAYS WHAT BINDS IT.**
+> Guard-banded (5 %, floored onto 0.05 W) and the minimum over every other axis,
+> INCLUDING ambient 0…40 °C.  **(T)** = TREG-conditioned: above this power the
+> zero-charge junction could reach TREG's low end at some ambient in the envelope, so no
+> no-discharge claim is made there.  **(C)** = under the BUVLO trip: nothing supplements,
+> and a heavier load collapses SYS.  An unmarked row is the supplement onset itself.
+>
+> | cell voltage | BATFET | rpi15w_high | rpi15w_low | generic_typec_24awg_2m *(outside the contract)* | unqualified_28awg_2m *(outside the contract)* |
+> |---|---|---|---|---|---|
+> | 2.850 V | uvlo_open | **2.45 W** (T) | **3.20 W** (C) | **2.95 W** (C) | **2.70 W** (C) |
+> | 2.860 V | connected / uvlo_open | **2.45 W** (T) | **2.70 W** | **2.70 W** | **2.60 W** |
+> | 2.900 V | connected / uvlo_open | **2.45 W** (T) | **2.70 W** | **2.70 W** | **2.65 W** |
+> | 2.950 V | connected / uvlo_open | **2.45 W** (T) | **2.75 W** | **2.75 W** | **2.65 W** (T) |
+> | 3.000 V | connected / uvlo_open | **2.45 W** (T) | **2.80 W** | **2.80 W** | **2.70 W** (T) |
+> | 3.050 V | connected / uvlo_open | **2.45 W** (T) | **2.85 W** | **2.85 W** | **2.75 W** (T) |
+> | 3.100 V | connected / uvlo_open | **2.45 W** (T) | **2.90 W** | **2.90 W** | **2.80 W** (T) |
+> | 3.150 V | connected / uvlo_open | **2.45 W** (T) | **2.95 W** | **2.95 W** | **2.85 W** (T) |
+> | 3.200 V | connected / uvlo_open | **2.45 W** (T) | **3.00 W** | **3.00 W** | **2.90 W** (T) |
+> | 3.250 V | connected / uvlo_open | **2.45 W** (T) | **3.05 W** | **3.05 W** | **2.95 W** (T) |
+> | 3.300 V | connected / uvlo_open | **2.45 W** (T) | **3.10 W** | **3.10 W** | **3.00 W** (C) |
+> | 3.350 V | connected | **2.45 W** (T) | **3.15 W** | **3.15 W** | **3.00 W** |
+> | 3.400 V | connected | **2.45 W** (T) | **3.20 W** | **3.20 W** | **2.95 W** |
+> | 3.450 V | connected | **2.45 W** (T) | **3.25 W** | **3.25 W** (T) | **2.85 W** |
+> | 3.500 V | connected | **2.45 W** (T) | **3.30 W** | **3.30 W** (T) | **2.80 W** |
+> | 3.520 V | connected | **2.45 W** (T) | **3.30 W** | **3.30 W** (T) | **2.40 W** |
+> | 3.550 V | connected | **2.45 W** (T) | **3.35 W** | **3.35 W** (T) | **2.35 W** |
+> | 3.600 V | connected | **2.45 W** (T) | **3.40 W** | **3.40 W** (T) | **2.20 W** |
+> | 3.650 V | connected | **2.45 W** (T) | **3.45 W** | **3.45 W** (T) | **2.05 W** |
+> | 3.700 V | connected | **2.45 W** (T) | **3.45 W** | **3.45 W** (T) | **1.90 W** |
+> | 3.750 V | connected | **2.45 W** (T) | **3.50 W** (T) | **3.50 W** (T) | **1.75 W** |
+> | 3.800 V | connected | **2.45 W** (T) | **3.55 W** (T) | **3.55 W** (T) | **1.60 W** |
+> | 3.850 V | connected | **2.45 W** (T) | **3.60 W** (T) | **3.30 W** | **1.45 W** |
+> | 3.900 V | connected | **2.45 W** (T) | **3.65 W** (T) | **2.90 W** | **1.30 W** |
+> | 3.950 V | connected | **2.45 W** (T) | **3.70 W** (T) | **2.55 W** | **1.10 W** |
+> | 4.000 V | connected | **2.45 W** (T) | **3.75 W** (T) | **2.15 W** | **0.95 W** |
+> | 4.050 V | connected | **2.45 W** (T) | **3.80 W** (T) | **1.75 W** | **0.75 W** |
+> | 4.100 V | connected | **2.45 W** (T) | **3.85 W** (T) | **1.35 W** | **0.55 W** |
+> | 4.150 V | connected | **2.45 W** (T) | **3.25 W** (T) | **0.90 W** | **0.40 W** |
+> | 4.200 V | connected | **2.45 W** (T) | **1.60 W** | **0.45 W** | **0.20 W** |
+> | 4.221 V | connected | **2.45 W** (T) | **0.90 W** | **0.30 W** | **0.10 W** |
+>
+> Its minimum over the qualified domain is **0.900 W**, at a full cell on the low
+> regulation corner, and there is **no useful universal no-discharge scalar**.  Above a
+> row the battery may supply part of the load; below the charging-safe row for that cell
+> that is ordinary power-path behaviour (BATOCP stays active).
+>
+> **CHARGE COMPLETION IS AN ENGINEERING QUALIFICATION TARGET.**  The pack record
+> publishes no capacity-versus-voltage curve and no charge-time figure, so no completion
+> power is published.  The QUALIFICATION TARGET is: a full charge from the 2.75 V cut-off,
+> device idle, on the named adapter, is classified **TERMINATED** before **288 min** at
+> 25 °C.  288 min is 360 min × 0.8 — an engineering qualification target taken on
+> SLUSF65B's TYP-only `tMAXCHG`, not a datasheet guarantee.  `C-PWR-CHARGE-02` is the
+> measurement of record, and it classifies every record as **TERMINATED**, **ACTIVE
+> LIMITING**, **FAULT / UNCLASSIFIED** or **TIMER EXPIRY** from measurement.
+>
+> **WHAT HAPPENS IF THE SAFETY TIMER EXPIRES FIRST — AN EXPLICIT FIRST-FIVE CONSEQUENCE.**
+> SLUSF65B §6.3.7.7: if charging has not terminated when `tMAXCHG` expires, charging is
+> disabled with a NON-RECOVERABLE fault, cleared only by toggling `CE` or the input
+> power.  On this board `/CE` is **hard-tied** and cannot be toggled by firmware.
+> **Recovery on the first five is to unplug the adapter and plug it back in**, which
+> starts a new cycle.  Firmware control of `CE` is a REV-B item, not a first-five
+> blocker.
+>
+> **WHAT THE STATUS PIN CAN AND CANNOT SAY.**  `STAT1` LOW is a directly observed fault,
+> but it is shared by every recoverable fault (VIN_OVP, TS HOT/COLD, TSHUT, system short)
+> and every latch-off fault (ILIM/ISET short, BATOCP, the safety timer); without `STAT2`
+> it never identifies which, and it is never read as a timer expiry by itself.  `STAT1`
+> HIGH is non-faulted and AMBIGUOUS between charging and charge-complete/sleep.  A current
+> taper near `VBATREG` is not termination while VINDPM, DPPM, ILIM or TREG may be active;
+> termination needs those loops excluded AND the BATFET-off transition sustained.
+>
+> **THE CHARGING STATES THE PRODUCT CAN BE IN.**  Only combinations the production
+> permission table admits are listed — no accessory rail is admitted while a radio
+> transmits — and each is inside the envelope only at or above its cell floor.  The
+> heaviest admissible charging state is `display_audio` + `acc_3v3_only` at **3.818 W**,
+> inside the charging-safe envelope at or above a 4.10 V cell; the external ambient at
+> which the internal air reaches the pouch's own 40 °C charge window at that state is
+> **28.7 °C**.
+>
+> **THE FIRMWARE CANNOT SEE THE CHARGER.**  This board has **no VBUS-present signal on any
+> MCU or expander pin** (`/01_POWER_TREE/VBUS_PRESENT` is bench-probed at `TP31.1`), so
+> the firmware cannot observe a charger being plugged or unplugged and does not stamp it.
+> Every accessory admission stamps its OWN request and reads the gauge only after the full
+> **1300 ms** post-request window (1293.75 ms at the MAX17048's tERR +3.5 %, rounded up);
+> a charger removed during that window or while a rail is live is caught by the settled
+> recheck and the periodic retention guard.  The charging restrictions above are a
+> SUPERVISED operating condition (`battery_pack_contract` **B8**; the pack has no
+> thermistor).
+>
+> ### **D-796 — CHARGING WHILE RUNNING — HISTORICAL, SUPERSEDED BY D-797 ABOVE** *(its universal junction-safe figure was bounded on the zero-charge state, not on the reachable absorbing supplement; RETIRED)*
 >
 > **THE CHARGING SOURCE IS A NAMED PART.**  Charge the first five **only** from the
 > **Raspberry Pi 15W USB-C Power Supply**, part `KSA-15E-051300HU` (US; regional

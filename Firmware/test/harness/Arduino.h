@@ -15,6 +15,8 @@
 
 #include <stdint.h>
 #include <stddef.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #include <vector>
 
@@ -38,6 +40,8 @@ struct Recorder {
   int digital_writes_low = 0;
   uint32_t ledc_hz = 0;
   uint8_t ledc_bits = 0;
+  // D-797 / D797-10: consecutive waits in which no time passed.
+  uint64_t stalled_waits = 0;
 
   void reset() { *this = Recorder(); }
 };
@@ -45,6 +49,40 @@ struct Recorder {
 inline Recorder &recorder() {
   static Recorder r;
   return r;
+}
+
+// D-797 / D797-10.  AN UNBOUNDED WAIT IS A NAMED FAILURE, NOT AN EXHAUSTED
+// HARNESS.  Every wait is RECORDED, so a wait loop that loses its own bound
+// used to end only when the recording vector grew until `std::bad_alloc`
+// terminated the process -- with no claim printed.  The same two limits as
+// `test/image/Arduino.h`: a million consecutive waits with no elapsed time
+// (a zero-length delay spinning), or twenty million waits since the last
+// reset (a loop whose exit condition never comes).  Either prints a named
+// `[FAIL]` claim and exits non-zero.
+constexpr uint64_t kHostStalledWaitLimit = 1000000u;
+constexpr size_t kHostRecordedWaitLimit = 20000000u;
+
+[[noreturn]] inline void hostGuardFail(const char *why) {
+  printf("[FAIL] host guard (D797-10): %s\n", why);
+  fflush(stdout);
+  exit(1);
+}
+
+inline void noteHostWait(uint64_t us) {
+  auto &r = recorder();
+  if (us == 0) {
+    if (++r.stalled_waits > kHostStalledWaitLimit) {
+      hostGuardFail("a shipped wait loop kept waiting without time passing "
+                    "-- its own attempt bound is missing");
+    }
+  } else {
+    r.stalled_waits = 0;
+  }
+  if (r.delay_ms_calls.size() + r.delay_us_calls.size()
+      > kHostRecordedWaitLimit) {
+    hostGuardFail("a shipped wait loop never reached its exit condition "
+                  "(more than 20 million waits since the last reset)");
+  }
 }
 
 }  // namespace aqroot_hal
@@ -55,12 +93,14 @@ inline void delay(uint32_t ms) {
   auto &r = aqroot_hal::recorder();
   r.delay_ms_calls.push_back(ms);
   r.total_delay_ms += ms;
+  aqroot_hal::noteHostWait(uint64_t(ms) * 1000u);
   r.clock_us += uint64_t(ms) * 1000u;
 }
 
 inline void delayMicroseconds(uint32_t us) {
   auto &r = aqroot_hal::recorder();
   r.delay_us_calls.push_back(us);
+  aqroot_hal::noteHostWait(us);
   r.clock_us += us;
 }
 

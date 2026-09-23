@@ -1,0 +1,92 @@
+{
+ "beta_v2_untouched": true,
+ "board": "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_changes": [],
+ "board_sha256": "c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907",
+ "branch": "aqroot-demo",
+ "closed_here": {
+  "astra_round_16": [
+   "R16-01",
+   "R16-02",
+   "R16-03",
+   "R16-04",
+   "R16-05"
+  ],
+  "fable_r16_06": "notes not reproduced in the reopen inventory; nothing further claimed",
+  "fable_work_round_16": [
+   "R16-01",
+   "R16-02",
+   "R16-03",
+   "R16-04",
+   "R16-05"
+  ],
+  "found_by_this_closeout": [
+   "the accessory rails exceed the corrected charging envelope below their cell floors and no reported floor can hold them without refusing them on battery: held by the supervised-charging rule (4.10 V), printed from the model and gated by F12",
+   "three Round-16 document shapes escaped the ported symmetric families (window 'after every request', universal quantifier read as a cell condition, value-form TREG independence); fixed at the family",
+   "two D-796 F14 controls went vacuous under the corrected model; re-aimed and caught",
+   "the F12 report writer crashed on mixed-type keys after the checks had run",
+   "DEVICE_SPEC's delivery table header 'guaranteed voltage' beside the 400 mA budget"
+  ],
+  "mandatory_items": [
+   "D797-01",
+   "D797-02",
+   "D797-03",
+   "D797-04",
+   "D797-05",
+   "D797-06",
+   "D797-07",
+   "D797-08",
+   "D797-09",
+   "D797-10"
+  ]
+ },
+ "content_commit": "this commit -- recorded by the identity commit that follows",
+ "decision": "D-797",
+ "gates": {
+  "battery_pack": "PASS",
+  "demo_feature": "F1-F14 PASS; F14 38/38 mutation controls caught",
+  "fab_package": "PASS",
+  "firmware_hw_map": "H1-H8 PASS; 8 host tests, 743 claims, 193/193 controls caught; H8 11/11 controls",
+  "guarantee_evidence": "17/17 GUARANTEED keys authenticated against the pinned semantic schema; 28/28 destructive controls caught",
+  "kicad_drc_parity": "identical in count and class to d796 (199 violations, 17 unconnected, 246 parity)",
+  "platformio": "4/4 (esp32-s3-aqroot, wokwi, esp32-s3-aqroot-dm, aqroot-demo)",
+  "protected_copper": "identical (15 nets, 406 objects)",
+  "rail_ampacity": "all_ok",
+  "routing_ledger": {
+   "approved_unrouted_edges": 1,
+   "connected_retained_nets": 173,
+   "retained_multi_pad_nets": 174,
+   "unapproved_open_edges": 0
+  },
+  "sourcing": "nine constrained groups, unchanged from d796",
+  "standing_contracts": "19/19 PASS (contract_regression vs d796: substantive difference only in demo_feature and firmware_hw_map, by design)"
+ },
+ "identity_commit": "the commit that follows -- a commit cannot contain its own SHA",
+ "manifest": "hardware/demo/fab/MANIFEST.json",
+ "manifest_sha256": "abfa74b59660301394f27f49e316e1a0f11f390f5995c9ea5752a571e675eabc",
+ "no_copper_change": true,
+ "order_status": {
+  "FAB_CAM_ACCEPTANCE": "PENDING (B01-B14)",
+  "FIRST_ARTICLE_VALIDATION": "PENDING (FA01-FA10)",
+  "PRE_ORDER_ANALYTICAL": "CLOSED on this target",
+  "PROCUREMENT": "PENDING"
+ },
+ "parent_rejected_by_round_16": "71030a55c572199bad8a9aecf0e008de09604e00",
+ "product_facing": {
+  "audio_row_V": 3.85,
+  "charging_safe_is_a_table_by_cell": true,
+  "charging_safe_universal_W": 2.7,
+  "charging_source": "Raspberry Pi 15W USB-C Power Supply KSA-15E-051300HU (regional variants), captive 1.5 m 18 AWG",
+  "d796_junction_safe_3_900_W": "RETIRED",
+  "firmware_charging_mode_floor_audio_plus_subghz_V": 3.6,
+  "firmware_wifi_rows": "NOT PERMITTED (no Wi-Fi caller in the image)",
+  "gauge_window_ms": 1300,
+  "harness_single_limiter_fault_A": 2.8628,
+  "harness_worst_conforming_A": 2.2689,
+  "nfc_revocation_deadline_ms": 820,
+  "quiet_row_V": 3.8,
+  "supervised_rail_rule_cell_V": 4.1,
+  "universal_no_discharge_W": 0.9
+ },
+ "schema": 1
+}

@@ -242,10 +242,27 @@ int main() {
                                    kQuiet));
 
   // ---- THE MODE EDGE.  The same transition, walked in the other order. ----
-  claim("with NO rail on, every mode combination is allowed -- the guard is "
-        "about the accessory tree and nothing else",
-        accessoryModeEntryAllowed(true, 3.30f, 0, all_three)
-        && accessoryModeEntryAllowed(false, 0.0f, 0, wifi_subghz));
+  // D-797 / D797-02.  With NO rail on the guard is no longer transparent: a
+  // charger that is SUPPLEMENTING absorbs the difference, so the mode edge
+  // applies the generated CHARGING floor.  0 = no reading needed; refused
+  // rows carry the Wi-Fi/BLE radio; audio + sub-GHz needs a valid reading.
+  claim("D797-02: with NO rail on, the quiet set, audio alone and sub-GHz "
+        "alone are allowed with NO reading at all",
+        accessoryModeEntryAllowed(false, 0.0f, 0, kQuiet)
+        && accessoryModeEntryAllowed(false, 0.0f, 0, amp)
+        && accessoryModeEntryAllowed(false, 0.0f, 0, subghz));
+  claim("D797-02: with NO rail on, every set carrying the Wi-Fi/BLE radio is "
+        "REFUSED, on a full pack",
+        !accessoryModeEntryAllowed(true, 4.20f, 0, wifi)
+        && !accessoryModeEntryAllowed(true, 4.20f, 0, wifi_amp)
+        && !accessoryModeEntryAllowed(true, 4.20f, 0, wifi_subghz)
+        && !accessoryModeEntryAllowed(true, 4.20f, 0, all_three));
+  claim("D797-02: with NO rail on, audio + sub-GHz needs a valid, plausible "
+        "reading at or above its 3.60 V charging floor",
+        accessoryModeEntryAllowed(true, 3.60f, 0, amp_subghz)
+        && !accessoryModeEntryAllowed(true, 3.59f, 0, amp_subghz)
+        && !accessoryModeEntryAllowed(false, 4.20f, 0, amp_subghz)
+        && !accessoryModeEntryAllowed(true, kVcellAllOnesV, 0, amp_subghz));
   claim("entering the amplifier with one rail live is REFUSED at D-793, while "
         "enabling a rail with the amplifier already on is permitted -- the two "
         "edges have not been collapsed",

@@ -509,10 +509,59 @@ inline bool accessoryEnableAllowed(bool vcell_valid, float vcell,
 // against the mode set that will exist AFTERWARDS.  With no rail on, every
 // mode combination is permitted -- the accessory tree is what the restriction
 // is about -- so the guard is transparent until it has something to protect.
+// ===========================================================================
+// D-797 / D797-02.  THE CHARGING MODE-ENTRY FLOOR, WITH NO ACCESSORY RAIL LIVE.
+//
+// ROUND-16 (Astra R16-01, Fable R16-01): a BQ25185 that is SUPPLEMENTING
+// carries no charge for TREG to fold and cannot lift its own SYS back past
+// VBAT - VBSUP2 while the load exceeds what the input carries at SYS = VBAT
+// (about ILIM_min x VBAT).  The supplement is ABSORBING, and on the high
+// source corner its static junction is far above TSHUT.  So a mode set whose
+// system power is above the lowest charging-safe power (the lowest connected
+// cell) is safe while charging only above a CELL FLOOR, which F12 reads off
+// the published cell-conditioned envelope.
+//
+// The firmware cannot see the adapter (no VBUS-present signal, D-776), and
+// while charging the gauge reads `BAT_PROTECTED_P` ABOVE the cell by the
+// charge current times the cell-to-node path.  So the REPORTED floor is the
+// cell floor, plus the largest charge current the pre-state can carry times
+// the itemised cell-to-node resistance, plus the MAX17048 error and one LSB,
+// rounded UP onto the 50 mV grid.  A floor above what the gauge can report in
+// the pre-state is a REFUSAL (D790-A03): it is `kAccessoryNotPermittedV`.
+//
+//   0.0f                     charging-safe at every cell: no reading needed
+//   kAccessoryNotPermittedV  no reported cell excludes an absorbing supplement
+//                            while charging: refused.  Every such row carries
+//                            the Wi-Fi/BLE radio, which has NO production
+//                            caller in this image (`wifiActivationPermitted`).
+//
+// GENERATED VALUES -- derived by F12, pinned by F12 entry by entry.  Index is
+// the mode bits.  Applies only with NO accessory rail live; with a rail live
+// the D-792 mode-edge table above governs.
+inline float accessoryChargingModeEntryFloor(unsigned bits) {
+  static const float kChargingModeFloors[8] = {
+      0.0f,                     // 0  no optional mode
+      kAccessoryNotPermittedV,  // 1  Wi-Fi / BLE TX
+      0.0f,                     // 2  audio at the capped level
+      kAccessoryNotPermittedV,  // 3  Wi-Fi + audio
+      0.0f,                     // 4  sub-GHz TX
+      kAccessoryNotPermittedV,  // 5  Wi-Fi + sub-GHz
+      3.60f,                    // 6  audio + sub-GHz
+      kAccessoryNotPermittedV,  // 7  all three
+  };
+  return kChargingModeFloors[bits & 7u];
+}
+
 inline bool accessoryModeEntryAllowed(bool vcell_valid, float vcell,
                                       int rails_on,
                                       const AccessoryLoadState &after) {
-  if (rails_on <= 0) return true;
+  if (rails_on <= 0) {
+    // D-797 / D797-02: the charging floor, fail-closed like every other.
+    const float f = accessoryChargingModeEntryFloor(accessoryLoadBits(after));
+    if (f >= kAccessoryNotPermittedV) return false;
+    if (f <= 0.0f) return true;
+    return vcell_valid && vcellIsPlausible(vcell) && vcell >= f;
+  }
   if (!accessoryModeEntryPermitted(after, rails_on)) return false;
   return vcell_valid && vcellIsPlausible(vcell)
          && vcell >= accessoryModeEntryFloor(after, rails_on);

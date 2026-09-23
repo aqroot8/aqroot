@@ -35,7 +35,9 @@ enum class SpiBDevice : uint8_t { None = 0, Cc1101, Sx1262, St25r3916 };
 // because a FIELD-OWNING NFC SESSION holds the part (D796-10: the session,
 // not the probe, owns register 11h while the field is its own).  A deferred
 // probe neither extends an OFF confirmation nor revokes one; the scheduler
-// keeps it DUE so the next opportunity asks again.
+// keeps it DUE so the next opportunity asks again.  D-797 / D797-08: at a
+// GRANT it is a refusal -- the grant was owed a proof taken now and did not
+// get one -- which still leaves the confirmation exactly as it was.
 enum class NfcLivenessResult : uint8_t { Alive = 0, Lost, Deferred };
 
 // D-796 / D796-10.  THE OWNERSHIP TOKEN FOR A FIELD-OWNING NFC SESSION IS THE

@@ -70,6 +70,7 @@ class BoardBus : public I2cBus {
   uint16_t hibrt = 0xFFFF;
   uint16_t mode = 0x0000;          // HibStat clear = active
   uint16_t vcell_counts = 51200;   // 51200 x 78.125 uV = 4.000 V
+  int vcell_reads = 0;             // D797-02: VCELL register reads
 
   // Failure injection.
   int fail_address = -1;
@@ -138,7 +139,10 @@ class BoardBus : public I2cBus {
       uint16_t value = 0;
       if (reg == Max17048Guard::kRegHibrt) value = hibrt;
       else if (reg == Max17048Guard::kRegMode) value = mode;
-      else if (reg == Max17048Guard::kRegVcell) value = vcell_counts;
+      else if (reg == Max17048Guard::kRegVcell) {
+        value = vcell_counts;
+        ++vcell_reads;
+      }
       for (size_t i = 0; i < length; ++i) {
         data[i] = uint8_t(value >> (8 * (length - 1 - i)));   // MSB first
       }
@@ -177,6 +181,16 @@ NfcLivenessResult countingProbe(uint8_t *identity) {
   if (identity) *identity = 0x2A;
   return g_probe_answer;
 }
+// D-797 / D797-08: the probe every Rig starts with.  The shipped image
+// attaches its probe in `setup()` before anything can ask for a grant, and a
+// grant now refuses unless a probe taken AT the grant answers `Alive` -- so a
+// Rig with no probe would model an image that can never grant anything.  It
+// answers `Alive` and counts nothing; the scenarios that count or fail the
+// probe attach `countingProbe` or `deferringProbe` themselves.
+NfcLivenessResult aliveProbe(uint8_t *identity) {
+  if (identity) *identity = 0x2A;
+  return NfcLivenessResult::Alive;
+}
 struct NullSelects : ChipSelects {
   void driveSelect(SpiBDevice, bool) override {}
 };
@@ -200,6 +214,7 @@ struct Rig {
     // CONFIRMED off.  The refusal an unconfirmed field produces has its own
     // claims at the end of this file.
     app.noteNfcFieldQuiesced(true, 0x00);
+    app.setNfcLivenessProbe(&aliveProbe);
   }
   bool bringUp() {
     const bool ok = expanders.begin(bus);
@@ -916,6 +931,9 @@ int main() {
     (void)r.app.handleAccessoryConsole('3');
     claim("R14-02 model: a rail is live under a confirmed-quiet U9",
           r.app.acc3v3() && r.app.nfcFieldConfirmedOff());
+    // D-797: the Rig's probe re-proved liveness at that grant, which restarts
+    // the period; let it lapse so the schedule itself is what is claimed.
+    delay(kNfcLivenessPeriodMs + 1);
     claim("a liveness probe is due on a confirmed-quiet part",
           r.app.nfcLivenessDue());
     claim("...and is not due again within its period", !r.app.nfcLivenessDue());
@@ -1054,6 +1072,315 @@ int main() {
           && r.app.nfcRevocations() == 1);
     claim("...and the rail granted before it is shed", !r.app.acc3v3());
     g_probe_answer = NfcLivenessResult::Alive;
+  }
+
+  // =========================================================================
+  // D-797 / D797-08 (Fable R16-03).  A DEFERRED PROBE AT A GRANT REFUSES THE
+  // GRANT AND KEEPS THE CONFIRMATION.
+  //
+  // "At rail/burst/session grants, a forced liveness probe returning
+  // Deferred must refuse the new grant while preserving prior confirmation
+  // state; do not treat Deferred as 'no news' for authorization."  Every
+  // grant is driven through its production method with the attached probe
+  // answering `Deferred` -- the probe could not be RUN -- and then again with
+  // it answering `Alive`, with no quiesce in between.
+  // =========================================================================
+  {
+    const char *kDeferred = "REFUSED at the grant: the ST25R3916 liveness "
+                            "probe was DEFERRED";
+    {
+      // THE ACCESSORY RAIL GRANT (the enable edge).
+      Rig r;
+      r.bringUp();
+      r.bus.vcell_counts = 51200;
+      g_probe_calls = 0;
+      g_probe_answer = NfcLivenessResult::Deferred;
+      r.app.setNfcLivenessProbe(&countingProbe);
+      delay(kNfcLivenessPeriodMs + 1);     // the schedule is due at the grant
+      const bool allowed = r.app.accessoryBatteryAllows(false);
+      claim("D797-08: an accessory rail grant whose forced liveness probe is "
+            "Deferred is REFUSED -- Deferred is not 'no news'",
+            !allowed && g_probe_calls >= 1 && logHas(kDeferred)
+            && logHas("the accessory rail admission request REFUSED at the "
+                      "grant"));
+      claim("...and the prior OFF confirmation is PRESERVED: not revoked, no "
+            "revocation counted, the burst slot not taken",
+            r.app.nfcFieldConfirmedOff() && r.app.nfcRevocations() == 0
+            && r.app.burstArbiter().active() == BurstLoad::None);
+      claim("...and the Deferred probe is not counted as a proof: the "
+            "liveness schedule is still DUE",
+            r.app.nfcLivenessProbes() == 0 && r.app.nfcLivenessDue());
+      g_log.clear();
+      (void)r.app.handleAccessoryConsole('3');
+      claim("D797-08: the console '3' enable is refused on the same Deferred "
+            "grant and the rail is never energised",
+            !r.app.acc3v3() && logHas(kDeferred)
+            && r.app.nfcFieldConfirmedOff());
+      g_probe_answer = NfcLivenessResult::Alive;
+      (void)r.app.handleAccessoryConsole('3');
+      claim("...and once a probe can run at the grant the same request is "
+            "GRANTED on the kept confirmation, with no quiesce in between",
+            r.app.acc3v3() && r.app.nfcFieldConfirmedOff());
+    }
+    {
+      // THE SECOND-RAIL GRANT, beside a rail already live.
+      Rig r;
+      r.bringUp();
+      r.bus.vcell_counts = 51200;
+      g_probe_answer = NfcLivenessResult::Alive;
+      r.app.setNfcLivenessProbe(&countingProbe);
+      (void)r.app.handleAccessoryConsole('3');
+      const bool first = r.app.acc3v3();
+      g_probe_answer = NfcLivenessResult::Deferred;
+      g_log.clear();
+      (void)r.app.handleAccessoryConsole('5');
+      claim("D797-08: a SECOND-rail grant on a Deferred probe is REFUSED",
+            first && !r.app.acc5v() && logHas(kDeferred));
+      claim("...and the rail already live is NOT shed and nothing is revoked",
+            r.app.acc3v3() && r.app.nfcFieldConfirmedOff()
+            && r.app.nfcRevocations() == 0);
+      g_probe_answer = NfcLivenessResult::Alive;
+    }
+    {
+      // MODE ENTRY WITH A RAIL LIVE -- the same admission reader.
+      Rig r;
+      r.bringUp();
+      r.bus.vcell_counts = 51200;
+      g_probe_answer = NfcLivenessResult::Alive;
+      r.app.setNfcLivenessProbe(&countingProbe);
+      (void)r.app.handleAccessoryConsole('3');
+      const bool live = r.app.acc3v3();
+      g_probe_answer = NfcLivenessResult::Deferred;
+      g_log.clear();
+      const bool amp = r.app.setAmplifierIntent(true);
+      claim("D797-08: mode entry with a rail live (AMP_SD_MODE enable) on a "
+            "Deferred probe is REFUSED at the grant",
+            live && !amp && logHas(kDeferred)
+            && logHas("AMP_SD_MODE enable admission request REFUSED at the "
+                      "grant"));
+      g_log.clear();
+      NullSelects selects;
+      SpiBusB spi(selects);
+      spi.setAccessoryLoadAuthority(&r.app);
+      const bool keyed = spi.beginTransmit(SpiBDevice::Cc1101);
+      claim("...and so is keying a sub-GHz transmitter through SpiBusB",
+            !keyed && spi.transmitting() == SpiBDevice::None
+            && logHas(kDeferred));
+      g_log.clear();
+      claim("...and so is the Wi-Fi/BLE radio",
+            !r.app.wifiActivationPermitted() && logHas(kDeferred));
+      claim("...and the rail and the confirmation are both kept",
+            r.app.acc3v3() && r.app.nfcFieldConfirmedOff()
+            && r.app.nfcRevocations() == 0);
+      // Every mode edge with a rail live is a table refusal in this revision
+      // (D-792 kModeRows), so the mode entry's own VERDICT cannot show the
+      // Deferred refusal apart from the table's.  The ADMISSION READER that
+      // every mode entry goes through can: it is claimed directly, both ways.
+      g_log.clear();
+      const bool read_deferred =
+          r.app.readFuelCellVoltageForAdmission("D797-08 mode entry");
+      g_probe_answer = NfcLivenessResult::Alive;
+      const bool read_alive =
+          r.app.readFuelCellVoltageForAdmission("D797-08 mode entry");
+      claim("...and the admission reader every mode entry goes through "
+            "returns NO reading on a Deferred probe and a reading once the "
+            "probe can run, with the confirmation kept throughout",
+            !read_deferred && read_alive && r.app.nfcFieldConfirmedOff()
+            && r.app.acc3v3());
+      g_log.clear();
+      const bool keyed_after = spi.beginTransmit(SpiBDevice::Cc1101);
+      claim("...and with the probe answering the same sub-GHz mode entry is "
+            "decided by the D-792 permission table again, not by the probe",
+            !keyed_after && !logHas(kDeferred)
+            && logHas("NO attainable VCELL"));
+    }
+    {
+      // THE NON-NFC BURST GRANTS.
+      Rig r;
+      r.bringUp();
+      g_probe_calls = 0;
+      g_probe_answer = NfcLivenessResult::Deferred;
+      r.app.setNfcLivenessProbe(&countingProbe);
+      for (BurstLoad which : {BurstLoad::MicroSdWrite, BurstLoad::IrTransmit}) {
+        g_log.clear();
+        const int calls = g_probe_calls;
+        const bool ok = r.app.burstAllowed(
+            which, which == BurstLoad::MicroSdWrite ? "microSD test"
+                                                    : "IR test");
+        claim(which == BurstLoad::MicroSdWrite
+                  ? "D797-08: a microSD burst grant on a Deferred probe is "
+                    "REFUSED"
+                  : "D797-08: an IR burst grant on a Deferred probe is "
+                    "REFUSED",
+              !ok && g_probe_calls == calls + 1 && logHas(kDeferred));
+      }
+      claim("...and the prior confirmation is PRESERVED and the slot left "
+            "free -- a Deferred probe is not a loss",
+            r.app.nfcFieldConfirmedOff() && r.app.nfcRevocations() == 0
+            && r.app.burstArbiter().active() == BurstLoad::None
+            && !logHas("U9 owns the burst slot"));
+      g_probe_answer = NfcLivenessResult::Alive;
+      claim("...and once a probe can run the burst is GRANTED",
+            r.app.burstAllowed(BurstLoad::MicroSdWrite, "microSD test"));
+    }
+    {
+      // THE NFC SESSION REQUEST -- already refused anything but Alive.
+      Rig r;
+      r.bringUp();
+      NullSelects selects;
+      SpiBusB spi(selects);
+      g_probe_answer = NfcLivenessResult::Deferred;
+      r.app.setNfcLivenessProbe(&countingProbe);
+      claim("D797-08: an NFC field session request on a Deferred probe is "
+            "REFUSED and keeps the confirmation",
+            !r.app.beginNfcFieldSession(spi) && !nfcFieldSessionOwnsU9(spi)
+            && r.app.nfcFieldConfirmedOff() && r.app.nfcRevocations() == 0
+            && r.app.burstArbiter().active() == BurstLoad::None);
+      g_probe_answer = NfcLivenessResult::Alive;
+    }
+  }
+
+  // =========================================================================
+  // D-797 / D797-02.  THE CHARGING MODE-ENTRY FLOOR, WITH NO RAIL LIVE.
+  //
+  // With no accessory rail on, the mode edge is no longer transparent: an
+  // absorbing charger supplement is the hazard, and the generated
+  // `accessoryChargingModeEntryFloor` decides.  All three production callers
+  // -- the amplifier, `SpiBusB`'s sub-GHz authority and the Wi-Fi guard --
+  // are driven here, with no rail live throughout.
+  // =========================================================================
+  {
+    const uint16_t k365 = uint16_t(3.65f / Max17048Guard::kVcellLsbV);
+    const uint16_t k355 = uint16_t(3.55f / Max17048Guard::kVcellLsbV);
+    {
+      // (a) Audio alone and sub-GHz alone: floor 0, no reading, no wait.
+      Rig r;
+      r.bringUp();
+      r.bus.vcell_counts = k355;
+      g_log.clear();
+      const int reads = r.bus.vcell_reads;
+      const uint32_t admissions = r.app.loadEpochAdmissions();
+      const uint32_t t0 = millis();
+      const bool amp = r.app.setAmplifierIntent(true);
+      claim("D797-02: with no rail live, audio ALONE is allowed at a 3.55 V "
+            "pack with NO gauge read, NO admission epoch and NO wait",
+            amp && r.app.accessoryRailsOn() == 0
+            && r.app.accessoryLoadState().amplifier_on
+            && r.bus.vcell_reads == reads
+            && r.app.loadEpochAdmissions() == admissions
+            && millis() - t0 < kGaugePostLoadConversionMs);
+      (void)r.app.setAmplifierIntent(false);
+    }
+    {
+      Rig r;
+      r.bringUp();
+      r.bus.vcell_counts = k355;
+      NullSelects selects;
+      SpiBusB spi(selects);
+      spi.setAccessoryLoadAuthority(&r.app);
+      g_log.clear();
+      const int reads = r.bus.vcell_reads;
+      const uint32_t admissions = r.app.loadEpochAdmissions();
+      const uint32_t t0 = millis();
+      const bool keyed = spi.beginTransmit(SpiBDevice::Cc1101);
+      claim("D797-02: with no rail live, sub-GHz ALONE keys through SpiBusB "
+            "at a 3.55 V pack with NO gauge read, NO admission epoch and NO "
+            "wait",
+            keyed && r.app.subGhzTransmitting()
+            && r.bus.vcell_reads == reads
+            && r.app.loadEpochAdmissions() == admissions
+            && millis() - t0 < kGaugePostLoadConversionMs);
+      // (b) ...and with sub-GHz keyed, the amplifier is the mode edge that
+      // reaches audio + sub-GHz (floor 3.60 V): refused at 3.55 V.
+      g_log.clear();
+      const bool amp_low = r.app.setAmplifierIntent(true);
+      claim("D797-02: with sub-GHz keyed and no rail live, the amplifier is "
+            "REFUSED at 3.55 V -- audio + sub-GHz needs 3.60 V while charging",
+            !amp_low && !r.app.accessoryLoadState().amplifier_on
+            && logHas("AMP_SD_MODE enable REFUSED: VCELL 3.5")
+            && logHas("3.60 V charging floor"));
+      r.bus.vcell_counts = k365;
+      claim("...and GRANTED at 3.65 V",
+            r.app.setAmplifierIntent(true)
+            && r.app.accessoryLoadState().amplifier_on);
+      (void)r.app.setAmplifierIntent(false);
+      spi.endTransmit(SpiBDevice::Cc1101);
+    }
+    {
+      // (b) Audio on, then key sub-GHz: the other order, same row.
+      Rig r;
+      r.bringUp();
+      r.bus.vcell_counts = k365;
+      NullSelects selects;
+      SpiBusB spi(selects);
+      spi.setAccessoryLoadAuthority(&r.app);
+      const bool amp = r.app.setAmplifierIntent(true);
+      g_log.clear();
+      const int reads = r.bus.vcell_reads;
+      const uint32_t admissions = r.app.loadEpochAdmissions();
+      const uint32_t asked = millis();
+      const bool keyed = spi.beginTransmit(SpiBDevice::Cc1101);
+      claim("D797-02: with audio on and no rail live, sub-GHz keys at 3.65 V "
+            "(audio + sub-GHz, floor 3.60 V)",
+            amp && keyed && r.app.subGhzTransmitting());
+      claim("...and the reading it was granted on came through the ADMISSION "
+            "reader: its own admission epoch, the whole post-load window "
+            "spent after the request, and a VCELL read",
+            r.app.loadEpochAdmissions() == admissions + 1
+            && millis() - asked >= kGaugePostLoadConversionMs
+            && r.bus.vcell_reads > reads);
+      spi.endTransmit(SpiBDevice::Cc1101);
+      r.bus.vcell_counts = k355;
+      g_log.clear();
+      claim("D797-02: with audio on and no rail live, sub-GHz is REFUSED at "
+            "3.55 V and the log names the reading and the floor",
+            !spi.beginTransmit(SpiBDevice::Cc1101)
+            && !r.app.subGhzTransmitting()
+            && spi.transmitting() == SpiBDevice::None
+            && logHas("sub-GHz TX REFUSED: VCELL 3.5")
+            && logHas("below the 3.60 V charging floor"));
+      r.bus.vcell_counts = k365;
+      r.bus.fail_address = AQROOT_I2C_ADDR_FUEL_GAUGE;
+      r.bus.fail_reg = Max17048Guard::kRegVcell;
+      g_log.clear();
+      claim("D797-02: with audio on and no rail live, an UNREADABLE gauge "
+            "refuses sub-GHz (fail-closed) even though the pack is at 3.65 V",
+            !spi.beginTransmit(SpiBDevice::Cc1101)
+            && !r.app.subGhzTransmitting()
+            && logHas("sub-GHz TX REFUSED: MAX17048 VCELL unreadable"));
+      r.bus.fail_address = -1;
+      r.bus.fail_reg = -1;
+      // The D797-08 liveness proof at the grant is part of the same reader.
+      g_probe_answer = NfcLivenessResult::Deferred;
+      r.app.setNfcLivenessProbe(&countingProbe);
+      g_log.clear();
+      claim("D797-02: ...and a Deferred liveness probe at the grant refuses "
+            "it too, at 3.65 V -- the charging floor is judged only on a "
+            "reading the admission reader would grant on",
+            !spi.beginTransmit(SpiBDevice::Cc1101)
+            && logHas("REFUSED at the grant: the ST25R3916 liveness probe "
+                      "was DEFERRED"));
+      g_probe_answer = NfcLivenessResult::Alive;
+      claim("...and with the probe answering the same request is GRANTED",
+            spi.beginTransmit(SpiBDevice::Cc1101));
+      spi.endTransmit(SpiBDevice::Cc1101);
+      (void)r.app.setAmplifierIntent(false);
+    }
+    {
+      // (c) Wi-Fi: every charging row carrying the radio is refused.
+      Rig r;
+      r.bringUp();
+      r.bus.vcell_counts = uint16_t(4.20f / Max17048Guard::kVcellLsbV);
+      g_log.clear();
+      const int reads = r.bus.vcell_reads;
+      claim("D797-02: with no rail live, Wi-Fi/BLE activation is REFUSED on "
+            "a 4.20 V pack without a gauge read, and says why",
+            r.app.accessoryRailsOn() == 0 && !r.app.wifiActivationPermitted()
+            && r.bus.vcell_reads == reads
+            && logHas("Wi-Fi / BLE radio REFUSED: no reported cell excludes "
+                      "an absorbing charger supplement while charging "
+                      "(D-797 / D797-02)"));
+    }
   }
 
   std::printf("\n%s -- %d failure(s)\n", failures ? "FAIL" : "PASS", failures);

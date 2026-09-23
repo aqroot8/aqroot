@@ -243,6 +243,20 @@ static NfcLivenessResult probeNfcLivenessOnBusB(uint8_t *identity) {
   return r;
 }
 
+#if defined(AQROOT_HOST_IMAGE_HARNESS)
+// D-797 / D797-08.  A HOST-IMAGE SEAM, COMPILED ONLY AGAINST `test/image/`.
+//
+// The probe above reports `Deferred` when SPI-B is already selected.  This
+// image is single-threaded and no console key holds SPI-B across a grant, so
+// the image test cannot otherwise put the bus in the state a future SPI-B
+// user -- or a transaction in flight when a grant is asked -- leaves it in.
+// It reaches the image's OWN bus object here and nothing else: every
+// decision the test observes is still made by the shipped code.  The ESP32
+// core never defines `AQROOT_HOST_IMAGE_HARNESS`, so the shipped image has
+// no such function.
+SpiBusB &aqrootHostImageSpiB() { return g_spi_b; }
+#endif
+
 static const char *chargerText(ChargerState state) {
   switch (state) {
     case ChargerState::Fault:

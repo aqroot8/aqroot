@@ -2750,7 +2750,18 @@ BQ25185 = dict(
                        "the input is regulated to 3.6V.'",
                        ruling=False),
     vbatreg_V=4.2, vbatreg_accuracy=0.005,
-    treg_C=100.0, tshut_rising_C=150.0,
+    treg_C=100.0,
+    # D-797 / D797-01: TSHUT is where a reachable absorbing SUPPLEMENT ends
+    # -- "the device stops charging and shuts down VSYS" (6.3.7.6), then
+    # powers up again below TSHUT_FALLING.  A TYP-only row, used ONLY to
+    # label that protection cycle; the compliance bound stays the 125 C
+    # operating maximum.
+    tshut_rising_C=tag("bq.tshut_rising_C", 150.0, TYPICAL,
+                       "TI SLUSF65B EC: TSHUT_RISING, thermal shutdown "
+                       "rising threshold, 150 C (TYP column only); "
+                       "TSHUT_FALLING 135 C.  6.3.7.6: at TSHUT_RISING the "
+                       "device stops charging and shuts down VSYS.",
+                       ruling=False),
     tj_operating_max_C=125.0,
     theta_ja_C_per_W=68.3,
     source="TI SLUSF65B, archived vendor/BQ25185/"
@@ -2917,6 +2928,33 @@ CHARGER_MODEL_ASSUMPTIONS = dict(
              "BUVLO disconnects BAT from SYS",
         consequence="below the trip a load above the input-carrying limit "
                     "collapses SYS; it is never solved as SUPPLEMENT"),
+    supplement_is_absorbing=dict(
+        status="PRIMARY_SOURCE_PHYSICS",
+        text="SLUSF65B 6.3.3: supplement is left when VSYS > VBAT - VBSUP2.  "
+             "While supplementing, SYS is the cell less the BATFET drop and "
+             "no charge flows, so neither the CC loop nor TREG can raise it; "
+             "with the input capped (ILIM/VINDPM) and a constant-power load "
+             "above what the input carries at SYS = VBAT, SYS cannot reach "
+             "the exit threshold",
+        consequence="D-797 / D797-01: a SUPPLEMENT reached from a cold start "
+                    "at the full program, or retained from any supplement "
+                    "history, is ABSORBING until the load falls or the "
+                    "source rises; exit is judged on the ACTUAL supplementing "
+                    "SYS, never on a hypothetical BATFET-off equilibrium; "
+                    "its junction is its STATIC junction and it is never a "
+                    "TREG limit-cycle phase"),
+    tshut_protection_cycle=dict(
+        status="PRIMARY_SOURCE",
+        text="SLUSF65B 6.3.7.6: 'When TJ reaches TSHUT_RISING, the device "
+             "stops charging and shuts down VSYS ... When TJ falls below "
+             "TSHUT_FALLING, the device automatically powers up'",
+        consequence="a reachable absorbing supplement whose static junction "
+                    "is at or above 150 C is labelled "
+                    "TSHUT_PROTECTION_CYCLE: the Demo browns out and "
+                    "reboots on a thermal cycle.  It is a protection event, "
+                    "not an operating state, and the published charging-"
+                    "safe envelope excludes it (and everything above "
+                    "125 C)"),
     treg_limit_cycle=dict(
         status="MODEL_CONSEQUENCE",
         text="where the charge is held by the DPPM loop at an input limit, "
@@ -2927,7 +2965,9 @@ CHARGER_MODEL_ASSUMPTIONS = dict(
         consequence="the HOT, low-charge phase is published as the state "
                     "(adverse for the enclosure air and the charge time); it "
                     "is never labelled TREG and never carries a junction "
-                    "below the threshold that would make TREG active",
+                    "below the threshold that would make TREG active.  Only "
+                    "DPPM-held phases (ILIM/VINDPM/DPPM) qualify: D-797 "
+                    "removed SUPPLEMENT from this class",
         junction="the junction is bounded by the threshold itself: the loop "
                  "acts on TJ, and the phases alternate on the loop's "
                  "timescale, far faster than the package's thermal time "
@@ -3013,6 +3053,13 @@ def charger_state(p_sys_W, vbat, ilim_corner="max", vbus_corner="max",
     s = BQ25185 if spec is None else spec
     if batfet not in batfet_states_at(vbat, s):
         return None
+    if batfet != "connected" and previous_mode == "SUPPLEMENT":
+        # D-797 / D797-10.  OUTSIDE THE DECLARED DOMAIN, SO REJECTED LOUDLY.
+        # BUVLO holds BAT off SYS, so the part cannot have been supplementing;
+        # a caller asking for that history has mislabelled the state, and
+        # returning None would read as "no operating point".
+        raise ValueError("previous_mode='SUPPLEMENT' with the BATFET "
+                         "disconnected by BUVLO is not a physical history")
     th = charger_thresholds(s, sweep)
     ilim = s["ilim_max_A"] if ilim_corner == "max" else s["ilim_min_A"]
     if vbus_V is None or path_ohm is None:
@@ -3065,16 +3112,74 @@ def charger_state(p_sys_W, vbat, ilim_corner="max", vbus_corner="max",
             return None
         return vs, p_sys_W / vs + i_chg, p_sys_W / vs, False
 
+    def _i_in_at(vs):
+        return max(0.0, min(i_cap, (vbus - vs) / r_src))
+
+    def _resid(vs):
+        return vbat - (p_sys_W / vs - _i_in_at(vs)) * ron_bat - vs
+
+    def _supplement_node():
+        """SYS with the BATFET conducting: the cell less the BATFET drop, the
+        input at whatever it can carry there.  None if the input carries the
+        whole load at SYS = VBAT (no shortfall for the cell to supply)."""
+        lo, hi = 1e-3, vbat
+        if _resid(hi) >= 0.0:
+            return None
+        for _ in range(90):
+            mid = 0.5 * (lo + hi)
+            if _resid(mid) >= 0.0:
+                lo = mid
+            else:
+                hi = mid
+        vs = 0.5 * (lo + hi)
+        return vs if vs > 0.2 else None
+
     mode = None
     i_supp = 0.0
     hysteresis_band = False
     threshold_used = None
     batfet_off_node_V = None
     regulated = False
+    retained = False
+
+    # ---- 0. D-797 / D797-01.  A SUPPLEMENTING PART STAYS SUPPLEMENTING UNTIL
+    #         ITS OWN SYS RISES PAST THE EXIT THRESHOLD. -------------------
+    # SLUSF65B 6.3.3: supplement is left when VSYS > VBAT - VBSUP2.  The SYS
+    # that comparator sees is the ACTUAL node of the supplementing state --
+    # the cell less the BATFET drop -- not the node a BATFET-OFF equilibrium
+    # would have, which is a different, mathematically possible state the
+    # part is not in.  D-796 judged exit on that hypothetical node, so a load
+    # above what the input carries AT THE CELL (but below what it carries at
+    # 4.41 V) was reported as NO_CHARGE at 4.41 V with a SUPPLEMENT history.
+    # With a constant-power load and the input capped, SYS cannot rise while
+    # the load at SYS = VBAT exceeds the input there; the charge program is
+    # irrelevant (no charge flows below the cell), so neither the CC loop nor
+    # TREG can end it.  The supplement is ABSORBING until the load or the
+    # source changes.
+    sup_vs = None
+    if batfet == "connected":
+        sup_vs = _supplement_node()
+    if previous_mode == "SUPPLEMENT" and sup_vs is not None:
+        retained = True
+        zero_off = _node(0.0)
+        batfet_off_node_V = (zero_off[0] if zero_off is not None
+                             and zero_off[1] <= i_cap + 1e-12 else None)
+        mode = "SUPPLEMENT"
+        threshold_used = (
+            "RETAINED: the part was supplementing and the input cannot "
+            "carry the load at SYS = VBAT = %.4f V, so the actual SYS "
+            "cannot rise past VBAT - VBSUP2 = %.4f V" % (vbat, v_sup_exit))
+        vsys = sup_vs
+        i_in = _i_in_at(vsys)
+        i_sys = p_sys_W / vsys
+        i_supp = max(0.0, i_sys - i_in)
+        i_chg = 0.0
 
     # ---- 1. The charge loop gets its PROGRAM, and no input-side loop binds.
-    full = _node(ichg_max) if ichg_max > 0.0 else None
-    if (full is not None and full[1] <= i_cap + 1e-12
+    full = (_node(ichg_max) if ichg_max > 0.0 and not retained else None)
+    if retained:
+        pass
+    elif (full is not None and full[1] <= i_cap + 1e-12
             and full[0] >= v_dppm - 1e-12):
         vsys, i_in, i_sys, regulated = full
         i_chg = ichg_max
@@ -3187,26 +3292,9 @@ def charger_state(p_sys_W, vbat, ilim_corner="max", vbus_corner="max",
                 if threshold_used is None:
                     threshold_used = ("VBSUP1: the input cannot carry the "
                                       "load")
-
-                def _i_in_at(vs):
-                    return max(0.0, min(i_cap, (vbus - vs) / r_src))
-
-                def _resid(vs):
-                    return vbat - (p_sys_W / vs - _i_in_at(vs)) * ron_bat - vs
-
-                lo, hi = 1e-3, vbat
-                if _resid(hi) >= 0.0:
+                if sup_vs is None:
                     return None
-                for _ in range(90):
-                    mid = 0.5 * (lo + hi)
-                    if _resid(mid) >= 0.0:
-                        lo = mid
-                    else:
-                        hi = mid
-                vs = 0.5 * (lo + hi)
-                if vs <= 0.2:
-                    return None
-                vsys = vs
+                vsys = sup_vs
                 i_in = _i_in_at(vsys)
                 i_sys = p_sys_W / vsys
                 i_supp = max(0.0, i_sys - i_in)
@@ -3271,6 +3359,9 @@ def charger_state(p_sys_W, vbat, ilim_corner="max", vbus_corner="max",
             charge_loop=loop,
             threshold_used=threshold_used,
             inside_the_supplement_hysteresis_band=bool(hysteresis_band),
+            supplement_retained_by_history=bool(retained),
+            input_carries_the_load_at_sys_equal_vbat=bool(
+                batfet != "connected" or sup_vs is None),
             batfet_off_comparator_node_V=(
                 None if batfet_off_node_V is None
                 else round(batfet_off_node_V, 6)),
@@ -3284,6 +3375,7 @@ def charger_state(p_sys_W, vbat, ilim_corner="max", vbus_corner="max",
                  v_vindpm=v_vindpm, v_dppm=v_dppm,
                  v_sup_enter=v_sup_enter, v_sup_exit=v_sup_exit,
                  batfet_off_node_V=batfet_off_node_V,
+                 supplement_node_V=sup_vs, retained=retained,
                  # D-795 / R14-05: EVERY printed heat field has a raw twin,
                  # so a corruption of either copy is visible.
                  p_input_fet=p_input_fet, p_charge_fet=p_charge_fet,
@@ -3301,7 +3393,10 @@ def charger_state(p_sys_W, vbat, ilim_corner="max", vbus_corner="max",
             hysteresis_band=hysteresis_band, previous_mode=previous_mode,
             batfet_off_node_V=batfet_off_node_V,
             ichg_nominal=nominal_prog, charge_loop=loop,
-            batfet=batfet, buvlo_trip_low_V=buvlo_band_V(s)[0]))
+            batfet=batfet, buvlo_trip_low_V=buvlo_band_V(s)[0],
+            input_short_at_vbat=bool(
+                batfet == "connected"
+                and p_sys_W / vbat > _i_in_at(vbat) + 1e-12)))
 
 
 def charger_junction(st, ambient_C, r_sys_K_per_W, theta_ja_C_per_W,
@@ -3319,9 +3414,19 @@ def charger_junction(st, ambient_C, r_sys_K_per_W, theta_ja_C_per_W,
 
 TREG_EQUILIBRIUM_TOL_K = 0.05
 # The hot phase of a TREG limit cycle: a state whose charge is NOT set by the
-# program -- held by DPPM at an input limit, or (at a cell low enough that the
-# CC loop drags SYS below the entry threshold) already supplementing.
-LIMIT_CYCLE_HOT_BRANCHES = ("ILIM", "VINDPM", "DPPM", "SUPPLEMENT")
+# program -- held by DPPM at an input limit.
+#
+# D-797 / D797-01 REMOVES SUPPLEMENT FROM THIS CLASS.  D-796 listed it, so a
+# supplementing state above TREG was published as a limit cycle whose die
+# "averages to TREG".  A limit cycle needs a physical path OUT of the hot
+# phase, and a supplementing part has none that TREG controls: no charge flows
+# (SYS is below the cell), so folding the program changes nothing, and exit
+# needs the part's own SYS to rise past VBAT - VBSUP2, which a capped input
+# cannot do while the load at SYS = VBAT exceeds it.  The supplement is
+# ABSORBING; its junction is its static junction, and if that reaches TSHUT
+# the protection -- not regulation -- is what acts.
+LIMIT_CYCLE_HOT_BRANCHES = ("ILIM", "VINDPM", "DPPM")
+ABSORBING_REGIMES = ("SUPPLEMENT_ABSORBING", "TSHUT_PROTECTION_CYCLE")
 
 
 def charger_thermal_problems(st):
@@ -3360,10 +3465,27 @@ def charger_thermal_problems(st):
             and tj > treg + TREG_EQUILIBRIUM_TOL_K):
         why.append("a charging state at %.3f C, above TREG, with the "
                    "thermal loop inactive" % tj)
+    if regime in ABSORBING_REGIMES:
+        if st["mode"] != "SUPPLEMENT":
+            why.append("an absorbing supplement regime on a %s state"
+                       % st["mode"])
+        if th.get("treg_active"):
+            why.append("TREG claimed active on a supplement it cannot fold")
+        tshut = th.get("tshut_C")
+        if tshut is None:
+            why.append("an absorbing supplement with no TSHUT threshold "
+                       "recorded")
+        elif (regime == "TSHUT_PROTECTION_CYCLE") != (tj >= tshut):
+            why.append("the TSHUT label disagrees with the junction %.3f C "
+                       "against %.1f C" % (tj, tshut))
+    if st["mode"] == "SUPPLEMENT" and regime not in ABSORBING_REGIMES:
+        why.append("a SUPPLEMENT state labelled %r: supplement is absorbing "
+                   "and TREG cannot act on it" % (regime,))
     if regime == "TREG_LIMIT_CYCLE_HOT_PHASE":
         if st["mode"] not in LIMIT_CYCLE_HOT_BRANCHES:
-            why.append("a limit-cycle hot phase that is neither DPPM-held "
-                       "nor supplementing")
+            why.append("a limit-cycle hot phase that is not DPPM-held "
+                       "(D-797: a supplement has no path out of the hot "
+                       "phase)")
         if tj < treg - TREG_EQUILIBRIUM_TOL_K:
             why.append("a limit-cycle hot phase below TREG")
         cold = (th.get("limit_cycle") or {}).get("cold_phase_junction_C")
@@ -3409,6 +3531,7 @@ def charger_operating_point(p_sys_W, vbat, ambient_C, r_sys_K_per_W,
     st = charger_state(p_sys_W, vbat, **kw)
     if st is None:
         return None
+    tshut_C = (kw.get("spec") or BQ25185)["tshut_rising_C"]
 
     def _tj(x):
         return charger_junction(x, ambient_C, r_sys_K_per_W,
@@ -3422,7 +3545,7 @@ def charger_operating_point(p_sys_W, vbat, ambient_C, r_sys_K_per_W,
             delivered_out_W=round(delivered_out_W, 6),
             internal_W=round(internal, 6), internal_air_C=round(air, 6),
             junction_C=round(tj, 6), treg_active=bool(active),
-            regime=regime)
+            regime=regime, tshut_C=tshut_C)
         if extra:
             th.update(extra)
         out = dict(x, thermal=th)
@@ -3433,6 +3556,18 @@ def charger_operating_point(p_sys_W, vbat, ambient_C, r_sys_K_per_W,
         out["invariants"] = inv
         return out
 
+    # ---- D-797 / D797-01.  A SUPPLEMENT IS ABSORBING. ---------------------
+    # Reached from a cold start at the full program or retained from any
+    # history, the supplementing part carries no charge for TREG to fold and
+    # cannot raise its own SYS to the exit threshold.  Its junction is STATIC.
+    if st["mode"] == "SUPPLEMENT":
+        tj = _tj(st)[0]
+        return _attach(st, False, ("TSHUT_PROTECTION_CYCLE" if tj >= tshut_C
+                                   else "SUPPLEMENT_ABSORBING"), dict(
+            treg_has_nothing_to_fold=True,
+            exits_only_when="the load falls, or the source rises, until the "
+                            "input carries the load at SYS = VBAT",
+            tshut_protection_acts=bool(tj >= tshut_C)))
     if _tj(st)[0] <= treg_C + 1e-9:
         return _attach(st, False, "NO_TREG")
     kw0 = dict(kw)
@@ -3465,6 +3600,13 @@ def charger_operating_point(p_sys_W, vbat, ambient_C, r_sys_K_per_W,
     if hot["mode"] not in LIMIT_CYCLE_HOT_BRANCHES:
         hot = charger_state(p_sys_W, vbat, ichg_program_A=hi,
                             charge_loop="TREG", **kw0) or st
+    if hot["mode"] == "SUPPLEMENT":
+        # Not a limit cycle: the hot phase is absorbing (see above).
+        tj = _tj(hot)[0]
+        return _attach(hot, False, ("TSHUT_PROTECTION_CYCLE" if tj >= tshut_C
+                                    else "SUPPLEMENT_ABSORBING"), dict(
+            treg_has_nothing_to_fold=True,
+            tshut_protection_acts=bool(tj >= tshut_C)))
     return _attach(hot, True, "TREG_LIMIT_CYCLE_HOT_PHASE", dict(
         limit_cycle=dict(
             program_band_A=[round(lo, 6), round(hi, 6)],
@@ -3487,7 +3629,8 @@ def charger_invariants(i_in, i_supp, i_sys, i_chg, vsys, vbat, v_pin, ron_in,
                        v_sup_enter=None, v_sup_exit=None,
                        hysteresis_band=False, previous_mode=None,
                        batfet_off_node_V=None, ichg_nominal=None,
-                       charge_loop=None, batfet=None, buvlo_trip_low_V=None):
+                       charge_loop=None, batfet=None, buvlo_trip_low_V=None,
+                       input_short_at_vbat=None):
     eps = 1e-6
     inv = dict(
         kcl_at_sys=bool(abs(i_in + i_supp - i_sys - i_chg) < 1e-6),
@@ -3536,6 +3679,18 @@ def charger_invariants(i_in, i_supp, i_sys, i_chg, vsys, vbat, v_pin, ron_in,
         if batfet == "uvlo_open" and previous_mode == "SUPPLEMENT":
             why.append("a SUPPLEMENT history with the BATFET disconnected by "
                        "BUVLO: the part cannot have been supplementing")
+        # ---- D-797 / D797-01: EXIT IS JUDGED ON THE ACTUAL SYS -----------
+        # A part that was supplementing leaves only when its OWN SYS rises
+        # past VBAT - VBSUP2, and with the input unable to carry the load at
+        # SYS = VBAT that cannot happen.  Any non-SUPPLEMENT branch with that
+        # history there is the D-796 defect: an alternate BATFET-off
+        # equilibrium substituted for the state the part is actually in.
+        if (previous_mode == "SUPPLEMENT" and batfet == "connected"
+                and input_short_at_vbat and mode != "SUPPLEMENT"):
+            why.append("the part was supplementing and the input cannot "
+                       "carry the load at SYS = VBAT: the actual SYS cannot "
+                       "rise to the VBSUP2 exit, so %s is not reachable from "
+                       "this history" % mode)
         # ---- universal: no input-side loop may be exceeded ---------------
         if i_in > cap + 1e-9:
             why.append("the input current exceeds the loop cap")
@@ -3648,14 +3803,18 @@ def charger_invariants(i_in, i_supp, i_sys, i_chg, vsys, vbat, v_pin, ron_in,
             # `batfet_off_node_V` is where SYS would sit with the BATFET off,
             # which is what VBSUP1/VBSUP2 watch.  `None` means no BATFET-off
             # operating point exists at all, which is entry by necessity.
+            # D-797 / D797-01: a RETAINED supplement is judged on its own SYS
+            # (the input short at SYS = VBAT), never on the BATFET-off node.
+            if input_short_at_vbat is False:
+                why.append("SUPPLEMENT where the input carries the whole load "
+                           "at SYS = VBAT: the cell has no shortfall to "
+                           "supply and SYS rises past the exit")
             if batfet_off_node_V is not None and v_sup_enter is not None \
-                    and batfet_off_node_V > v_sup_enter + 1e-9:
-                if not (hysteresis_band and previous_mode == "SUPPLEMENT"
-                        and v_sup_exit is not None
-                        and batfet_off_node_V <= v_sup_exit + 1e-9):
-                    why.append("supplement entered with the BATFET-off node "
-                               "above VBAT - VBSUP1 and no prior supplement "
-                               "state to latch it")
+                    and batfet_off_node_V > v_sup_enter + 1e-9 \
+                    and previous_mode != "SUPPLEMENT":
+                why.append("supplement entered with the BATFET-off node "
+                           "above VBAT - VBSUP1 and no prior supplement "
+                           "state to latch it")
         else:
             why.append("unknown branch %r" % (mode,))
         inv["branch_condition"] = not why

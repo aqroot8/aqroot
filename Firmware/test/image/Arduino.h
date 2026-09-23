@@ -14,6 +14,11 @@
 // pin state the image parks, and the I2S surface `aqroot_demo_peripherals.h`
 // needs.  Nothing here models hardware beyond what the image OBSERVES.
 
+// D-797 / D797-08: tells `src/demo/main.cpp` it is being compiled against
+// this host core, which is the only build that gets its one test seam
+// (`aqrootHostImageSpiB()`).  The ESP32 Arduino core never defines it.
+#define AQROOT_HOST_IMAGE_HARNESS 1
+
 #include <stdint.h>
 #include <stddef.h>
 #include <stdarg.h>
@@ -79,6 +84,15 @@ struct Recorder {
   bool clock_frozen = false;
   uint64_t freeze_at_us = ~uint64_t(0);
   uint64_t frozen_polls = 0;
+  // D-797 / D797-10.  THE SAME BOUND FOR A WAIT LOOP.  `frozen_polls` only
+  // covered `digitalRead()`.  A wait loop that loses its own attempt bound
+  // spins on `delay()` instead, and every call is RECORDED -- so before this
+  // counter the only thing that ended such a mutant was the recording vector
+  // growing until `std::bad_alloc` terminated the process with no claim
+  // printed.  `stalled_waits` counts CONSECUTIVE waits that did not move the
+  // clock (a frozen clock, or a zero-length wait); the limit below turns an
+  // unbounded wait into a NAMED failed claim.
+  uint64_t stalled_waits = 0;
   // D-796 / C-NFC-QUIESCE-01: when each console line was printed, so a
   // revocation LATENCY can be measured from the image's own output.
   std::vector<uint64_t> console_t_us;
@@ -109,6 +123,45 @@ inline Recorder &recorder() {
   return r;
 }
 
+// D-797 / D797-10.  AN UNBOUNDED WAIT IS A NAMED FAILURE, NOT AN EXHAUSTED
+// HARNESS.  Every `delay()` / `delayMicroseconds()` passes through
+// `noteHostWait` before it moves the clock.  Two limits, each far above any
+// scenario the image test runs between two `rig()` resets:
+//
+//   * a million CONSECUTIVE waits in which no time passed -- a wait loop
+//     spinning on a frozen clock, or on a zero-length delay;
+//   * twenty million waits recorded since the last reset -- a wait loop whose
+//     clock does advance but whose exit condition never comes.
+//
+// Either prints a `[FAIL]` claim that says which, and exits non-zero, so a
+// mutant that removes a loop's own bound is caught for that stated reason.
+constexpr uint64_t kHostStalledWaitLimit = 1000000u;
+constexpr size_t kHostRecordedWaitLimit = 20000000u;
+constexpr size_t kHostConsoleLineLimit = 2000000u;
+
+[[noreturn]] inline void hostGuardFail(const char *why) {
+  printf("[FAIL] host guard (D797-10): %s\n", why);
+  fflush(stdout);
+  exit(1);
+}
+
+inline void noteHostWait(uint64_t us) {
+  auto &r = recorder();
+  if (r.clock_frozen || us == 0) {
+    if (++r.stalled_waits > kHostStalledWaitLimit) {
+      hostGuardFail("a shipped wait loop kept waiting on a clock that does "
+                    "not advance -- its own attempt bound is missing");
+    }
+  } else {
+    r.stalled_waits = 0;
+  }
+  if (r.delay_ms_calls.size() + r.delay_us_calls.size()
+      > kHostRecordedWaitLimit) {
+    hostGuardFail("a shipped wait loop never reached its exit condition "
+                  "(more than 20 million waits since the last reset)");
+  }
+}
+
 // Every advance of the recording clock goes through here, so a frozen clock
 // is frozen for every caller alike.
 inline void advanceClockUs(uint64_t us) {
@@ -123,6 +176,10 @@ inline void advanceClockUs(uint64_t us) {
 
 inline void consoleLine(const char *s) {
   auto &r = recorder();
+  if (r.console.size() > kHostConsoleLineLimit) {
+    hostGuardFail("the image printed more than two million console lines "
+                  "since the last reset -- a loop that never ends");
+  }
   r.console.emplace_back(s ? s : "");
   r.console_t_us.push_back(r.clock_us);
 }
@@ -136,12 +193,14 @@ inline void delay(uint32_t ms) {
   r.total_delay_ms += ms;
   const uint32_t real = (ms > r.delay_shortfall_ms) ? ms - r.delay_shortfall_ms
                                                      : ms;
+  aqroot_hal::noteHostWait(uint64_t(real) * 1000u);
   aqroot_hal::advanceClockUs(uint64_t(real) * 1000u);
 }
 
 inline void delayMicroseconds(uint32_t us) {
   auto &r = aqroot_hal::recorder();
   r.delay_us_calls.push_back(us);
+  aqroot_hal::noteHostWait(us);
   aqroot_hal::advanceClockUs(us);
 }
 

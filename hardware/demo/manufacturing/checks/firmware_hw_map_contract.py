@@ -207,10 +207,14 @@ POWER_POLICY_CONTROLS = [
                             ? accessoryModeEntryFloor(after, rails_on)
                             : kAccessoryRetentionFloorV;
   return vcell_valid && vcellIsPlausible(vcell) && vcell >= required;"""),
-    ("the mode edge is transparent while a rail is live",
+    # D-797 / D797-02 re-aimed: the no-rail branch is now the CHARGING floor,
+    # so the mutant takes that branch with a rail live as well -- the D-792
+    # rail-live table is then never consulted.
+    ("the mode edge is transparent while a rail is live (the no-rail "
+     "charging branch taken with a rail live too)",
      "aqroot_accessory_power_policy.h",
-     "  if (rails_on <= 0) return true;",
-     "  if (rails_on >= 0) return true;"),
+     "  if (rails_on <= 0) {\n    // D-797 / D797-02",
+     "  if (rails_on >= 0) {\n    // D-797 / D797-02"),
     ("the mode edge ignores an unreadable gauge",
      "aqroot_accessory_power_policy.h",
      """  return vcell_valid && vcellIsPlausible(vcell)
@@ -270,6 +274,22 @@ POWER_POLICY_CONTROLS = [
      "aqroot_accessory_power_policy.h",
      "constexpr float kVcellPlausibleMaxV = 4.50f;",
      "constexpr float kVcellPlausibleMaxV = 5.50f;"),
+    # ---- D-797 / D797-02.  THE CHARGING MODE-ENTRY FLOOR (no rail live).
+    # F12 pins the table's VALUES; these prove the host test feels a change
+    # in what the table DOES.
+    ("D797-02: the charging floor is ignored with no rail live -- the "
+     "pre-D-797 transparent guard",
+     "aqroot_accessory_power_policy.h",
+     "    const float f = accessoryChargingModeEntryFloor(accessoryLoadBits(after));",
+     "    const float f = 0.0f;"),
+    ("D797-02: a NotPermitted charging row is treated as allowed",
+     "aqroot_accessory_power_policy.h",
+     "    if (f >= kAccessoryNotPermittedV) return false;",
+     "    if (f >= kAccessoryNotPermittedV) return true;"),
+    ("D797-02: the generated audio + sub-GHz charging floor is edited 3.60 -> 3.50 V",
+     "aqroot_accessory_power_policy.h",
+     "      3.60f,                    // 6  audio + sub-GHz",
+     "      3.50f,                    // 6  audio + sub-GHz"),
 ]
 
 # Round-4 R4-04: active-mode configuration/readiness is part of VCELL validity.
@@ -500,7 +520,8 @@ PRODUCTION_CALLER_CONTROLS = [
     ("the mode edge stops being fail-closed when no rail is on... and also "
      "when one is",
      "aqroot_demo_bringup_app.h",
-     "    const int rails = accessoryRailsOn();\n    if (rails <= 0) return true;",
+     "    const int rails = accessoryRailsOn();\n"
+     "    if (rails <= 0) return chargingModeEntryAllowed(after, what);",
      "    const int rails = accessoryRailsOn();\n    if (rails >= 0) return true;"),
     # --- FABLE / D-792: post-recovery amplifier-intent reconciliation -------
     # Recovery rebuilds a SAFE state, not a WANTED one.  Fable's mutation
@@ -696,6 +717,73 @@ PRODUCTION_CALLER_CONTROLS = [
      "aqroot_demo_bringup_app.h",
      "        serviceNfcLiveness(/*force=*/true) != NfcLivenessResult::Alive) {",
      "        false) {"),
+    # ---- D-797 / D797-08 (Fable R16-03), at the app level.  A Deferred
+    # forced probe at a grant refuses the grant and keeps the confirmation.
+    ("D797-08: the admission reader treats a Deferred forced probe as no "
+     "news (rail enable AND mode entry with a rail live)",
+     "aqroot_demo_bringup_app.h",
+     "    if (proof != NfcLivenessResult::Alive) {\n"
+     "      logNfcGrantDeferred(label);",
+     "    if (false && proof != NfcLivenessResult::Alive) {\n"
+     "      logNfcGrantDeferred(label);"),
+    ("D797-08: a non-NFC burst treats a Deferred forced probe as no news",
+     "aqroot_demo_bringup_app.h",
+     "    if (proof != NfcLivenessResult::Alive) {\n"
+     "      logNfcGrantDeferred(what);",
+     "    if (false && proof != NfcLivenessResult::Alive) {\n"
+     "      logNfcGrantDeferred(what);"),
+    ("D797-08: a Deferred grant revokes the confirmation instead of keeping "
+     "it",
+     "aqroot_demo_bringup_app.h",
+     "  void logNfcGrantDeferred(const char *what) {\n",
+     "  void logNfcGrantDeferred(const char *what) {\n"
+     "    noteNfcLiveness(false, 0x00);\n"),
+    ("D797-08: a Deferred forced probe at a grant is counted as a proof and "
+     "consumes the schedule",
+     "aqroot_demo_bringup_app.h",
+     "    if (r == NfcLivenessResult::Deferred) {\n"
+     "      nfc_liveness_started_ = was_started;\n"
+     "      last_nfc_liveness_ms_ = was_last;\n      return r;\n    }\n"
+     "    ++nfc_liveness_probes_;",
+     "    (void)was_started;\n    (void)was_last;\n"
+     "    ++nfc_liveness_probes_;\n"
+     "    if (r == NfcLivenessResult::Deferred) {\n      return r;\n    }"),
+    # ---- D-797 / D797-02.  THE CHARGING MODE-ENTRY FLOOR AT THE CALLERS.
+    ("D797-02: the charging floor is ignored with no rail live -- the pre-D-797 `return true`",
+     "aqroot_demo_bringup_app.h",
+     "    if (rails <= 0) return chargingModeEntryAllowed(after, what);",
+     "    if (rails <= 0) return true;"),
+    ("D797-02: a NotPermitted charging row is treated as allowed at the "
+     "caller (the Wi-Fi/BLE guard grants with no rail live)",
+     "aqroot_demo_bringup_app.h",
+     "    if (floor_v >= kAccessoryNotPermittedV) {\n",
+     "    if (floor_v >= kAccessoryNotPermittedV) return true;\n"
+     "    if (false) {\n"),
+    ("D797-02: a positive charging floor is granted without any reading",
+     "aqroot_demo_bringup_app.h",
+     "    if (floor_v <= 0.0f) return accessoryModeEntryAllowed(false, 0.0f, 0, after);",
+     "    if (floor_v < kAccessoryNotPermittedV) return true;"),
+    ("D797-02: the positive charging floor is compared against a stale, "
+     "unwaited reading that bypasses the admission reader (no epoch, no "
+     "post-request window, no liveness proof at the grant)",
+     "aqroot_demo_bringup_app.h",
+     "    const bool read = readFuelCellVoltageForAdmission(what);\n"
+     "    const float v = last_admission_vcell_;\n"
+     "    if (accessoryModeEntryAllowed(read, v, 0, after)) return true;",
+     "    const bool read = gauge_.readVcell(bus_, &last_admission_vcell_);\n"
+     "    const float v = last_admission_vcell_;\n"
+     "    if (accessoryModeEntryAllowed(read, v, 0, after)) return true;"),
+    ("D797-02: an unqualified gauge is not qualified before the charging-floor "
+     "reading, so a healthy 3.65 V pack is refused (availability, "
+     "fail-closed)",
+     "aqroot_demo_bringup_app.h",
+     "    if (!gauge_.activeReady() && !expanders_.safeShutdownPending()) {\n"
+     "      (void)configureFuelGaugeActiveMode();\n    }\n",
+     ""),
+    ("D797-02: the generated audio + sub-GHz charging floor is edited 3.60 -> 3.50 V",
+     "aqroot_accessory_power_policy.h",
+     "      3.60f,                    // 6  audio + sub-GHz",
+     "      3.50f,                    // 6  audio + sub-GHz"),
 ]
 
 
@@ -1084,13 +1172,16 @@ PRODUCTION_IMAGE_CONTROLS = [
     ("D-796: an admission is granted on the last SCHEDULED liveness proof "
      "instead of one taken at the grant",
      "aqroot_demo_bringup_app.h",
-     "    (void)serviceNfcLiveness(/*force=*/true);\n"
+     "    const NfcLivenessResult proof = serviceNfcLiveness(/*force=*/true);\n"
      "    if (!nfc_field_confirmed_off_) {\n      char line[232];",
+     "    const NfcLivenessResult proof = NfcLivenessResult::Alive;\n"
      "    if (!nfc_field_confirmed_off_) {\n      char line[232];"),
     ("D-796: a burst is granted on the last SCHEDULED liveness proof",
      "aqroot_demo_bringup_app.h",
-     "    if (which != BurstLoad::NfcField) (void)serviceNfcLiveness(/*force=*/true);",
-     "    (void)0;"),
+     "        ? serviceNfcLiveness(/*force=*/true)\n"
+     "        : NfcLivenessResult::Alive;",
+     "        ? NfcLivenessResult::Alive\n"
+     "        : NfcLivenessResult::Alive;"),
     ("D-796: the liveness schedule is D-795's 1000 ms period again, which "
      "alone consumes the 1 s promise",
      "aqroot_demo_bringup_app.h",
@@ -1131,6 +1222,62 @@ PRODUCTION_IMAGE_CONTROLS = [
      "    const uint32_t elapsed = now_ms - edge_ms_;     // wraps correctly",
      "    const uint32_t elapsed = (now_ms == edge_ms_)\n"
      "        ? kGaugePostLoadConversionMs : now_ms - edge_ms_;"),
+    # ---- D-797 / D797-08 (Fable R16-03).  A DEFERRED PROBE AT A GRANT IS NOT
+    # "NO NEWS".  Each puts back D-796's reading of a Deferred forced probe
+    # at one grant site -- the grant proceeds on the last scheduled proof --
+    # and must be caught by the SPI-B-busy scenarios in
+    # test_production_image.cpp.
+    ("D797-08 image: a rail admission treats a Deferred forced probe as no "
+     "news and grants on the last scheduled proof",
+     "aqroot_demo_bringup_app.h",
+     "    if (proof != NfcLivenessResult::Alive) {\n"
+     "      logNfcGrantDeferred(label);",
+     "    if (false && proof != NfcLivenessResult::Alive) {\n"
+     "      logNfcGrantDeferred(label);"),
+    ("D797-08 image: a non-NFC burst treats a Deferred forced probe as no "
+     "news and runs on the last scheduled proof",
+     "aqroot_demo_bringup_app.h",
+     "    if (proof != NfcLivenessResult::Alive) {\n"
+     "      logNfcGrantDeferred(what);",
+     "    if (false && proof != NfcLivenessResult::Alive) {\n"
+     "      logNfcGrantDeferred(what);"),
+    ("D797-08 image: a Deferred grant REVOKES the confirmation instead of "
+     "keeping it -- a scheduling accident treated as a lost part",
+     "aqroot_demo_bringup_app.h",
+     "  void logNfcGrantDeferred(const char *what) {\n",
+     "  void logNfcGrantDeferred(const char *what) {\n"
+     "    noteNfcLiveness(false, 0x00);\n"),
+    # ---- D-797 / D797-10.  AN UNBOUNDED WAIT IS CAUGHT FOR A STATED REASON.
+    # Before D-797 each of these ended only when the host core's recording
+    # vector grew until std::bad_alloc terminated the image test with no
+    # claim printed.  The fifth element is the claim text the failure MUST
+    # carry: the host core's named wait guard, not memory exhaustion.
+    ("D797-10: the gauge window loses its own attempt bound, so a stalled "
+     "clock spins it for ever",
+     "aqroot_demo_bringup_app.h",
+     "    for (unsigned attempt = 0; attempt < kGaugeWindowWaitAttempts; "
+     "++attempt) {",
+     "    for (unsigned attempt = 0; ; ++attempt) {",
+     "host guard (D797-10): a shipped wait loop kept waiting on a clock"),
+    ("D797-10: the liveness-servicing wait (the settled recheck) loses its "
+     "own attempt bound, so a stalled clock spins it for ever",
+     "aqroot_demo_bringup_app.h",
+     "    for (unsigned attempt = 0; attempt < attempts; ++attempt) {\n"
+     "      (void)serviceNfcLiveness();",
+     "    (void)attempts;\n"
+     "    for (unsigned attempt = 0; ; ++attempt) {\n"
+     "      (void)serviceNfcLiveness();",
+     "host guard (D797-10): a shipped wait loop kept waiting on a clock"),
+    # ---- D-797 / D797-02.  THE CHARGING FLOOR IN THE SHIPPED IMAGE: the tone
+    # key with the image's own CC1101 keyed at 3.55 V.
+    ("D797-02 image: the charging floor is ignored with no rail live -- the pre-D-797 `return true`",
+     "aqroot_demo_bringup_app.h",
+     "    if (rails <= 0) return chargingModeEntryAllowed(after, what);",
+     "    if (rails <= 0) return true;"),
+    ("D797-02 image: the generated audio + sub-GHz charging floor is edited 3.60 -> 3.50 V",
+     "aqroot_accessory_power_policy.h",
+     "      3.60f,                    // 6  audio + sub-GHz",
+     "      3.50f,                    // 6  audio + sub-GHz"),
 ]
 
 
@@ -1345,7 +1492,7 @@ def run_host_test(test, mutation=None):
             shutil.copytree(IMAGE_HARNESS, work / "image")
         shutil.copy(test, work / test.name)
         if mutation is not None:
-            _, filename, before, after = mutation
+            _, filename, before, after = mutation[:4]
             target = (work / filename) if "/" in filename \
                 else (work / "hw" / filename)
             if not target.exists():
@@ -1603,9 +1750,21 @@ def main():
             c_compiled, c_code, c_output = run_host_test(test, control)
             c_claims = [line for line in c_output.splitlines()
                         if line.startswith("[FAIL")]
+            # D-797 / D797-10: a mutant is CAUGHT only by a claim the test
+            # printed and an ordinary non-zero exit.  A death by signal --
+            # std::bad_alloc's abort, a segfault -- is harness exhaustion,
+            # not a stated reason, and never counts; and a control that
+            # names the claim it must fail on (a fifth element) is caught
+            # only by that claim.
+            expected = control[4] if len(control) > 4 else None
+            reason_ok = (expected is None
+                         or any(expected in line for line in c_claims))
             entry["controls"].append(dict(
                 control=control[0], compiled=c_compiled, exit_code=c_code,
-                caught=(c_compiled and c_code != 0 and bool(c_claims)),
+                terminated_by_signal=bool(c_compiled and c_code < 0),
+                expected_failure=expected,
+                caught=(c_compiled and c_code > 0 and bool(c_claims)
+                        and reason_ok),
                 first_failed_claim=c_claims[0] if c_claims else None))
         entry["verdict"] = ("PASS" if compiled and code == 0 and claims
                             and all(c["caught"] for c in entry["controls"])

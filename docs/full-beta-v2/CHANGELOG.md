@@ -1,3 +1,43 @@
+## D-797 — 2026-09-23 — ROUND-16 FOCUSED CONVERGENCE: A SUPPLEMENT THAT CANNOT LEAVE, A BOUNDARY PROVED AT THE WRONG POWER, A CACHE THAT REMEMBERED AN OBJECT, AND A GUARANTEE WHOSE MEANING WAS EDITABLE
+
+Round-16 external review **REJECTED D-796** (Astra **B**, Fable Work **B** — engineering
+design acceptable after specific non-PCB pre-order corrections; no respin established).
+**Astra `R16-01`…`R16-05` and every reproduced Fable Work `R16-01`…`R16-05` residual are
+closed (D797-01…D797-10).**  **NO COPPER** — board sha256 unchanged.
+
+* **Charger reachability (D797-01):** a supplementing BQ25185 is ABSORBING — no charge for
+  TREG to fold, and `SYS` cannot rise to `VBAT − VBSUP2` while the load exceeds what the
+  input carries at `SYS = VBAT`.  Exit is judged on the actual supplementing `SYS`, never
+  on a BATFET-off node; SUPPLEMENT is removed from the TREG limit-cycle class; the
+  junction is bounded over reachable states from a cold start and every history; a
+  supplement at or above TSHUT is labelled `TSHUT_PROTECTION_CYCLE` and is never an
+  operating state.
+* **Charging envelope (D797-02):** the charging-safe power is a TABLE by cell, universal
+  minimum **2.700 W** (D-796's 3.900 W retired).  Firmware charging mode-entry floor with
+  no rail live: `audio` + `sub-GHz TX` **3.60 V**, every Wi-Fi row refused.  Accessory
+  rails while charging: supervised rule, at or above **4.10 V**.  `C-PWR-CHARGE-01` step 7
+  measures the 3.400 V trap; `C-THERM-01` states its 4.10 V cell condition.
+* **F14 (D797-03/04):** every `_at`/`_above` boundary state is bound to the exact scalar and
+  probe offset it proves, and the oracle re-derives each boundary one step below and above
+  from its own states; the regime cache is keyed by content digest.  New controls: exit on
+  the hypothetical BATFET-off node, a supplement labelled a limit cycle, a coordinated
+  +0.5 W boundary/publication inflation, and an in-place mutation after a PASS.
+* **Provenance (D797-05):** each GUARANTEED key's meaning is pinned in an independent,
+  hash-pinned schema (document, symbol, parameter, condition, units, direction, row and
+  table identity); coordinated registry + evidence + hash re-points are refused.
+* **Completion (D797-06):** `C-PWR-CHARGE-02` classifies **TERMINATED** / **ACTIVE
+  LIMITING** / **FAULT / UNCLASSIFIED** / **TIMER EXPIRY** from measurement; F12 runs the
+  classifier's controls.
+* **Documents (D797-07/09/10):** table-aware, order-symmetric claim families; the Round-16
+  shapes are permanent injections; every first-article step states PASS / RECORD +
+  ESCALATE / RECORD ONLY and its re-runs.
+* **Firmware (D797-08/10):** a Deferred NFC liveness probe at a rail, burst or session grant
+  refuses the grant and keeps the prior confirmation; host wait-loop mutants fail on a named
+  guard, never on `std::bad_alloc`; the charging mode-entry table is consulted with no rail
+  live.
+
+**REVIEW TARGET, NOT A FABRICATION AUTHORIZATION.  DO NOT ORDER.**
+
 ## D-796 — 2026-09-23 — ROUND-15 FULL CONVERGENCE: A THERMAL LOOP LABELLED ON A COLD DIE, A BATTERY THAT SUPPLEMENTED BELOW ITS OWN LOCKOUT, KEYS THAT DID NOT NAME THEIR STATES, AND A GUARANTEE AUTHENTICATED BY ITS OWN METADATA
 
 Round-15 external review **REJECTED D-795** (Astra **B**, Fable Work **B** — engineering

@@ -1,3 +1,187 @@
+## D-797 — **ROUND-16 FOCUSED CONVERGENCE: A SUPPLEMENT THAT CANNOT LEAVE, A BOUNDARY PROVED AT THE WRONG POWER, A CACHE THAT REMEMBERED AN OBJECT, AND A GUARANTEE WHOSE MEANING WAS EDITABLE**
+
+    authority  board c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907
+    manifest   recorded in hardware/demo/manufacturing/evidence/d797-review-target.json
+    content    the D-797 content commit (recorded by the identity commit that follows it)
+    parent     71030a55c572199bad8a9aecf0e008de09604e00 (D-796 identity, REJECTED by Round-16)
+    scope      D797-01..D797-10: Astra R16-01..R16-05 and every reproduced Fable Work
+               R16-01..R16-05 residual, plus this closeout's own new-defect sweep
+    copper     NONE.  No copper, net, footprint, placement, part value or
+               protected-copper object moves.
+    order      HOLD.  External-review target only.  B01-B14 (CAM), FA01-FA10
+               (first article) and procurement remain outstanding.
+    owner      NO NEW OWNER DECISION IS REQUIRED -- but one engineering call is
+               flagged for the owner in section 2 (the accessory rails while
+               charging are held by the existing SUPERVISED-charging condition,
+               not by firmware), with the alternative and its cost.
+
+Round-16 rejected D-796.  **Astra** and **Fable Work** both graded it **B — engineering
+design acceptable after specific non-PCB pre-order corrections**; neither established a
+respin.  None is made.
+
+### 1 — `R16-01` / D797-01: A SUPPLEMENT IS ABSORBING, AND THE PROOF RUNS OVER REACHABLE STATES
+
+**REPRODUCED.**  SLUSF65B §6.3.3: the battery stops supplementing when `VSYS > VBAT −
+VBSUP2`.  A supplementing part holds `SYS` at the cell less the BATFET drop; no charge
+flows, so TREG has nothing to fold; and with the input capped a constant-power load above
+what the input carries at `SYS = VBAT` cannot let `SYS` rise.  D-796 evaluated exit on
+the node a BATFET-OFF equilibrium would have — a different, mathematically possible state
+the part is not in — and bounded the junction on the zero-charge state.  D-797:
+
+* `charger_state` RETAINS a supplement whenever its history is SUPPLEMENT and the input
+  cannot carry the load at `SYS = VBAT`, whatever alternate equilibrium exists; the
+  canonical invariants and the oracle's own classifier both refuse any other branch with
+  that history there (`input_short_at_vbat`).
+* SUPPLEMENT is REMOVED from the TREG limit-cycle class; a supplementing state's
+  junction is its STATIC junction, labelled `SUPPLEMENT_ABSORBING`, or
+  `TSHUT_PROTECTION_CYCLE` at or above TSHUT_RISING (150 °C TYP; §6.3.7.6 "stops charging
+  and shuts down VSYS").  Protection is never counted as meeting 125 °C.
+* The junction boundary is the maximum over REACHABLE states from a COLD START at the full
+  program: an absorbing supplement where the full program supplements, otherwise the
+  zero-charge state TREG cannot improve on.  Both histories are enumerated wherever the
+  BATFET can be connected.
+* `uvlo_open` with a SUPPLEMENT history is rejected loudly (D797-10).
+
+### 2 — D797-02: THE CHARGING ENVELOPE, THE FIRMWARE FLOORS, AND THE ONE CALL FLAGGED FOR THE OWNER
+
+The corrected boundary is `ILIM_min × VBAT` (raw 0.995 × cell, exactly): the charging-safe
+power is a TABLE by cell on a 50 mV grid, guard-banded 5 % and floored onto 0.05 W, with a
+**2.700 W** universal minimum at the lowest cell the BATFET can be connected at (2.86 V)
+and **3.95 W** at a full cell.  D-796's **3.900 W** is RETIRED.  Fable's 2.85 W is NOT
+hard-coded: the raw figure there is 2.8457 W and the published one 2.70 W.
+
+**Firmware.**  The gauge reads `BAT_PROTECTED_P`, which while charging sits ABOVE the cell by
+the charge current times the itemised cell-to-node path (0.7927 Ω with the pass pair at
+150 °C).  A reported charging floor therefore carries that offset.  The new
+`accessoryChargingModeEntryFloor` table (no rail live), pinned entry by entry by F12:
+`audio` + `sub-GHz TX` (2.887 W, cell floor 3.10 V) needs a reported **3.60 V**; audio alone
+and sub-GHz alone are charging-safe at every cell; every Wi-Fi/BLE row is refused — no
+reported value excludes its absorbing supplement while charging, and the shipped image has
+no Wi-Fi caller.  Host-tested at caller and image level with mutation controls.  It is an ENTRY floor: in the shipped image the amplifier runs only for the `t` tone (400 ms of I2S, ~440 ms in all), so the one combination that needs a charging reading exists for under half a second at a time.
+
+**The accessory rails — flagged for the owner.**  Every rail state is above 2.700 W (3.3 V
+rail 3.388 W, 5 V rail 3.716 W, declared pair 3.741 W, audio + 3.3 V rail 3.818 W; cell
+floors 3.60–4.10 V).  A reported floor covering the charge offset would be 4.15–4.60 V,
+above anything the gauge reports on battery (3.857–3.937 V), so the rails would never turn
+on — the D790-A03 defect.  The firmware cannot separate "charging at a low cell" from
+"discharging at a high one": there is no VBUS-present signal (D-776) and `STAT2` is
+unrouted by owner decision.  **Decision (engineering, inside the existing supervised
+first-five charging condition, `battery_pack_contract` B8):** the supervisor's rule is
+generated from the model and printed in DEVICE_SPEC, the fab handoff and the plan — *while
+charging, do not run an accessory rail with the adapter attached unless the pack is at or
+above 4.10 V*.  No capability is removed: on battery, and while charging at or above that
+cell, every published budget is unchanged.  F12 lists every state the firmware cannot hold
+and refuses the release if one is not an accessory-rail state or the rule is missing from a
+document.  **Alternative the owner may prefer:** a first-five rework landing `U11.3` on the
+existing `STAT2` net (R128/TP7/U2.19 are already routed) so firmware can enforce the rule —
+rejected here because `U11.3` is a 0.2 mm WSON land at 0.4 mm pitch between the ILIM/ISET
+neighbours on B.Cu, and a bridge there is a latched charger fault; REV-B routes `STAT2`.
+
+`C-PWR-CHARGE-01` step 7 exercises the former trap (3.400 V, high source corner,
+BATFET connected: `VSYS`, `IIN`, `IBAT`, package temperature and `STAT1`, PASS / RECORD +
+ESCALATE explicit).  `C-THERM-01`'s charge record is inside the envelope only at or above a
+**4.10 V** cell, and says so.
+
+### 3 — `R16-02` / D797-03 + D797-04: A BOUNDARY IS PROVED AT ITS OWN POWER, AND A CACHE KEYS ON CONTENT
+
+**REPRODUCED.**  F14 accepted a coordinated +0.5 W inflation of every junction boundary and
+its publication (a 4.400 W claim) because the evidence states were only checked for being
+the key's state at SOME power.  Every `*_at` / `*_above` state is now bound — raw and summary
+— to the exact published scalar and the declared probe offset, missing labels are refused,
+and the oracle RECOMPUTES every boundary one step (0.01 % + 0.1 mW) below and above from its
+own states, including the enum label of what lies above.  The regime audit cache was keyed
+by Python object identity; it is now keyed by a SHA-256 over a deterministic serialisation
+of every argument taken at lookup.  **F14: 38 of 38 controls caught**, four new
+(`d797_exit_judged_on_the_hypothetical_batfet_off_node`,
+`d797_an_absorbing_supplement_labelled_a_treg_limit_cycle`,
+`d797_inflate_every_junction_boundary_and_its_publication_by_half_a_watt`,
+`d797_mutate_the_passed_regime_in_place`).
+
+### 4 — `R16-03` + Fable `R16-02` / D797-05: A GUARANTEE'S MEANING IS PINNED OUTSIDE THE REGISTRY
+
+`checks/guarantee_semantics.py` is an independent schema — parsed as data, never imported —
+pinned by its sha256 inside the verifier.  For each of the 17 GUARANTEED keys it fixes the
+document (path, sha256, identity token), the row (line, normalised-row sha256), the symbol
+and parameter phrases, the condition and WHERE it must sit (the value line, never a
+sibling sub-row), the table header and title, the units, the value token and the direction.
+Registry and evidence must agree with the schema; a registry key absent from it, or a
+schema key the registry does not tag, fails.  **17/17 keys authenticated; 28/28 destructive
+controls caught**, eleven new, including the coordinated VLOWV → VIN_LOWVZ re-point, the
+VBUVLO_HYS VIN = 5 V → VIN = 0 V sub-row move, a coordinated MIN/MAX reversal and the generic
+coordinated registry + evidence + hash re-point — each of which the D-796 document-only
+audit ACCEPTED.
+
+### 5 — `R16-04` / D797-06: CHARGE COMPLETION IS CLASSIFIED FROM MEASUREMENT
+
+`C-PWR-CHARGE-02` now records continuously and classifies every record: **TERMINATED** only
+with VINDPM, DPPM, ILIM and TREG excluded AND a sustained BATFET-off transition (declared
+bench criteria: ≤ 5 mA, ≥ 10 mV relaxation, ≥ 10 min); **ACTIVE LIMITING**; **FAULT /
+UNCLASSIFIED** (ESCALATE); **TIMER EXPIRY** only with every recoverable and latch-off cause
+excluded, the fault latched and a re-plug that restarts.  `classify_charge_end()` is the
+executable rule, and F12 runs ten controls on it (taper with DPPM / TREG / ILIM active is not
+termination; `STAT1` LOW alone, with TSHUT not excluded, self-clearing, or early is not a
+timer).  A high-impedance `TP7` probe is permitted as test instrumentation only.
+
+### 6 — `R16-05` + Fable `R16-05` / D797-07: NORMATIVE CLAIMS BOUND SYMMETRICALLY AND IN TABLES
+
+Tables are rewritten as label/value pairs before scanning; numeric claims bind a value to its
+NEAREST role on either side (never across another value of the same shape); non-numeric
+claims are concept sets in any order.  A universal quantifier ("at every cell", "over the
+whole range") is not a cell condition: a junction-safe figure stated with one must be the
+universal minimum.  **Twenty-one Round-16 shapes** — Astra's appended quiet floor and
+1000 ms window, and the value-first, intervening-clause and table forms of the quiet/audio
+rows, the window, the charging source, TX + rail, TREG independence, completion, release
+identity, BUVLO supplement, the retired junction-safe figure and the harness fault — are
+permanent injections, each caught in all nine operative documents.  The Round-16 inventory
+names Fable's IDs (D02d/e/f/g, D01b, D07b, D13c, D22, D24, D26) without their strings; each
+is reconstructed from its named shape and binding.  Three of them escaped the ported
+families on first run and were fixed at the family (the window role, the universal
+quantifier, a value-form TREG-independence family).
+
+### 7 — Fable `R16-03` / D797-08: A DEFERRED PROBE AT A GRANT REFUSES THE GRANT
+
+Rail admission (and mode entry with a rail live), every non-NFC burst and the NFC session
+now require a forced probe to answer `Alive`; `Deferred` refuses the grant, logs it, and
+keeps the prior OFF confirmation (no revocation).  With no probe attached every grant is
+refused.  16 caller-level and 12 image-level claims; seven new mutation controls.
+
+### 8 — Fable `R16-04` / D797-09: EVERY FIRST-ARTICLE STEP STATES ITS OUTCOME
+
+All 21 steps in `FIRST_FIVE_ASSEMBLY_PLAN` §7d carry an `OUTCOME:` clause: PASS inside the
+bound; otherwise RECORD + ESCALATE and re-run the checks that consumed the input (F5, F6,
+F10, F11, F12, F14 as declared per step); record-only parts say RECORD ONLY.  F12 declares
+each step's semantics and refuses a missing clause, a worse result merely recorded, a dropped
+re-run or an undeclared new step.
+
+### 9 — D797-10: HYGIENE
+
+`uvlo_open` with a SUPPLEMENT history raises; the host Arduino cores stop a wait loop on a
+frozen clock with a NAMED failure (1M zero-advance waits, 20M waits, 2M console lines), so a
+wait-loop mutant is caught for its reason and never by `std::bad_alloc`; a control that dies
+by signal no longer counts as caught.  The D-796 KiCad `sys.path` fix is preserved.  Fable
+`R16-06`'s notes are not reproduced in the reopen inventory; nothing further is claimed for
+them.
+
+### 10 — FOUND BY THIS CLOSEOUT
+
+* **The accessory rails exceed the corrected charging envelope** (section 2) — found by the
+  new F12 clause that asks which admissible charging states each firmware floor can hold.
+* **Three Round-16 document shapes escaped the ported families** (section 6).
+* **Two D-796 F14 controls went vacuous** under the corrected model (the latched-supplement
+  control selected victims by the hysteresis flag; the thermal-label reason was truncated
+  behind content mismatches); both re-aimed and caught.
+* **A report writer crashed on mixed-type keys** after the checks had run; keys are now
+  stringified.
+* **DEVICE_SPEC's delivery table was headed "guaranteed voltage"** beside the 400 mA budget;
+  renamed "minimum delivered voltage (F6)".
+
+### WHAT IS NOT CLAIMED
+
+D-797 is an ANALYTICAL closure.  No copper moved.  CAM acceptance (B01–B14), first article
+(FA01–FA10), procurement and enclosure/CAD remain downstream; the absorbing supplement, the
+TREG-to-zero behaviour, the charge timer path, the source range, the gauge cadence and the
+thermal model are all still to be measured, and the steps that measure them now exist.
+
 ## D-796 — **ROUND-15 FULL CONVERGENCE: A THERMAL LOOP LABELLED ON A COLD DIE, A BATTERY THAT SUPPLEMENTED BELOW ITS OWN LOCKOUT, KEYS THAT DID NOT NAME THEIR STATES, AND A GUARANTEE AUTHENTICATED BY ITS OWN METADATA**
 
     authority  board c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907

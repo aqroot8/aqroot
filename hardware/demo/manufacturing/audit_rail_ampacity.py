@@ -867,8 +867,15 @@ CHARGE_REGIME = dict(
 #   * a NO-DISCHARGE ENVELOPE, conditioned on VBAT and source class, which is
 #     published as a table and never as a scalar.
 # ==========================================================================
-REGIME_VBAT_GRID_V = (2.85, 3.0, 3.2, 3.4, 3.5, 3.52, 3.6, 3.8, 4.0, 4.1,
-                      4.2, apm.BAT_RAW_MAX_V)
+# D-797 / D797-02.  THE JUNCTION-SAFE POWER IS NOW CELL-CONDITIONED (about
+# ILIM_min x VBAT: a reachable SUPPLEMENT is absorbing and hot), so the grid is
+# 50 mV wide wherever a firmware floor can be read off it, plus 2.86 V -- the
+# lowest cell at which the BATFET can be CONNECTED (just above the lowest
+# falling BUVLO trip) and so the one that bounds the universal figure -- and
+# the two historical special points, 3.52 V and the 4.221 V regulation top.
+REGIME_VBAT_GRID_V = tuple(sorted(
+    {2.85, 2.86, 3.52, apm.BAT_RAW_MAX_V}
+    | {round(2.90 + 0.05 * i, 3) for i in range(27)}))
 REGIME_SWEEP_POINTS = (-1.0, -0.5, 0.0, 0.5, 1.0)
 REGIME_HISTORIES = (None, "SUPPLEMENT")
 REGIME_AMBIENTS_C = (0.0, 25.0, 40.0)
@@ -952,6 +959,25 @@ def _regime_point(cls, vbat, bf, ilim, sw, hist, r_sys, theta, tj_max,
         st = _st(p)
         return st is not None and st["mode"] != "SUPPLEMENT"
 
+    def _reachable(p):
+        """D-797 / D797-01.  The states the part can actually be in at `p`
+        with this history, from a COLD START at the full program.
+
+        If the full-program state is SUPPLEMENT -- entered by necessity from
+        a cold start, or retained from a SUPPLEMENT history -- it is
+        ABSORBING: no charge flows for TREG to fold and the actual SYS cannot
+        reach the exit, so it is the state, at its STATIC junction.
+        Otherwise TREG may fold the charge anywhere down to zero, and the
+        zero-charge state is the one TREG cannot improve on -- carried even
+        where the full program collapses SYS (below VBUVLO), because a charge
+        TREG had already folded is a history that reaches it.  None: no
+        static operating point at all."""
+        full = _st(p)
+        if full is not None and full["mode"] == "SUPPLEMENT":
+            return [full]
+        z = _st(p, zero=True)
+        return None if z is None else [z]
+
     p_nd = _bisect_max(_nd)
     nd_at = _st(p_nd)
     nd_above = _st(p_nd * (1.0 + 1e-7) + 1e-7)
@@ -976,15 +1002,18 @@ def _regime_point(cls, vbat, bf, ilim, sw, hist, r_sys, theta, tj_max,
             return z is not None and _tj(z) < treg_low
 
         def _junction_ok(p):
-            z = _st(p, zero=True)
-            return z is not None and _tj(z) <= tj_max
+            reach = _reachable(p)
+            return reach is not None and all(_tj(x) <= tj_max
+                                             for x in reach)
 
         p_t0 = _bisect_max(_treg0_unreachable)
         t0_at = _st(p_t0, zero=True)
         t0_above = _st(p_t0 * (1.0 + 1e-7) + 1e-7, zero=True)
         p_tj = _bisect_max(_junction_ok)
-        tj_at = _st(p_tj, zero=True)
-        tj_above = _st(p_tj * (1.0 + 1e-7) + 1e-7, zero=True)
+        _r_at = _reachable(p_tj) or [None]
+        _r_above = _reachable(p_tj * (1.0 + 1e-7) + 1e-7) or [None]
+        tj_at = max(_r_at, key=lambda x: -1e9 if x is None else _tj(x))
+        tj_above = max(_r_above, key=lambda x: -1e9 if x is None else _tj(x))
         junction_limited = True
         junction_binding = ("junction" if tj_above is not None
                             else "no_operating_point_above")
@@ -999,6 +1028,20 @@ def _regime_point(cls, vbat, bf, ilim, sw, hist, r_sys, theta, tj_max,
             junction_limited = False
             junction_binding = "input_carrying_below_vbuvlo"
         junction_W = p_tj if junction_limited else REGIME_JUNCTION_UNBOUNDED_W
+        # D-797 / D797-01: what lies just above a junction ceiling, named.  A
+        # reachable absorbing SUPPLEMENT at or above TSHUT_RISING is the
+        # device's own thermal shutdown cycling VSYS -- protection, not
+        # regulation, and never counted as compliance with 125 C.
+        _hot = tj_above
+        above_regime = None
+        if _hot is not None:
+            _tj_hot = _tj(_hot)
+            if _hot["mode"] == "SUPPLEMENT":
+                above_regime = ("TSHUT_PROTECTION_CYCLE" if _tj_hot
+                                >= apm.BQ25185["tshut_rising_C"]
+                                else "SUPPLEMENT_ABSORBING")
+            else:
+                above_regime = "ZERO_CHARGE_ABOVE_TJ_MAX"
         nd_W = min(p_nd, p_t0)
         if carrying is not None and p_nd <= p_t0:
             nd_binding = "input_carrying_below_vbuvlo"
@@ -1024,11 +1067,22 @@ def _regime_point(cls, vbat, bf, ilim, sw, hist, r_sys, theta, tj_max,
             input_carrying_at_zero_charge_W=(
                 None if carrying_zero is None else round(carrying_zero, 6)),
             junction_W=round(junction_W, 6),
+            # D-797 / D797-03: the exact scalar the junction evidence is
+            # solved at -- published even where the row is not junction-
+            # limited, so every *_at / *_above state binds to a number.
+            junction_boundary_W=round(p_tj, 6),
             junction_limited=junction_limited,
             junction_binding=junction_binding,
             ceiling_W=round(ceiling, 6),
             binding=("no_discharge" if nd_W <= junction_W else "junction"),
-            mode_at_no_discharge_ceiling=(nd_at["mode"] if nd_at else None))
+            mode_at_no_discharge_ceiling=(nd_at["mode"] if nd_at else None),
+            junction_at_mode=(tj_at["mode"] if tj_at else None),
+            junction_above_mode=(tj_above["mode"] if tj_above else None),
+            junction_above_regime=(above_regime if junction_limited
+                                   else None),
+            junction_above_static_C=(round(_tj(tj_above), 3)
+                                     if (tj_above is not None
+                                         and junction_limited) else None))
         if keep_evidence:
             row["_evidence"] = dict(
                 no_discharge_at=nd_at, no_discharge_above=nd_above,
@@ -1121,6 +1175,40 @@ def charge_regime_envelope(system=None, spec=None, delivered_out_W=0.0,
                                             if carry else None),
                 no_discharge_bindings=sorted({r["no_discharge_binding"]
                                               for r in sel})))
+    # ---- D-797 / D797-02.  THE CHARGING-SAFE POWER, BY CELL. -------------
+    # At each grid cell, over the QUALIFIED (named-adapter) classes and every
+    # other axis: the published junction figure (reachable states, absorbing
+    # supplement included) and, under the BUVLO trip, the input-carrying
+    # power above which SYS collapses (a reboot, not a junction limit, but
+    # equally not an operating state).  `at_or_above` is the minimum over
+    # every grid cell at or above this one: a charging cell only RISES while
+    # the part is charging, so a state admitted at a cell must stay inside
+    # the envelope at every higher one.
+    _q_env = [e for e in envelope if e["qualified"]]
+    by_cell = []
+    for v in REGIME_VBAT_GRID_V:
+        es = [e for e in _q_env if e["vbat_V"] == v]
+        lims = []
+        for e in es:
+            if e["junction_published_W"] is not None:
+                lims.append(("junction", e["junction_published_W"],
+                             e["source_class"]))
+            if e["input_carrying_published_W"] is not None:
+                lims.append(("input_carrying_below_vbuvlo",
+                             e["input_carrying_published_W"],
+                             e["source_class"]))
+        lim = min(lims, key=lambda x: x[1]) if lims else None
+        by_cell.append(dict(
+            vbat_V=v, batfet_states=list(apm.batfet_states_at(v)),
+            charging_safe_published_W=(None if lim is None
+                                       else round(lim[1], 6)),
+            binding=(None if lim is None else lim[0]),
+            ruling_source_class=(None if lim is None else lim[2])))
+    for i, row in enumerate(by_cell):
+        higher = [b["charging_safe_published_W"] for b in by_cell[i:]
+                  if b["charging_safe_published_W"] is not None]
+        row["charging_safe_at_or_above_published_W"] = (
+            round(min(higher), 6) if higher else None)
     q = [r for r in rows if r["qualified"]]
     universal_nd = min(r["no_discharge_W"] for r in q)
     universal_tj = min(r["junction_W"] for r in q)
@@ -1139,6 +1227,10 @@ def charge_regime_envelope(system=None, spec=None, delivered_out_W=0.0,
         junction_safe_raw_W=round(universal_tj, 6),
         junction_safe_published_W=round(_floor(universal_tj), 6),
         junction_safe_ruling_row=worst_tj_row["key"],
+        charging_safe_by_cell=by_cell,
+        charging_safe_universal_published_W=round(min(
+            b["charging_safe_published_W"] for b in by_cell
+            if b["charging_safe_published_W"] is not None), 6),
         input_carrying_below_vbuvlo_raw_W=(round(min(carry_q), 6)
                                            if carry_q else None),
         input_carrying_below_vbuvlo_published_W=(
@@ -1178,24 +1270,40 @@ def charge_regime_junction(system_W, ambient_C=None, spec=None, system=None,
                  + apm.BQ25185["treg_declared_band_K"])
     grid = REGIME_VBAT_GRID_V if vbat_grid is None else vbat_grid
     corners = {}
-    for vbat, bf in [(v, b) for v in grid for b in apm.batfet_states_at(v)]:
+    # D-797 / D797-01: BOTH histories wherever the BATFET can be connected,
+    # unless the caller pins one.  A retained supplement is a physical state
+    # the part can be in, and it is the hot one.
+    hist_set = ((previous_mode,) if previous_mode is not None
+                else REGIME_HISTORIES)
+    for vbat, bf, prev in [(v, b, h) for v in grid
+                           for b in apm.batfet_states_at(v)
+                           for h in hist_set
+                           if b == "connected" or h != "SUPPLEMENT"]:
         for ilim_corner in REGIME_ILIM_CORNERS:
             for cls in apm.USB_SOURCE_CLASSES:
-                # D-796 / D796-08: no supplement HISTORY below the trip.
-                prev = (previous_mode if bf == "connected"
-                        or previous_mode != "SUPPLEMENT" else None)
+                ckey = "vbat%.3f/%s/ilim_%s/%s__%s" % (
+                    vbat, bf, ilim_corner, prev or "none", cls["key"])
                 kw = dict(ilim_corner=ilim_corner, vbus_V=cls["vbus_V"],
                           path_ohm=cls["path_ohm"], source_key=cls["key"],
                           previous_mode=prev, sweep=sweep, batfet=bf)
                 st = apm.charger_operating_point(
                     system_W, vbat, ambient_C, r_sys, theta, treg_high,
                     delivered_out_W, **kw)
-                zero = apm.charger_state(system_W, vbat,
-                                         treg_folds_charge_to_zero=True, **kw)
+                # What TREG cannot improve on: the zero-charge state -- or,
+                # if the part is supplementing, the SUPPLEMENT itself, which
+                # is absorbing and carries no charge to fold.
+                if st is not None and st["mode"] == "SUPPLEMENT":
+                    zero = apm.charger_state(
+                        system_W, vbat, treg_folds_charge_to_zero=True,
+                        **dict(kw, previous_mode="SUPPLEMENT"))
+                else:
+                    zero = apm.charger_state(system_W, vbat,
+                                             treg_folds_charge_to_zero=True,
+                                             **kw)
                 if st is None or zero is None:
-                    corners["vbat%.3f/%s/ilim_%s__%s" % (
-                        vbat, bf, ilim_corner, cls["key"])] = dict(
+                    corners[ckey] = dict(
                         vbat_V=vbat, source_key=cls["key"], batfet=bf,
+                        previous_mode=prev,
                         source_rules=cls["rules"], mode=None,
                         no_operating_point=True)
                     continue
@@ -1205,8 +1313,7 @@ def charge_regime_junction(system_W, ambient_C=None, spec=None, system=None,
                 tjf = (apm.charger_junction(full, ambient_C, r_sys, theta,
                                             delivered_out_W)[0]
                        if full is not None else None)
-                corners["vbat%.3f/%s/ilim_%s__%s" % (
-                    vbat, bf, ilim_corner, cls["key"])] = dict(
+                corners[ckey] = dict(
                     st, source_rules=cls["rules"], source_what=cls["what"],
                     no_operating_point=False,
                     internal_W=st["thermal"]["internal_W"],
@@ -1261,11 +1368,13 @@ def charge_regime_junction(system_W, ambient_C=None, spec=None, system=None,
         supplements_somewhere_in_the_domain=bool(supplementing),
         highest_vbat_without_supplement_on_every_qualified_class_V=(
             max((v for v in grid if not any(
-                corners.get("vbat%.3f/%s/ilim_%s__%s" % (v, bf, il, c["key"]),
-                            {}).get("mode") == "SUPPLEMENT"
-                for bf in apm.batfet_states_at(v)
-                for il in REGIME_ILIM_CORNERS for c in apm.USB_SOURCE_CLASSES
-                if c["rules"])), default=None)),
+                c_.get("mode") == "SUPPLEMENT"
+                for c_ in corners.values()
+                if c_.get("source_rules") and c_.get("vbat_V") == v)),
+                default=None)),
+        tshut_protection_cycle_qualified_corners=sorted(
+            k for k, v in corners.items() if v.get("source_rules")
+            and v.get("thermal_regime") == "TSHUT_PROTECTION_CYCLE"),
         # D-796 / D796-08: below VBUVLO a load the input cannot carry has no
         # operating point -- SYS collapses.  Named, never silently dropped.
         sys_collapses_below_vbuvlo_at=sorted(

@@ -53,6 +53,9 @@ using namespace aqroot;
 // The image's own entry points.
 void setup();
 void loop();
+// D-797 / D797-08: the one host-image seam (`AQROOT_HOST_IMAGE_HARNESS`) --
+// the image's own SPI-B object, so a test can leave it selected at a grant.
+aqroot::SpiBusB &aqrootHostImageSpiB();
 
 static int failures = 0;
 static void claim(const char *name, bool ok) {
@@ -2439,6 +2442,183 @@ int main() {
           spent_ms >= kLongestUnpreemptibleOperatorTestMs
           && spent_ms <= kLongestUnpreemptibleOperatorTestMs + 5
           && kNfcRevocationWithRailsOffOperatorTestMs == 1347);
+  }
+
+  // =========================================================================
+  // D-797 / D797-08 (Fable R16-03).  A DEFERRED PROBE AT A GRANT REFUSES THE
+  // GRANT AND KEEPS THE CONFIRMATION.
+  //
+  // "At rail/burst/session grants, a forced liveness probe returning
+  // Deferred must refuse the new grant while preserving prior confirmation
+  // state; do not treat Deferred as 'no news' for authorization."
+  //
+  // The shipped probe reports `Deferred` when SPI-B is already selected.  The
+  // test leaves the image's own SPI-B selected (a CC1101 transaction in
+  // flight) across the key press, so the forced probe at the grant CANNOT
+  // run, and then releases it: the grant must be refused, nothing may be
+  // revoked or shed, and the very next request -- with no quiesce in between
+  // -- must be granted on the confirmation that was kept.
+  // =========================================================================
+  {
+    auto rail3On = []() {
+      return bit(g_board.u3_output, AQROOT_U3_ACC_3V3_EN);
+    };
+    auto rail5On = []() {
+      return bit(g_board.u3_output, AQROOT_U3_ACC_5V_SW_EN);
+    };
+    auto enabledAfter = [](uint64_t t_us, uint8_t b) {
+      for (const auto &e : g_board.latch_events) {
+        if (e.t_us >= t_us && bit(e.u3_output, b)) return true;
+      }
+      return false;
+    };
+    const char *kDeferred = "REFUSED at the grant: the ST25R3916 liveness "
+                            "probe was DEFERRED";
+    {
+      // THE FIRST-RAIL GRANT.
+      rig();
+      setup();
+      delay(3000);
+      loop();
+      const int quiesces = rec().consoleCount("FIELD OFF, live identity");
+      const uint64_t pressed = rec().clock_us;
+      SpiBusB &spi = aqrootHostImageSpiB();
+      const bool held = spi.select(SpiBDevice::Cc1101);
+      press("3");
+      pump(1);
+      press("");
+      spi.release();
+      claim("D797-08 image: with SPI-B busy at the grant, a FIRST-rail "
+            "admission is REFUSED because the forced liveness probe was "
+            "Deferred -- not granted on the last scheduled proof",
+            held && rec().consoleHas(kDeferred)
+            && rec().consoleHas("ACC_3V3_SW REFUSED")
+            && !enabledAfter(pressed, AQROOT_U3_ACC_3V3_EN));
+      claim("...and the Deferred probe revoked NOTHING: no revocation line, "
+            "no quiesce retry, the confirmation is kept",
+            !rec().consoleHas("NFC OFF confirmation REVOKED")
+            && rec().consoleCount("FIELD OFF, live identity") == quiesces);
+      press("3");
+      pump(1);
+      press("");
+      claim("...and with SPI-B free the very next request is GRANTED on the "
+            "kept confirmation, with no quiesce in between",
+            rail3On()
+            && rec().consoleCount("FIELD OFF, live identity") == quiesces);
+      press("3");
+      pump(1);
+      press("");
+    }
+    {
+      // THE SECOND-RAIL GRANT, with ACC_3V3_SW already live.
+      rig();
+      setup();
+      delay(3000);
+      press("3");
+      pump(1);
+      press("");
+      const bool first = rail3On();
+      const uint64_t pressed = rec().clock_us;
+      SpiBusB &spi = aqrootHostImageSpiB();
+      const bool held = spi.select(SpiBDevice::Cc1101);
+      press("5");
+      pump(1);
+      press("");
+      spi.release();
+      claim("D797-08 image: with SPI-B busy at the grant, a SECOND-rail "
+            "admission is REFUSED on the Deferred probe",
+            first && held && rec().consoleHas(kDeferred)
+            && rec().consoleHas("ACC_5V_SW REFUSED")
+            && !enabledAfter(pressed, AQROOT_U3_ACC_5V_SW_EN));
+      claim("...and the rail already live under the kept confirmation is "
+            "NOT shed, and nothing is revoked",
+            rail3On() && !rec().consoleHas("NFC OFF confirmation REVOKED"));
+      press("5");
+      pump(1);
+      press("");
+      claim("...and with SPI-B free the second rail is then GRANTED",
+            rail3On() && rail5On());
+      press("5");
+      pump(1);
+      press("3");
+      pump(1);
+      press("");
+    }
+    // THE BURST GRANTS.
+    for (const char *key : {"d", "x"}) {
+      rig();
+      setup();
+      delay(3000);
+      loop();
+      const bool sd = key[0] == 'd';
+      SpiBusB &spi = aqrootHostImageSpiB();
+      const bool held = spi.select(SpiBDevice::Cc1101);
+      press(key);
+      pump(1);
+      press("");
+      spi.release();
+      char name[240];
+      snprintf(name, sizeof(name),
+               "D797-08 image: with SPI-B busy at the grant, a %s burst is "
+               "REFUSED on the Deferred probe and never runs",
+               sd ? "microSD" : "IR");
+      claim(name, held && rec().consoleHas(kDeferred)
+                  && !rec().consoleHas(sd ? "microSD  CMD0" : "IR  "));
+      claim("...and the Deferred probe revoked nothing and left the burst "
+            "slot free -- U9 did not take it",
+            !rec().consoleHas("NFC OFF confirmation REVOKED")
+            && !rec().consoleHas("U9 owns the burst slot"));
+      press(key);
+      pump(1);
+      press("");
+      claim("...and with SPI-B free the same burst then runs",
+            rec().consoleHas(sd ? "microSD  CMD0" : "IR  "));
+    }
+  }
+
+  // =========================================================================
+  // D-797 / D797-02.  THE CHARGING MODE-ENTRY FLOOR, IN THE SHIPPED IMAGE.
+  //
+  // With no accessory rail live, audio + sub-GHz is safe while charging only
+  // above a 3.60 V reported cell.  The image's own SpiBusB keys the CC1101
+  // (sub-GHz alone: no floor), and then the operator's tone key asks for the
+  // amplifier -- the mode edge that reaches audio + sub-GHz.
+  // =========================================================================
+  {
+    rig();
+    setup();
+    delay(3000);
+    loop();
+    g_board.vcell_counts = uint16_t(3.55f / Max17048Guard::kVcellLsbV);
+    SpiBusB &spi = aqrootHostImageSpiB();
+    const bool keyed = spi.beginTransmit(SpiBDevice::Cc1101);
+    claim("D797-02 image: with no rail live the image keys sub-GHz ALONE at "
+          "a 3.55 V pack -- its charging floor is zero",
+          keyed && spi.transmitting() == SpiBDevice::Cc1101
+          && !bit(g_board.u3_output, AQROOT_U3_ACC_3V3_EN)
+          && !bit(g_board.u3_output, AQROOT_U3_ACC_5V_SW_EN));
+    const int tones = rec().consoleCount("i2s tone ");
+    press("t");
+    pump(1);
+    press("");
+    claim("D797-02 image: with sub-GHz keyed and no rail live, the tone key "
+          "is REFUSED at 3.55 V -- audio + sub-GHz needs 3.60 V while "
+          "charging -- and the amplifier never leaves shutdown",
+          rec().consoleHas("AMP_SD_MODE enable REFUSED: VCELL 3.5")
+          && rec().consoleHas("below the 3.60 V charging floor")
+          && rec().consoleHas("audio: ABORTED")
+          && rec().consoleCount("i2s tone ") == tones
+          && !bit(g_board.u2_output, AQROOT_U2_AMP_SD_MODE));
+    g_board.vcell_counts = uint16_t(3.65f / Max17048Guard::kVcellLsbV);
+    press("t");
+    pump(2);
+    press("");
+    claim("...and at 3.65 V the same key energises the amplifier for the tone "
+          "and puts it back into shutdown",
+          rec().consoleCount("i2s tone played") == tones + 1
+          && rec().consoleHas("AMP_SD_MODE requested off, acknowledged yes")
+          && !bit(g_board.u2_output, AQROOT_U2_AMP_SD_MODE));
+    spi.endTransmit(SpiBDevice::Cc1101);
   }
 
   // =========================================================================
