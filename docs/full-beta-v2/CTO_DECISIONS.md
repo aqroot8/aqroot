@@ -1,8 +1,9 @@
 ## D-797 — **ROUND-16 FOCUSED CONVERGENCE: A SUPPLEMENT THAT CANNOT LEAVE, A BOUNDARY PROVED AT THE WRONG POWER, A CACHE THAT REMEMBERED AN OBJECT, AND A GUARANTEE WHOSE MEANING WAS EDITABLE**
 
     authority  board c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907
-    manifest   recorded in hardware/demo/manufacturing/evidence/d797-review-target.json
-    content    the D-797 content commit (recorded by the identity commit that follows it)
+    manifest   abfa74b59660301394f27f49e316e1a0f11f390f5995c9ea5752a571e675eabc
+    content    482bd5a8314537f48979085d54b01cc1688e9e78
+    identity   the post-commit verification record commit that follows it
     parent     71030a55c572199bad8a9aecf0e008de09604e00 (D-796 identity, REJECTED by Round-16)
     scope      D797-01..D797-10: Astra R16-01..R16-05 and every reproduced Fable Work
                R16-01..R16-05 residual, plus this closeout's own new-defect sweep

@@ -11,9 +11,9 @@
 > part value or protected-copper object moves at D-797** — the board sha256 is unchanged
 > at `c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907`.  Connectivity is
 > **174 retained / 173 connected / one owner-approved `U11.3` open / zero unapproved**.
-> The D-797 content commit, the current MANIFEST sha256, the identity commit and the
-> post-commit verification are recorded in
-> `hardware/demo/manufacturing/evidence/d797-review-target.json`.
+> The D-797 content commit is `482bd5a8314537f48979085d54b01cc1688e9e78`; the current MANIFEST sha256 is
+> `abfa74b59660301394f27f49e316e1a0f11f390f5995c9ea5752a571e675eabc`; the identity commit and the post-commit
+> verification are recorded in `hardware/demo/manufacturing/evidence/d797-review-target.json`.
 >
 > **GATES ON THIS TARGET.**  19/19 standing contracts, `F1`–`F14` (F14 now re-derives every
 > published charger boundary one step below and above from its own states, and audits by
