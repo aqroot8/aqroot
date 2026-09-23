@@ -19,8 +19,8 @@
 > | what | value |
 > |---|---|
 > | branch | `origin/aqroot-demo` |
-> | content commit | *the D-796 content commit — a commit cannot contain its own SHA; it is recorded by the identity commit that follows it* |
-> | identity / post-commit verification commit | *the commit that records the content commit — the reviewable target is the PAIR* |
+> | content commit | `887400b573508ccaf042f101c7b02f5244c3f4ed` (D-796 content `e96f1f47` plus the assembly-drawing relabel) |
+> | identity / post-commit verification commit | *this commit — a commit cannot contain its own SHA, so the reviewable target is the PAIR* |
 > | board `aqroot-Beta-v2.kicad_pcb` sha256 | `c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907` |
 > | `hardware/demo/fab/MANIFEST.json` sha256 | `9ef4e648753ef3f16ae14835e1aa7cdf83901c4da24fc1dc9287536341ce68c0` |
 > | parent, REJECTED by Round-15 | `3eb6a6d3dd753fb561cce08cfb6f2d70429af559` (D-795 identity) |

@@ -11,7 +11,8 @@
 > part value or protected-copper object moves at D-796** — the board sha256 is unchanged
 > at `c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907`.  Connectivity is
 > **174 retained / 173 connected / one owner-approved `U11.3` open / zero unapproved**.
-> The D-796 content commit, the identity commit, the MANIFEST sha256 and the post-commit
+> The D-796 content commit is `887400b573508ccaf042f101c7b02f5244c3f4ed`; the current MANIFEST sha256 is
+> `9ef4e648753ef3f16ae14835e1aa7cdf83901c4da24fc1dc9287536341ce68c0`; the identity commit and the post-commit
 > verification are recorded in `hardware/demo/manufacturing/evidence/d796-review-target.json`.
 >
 > **GATES ON THIS TARGET.**  19/19 standing contracts, `F1`–`F14` (F14 now binds every

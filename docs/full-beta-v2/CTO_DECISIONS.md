@@ -1,8 +1,8 @@
 ## D-796 — **ROUND-15 FULL CONVERGENCE: A THERMAL LOOP LABELLED ON A COLD DIE, A BATTERY THAT SUPPLEMENTED BELOW ITS OWN LOCKOUT, KEYS THAT DID NOT NAME THEIR STATES, AND A GUARANTEE AUTHENTICATED BY ITS OWN METADATA**
 
     authority  board c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907
-    manifest   recorded in evidence/d796-review-target.json by the identity commit
-    content    the D-796 content commit (recorded by the identity commit)
+    manifest   9ef4e648753ef3f16ae14835e1aa7cdf83901c4da24fc1dc9287536341ce68c0
+    content    887400b573508ccaf042f101c7b02f5244c3f4ed
     identity   the post-commit verification record commit that follows it
     parent     3eb6a6d3dd753fb561cce08cfb6f2d70429af559 (D-795, REJECTED by Round-15)
     scope      D796-01..D796-10: Astra R15-01..R15-04 and every reproduced Fable Work

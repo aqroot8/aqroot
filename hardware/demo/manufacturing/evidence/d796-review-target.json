@@ -45,7 +45,11 @@
    "D796-10"
   ]
  },
- "content_commit": "recorded by the identity commit",
+ "content_commit": "887400b573508ccaf042f101c7b02f5244c3f4ed",
+ "content_commits": [
+  "e96f1f47f28e29d0090dc63a84493ffae027c407 (D-796 content)",
+  "887400b573508ccaf042f101c7b02f5244c3f4ed (content correction: assembly drawings relabelled D-796; the reviewable content state)"
+ ],
  "decision": "D-796",
  "gates": {
   "battery_pack": "PASS",
@@ -65,7 +69,7 @@
   "sourcing": "nine constrained groups, unchanged from d795",
   "standing_contracts": "19/19 PASS (contract_regression vs d795: substantive difference only in demo_feature and firmware_hw_map, by design)"
  },
- "identity_commit": "the commit that records the content commit's SHA; a commit cannot contain its own",
+ "identity_commit": "this commit -- it records the content commit's SHA; a commit cannot contain its own",
  "manifest": "hardware/demo/fab/MANIFEST.json",
  "manifest_sha256": "9ef4e648753ef3f16ae14835e1aa7cdf83901c4da24fc1dc9287536341ce68c0",
  "no_copper_change": true,
@@ -76,7 +80,44 @@
   "PROCUREMENT": "PENDING"
  },
  "parent_rejected_by_round_15": "3eb6a6d3dd753fb561cce08cfb6f2d70429af559",
- "post_commit_verification": null,
+ "post_commit_verification": {
+  "beta_v2_untouched": true,
+  "board_sha256": "c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907",
+  "demo_feature_contract": {
+   "checks": "F1-F14, 14 of 14",
+   "verdict": "PASS"
+  },
+  "fab_package_contract": {
+   "verdict": "PASS"
+  },
+  "finding": "the first post-commit run (on e96f1f47) caught assembly PDFs labelled D-795; corrected in 887400b573508ccaf042f101c7b02f5244c3f4ed and re-verified",
+  "firmware_hw_map_contract": {
+   "checks": "H1-H8",
+   "note": "697 claims, 173/173 controls caught",
+   "verdict": "PASS"
+  },
+  "guarantee_evidence": {
+   "verdict": "PASS"
+  },
+  "manifest_sha256": "9ef4e648753ef3f16ae14835e1aa7cdf83901c4da24fc1dc9287536341ce68c0",
+  "platformio": {
+   "all_success": true,
+   "environments": [
+    "esp32-s3-aqroot",
+    "wokwi",
+    "esp32-s3-aqroot-dm",
+    "aqroot-demo"
+   ]
+  },
+  "routing_ledger": {
+   "approved_unrouted_edges": 1,
+   "connected_retained_nets": 173,
+   "retained_multi_pad_nets": 174,
+   "unapproved_open_edges": 0
+  },
+  "run_against": "887400b573508ccaf042f101c7b02f5244c3f4ed, clean tree",
+  "worktree_clean": true
+ },
  "product_facing": {
   "charging_source": "Raspberry Pi 15W USB-C Power Supply KSA-15E-051300HU (regional variants), captive 1.5 m 18 AWG",
   "harness_single_limiter_fault_A": 2.8628,
