@@ -14,7 +14,26 @@
 
 ## 1. Authoritative HEAD
 
-> ### **D-795 REVIEW TARGET — THE EXACT FROZEN IDENTITY**
+> ### **D-796 REVIEW TARGET — THE EXACT FROZEN IDENTITY**
+>
+> | what | value |
+> |---|---|
+> | branch | `origin/aqroot-demo` |
+> | content commit | *the D-796 content commit — a commit cannot contain its own SHA; it is recorded by the identity commit that follows it* |
+> | identity / post-commit verification commit | *the commit that records the content commit — the reviewable target is the PAIR* |
+> | board `aqroot-Beta-v2.kicad_pcb` sha256 | `c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907` |
+> | `hardware/demo/fab/MANIFEST.json` sha256 | `1eff3181cc57d80b46b145105450ccefb71d9b58b9a10357857d573195486cc7` |
+> | parent, REJECTED by Round-15 | `3eb6a6d3dd753fb561cce08cfb6f2d70429af559` (D-795 identity) |
+>
+> The board sha256 is IDENTICAL to the reviewed D-795 target: **no copper moved**.
+> D-796 corrects the charger state physics (no TREG label on a cold state, no supplement
+> under the BUVLO trip, the TREG-to-zero ambiguity carried as a named assumption), binds
+> every F14 domain key to the physical state it labels, authenticates every guarantee
+> against the primary row's own layout, and corrects the operative instructions.  The
+> full record is `evidence/d796-review-target.json`.
+> **REVIEW TARGET, NOT A FABRICATION AUTHORIZATION.  DO NOT ORDER.**
+
+> ### **D-795 REVIEW TARGET — THE EXACT FROZEN IDENTITY**  *(**HISTORICAL** — REJECTED by Round-15)*
 >
 > | what | value |
 > |---|---|

@@ -51,6 +51,7 @@ and the independent residuals inside tolerance.  `audit()` ANDs it into `ok`.
 """
 
 import math
+import re
 
 # The canonical model returns its solved states ROUNDED to six decimals for
 # the report and UNROUNDED under a `raw` key, exactly as F12's own residual
@@ -81,6 +82,12 @@ PRIMITIVES = {
     "usb.vbus_source_max_V": 5.457,
     "usb.vbus_source_min_V": 4.743,
     "usb.awg18_stranded_max_ohm_per_m": 0.0228,
+    # D-796 / R15-02: the source classes' own path terms, so the oracle can
+    # rebuild every class's physics and bind a key's source label to it.
+    "usb.awg24_stranded_max_ohm_per_m": 0.0918,
+    "usb.awg28_stranded_max_ohm_per_m": 0.232,
+    "usb.mated_receptacle_pair_ohm": 0.03,
+    "usb.board_vbus_copper_ohm": 0.02,
     # --- the BQ25185 (TI SLUSF65B) ---------------------------------------
     "bq.vsys_reg_V": 4.5,
     "bq.ron_in_max_ohm": 0.470,
@@ -95,8 +102,13 @@ PRIMITIVES = {
     "bq.iprechg_fraction": 0.20,
     "bq.iprechg_accuracy": 0.10,
     "bq.vlowv_min_V": 2.9,
+    "bq.vlowv_max_V": 3.1,
     "bq.treg_typ_C": 100.0,
     "bq.treg_declared_band_K": 10.0,
+    # D-796 / D796-08: VBUVLO and its hysteresis, SLUSF65B EC, by hand.
+    "bq.vbuvlo_typ_V": 3.0,
+    "bq.vbuvlo_declared_tolerance": 0.05,
+    "bq.vbuvlo_hys_max_V": 0.190,
     # D-794 / R13-02.  THE FOUR CONTROL-LOOP THRESHOLDS, read off the same EC
     # table by hand.  Each is a DIFFERENT physical loop and the oracle checks
     # each branch against its own.
@@ -214,6 +226,142 @@ def oracle_charge_program(vbat, ichg_corner):
 # The branches that MUST appear somewhere in the derivation for it to have
 # exercised the physics at all.  `completeness()` rules on this.
 CHARGER_BRANCHES_THAT_FOLD_CHARGE = ("ILIM", "VINDPM", "DPPM")
+
+
+# ==========================================================================
+# D-796 / D796-08.  THE BATFET BELOW VBUVLO, WRITTEN OUT.
+#
+# SLUSF65B 6.3.3: supplement needs VBAT > VBUVLO; 6.3.7.2: BUVLO disconnects
+# BAT from SYS.  The falling trip is 3.0 V TYP with the DECLARED +/-5 %; a
+# cell that fell through it re-connects at trip + VBUVLO_HYS (190 mV MAX).
+# ==========================================================================
+def oracle_buvlo_band():
+    p = PRIMITIVES
+    lo = p["bq.vbuvlo_typ_V"] * (1.0 - p["bq.vbuvlo_declared_tolerance"])
+    hi = p["bq.vbuvlo_typ_V"] * (1.0 + p["bq.vbuvlo_declared_tolerance"])
+    return lo, hi, hi + p["bq.vbuvlo_hys_max_V"]
+
+
+def oracle_batfet_states(vbat):
+    lo, _hi, reconnect = oracle_buvlo_band()
+    if vbat <= lo + 1e-9:
+        return ("uvlo_open",)
+    if vbat >= reconnect - 1e-9:
+        return ("connected",)
+    return ("connected", "uvlo_open")
+
+
+# ==========================================================================
+# D-796 / R15-02 (D796-03).  THE SOURCE CLASSES, REBUILT FROM PRIMITIVES.
+#
+# A key that says `rpi15w_high` must carry the named adapter's +7 % VBUS on
+# its captive 1.5 m 18 AWG cable with ONE mated pair -- not merely the name.
+# ==========================================================================
+ORACLE_RPI_NOMINAL_V = 5.1
+
+
+def oracle_source_classes():
+    p = PRIMITIVES
+    def path(awg_key, length_m, pairs):
+        return round(2.0 * length_m * p[awg_key]
+                     + pairs * p["usb.mated_receptacle_pair_ohm"]
+                     + p["usb.board_vbus_copper_ohm"], 6)
+    reg = p["usb.rpi15w_regulation_fraction"]
+    return {
+        "rpi15w_high": dict(vbus_V=round(ORACLE_RPI_NOMINAL_V * (1 + reg), 6),
+                            path_ohm=path("usb.awg18_stranded_max_ohm_per_m",
+                                          1.5, 1), qualified=True),
+        "rpi15w_low": dict(vbus_V=round(ORACLE_RPI_NOMINAL_V * (1 - reg), 6),
+                           path_ohm=path("usb.awg18_stranded_max_ohm_per_m",
+                                         1.5, 1), qualified=True),
+        "generic_typec_24awg_2m": dict(
+            vbus_V=4.75, path_ohm=path("usb.awg24_stranded_max_ohm_per_m",
+                                       2.0, 2), qualified=False),
+        "unqualified_28awg_2m": dict(
+            vbus_V=4.75, path_ohm=path("usb.awg28_stranded_max_ohm_per_m",
+                                       2.0, 2), qualified=False),
+    }
+
+
+def oracle_ilim(corner):
+    p = PRIMITIVES
+    return {"max": p["bq.ilim_max_A"], "min": p["bq.ilim_min_A"]}.get(corner)
+
+
+def oracle_treg_band():
+    p = PRIMITIVES
+    return (p["bq.treg_typ_C"] - p["bq.treg_declared_band_K"],
+            p["bq.treg_typ_C"] + p["bq.treg_declared_band_K"])
+
+
+TREG_TOL_K = 0.05
+
+
+def thermal_label_problems(st):
+    """D-796 / R15-01, independently: a thermal label must be HELD by the
+    loop it names.  The junction is re-derived from the state's own terminal
+    powers and thermal block, never read from `junction_C`."""
+    th = st.get("thermal")
+    if not isinstance(th, dict):
+        return ["no thermal block"]
+    why = []
+    internal = (st["source_W"] + st["from_cell_W"] - st["stored_W"]
+                - th.get("delivered_out_W", 0.0))
+    tj = (th["ambient_C"] + th["r_sys_K_per_W"] * internal
+          + th["theta_ja_C_per_W"] * st["package_W"])
+    treg = th["treg_C"]
+    lo, hi = oracle_treg_band()
+    if not (lo - 1e-9 <= treg <= hi + 1e-9):
+        why.append("a thermal solve at %.3f C, outside the declared TREG "
+                   "band" % treg)
+    if abs(tj - th.get("junction_C", float("nan"))) > 1e-3:
+        why.append("the published junction %.4f C is not what the state's "
+                   "own powers give (%.4f C)" % (th.get("junction_C",
+                                                        float("nan")), tj))
+    regime = th.get("regime")
+    active = bool(th.get("treg_active"))
+    charging = st["charge_A"] > 1e-9
+    nominal, _k = oracle_charge_program(st["vbat_V"],
+                                        st.get("ichg_corner", "max"))
+    folded = st["charge_A"] < nominal - 5e-6
+    if st["mode"] == "TREG" and regime not in ("TREG_EQUILIBRIUM",
+                                               "TREG_AT_ZERO_CHARGE"):
+        why.append("a TREG branch that no thermal solve produced")
+    if regime == "NO_TREG":
+        if active:
+            why.append("NO_TREG with the loop marked active")
+        if tj > treg + TREG_TOL_K and charging:
+            why.append("a charging state at %.3f C above TREG %.1f C with "
+                       "the thermal loop inactive" % (tj, treg))
+    elif regime == "TREG_EQUILIBRIUM":
+        if abs(tj - treg) > TREG_TOL_K:
+            why.append("a TREG equilibrium at %.3f C, not at its %.1f C "
+                       "threshold -- a COLD TREG state" % (tj, treg))
+        if not folded:
+            why.append("a TREG equilibrium that folds nothing")
+    elif regime == "TREG_AT_ZERO_CHARGE":
+        if charging:
+            why.append("TREG at zero charge with a charge current")
+        if tj < treg - TREG_TOL_K:
+            why.append("zero charge claimed by TREG with the junction "
+                       "%.3f C below the threshold" % tj)
+    elif regime == "TREG_LIMIT_CYCLE_HOT_PHASE":
+        if st["mode"] not in CHARGER_BRANCHES_THAT_FOLD_CHARGE + (
+                "SUPPLEMENT",):
+            why.append("a limit-cycle hot phase that is neither DPPM-held "
+                       "nor supplementing")
+        if tj < treg - TREG_TOL_K:
+            why.append("a limit-cycle hot phase below TREG")
+        lc = th.get("limit_cycle") or {}
+        if lc.get("cold_phase_junction_C") is None or \
+                lc["cold_phase_junction_C"] >= treg - TREG_TOL_K:
+            why.append("a limit cycle whose cold phase is not below TREG: "
+                       "a static TREG state existed and was not used")
+    else:
+        why.append("unknown thermal regime %r" % (regime,))
+    if regime != "NO_TREG" and not active:
+        why.append("%s with the loop marked inactive" % regime)
+    return why
 
 
 # ==========================================================================
@@ -465,6 +613,20 @@ def charger_branch_is_valid(st):
     if mode not in CHARGER_BRANCHES:
         why.append("unknown branch %r" % (mode,))
         return False, why
+    # ---- D-796 / D796-08: the BATFET below VBUVLO ------------------------
+    bf = st.get("batfet")
+    if bf not in ("connected", "uvlo_open"):
+        why.append("the state names no BATFET state (%r)" % (bf,))
+    elif bf not in oracle_batfet_states(vbat):
+        why.append("BATFET %r is not a state a %.3f V cell can be in" %
+                   (bf, vbat))
+    if bf == "uvlo_open" and st.get("previous_mode") == "SUPPLEMENT":
+        why.append("a SUPPLEMENT history with the BATFET disconnected by "
+                   "BUVLO")
+    if (mode == "SUPPLEMENT" or i_supp > 1e-9) and (
+            bf != "connected" or vbat <= oracle_buvlo_band()[0] + 1e-9):
+        why.append("supplement at or under VBUVLO: SLUSF65B 6.3.3 -- the "
+                   "BATFET cannot supply SYS there")
     # ---- universal ------------------------------------------------------
     if i_in > cap + tol:
         why.append("the input current exceeds the binding input-side loop")
@@ -504,19 +666,8 @@ def charger_branch_is_valid(st):
     elif mode == "TREG":
         if loop != "TREG":
             why.append("TREG claimed with no thermal loop")
-        th = st.get("thermal")
-        if not isinstance(th, dict):
+        if not isinstance(st.get("thermal"), dict):
             why.append("a TREG state carries no thermal evidence")
-        else:
-            internal = (st["source_W"] + st["from_cell_W"] - st["stored_W"]
-                        - th.get("delivered_out_W", 0.0))
-            tj = (th["ambient_C"] + th["r_sys_K_per_W"] * internal
-                  + th["theta_ja_C_per_W"] * st["package_W"])
-            if tj > th["treg_C"] + 0.01:
-                why.append("a TREG state whose junction %.3f C is above the "
-                           "TREG threshold it names" % tj)
-            if i_chg < nominal - tol and tj < th["treg_C"] - 30.0:
-                why.append("a TREG fold with the junction far below TREG")
     elif mode in ("ILIM", "VINDPM", "DPPM"):
         if abs(vsys - v_dppm) > tol:
             why.append("%s must hold SYS at VBAT + VDPPM" % mode)
@@ -562,7 +713,7 @@ def charger_branch_is_valid(st):
         if prog > 1e-9 and vsys > v_dppm + tol:
             why.append("NO_CHARGE above VDPPM with the CC loop active: the "
                        "loop would pull SYS down to VDPPM")
-        if vsys < v_sup_enter - 1e-9:
+        if vsys < v_sup_enter - 1e-9 and st.get("batfet") != "uvlo_open":
             why.append("SYS is below the supplement ENTRY threshold")
         if st.get("previous_mode") == "SUPPLEMENT" and vsys < v_sup_exit - 1e-9:
             why.append("the part was supplementing and SYS has not risen "
@@ -583,6 +734,9 @@ def charger_branch_is_valid(st):
                         and off_node <= v_sup_exit + 1e-9):
                     why.append("supplement entered with the BATFET-off node "
                                "above VBAT - VBSUP1 and nothing to latch it")
+    # ---- D-796 / R15-01: every thermally-closed state, whatever its branch
+    if isinstance(st.get("thermal"), dict):
+        why += thermal_label_problems(st)
     return (not why), why
 
 
@@ -598,8 +752,8 @@ def charger_branch_is_valid(st):
 # canonical control flow.
 # ==========================================================================
 def _candidate(mode, vsys, i_in, i_chg, i_supp, p_sys, vbat, vbus, path,
-               ilim, sweep, prev, ichg_corner, off_node):
-    return dict(mode=mode, vsys_V=vsys, vbat_V=vbat,
+               ilim, sweep, prev, ichg_corner, off_node, batfet="connected"):
+    return dict(mode=mode, vsys_V=vsys, vbat_V=vbat, batfet=batfet,
                 vin_pin_V=vbus - i_in * path, input_A=i_in, charge_A=i_chg,
                 supplement_A=i_supp,
                 system_A=(p_sys / vsys if vsys > 0 else 0.0),
@@ -611,8 +765,11 @@ def _candidate(mode, vsys, i_in, i_chg, i_supp, p_sys, vbat, vbus, path,
 
 
 def independent_branches(p_sys, vbat, vbus, path, ilim, sweep, prev,
-                         ichg_corner):
-    """Every branch whose own candidate passes the oracle's inequalities."""
+                         ichg_corner, batfet="connected"):
+    """Every branch whose own candidate passes the oracle's inequalities.
+
+    An EMPTY answer means no static state: with the BATFET open that is SYS
+    collapse, and the canonical side must deliver a refusal there."""
     p = PRIMITIVES
     vsys_reg = p["bq.vsys_reg_V"] * 0.98
     ron_in = p["bq.ron_in_max_ohm"]
@@ -625,6 +782,9 @@ def independent_branches(p_sys, vbat, vbus, path, ilim, sweep, prev,
     args = (p_sys, vbat, vbus, path, ilim, sweep, prev, ichg_corner)
     cands = []
 
+    def _cand(*a):
+        return _candidate(*a, batfet=batfet)
+
     def high_root(ichg):
         b = vbus - ichg * r_src
         d = b * b - 4.0 * p_sys * r_src
@@ -633,11 +793,11 @@ def independent_branches(p_sys, vbat, vbus, path, ilim, sweep, prev,
         return 0.5 * (b + math.sqrt(d))
 
     # full program, regulated
-    cands.append(_candidate("SYS_REG", vsys_reg, p_sys / vsys_reg + prog,
+    cands.append(_cand("SYS_REG", vsys_reg, p_sys / vsys_reg + prog,
                             prog, 0.0, *args, None))
     v = high_root(prog)
     if v is not None and v < vsys_reg:
-        cands.append(_candidate("CC_PATH_LIMITED", v,
+        cands.append(_cand("CC_PATH_LIMITED", v,
                                 (vbus - v) / r_src, prog, 0.0, *args, None))
     # DPPM-held
     held = max(0.0, (vbus - v_dppm) / r_src)
@@ -646,7 +806,7 @@ def independent_branches(p_sys, vbat, vbus, path, ilim, sweep, prev,
                        ("DPPM", held)):
         i_chg = i_in - p_sys / v_dppm
         if -1e-12 <= i_chg:
-            cands.append(_candidate(mode, v_dppm, i_in, max(0.0, i_chg), 0.0,
+            cands.append(_cand(mode, v_dppm, i_in, max(0.0, i_chg), 0.0,
                                     *args, None))
     # no charge: the zero-charge node
     v0 = high_root(0.0)
@@ -656,7 +816,7 @@ def independent_branches(p_sys, vbat, vbus, path, ilim, sweep, prev,
         i0 = p_sys / v0 if v0 > 0 else 0.0
         if i0 <= cap + 1e-12:
             off = v0
-            cands.append(_candidate("NO_CHARGE", v0, i0, 0.0, 0.0, *args,
+            cands.append(_cand("NO_CHARGE", v0, i0, 0.0, 0.0, *args,
                                     None))
     # CC-loop necessity: an off node above VDPPM is not an equilibrium
     off_for_sup = off
@@ -667,7 +827,7 @@ def independent_branches(p_sys, vbat, vbus, path, ilim, sweep, prev,
         i_in = max(0.0, min(cap, (vbus - vs) / r_src))
         return vbat - (p_sys / vs - i_in) * ron_bat - vs
     lo, hi = 1e-3, vbat
-    if resid(hi) < 0.0:
+    if batfet == "connected" and resid(hi) < 0.0:
         for _ in range(90):
             mid = 0.5 * (lo + hi)
             if resid(mid) >= 0.0:
@@ -678,7 +838,7 @@ def independent_branches(p_sys, vbat, vbus, path, ilim, sweep, prev,
         if vs > 0.2:
             i_in = max(0.0, min(cap, (vbus - vs) / r_src))
             i_supp = max(0.0, p_sys / vs - i_in)
-            cands.append(_candidate("SUPPLEMENT", vs, i_in, 0.0, i_supp,
+            cands.append(_cand("SUPPLEMENT", vs, i_in, 0.0, i_supp,
                                     *args, off_for_sup))
     valid = []
     for c in cands:
@@ -696,13 +856,20 @@ def independent_branches(p_sys, vbat, vbus, path, ilim, sweep, prev,
     # physical; the history decides, exactly as the part does.
     if "NO_CHARGE" in valid and "SUPPLEMENT" in valid:
         valid = ["SUPPLEMENT"] if prev == "SUPPLEMENT" else ["NO_CHARGE"]
+    # D-796 / D796-08: with the BATFET open, a NO_CHARGE node the CC loop
+    # would pull down to VDPPM is not an equilibrium either -- there is no
+    # supplement to end in, so SYS collapses and nothing is valid.
+    if batfet != "connected" and valid == ["NO_CHARGE"] and prog > 0.0 \
+            and off is not None and off > v_dppm + 1e-12:
+        valid = []
     return sorted(set(valid))
 
 
-def max_deliverable_W(vbat, vbus, path, ilim, sweep):
+def max_deliverable_W(vbat, vbus, path, ilim, sweep, batfet="connected"):
     """The most a constant-power load at SYS can be given at all -- input at
     its cap plus the battery through the BATFET -- scanned, so a refusal of
-    'no operating point' can be checked against physics."""
+    'no operating point' can be checked against physics.  D-796: with the
+    BATFET open (under VBUVLO) the battery term is zero."""
     p = PRIMITIVES
     ron_in = p["bq.ron_in_max_ohm"]
     ron_bat = p["bq.ron_bat_max_ohm"] * p["bq.ron_bat_vbat_allowance"]
@@ -714,7 +881,8 @@ def max_deliverable_W(vbat, vbus, path, ilim, sweep):
     for k in range(1, n):
         vs = 0.2 + (vbat - 0.2) * k / n
         i_in = max(0.0, min(cap, (vbus - vs) / r_src))
-        best = max(best, vs * (i_in + (vbat - vs) / ron_bat))
+        i_bat = (vbat - vs) / ron_bat if batfet == "connected" else 0.0
+        best = max(best, vs * (i_in + i_bat))
     return best
 
 
@@ -946,6 +1114,152 @@ EXPECTED_ACCESSORY_CONFIGURATIONS = (
 EXPECTED_CELL_CORNERS = ("at_a_full_cell", "at_the_lowest_supported_cell")
 
 
+# ==========================================================================
+# D-796 / R15-02 (D796-03).  THE LOAD SET BEHIND EVERY NETWORK KEY.
+#
+# "A network row labelled lowest-supported-cell carrying a full-cell solve
+# MUST fail.  A canary name carrying another refused state's physics MUST
+# fail unless the physical load set itself is exactly the named canary."
+# The product definition below is what a network KEY means; the currents are
+# a CHECKSUM of the canonical load table (`network_terms_agree`).
+# ==========================================================================
+EXPECTED_STATE_MODES = {
+    "display_only": (),
+    "display_audio": ("audio at the capped level",),
+    "display_subghz": ("sub-GHz TX",),
+    "display_subghz_audio": ("sub-GHz TX", "audio at the capped level"),
+    "display_wifi": ("Wi-Fi / BLE TX",),
+    "display_wifi_subghz": ("Wi-Fi / BLE TX", "sub-GHz TX"),
+    "d790_declared": ("Wi-Fi / BLE TX", "sub-GHz TX",
+                      "audio at the capped level"),
+}
+ORACLE_ALWAYS_ON_A = 0.466034
+ORACLE_BURSTY_AVERAGE_A = 0.08
+ORACLE_OPTIONAL_A = {"Wi-Fi / BLE TX": 0.426, "sub-GHz TX": 0.14,
+                     "audio at the capped level": 0.12}
+ORACLE_PUBLISHED_BUDGET_A = {"ACC_3V3": 0.400, "ACC_5V": 0.300}
+ORACLE_DECLARED_PAIR_A = {"acc_3v3_A": 0.22, "acc_5v_A": 0.17}
+CANARY_ACCESSORY = "acc_3v3_only"
+
+
+def oracle_accessory_currents(cfg):
+    b, d = ORACLE_PUBLISHED_BUDGET_A, ORACLE_DECLARED_PAIR_A
+    return {"acc_3v3_only": (b["ACC_3V3"], 0.0),
+            "acc_5v_only": (0.0, b["ACC_5V"]),
+            "both_rails": (b["ACC_3V3"], b["ACC_5V"]),
+            "both_rails_at_the_declared_pair": (d["acc_3v3_A"], d["acc_5v_A"]),
+            "no_accessory": (0.0, 0.0)}.get(cfg)
+
+
+def network_terms_agree(terms):
+    why = []
+    if not isinstance(terms, dict):
+        return ["no network power terms were handed to the oracle"]
+    for label, mine, theirs in (
+            ("always-on", ORACLE_ALWAYS_ON_A, terms.get("always_on_A")),
+            ("bursty average", ORACLE_BURSTY_AVERAGE_A,
+             terms.get("bursty_time_averaged_A"))):
+        if theirs is None or abs(mine - theirs) > 1e-9:
+            why.append("the canonical %s current %r is not the oracle's %r"
+                       % (label, theirs, mine))
+    for m, mine in ORACLE_OPTIONAL_A.items():
+        theirs = (terms.get("optional_A") or {}).get(m)
+        if theirs is None or abs(mine - theirs) > 1e-9:
+            why.append("mode %r: canonical %r vs oracle %r" % (m, theirs, mine))
+    for k, mine in ORACLE_PUBLISHED_BUDGET_A.items():
+        theirs = (terms.get("published_budget_A") or {}).get(k)
+        if theirs is None or abs(mine - theirs) > 1e-9:
+            why.append("budget %s: canonical %r vs oracle %r"
+                       % (k, theirs, mine))
+    for k, mine in ORACLE_DECLARED_PAIR_A.items():
+        theirs = (terms.get("declared_pair_A") or {}).get(k)
+        if theirs is None or abs(mine - theirs) > 1e-9:
+            why.append("declared pair %s: canonical %r vs oracle %r"
+                       % (k, theirs, mine))
+    return why
+
+
+def oracle_demand_W(modes, cfg, terms, scalars):
+    i_int = (ORACLE_ALWAYS_ON_A + ORACLE_BURSTY_AVERAGE_A
+             + sum(ORACLE_OPTIONAL_A[m] for m in modes))
+    i3, i5 = oracle_accessory_currents(cfg)
+    p12 = ((i_int + i3) * terms["v_3v3_V"] + i3 * i3 * terms["r_a3_ohm"]) \
+        / scalars["eta_u12"]
+    p21 = ((i5 * terms["v_acc5v_V"] + i5 * i5 * terms["r_a5_ohm"])
+           / scalars["eta_u21"]) if i5 else 0.0
+    return i_int, i3, i5, p12, p21
+
+
+def load_set_problems(key, load_set, state, cfg, terms, scalars):
+    why = []
+    want_modes = EXPECTED_STATE_MODES.get(state)
+    if want_modes is None:
+        return ["%s names an unknown state %r" % (key, state)]
+    if oracle_accessory_currents(cfg) is None:
+        return ["%s names an unknown accessory configuration %r" % (key, cfg)]
+    if not isinstance(load_set, dict):
+        return ["%s carries no load set" % key]
+    if sorted(load_set.get("modes") or []) != sorted(want_modes):
+        why.append("%s is labelled %s but its load set runs %r"
+                   % (key, state, load_set.get("modes")))
+    i_int, i3, i5, p12, p21 = oracle_demand_W(want_modes, cfg, terms,
+                                              scalars)
+    for field, want in (("internal_3v3_A", i_int), ("acc_3v3_A", i3),
+                        ("acc_5v_A", i5), ("demand_W", p12 + p21)):
+        got = load_set.get(field)
+        if got is None or abs(float(got) - want) > 2e-6:
+            why.append("%s: %s is %r, the %s/%s load set gives %.6f"
+                       % (key, field, got, state, cfg, want))
+    return why
+
+
+def network_row_problems(ns, terms, scalars):
+    parts = (ns.get("key") or "").split("/")
+    if len(parts) != 3:
+        return ["network key %r does not parse" % (ns.get("key"),)]
+    state, cfg, corner = parts
+    why = load_set_problems(ns["key"], ns.get("load_set"), state, cfg, terms,
+                            scalars)
+    if ns.get("refused") or why:
+        return why
+    full = terms["full_cell_V"]
+    if corner == "at_a_full_cell":
+        if abs(ns["cell_V"] - full) > 1e-9:
+            why.append("%s is labelled a full cell (%.4f V) and is solved at "
+                       "%.6f V" % (ns["key"], full, ns["cell_V"]))
+    elif corner == "at_the_lowest_supported_cell":
+        floor = (ns.get("load_set") or {}).get("lowest_supported_cell_ocv_V")
+        if floor is None or abs(ns["cell_V"] - floor) > 6e-5:
+            why.append("%s is labelled the lowest supported cell (%r V) and "
+                       "is solved at %.6f V" % (ns["key"], floor,
+                                                ns["cell_V"]))
+        if ns["cell_V"] >= full - 1e-4:
+            why.append("%s is labelled the lowest supported cell and carries "
+                       "a FULL-cell solve" % ns["key"])
+    else:
+        why.append("%s names an unknown cell corner" % ns["key"])
+    # the demand the load set implies is what the solved node delivers at SYS
+    i_int, i3, i5, p12, p21 = oracle_demand_W(EXPECTED_STATE_MODES[state],
+                                              cfg, terms, scalars)
+    trunk = 0.0
+    if p21:
+        i_u21 = p21 / ns["vsys_V"]
+        for _ in range(400):
+            i_u21 = p21 / (ns["vsys_V"] - i_u21 * terms["r_trunk_ohm"])
+        trunk = i_u21 * i_u21 * terms["r_trunk_ohm"]
+    r = ns["vsys_V"] * ns["amps"] - (p12 + p21 + trunk)
+    if abs(r) > 1e-6:
+        why.append("%s: SYS delivers %.6f W but its %s/%s load set demands "
+                   "%.6f W" % (ns["key"], ns["vsys_V"] * ns["amps"], state,
+                               cfg, p12 + p21 + trunk))
+    kvl = ns["vsys_V"] - (ns["cell_V"] - ns["amps"] * (
+        ns["fixed_ohm"] + ns["channels"] * ns["channel_ohm"]
+        + terms["r_bat_ohm"]))
+    if abs(kvl) > 1e-6:
+        why.append("%s: KVL to SYS misses by %.3e V" % (ns["key"], kvl))
+    return why
+
+
 def expected_table_keys():
     """The permission-table key multiset, constructed rather than collected."""
     out = []
@@ -1015,21 +1329,72 @@ REGIME_GUARDBAND = 0.05
 REGIME_GRID_W = 0.05
 
 
-def charger_domain_key(vbat, p_sys, ilim, source, hist, ichg):
-    return "vbat%.3f/p%.3f/ilim_%s/%s/%s/ichg_%s" % (
-        vbat, p_sys, ilim, source, hist or "none", ichg)
+EXPECTED_HISTORIES_WITH_THE_BATFET_OPEN = (None, "NO_CHARGE")
+
+
+def histories_for(batfet, histories=EXPECTED_HISTORIES):
+    """D-796 / D796-08: a SUPPLEMENT history is meaningless under the trip."""
+    return tuple(h for h in histories
+                 if batfet == "connected" or h != "SUPPLEMENT")
+
+
+def charger_domain_key(vbat, p_sys, ilim, source, hist, ichg,
+                       batfet="connected"):
+    return "vbat%.3f/batfet_%s/p%.3f/ilim_%s/%s/%s/ichg_%s" % (
+        vbat, batfet, p_sys, ilim, source, hist or "none", ichg)
+
+
+_CHARGER_KEY = re.compile(
+    r"^vbat(?P<vbat>[0-9.]+)/batfet_(?P<batfet>[a-z_]+)/p(?P<p>[0-9.]+)/"
+    r"ilim_(?P<ilim>max|min)/(?P<source>[a-z0-9_]+)/(?P<hist>[A-Z_]+|none)/"
+    r"ichg_(?P<ichg>max|min)$")
+
+
+def parse_charger_key(k):
+    m = _CHARGER_KEY.match(k or "")
+    if not m:
+        return None
+    d = m.groupdict()
+    return dict(vbat=float(d["vbat"]), batfet=d["batfet"],
+                p_sys=float(d["p"]), ilim=d["ilim"], source=d["source"],
+                hist=None if d["hist"] == "none" else d["hist"],
+                ichg=d["ichg"])
 
 
 def expected_charger_keys():
     out = []
     for v in EXPECTED_CHARGER_CELLS_V:
-        for w in EXPECTED_CHARGER_POWERS_W:
-            for il in EXPECTED_ILIM_CORNERS:
-                for c in EXPECTED_SOURCE_CLASSES:
-                    for h in EXPECTED_HISTORIES:
-                        for ic in EXPECTED_ICHG_CORNERS:
-                            out.append(charger_domain_key(v, w, il, c, h, ic))
+        for bf in oracle_batfet_states(v):
+            for w in EXPECTED_CHARGER_POWERS_W:
+                for il in EXPECTED_ILIM_CORNERS:
+                    for c in EXPECTED_SOURCE_CLASSES:
+                        for h in histories_for(bf):
+                            for ic in EXPECTED_ICHG_CORNERS:
+                                out.append(charger_domain_key(
+                                    v, w, il, c, h, ic, bf))
     return out
+
+
+def regime_row_key(source, vbat, batfet, ilim, sweep, hist, amb):
+    return "%s/vbat%.3f/batfet_%s/ilim_%s/sweep%+.3f/%s/amb%.0f" % (
+        source, vbat, batfet, ilim, sweep, hist or "none", amb)
+
+
+_REGIME_KEY = re.compile(
+    r"^(?P<source>[a-z0-9_]+)/vbat(?P<vbat>[0-9.]+)/batfet_(?P<batfet>[a-z_]+)"
+    r"/ilim_(?P<ilim>max|min)/sweep(?P<sweep>[+-][0-9.]+)/"
+    r"(?P<hist>[A-Z_]+|none)/amb(?P<amb>[0-9]+)$")
+
+
+def parse_regime_key(k):
+    m = _REGIME_KEY.match(k or "")
+    if not m:
+        return None
+    d = m.groupdict()
+    return dict(source=d["source"], vbat=float(d["vbat"]),
+                batfet=d["batfet"], ilim=d["ilim"], sweep=float(d["sweep"]),
+                hist=None if d["hist"] == "none" else d["hist"],
+                amb=float(d["amb"]))
 
 
 def expected_regime_keys():
@@ -1037,14 +1402,97 @@ def expected_regime_keys():
     out = []
     for c in EXPECTED_SOURCE_CLASSES:
         for v in EXPECTED_REGIME_VBAT_GRID_V:
-            for il in EXPECTED_ILIM_CORNERS:
-                for f in EXPECTED_REGIME_SWEEP_FRACTIONS:
-                    for h in EXPECTED_REGIME_HISTORIES:
-                        for a in EXPECTED_REGIME_AMBIENTS_C:
-                            out.append("%s/vbat%.3f/ilim_%s/sweep%+.3f/%s/"
-                                       "amb%.0f" % (c, v, il, round(f * sw0, 6),
-                                                    h or "none", a))
+            for bf in oracle_batfet_states(v):
+                for il in EXPECTED_ILIM_CORNERS:
+                    for f in EXPECTED_REGIME_SWEEP_FRACTIONS:
+                        for h in histories_for(bf, EXPECTED_REGIME_HISTORIES):
+                            for a in EXPECTED_REGIME_AMBIENTS_C:
+                                out.append(regime_row_key(
+                                    c, v, bf, il, round(f * sw0, 6), h, a))
     return out
+
+
+# ==========================================================================
+# D-796 / R15-02 (D796-03).  A KEY IS A CLAIM ABOUT THE STATE IT LABELS.
+#
+# ROUND-15: "Exact domain key multisets are necessary but not sufficient.
+# Parse/reconstruct every semantic key and require equality with the physical
+# state fields it names ... A charger key labelled vbat4.221 carrying a 4.2 V
+# solve MUST fail."  D-795 checked that the right KEYS arrived exactly once
+# and never that the state behind a key was the state the key names.
+# ==========================================================================
+def state_content_problems(st, want):
+    """`want`: vbat, batfet, p_sys (or None), ilim, source, hist (or
+    'ANY'), ichg (or None), sweep (or None).  Checks the PUBLIC fields, the
+    ones every consumer reads."""
+    why = []
+    cls = oracle_source_classes().get(want["source"])
+    if cls is None:
+        return ["an unknown source class %r" % (want["source"],)]
+
+    def neq(a, b, tol=1e-9):
+        return a is None or b is None or abs(float(a) - float(b)) > tol
+    if neq(st.get("vbat_V"), want["vbat"]):
+        why.append("labelled a %.3f V cell, solved at %r V"
+                   % (want["vbat"], st.get("vbat_V")))
+    if st.get("batfet") != want["batfet"]:
+        why.append("labelled BATFET %s, solved %r" % (want["batfet"],
+                                                     st.get("batfet")))
+    if want.get("p_sys") is not None and neq(st.get("system_W"),
+                                             want["p_sys"]):
+        why.append("labelled %.3f W, solved at %r W" % (want["p_sys"],
+                                                       st.get("system_W")))
+    if neq(st.get("ilim_A"), oracle_ilim(want["ilim"])):
+        why.append("labelled ILIM %s (%.3f A), solved at %r A" % (
+            want["ilim"], oracle_ilim(want["ilim"]), st.get("ilim_A")))
+    if neq(st.get("vbus_source_V"), cls["vbus_V"]) or \
+            neq(st.get("path_ohm"), cls["path_ohm"]):
+        why.append("labelled source %s (%.4f V, %.4f ohm), solved on "
+                   "%r V / %r ohm" % (want["source"], cls["vbus_V"],
+                                      cls["path_ohm"],
+                                      st.get("vbus_source_V"),
+                                      st.get("path_ohm")))
+    if st.get("source_key") is not None and st["source_key"] != want["source"]:
+        why.append("labelled source %s, the state names %r"
+                   % (want["source"], st["source_key"]))
+    if want.get("hist", "ANY") != "ANY" and \
+            st.get("previous_mode") != want["hist"]:
+        why.append("labelled history %r, solved with %r"
+                   % (want["hist"], st.get("previous_mode")))
+    if want.get("ichg") is not None and st.get("ichg_corner") != want["ichg"]:
+        why.append("labelled ICHG corner %r, solved at %r"
+                   % (want["ichg"], st.get("ichg_corner")))
+    if want.get("sweep") is not None:
+        got = float((st.get("controls") or {}).get("sweep") or 0.0)
+        if abs(got - want["sweep"]) > 1e-9:
+            why.append("labelled threshold sweep %+.3f, solved at %+.3f"
+                       % (want["sweep"], got))
+    return why
+
+
+def refusal_content_problems(r, want):
+    why = []
+    cls = oracle_source_classes().get(want["source"])
+    if cls is None:
+        return ["an unknown source class %r" % (want["source"],)]
+    for field, value in (("vbat_V", want["vbat"]), ("system_W", want["p_sys"]),
+                         ("ilim_A", oracle_ilim(want["ilim"])),
+                         ("vbus_V", cls["vbus_V"]),
+                         ("path_ohm", cls["path_ohm"]),
+                         ("sweep", 0.0)):
+        if r.get(field) is None or abs(float(r[field]) - value) > 1e-9:
+            why.append("refusal labelled %s=%r carries %r"
+                       % (field, value, r.get(field)))
+    if r.get("batfet") != want["batfet"]:
+        why.append("refusal labelled BATFET %s carries %r"
+                   % (want["batfet"], r.get("batfet")))
+    if r.get("previous_mode", "ABSENT") != want["hist"]:
+        why.append("refusal labelled history %r carries %r"
+                   % (want["hist"], r.get("previous_mode", "ABSENT")))
+    if r.get("ichg_corner") != want["ichg"]:
+        why.append("refusal labelled ICHG %r carries %r"
+                   % (want["ichg"], r.get("ichg_corner")))
+    return why
 
 
 def _floor_to_grid(x):
@@ -1053,8 +1501,9 @@ def _floor_to_grid(x):
 
 
 def charger_domain_problems(charger_states, charger_refusals):
-    """Exact keys; every solved point agrees with the independent
-    classifier; every refusal is physically re-checked."""
+    """Exact keys; every key's CONTENT is the state it names (D796-03);
+    every solved point agrees with the independent classifier; every refusal
+    is physically re-checked."""
     why = []
     got = ([st.get("domain_key") for st in charger_states]
            + [r.get("domain_key") for r in charger_refusals])
@@ -1062,38 +1511,94 @@ def charger_domain_problems(charger_states, charger_refusals):
     pops = {}
     by_key = {}
     disagreements = 0
+    mislabelled = 0
+    uvlo_solved = uvlo_refused = 0
     for st in charger_states:
         k = st.get("domain_key")
         by_key[k] = st
+        want = parse_charger_key(k)
+        if want is None:
+            why.append("charger key %r does not parse" % (k,))
+            continue
+        cp = state_content_problems(st, dict(want, sweep=0.0))
+        if cp:
+            mislabelled += 1
+            if mislabelled <= 8:
+                why.append("charger point %s: the key is not the state it "
+                           "labels: %s" % (k, cp[:2]))
         pops[(st["mode"], st.get("previous_mode"))] = pops.get(
             (st["mode"], st.get("previous_mode")), 0) + 1
-        want = independent_branches(
-            st["system_W"], st["vbat_V"], st["vbus_source_V"], st["path_ohm"],
-            st["ilim_A"], float((st.get("controls") or {}).get("sweep") or 0.0),
-            st.get("previous_mode"), st.get("ichg_corner", "max"))
-        if want != [st["mode"]]:
+        if want["batfet"] == "uvlo_open":
+            uvlo_solved += 1
+        branches = independent_branches(
+            want["p_sys"], want["vbat"],
+            oracle_source_classes()[want["source"]]["vbus_V"]
+            if want["source"] in oracle_source_classes() else 0.0,
+            oracle_source_classes()[want["source"]]["path_ohm"]
+            if want["source"] in oracle_source_classes() else 1.0,
+            oracle_ilim(want["ilim"]), 0.0, want["hist"], want["ichg"],
+            want["batfet"])
+        if branches != [st["mode"]]:
             disagreements += 1
             if disagreements <= 8:
                 why.append("charger point %s: the canonical branch is %r but "
                            "the independent elimination leaves %r"
-                           % (k, st["mode"], want))
+                           % (k, st["mode"], branches))
+    if mislabelled > 8:
+        why.append("... and %d more mislabelled charger points"
+                   % (mislabelled - 8))
     if disagreements > 8:
         why.append("... and %d more branch disagreements" % (disagreements - 8))
     if not charger_refusals:
         why.append("the charger refusal set is EMPTY, but the declared domain "
                    "contains powers no source-plus-BATFET can deliver")
+    bad_ref = 0
     for r in charger_refusals:
-        pmax = max_deliverable_W(r["vbat_V"], r["vbus_V"], r["path_ohm"],
-                                 r["ilim_A"], r.get("sweep", 0.0))
-        if r["system_W"] <= pmax * (1.0 + 1e-6):
-            why.append("charger point %s is REFUSED as having no operating "
-                       "point, but the input plus the BATFET can deliver "
-                       "%.4f W against the %.4f W asked"
-                       % (r.get("domain_key"), pmax, r["system_W"]))
+        want = parse_charger_key(r.get("domain_key"))
+        if want is None:
+            why.append("charger refusal key %r does not parse"
+                       % (r.get("domain_key"),))
+            continue
+        rp = refusal_content_problems(r, want)
+        cls = oracle_source_classes().get(want["source"])
+        if cls is not None:
+            left = independent_branches(
+                want["p_sys"], want["vbat"], cls["vbus_V"], cls["path_ohm"],
+                oracle_ilim(want["ilim"]), 0.0, want["hist"], want["ichg"],
+                want["batfet"])
+            if left:
+                rp.append("REFUSED as having no operating point, but the "
+                          "independent elimination finds %r" % (left,))
+            if want["batfet"] == "connected":
+                pmax = max_deliverable_W(want["vbat"], cls["vbus_V"],
+                                         cls["path_ohm"],
+                                         oracle_ilim(want["ilim"]), 0.0)
+                if want["p_sys"] <= pmax * (1.0 + 1e-6):
+                    rp.append("the input plus the BATFET can deliver %.4f W "
+                              "against the %.4f W asked" % (pmax,
+                                                            want["p_sys"]))
+            else:
+                uvlo_refused += 1
+                if r.get("reason") != "sys_collapse_below_vbuvlo":
+                    rp.append("a refusal under the trip must be the SYS "
+                              "collapse, not %r" % (r.get("reason"),))
+        if rp:
+            bad_ref += 1
+            if bad_ref <= 8:
+                why.append("charger refusal %s: %s" % (r.get("domain_key"),
+                                                       rp[:2]))
     for pair in REQUIRED_MODE_HISTORY_POPULATIONS:
         if not pops.get(pair):
             why.append("the (branch, history) population %r is EMPTY" %
                        (pair,))
+    # D-796 / D796-08: the under-the-trip population exists, solved AND
+    # collapsed, and it never supplements (charger_branch_is_valid).
+    if not uvlo_solved:
+        why.append("no charger point is solved with the BATFET open: the "
+                   "VBUVLO regime is not exercised")
+    if not uvlo_refused:
+        why.append("no charger point collapses with the BATFET open: the "
+                   "input-carrying boundary under VBUVLO is not exercised")
     # the hysteresis is DEMONSTRATED, not assumed
     latched = 0
     for st in charger_states:
@@ -1110,74 +1615,210 @@ def charger_domain_problems(charger_states, charger_refusals):
     return why, dict(
         expected_points=len(expected_charger_keys()),
         solved=len(charger_states), refused=len(charger_refusals),
+        solved_with_the_batfet_open=uvlo_solved,
+        collapsed_with_the_batfet_open=uvlo_refused,
         populations={"%s/%s" % (m, h or "none"): n
                      for (m, h), n in sorted(pops.items(),
                                              key=lambda x: repr(x))},
         points_where_history_decides=latched,
-        classifier_disagreements=disagreements)
+        classifier_disagreements=disagreements,
+        mislabelled_points=mislabelled)
+
+
+REGIME_JUNCTION_UNBOUNDED_W = 8.0
+
+
+def _row_tj(st, th):
+    internal = (st["source_W"] + st["from_cell_W"] - st["stored_W"]
+                - th.get("delivered_out_W", 0.0))
+    return (th["ambient_C"] + th["r_sys_K_per_W"] * internal
+            + th["theta_ja_C_per_W"] * st["package_W"])
+
+
+def regime_row_problems(r, scalars):
+    """One regime row: its key is its content, its evidence brackets each
+    ceiling it publishes, and every evidence state is physical."""
+    why = []
+    want = parse_regime_key(r.get("key"))
+    if want is None:
+        return ["regime key %r does not parse" % (r.get("key"),)]
+    cls = oracle_source_classes().get(want["source"])
+    if cls is None:
+        return ["regime row %s names an unknown source" % r["key"]]
+    # ---- D796-03: the row's own fields are the key's ----------------------
+    for field, value in (("vbat_V", want["vbat"]), ("sweep", want["sweep"]),
+                         ("ambient_C", want["amb"]),
+                         ("ilim_A", oracle_ilim(want["ilim"])),
+                         ("vbus_V", cls["vbus_V"]),
+                         ("path_ohm", cls["path_ohm"])):
+        if r.get(field) is None or abs(float(r[field]) - value) > 1e-9:
+            why.append("row %s: %s is %r, the key says %r"
+                       % (r["key"], field, r.get(field), value))
+    for field, value in (("source_class", want["source"]),
+                         ("batfet", want["batfet"]),
+                         ("ilim_corner", want["ilim"]),
+                         ("previous_mode", want["hist"]),
+                         ("qualified", cls["qualified"])):
+        if r.get(field, "ABSENT") != value:
+            why.append("row %s: %s is %r, the key says %r"
+                       % (r["key"], field, r.get(field, "ABSENT"), value))
+    ev = r.get("_evidence")
+    if not isinstance(ev, dict):
+        return why + ["regime row %s carries no evidence" % r["key"]]
+    th = ev.get("thermal") or {}
+    if th.get("r_sys_K_per_W") != scalars.get("r_sys_K_per_W") or \
+            th.get("theta_ja_C_per_W") != scalars.get("theta_ja_C_per_W"):
+        why.append("regime row %s is solved on a thermal model the oracle "
+                   "was not given" % r["key"])
+    if th.get("ambient_C") is None or abs(th["ambient_C"] - want["amb"]) > 1e-9:
+        why.append("row %s: the evidence is solved at %r C, the key says "
+                   "%.0f C" % (r["key"], th.get("ambient_C"), want["amb"]))
+    treg_low = oracle_treg_band()[0]
+    if th.get("treg_low_C") is None or abs(th["treg_low_C"] - treg_low) > 1e-9:
+        why.append("row %s: the TREG condition is judged at %r C, not the "
+                   "declared low end %.1f C" % (r["key"], th.get("treg_low_C"),
+                                                treg_low))
+    want_state = dict(want, p_sys=None, hist=want["hist"], ichg="max")
+    for label in ("no_discharge_at", "no_discharge_above", "treg_zero_at",
+                  "treg_zero_above", "junction_at", "junction_above"):
+        st = ev.get(label)
+        if st is None:
+            continue
+        cp = state_content_problems(st, want_state)
+        if cp:
+            why.append("row %s: the %s state is not the state the key names: "
+                       "%s" % (r["key"], label, cp[:2]))
+        ok, w = charger_branch_is_valid(st)
+        dok, dw = raw_summary_divergence(st)
+        if not ok or not dok:
+            why.append("row %s: the %s state is not physical: %s"
+                       % (r["key"], label, (w + dw)[:2]))
+        if label.startswith(("treg_zero", "junction")) and not (
+                (st.get("controls") or {}).get("treg_folds_charge_to_zero")
+                and st["charge_A"] <= 1e-12):
+            why.append("row %s: the %s state is not the zero-charge state"
+                       % (r["key"], label))
+    tj_max = scalars["tj_operating_max_C"]
+    nd_e = r.get("no_discharge_electrical_W")
+    t0 = r.get("treg_zero_unreachable_W")
+    if nd_e is None or t0 is None:
+        return why + ["row %s: the two halves of the no-discharge ceiling "
+                      "are not published" % r["key"]]
+    if abs(r["no_discharge_W"] - min(nd_e, t0)) > 1e-6:
+        why.append("row %s: no-discharge %.6f W is not min(electrical %.6f, "
+                   "TREG-zero %.6f)" % (r["key"], r["no_discharge_W"], nd_e,
+                                        t0))
+    # ---- the electrical half: supplement onset, or collapse under the trip
+    nd_at, nd_above = ev.get("no_discharge_at"), ev.get("no_discharge_above")
+    if nd_e < REGIME_JUNCTION_UNBOUNDED_W - 0.01:
+        if nd_e > 0 and (nd_at is None or nd_at["mode"] == "SUPPLEMENT"):
+            why.append("row %s: at the electrical no-discharge ceiling the "
+                       "part is supplementing or has no state" % r["key"])
+        p_above = nd_e * (1.0 + 1e-7) + 1e-7
+        if want["batfet"] == "connected":
+            if nd_above is not None and nd_above["mode"] != "SUPPLEMENT":
+                why.append("row %s: just ABOVE the no-discharge ceiling the "
+                           "part is still not supplementing -- the ceiling "
+                           "is not the boundary" % r["key"])
+        else:
+            if nd_above is not None:
+                why.append("row %s: under the trip, just above the input-"
+                           "carrying ceiling a state still exists (%s)"
+                           % (r["key"], nd_above["mode"]))
+            # probed 0.01 % above: the oracle's own inequalities carry a
+            # 5 uA tolerance, so a probe at 1e-7 would sit inside it
+            left = independent_branches(
+                nd_e * (1.0 + 1e-4) + 1e-4, want["vbat"], cls["vbus_V"],
+                cls["path_ohm"],
+                oracle_ilim(want["ilim"]), want["sweep"], want["hist"],
+                "max", "uvlo_open")
+            if left:
+                why.append("row %s: the oracle finds %r just above the "
+                           "claimed input-carrying ceiling" % (r["key"], left))
+            if r.get("input_carrying_W") is None or \
+                    abs(r["input_carrying_W"] - nd_e) > 1e-6:
+                why.append("row %s: the input-carrying figure is not the "
+                           "collapse point" % r["key"])
+    if want["batfet"] == "connected" and r.get("input_carrying_W") is not None:
+        why.append("row %s: an input-carrying limit on a connected BATFET"
+                   % r["key"])
+    # ---- the TREG half: the zero-charge junction against TREG's LOW end ---
+    z_at, z_above = ev.get("treg_zero_at"), ev.get("treg_zero_above")
+    if t0 > 0 and (z_at is None or _row_tj(z_at, th) >= treg_low):
+        why.append("row %s: at the TREG-zero ceiling the zero-charge "
+                   "junction is not below %.1f C" % (r["key"], treg_low))
+    if t0 < REGIME_JUNCTION_UNBOUNDED_W - 0.01 and z_above is not None \
+            and _row_tj(z_above, th) < treg_low:
+        why.append("row %s: just above the TREG-zero ceiling the junction "
+                   "is still below %.1f C -- not the boundary"
+                   % (r["key"], treg_low))
+    binding = r.get("no_discharge_binding")
+    want_binding = ("input_carrying_below_vbuvlo"
+                    if want["batfet"] != "connected" and nd_e <= t0
+                    else "supplement_onset" if nd_e <= t0
+                    else "treg_could_fold_the_charge_to_zero")
+    if binding != want_binding:
+        why.append("row %s: the no-discharge binding is %r, the halves say "
+                   "%r" % (r["key"], binding, want_binding))
+    # ---- the junction ------------------------------------------------------
+    j_at, j_above = ev.get("junction_at"), ev.get("junction_above")
+    jb = r.get("junction_binding")
+    if jb == "domain_cap":
+        if r.get("junction_limited") or \
+                abs(r["junction_W"] - REGIME_JUNCTION_UNBOUNDED_W) > 1e-9:
+            why.append("row %s: 'domain_cap' on a junction-limited row"
+                       % r["key"])
+        if j_at is not None and _row_tj(j_at, th) > tj_max + 1e-6:
+            why.append("row %s: the junction is over %.1f C at the domain "
+                       "cap" % (r["key"], tj_max))
+    elif jb == "input_carrying_below_vbuvlo":
+        if want["batfet"] == "connected" or r.get("junction_limited") or \
+                abs(r["junction_W"] - REGIME_JUNCTION_UNBOUNDED_W) > 1e-9:
+            why.append("row %s: an input-carrying junction label on a row "
+                       "that is not under the trip or is junction-limited"
+                       % r["key"])
+        if j_above is not None:
+            why.append("row %s: the junction is called unbounded by the "
+                       "collapse but a zero-charge state exists above it"
+                       % r["key"])
+    elif jb in ("junction", "no_operating_point_above"):
+        if not r.get("junction_limited"):
+            why.append("row %s: %s but not junction-limited" % (r["key"], jb))
+        if j_at is not None and _row_tj(j_at, th) > tj_max + 1e-6:
+            why.append("row %s: the junction ceiling is over %.1f C"
+                       % (r["key"], tj_max))
+        if jb == "junction":
+            if j_above is None or _row_tj(j_above, th) <= tj_max:
+                why.append("row %s: just ABOVE the junction ceiling the "
+                           "junction is still inside the maximum"
+                           % r["key"])
+        elif j_above is not None:
+            why.append("row %s: 'no operating point above' with a state "
+                       "above" % r["key"])
+    else:
+        why.append("row %s: unknown junction binding %r" % (r["key"], jb))
+    if abs(r["ceiling_W"] - min(r["no_discharge_W"], r["junction_W"])) > 1e-6:
+        why.append("regime row %s: the ceiling is not the lower of its two "
+                   "limits" % r["key"])
+    return why
 
 
 def regime_problems(rows, published, scalars):
-    """Every regime row exists exactly once, its evidence brackets its own
-    ceiling, and every PUBLISHED figure is the oracle's own minimum."""
+    """Every regime row exists exactly once, is the row its key names, its
+    evidence brackets its own ceilings, and every PUBLISHED figure is the
+    oracle's own minimum."""
     why = []
     got = [r.get("key") for r in rows]
     why += _multiset_problems("charge regime", got, expected_regime_keys())
-    tj_max = scalars["tj_operating_max_C"]
     bad = 0
     for r in rows:
-        ev = r.get("_evidence")
-        if not isinstance(ev, dict):
-            why.append("regime row %s carries no evidence" % r.get("key"))
+        w = regime_row_problems(r, scalars)
+        if w:
             bad += 1
-            continue
-        for label in ("no_discharge_at", "junction_at"):
-            st = ev.get(label)
-            if st is None:
-                if (label == "no_discharge_at" and r["no_discharge_W"] > 0) or \
-                        (label == "junction_at" and r["junction_W"] > 0):
-                    why.append("regime row %s: no %s state" % (r["key"], label))
-                continue
-            ok, w = charger_branch_is_valid(st)
-            dok, dw = raw_summary_divergence(st)
-            if not ok or not dok:
-                bad += 1
-                if bad <= 6:
-                    why.append("regime row %s: the %s state is not physical: "
-                               "%s" % (r["key"], label, (w + dw)[:2]))
-        nd_at, nd_above = ev.get("no_discharge_at"), ev.get("no_discharge_above")
-        if r["no_discharge_W"] < 7.99:
-            if nd_at is not None and nd_at["mode"] == "SUPPLEMENT":
-                why.append("regime row %s: the no-discharge ceiling is itself "
-                           "in SUPPLEMENT" % r["key"])
-            if nd_above is not None and nd_above["mode"] != "SUPPLEMENT":
-                why.append("regime row %s: just ABOVE the no-discharge ceiling "
-                           "the part is still not supplementing -- the "
-                           "ceiling is not the boundary" % r["key"])
-        th = ev.get("thermal") or {}
-
-        def tj(st):
-            internal = (st["source_W"] + st["from_cell_W"] - st["stored_W"]
-                        - th.get("delivered_out_W", 0.0))
-            return (th["ambient_C"] + th["r_sys_K_per_W"] * internal
-                    + th["theta_ja_C_per_W"] * st["package_W"])
-        if th.get("r_sys_K_per_W") != scalars["r_sys_K_per_W"] or \
-                th.get("theta_ja_C_per_W") != scalars["theta_ja_C_per_W"]:
-            why.append("regime row %s is solved on a thermal model the "
-                       "oracle was not given" % r["key"])
-        j_at, j_above = ev.get("junction_at"), ev.get("junction_above")
-        if r["junction_W"] < 7.99:
-            if j_at is not None and tj(j_at) > tj_max + 1e-6:
-                why.append("regime row %s: the junction ceiling is over %.1f C"
-                           % (r["key"], tj_max))
-            if j_above is not None and tj(j_above) <= tj_max:
-                why.append("regime row %s: just ABOVE the junction ceiling the "
-                           "junction is still inside the maximum" % r["key"])
-        if abs(r["ceiling_W"] - min(r["no_discharge_W"], r["junction_W"])) \
-                > 1e-6:
-            why.append("regime row %s: the ceiling is not the lower of its two "
-                       "limits" % r["key"])
-    # ---- the PUBLISHED figures, recomputed from the rows ------------------
+            if bad <= 8:
+                why += w[:2]
+    if bad > 8:
+        why.append("... and %d more regime rows with problems" % (bad - 8))
     q = [r for r in rows if r.get("source_class")
          in EXPECTED_QUALIFIED_SOURCE_CLASSES]
     if q and published:
@@ -1201,18 +1842,109 @@ def regime_problems(rows, published, scalars):
                     why.append("the published envelope has no row for %s at "
                                "%.3f V" % (c, v))
                     continue
-                for pub, field in (("no_discharge_published_W",
-                                    "no_discharge_W"),
-                                   ("junction_published_W", "junction_W")):
-                    want = _floor_to_grid(min(r[field] for r in sel))
-                    if abs(e[pub] - want) > 1e-6:
+                nd_want = _floor_to_grid(min(r["no_discharge_W"]
+                                             for r in sel))
+                jl = [r["junction_W"] for r in sel if r["junction_limited"]]
+                tj_want = _floor_to_grid(min(jl)) if jl else None
+                cr = [r["input_carrying_W"] for r in sel
+                      if r.get("input_carrying_W") is not None]
+                cr_want = _floor_to_grid(min(cr)) if cr else None
+                for pub, want in (("no_discharge_published_W", nd_want),
+                                  ("junction_published_W", tj_want),
+                                  ("input_carrying_published_W", cr_want)):
+                    got_v = e.get(pub, "ABSENT")
+                    if (want is None) != (got_v is None) or (
+                            want is not None and (
+                                not isinstance(got_v, (int, float))
+                                or abs(got_v - want) > 1e-6)):
                         why.append("envelope %s/%.3f V %s is %r, the oracle "
-                                   "floors to %.6f" % (c, v, pub, e[pub],
-                                                       want))
+                                   "floors to %r" % (c, v, pub, got_v, want))
+                if sorted(e.get("batfet_states") or []) != sorted(
+                        oracle_batfet_states(v)):
+                    why.append("envelope %s/%.3f V names BATFET states %r"
+                               % (c, v, e.get("batfet_states")))
     elif not published:
         why.append("no published regime figures were handed to the oracle")
     return why, dict(expected_rows=len(expected_regime_keys()),
-                     rows_seen=len(rows), rows_with_bad_evidence=bad)
+                     rows_seen=len(rows), rows_with_problems=bad)
+
+
+# ==========================================================================
+# D-796 / R15-02 (D796-03).  THE THERMALLY-CLOSED POPULATION IS EXACT.
+#
+# ROUND-15: "Thermal-domain completeness must require the exact expected
+# population for each ambient/source/BAT/threshold/history combination.  A
+# collapsed thermal population must fail even if one valid TREG state
+# remains."  D-795 asked only that TREG appear somewhere.
+# ==========================================================================
+EXPECTED_COMPLETION_SCENARIOS = (("idle", 0.0), ("housekeeping", 0.35),
+                                 ("display_quiet", 1.0))
+EXPECTED_COMPLETION_AMBIENTS_C = (0.0, 25.0, 40.0)
+EXPECTED_COMPLETION_STEPS = 23
+ORACLE_VBATREG_V = 4.2
+
+
+def completion_key(source, amb, scenario, vbat, batfet):
+    return "completion/%s/amb%.0f/%s/vbat%.4f/batfet_%s" % (
+        source, amb, scenario, vbat, batfet)
+
+
+def expected_thermal_population():
+    """{key: the physical content that key must carry}."""
+    p = PRIMITIVES
+    lo = p["bq.vlowv_max_V"]
+    out = {}
+    for c in EXPECTED_QUALIFIED_SOURCE_CLASSES:
+        for a in EXPECTED_COMPLETION_AMBIENTS_C:
+            for name, w in EXPECTED_COMPLETION_SCENARIOS:
+                for k in range(EXPECTED_COMPLETION_STEPS + 1):
+                    vb = lo + (ORACLE_VBATREG_V - lo) * k / float(
+                        EXPECTED_COMPLETION_STEPS)
+                    for bf in oracle_batfet_states(vb):
+                        out[completion_key(c, a, name, vb, bf)] = dict(
+                            source=c, amb=a, p_sys=w, vbat=round(vb, 6),
+                            batfet=bf, ilim="min", ichg="min", hist=None,
+                            sweep=p["bq.branch_threshold_sweep"],
+                            treg_C=oracle_treg_band()[0])
+    return out
+
+
+def thermal_population_problems(thermal_states):
+    why = []
+    want = expected_thermal_population()
+    why += _multiset_problems("thermal population",
+                              [st.get("domain_key") for st in thermal_states],
+                              list(want))
+    bad = 0
+    regimes = {}
+    for st in thermal_states:
+        w = want.get(st.get("domain_key"))
+        th = st.get("thermal") or {}
+        regimes[th.get("regime")] = regimes.get(th.get("regime"), 0) + 1
+        if w is None:
+            continue
+        p = state_content_problems(st, w)
+        if th.get("ambient_C") is None or abs(th["ambient_C"] - w["amb"]) \
+                > 1e-9:
+            p.append("labelled %.0f C, solved at %r C" % (w["amb"],
+                                                          th.get("ambient_C")))
+        if th.get("treg_C") is None or abs(th["treg_C"] - w["treg_C"]) > 1e-9:
+            p.append("solved at TREG %r C, the completion domain is %.1f C"
+                     % (th.get("treg_C"), w["treg_C"]))
+        ok, bw = charger_branch_is_valid(st)
+        if not ok:
+            p += bw[:2]
+        if p:
+            bad += 1
+            if bad <= 8:
+                why.append("thermal state %s: %s" % (st.get("domain_key"),
+                                                     p[:2]))
+    if bad > 8:
+        why.append("... and %d more thermal states with problems" % (bad - 8))
+    if not regimes.get("TREG_EQUILIBRIUM"):
+        why.append("no thermally-closed state is a TREG equilibrium")
+    return why, dict(expected=len(want), seen=len(thermal_states),
+                     with_problems=bad, regimes=regimes)
 
 
 def _multiset_problems(what, got, want):
@@ -1239,10 +1971,28 @@ def _multiset_problems(what, got, want):
     return why
 
 
+# The regime audit re-checks 3000 rows and their evidence; every F14 mutation
+# that does not touch the regime hands the SAME objects back.  Cached by
+# IDENTITY (strong references held, so an id is never reused) -- a mutated
+# regime is always a new object and is always re-audited.
+_REGIME_CACHE = []
+
+
+def _regime_problems_cached(rows, published, scalars):
+    for r_, p_, s_, res in _REGIME_CACHE:
+        if r_ is rows and p_ is published and s_ == scalars:
+            return list(res[0]), dict(res[1])
+    res = regime_problems(rows, published, scalars)
+    _REGIME_CACHE.append((rows, published, dict(scalars), res))
+    del _REGIME_CACHE[:-3]
+    return list(res[0]), dict(res[1])
+
+
 def completeness(transitions, charger_states, rejected_post_states,
                  residual_worst_W, residual_worst_V, network_states=(),
                  charger_refusals=None, regime_rows=None,
-                 regime_published=None, thermal_states=None, scalars=None):
+                 regime_published=None, thermal_states=None, scalars=None,
+                 network_terms=None):
     """R12-04's mandatory invariants, ANDed into the verdict."""
     keys = {t.get("transition") for t in transitions}
     orders = set()
@@ -1277,21 +2027,18 @@ def completeness(transitions, charger_states, rejected_post_states,
                         "oracle: the published regime claims are unbound")
         regime_extra = {}
     else:
-        rp, regime_extra = regime_problems(regime_rows, regime_published,
-                                           scalars or {})
+        rp, regime_extra = _regime_problems_cached(
+            regime_rows, regime_published, scalars or {})
         problems += rp
+    thermal_extra = {}
     if not thermal_states:
         problems.append("no thermally-closed charger state was handed to the "
                         "oracle, so the TREG branch was never checked")
     else:
         if "TREG" not in thermal_branches:
             problems.append("no thermally-closed state exercises TREG")
-        for st in thermal_states:
-            ok, w = charger_branch_is_valid(st)
-            if not ok:
-                problems.append("thermal state %s is not physical: %s"
-                                % (st.get("domain_key"), w[:2]))
-                break
+        tp, thermal_extra = thermal_population_problems(thermal_states)
+        problems += tp
     # ---- D-794 / R13-04.  EXACT MULTISETS OVER THE CONSTRUCTED DOMAIN -----
     got_table = [t.get("transition") for t in transitions
                  if t.get("kind") == "table"
@@ -1327,6 +2074,19 @@ def completeness(transitions, charger_states, rejected_post_states,
         problems.append("the cell-to-load network domain has no SOLVED row: "
                         "nothing was re-derived by KVL at all")
     problems += _multiset_problems("network", got_net, want_net)
+    # ---- D-796 / R15-02: every network key IS its load set and corner ----
+    problems += network_terms_agree(network_terms)
+    net_bad = 0
+    if isinstance(network_terms, dict):
+        for n in network_states:
+            w = network_row_problems(n, network_terms, scalars or {})
+            if w:
+                net_bad += 1
+                if net_bad <= 8:
+                    problems += w[:2]
+    if net_bad > 8:
+        problems.append("... and %d more network rows with problems"
+                        % (net_bad - 8))
     for n in network_states:
         if not n.get("refused"):
             continue
@@ -1382,6 +2142,16 @@ def completeness(transitions, charger_states, rejected_post_states,
         c = canaries[0]
         if c.get("permitted"):
             problems.append("the seeded canary is marked permitted")
+        # D-796 / R15-02 (PM2 class): the canary's physics must be the
+        # canary's own load set -- the named state at the named accessory.
+        if isinstance(network_terms, dict):
+            ls = c.get("load_set") or {}
+            if ls.get("accessory") != CANARY_ACCESSORY:
+                problems.append("the seeded canary names accessory %r, not "
+                                "%r" % (ls.get("accessory"), CANARY_ACCESSORY))
+            problems += load_set_problems(
+                "seeded canary", ls, REQUIRED_SEEDED_REJECTION.split("/")[1],
+                CANARY_ACCESSORY, network_terms, scalars or {})
         limits = c.get("physical_limits")
         points = c.get("physical_operating_points")
         if not isinstance(limits, dict) or not limits:
@@ -1434,6 +2204,7 @@ def completeness(transitions, charger_states, rejected_post_states,
         worst_voltage_residual_V=residual_worst_V,
         charger_domain=charger_extra, regime_domain=regime_extra,
         thermal_states_checked=len(thermal_states or []),
+        thermal_population=thermal_extra,
         problems=problems,
         method="R12-04 convergence requirement 3: transition/state "
                "completeness is a HARD VERDICT REQUIREMENT, never "
@@ -1448,7 +2219,8 @@ def audit(registry, scalars, charger_states, transitions,
           rejected_post_states, board_forward_ohm_20C,
           canonical_source_path_ohm, network_states=(),
           without_energy_oracle=False, charger_refusals=None,
-          regime_rows=None, regime_published=None, thermal_states=None):
+          regime_rows=None, regime_published=None, thermal_states=None,
+          network_terms=None):
     """`without_energy_oracle` ABLATES THE ENERGY ACCOUNTING ENTIRELY.
 
     It removes both halves of it: the TERMINAL-vs-INTERNAL identity (what
@@ -1529,7 +2301,8 @@ def audit(registry, scalars, charger_states, transitions,
                                  regime_rows=regime_rows,
                                  regime_published=regime_published,
                                  thermal_states=thermal_states,
-                                 scalars=scalars)
+                                 scalars=scalars,
+                                 network_terms=network_terms)
     ok = bool(prim_ok and comp_ok
               and all(r["ok"] for r in charger_rows)
               and all(r["ok"] for r in net_rows)

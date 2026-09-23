@@ -46,6 +46,7 @@
 #include "max17048_guard.h"
 #include "pcal9535a.h"
 #include "aqroot_demo_pins.h"
+#include "aqroot_demo_radios.h"
 
 using namespace aqroot;
 
@@ -541,6 +542,11 @@ class Cc1101Stub : public aqroot_hal::SpiModel {
   // "safe-looking" value D-794 accepted.
   bool nfc_dies_after_set_default = false;
   bool nfc_dead_ = false;
+  // D-796 / C-NFC-QUIESCE-01.  The part stops answering at a CHOSEN INSTANT
+  // of recorded time -- a lifted NFC_CS_N, a brown-out -- so a test can put
+  // the loss at the worst phase of whatever the image is doing then: inside
+  // the gauge window, inside the settled recheck, just after a probe.
+  uint64_t nfc_dead_from_us = ~uint64_t(0);
   uint8_t nfc_regs[64] = {0};       // register space A
   int nfc_set_default_commands = 0;
   int nfc_stop_all_commands = 0;
@@ -561,7 +567,8 @@ class Cc1101Stub : public aqroot_hal::SpiModel {
   uint8_t st25r3916(uint8_t out) {
     // DS12484 Rev 3 Table 11: the first two bits of the first byte are the
     // mode.  00 = register write, 01 = register read, 11 = direct command.
-    const bool dead = nfc_zero_fill || nfc_ff_fill || nfc_dead_;
+    const bool dead = nfc_zero_fill || nfc_ff_fill || nfc_dead_
+                   || aqroot_hal::recorder().clock_us >= nfc_dead_from_us;
     const uint8_t idle = nfc_ff_fill ? 0xFF : 0x00;
     if (nfc_pending_read_) {
       nfc_pending_read_ = false;
@@ -2221,6 +2228,336 @@ int main() {
           && radio.nfc_set_default_commands >= 1);
     claim("...and the field is off and confirmed",
           !radio.nfcFieldIsUp() && rec().consoleHas("FIELD OFF, live identity"));
+  }
+
+  // =========================================================================
+  // D-796 / D796-05 item 4 + D796-09 C-NFC-QUIESCE-01.  THE REVOCATION
+  // DEADLINE, MEASURED ON THE SHIPPED IMAGE AT EVERY PHASE.
+  //
+  // ROUND-15: "current plan says revocation within 1 s, but the production-
+  // image trace can remain unrevoked for ~2.6 s during blocking gauge/
+  // admission work.  Either change firmware/scheduling to guarantee the
+  // promised wall-clock deadline, OR publish and qualify the real bounded
+  // worst-case latency."
+  //
+  // It reproduced: D-795 serviced the liveness probe once per `loop()`, and a
+  // single '5' press spends the admission window (1300 ms), the settled
+  // recheck (400 ms) and the rest of the window from the rail step (900 ms)
+  // inside ONE iteration.  The image now gives the probe an opportunity
+  // before every slice of every app-owned wait, and re-proves liveness AT
+  // every grant.  This sweep drops U9 at every 20 ms of a first-rail and a
+  // second-rail admission, from five different phases of the probe
+  // schedule, and measures the latency from the loss to the revocation line
+  // and to the shed of every rail that was live at the loss.
+  // =========================================================================
+  {
+    struct LossStats {
+      int runs = 0, revoked = 0, shed = 0, enabled_after_loss = 0;
+      uint64_t worst_revoke_us = 0, worst_shed_us = 0;
+    };
+    auto sweep = [](bool second_rail) {
+      LossStats st;
+      for (uint64_t phase_ms : {uint64_t(0), uint64_t(100), uint64_t(200),
+                                uint64_t(300), uint64_t(400)}) {
+        for (uint64_t offset_ms = 0; offset_ms <= 2900; offset_ms += 20) {
+          rig();
+          setup();
+          delay(3000);                   // every boot edge is spent
+          if (second_rail) {
+            press("3");
+            pump(1);
+            press("");
+          }
+          // Move the probe schedule's phase relative to the key press.
+          for (uint64_t t = 0; t < phase_ms; t += 10) {
+            delay(10);
+            loop();
+          }
+          const uint64_t pressed = rec().clock_us;
+          const uint64_t loss = pressed + offset_ms * 1000u;
+          g_radio->nfc_dead_from_us = loss;
+          press(second_rail ? "5" : "3");
+          pump(1);
+          press("");
+          for (int i = 0; i < 150; ++i) {   // three seconds of idle loop
+            delay(20);
+            loop();
+          }
+          ++st.runs;
+          for (size_t i = 0; i < rec().console.size(); ++i) {
+            if (rec().console_t_us[i] >= loss &&
+                rec().console[i].find("NFC OFF confirmation REVOKED")
+                    != std::string::npos) {
+              ++st.revoked;
+              const uint64_t lat = rec().console_t_us[i] - loss;
+              if (lat > st.worst_revoke_us) st.worst_revoke_us = lat;
+              break;
+            }
+          }
+          const bool live_at_loss =
+              g_board.accessoryOnAt(loss, AQROOT_U3_ACC_3V3_EN) ||
+              g_board.accessoryOnAt(loss, AQROOT_U3_ACC_5V_SW_EN);
+          uint16_t prev = 0x0000;
+          bool shed = !live_at_loss;
+          for (const auto &e : g_board.latch_events) {
+            const bool on3 = bit(e.u3_output, AQROOT_U3_ACC_3V3_EN);
+            const bool on5 = bit(e.u3_output, AQROOT_U3_ACC_5V_SW_EN);
+            if (e.t_us >= loss &&
+                ((on3 && !bit(prev, AQROOT_U3_ACC_3V3_EN)) ||
+                 (on5 && !bit(prev, AQROOT_U3_ACC_5V_SW_EN)))) {
+              ++st.enabled_after_loss;
+            }
+            if (live_at_loss && !shed && e.t_us >= loss && !on3 && !on5) {
+              shed = true;
+              const uint64_t lat = e.t_us - loss;
+              if (lat > st.worst_shed_us) st.worst_shed_us = lat;
+            }
+            prev = e.u3_output;
+          }
+          st.shed += shed;
+        }
+      }
+      return st;
+    };
+    const uint64_t deadline_us = uint64_t(kNfcRevocationDeadlineMs) * 1000u;
+    claim("C-NFC-QUIESCE-01: the published revocation deadline is DERIVED -- "
+          "the liveness period plus the longest step with no liveness "
+          "opportunity plus the probe-and-shed allowance -- and is inside "
+          "the 1 s the first-five plan promises",
+          kNfcRevocationDeadlineMs == kNfcLivenessPeriodMs
+              + kNfcLongestUnpolledStepMs + kNfcRevocationWorkAllowanceMs
+          && kNfcRevocationDeadlineMs <= 1000u);
+    for (bool second : {true, false}) {
+      const LossStats st = sweep(second);
+      const char *what = second
+          ? "a SECOND-rail admission with ACC_3V3_SW live (admission window, "
+            "settled recheck and the rest of the window from the rail step)"
+          : "a FIRST-rail admission";
+      char name[360];
+      snprintf(name, sizeof(name),
+               "C-NFC-QUIESCE-01: a U9 lost at any 20 ms instant of %s, from "
+               "five probe phases (%d runs), is REVOKED within the %lu ms "
+               "deadline", what, st.runs,
+               (unsigned long)kNfcRevocationDeadlineMs);
+      claim(name, st.revoked == st.runs && st.worst_revoke_us <= deadline_us);
+      claim("...and every rail live at the loss is SHED within the same "
+            "deadline", st.shed == st.runs && st.worst_shed_us <= deadline_us);
+      claim("...and no rail is ever enabled at or after the loss: every grant "
+            "is decided on a liveness proof taken AT the grant",
+            st.enabled_after_loss == 0);
+      std::printf("  measured (%s rail): worst revocation %.3f ms, worst shed "
+                  "%.3f ms, deadline %lu ms\n", second ? "second" : "first",
+                  double(st.worst_revoke_us) / 1000.0,
+                  double(st.worst_shed_us) / 1000.0,
+                  (unsigned long)kNfcRevocationDeadlineMs);
+    }
+  }
+
+  {
+    // A BURST IS A GRANT TOO.  U9 is proved alive at the top of this loop
+    // iteration and lost immediately afterwards, so the periodic schedule
+    // will not look again for a full period -- the burst key must re-prove
+    // it at the grant, or a microSD / IR burst runs beside a field nobody
+    // can see.
+    for (const char *key : {"d", "x"}) {
+      rig();
+      setup();
+      delay(3000);
+      loop();                              // a scheduled probe: alive
+      g_radio->nfc_dead_from_us = rec().clock_us;
+      press(key);
+      pump(1);
+      const bool sd = key[0] == 'd';
+      char name[240];
+      snprintf(name, sizeof(name),
+               "C-NFC-QUIESCE-01: a %s burst requested just after U9 was lost "
+               "is refused AT the grant -- the grant re-proves liveness rather "
+               "than trusting the last scheduled proof",
+               sd ? "microSD" : "IR");
+      claim(name, rec().consoleHas("NFC OFF confirmation REVOKED")
+                  && rec().consoleHas("U9 owns the burst slot"));
+      claim("...and the burst never ran",
+            !rec().consoleHas(sd ? "microSD  CMD0" : "IR  "));
+    }
+  }
+
+  {
+    // THE LOOP-TOP PROBE, ON ITS OWN.  Rails off, no key pressed, a healthy
+    // gauge: nothing in `loop()` but the top-of-loop call gives the probe an
+    // opportunity -- no admission, no gauge window, no settled recheck, no
+    // retention read.  A lost U9 must still be revoked within the bound, or a
+    // later grant, burst or session would be the first to find out.
+    int runs = 0, revoked = 0;
+    uint64_t worst_us = 0;
+    for (uint64_t offset_ms = 0; offset_ms < 1000; offset_ms += 20) {
+      rig();
+      setup();
+      delay(3000);
+      loop();
+      const uint64_t loss = rec().clock_us + offset_ms * 1000u;
+      g_radio->nfc_dead_from_us = loss;
+      press("");
+      for (int i = 0; i < 200; ++i) {        // four seconds of idle loop
+        delay(20);
+        loop();
+      }
+      ++runs;
+      for (size_t i = 0; i < rec().console.size(); ++i) {
+        if (rec().console_t_us[i] >= loss &&
+            rec().console[i].find("NFC OFF confirmation REVOKED")
+                != std::string::npos) {
+          ++revoked;
+          const uint64_t lat = rec().console_t_us[i] - loss;
+          if (lat > worst_us) worst_us = lat;
+          break;
+        }
+      }
+    }
+    char name[240];
+    snprintf(name, sizeof(name),
+             "C-NFC-QUIESCE-01: with both rails off and the loop idle -- where "
+             "only the top-of-loop probe runs -- a lost U9 is REVOKED within "
+             "the %lu ms deadline at every 20 ms phase (%d runs)",
+             (unsigned long)kNfcRevocationDeadlineMs, runs);
+    claim(name, revoked == runs
+                && worst_us <= uint64_t(kNfcRevocationDeadlineMs) * 1000u);
+    std::printf("  measured (idle, rails off): worst revocation %.3f ms\n",
+                double(worst_us) / 1000.0);
+  }
+  {
+    // THE PUBLISHED OPERATOR-TEST EXCEPTION IS THE SHIPPED RAMP'S LENGTH.
+    rig();
+    setup();
+    delay(3000);
+    const uint64_t before = rec().clock_us;
+    press("l");
+    pump(1);
+    const uint64_t spent_ms = (rec().clock_us - before) / 1000u;
+    claim("C-NFC-QUIESCE-01 exception: the longest unpreemptible operator "
+          "test, the 'l' backlight ramp, takes the 827 ms the published "
+          "rails-off exception (1347 ms) is derived from",
+          spent_ms >= kLongestUnpreemptibleOperatorTestMs
+          && spent_ms <= kLongestUnpreemptibleOperatorTestMs + 5
+          && kNfcRevocationWithRailsOffOperatorTestMs == 1347);
+  }
+
+  // =========================================================================
+  // D-796 / D796-10.  A FIELD-OWNING NFC SESSION OWNS THE LIVENESS PROBE.
+  //
+  // ROUND-15: "NFC liveness probe currently rewrites register 11h while the
+  // field is confirmed off.  Document/architect future field-owning firmware
+  // so active NFC operation suspends/owns that liveness probe."
+  //
+  // The ownership token is the SPI-B transmit slot: a session is
+  // `SpiBusB::beginTransmit(SpiBDevice::St25r3916)`.  While it is held,
+  // neither the liveness probe nor the quiesce may touch U9 -- not a
+  // challenge write, not a Set default, not even a chip select.
+  // =========================================================================
+  {
+    rig();
+    Cc1101Stub &radio = *g_radio;
+    radio.transmitting = false;
+    radio.nfc_operation_control = 0x00;
+    BoardChipSelects selects;
+    selects.begin();
+    SpiBusB bus(selects);
+    uint8_t identity = 0x00;
+    const NfcLivenessResult free_probe = st25r3916LivenessProbe(bus, &identity);
+    claim("D796-10: with no session the liveness probe runs its 11h "
+          "challenge and proves the part alive",
+          free_probe == NfcLivenessResult::Alive
+          && radio.nfc_challenge_writes >= 2);
+    const bool took = bus.beginTransmit(SpiBDevice::St25r3916);
+    radio.nfc_operation_control = 0x88;   // the session's own field is up
+    const int writes_before = radio.nfc_challenge_writes;
+    const uint32_t frames_before = rec().low_edges[AQROOT_PIN_NFC_CS_N];
+    const NfcLivenessResult owned = st25r3916LivenessProbe(bus, &identity);
+    const bool raw_alive = st25r3916StillAlive(bus, &identity);
+    const NfcQuiesceReport q = st25r3916QuiesceReport(bus);
+    claim("D796-10: while a field session owns U9 the liveness probe is "
+          "SUSPENDED -- it reports Deferred, never Lost",
+          took && owned == NfcLivenessResult::Deferred);
+    claim("...and neither the probe, the raw liveness challenge nor the "
+          "quiesce writes register 11h under the session",
+          radio.nfc_challenge_writes == writes_before);
+    claim("...and none of them so much as selects the part",
+          rec().low_edges[AQROOT_PIN_NFC_CS_N] == frames_before);
+    claim("...and a raw challenge under a session is never a liveness proof",
+          !raw_alive);
+    claim("...and the quiesce refuses BY NAME instead of Set-defaulting the "
+          "session's field", !q.confirmed
+          && q.failed_at == NfcQuiesceStep::OwnedBySession
+          && radio.nfc_set_default_commands == 0 && radio.nfcFieldIsUp());
+    radio.nfc_operation_control = 0x00;   // the session turns its field off
+    bus.endTransmit(SpiBDevice::St25r3916);
+    const NfcLivenessResult after = st25r3916LivenessProbe(bus, &identity);
+    claim("...and once the session releases U9 the probe challenges 11h again",
+          after == NfcLivenessResult::Alive
+          && radio.nfc_challenge_writes > writes_before);
+  }
+
+  // =========================================================================
+  // D-796 / D796-10 + D796-09 C-GAUGE-EPOCH-01 (Fable G10).  A STALLED
+  // FRESHNESS CLOCK IS NEVER FRESHNESS.
+  //
+  // ROUND-15: "Add a production-image/host scenario for a stalled/non-
+  // advancing freshness clock."  The load epoch measures its window with
+  // `millis()`.  A clock that stops -- at the request, in the middle of the
+  // window, or inside the settled recheck after a grant -- must yield NO
+  // VCELL reading, refuse the admission, and shed a rail it cannot re-judge.
+  // =========================================================================
+  {
+    auto enabledEver = []() {
+      for (const auto &e : g_board.latch_events) {
+        if (bit(e.u3_output, AQROOT_U3_ACC_3V3_EN)) return true;
+      }
+      return false;
+    };
+    auto readsFrom = [](uint64_t t_us) {
+      int n = 0;
+      for (const auto &r : g_board.vcell_reads) n += r.t_us >= t_us;
+      return n;
+    };
+    for (uint64_t stall_ms : {uint64_t(0), uint64_t(600)}) {
+      rig();
+      setup();
+      delay(3000);
+      const uint64_t pressed = rec().clock_us;
+      aqroot_hal::recorder().freeze_at_us = pressed + stall_ms * 1000u;
+      if (stall_ms == 0) aqroot_hal::recorder().clock_frozen = true;
+      press("3");
+      pump(3);
+      char name[240];
+      snprintf(name, sizeof(name),
+               "C-GAUGE-EPOCH-01 G10: with millis() stalled %s the admission "
+               "window is never treated as spent -- the image says the clock "
+               "did not advance", stall_ms == 0 ? "AT the request"
+                                                : "600 ms into the window");
+      claim(name, rec().consoleHas("the clock did not advance"));
+      claim("...and the rail is REFUSED and never energised",
+            rec().consoleHas("ACC_3V3_SW REFUSED") && !enabledEver());
+      claim("...and no VCELL reading at all is taken on the stalled clock",
+            readsFrom(pressed) == 0);
+    }
+    {
+      rig();
+      setup();
+      delay(3000);
+      const uint64_t pressed = rec().clock_us;
+      const uint64_t stall =
+          pressed + (uint64_t(kGaugePostLoadConversionMs) + 150u) * 1000u;
+      aqroot_hal::recorder().freeze_at_us = stall;
+      press("3");
+      pump(3);
+      claim("C-GAUGE-EPOCH-01 G10: a clock that stalls inside the settled "
+            "recheck AFTER a grant never lets the recheck read -- the rail "
+            "granted a moment earlier is SHED as no measurement",
+            enabledEver()
+            && !bit(g_board.u3_output, AQROOT_U3_ACC_3V3_EN)
+            && rec().consoleHas("VCELL unreadable"));
+      claim("...and no VCELL reading is taken after the stall",
+            readsFrom(stall) == 0);
+    }
   }
 
   std::printf("\n%s -- %d failure(s)\n", failures ? "FAIL" : "PASS", failures);

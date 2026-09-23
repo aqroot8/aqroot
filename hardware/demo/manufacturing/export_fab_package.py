@@ -719,10 +719,13 @@ def acc_3v3_reinforcement_notes():
         "- `U20` TPS22950-Q1 current limiting and OFF isolation are unchanged "
         "and remain in series with both contacts.",
         "- Published delivery, DERIVED by `demo_feature_contract` F6 over every "
-        "permitted wiring and load mode: **%.6f V** at the full 400 mA in the "
-        "worst permitted mode (one 3.3 V contact alone, one mated ground, the "
-        "5 V rail also at its 300 mA budget), and **%.6f V** with the header "
-        "fully mated."
+        "wiring and load case: **%.6f V** at the full 400 mA in the worst "
+        "SIZING case (one 3.3 V contact alone, one mated ground, the 5 V rail "
+        "also at its full 300 mA budget), and **%.6f V** with the header fully "
+        "mated.  The 400 mA + 300 mA pair is a SIZING case, NOT a permitted "
+        "mode: both rails together are admitted only at the declared 220 mA + "
+        "170 mA pair, and no accessory rail is admitted while a radio "
+        "transmits (D-796)."
         # D-794 / R13-06: BOTH figures come from the record's own explicit
         # fields, which `demo_feature_contract` F6 binds to its derivation.
         # D-793 scraped the fully-mated figure out of an English sentence

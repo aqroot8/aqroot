@@ -1,3 +1,218 @@
+## D-796 — **ROUND-15 FULL CONVERGENCE: A THERMAL LOOP LABELLED ON A COLD DIE, A BATTERY THAT SUPPLEMENTED BELOW ITS OWN LOCKOUT, KEYS THAT DID NOT NAME THEIR STATES, AND A GUARANTEE AUTHENTICATED BY ITS OWN METADATA**
+
+    authority  board c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907
+    manifest   recorded in evidence/d796-review-target.json by the identity commit
+    content    the D-796 content commit (recorded by the identity commit)
+    identity   the post-commit verification record commit that follows it
+    parent     3eb6a6d3dd753fb561cce08cfb6f2d70429af559 (D-795, REJECTED by Round-15)
+    scope      D796-01..D796-10: Astra R15-01..R15-04 and every reproduced Fable Work
+               R15-01..R15-11 residual, plus this closeout's own new-defect sweep
+    copper     NONE.  No copper, net, footprint, placement, part value or
+               protected-copper object moves.
+    order      HOLD.  External-review target only.  B01-B14 (CAM), FA01-FA10
+               (first article) and procurement remain outstanding.
+    owner      NO NEW OWNER DECISION IS REQUIRED.  One product statement is
+               NARROWED (the no-discharge table is TREG-conditioned; on the high
+               regulation corner every row is 2.45 W) and one first-five limitation
+               is stated (safety-timer expiry is cleared only by an unplug/re-plug);
+               no promised capability is removed.
+
+Round-15 rejected D-795.  **Astra** and **Fable Work** both graded it **B — engineering
+design acceptable after specific non-PCB pre-order corrections**, and both said no respin is
+established.  None is made.
+
+### 1 — `R15-01` / D796-01 + D796-08: EVERY CHARGER STATE IS HELD BY THE LOOP IT NAMES
+
+**REPRODUCED.**  D-795's `charger_operating_point` bisected the charge program for
+"junction ≤ TREG" and labelled whatever it landed on `TREG`: **44 of 480** thermally-closed
+corners carried the label with the junction **1–21 K below** the 110 °C threshold.  The
+cause is physics the model had not written down: while the DPPM loop holds the charge at an
+input limit, a lower PROGRAM changes nothing until it falls below the held charge, and then
+SYS leaps back to regulation, the input FET's drop collapses and the junction falls below
+TREG.  No static TREG state exists; the part cycles.  D-796 labels every thermally-closed
+state by its regime — `NO_TREG`, `TREG_EQUILIBRIUM` (junction AT the threshold, ±0.05 K),
+`TREG_AT_ZERO_CHARGE` (junction at or above it), or `TREG_LIMIT_CYCLE_HOT_PHASE` (the
+DPPM-held or supplementing phase, published because it is adverse for the air and the charge
+time, never labelled `TREG`).  The junction bound for a cycle is the threshold's
+time-average, a DECLARED assumption because SLUSF65B publishes no loop bandwidth.  A cold
+TREG state now fails the canonical invariants, the oracle's independent thermal-label rule,
+F12's scan of every thermally-closed state, and F14's re-check of 4336 regime-junction
+corners (396 of them limit cycles).
+
+**SUPPLEMENT UNDER THE TRIP.**  SLUSF65B §6.3.3 requires VBAT > VBUVLO to supplement;
+§6.3.7.2 disconnects BAT from SYS below it.  D-795 solved SUPPLEMENT states — with SUPPLEMENT
+histories — at 2.85 V.  VBUVLO is now carried explicitly: 3.0 V TYP with a DECLARED ±5 %
+falling band (2.85…3.15 V) and the guaranteed 190 mV `VBUVLO_HYS` MAX, so a cell re-connects
+by 3.34 V.  Every cell in that band is solved in BOTH BATFET states; with the BATFET open
+nothing supplements, a SUPPLEMENT history is not in the domain, and a load the input cannot
+carry is a **SYS collapse** — a refusal the oracle re-checks with its own classifier.  The
+lowest input-carrying power on the named adapter is **2.85 W** published (3.035 W raw).
+
+**RE-AUDITED:** NO_CHARGE, DPPM, ILIM, VINDPM, supplement, TREG and the zero-charge limit —
+every static state satisfies its arithmetic AND the controller authority that holds it.  Two
+further canonical fixes fell out: with the BATFET open, SYS below `VBAT − VBSUP1` is a valid
+NO_CHARGE state (no comparator acts), and the limit-cycle hot phase is published at the
+NOMINAL program so its label cannot depend on a checker's rounding at the switch.
+
+**THE CLAIMS.**  Junction-safe **3.900 W** is RETAINED over the corrected domain (raw
+4.1368 W, bounded at a 3.0 V cell on the low regulation corner where the zero-charge state
+enters supplement); under the trip a heavier load is a brown-out, not a junction limit.
+
+### 2 — Fable `R15-01` / D796-02: THE NO-DISCHARGE TABLE AND THE TREG-TO-ZERO SENTENCE
+
+SLUSF65B §6.3.7.6: *"If the charge current is reduced to 0, the battery supplies the current
+needed by the SYS output."*  It is ambiguous whether the input is also throttled.  D-795
+chose the benign reading silently.  **Option (B) is taken:** the model carries
+`CHARGER_MODEL_ASSUMPTIONS.treg_zero_charge_sys_source =
+AMBIGUOUS_IN_THE_PRIMARY_SOURCE_NOT_RELIED_ON`, and each no-discharge row is the lower of the
+supplement onset and the power at which the zero-charge junction reaches TREG's declared LOW
+end (90 °C) at that ambient — so no published row depends on the sentence.  The table is
+generated with **(T)** (TREG-conditioned) and **(C)** (under the trip) markers.  On the high
+regulation corner every row is **2.45 W (T)**; the qualified minimum stays **0.900 W**.
+`C-PWR-CHARGE-01` step 6 is the discriminating measurement (40 °C, high source corner, 3.8 V
+and 4.1 V cells: input current, BAT supplement, SYS, TJ and whether the input throttles once
+the charge reaches zero).  The junction claim is unaffected — the benign reading is the
+HOTTER one for the input FET, and that is the one it uses.
+
+### 3 — `R15-02` + Fable `R15-11` / D796-03: A KEY IS A CLAIM ABOUT ITS STATE
+
+Exact key multisets were necessary and not sufficient.  The oracle now PARSES every key and
+requires equality with the state behind it: cell, BATFET, system power, ILIM corner and
+value, source class rebuilt from its own primitives (VBUS and path), history, ICHG corner,
+threshold sweep, ambient and TREG for thermal states; for network rows the load set (modes,
+internal current, both accessory currents, demand) re-derived from the oracle's own product
+definition, the cell corner (a lowest-supported-cell row must be solved at its own floor,
+strictly below a full cell), SYS power balance and KVL; and the canary's load set must be
+exactly `d790_declared` at `acc_3v3_only`.  The thermal population is an exact multiset over
+source × ambient × scenario × cell × BATFET (540 states).  **Eleven new F14 controls**, each
+required to fail FOR ITS NAMED REASON: `O01` (a vbat4.221 key carrying a 4.2 V solve), `O04`
+(a lowest-cell row carrying a full-cell solve), `PM2` (the canary carrying another refused
+state's physics), a collapsed thermal population, a regime row carrying another ambient's
+evidence, a restored cold TREG state, restored supplement below VBUVLO, NO_CHARGE above DPPM
+with the CC loop active, a charge folded above DPPM without TREG, a latched supplement with no
+history, and a supplement history under the trip.  **34 of 34 F14 controls caught.**
+
+### 4 — `R15-03` + Fable `R15-04` / D796-04: A GUARANTEE IS AUTHENTICATED BY THE DOCUMENT
+
+A PDF hash plus editable JSON column metadata proved nothing about the row.
+`checks/guarantee_evidence.py` now derives every semantic from the `pdftotext -layout` text:
+the nearest table header ABOVE the row (never from the JSON), the column each cell sits under
+by character position, the direction from that column (or a MAX/MIN word, a ≤/≥ sign or a ±
+code IN the row), the unit and its fixed scale, the condition in the row's own text, and the
+key's symbol in both the row and the registry source.  **All 17 GUARANTEED keys re-audited —
+all pass, none retagged** (including the new `bq.vbuvlo_hys_max_V`, bound to the VIN = 5 V
+row and refused on the VIN = 0 V one).  **Eighteen destructive controls** — Astra's
+unrelated-row re-pin, Fable's fabricated header and three-edit attack, a MAX flipped to MIN,
+an invented MAX on a TYP-only row, a symbol swap, the wrong-condition sub-row, a shifted
+locator, a scale/unit lie, a changed document hash, an unpinned edit and a missing row — are
+all caught, and F6 requires them.
+
+### 5 — `R15-04` + Fable `R15-03`/`R15-05` / D796-05: OPERATIVE INSTRUCTIONS
+
+1. **Harness fault test:** the record's currents are now GENERATED from F6 — single-limiter
+   fault **2.8628 A** (D-795 printed 2.7536 A), worst conforming **2.2689 A** (was 2.1597 A),
+   both limiters in fault **3.8236 A**, above the BATOCP maximum so the recoverable hiccup
+   interrupts it.  F6 refuses a record that differs.
+2. **Fab notes / DEVICE_SPEC:** the 400 mA + 300 mA pair is a SIZING case, not a permitted
+   mode; both rails together are admitted only at 220 mA + 170 mA; no rail beside a radio.
+3. **The "1 A or better" / "1 A USB adapter" rows** are replaced by the named Raspberry Pi
+   15W source contract.
+4. **NFC liveness:** the revocation deadline is now the firmware's own `static_assert`ed **820 ms** (section 9); D-795's 1 s promise was violated for ~2.6 s by blocking gauge work.
+5. **`C-PWR-CHARGE-02`:** termination is judged from the measured battery current at `ITERM`,
+   the cell at `VBATREG` and the gauge — never from `STAT1` alone, which cannot tell charging
+   from complete without `STAT2`; `STAT1` LOW is a fault.
+6. **`C-DISP-01`:** the EastRising module specification IS archived and used.
+7. **`ltc4368_trip_A = 3.3333`** is deleted from F6's report; the live breaker object
+   (10 mΩ, 3.9604 A minimum, 5 A typical) is the only breaker authority.
+8. **Consistency** across DEVICE_SPEC, CURRENT_STATE, the handoff, fab notes, the first-five
+   plan, both travelers, the off-board BOM and the acceptance register is now machine-bound
+   (section 6).
+
+### 6 — Fable `R15-05` / D796-06: CRITICAL CLAIM FAMILIES, BOUND BY ROLE
+
+The semantic scans split sentences on `.` `;` and `:`, so "completion ceiling: 1.150 W"
+evaded every family.  One splitter now ends a sentence only at `.` `;` `!` `?` or a blank
+line.  New ROLE-BOUND families: the gauge window (1300 / 1293.75 ms), the quiet (3.80 V) and
+audio (3.85 V) rows, the harness currents (F6's own, in a battery/harness sentence), a
+no-discharge figure stated for the named adapter (qualified rows only — an outside-contract
+column's value is refused in that role even though it is a live REPORTED number), a generic
+charging-source rule, a radio beside an accessory rail called admitted, the full pair called a
+mode, a completion power, 288 min called a guarantee, `STAT1` read as completion, the
+EastRising spec called unobtainable, a no-discharge figure called ambient- or TREG-independent,
+supplement below the trip, an earlier release called current, and an outside-contract figure
+used as a qualified one.  **Nineteen scratch injections** (thirteen new) are each caught in
+every one of nine operative documents, and six numeric injections are each caught by their
+own family.  The scans now also cover CURRENT_STATE, the ACC_3V3 traveler and the acceptance
+register.
+
+### 7 — Fable `R15-02` / D796-07: THE SAFETY-TIMER CONSEQUENCE
+
+Every modelled full-charge estimate exceeds the 360 min TYP timer, so the consequence is now
+explicit wherever completion is discussed: if `tMAXCHG` expires first, charging is disabled
+with a NON-RECOVERABLE fault (`STAT1` LOW); `/CE` is hard-tied and cannot be toggled by
+firmware; **recovery on the first five is an unplug/re-plug of the adapter**.  288 min is an
+ENGINEERING QUALIFICATION TARGET on a TYP-only timer, not a datasheet guarantee.
+`C-PWR-CHARGE-02` gains the timer-fault branch (record elapsed time, VBAT, gauge, current and
+temperature; unplug, re-plug, record the second cycle) and a 40 °C internal-air record judged
+against the pouch window separately from the junction.  CE under firmware control is REV-B.
+
+### 8 — D796-09: FIRST-ARTICLE PROCEDURES THAT TEST THE OPEN QUESTIONS
+
+`C-PWR-CHARGE-01` step 6 (above) and a 2.85 V step that records the SYS-collapse power
+instead of holding 3.900 W under the trip; `C-PWR-CHARGE-02` (above); `C-CHG-01` records the
+minimum `U11` pin voltage under 1.1 A AND the light-load maximum on the same unit, against the
+modelled 4.6128…5.457 V range; `C-GAUGE-EPOCH-01` polls VCELL every 10 ms for 2 s after a
+supply step to observe the register cadence; `C-NFC-QUIESCE-01` lifts `NFC_CS_N` idle, inside the gauge window and inside the settled recheck and accepts revocation-and-shed within **820 ms**, with the 1347 ms rails-off operator-test exception stated;
+`C-THERM-01`'s charge record is taken at `display_audio` + `acc_3v3_only` (3.818 W, inside
+the junction-safe domain) and anything heavier is a bounded diagnostic only.
+
+### 9 — D796-10: FIRMWARE STRENGTH ITEMS
+
+The firmware agent's changes, verified by `firmware_hw_map_contract` H1–H8 (697 claims, 0 failed,
+**173/173** mutation controls caught, 11/11 H8 controls refused) and 4/4 PlatformIO environments:
+
+* **NFC revocation deadline (D796-05 item 4).**  Reproduced on D-795's image: a lost ST25R3916
+  stayed unrevoked for **2620 ms** during a blocking gauge admission, and a rail could even be
+  enabled after the loss.  The liveness period is now **500 ms**, every app-owned wait (the
+  1300 ms gauge window, the settled recheck) waits in **100 ms slices** with a probe before each,
+  a probe precedes the MAX17048 settle, and every grant (rail admission, mode entry with a rail
+  live, a non-NFC burst, an NFC session) re-proves liveness at the grant; revocation sheds the
+  rails before it prints.  The bound `kNfcRevocationDeadlineMs` = 500 + 300 (the one
+  non-preemptible settle) + 20 ms allowance = **820 ms** is `static_assert`ed and the published
+  `C-NFC-QUIESCE-01` criterion is read from it by F12.  Host sweep: 1460 admission runs plus a
+  50-point idle-loop sweep, worst **500.001 ms**.  **First-five limitation:** with both rails
+  off an operator demo test is not preemptible; the longest (`l`, 827 ms) gives **1347 ms**,
+  with nothing live to shed.
+* **NFC field ownership (D796-10).**  `beginNfcFieldSession` / `endNfcFieldSession` hold U9 via
+  the SPI-B transmit slot; while a session holds it the liveness probe and the quiesce touch
+  nothing — no 11h challenge write, no Set default, no chip select.  Host-tested.
+* **Stalled freshness clock (Fable G10).**  The host clock can be frozen; a stall at the request,
+  600 ms into the window and inside the settled recheck each fails closed with no reading and no
+  grant, with mutation controls caught.
+* **Controls:** four caller-level and eleven image-level new controls; one ("the settled recheck
+  stops polling liveness") is equivalent at image level — the 400 ms recheck is shorter than the
+  500 ms period — and is caught instead by a caller-level claim that forces the probe due
+  mid-recheck.
+
+### 10 — FOUND BY THIS CLOSEOUT (the new-defect sweep)
+
+* **The TREG limit cycle** (section 1) — a real behaviour of the part, not only a labelling
+  error; the hot phase is now the published state.
+* **The 2.85 V `C-PWR-CHARGE-01` instruction** told a technician to hold 3.900 W at a cell
+  under the BUVLO trip, where the named adapter's input-carrying limit is below it.
+* **A released F6 report carried two breaker figures** (`ltc4368_trip_A` beside `breaker`).
+* **The delivered-voltage "worst permitted mode"** in DEVICE_SPEC and the fab notes was the
+  400 + 300 mA sizing case.
+* **`C-DISP-01`** still said the EastRising specification was unobtainable after D-795
+  archived and used it.
+
+### WHAT IS NOT CLAIMED
+
+D-796 is an ANALYTICAL closure.  No copper moved.  CAM acceptance (B01–B14), first article
+(FA01–FA10), procurement and enclosure/CAD remain downstream; the TREG-to-zero behaviour, the
+charge timer path, the source range, the gauge cadence, the NFC latency and the thermal model
+are all still to be measured on hardware, and the steps that measure them now exist.
+
 ## D-795 — **ROUND-14 FULL CONVERGENCE: A GAUGE AVERAGE FROM BEFORE THE LOAD, A FIELD CONFIRMED OFF BY A DEAD BUS, A CHARGER CEILING SOLVED AT ONE CELL, AND A GUARANTEE MADE OF TWO EDITS**
 
     authority  board c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907

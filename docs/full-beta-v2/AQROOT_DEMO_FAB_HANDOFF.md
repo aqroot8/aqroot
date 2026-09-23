@@ -2,22 +2,23 @@
 
 
 
-> # **STATUS: D-795 ROUND-14 FULL-CONVERGENCE CORRECTION — EXTERNAL-REVIEW TARGET, BOARD AUTHORITY `c8eabd43` (2026-09-23).**
+> # **STATUS: D-796 ROUND-15 FULL-CONVERGENCE CORRECTION — EXTERNAL-REVIEW TARGET, BOARD AUTHORITY `c8eabd43` (2026-09-23).**
 >
-> **D-795 supersedes D-794, which Round-14 external review REJECTED.  THIS IS A REVIEW
-> TARGET, NOT A FABRICATION AUTHORIZATION — DO NOT ORDER.**  Astra graded D-794 **C — DO
-> NOT ORDER** with seven findings; Fable graded B on its full scope with non-copper
-> pre-order corrections.  **No copper, net, footprint, placement, part value or
-> protected-copper object moves at D-795** — the board sha256 is unchanged at
-> `c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907`.  Connectivity is
+> **D-796 supersedes D-795, which Round-15 external review REJECTED.  THIS IS A REVIEW
+> TARGET, NOT A FABRICATION AUTHORIZATION — DO NOT ORDER.**  Astra and Fable Work both
+> graded D-795 **B — engineering design acceptable after specific non-PCB pre-order
+> corrections**; neither established a respin.  **No copper, net, footprint, placement,
+> part value or protected-copper object moves at D-796** — the board sha256 is unchanged
+> at `c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907`.  Connectivity is
 > **174 retained / 173 connected / one owner-approved `U11.3` open / zero unapproved**.
-> The D-795 content commit is `ffa59d101dbac0b209dcb975b3eca688012f6f52`; the current MANIFEST sha256 is
-> `4f292c36411648c04c9e145eab59a0716ca16200f61f162f5da8fb299a5adc05`; the identity commit and the post-commit verification are
-> recorded in `hardware/demo/manufacturing/evidence/d795-review-target.json`.
+> The D-796 content commit, the identity commit, the MANIFEST sha256 and the post-commit
+> verification are recorded in `hardware/demo/manufacturing/evidence/d796-review-target.json`.
 >
-> **GATES ON THIS TARGET.**  19/19 standing contracts, `F1`–`F14`, `H1`–`H8` with every
-> host-test mutation caught, 8/8 host tests, 4/4 PlatformIO environments, the fab-package
-> contract, KiCad DRC and schematic parity identical in count and class to the reviewed
+> **GATES ON THIS TARGET.**  19/19 standing contracts, `F1`–`F14` (F14 now binds every
+> domain key to the physical state it labels and re-checks every thermally-closed state's
+> loop), `H1`–`H8` with every host-test mutation caught, 4/4 PlatformIO environments,
+> the fab-package contract, the guarantee-provenance verifier with its destructive
+> controls, KiCad DRC and schematic parity identical in count and class to the reviewed
 > baseline.  **PRE-ORDER ANALYTICAL: CLOSED on this target.  FAB/CAM ACCEPTANCE,
 > FIRST-ARTICLE VALIDATION and PROCUREMENT: PENDING.**
 >
@@ -25,52 +26,66 @@
 >
 > * **CHARGE ONLY FROM THE NAMED ADAPTER.**  The Raspberry Pi 15W USB-C Power Supply,
 >   part `KSA-15E-051300HU` (or its regional variant), on its own captive 1.5 m 18 AWG
->   cable.  A USB 2.0 computer port (500 mA) cannot meet the 1.1 A input limit and is
->   outside the contract.  `C-CHG-01` accepts it at `U11` pin 10 (≥ 4.6128 V).
-> * **THE CHARGE CLAIMS ARE CORRECTED.**  The junction-safe system power while charging is
->   **3.900 W** over the whole cell range and 0–40 °C.  D-794's 3.600 W was NOT a
->   no-discharge ceiling: the no-discharge boundary depends on the cell voltage and is
->   published only as the table below, whose minimum is **0.900 W** at a full cell.
->   Charge completion is a **QUALIFICATION TARGET** (`C-PWR-CHARGE-02`), not a derived
->   figure.  The heaviest charging state the production image admits has a folded-charge
->   junction of **107.0 °C**, and the internal air reaches the pouch's 40 °C charge window
->   at an external **28.7 °C** there.  The firmware cannot see the charger (no VBUS-present
->   signal on any readable pin), so these are SUPERVISED conditions (`battery_pack_contract`
->   **B8**).
-> * **THE GAUGE WINDOW IS 1300 ms AND EVERY ACCESSORY ADMISSION OWES ONE.**  A technician
->   will see a ~1.3 s pause between a rail key and the rail — five MAX17048 periods at its
->   +3.5 % time-base tolerance.  The request is its own epoch, which is what covers a
->   charger unplugged just before it.  `C-GAUGE-EPOCH-01` measures it.
-> * **THE NFC FIELD IS OFF ONLY WHEN A LIVE ST25R3916 SAYS SO.**  An all-zero or all-ones
->   SPI read can no longer confirm FIELD OFF; the part must prove its identity before and
->   after the quiesce and pass a register challenge, and a later loss of liveness revokes
->   the confirmation and sheds the rails.  `C-NFC-QUIESCE-01` exercises it.
-> * **`C-THERM-01` HOLDS AN ADMISSIBLE STATE** (`display_audio` with both rails at the
->   declared pair).  The old reference state is kept as a SIZING envelope only.
-> * **THE FAB NOTES NOW STATE THE FOUR PLATED ROUTED SLOTS (G85)** at `J3`'s shield tabs
->   and carry the B01–B14 manufacturer register (B09 is the slot acceptance).
+>   cable.  Every other adapter, cable or computer port is OUTSIDE the contract.
+>   `C-CHG-01` accepts the adapter at `U11` pin 10 (≥ 4.6128 V under the 1.1 A limit) and
+>   now also records the light-load maximum on the same unit.
+> * **THE CHARGER STATES ARE HELD BY THE LOOPS THEY NAME.**  No state is labelled thermal
+>   regulation with the junction below the threshold (D-795 had 44 such corners); where
+>   no static TREG state exists the part cycles, and the hot phase is published.  Below
+>   the BUVLO trip (2.85…3.15 V falling, re-connect ≤ 3.34 V) the battery cannot
+>   supplement: a heavier load collapses SYS — **2.85 W** is the lowest input-carrying
+>   power on the named adapter.  The junction-safe power stays **3.900 W**.
+> * **THE NO-DISCHARGE TABLE NO LONGER DEPENDS ON AN AMBIGUOUS DATASHEET SENTENCE.**  It
+>   is published only where TREG cannot fold the charge to zero at every ambient 0–40 °C;
+>   on the HIGH regulation corner every row is **2.45 W (T)**.  `C-PWR-CHARGE-01` step 6
+>   measures what the datasheet leaves open.
+> * **THE SAFETY TIMER CONSEQUENCE IS STATED.**  If `tMAXCHG` expires before termination,
+>   charging stops with a NON-RECOVERABLE fault (`STAT1` LOW); `/CE` is hard-tied, so the
+>   recovery on the first five is **unplug and re-plug the adapter**.  288 min is an
+>   engineering qualification target, not a datasheet guarantee, and completion is judged
+>   from the measured battery current, never from `STAT1` alone.
+> * **THE HARNESS FAULT TEST USES F6's CURRENTS.**  Single-limiter fault **2.8628 A** and
+>   worst conforming **2.2689 A**, generated into `BATTERY_HARNESS.json` (D-795 printed
+>   stale values).
+> * **THE 400 mA + 300 mA PAIR IS A SIZING CASE, NOT A MODE.**  Both rails together are
+>   admitted only at the declared **220 mA + 170 mA** pair, and no accessory rail is
+>   admitted while a radio transmits.
+> * **THE NFC REVOCATION DEADLINE IS THE FIRMWARE'S OWN BOUND: 820 ms.**  D-795 promised
+>   1 s while a blocking gauge admission could leave a lost ST25R3916 unrevoked for about
+>   2.6 s.  The probe period is now 500 ms and every app-owned wait polls liveness in
+>   100 ms slices, so a loss is revoked and the rails shed within 500 + 300 (the one
+>   non-preemptible MAX17048 settle) + 20 ms; `C-NFC-QUIESCE-01` measures it.  With both
+>   rails off an operator demo test may delay it by its own length (worst 1347 ms, the
+>   827 ms backlight ramp) — nothing is live to shed, and every grant re-proves
+>   liveness first.
+> * **`C-THERM-01`** holds `display_audio` with both rails at the declared pair, and its
+>   charge record is taken at `display_audio` + `acc_3v3_only` (3.818 W), inside the
+>   junction-safe domain.
 > * **Unchanged:** retention **3.20 V**, first-rail enable **3.85 V**, second-rail enable
->   **3.85 V**, the declared simultaneous pair **220 mA + 170 mA**, the full pair
->   **not supported at any ambient in the declared 0–40 °C envelope**, the internal `+3V3`
->   peak envelope **1.402034 A**, the itemised harness **177.478 mΩ** and fixed series path
->   **355.204 mΩ**, and the backlight inductor's **57.4 mΩ** DCR maximum.
+>   **3.85 V**, the quiet row **3.80 V** and the audio row **3.85 V**, the **1300 ms** gauge
+>   window, the internal `+3V3` peak envelope **1.402034 A**, the itemised harness
+>   **177.478 mΩ** and fixed series path **355.204 mΩ**, and the backlight inductor's
+>   **57.4 mΩ** DCR maximum.
 >
 > ### The no-discharge envelope (generated by F12)
 >
-> | cell voltage | rpi15w_high | rpi15w_low | generic_typec_24awg_2m *(outside the contract)* | unqualified_28awg_2m *(outside the contract)* |
-> |---|---|---|---|---|
-> | 2.850 V | **3.40 W** | **3.20 W** | **2.95 W** | **2.70 W** |
-> | 3.000 V | **2.85 W** | **2.85 W** | **2.85 W** | **2.85 W** |
-> | 3.200 V | **3.05 W** | **3.05 W** | **3.05 W** | **3.00 W** |
-> | 3.400 V | **3.25 W** | **3.25 W** | **3.25 W** | **2.95 W** |
-> | 3.500 V | **3.35 W** | **3.35 W** | **3.35 W** | **2.80 W** |
-> | 3.520 V | **3.35 W** | **3.35 W** | **3.35 W** | **2.50 W** |
-> | 3.600 V | **3.45 W** | **3.45 W** | **3.45 W** | **2.30 W** |
-> | 3.800 V | **3.60 W** | **3.60 W** | **3.60 W** | **1.65 W** |
-> | 4.000 V | **3.80 W** | **3.80 W** | **2.20 W** | **0.95 W** |
-> | 4.100 V | **3.90 W** | **3.90 W** | **1.35 W** | **0.60 W** |
-> | 4.200 V | **4.00 W** | **1.65 W** | **0.50 W** | **0.20 W** |
-> | 4.221 V | **4.00 W** | **0.90 W** | **0.30 W** | **0.10 W** |
+> **(T)** = TREG-conditioned; **(C)** = under the BUVLO trip (nothing supplements; a
+> heavier load collapses SYS); unmarked = the supplement onset.
+>
+> | cell voltage | BATFET | rpi15w_high | rpi15w_low | generic_typec_24awg_2m *(outside the contract)* | unqualified_28awg_2m *(outside the contract)* |
+> |---|---|---|---|---|---|
+> | 2.850 V | uvlo_open | **2.45 W** (T) | **3.20 W** (C) | **2.95 W** (C) | **2.70 W** (C) |
+> | 3.000 V | connected / uvlo_open | **2.45 W** (T) | **2.85 W** (C) | **2.85 W** (C) | **2.85 W** (C) |
+> | 3.200 V | connected / uvlo_open | **2.45 W** (T) | **3.05 W** (C) | **3.05 W** (C) | **3.00 W** (C) |
+> | 3.400 V | connected | **2.45 W** (T) | **3.25 W** | **3.25 W** | **2.95 W** |
+> | 3.500 V | connected | **2.45 W** (T) | **3.35 W** | **3.35 W** (T) | **2.80 W** |
+> | 3.520 V | connected | **2.45 W** (T) | **3.35 W** | **3.35 W** (T) | **2.50 W** |
+> | 3.600 V | connected | **2.45 W** (T) | **3.45 W** | **3.45 W** (T) | **2.30 W** |
+> | 3.800 V | connected | **2.45 W** (T) | **3.60 W** (T) | **3.60 W** (T) | **1.65 W** |
+> | 4.000 V | connected | **2.45 W** (T) | **3.80 W** (T) | **2.20 W** | **0.95 W** |
+> | 4.100 V | connected | **2.45 W** (T) | **3.90 W** (T) | **1.35 W** | **0.60 W** |
+> | 4.200 V | connected | **2.45 W** (T) | **1.65 W** | **0.50 W** | **0.20 W** |
+> | 4.221 V | connected | **2.45 W** (T) | **0.90 W** | **0.30 W** | **0.10 W** |
 >
 > ### The in-tree acceptance register (generated by F12)
 >
@@ -106,7 +121,7 @@
 >
 > ### **THE FOUR GATES, KEPT APART ON PURPOSE**
 >
-> | gate | D-795 status |
+> | gate | D-796 status |
 > |---|---|
 > | **PRE-ORDER ANALYTICAL** | **CLOSED on this target** |
 > | **FAB / CAM ACCEPTANCE** | **PENDING** — B01–B14 above |
@@ -114,6 +129,59 @@
 > | **PROCUREMENT** | **PENDING** — nine constrained fitted groups plus the AOS pass-pair allocation, `SOURCING_LEDGER.md` §4a |
 
 
+> # **D-795 ROUND-14 FULL-CONVERGENCE CORRECTION — HISTORICAL, SUPERSEDED BY THE D-796 BLOCK ABOVE (REJECTED by Round-15)**
+>
+> **D-795 supersedes D-794, which Round-14 external review REJECTED.  THIS IS A REVIEW
+> TARGET, NOT A FABRICATION AUTHORIZATION — DO NOT ORDER.**  Astra graded D-794 **C — DO
+> NOT ORDER** with seven findings; Fable graded B on its full scope with non-copper
+> pre-order corrections.  **No copper, net, footprint, placement, part value or
+> protected-copper object moves at D-795** — the board sha256 is unchanged at
+> `c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907`.  Connectivity is
+> **174 retained / 173 connected / one owner-approved `U11.3` open / zero unapproved**.
+> The D-795 content commit is `ffa59d101dbac0b209dcb975b3eca688012f6f52`; the current MANIFEST sha256 is
+> `4f292c36411648c04c9e145eab59a0716ca16200f61f162f5da8fb299a5adc05`; the identity commit and the post-commit verification are
+> recorded in `hardware/demo/manufacturing/evidence/d795-review-target.json`.
+>
+> **GATES ON THIS TARGET.**  19/19 standing contracts, `F1`–`F14`, `H1`–`H8` with every
+> host-test mutation caught, 8/8 host tests, 4/4 PlatformIO environments, the fab-package
+> contract, KiCad DRC and schematic parity identical in count and class to the reviewed
+> baseline.  **PRE-ORDER ANALYTICAL: CLOSED on this target.  FAB/CAM ACCEPTANCE,
+> FIRST-ARTICLE VALIDATION and PROCUREMENT: PENDING.**
+>
+> ### What D-795 changed — HISTORICAL
+>
+> * **CHARGE ONLY FROM THE NAMED ADAPTER.**  The Raspberry Pi 15W USB-C Power Supply,
+>   part `KSA-15E-051300HU` (or its regional variant), on its own captive 1.5 m 18 AWG
+>   cable.  A USB 2.0 computer port (500 mA) cannot meet the 1.1 A input limit and is
+>   outside the contract.  `C-CHG-01` accepts it at `U11` pin 10 (≥ 4.6128 V).
+> * **THE CHARGE CLAIMS ARE CORRECTED.**  The junction-safe system power while charging is
+>   **3.900 W** over the whole cell range and 0–40 °C.  D-794's 3.600 W was NOT a
+>   no-discharge ceiling: the no-discharge boundary depends on the cell voltage and is
+>   published only as the table below, whose minimum is **0.900 W** at a full cell.
+>   Charge completion is a **QUALIFICATION TARGET** (`C-PWR-CHARGE-02`), not a derived
+>   figure.  The heaviest charging state the production image admits has a folded-charge
+>   junction of **107.0 °C**, and the internal air reaches the pouch's 40 °C charge window
+>   at an external **28.7 °C** there.  The firmware cannot see the charger (no VBUS-present
+>   signal on any readable pin), so these are SUPERVISED conditions (`battery_pack_contract`
+>   **B8**).
+> * **THE GAUGE WINDOW IS 1300 ms AND EVERY ACCESSORY ADMISSION OWES ONE.**  A technician
+>   will see a ~1.3 s pause between a rail key and the rail — five MAX17048 periods at its
+>   +3.5 % time-base tolerance.  The request is its own epoch, which is what covers a
+>   charger unplugged just before it.  `C-GAUGE-EPOCH-01` measures it.
+> * **THE NFC FIELD IS OFF ONLY WHEN A LIVE ST25R3916 SAYS SO.**  An all-zero or all-ones
+>   SPI read can no longer confirm FIELD OFF; the part must prove its identity before and
+>   after the quiesce and pass a register challenge, and a later loss of liveness revokes
+>   the confirmation and sheds the rails.  `C-NFC-QUIESCE-01` exercises it.
+> * **`C-THERM-01` HOLDS AN ADMISSIBLE STATE** (`display_audio` with both rails at the
+>   declared pair).  The old reference state is kept as a SIZING envelope only.
+> * **THE FAB NOTES NOW STATE THE FOUR PLATED ROUTED SLOTS (G85)** at `J3`'s shield tabs
+>   and carry the B01–B14 manufacturer register (B09 is the slot acceptance).
+> * **Unchanged:** retention **3.20 V**, first-rail enable **3.85 V**, second-rail enable
+>   **3.85 V**, the declared simultaneous pair **220 mA + 170 mA**, the full pair
+>   **not supported at any ambient in the declared 0–40 °C envelope**, the internal `+3V3`
+>   peak envelope **1.402034 A**, the itemised harness **177.478 mΩ** and fixed series path
+>   **355.204 mΩ**, and the backlight inductor's **57.4 mΩ** DCR maximum.
+>
 > # **D-793 ROUND-12 FULL-CONVERGENCE CORRECTION — HISTORICAL, SUPERSEDED BY THE D-795 BLOCK ABOVE (its charge figures, its C-THERM-01 state and its source contract are RETIRED).**
 >
 > **D-793 supersedes D-792, which Round-12 external review REJECTED.  THIS IS A

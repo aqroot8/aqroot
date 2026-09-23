@@ -163,6 +163,24 @@ bool logHas(const char *needle) {
 
 using App = DemoBringupApp<BoardBus, void (*)(const char *)>;
 
+// D-796 / D796-10: a hardware-free liveness probe the app can schedule, which
+// counts how often it is asked -- every call on silicon is a challenge write
+// to register 11h.
+int g_probe_calls = 0;
+uint64_t g_first_lost_probe_us = 0;
+NfcLivenessResult g_probe_answer = NfcLivenessResult::Alive;
+NfcLivenessResult countingProbe(uint8_t *identity) {
+  ++g_probe_calls;
+  if (g_probe_answer == NfcLivenessResult::Lost && g_first_lost_probe_us == 0) {
+    g_first_lost_probe_us = aqroot_hal::recorder().clock_us;
+  }
+  if (identity) *identity = 0x2A;
+  return g_probe_answer;
+}
+struct NullSelects : ChipSelects {
+  void driveSelect(SpiBDevice, bool) override {}
+};
+
 struct Rig {
   BoardBus bus;
   DemoExpanders expanders;
@@ -919,6 +937,123 @@ int main() {
           && logHas("the physical field state of U9"));
     claim("no liveness probe is scheduled while UNKNOWN -- the quiesce retry "
           "owns recovery", !r.app.nfcLivenessDue());
+  }
+
+  // =========================================================================
+  // D-796 / D796-10.  A FIELD-OWNING NFC SESSION OWNS U9, AND THE LIVENESS
+  // PROBE -- EVERY CALL OF WHICH WRITES REGISTER 11h -- STANDS DOWN FOR IT.
+  // =========================================================================
+  {
+    Rig r;
+    r.bringUp();
+    NullSelects selects;
+    SpiBusB spi(selects);
+    g_probe_calls = 0;
+    g_probe_answer = NfcLivenessResult::Alive;
+    r.app.setNfcLivenessProbe(&countingProbe);
+    delay(kNfcLivenessPeriodMs + 1);
+    (void)r.app.serviceNfcLiveness();
+    claim("D796-10 model: with no session the attached probe is scheduled",
+          g_probe_calls == 1 && r.app.nfcFieldConfirmedOff());
+    const bool began = r.app.beginNfcFieldSession(spi);
+    const int calls_at_begin = g_probe_calls;
+    claim("D796-10: a confirmed-quiet, live U9 with no rail live may begin a "
+          "field session, which takes the SPI-B ownership token and the "
+          "burst slot", began && nfcFieldSessionOwnsU9(spi)
+          && r.app.burstArbiter().active() == BurstLoad::NfcField);
+    claim("...and the session request itself re-proved liveness first",
+          calls_at_begin == 2);
+    claim("...and the session WITHDRAWS the OFF confirmation, because the "
+          "field is now on by design", !r.app.nfcFieldConfirmedOff());
+    for (int i = 0; i < 10; ++i) {
+      delay(kNfcLivenessPeriodMs + 1);
+      (void)r.app.serviceNfcLiveness();
+      (void)r.app.serviceNfcLiveness(/*force=*/true);
+    }
+    claim("D796-10: while the session owns U9 the liveness probe is never "
+          "run -- neither scheduled nor forced -- so it cannot write 11h "
+          "under the session's field", g_probe_calls == calls_at_begin);
+    r.app.noteNfcFieldQuiesced(true, 0x00);
+    claim("...and no quiesce verdict can restore a confirmation while the "
+          "session holds the part",
+          !r.app.nfcFieldConfirmedOff() && r.app.nfcFieldSessionActive());
+    r.bus.vcell_counts = 51200;
+    claim("...and no accessory rail is admitted beside the session's field",
+          !r.app.accessoryBatteryAllows(false));
+    claim("...and a second session is refused",
+          !r.app.beginNfcFieldSession(spi));
+    r.app.endNfcFieldSession(spi);
+    claim("D796-10: ending the session releases the token but NOT the "
+          "confirmation -- the field is UNKNOWN and U9 keeps the slot until "
+          "a quiesce re-proves it off",
+          !nfcFieldSessionOwnsU9(spi) && !r.app.nfcFieldSessionActive()
+          && !r.app.nfcFieldConfirmedOff()
+          && r.app.burstArbiter().active() == BurstLoad::NfcField);
+    r.app.noteNfcFieldQuiesced(true, 0x00);
+    delay(kNfcLivenessPeriodMs + 1);
+    (void)r.app.serviceNfcLiveness();
+    claim("...and once the field is re-proved off the probe is scheduled "
+          "again", r.app.nfcFieldConfirmedOff()
+          && g_probe_calls == calls_at_begin + 1);
+  }
+  {
+    Rig r;
+    r.bringUp();
+    NullSelects selects;
+    SpiBusB spi(selects);
+    g_probe_calls = 0;
+    g_probe_answer = NfcLivenessResult::Alive;
+    r.app.setNfcLivenessProbe(&countingProbe);
+    r.bus.vcell_counts = 51200;
+    (void)r.app.handleAccessoryConsole('3');
+    claim("D796-10: a session is refused while an accessory rail is live",
+          r.app.acc3v3() && !r.app.beginNfcFieldSession(spi)
+          && !nfcFieldSessionOwnsU9(spi)
+          && logHas("NFC field session REFUSED"));
+    (void)r.app.handleAccessoryConsole('3');
+    g_probe_answer = NfcLivenessResult::Lost;
+    claim("...and so is one whose part fails the liveness proof at the "
+          "request, which REVOKES the confirmation instead",
+          !r.app.acc3v3() && !r.app.beginNfcFieldSession(spi)
+          && !nfcFieldSessionOwnsU9(spi) && !r.app.nfcFieldConfirmedOff()
+          && r.app.nfcRevocations() == 1);
+  }
+
+  {
+    // D-796 / C-NFC-QUIESCE-01.  THE SETTLED RECHECK KEEPS THE SCHEDULE.
+    //
+    // In the shipped image this cannot be seen from outside: every rail
+    // admission re-proves liveness AT the grant, and the 400 ms recheck that
+    // follows is shorter than the 500 ms period, so no probe falls due inside
+    // it.  That makes the recheck's polling an equivalent mutant AT IMAGE
+    // LEVEL -- and the reason is a coincidence of two constants, not a design
+    // rule.  So it is claimed HERE, directly: with the probe falling due
+    // part-way through the recheck, the loss is revoked INSIDE it -- within
+    // one period plus one slice of the last proof -- rather than after the
+    // whole unpolled settle.
+    Rig r;
+    r.bringUp();
+    g_probe_calls = 0;
+    g_first_lost_probe_us = 0;
+    g_probe_answer = NfcLivenessResult::Alive;
+    r.app.setNfcLivenessProbe(&countingProbe);
+    r.bus.vcell_counts = 51200;
+    (void)r.app.handleAccessoryConsole('3');
+    delay(kNfcLivenessPeriodMs + 1);
+    (void)r.app.serviceNfcLiveness();       // the last proof, at t0
+    const uint64_t t0 = aqroot_hal::recorder().clock_us;
+    delay(250);                             // the probe falls due mid-recheck
+    g_probe_answer = NfcLivenessResult::Lost;
+    r.app.settledAccessoryRecheck("D-796 recheck");
+    const uint64_t bound_us =
+        uint64_t(kNfcLivenessPeriodMs + kNfcLivenessPollSliceMs) * 1000u;
+    claim("C-NFC-QUIESCE-01: a U9 lost during the settled recheck is revoked "
+          "INSIDE the recheck, within one period plus one 100 ms slice of the "
+          "last proof (600 ms), not after the whole 400 ms settle",
+          g_first_lost_probe_us != 0 && g_first_lost_probe_us - t0 <= bound_us
+          && r.app.nfcRevocations() == 1);
+    claim("...and the rail granted before it is shed", !r.app.acc3v3());
+    g_probe_answer = NfcLivenessResult::Alive;
   }
 
   std::printf("\n%s -- %d failure(s)\n", failures ? "FAIL" : "PASS", failures);

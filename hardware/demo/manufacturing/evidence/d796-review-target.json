@@ -1,0 +1,92 @@
+{
+ "beta_v2_untouched": true,
+ "board": "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_changes": [],
+ "board_sha256": "c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907",
+ "branch": "aqroot-demo",
+ "closed_here": {
+  "astra_round_15": [
+   "R15-01",
+   "R15-02",
+   "R15-03",
+   "R15-04"
+  ],
+  "fable_work_round_15": [
+   "R15-01",
+   "R15-02",
+   "R15-03",
+   "R15-04",
+   "R15-05",
+   "R15-06",
+   "R15-07",
+   "R15-08",
+   "R15-09",
+   "R15-10",
+   "R15-11"
+  ],
+  "found_by_this_closeout": [
+   "TREG has no static equilibrium at the DPPM/input-limit boundary: a limit cycle, hot phase published",
+   "C-PWR-CHARGE-01 told a technician to hold 3.900 W at 2.85 V, under the BUVLO trip where the input cannot carry it",
+   "F6 printed a second, retired breaker figure (ltc4368_trip_A 3.3333 A) beside the live breaker object",
+   "the delivered-voltage 'worst permitted mode' was the 400 + 300 mA SIZING case",
+   "C-DISP-01 still called the archived EastRising specification unobtainable",
+   "placement/rf_symmetry contracts prepended the system dist-packages path (could import KiCad 7)"
+  ],
+  "mandatory_items": [
+   "D796-01",
+   "D796-02",
+   "D796-03",
+   "D796-04",
+   "D796-05",
+   "D796-06",
+   "D796-07",
+   "D796-08",
+   "D796-09",
+   "D796-10"
+  ]
+ },
+ "content_commit": "recorded by the identity commit",
+ "decision": "D-796",
+ "gates": {
+  "battery_pack": "PASS",
+  "demo_feature": "F1-F14 PASS; F14 34/34 mutation controls caught",
+  "fab_package": "PASS",
+  "firmware_hw_map": "H1-H8 PASS; 697 claims; 173/173 controls caught",
+  "guarantee_evidence": "17/17 GUARANTEED keys authenticated; 18 destructive controls caught",
+  "kicad_drc_parity": "identical in count and class to d795",
+  "platformio": "4/4 (esp32-s3-aqroot, wokwi, esp32-s3-aqroot-dm, aqroot-demo)",
+  "rail_ampacity": "all_ok",
+  "routing_ledger": {
+   "approved_unrouted_edges": 1,
+   "connected_retained_nets": 173,
+   "retained_multi_pad_nets": 174,
+   "unapproved_open_edges": 0
+  },
+  "sourcing": "nine constrained groups, unchanged from d795",
+  "standing_contracts": "19/19 PASS (contract_regression vs d795: substantive difference only in demo_feature and firmware_hw_map, by design)"
+ },
+ "identity_commit": "the commit that records the content commit's SHA; a commit cannot contain its own",
+ "manifest": "hardware/demo/fab/MANIFEST.json",
+ "manifest_sha256": "1eff3181cc57d80b46b145105450ccefb71d9b58b9a10357857d573195486cc7",
+ "no_copper_change": true,
+ "order_status": {
+  "FAB_CAM_ACCEPTANCE": "PENDING (B01-B14)",
+  "FIRST_ARTICLE_VALIDATION": "PENDING (FA01-FA10)",
+  "PRE_ORDER_ANALYTICAL": "CLOSED on this target",
+  "PROCUREMENT": "PENDING"
+ },
+ "parent_rejected_by_round_15": "3eb6a6d3dd753fb561cce08cfb6f2d70429af559",
+ "post_commit_verification": null,
+ "product_facing": {
+  "charging_source": "Raspberry Pi 15W USB-C Power Supply KSA-15E-051300HU (regional variants), captive 1.5 m 18 AWG",
+  "harness_single_limiter_fault_A": 2.8628,
+  "harness_worst_conforming_A": 2.2689,
+  "high_corner_no_discharge_W": 2.45,
+  "input_carrying_below_vbuvlo_W": 2.85,
+  "junction_safe_system_W": 3.9,
+  "nfc_rails_off_operator_test_worst_ms": 1347,
+  "nfc_revocation_deadline_ms": 820,
+  "universal_no_discharge_W": 0.9
+ },
+ "schema": 1
+}

@@ -28,6 +28,27 @@ namespace aqroot {
 
 enum class SpiBDevice : uint8_t { None = 0, Cc1101, Sx1262, St25r3916 };
 
+// D-796 / D796-05 item 4 + D796-10.  WHAT ONE ST25R3916 LIVENESS PROBE PROVED.
+//
+// `Deferred` is NOT a verdict about the part.  It means the probe did not
+// touch U9 at all -- because SPI-B was already selected by someone else, or
+// because a FIELD-OWNING NFC SESSION holds the part (D796-10: the session,
+// not the probe, owns register 11h while the field is its own).  A deferred
+// probe neither extends an OFF confirmation nor revokes one; the scheduler
+// keeps it DUE so the next opportunity asks again.
+enum class NfcLivenessResult : uint8_t { Alive = 0, Lost, Deferred };
+
+// D-796 / D796-10.  THE OWNERSHIP TOKEN FOR A FIELD-OWNING NFC SESSION IS THE
+// SPI-B TRANSMIT SLOT.  Future firmware that turns the ST25R3916's field on
+// does so only after `SpiBusB::beginTransmit(SpiBDevice::St25r3916)` succeeds
+// (normally through `DemoBringupApp::beginNfcFieldSession`), and holds it
+// until the field is off again.  While it is held, the liveness probe and the
+// quiesce in `aqroot_demo_radios.h` refuse to touch U9 -- no challenge write
+// to 11h, no Set default, not even a chip select.  The shipped bring-up image
+// never takes the token: it never turns the field on in normal operation.
+class SpiBusB;
+inline bool nfcFieldSessionOwnsU9(const SpiBusB &bus);
+
 // D-792 / R11-04.  THE MODE EDGE OF THE ACCESSORY PERMISSION, PUT WHERE THE
 // MODE IS ACTUALLY KEYED.
 //
@@ -170,6 +191,10 @@ class SpiBusB {
   SpiBDevice transmitting_;
   AccessoryLoadAuthority *authority_;
 };
+
+inline bool nfcFieldSessionOwnsU9(const SpiBusB &bus) {
+  return bus.transmitting() == SpiBDevice::St25r3916;
+}
 
 }  // namespace aqroot
 

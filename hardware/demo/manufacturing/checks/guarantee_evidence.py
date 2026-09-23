@@ -1,68 +1,129 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""AQROOT Demo -- D-795 / R14-06.  A GUARANTEE IS BOUND TO A PRIMARY ROW.
+"""AQROOT Demo -- D-795 / R14-06, D-796 / R15-03 + R15-04.
+A GUARANTEE IS BOUND TO THE PRIMARY ROW THE DOCUMENT ITSELF PUBLISHES.
 
-ROUND-14, IN ITS OWN WORDS: "a TYP-only row cannot become GUARANTEED by
-changing the tag plus adding a row to a mutable allow-list.  GUARANTEED_*
-must be bound to immutable/hashed primary-source evidence whose row/condition
-actually has min/max guarantee semantics.  Reject evidence text/conditions
-containing TYP/typical/no min/max when asked to support a guarantee.  Put
-GUARANTEED_ROWS/source facts in separately hashed evidence or derive from
-archived primary docs; do not let two source edits manufacture certainty."
+ROUND-14 moved the guaranteed rows out of the model into
+`evidence/guaranteed-rows.json`, pinned by sha256, and re-found each row's
+text in its archived primary document.  ROUND-15 (Astra R15-03, Fable R15-04)
+showed that this still trusted the JSON for everything that MEANS anything:
 
-D-794's `GUARANTEED_ROWS` was a dict in the model: relabel a typical as
-GUARANTEED_MAX, add one line to the dict naming a real document and a real
-row token, and the audit passed -- two edits in one file.
+  * Astra's UNRELATED-ROW REPIN: point a key at a genuine but unrelated row of
+    the same hashed PDF, re-pin the JSON -- accepted, because the row text was
+    real and nothing asked whether it was THIS quantity's row;
+  * Fable's FABRICATED HEADER: the JSON said which columns the row had and
+    which of them was MIN/TYP/MAX; a TYP-only row could be given a MAX header;
+  * Fable's THREE-EDIT ATTACK: retag a typical, add a JSON row, re-pin.
 
-WHAT REPLACES IT.  `evidence/guaranteed-rows.json` names, for every
-GUARANTEED_* key, an ARCHIVED document by path and sha256, and the VERBATIM
-row the value is read from, with its column semantics.  At release time this
-module:
+WHAT THE JSON MAY NOW SAY, AND WHAT IT MAY NOT.  An evidence row carries a
+LOCATOR and a set of CLAIMS.  The locator is `line`, a 0-based index into the
+document's `pdftotext -layout` text, plus `row_text`, that line verbatim
+(whitespace-normalised) -- if either drifts, the row is refused, loudly.  The
+claims (`symbol`, `parameter`, `condition`, `table_condition`, `unit`,
+`scale`, `value_token`, `bound`, `published_columns`) are each RECOMPUTED FROM
+THE DOCUMENT and compared; the JSON can only be refused by being wrong.  From
+the document text alone this module derives:
 
-  1  checks the evidence file against the sha256 PINNED in
-     `aqroot_power_model.GUARANTEE_EVIDENCE_SHA256`;
-  2  checks every document against its own pinned sha256;
-  3  EXTRACTS the document's text (pdftotext -layout) and requires the row --
-     every one of its lines, whitespace-normalised, in order -- to be in it;
-  4  requires the row's COLUMNS to appear in it, the value to sit in a MIN or
-     MAX column (or behind a MAX/MIN word, a <= / >= sign, or a +/- tolerance
-     code), and refuses a row whose header has a TYP column and nothing else;
-  5  refuses TYP/typical/"no min"/"TYP only" in the condition of anything asked
-     to carry a guarantee; and
-  6  requires every GUARANTEED_* registry entry to have evidence, and every
-     evidence entry to belong to a GUARANTEED_* entry of the same value.
+  identity   the document's sha256 and an identity token in its own text;
+  header     the table header nearest ABOVE the row on the same page -- a
+             MIN/TYP/MAX/UNIT header, an ITEM ... REQUIREMENT header, or (for
+             an ordering-code list) the list heading above the bullet;
+  columns    every cell of the row is placed under the header label whose
+             centre is nearest its own centre in the -layout text, so WHICH
+             column a number sits in is the document's, not the JSON's;
+  symbol     the row's own symbol cell (or, for a sub-row, the symbol cell
+             beside it plus the symbol named in the sub-row's own condition,
+             or the item number vertically centred inside the value's cell);
+             it must equal the claim AND be named by the registry entry's own
+             source text -- so re-pointing a key needs the model edited too;
+  value      the published cell whose number x the unit's CANONICAL scale is
+             the registry value -- scale is a function of the document's unit,
+             never a free JSON number;
+  direction  MIN or MAX from the column the value sits in; for a requirement
+             cell, a MAX./MIN. word attached to it or a <= / >= sign before
+             it; for an ordering code, a +/- tolerance.  GUARANTEED_MAX needs
+             MAX, GUARANTEED_MIN needs MIN, GUARANTEED_ROC needs the claimed
+             one.  A value in a TYP column can never carry a guarantee;
+  unit       the row's own unit cell (or the unit attached to the value), whose
+             dimension must also match the registry key's unit suffix;
+  condition  the claimed condition must be in the row's own condition text
+             (its line plus value-free continuation lines, never a sibling
+             sub-row), and the claimed table condition in the table preamble.
 
-So manufacturing certainty for a typical now takes a vendor PDF that
-publishes a MIN or MAX column for it -- which is the point.
+So certainty for a quantity takes a hashed vendor document that publishes a
+MIN or MAX for THAT symbol, at THAT condition, in THAT unit.  The Round-15
+attacks, and the other ways a transcription can lie, are executable
+destructive controls in `destructive_controls()`, run on in-memory copies
+only; `verdict()` requires every one of them to be caught for the reason it
+exists, and an unmutated copy to pass.
 """
 
+import copy
 import hashlib
 import json
 import re
 import subprocess
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[4]
 EVIDENCE = ROOT / "hardware/demo/manufacturing/evidence/guaranteed-rows.json"
-GUARANTEED_SEMANTICS = ("MIN", "MAX", "MAX_WORD", "MIN_WORD", "LE_SIGN",
-                        "GE_SIGN", "TOLERANCE_CODE")
-TYP_WORDS = re.compile(r"\btyp(ical)?\b|typ only|no min|no max|\bTYP\b",
-                       re.I)
+SCHEMA = "aqroot-guarantee-evidence/2"
+TYP_WORDS = re.compile(r"\btyp(ical)?\b|typ only|no min|no max", re.I)
+
+# The document's unit decides the scale and the dimension.  These are
+# physics, not evidence: they are not in the JSON and cannot be edited there.
+UNITS = {
+    "A": (1.0, "A"), "mA": (1e-3, "A"),
+    "V": (1.0, "V"), "mV": (1e-3, "V"),
+    "Ω": (1.0, "ohm"), "mΩ": (1e-3, "ohm"), "milliohms": (1e-3, "ohm"),
+    "AΩ": (1.0, "AOhm"),
+    "%": (1e-2, "1"),
+}
+KEY_SUFFIX_DIMENSION = {"A": "A", "V": "V", "ohm": "ohm", "AOhm": "AOhm"}
+
+_MMT_LABELS = {"min", "typ", "max", "nom", "unit"}
+_REQ_LABELS = {"requirement", "specifications"}
+_CELL = re.compile(r"\S+(?: \S+)*")
+_NUM = re.compile(r"^[-+]?\d+(?:\.\d+)?$")
+_SYMBOL_SHAPE = re.compile(r"^(?:[A-Z][A-Za-z0-9_]*(?: [A-Z]{1,4})?"
+                           r"|\d+(?:\.\d+)+)$")
+_REQ_VALUE = re.compile(
+    r"^(?P<pre>[≤≥])?\s*(?P<num>[-+]?\d+(?:\.\d+)?)\s*"
+    r"(?P<unit>[A-Za-zΩ%]+)(?:\s+(?P<word>MAX|MIN)\.?)?$")
+_LIST_VALUE = re.compile(
+    r"^•\s*(?P<code>[A-Z0-9]{1,3})\s*=\s*±\s*(?P<num>\d+(?:\.\d+)?)\s*"
+    r"(?P<unit>%)$")
+
+
+def _glyphs(t):
+    # One spelling per glyph: en dash and minus sign as '-', the ohm sign
+    # (U+2126) as capital omega (U+03A9) -- PDF extraction emits either.
+    t = (t or "").replace("–", "-").replace("−", "-")
+    return t.replace("Ω", "Ω")
 
 
 def _norm(t):
-    # One spelling per glyph: en dash and minus sign as '-', the ohm sign
-    # (U+2126) as capital omega (U+03A9) -- PDF extraction emits either.
-    t = (t or "").replace("\u2013", "-").replace("\u2212", "-")
-    t = t.replace("\u2126", "\u03a9")
-    return re.sub(r"\s+", " ", t).strip()
+    return re.sub(r"\s+", " ", _glyphs(t)).strip()
+
+
+def _squash(t):
+    return re.sub(r"\s+", "", _glyphs(t)).casefold()
+
+
+def _sha_bytes(b):
+    return hashlib.sha256(b).hexdigest()
+
+
+_SHA_CACHE = {}
+_TEXT_CACHE = {}
 
 
 def _sha(path):
-    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
-
-
-_TEXT_CACHE = {}
+    path = Path(path)
+    if path not in _SHA_CACHE:
+        _SHA_CACHE[path] = _sha_bytes(path.read_bytes())
+    return _SHA_CACHE[path]
 
 
 def document_text(path):
@@ -79,77 +140,418 @@ def document_text(path):
     return txt
 
 
-def _row_in_text(lines, text):
-    """Every line of the row, normalised, appears in the document, in order,
-    within a few lines of the previous one."""
-    doc = [_norm(x) for x in text.splitlines()]
-    want = [_norm(x) for x in lines]
-    for i, d in enumerate(doc):
-        if want[0] not in d:
-            continue
-        j, ok = i, True
-        for w in want[1:]:
-            hit = next((k for k in range(j + 1, min(j + 5, len(doc)))
-                        if w in doc[k]), None)
-            if hit is None:
-                ok = False
+def document_lines(path):
+    # split on '\n' ONLY: str.splitlines() would also split on the form feed
+    # pdftotext puts at each page start, and shift every locator.
+    return document_text(path).split("\n")
+
+
+def _cells(line):
+    line = _glyphs(line.expandtabs(8))
+    return [dict(s=m.start(), e=m.end(), c=(m.start() + m.end()) / 2.0,
+                 t=m.group()) for m in _CELL.finditer(line)]
+
+
+def _is_page_start(line):
+    return "\f" in line
+
+
+# ---------------------------------------------------------------- header --
+def _header_of(cells):
+    labs = [c["t"].casefold() for c in cells]
+    if len(set(labs) & _MMT_LABELS) >= 3 and ({"min", "max"} & set(labs)):
+        return "TABLE"
+    if (set(labs) & _REQ_LABELS) and labs and labs[0] == "item":
+        return "REQUIREMENT"
+    return None
+
+
+def find_header(lines, i, reach=150):
+    """The nearest table header ABOVE line i, on the same page."""
+    for k in range(i - 1, max(-1, i - reach), -1):
+        cells = _cells(lines[k])
+        kind = _header_of(cells)
+        if kind:
+            return k, kind, cells
+        if _is_page_start(lines[k]):
+            return None
+    return None
+
+
+def _preamble(lines, h):
+    out = []
+    for k in range(h - 1, max(-1, h - 6), -1):
+        if lines[k].strip():
+            out.append(_norm(lines[k]))
+        if len(out) == 3 or _is_page_start(lines[k]):
+            break
+    return " ".join(reversed(out))
+
+
+def _label_of(cell, header):
+    best = sorted(header, key=lambda h: abs(h["c"] - cell["c"]))
+    return best[0]["t"].upper() if best else None
+
+
+def _symbol_cell(cells, header):
+    """A line's symbol cell: its first cell, symbol-shaped, ending before the
+    header's second label starts."""
+    if not cells or len(header) < 2:
+        return None
+    c = cells[0]
+    if c["e"] < header[1]["s"] and _SYMBOL_SHAPE.match(c["t"]):
+        return c["t"]
+    return None
+
+
+def _value_cells(cells, header, kind):
+    out = []
+    for c in cells:
+        lab = _label_of(c, header)
+        if kind == "TABLE" and lab in ("MIN", "TYP", "MAX", "NOM") \
+                and (_NUM.match(c["t"]) or c["t"] in ("-", "—")):
+            out.append(dict(c, label=lab))
+        elif kind == "REQUIREMENT" and lab in ("REQUIREMENT",
+                                               "SPECIFICATIONS") \
+                and _REQ_VALUE.match(c["t"]):
+            out.append(dict(c, label=lab))
+    return out
+
+
+def _sym_eq(a, b):
+    return bool(a) and bool(b) and _squash(a) == _squash(b)
+
+
+def _word_in(word, text):
+    return re.search(r"(?<![A-Za-z0-9_])" + re.escape(word) +
+                     r"(?![A-Za-z0-9_])", text or "") is not None
+
+
+# ------------------------------------------------------------ derivation --
+def derive_row(lines, i, registry_value):
+    """Everything the DOCUMENT says about line i, independent of any JSON
+    claim except the registry value it is asked to locate.  Returns a dict
+    with `problems` for anything the document itself refuses."""
+    d = dict(line=i, problems=[])
+    if not (0 <= i < len(lines)):
+        d["problems"].append("locator line %r is outside the document" % i)
+        return d
+    cells = _cells(lines[i])
+    d["row_text"] = _norm(lines[i])
+
+    # ---- an ordering-code list ("• F = ±1 %") has no table header -------
+    lst = [c for c in cells if _LIST_VALUE.match(c["t"])]
+    if lst:
+        c = lst[0]
+        m = _LIST_VALUE.match(c["t"])
+        heading = None
+        for k in range(i - 1, max(-1, i - 5), -1):
+            for h in _cells(lines[k]):
+                if c["s"] - 8 <= h["s"] <= c["s"] + 2 \
+                        and not h["t"].startswith("•"):
+                    heading = h["t"]
+                    break
+            if heading or _is_page_start(lines[k]):
                 break
-            j = hit
-        if ok:
-            return True
-    return False
+        scale = UNITS[m.group("unit")][0]
+        v = float(m.group("num"))
+        bound = None
+        if abs(v * scale - registry_value) <= 1e-9 * max(1, abs(v)):
+            bound = "MAX"
+        elif abs(-v * scale - registry_value) <= 1e-9 * max(1, abs(v)):
+            bound = "MIN"
+        d.update(kind="LIST", header=[heading] if heading else [],
+                 header_line=None, symbols=[m.group("code")],
+                 symbol_rule="list code", unit=m.group("unit"),
+                 published_columns=["PLUS_MINUS"], value_token=m.group("num"),
+                 bound=bound, parameter_text=heading or "", context="",
+                 preamble="", cell_span=[i, i], context_lines=[i])
+        if heading is None:
+            d["problems"].append("the ordering-code bullet has no heading")
+        if bound is None:
+            d["problems"].append("the +/- code %s is not the registered "
+                                 "value" % c["t"])
+        return d
+
+    hdr = find_header(lines, i)
+    if hdr is None:
+        d["problems"].append("no MIN/TYP/MAX or REQUIREMENT table header "
+                             "above this line on its page")
+        return d
+    h, kind, header = hdr
+    d.update(kind=kind, header_line=h,
+             header=[x["t"].upper() for x in header],
+             preamble=_preamble(lines, h))
+    vals = _value_cells(cells, header, kind)
+    if not vals:
+        d["problems"].append("the located line publishes no value under the "
+                             "table's value columns")
+        return d
+
+    # ---- value, column, unit, direction ---------------------------------
+    hits = []
+    if kind == "TABLE":
+        unit = next((c["t"] for c in cells
+                     if _label_of(c, header) == "UNIT"), None)
+        d["unit"] = unit
+        d["published_columns"] = [v["label"] for v in vals
+                                  if _NUM.match(v["t"])]
+        scale = UNITS.get(unit, (None,))[0]
+        if scale is None:
+            d["problems"].append("the row's unit %r has no canonical scale"
+                                 % (unit,))
+            return d
+        for v in vals:
+            if _NUM.match(v["t"]) and abs(float(v["t"]) * scale -
+                                          registry_value) <= \
+                    1e-9 * max(1.0, abs(registry_value)):
+                hits.append(v)
+        if len(hits) != 1:
+            d["problems"].append(
+                "the registered value %r is published %d times on this row "
+                "(cells %s, unit %s)" % (registry_value, len(hits),
+                                         [v["t"] for v in vals], unit))
+            return d
+        v = hits[0]
+        d["value_token"] = v["t"]
+        d["value_column"] = v["label"]
+        d["bound"] = v["label"] if v["label"] in ("MIN", "MAX") else None
+        span_end = i
+    else:
+        for v in vals:
+            m = _REQ_VALUE.match(v["t"])
+            sc = UNITS.get(m.group("unit"), (None,))[0]
+            if sc is not None and abs(float(m.group("num")) * sc -
+                                      registry_value) <= \
+                    1e-9 * max(1.0, abs(registry_value)):
+                hits.append((v, m))
+        if len(hits) != 1:
+            d["problems"].append(
+                "the registered value %r is published %d times in this "
+                "row's requirement column (cells %s)"
+                % (registry_value, len(hits), [v["t"] for v in vals]))
+            return d
+        v, m = hits[0]
+        d["unit"] = m.group("unit")
+        d["value_token"] = m.group("num")
+        span_end = i
+        if m.group("pre") == "≤":
+            bound, how = "MAX", "LE_SIGN"
+        elif m.group("pre") == "≥":
+            bound, how = "MIN", "GE_SIGN"
+        elif m.group("word"):
+            bound, how = m.group("word"), m.group("word") + "_WORD"
+        else:
+            bound = how = None
+            # the direction word may continue the cell on the next line(s)
+            for k in range(i + 1, min(len(lines), i + 3)):
+                if _is_page_start(lines[k]):
+                    break
+                for c in _cells(lines[k]):
+                    if c["t"].rstrip(".") in ("MAX", "MIN") and \
+                            c["s"] <= v["e"] + 4 and c["e"] >= v["s"] - 4:
+                        bound, how, span_end = (c["t"].rstrip("."),
+                                                c["t"].rstrip(".") + "_WORD",
+                                                k)
+                        break
+                if bound:
+                    break
+        d["bound"] = bound
+        d["value_column"] = v["label"]
+        d["published_columns"] = [how] if how else []
+    d["cell_span"] = [i, span_end]
+
+    # ---- symbol ---------------------------------------------------------
+    own = _symbol_cell(cells, header)
+    syms, rule = [], None
+    if own:
+        syms, rule = [own], "the row's own symbol cell"
+    else:
+        near = []
+        for step in (-1, 1):
+            for k in range(i + step, i + 3 * step, step):
+                if not (0 <= k < len(lines)) or _header_of(_cells(lines[k])):
+                    break
+                s = _symbol_cell(_cells(lines[k]), header)
+                if s:
+                    near.append((abs(k - i), k, s))
+                    break
+        # (ii) a sub-row: the symbol beside it, and named in its own text
+        for _dist, _k, s in sorted(near):
+            if _word_in(_squash(s), _squash(d["row_text"])) or \
+                    _word_in(s, d["row_text"]):
+                syms.append(s)
+                rule = "sub-row: symbol cell adjacent and named in the row"
+        # (iii) the symbol is vertically centred inside the value's own cell
+        for k in range(i + 1, span_end):
+            s = _symbol_cell(_cells(lines[k]), header)
+            if s:
+                syms.append(s)
+                rule = "symbol cell inside the value's multi-line cell"
+    d["symbols"] = syms
+    d["symbol_rule"] = rule
+
+    # ---- the row's own text: condition context, parameter words ---------
+    ctx = [i]
+    for step in (-1, 1):
+        for k in range(i + step, i + 3 * step, step):
+            if not (0 <= k < len(lines)) or _is_page_start(lines[k]) and \
+                    step == 1:
+                break
+            kc = _cells(lines[k])
+            if _header_of(kc) or _value_cells(kc, header, kind):
+                break
+            s = _symbol_cell(kc, header)
+            if s and not any(_sym_eq(s, x) for x in syms):
+                break
+            ctx.append(k)
+            if _is_page_start(lines[k]):
+                break
+    ctx.sort()
+    d["context_lines"] = ctx
+    d["context"] = " ".join(_norm(lines[k]) for k in ctx)
+    return d
 
 
-def _semantics_ok(entry):
+# ----------------------------------------------------------------- audit --
+def _check_row(key, reg_entry, e, docs):
     why = []
-    sem = entry.get("semantics")
-    row = _norm(" ".join(entry.get("row_lines") or []))
-    val = str(entry.get("value_token"))
-    if sem not in GUARANTEED_SEMANTICS:
-        why.append("semantics %r cannot carry a guarantee" % (sem,))
-        return why
-    if val not in row:
-        why.append("the value token %r is not in the row" % val)
-    if sem in ("MIN", "MAX"):
-        hdr = entry.get("columns_header") or []
-        cols = entry.get("columns") or []
-        if len(hdr) != len(cols) or len(cols) < 1:
-            why.append("the row's columns do not match its header")
-        elif not ({"MIN", "MAX"} & set(hdr)):
-            why.append("the row's header has no MIN or MAX column: a TYP-only "
-                       "row cannot carry a guarantee")
-        elif sem not in hdr or cols[hdr.index(sem)] != val:
-            why.append("the value is not in the row's %s column" % sem)
-        elif " ".join(cols) not in row:
-            why.append("the columns %r do not appear consecutively in the "
-                       "row" % (cols,))
-    elif sem == "MAX_WORD" and "MAX" not in row:
-        why.append("no MAX word in the row")
-    elif sem == "MIN_WORD" and "MIN" not in row:
-        why.append("no MIN word in the row")
-    elif sem == "LE_SIGN" and not re.search("≤\\s*" + re.escape(val), row):
-        why.append("no <= sign before the value")
-    elif sem == "GE_SIGN" and not re.search("≥\\s*" + re.escape(val), row):
-        why.append("no >= sign before the value")
-    elif sem == "TOLERANCE_CODE" and "±" not in row:
-        why.append("no +/- tolerance in the row")
-    return why
+    d = docs.get(e.get("document"))
+    if d is None:
+        return ["names an unknown document %r" % (e.get("document"),)], None
+    f = ROOT / d["path"]
+    if not f.exists():
+        return ["its document %s is absent" % d["path"]], None
+    lines = document_lines(f)
+    tok = d.get("token")
+    if not tok or tok not in document_text(f):
+        why.append("the document's identity token %r is not in its own "
+                   "text" % (tok,))
+    try:
+        rv = float(reg_entry["value"])
+        line = int(e["line"])
+    except (KeyError, TypeError, ValueError):
+        return why + ["the evidence row has no integer `line` locator or the "
+                      "registry value is not a number"], None
+    der = derive_row(lines, line, rv)
+    why += der["problems"]
+    # locator anchor
+    if _norm(e.get("row_text")) != der.get("row_text"):
+        why.append("row_text is not document line %d (which reads %r)"
+                   % (line, der.get("row_text")))
+    if der["problems"]:
+        return why, der
+    # symbol: document <-> claim <-> model's own citation
+    sym = e.get("symbol")
+    if not sym:
+        why.append("the evidence row declares no symbol")
+    elif not any(_sym_eq(sym, s) for s in der["symbols"]):
+        why.append("the row's own symbol is %s, not the declared %r"
+                   % (der["symbols"] or "absent", sym))
+    src = reg_entry.get("source") or ""
+    if sym and not (_word_in(_squash(sym), _squash(src))
+                    or _word_in(sym, src)):
+        why.append("the registry entry's own source text never names the "
+                   "symbol %r: the evidence is for another quantity" % sym)
+    # header / columns
+    if e.get("published_columns") != der.get("published_columns"):
+        why.append("the claimed published columns %r are not the document's "
+                   "%r (header %r)" % (e.get("published_columns"),
+                                       der.get("published_columns"),
+                                       der.get("header")))
+    # direction
+    want = {"GUARANTEED_MAX": "MAX", "GUARANTEED_MIN": "MIN"}.get(
+        reg_entry.get("tag"), e.get("bound"))
+    if der.get("bound") not in ("MIN", "MAX"):
+        why.append("the value sits in the document's %s column: only a MIN "
+                   "or MAX can carry a guarantee"
+                   % (der.get("value_column"),))
+    elif der["bound"] != want:
+        why.append("the document publishes this value as a %s, but the "
+                   "registry tag %s needs a %s"
+                   % (der["bound"], reg_entry.get("tag"), want))
+    if e.get("bound") != der.get("bound"):
+        why.append("the claimed bound %r is not the document's %r"
+                   % (e.get("bound"), der.get("bound")))
+    # value, unit, scale
+    if str(e.get("value_token")) != str(der.get("value_token")):
+        why.append("the claimed value token %r is not the document's %r"
+                   % (e.get("value_token"), der.get("value_token")))
+    unit = der.get("unit")
+    if e.get("unit") != unit:
+        why.append("the claimed unit %r is not the row's unit %r"
+                   % (e.get("unit"), unit))
+    scale, dim = UNITS.get(unit, (None, None))
+    try:
+        if scale is None or abs(float(e.get("scale")) - scale) > 1e-15:
+            why.append("the declared scale %r is not the canonical %r for "
+                       "unit %r" % (e.get("scale"), scale, unit))
+    except (TypeError, ValueError):
+        why.append("the declared scale is not a number")
+    kdim = KEY_SUFFIX_DIMENSION.get(key.rsplit("_", 1)[-1], "1")
+    if dim is not None and dim != kdim:
+        why.append("the row's unit %r is a %s, the key %s is a %s"
+                   % (unit, dim, key, kdim))
+    # condition and parameter text
+    cond = e.get("condition")
+    tcond = e.get("table_condition")
+    if der["kind"] != "LIST" and not (cond or tcond):
+        why.append("the evidence row states no condition")
+    if cond and _squash(cond) not in _squash(der.get("context")):
+        why.append("the condition %r is not this row's own condition text "
+                   "%r" % (cond, der.get("context")))
+    if tcond and _squash(tcond) not in _squash(der.get("preamble")):
+        why.append("the table condition %r is not in the table preamble %r"
+                   % (tcond, der.get("preamble")))
+    par = e.get("parameter")
+    if der["kind"] == "LIST" and not par:
+        why.append("the evidence row names no parameter")
+    if par:
+        if der["kind"] == "LIST":
+            if _norm(par) != _norm(der.get("parameter_text")):
+                why.append("the list heading is %r, not %r"
+                           % (der.get("parameter_text"), par))
+        elif not all(_word_in(w, der["context"]) for w in par.split()):
+            why.append("the parameter %r is not in the row" % par)
+        if _squash(par) not in _squash(src):
+            why.append("the registry source never names the parameter %r"
+                       % par)
+    # the row's OWN line and its symbol's line -- not a continuation line,
+    # which in a -layout table may be the next row's wrapped description
+    own = [lines[k] for k in der["cell_span"]] + [
+        lines[k] for k in der["context_lines"]
+        if any(_sym_eq(s, (_cells(lines[k]) or [dict(t="")])[0]["t"])
+               for s in der["symbols"])]
+    if der["kind"] == "TABLE" and TYP_WORDS.search(_norm(" ".join(own))):
+        why.append("the row's own text calls it typical")
+    return why, der
 
 
-def audit(registry, pinned_sha256, evidence_path=None, evidence=None):
-    """Returns (ok, report)."""
+def audit(registry, pinned_sha256, evidence_path=None, evidence=None,
+          evidence_text=None):
+    """Returns (ok, report).
+
+    evidence_text: the evidence file's CONTENT (checked against the pin),
+    for in-memory controls that model an edited-and-re-pinned file."""
     path = EVIDENCE if evidence_path is None else Path(evidence_path)
     problems = []
     if evidence is None:
-        if not path.exists():
-            return False, dict(problems=["the guarantee evidence file %s is "
-                                         "absent" % path])
-        actual = _sha(path)
+        if evidence_text is None:
+            if not path.exists():
+                return False, dict(problems=["the guarantee evidence file %s "
+                                             "is absent" % path])
+            raw = path.read_bytes()
+        else:
+            raw = evidence_text.encode("utf-8")
+        actual = _sha_bytes(raw)
         if actual != pinned_sha256:
             problems.append("the guarantee evidence file's sha256 %s is not "
                             "the pinned %s: it was edited without re-pinning"
                             % (actual, pinned_sha256))
-        evidence = json.loads(path.read_text(encoding="utf-8"))
+        evidence = json.loads(raw.decode("utf-8"))
+    if evidence.get("schema") != SCHEMA:
+        problems.append("the evidence schema is %r, not %r"
+                        % (evidence.get("schema"), SCHEMA))
     docs = evidence.get("documents") or {}
     for dk, d in docs.items():
         f = ROOT / d["path"]
@@ -171,37 +573,23 @@ def audit(registry, pinned_sha256, evidence_path=None, evidence=None):
         if e is None:
             problems.append("%s is tagged %s with NO primary-row evidence"
                             % (key, r["tag"]))
+            checked.append(dict(key=key, ok=False, problems=[
+                "no primary-row evidence"]))
             continue
-        why = []
-        d = docs.get(e.get("document"))
-        if d is None:
-            why.append("names an unknown document %r" % (e.get("document"),))
-        else:
-            f = ROOT / d["path"]
-            if f.exists() and not _row_in_text(e.get("row_lines") or [""],
-                                               document_text(f)):
-                why.append("its row is NOT in the archived document text")
-        why += _semantics_ok(e)
-        cond = " ".join(str(x) for x in (r.get("condition"),
-                                         e.get("condition")) if x)
-        if TYP_WORDS.search(cond):
-            why.append("its condition says TYP/typical/no min-max")
-        if TYP_WORDS.search(_norm(" ".join(e.get("row_lines") or []))) \
-                and e.get("semantics") not in ("MIN", "MAX"):
-            why.append("its row text is a typical")
-        try:
-            scale = float(e.get("scale", 1.0))
-            if abs(float(e["value_token"].replace("−", "-")) * scale
-                   - float(r["value"])) > 1e-9 * max(1.0, abs(r["value"])):
-                why.append("the evidence value %s x %s is not the registered "
-                           "value %r" % (e["value_token"], scale, r["value"]))
-        except (ValueError, KeyError, TypeError):
-            why.append("the evidence value is not a number")
+        why, der = _check_row(key, r, e, docs)
+        if TYP_WORDS.search(str(r.get("condition") or "")):
+            why.append("its registry condition says TYP/typical/no min-max")
         for w in why:
             problems.append("%s: %s" % (key, w))
-        checked.append(dict(key=key, document=e.get("document"),
-                            semantics=e.get("semantics"), ok=not why,
-                            problems=why))
+        der = der or {}
+        checked.append(dict(
+            key=key, tag=r["tag"], value=r["value"],
+            document=e.get("document"), line=e.get("line"),
+            derived=dict((k, der.get(k)) for k in (
+                "kind", "header_line", "header", "symbols", "symbol_rule",
+                "value_token", "value_column", "published_columns", "bound",
+                "unit", "context", "preamble")),
+            ok=not why, problems=why))
     for key in rows:
         if key not in guaranteed:
             problems.append("evidence row %s belongs to no GUARANTEED_* "
@@ -212,3 +600,196 @@ def audit(registry, pinned_sha256, evidence_path=None, evidence=None):
         str(path), pinned_sha256=pinned_sha256, rows=checked,
         guaranteed_entries=guaranteed, documents=sorted(docs),
         problems=problems)
+
+
+# ---------------------------------------------------- destructive controls --
+def _relabel(registry, key, **fields):
+    out, hit = [], False
+    for r in registry:
+        r = dict(r)
+        if r["key"] == key:
+            r.update(fields)
+            hit = True
+        out.append(r)
+    if not hit:
+        out.append(dict(dict(key=key, value=None, tag="TYPICAL", source="",
+                             condition=None), **fields))
+    return out
+
+
+def _find_line(doc_path, first_cell, contains=""):
+    lines = document_lines(ROOT / doc_path)
+    for i, l in enumerate(lines):
+        c = _cells(l)
+        if c and c[0]["t"] == first_cell and _squash(contains) in _squash(l):
+            return i
+    raise LookupError("%s: no line starting %r containing %r"
+                      % (doc_path, first_cell, contains))
+
+
+def destructive_controls(registry, evidence_text=None):
+    """Each Round-15 attack, and the other ways a transcription can lie,
+    applied to an IN-MEMORY copy of the registry and the evidence file (the
+    files on disk are never touched), with the evidence RE-PINNED to its own
+    new sha256 -- so the only thing that can refuse it is the document.
+
+    Returns {control: caught}.  A control is caught only if the audit fails
+    AND one of its problems is the one the control exists to provoke -- a
+    control refused for some unrelated reason is not a caught control."""
+    if evidence_text is None:
+        evidence_text = EVIDENCE.read_text(encoding="utf-8")
+    base = json.loads(evidence_text)
+    ti = base["documents"]["SLUSF65B"]["path"]
+
+    def run(rows_over=None, reg=None, doc_over=None, drop=()):
+        ev = copy.deepcopy(base)
+        for k in drop:
+            ev["rows"].pop(k, None)
+        for k, v in (rows_over or {}).items():
+            ev["rows"][k] = dict(ev["rows"].get(k) or {}, **v)
+        for k, v in (doc_over or {}).items():
+            ev["documents"][k] = dict(ev["documents"][k], **v)
+        text = json.dumps(ev, indent=1, ensure_ascii=False, sort_keys=True)
+        return audit(registry if reg is None else reg,
+                     _sha_bytes(text.encode("utf-8")), evidence_text=text)
+
+    def caught(result, *needles):
+        ok, rep = result
+        blob = " | ".join(rep["problems"])
+        return (not ok) and all(n in blob for n in needles)
+
+    def row_at(first, contains=""):
+        i = _find_line(ti, first, contains)
+        return dict(line=i, row_text=_norm(document_lines(ROOT / ti)[i]))
+
+    c = {}
+    # 0. the unmutated copy, re-serialised and re-pinned, must PASS -- or
+    #    every control below is vacuous
+    ok0, rep0 = run()
+    c["an_unmutated_repinned_copy_passes"] = ok0
+
+    # (a) Astra: VLOWV's MAX 3.1 V re-pointed at VIN_LOWVZ's genuine
+    #     "2.95 3.1 V" row (3.1 V, MAX column, same hashed PDF), re-pinned
+    c["a_unrelated_row_repin_is_refused"] = caught(
+        run({"bq.vlowv_max_V": row_at("VIN_LOWVZ")}),
+        "bq.vlowv_max_V", "not the declared 'VLOWV'")
+    # (a') ...and with the symbol claim changed to match that row: the model's
+    #     own source text still cites VLOWV
+    c["a_unrelated_row_repin_with_its_symbol_is_refused"] = caught(
+        run({"bq.vlowv_max_V": dict(row_at("VIN_LOWVZ"),
+                                    symbol="VIN_LOWVZ",
+                                    condition="VIN falling")}),
+        "bq.vlowv_max_V", "never names the symbol 'VIN_LOWVZ'")
+
+    vdppm = row_at("VDPPM")
+    typ_row = dict(document="SLUSF65B", symbol="VDPPM", unit="V", scale=1.0,
+                   value_token="0.1", bound="MAX",
+                   condition="VBAT = 3.6V, VSYS = VDPPM + VBAT",
+                   row_token="VDPPM", **vdppm)
+    reg_vdppm = _relabel(registry, "bq.vdppm_V", tag="GUARANTEED_MAX",
+                         role="DEVICE_BOUND", condition="VBAT = 3.6 V")
+    # (b) Fable: a fabricated MIN/TYP/MAX header claim on a TYP-only row
+    c["b_fabricated_header_is_refused"] = caught(
+        run({"bq.vdppm_V": dict(typ_row,
+                                published_columns=["MIN", "TYP", "MAX"])},
+            reg=reg_vdppm),
+        "bq.vdppm_V", "not the document's ['TYP']")
+    # (c) Fable's three edits: retag TYP as GUARANTEED_MAX, add an honest-
+    #     looking evidence row, re-pin -- the document has no MAX for VDPPM
+    c["c_three_edit_typ_to_max_is_refused"] = caught(
+        run({"bq.vdppm_V": dict(typ_row, published_columns=["TYP"])},
+            reg=reg_vdppm),
+        "bq.vdppm_V", "sits in the document's TYP column")
+    # (d) a published MAXIMUM reversed into GUARANTEED_MIN
+    c["d_direction_flip_max_to_min_is_refused"] = caught(
+        run({"bq.ilim_max_A": dict(bound="MIN")},
+            reg=_relabel(registry, "bq.ilim_max_A", tag="GUARANTEED_MIN")),
+        "bq.ilim_max_A", "publishes this value as a MAX")
+    c["d_direction_flip_of_the_tag_alone_is_refused"] = caught(
+        run(reg=_relabel(registry, "bq.ron_in_max_ohm",
+                         tag="GUARANTEED_MIN")),
+        "bq.ron_in_max_ohm", "needs a MIN")
+    # (e) a TYP-only single-value row (VSYS_REG 4.5 V) promoted by inventing
+    #     a MAX header for it
+    c["e_typ_only_single_value_with_invented_max_is_refused"] = caught(
+        run({"bq.vsys_reg_V": dict(
+            document="SLUSF65B", symbol="VSYS_REG", unit="V", scale=1.0,
+            value_token="4.5", bound="MAX", published_columns=["MAX"],
+            condition="VIN = 5V, VBATREG ≤ 4.3V", row_token="VSYS_REG",
+            **row_at("VSYS_REG"))},
+            reg=_relabel(registry, "bq.vsys_reg_V", tag="GUARANTEED_MAX",
+                         role="DEVICE_BOUND", condition="VBATREG <= 4.3 V")),
+        "bq.vsys_reg_V", "sits in the document's TYP column")
+    # (f) a row whose symbol is not the key's declared symbol: RON_IN's real
+    #     row claimed as RON_BAT, with the model source edited to cite it
+    reg_f = [dict(r, source=(r.get("source") or "") + " RON_BAT")
+             if r["key"] == "bq.ron_in_max_ohm" else r for r in registry]
+    c["f_symbol_mismatch_is_refused"] = caught(
+        run({"bq.ron_in_max_ohm": dict(symbol="RON_BAT")}, reg=reg_f),
+        "bq.ron_in_max_ohm", "not the declared 'RON_BAT'")
+    # (g) the wrong condition's sub-row: VBUVLO_HYS is published twice; the
+    #     VIN = 0 V row's MAX (210 mV) bound under the VIN = 5 V condition
+    if "bq.vbuvlo_hys_max_V" in base["rows"]:
+        c["g_sibling_row_at_another_condition_is_refused"] = caught(
+            run({"bq.vbuvlo_hys_max_V": dict(
+                row_at("VBUVLO_HYS", "VIN = 0V"), value_token="210")},
+                reg=_relabel(registry, "bq.vbuvlo_hys_max_V", value=0.210)),
+            "bq.vbuvlo_hys_max_V", "not this row's own condition")
+    # (h) a scale that is not the unit's: mA declared as A
+    c["h_declared_scale_is_not_free_is_refused"] = caught(
+        run({"bq.ilim_max_A": dict(scale=1.0)}),
+        "bq.ilim_max_A", "not the canonical")
+    # (i) a unit claim that is not the row's
+    c["i_unit_claim_is_refused"] = caught(
+        run({"bq.ron_bat_max_ohm": dict(unit="Ω")}),
+        "bq.ron_bat_max_ohm", "not the row's unit")
+    # (j) a locator that drifted: the right text, the wrong line
+    c["j_locator_drift_is_refused"] = caught(
+        run({"bq.kiset_max_AOhm": dict(
+            line=base["rows"]["bq.kiset_max_AOhm"]["line"] + 1)}),
+        "bq.kiset_max_AOhm", "row_text is not document line")
+    # (k) a document whose bytes are not the pinned bytes
+    c["k_document_hash_is_refused"] = caught(
+        run(doc_over={"SLUSF65B": dict(sha256="0" * 64)}),
+        "SLUSF65B's sha256 does not match")
+    # (l) an evidence file edited without re-pinning
+    ok_l, rep_l = audit(registry, "0" * 64, evidence_text=evidence_text)
+    c["l_unpinned_evidence_edit_is_refused"] = (
+        not ok_l and "without re-pinning" in " | ".join(rep_l["problems"]))
+    # (m) a guarantee with no evidence row at all
+    c["m_guarantee_without_evidence_is_refused"] = caught(
+        run(drop=("bq.kiset_min_AOhm",)),
+        "bq.kiset_min_AOhm is tagged GUARANTEED_MIN with NO primary-row")
+    # (n) a MAX-word requirement read as a MIN (Molex 6.1.1)
+    c["n_requirement_word_direction_flip_is_refused"] = caught(
+        run({"path.microlock_contact_initial_max_ohm": dict(bound="MIN")},
+            reg=_relabel(registry, "path.microlock_contact_initial_max_ohm",
+                         tag="GUARANTEED_MIN")),
+        "path.microlock_contact_initial_max_ohm", "publishes this value as "
+        "a MAX")
+    return c
+
+
+def verdict(registry, pinned_sha256):
+    ok, rep = audit(registry, pinned_sha256)
+    controls = destructive_controls(registry)
+    rep["destructive_controls"] = controls
+    rep["every_destructive_control_caught"] = bool(controls) and all(
+        controls.values())
+    return bool(ok and rep["every_destructive_control_caught"]), rep
+
+
+if __name__ == "__main__":
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    import aqroot_power_model as apm                          # noqa: E402
+    ok, rep = verdict(apm.registry(), apm.GUARANTEE_EVIDENCE_SHA256)
+    for r in rep["rows"]:
+        print("%-4s %-40s %-15s %s" % ("PASS" if r["ok"] else "FAIL",
+                                       r["key"], r.get("tag"),
+                                       "; ".join(r["problems"])))
+    for k, v in rep["destructive_controls"].items():
+        print("%-7s %s" % ("OK" if v else "MISSED", k))
+    for p in rep["problems"]:
+        print("PROBLEM", p)
+    print("VERDICT", "PASS" if ok else "FAIL")
+    sys.exit(0 if ok else 1)

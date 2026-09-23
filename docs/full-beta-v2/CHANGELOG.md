@@ -1,3 +1,38 @@
+## D-796 — 2026-09-23 — ROUND-15 FULL CONVERGENCE: A THERMAL LOOP LABELLED ON A COLD DIE, A BATTERY THAT SUPPLEMENTED BELOW ITS OWN LOCKOUT, KEYS THAT DID NOT NAME THEIR STATES, AND A GUARANTEE AUTHENTICATED BY ITS OWN METADATA
+
+Round-15 external review **REJECTED D-795** (Astra **B**, Fable Work **B** — engineering
+design acceptable after specific non-PCB pre-order corrections; no respin established).
+**Astra `R15-01`…`R15-04` and every reproduced Fable Work `R15-01`…`R15-11` residual are
+closed (D796-01…D796-10).**  **NO COPPER** — board sha256 unchanged.
+
+* **Charger physics (D796-01/08):** no state is labelled TREG with the junction below the
+  threshold (D-795 had 44 of 480); the DPPM-boundary discontinuity is modelled as a TREG
+  limit cycle whose hot phase is published.  VBUVLO (3.0 V TYP ±5 % declared, 190 mV
+  hysteresis MAX) is carried explicitly; under the trip nothing supplements and an
+  over-load collapses SYS (2.85 W lowest input-carrying power on the named adapter).
+  Junction-safe **3.900 W** retained.
+* **No-discharge vs TREG (D796-02):** the TREG-to-zero sentence is a named AMBIGUOUS
+  assumption; the table is published only where TREG cannot fold the charge to zero at any
+  ambient 0–40 °C, with (T)/(C) markers.  High regulation corner: 2.45 W at every cell.
+  `C-PWR-CHARGE-01` step 6 discriminates.
+* **F14 (D796-03):** every domain key is bound to the physical state it labels; thermal
+  population exact (540); network rows and the canary bound to their load sets; 4336
+  regime-junction corners re-checked.  Eleven new controls (O01, O04, PM2, thermal collapse,
+  cold TREG, supplement under the trip, …) — 34/34 caught.
+* **Provenance (D796-04):** header, column, direction, unit, condition and symbol derived
+  from the primary document's own layout; 17/17 GUARANTEED keys re-authenticated; 18
+  destructive controls caught.
+* **Operative documents (D796-05/06/07/09):** harness currents generated from F6 (2.8628 A
+  fault, 2.2689 A conforming); 400 + 300 mA is a SIZING case; named-adapter source rows;
+  NFC revocation bound **820 ms** from the firmware's own `static_assert`; termination
+  judged by measurement, never by STAT1 alone; safety-timer expiry → unplug/re-plug;
+  EastRising spec archived; `ltc4368_trip_A` deleted.  Sentence splitter no longer splits
+  on `:`; sixteen role-bound claim families; nineteen scratch injections caught in nine
+  documents.
+* **Firmware (D796-05 item 4, D796-10):** NFC revocation bounded at 820 ms (500 ms period, 100 ms polled slices, grant-time re-proof; D-795 reproduced at 2620 ms); field-owning session API suspends the 11h liveness write; stalled-clock scenarios fail closed.  H1–H8: 697 claims, 173/173 controls caught; 4/4 PlatformIO.
+
+**REVIEW TARGET, NOT A FABRICATION AUTHORIZATION.  DO NOT ORDER.**
+
 ## D-795 — 2026-09-23 — ROUND-14 FULL CONVERGENCE: A GAUGE AVERAGE FROM BEFORE THE LOAD, A FIELD CONFIRMED OFF BY A DEAD BUS, A CHARGER CEILING SOLVED AT ONE CELL, AND A GUARANTEE MADE OF TWO EDITS
 
 Round-14 external review **REJECTED D-794** (Astra **C — DO NOT ORDER**, seven findings;

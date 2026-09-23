@@ -79,14 +79,133 @@ constexpr uint32_t kBatteryGuardPeriodMs = 500;
 // retries it.  Liveness: an unconfirmed radio state refuses accessory power,
 // so a board that gave up would refuse it forever.
 constexpr uint32_t kRadioQuiescePeriodMs = 250;
-// D-795 / R14-01.  How many times the gauge reader re-reads the clock before
-// it gives up on a window it cannot confirm spent.  A delay that returns a
-// tick early costs one more attempt; a clock that never advances costs all of
+// ===========================================================================
+// D-796 / D796-05 item 4 + D796-09 C-NFC-QUIESCE-01.  THE NFC REVOCATION
+// DEADLINE IS A DERIVED CONSTANT, AND THE SCHEDULE IS BUILT TO MEET IT.
+//
+// ROUND-15: "current plan says revocation within 1 s, but the production-
+// image trace can remain unrevoked for ~2.6 s during blocking gauge/admission
+// work."  It reproduced on the host image at 2620 ms: D-795 serviced the
+// liveness probe once per `loop()`, with a 1000 ms period, and ONE '5' press
+// spends the admission window (1300 ms), the settled recheck (400 ms) and the
+// rest of the window from the rail step (900 ms) inside a single iteration.
+// A rail could even be GRANTED on a confirmation whose part had already gone.
+//
+// THE SCHEDULE NOW:
+//   * the probe runs at the top of every `loop()` -- before the expander
+//     recovery branch, because the probe needs SPI-B, not I2C;
+//   * every app-owned wait (the gauge window in `waitForPostLoadConversion`,
+//     the settled recheck in `waitServicingNfcLiveness`) is sliced into
+//     `kNfcLivenessPollSliceMs` pieces with a liveness opportunity before
+//     each slice;
+//   * the one non-preemptible wait left on an admission path -- the
+//     MAX17048's 300 ms qualified settle, which lives in a seam H7/H8 pin --
+//     is preceded by a liveness opportunity;
+//   * every GRANT (rail admission, mode entry with a rail live, a non-NFC
+//     burst) re-proves liveness at the grant itself, so no permission is ever
+//     decided on a proof older than the decision.
+//
+// THE BOUND.  A part lost just after a successful probe at t is next probed
+// at the first opportunity at or after t + P, and opportunities are never
+// more than G apart on any path that has something to shed or is deciding a
+// grant.  Revocation runs the shed in the same call.  So
+//
+//     deadline = P + G + W
+//              = kNfcLivenessPeriodMs (500)
+//              + kNfcLongestUnpolledStepMs (300, = max(slice 100, settle 300))
+//              + kNfcRevocationWorkAllowanceMs (20)
+//              = 820 ms,
+//
+// inside the 1 s C-NFC-QUIESCE-01 promises.  W is the execution time of the
+// probe (seven two-byte SPI frames at 4 MHz, ~0.1 ms) and the shed (at most
+// six PCAL9535A transactions at 400 kHz, ~0.6 ms) on healthy buses; the host
+// clock does not charge for it, so it is carried as an explicit allowance
+// and measured on the bench by C-NFC-QUIESCE-01.
+//
+// WHAT IS OUTSIDE IT, AND WHY THAT IS SAFE.  With BOTH accessory rails
+// confirmed off, the operator demo tests ('l' backlight ramp ~830 ms, 'p'
+// display init, 't' tone, 'm' microphone) are not preemptible and may delay a
+// revocation by their own length -- at most 827 ms, the backlight ramp, so
+// at most 1347 ms in all (`kNfcRevocationWithRailsOffOperatorTestMs`, derived
+// below).  There is nothing to shed in that state --
+// `blockingDemoTestAllowed` refuses every one of them while a rail is live --
+// and no later grant can use the stale confirmation, because every grant
+// re-proves liveness first.  `test_production_image.cpp` sweeps the loss over
+// every 20 ms of a first- and second-rail admission from five probe phases.
+// ===========================================================================
+// How often a confirmed-quiet ST25R3916 is asked to prove it is still alive.
+// D-795 had 1000 ms; that period alone consumed the whole 1 s promise.
+constexpr uint32_t kNfcLivenessPeriodMs = 500;
+// The longest single delay an app-owned wait takes between two liveness
+// opportunities.
+constexpr uint32_t kNfcLivenessPollSliceMs = 100;
+// The longest step with NO liveness opportunity on a path that has a rail to
+// shed or a grant to decide: the MAX17048 qualified settle (first-rail
+// admission, background requalification, expander recovery), or one slice.
+constexpr uint32_t kNfcLongestUnpolledStepMs =
+    kFuelGaugeActiveSettleMs > kNfcLivenessPollSliceMs
+        ? kFuelGaugeActiveSettleMs : kNfcLivenessPollSliceMs;
+// Probe plus shed execution on healthy buses (see above).
+constexpr uint32_t kNfcRevocationWorkAllowanceMs = 20;
+constexpr uint32_t kNfcRevocationDeadlineMs =
+    kNfcLivenessPeriodMs + kNfcLongestUnpolledStepMs +
+    kNfcRevocationWorkAllowanceMs;
+static_assert(kNfcLongestUnpolledStepMs == 300,
+              "the longest unpolled step is the 300 ms MAX17048 settle");
+static_assert(kNfcLivenessPollSliceMs <= kNfcLongestUnpolledStepMs,
+              "a wait slice may not be the new longest unpolled step");
+static_assert(kNfcRevocationDeadlineMs == 820,
+              "500 ms period + 300 ms unpolled step + 20 ms allowance");
+static_assert(kNfcRevocationDeadlineMs <= 1000,
+              "C-NFC-QUIESCE-01 promises revocation and shed within 1 s");
+static_assert(kAccessorySettledRecheckMs > kNfcLivenessPollSliceMs,
+              "the settled recheck is long enough to need slicing");
+
+// ---------------------------------------------------------------------------
+// D-796.  THE ONE EXCEPTION TO THE 820 ms BOUND, STATED AS A NUMBER.
+//
+// With BOTH accessory rails confirmed OFF, the operator demo tests are not
+// preemptible and run with no liveness opportunity inside them.  A U9 lost
+// just after a probe, with a test started the instant before the next probe
+// fell due, is revoked at most P + (the test's own length) + W after the loss.
+// The tests, by the waits they are built from:
+//
+//   'l' backlight ramp   3 ms prime + 51 up-steps x 8 ms + 52 down-steps x
+//                        8 ms = 827 ms of delay (plus PWM set-up, microseconds)
+//   'p' display init     40 ms DISP_RST_N pulse + 260 ms ILI9488 SWRESET /
+//                        SLPOUT / DISPON waits + ~184 ms of 20 MHz pixel data
+//                        (320 x 480 x 3 bytes) = ~485 ms
+//   't' tone             5 ms + 400 ms of I2S + ~35 ms of DMA drain = ~440 ms
+//   'm' microphone       at most 200 ms + 200 ms capture deadline = 400 ms
+//   'd' microSD, 'x' IR  a few ms; both are bursts and re-prove liveness at
+//                        their grant anyway
+//
+// So the longest is the backlight ramp, 827 ms, and the worst revocation in
+// that state is 500 + 827 + 20 = 1347 ms.  It is SAFE for two reasons, both
+// tested: there is nothing to shed (`blockingDemoTestAllowed` refuses every
+// one of these tests while a rail is live), and no later grant can use the
+// stale confirmation (every grant re-proves liveness first).  It is a
+// published first-five limitation, not a hidden one.
+constexpr uint32_t kLongestUnpreemptibleOperatorTestMs =
+    kBacklightStartupPrimeUs / 1000u + (51u + 52u) * 8u;
+static_assert(kLongestUnpreemptibleOperatorTestMs == 827,
+              "the backlight ramp's waits are 3 + 103 x 8 = 827 ms");
+constexpr uint32_t kNfcRevocationWithRailsOffOperatorTestMs =
+    kNfcLivenessPeriodMs + kLongestUnpreemptibleOperatorTestMs +
+    kNfcRevocationWorkAllowanceMs;
+static_assert(kNfcRevocationWithRailsOffOperatorTestMs == 1347,
+              "500 + 827 + 20 ms, rails off, nothing to shed");
+
+// D-795 / R14-01, re-derived at D-796.  How many slices the gauge reader
+// takes before it gives up on a window it cannot confirm spent.  The window
+// needs ceil(1300 / 100) = 13 slices on an honest clock; eight more absorb
+// delays that return a tick early.  A clock that never advances costs all of
 // them and yields NO reading.
-constexpr unsigned kGaugeWindowWaitAttempts = 8;
-// D-795 / R14-02.  How often a confirmed-quiet ST25R3916 is asked to prove it
-// is still alive.  Liveness lost after an OFF confirmation REVOKES it.
-constexpr uint32_t kNfcLivenessPeriodMs = 1000;
+constexpr unsigned kGaugeWindowWaitAttempts =
+    (kGaugePostLoadConversionMs + kNfcLivenessPollSliceMs - 1) /
+        kNfcLivenessPollSliceMs + 8;
+static_assert(kGaugeWindowWaitAttempts == 21,
+              "13 slices of 100 ms cover the 1300 ms window, plus 8 spare");
 
 // What `releaseExpanderResetLines()` could prove.  D-788 / R7-D787-08 made the
 // diagnostic honest; D788-06 makes it EXECUTABLE.
@@ -217,6 +336,10 @@ class DemoBringupApp : public AccessoryLoadAuthority {
   // =========================================================================
   void noteNfcFieldQuiesced(bool confirmed, uint8_t operation_control = 0xFF,
                             const char *why = nullptr) {
+    // D-796 / D796-10: a field session owns U9; a quiesce verdict taken
+    // while it does (the radio layer refuses to touch the part) is not a
+    // verdict about the field.
+    if (nfc_session_active_) return;
     nfc_field_confirmed_off_ = confirmed;
     nfc_operation_control_ = operation_control;
     if (confirmed) {
@@ -269,6 +392,12 @@ class DemoBringupApp : public AccessoryLoadAuthority {
     nfc_field_confirmed_off_ = false;
     ++nfc_revocations_;
     (void)burst_.begin(BurstLoad::NfcField);
+    // D-796 / C-NFC-QUIESCE-01: the SHED runs before the console line.  The
+    // deadline is a physical one, and a console write is the one step here
+    // whose duration this image does not control.
+    if (acc3v3_ || acc5v_ || accessory_i2c_) {
+      forceAccessoriesOff("the ST25R3916 field state became UNKNOWN");
+    }
     char line[240];
     snprintf(line, sizeof(line),
              "NFC OFF confirmation REVOKED: the ST25R3916 no longer proves "
@@ -277,11 +406,140 @@ class DemoBringupApp : public AccessoryLoadAuthority {
              "refused until a confirmed quiesce (D-795 / R14-02)",
              unsigned(identity));
     log_(line);
-    if (acc3v3_ || acc5v_ || accessory_i2c_) {
-      forceAccessoriesOff("the ST25R3916 field state became UNKNOWN");
-    }
   }
   uint32_t nfcRevocations() const { return nfc_revocations_; }
+
+  // ===========================================================================
+  // D-796 / D796-05 item 4.  THE PROBE IS THE APP'S TO SCHEDULE.
+  //
+  // `demo/main.cpp` attaches the hardware probe once, in `setup()`; the app
+  // then asks for it wherever the schedule needs an opportunity -- the top of
+  // `loop()`, every slice of every app-owned wait, before the qualified
+  // settle, and at every grant.  `force` skips the period (a grant must be
+  // decided on a proof taken now).  A `Deferred` probe did not touch the part:
+  // it restores the schedule so the probe stays DUE and proves nothing.
+  using NfcLivenessProbe = NfcLivenessResult (*)(uint8_t *identity);
+  void setNfcLivenessProbe(NfcLivenessProbe probe) { nfc_probe_ = probe; }
+  bool nfcLivenessProbeAttached() const { return nfc_probe_ != nullptr; }
+
+  NfcLivenessResult serviceNfcLiveness(bool force = false) {
+    if (nfc_probe_ == nullptr) return NfcLivenessResult::Deferred;
+    const bool was_started = nfc_liveness_started_;
+    const uint32_t was_last = last_nfc_liveness_ms_;
+    if (force) {
+      // No OFF confirmation, no probe: a field session or an UNKNOWN field
+      // is the quiesce's to prove, and a session's 11h is the session's.
+      if (!nfc_field_confirmed_off_) return NfcLivenessResult::Deferred;
+      nfc_liveness_started_ = true;
+      last_nfc_liveness_ms_ = millis();
+    } else if (!nfcLivenessDue()) {
+      return NfcLivenessResult::Deferred;
+    }
+    uint8_t identity = 0x00;
+    const NfcLivenessResult r = nfc_probe_(&identity);
+    if (r == NfcLivenessResult::Deferred) {
+      nfc_liveness_started_ = was_started;
+      last_nfc_liveness_ms_ = was_last;
+      return r;
+    }
+    ++nfc_liveness_probes_;
+    noteNfcLiveness(r == NfcLivenessResult::Alive, identity);
+    return r;
+  }
+  uint32_t nfcLivenessProbes() const { return nfc_liveness_probes_; }
+
+  // A wait that keeps the liveness schedule: sliced, with an opportunity
+  // before each slice, and ended on ELAPSED time rather than on the sum of
+  // the delays asked for (a delay that returns a tick early is not a clock).
+  // Bounded: a clock that does not advance ends it after its attempts.
+  void waitServicingNfcLiveness(uint32_t ms) {
+    const uint32_t start = millis();
+    const unsigned attempts =
+        unsigned((ms + kNfcLivenessPollSliceMs - 1) / kNfcLivenessPollSliceMs)
+        + 8u;
+    for (unsigned attempt = 0; attempt < attempts; ++attempt) {
+      (void)serviceNfcLiveness();
+      const uint32_t elapsed = millis() - start;
+      if (elapsed >= ms) return;
+      const uint32_t left = ms - elapsed;
+      delay(left < kNfcLivenessPollSliceMs ? left : kNfcLivenessPollSliceMs);
+    }
+  }
+
+  // ===========================================================================
+  // D-796 / D796-10.  A FIELD-OWNING NFC SESSION OWNS U9, AND THE LIVENESS
+  // PROBE STANDS DOWN FOR IT.
+  //
+  // ROUND-15: "NFC liveness probe currently rewrites register 11h while the
+  // field is confirmed off.  Document/architect future field-owning firmware
+  // so active NFC operation suspends/owns that liveness probe."
+  //
+  // THE CONTRACT FOR ANY FUTURE FIRMWARE THAT TURNS THE FIELD ON:
+  //
+  //   1  it calls `beginNfcFieldSession(bus)` FIRST, and only turns the field
+  //      on if that returns true.  Begin requires a confirmed-OFF,
+  //      liveness-proved part, no accessory rail live, and the burst slot;
+  //      it takes the burst slot for `BurstLoad::NfcField` and the SPI-B
+  //      ownership token (`SpiBusB::beginTransmit(SpiBDevice::St25r3916)`).
+  //   2  while the session holds U9, the OFF confirmation is WITHDRAWN -- the
+  //      field is on by design -- so the liveness probe is never scheduled,
+  //      and the radio layer refuses to challenge 11h, Set-default or even
+  //      select the part for the probe or the quiesce (`nfcFieldSessionOwnsU9`).
+  //      Register 11h is the session's No-response timer, not a scratch
+  //      register, once the field is its own.
+  //   3  it calls `endNfcFieldSession(bus)` when its field is off.  End does
+  //      NOT restore the confirmation: the field state is UNKNOWN until the
+  //      loop's quiesce retry proves it off again from a live, identified
+  //      part.  The slot stays with U9 until then.
+  //
+  // The shipped bring-up image has no caller: it never turns the field on.
+  bool beginNfcFieldSession(SpiBusB &bus) {
+    const char *refusal = nullptr;
+    if (nfc_session_active_) refusal = "a session already owns U9";
+    else if (!nfc_field_confirmed_off_)
+      refusal = "the field is not confirmed off by a live part";
+    else if (acc3v3_ || acc5v_)
+      refusal = "an accessory rail is live and its permission did not "
+                "account for a carrier";
+    if (refusal == nullptr &&
+        serviceNfcLiveness(/*force=*/true) != NfcLivenessResult::Alive) {
+      refusal = "U9 did not prove liveness at the session request";
+    }
+    if (refusal == nullptr && !burstAllowed(BurstLoad::NfcField,
+                                            "NFC field session")) {
+      refusal = "the burst slot is taken";
+    }
+    if (refusal == nullptr && !burst_.begin(BurstLoad::NfcField)) {
+      refusal = "the burst slot is taken";
+    }
+    if (refusal == nullptr && !bus.beginTransmit(SpiBDevice::St25r3916)) {
+      burst_.end(BurstLoad::NfcField);
+      refusal = "the SPI-B transmit slot is taken";
+    }
+    if (refusal != nullptr) {
+      char line[200];
+      snprintf(line, sizeof(line), "NFC field session REFUSED: %s (D796-10)",
+               refusal);
+      log_(line);
+      return false;
+    }
+    nfc_session_active_ = true;
+    nfc_field_confirmed_off_ = false;
+    noteMaterialLoadEdge("an NFC field session starting");
+    log_("NFC field session OWNS U9: the OFF confirmation is withdrawn and "
+         "the liveness probe stands down until a quiesce re-proves the "
+         "field off (D796-10)");
+    return true;
+  }
+  void endNfcFieldSession(SpiBusB &bus) {
+    if (!nfc_session_active_) return;
+    bus.endTransmit(SpiBDevice::St25r3916);
+    nfc_session_active_ = false;
+    noteMaterialLoadEdge("an NFC field session ending");
+    log_("NFC field session ENDED: the field state is UNKNOWN until the "
+         "quiesce retry proves it off (D796-10)");
+  }
+  bool nfcFieldSessionActive() const { return nfc_session_active_; }
   uint8_t nfcOperationControl() const { return nfc_operation_control_; }
 
   AccessoryLoadState accessoryLoadState() const {
@@ -303,6 +561,10 @@ class DemoBringupApp : public AccessoryLoadAuthority {
   // broken peripheral on a bring-up console.
   bool burstAllowed(BurstLoad which, const char *what) {
     if (which == BurstLoad::None) return false;
+    // D-796 / C-NFC-QUIESCE-01: a burst beside a possibly retained field is
+    // the coincident sum the arbiter exists to refuse, so it too is decided
+    // on a liveness proof taken now.
+    if (which != BurstLoad::NfcField) (void)serviceNfcLiveness(/*force=*/true);
     // D-795 / R14-02: UNKNOWN owns the slot even if a reset cleared the
     // arbiter or another holder released it -- the rule is the field state,
     // not the arbiter's bookkeeping of it.
@@ -403,6 +665,11 @@ class DemoBringupApp : public AccessoryLoadAuthority {
   // that no accessory permission is granted without the qualification and its
   // wait actually having happened.
   bool configureFuelGaugeActiveMode() {
+    // D-796 / C-NFC-QUIESCE-01: the qualified settle is the one wait on an
+    // admission path this class cannot slice, so it is PRECEDED by a liveness
+    // opportunity -- which is what makes it, and not the sum of two settles,
+    // the longest unpolled step.
+    (void)serviceNfcLiveness();
     return configureFuelGaugeActiveModeOnHardware(gauge_, bus_);
   }
 
@@ -464,7 +731,23 @@ class DemoBringupApp : public AccessoryLoadAuthority {
     snprintf(admission_label_, sizeof(admission_label_), "%s", label);
     load_epoch_.noteAdmissionRequest(millis(), admission_label_);
     last_admission_vcell_ = 0.0f;
-    return readFuelCellVoltage(&last_admission_vcell_);
+    const bool read = readFuelCellVoltage(&last_admission_vcell_);
+    // D-796 / C-NFC-QUIESCE-01.  THE GRANT IS DECIDED ON A LIVENESS PROOF
+    // TAKEN AT THE GRANT.  Every admission ends here, so a U9 that stopped
+    // answering at any point before the decision -- in the window, or in an
+    // unpolled operator test before the key press -- is revoked HERE and the
+    // admission is refused, rather than granted and shed a period later.
+    (void)serviceNfcLiveness(/*force=*/true);
+    if (!nfc_field_confirmed_off_) {
+      char line[232];
+      snprintf(line, sizeof(line),
+               "%s REFUSED at the grant: the ST25R3916 field is not confirmed "
+               "off by a live part (D-796 / C-NFC-QUIESCE-01)", label);
+      log_(line);
+      last_admission_vcell_ = 0.0f;
+      return false;
+    }
+    return read;
   }
 
   // A material change in what the board draws.  Call AFTER the new load is
@@ -484,10 +767,23 @@ class DemoBringupApp : public AccessoryLoadAuthority {
   // once the elapsed time since the epoch is genuinely past the window.  It is
   // BOUNDED: a clock that does not advance makes this return false, and the
   // caller treats that as no measurement (fail-closed), never as a fresh one.
+  //
+  // D-796 / C-NFC-QUIESCE-01: the window is spent in slices of at most
+  // `kNfcLivenessPollSliceMs`, with a liveness opportunity before each, so a
+  // 1300 ms window is no longer 1300 ms in which a lost U9 goes unnoticed.  A
+  // revocation inside the window ENDS it with no reading: whatever the
+  // reading was for, it is no longer being decided under a confirmed field.
   bool waitForPostLoadConversion() {
     bool logged = false;
     last_wait_ms_ = 0;
+    const uint32_t revocations_at_entry = nfc_revocations_;
     for (unsigned attempt = 0; attempt < kGaugeWindowWaitAttempts; ++attempt) {
+      (void)serviceNfcLiveness();
+      if (nfc_revocations_ != revocations_at_entry) {
+        log_("gauge: the ST25R3916 was REVOKED inside the post-load window; "
+             "no VCELL reading is taken (fail-closed, D-796)");
+        return false;
+      }
       const uint32_t remaining = load_epoch_.remainingMs(millis());
       if (remaining == 0) {
         load_epoch_.noteWindowSpent(millis());
@@ -504,8 +800,11 @@ class DemoBringupApp : public AccessoryLoadAuthority {
                  load_epoch_.what(), (unsigned long)remaining);
         log_(line);
       }
-      delay(remaining);
-      last_wait_ms_ += remaining;
+      const uint32_t slice =
+          remaining < kNfcLivenessPollSliceMs ? remaining
+                                              : kNfcLivenessPollSliceMs;
+      delay(slice);
+      last_wait_ms_ += slice;
     }
     log_("gauge: the post-load window could NOT be confirmed spent -- the "
          "clock did not advance; no VCELL reading is taken (fail-closed)");
@@ -674,8 +973,12 @@ class DemoBringupApp : public AccessoryLoadAuthority {
 
   // D-779.  THE PERMISSION WAS TAKEN BEFORE THE LOAD EXISTED: re-read once the
   // step has settled and apply the ordinary retention rule to the result.
+  //
+  // D-796 / C-NFC-QUIESCE-01: the electrical settle keeps the liveness
+  // schedule -- a rail was granted a moment ago, so this is exactly the state
+  // in which a lost U9 has something to shed.
   void settledAccessoryRecheck(const char *what) {
-    delay(kAccessorySettledRecheckMs);
+    waitServicingNfcLiveness(kAccessorySettledRecheckMs);
     applyAccessoryRetention(what);
     last_battery_guard_ms_ = millis();
   }
@@ -1178,6 +1481,11 @@ class DemoBringupApp : public AccessoryLoadAuthority {
   bool nfc_liveness_started_ = false;
   uint32_t last_nfc_liveness_ms_ = 0;
   uint32_t nfc_revocations_ = 0;
+  // D-796 / D796-05 item 4 + D796-10: the attached hardware probe, how often
+  // it has answered, and whether a field-owning session holds U9.
+  NfcLivenessProbe nfc_probe_ = nullptr;
+  uint32_t nfc_liveness_probes_ = 0;
+  bool nfc_session_active_ = false;
   // D-793 / R12-08.
   BurstArbiter burst_;
   // D-794 / R13-01: when the board's load last changed materially.

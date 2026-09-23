@@ -2,7 +2,9 @@
 
 **Status: LIVING DASHBOARD.**
 
-**D-795 (2026-09-23) — ROUND-14 FULL CONVERGENCE; EXTERNAL-REVIEW TARGET; NO OPEN OWNER DECISION.**  R14-01..R14-07 and the Fable Work residuals closed with no copper moved: a 1300 ms gauge window with every admission its own epoch; liveness-qualified NFC OFF; the charger control model corrected over the full 2.85-4.221 V domain (junction-safe 3.900 W, no-discharge as a VBAT/source table, completion a qualification target); exact F14 domains; guarantees bound to hashed primary rows; B01-B14 / FA01-FA10 enumerated in-tree.  DO NOT ORDER.
+**D-796 (2026-09-23) — ROUND-15 FULL CONVERGENCE; EXTERNAL-REVIEW TARGET; NO OPEN OWNER DECISION.**  D796-01..D796-10 closed with no copper moved: charger states held by the loops they name (no cold TREG, no supplement under the BUVLO trip, TREG-to-zero carried as a named assumption and the no-discharge table conditioned on it), F14 binds every key to its physical state, guarantee provenance authenticated from the primary document's layout, operative documents corrected and machine-bound by role, NFC revocation bounded at 820 ms.  **REVIEW TARGET, NOT A FABRICATION AUTHORIZATION.  DO NOT ORDER.**  Full record: `CTO_DECISIONS.md` D-796, `evidence/d796-review-target.json`.
+
+**D-795 (2026-09-23) — HISTORICAL, SUPERSEDED BY D-796 (REJECTED by Round-15).**  R14-01..R14-07 and the Fable Work residuals closed with no copper moved: a 1300 ms gauge window with every admission its own epoch; liveness-qualified NFC OFF; the charger control model corrected over the full 2.85-4.221 V domain (junction-safe 3.900 W, no-discharge as a VBAT/source table, completion a qualification target); exact F14 domains; guarantees bound to hashed primary rows; B01-B14 / FA01-FA10 enumerated in-tree.  DO NOT ORDER.
 
 **D-794 (2026-09-22) — HISTORICAL, SUPERSEDED BY D-795.**
 Round-13 rejected D-793: Astra graded it **C — DO NOT ORDER** with seven findings and

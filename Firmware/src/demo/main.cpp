@@ -222,15 +222,25 @@ static void probeRadios() {
 }
 
 // D-795 / R14-02.  A CONFIRMED-QUIET ST25R3916 KEEPS PROVING IT IS ALIVE.
-static void serviceNfcLiveness() {
-  if (!g_app.nfcLivenessDue()) return;
+//
+// D-796 / D796-05 item 4: this is now only the HARDWARE half of the probe.
+// `g_app` owns the SCHEDULE -- the top of every `loop()`, every slice of every
+// app-owned wait, and every grant -- because the ~2.6 s Round-15 measured
+// was spent inside ONE loop iteration, where a loop-level call cannot reach.
+// It never disturbs a transaction in flight: with SPI-B already selected, or
+// with a field-owning NFC session holding U9 (D796-10), it touches nothing and
+// reports `Deferred`.
+static NfcLivenessResult probeNfcLivenessOnBusB(uint8_t *identity) {
+  if (identity) *identity = 0x00;
+  if (g_spi_b.selected() != SpiBDevice::None || nfcFieldSessionOwnsU9(g_spi_b)) {
+    return NfcLivenessResult::Deferred;
+  }
   g_selects.begin();
   SPI.begin(AQROOT_PIN_SPI_B_SCK, AQROOT_PIN_SPI_B_MISO, AQROOT_PIN_SPI_B_MOSI,
             -1);
-  uint8_t identity = 0x00;
-  const bool alive = st25r3916StillAlive(g_spi_b, &identity);
+  const NfcLivenessResult r = st25r3916LivenessProbe(g_spi_b, identity);
   SPI.end();
-  g_app.noteNfcLiveness(alive, identity);
+  return r;
 }
 
 static const char *chargerText(ChargerState state) {
@@ -292,6 +302,8 @@ void setup() {
   // code path can reach `beginTransmit` with no authority attached.
   // `test_production_callers.cpp` proves this line exists.
   g_spi_b.setAccessoryLoadAuthority(&g_app);
+  // D-796 / D796-05 item 4.  And the NFC liveness probe the app schedules.
+  g_app.setNfcLivenessProbe(&probeNfcLivenessOnBusB);
 
   // D-766 / round-2 review: a warm MCU reset does NOT reset the powered
   // PCAL9535As.  Safety therefore cannot wait for USB CDC, logging, an I2C scan
@@ -465,6 +477,11 @@ static void printStatus() {
 }
 
 void loop() {
+  // D-795 / R14-02 + D-796 / C-NFC-QUIESCE-01: liveness of a confirmed-quiet
+  // NFC front end, FIRST -- before the expander recovery branch, because the
+  // probe needs SPI-B and not I2C, and a board recovering its expanders is
+  // still a board whose U9 may have gone.
+  (void)g_app.serviceNfcLiveness();
   if (!g_expanders.ready()) {
     // Round-4 R4-03: an MCU reset must not turn one failed safe-latch write
     // into an indefinite energized rail.  D-789 / D788-06: the retry itself --
@@ -522,7 +539,10 @@ void loop() {
   // D-794 / R13-03: the NFC field is part of the same liveness requirement --
   // an unconfirmed field holds a burst slot and refuses accessory power, so a
   // board that gave up on it would refuse both forever.
-  if (!g_app.radiosQuiesced() || !g_app.nfcFieldConfirmedOff()) {
+  // D-796 / D796-10: a field-owning NFC session holds U9 and its field is its
+  // own; the quiesce retry leaves it alone until the session ends.
+  if (!g_app.radiosQuiesced() ||
+      (!g_app.nfcFieldConfirmedOff() && !g_app.nfcFieldSessionActive())) {
     static uint32_t last_quiesce = 0;
     static bool quiesce_retry_started = false;
     const uint32_t now = millis();
@@ -532,8 +552,6 @@ void loop() {
       (void)bringUpSpiBAndQuiesceRadios();
     }
   }
-  // D-795 / R14-02: liveness of a confirmed-quiet NFC front end.
-  serviceNfcLiveness();
   g_app.periodicBatteryGuard();
   // D-790 / D789-A09: any non-accessory command whose write did not land is
   // retried here until the physical latch confirms it.

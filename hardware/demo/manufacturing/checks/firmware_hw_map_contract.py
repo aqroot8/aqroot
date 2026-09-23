@@ -668,6 +668,34 @@ PRODUCTION_CALLER_CONTROLS = [
      "aqroot_demo_bringup_app.h",
      "    if (!nfc_field_confirmed_off_ && which != BurstLoad::NfcField) {",
      "    if (false) {"),
+    # ---- D-796 / D796-10, at the app level.  A field-owning NFC session
+    # owns U9, and the liveness probe -- every call of which writes 11h --
+    # stands down for it.
+    ("D796-10: a field session keeps the OFF confirmation, so the liveness "
+     "probe keeps challenging 11h under the session's field",
+     "aqroot_demo_bringup_app.h",
+     "    nfc_session_active_ = true;\n    nfc_field_confirmed_off_ = false;",
+     "    nfc_session_active_ = true;"),
+    ("D796-10: a quiesce verdict restores the confirmation while a session "
+     "still holds U9",
+     "aqroot_demo_bringup_app.h",
+     "    if (nfc_session_active_) return;\n"
+     "    nfc_field_confirmed_off_ = confirmed;",
+     "    nfc_field_confirmed_off_ = confirmed;"),
+    ("D796-10: a session is begun beside a live accessory rail",
+     "aqroot_demo_bringup_app.h",
+     "    else if (acc3v3_ || acc5v_)\n",
+     "    else if (false)\n"),
+    ("D-796: the settled recheck's electrical settle stops polling liveness "
+     "(equivalent at image level -- see PRODUCTION_IMAGE_CONTROLS)",
+     "aqroot_demo_bringup_app.h",
+     "      (void)serviceNfcLiveness();\n"
+     "      const uint32_t elapsed = millis() - start;",
+     "      const uint32_t elapsed = millis() - start;"),
+    ("D796-10: a session is begun without re-proving liveness at the request",
+     "aqroot_demo_bringup_app.h",
+     "        serviceNfcLiveness(/*force=*/true) != NfcLivenessResult::Alive) {",
+     "        false) {"),
 ]
 
 
@@ -733,7 +761,8 @@ PRODUCTION_IMAGE_CONTROLS = [
     ("the loop stops retrying a failed quiesce, so a board that missed it "
      "once refuses accessory power forever",
      "demo/main.cpp",
-     "  if (!g_app.radiosQuiesced() || !g_app.nfcFieldConfirmedOff()) {",
+     "  if (!g_app.radiosQuiesced() ||\n"
+     "      (!g_app.nfcFieldConfirmedOff() && !g_app.nfcFieldSessionActive())) {",
      "  if (false) {"),
     # --- D-792 / R11-04: the SPI-B transmit gate is never attached.  The image
     # still builds, still runs, still probes both radios -- and every future TX
@@ -779,7 +808,7 @@ PRODUCTION_IMAGE_CONTROLS = [
     ("the settled post-enable retention recheck is removed",
      "aqroot_demo_bringup_app.h",
      """  void settledAccessoryRecheck(const char *what) {
-    delay(kAccessorySettledRecheckMs);
+    waitServicingNfcLiveness(kAccessorySettledRecheckMs);
     applyAccessoryRetention(what);
     last_battery_guard_ms_ = millis();
   }""",
@@ -790,8 +819,10 @@ PRODUCTION_IMAGE_CONTROLS = [
     # --- Fable V-01, the exact mutant: an early return before the wait
     ("settledAccessoryRecheck early-returns before its wait",
      "aqroot_demo_bringup_app.h",
-     "    delay(kAccessorySettledRecheckMs);\n    applyAccessoryRetention(what);",
-     "    if (acc3v3_ || acc5v_) return;\n    delay(kAccessorySettledRecheckMs);\n"
+     "    waitServicingNfcLiveness(kAccessorySettledRecheckMs);\n"
+     "    applyAccessoryRetention(what);",
+     "    if (acc3v3_ || acc5v_) return;\n"
+     "    waitServicingNfcLiveness(kAccessorySettledRecheckMs);\n"
      "    applyAccessoryRetention(what);"),
     # --- D-794 / R13-01: the load-epoch rule, four ways.  Each of these is
     # the D-793 behaviour written back in, and each must be CAUGHT by the
@@ -805,8 +836,8 @@ PRODUCTION_IMAGE_CONTROLS = [
     ("the post-load window is shortened to D-779's one update, which leaves "
      "three quarters of the VCELL average describing the pre-load board",
      "aqroot_demo_bringup_app.h",
-     "      delay(remaining);",
-     "      delay(remaining / 4);"),
+     "      delay(slice);",
+     "      delay(slice / 4);"),
     # D-795 / R14-01 RETIRES D-794's IMAGE-LEVEL "the display initialisation
     # stops being a material load edge" CONTROL AS AN EQUIVALENT MUTANT AT
     # THIS LEVEL, AND SAYS WHY RATHER THAN LEAVING IT PASSING VACUOUSLY.  Every
@@ -976,8 +1007,8 @@ PRODUCTION_IMAGE_CONTROLS = [
      "    return kGaugeD794NominalWindowMs - elapsed;"),
     ("R14-01 image: the wait delays ONCE and assumes the time has passed",
      "aqroot_demo_bringup_app.h",
-     "      delay(remaining);\n      last_wait_ms_ += remaining;",
-     "      delay(remaining);\n      last_wait_ms_ += remaining;\n"
+     "      delay(slice);\n      last_wait_ms_ += slice;",
+     "      delay(slice);\n      last_wait_ms_ += slice;\n"
      "      load_epoch_.noteWindowSpent(millis() + remaining);\n"
      "      return true;"),
     ("R14-01 image: the ACC_3V3_SW rail step is no longer stamped, so the "
@@ -1022,14 +1053,84 @@ PRODUCTION_IMAGE_CONTROLS = [
      "  r.nfc.failed_at = NfcQuiesceStep::Confirmed;"),
     ("R14-02 image: main never checks the liveness of a confirmed-quiet U9",
      "demo/main.cpp",
-     "  serviceNfcLiveness();\n  g_app.periodicBatteryGuard();",
-     "  if (false) serviceNfcLiveness();\n  g_app.periodicBatteryGuard();"),
+     "  (void)g_app.serviceNfcLiveness();\n  if (!g_expanders.ready()) {",
+     "  if (false) (void)g_app.serviceNfcLiveness();\n"
+     "  if (!g_expanders.ready()) {"),
     ("R14-02 image: the liveness probe trusts the identity alone",
      "aqroot_demo_radios.h",
      "  if (!writeRegister(bus, kRegNoResponseTimer2, kChallenge[1]) ||\n"
      "      !readRegister(bus, kRegNoResponseTimer2, &back) ||\n"
      "      back != kChallenge[1]) {\n    return false;\n  }",
      "  (void)back;"),
+    # ---- D-796 / D796-05 item 4 + D796-09 C-NFC-QUIESCE-01.  THE REVOCATION
+    # DEADLINE.  Each of these puts back a piece of D-795's schedule, under
+    # which the image left a lost U9 unrevoked for 2620 ms; each must be
+    # caught by the loss sweep in test_production_image.cpp.
+    ("D-796: the gauge window stops giving the liveness probe an "
+     "opportunity per slice -- the 1300 ms window is unpolled again",
+     "aqroot_demo_bringup_app.h",
+     "      (void)serviceNfcLiveness();\n"
+     "      if (nfc_revocations_ != revocations_at_entry) {",
+     "      if (nfc_revocations_ != revocations_at_entry) {"),
+    # D-796 MOVES "the settled recheck's electrical settle stops polling
+    # liveness" TO PRODUCTION_CALLER_CONTROLS AS AN EQUIVALENT MUTANT AT THIS
+    # LEVEL, AND SAYS WHY RATHER THAN LEAVING IT PASSING VACUOUSLY.  Every
+    # rail admission re-proves U9's liveness AT the grant, and the 400 ms
+    # recheck that follows is shorter than the 500 ms liveness period, so no
+    # probe can fall due inside the recheck in the shipped image -- removing
+    # its polling cannot change any physical outcome here.  The polling is
+    # kept because that is a coincidence of two constants, and the caller
+    # test claims it directly with the probe made due mid-recheck.
+    ("D-796: an admission is granted on the last SCHEDULED liveness proof "
+     "instead of one taken at the grant",
+     "aqroot_demo_bringup_app.h",
+     "    (void)serviceNfcLiveness(/*force=*/true);\n"
+     "    if (!nfc_field_confirmed_off_) {\n      char line[232];",
+     "    if (!nfc_field_confirmed_off_) {\n      char line[232];"),
+    ("D-796: a burst is granted on the last SCHEDULED liveness proof",
+     "aqroot_demo_bringup_app.h",
+     "    if (which != BurstLoad::NfcField) (void)serviceNfcLiveness(/*force=*/true);",
+     "    (void)0;"),
+    ("D-796: the liveness schedule is D-795's 1000 ms period again, which "
+     "alone consumes the 1 s promise",
+     "aqroot_demo_bringup_app.h",
+     "now - last_nfc_liveness_ms_ < kNfcLivenessPeriodMs) {",
+     "now - last_nfc_liveness_ms_ < 2 * kNfcLivenessPeriodMs) {"),
+    ("D-796: setup never attaches the NFC liveness probe to the app",
+     "demo/main.cpp",
+     "  g_app.setNfcLivenessProbe(&probeNfcLivenessOnBusB);",
+     "  g_app.setNfcLivenessProbe(nullptr);\n"
+     "  (void)&probeNfcLivenessOnBusB;"),
+    # ---- D-796 / D796-10.  A FIELD-OWNING SESSION OWNS 11h.
+    ("D796-10: the raw liveness challenge writes 11h under a field session",
+     "aqroot_demo_radios.h",
+     "  if (nfcFieldSessionOwnsU9(bus)) {\n"
+     "    if (identity_out) *identity_out = 0x00;\n    return false;\n  }\n",
+     ""),
+    ("D796-10: the scheduled probe reports a session-owned U9 as LOST, which "
+     "would revoke on a scheduling fact and challenge the session's 11h",
+     "aqroot_demo_radios.h",
+     "  if (nfcFieldSessionOwnsU9(bus)) return NfcLivenessResult::Deferred;\n",
+     ""),
+    ("D796-10: the quiesce Set-defaults a field a session owns",
+     "aqroot_demo_radios.h",
+     "  if (nfcFieldSessionOwnsU9(bus)) {\n"
+     "    r.failed_at = NfcQuiesceStep::OwnedBySession;\n    return r;\n  }\n",
+     ""),
+    # ---- D-796 / D796-09 C-GAUGE-EPOCH-01 (Fable G10).  A STALLED CLOCK.
+    ("G10: a window the stalled clock never let pass is treated as spent, so "
+     "a VCELL reading is taken with no post-load conversion behind it",
+     "aqroot_demo_bringup_app.h",
+     "         \"clock did not advance; no VCELL reading is taken (fail-closed)\");\n"
+     "    return false;",
+     "         \"clock did not advance; no VCELL reading is taken (fail-closed)\");\n"
+     "    return true;"),
+    ("G10: a clock that has not moved since the edge is read as a spent "
+     "window",
+     "aqroot_accessory_power_policy.h",
+     "    const uint32_t elapsed = now_ms - edge_ms_;     // wraps correctly",
+     "    const uint32_t elapsed = (now_ms == edge_ms_)\n"
+     "        ? kGaugePostLoadConversionMs : now_ms - edge_ms_;"),
 ]
 
 

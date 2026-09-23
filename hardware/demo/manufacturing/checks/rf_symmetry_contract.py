@@ -210,6 +210,25 @@ def judge(pre, post, budget_mm):
     return checks, detail
 
 
+def _require_kicad10_pcbnew():
+    """D-796 / D796-10.  This tool used to PREPEND /usr/lib/python3/dist-packages
+    to sys.path unconditionally, which can shadow the intended KiCad 10 build
+    with an older system one (KiCad 7) and make the geometry it reads a
+    different program's.  The system path is now only APPENDED as a fallback
+    when `pcbnew` is not importable at all, and a non-10.x `pcbnew` is refused
+    by name rather than silently used."""
+    try:
+        import pcbnew  # noqa: F401
+    except ImportError:
+        sys.path.append("/usr/lib/python3/dist-packages")
+        import pcbnew  # noqa: F401
+    major = str(pcbnew.Version()).split(".")[0]
+    if major != "10":
+        raise SystemExit("this contract is written against KiCad 10 and the "
+                         "pcbnew on sys.path is %s (%s)"
+                         % (pcbnew.Version(), pcbnew.__file__))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--ref", default="HEAD",
@@ -222,7 +241,7 @@ def main():
     ap.add_argument("-o", "--out", type=Path)
     a = ap.parse_args()
 
-    sys.path.insert(0, "/usr/lib/python3/dist-packages")
+    _require_kicad10_pcbnew()
     tmp = Path(tempfile.mkdtemp(prefix="aqroot-demo-rfsym-"))
     pre_path, post_path = stage(a.ref, tmp / "pre"), stage(None, tmp / "post")
     pre, post = read(pre_path), read(post_path)

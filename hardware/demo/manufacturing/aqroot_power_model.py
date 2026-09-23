@@ -180,7 +180,7 @@ RULING_TAGS = ROLE_ALLOWS[DEVICE_BOUND]
 # are not MIN or MAX.  This table is a READ-ONLY view of that file, kept so
 # `audit_tags` can still name the document and row it expects.
 GUARANTEE_EVIDENCE_SHA256 = (
-    "e41c0e29198d68e54640ee86ac34e21b4acd96c032adee02fefd0178e5c7988a")
+    "805766ea642038ea8d32cf10ee1da34146ab131201a8bfc4b8dac1ed4b7f09ec")
 
 
 def _load_guaranteed_rows():
@@ -2664,6 +2664,30 @@ BQ25185 = dict(
         "bq.vbuvlo_typ_V", 3.0, TYPICAL,
         "TI SLUSF65B EC: VBUVLO, battery UVLO, VBAT falling, 3 V typical.",
         ruling=False),
+    # ---- D-796 / R15-01 + Fable R15-06.  THE BATFET BELOW VBUVLO. ---------
+    #
+    # SLUSF65B 6.3.3: "Battery voltage must be higher than the battery
+    # undervoltage lockout threshold (VBUVLO) to supplement the input in
+    # supplying the system load", and 6.3.7.2: BUVLO "disconnects BAT from
+    # SYS when the battery voltage drops below the BUVLO threshold."  D-795
+    # solved SUPPLEMENT states -- with SUPPLEMENT histories -- at a 2.85 V
+    # cell, which is at the bottom of the falling threshold's own declared
+    # band.  The threshold and its hysteresis are now carried explicitly: the
+    # falling trip is 3.0 V TYP with a DECLARED +/-5 % (TI publishes no
+    # min/max for it), and the RISING re-connect sits VBUVLO_HYS above it.
+    vbuvlo_declared_tolerance=tag(
+        "bq.vbuvlo_declared_tolerance", 0.05, DECLARED_ENGINEERING_BOUND,
+        "DECLARED.  VBUVLO has a TYP column only (3.0 V, VBAT falling); the "
+        "falling trip is modelled anywhere in 3.0 V +/-5 % = 2.85..3.15 V.  "
+        "The same band `BUVLO_BOUND_V` rules the permission floors with.",
+        condition="applied either way to the 3.0 V typical",
+        role=POLICY_BUDGET),
+    vbuvlo_hys_max_V=tag(
+        "bq.vbuvlo_hys_max_V", 0.190, GUARANTEED_MAX,
+        "TI SLUSF65B EC: VBUVLO_HYS, Battery UVLO hysteresis, VBAT rising, "
+        "VIN = 5V: 110 / 150 / 190 mV -- the MAX column.  A cell that fell "
+        "through the trip is re-connected no later than trip + 190 mV.",
+        condition="VBAT rising, VIN = 5 V"),
     treg_typ_C=tag(
         "bq.treg_typ_C", 100.0, TYPICAL,
         "TI SLUSF65B EC: TREG, typical junction temperature regulation, "
@@ -2806,6 +2830,111 @@ def vindpm_threshold_V(vbat, spec=None, thresholds=None):
 CHARGER_BRANCH_NAMES = ("SYS_REG", "CC_PATH_LIMITED", "TREG", "ILIM",
                         "VINDPM", "DPPM", "NO_CHARGE", "SUPPLEMENT")
 
+# ==========================================================================
+# D-796 / R15-01 + Fable R15-06 (D796-08).  WHETHER THE BATFET CAN SUPPLEMENT.
+#
+# Two BATFET states, and which of them a cell voltage admits:
+#
+#   "connected"  the cell is above VBUVLO; the BATFET may carry BAT -> SYS.
+#   "uvlo_open"  BUVLO has disconnected BAT from SYS for DISCHARGE.  Charging
+#                (precharge / CC) still flows -- SLUSF65B charges a battery
+#                down to 0 V -- but nothing can SUPPLEMENT: a load the input
+#                cannot carry collapses SYS (brown-out, then the 6.3.7.5
+#                system-short hiccup), it does not draw on the cell.
+#
+# The falling trip is anywhere in the declared band; a cell that FELL
+# through it re-connects only at trip + VBUVLO_HYS.  So:
+#
+#   VBAT <= trip_low                 -> uvlo_open only ("at/under VBUVLO")
+#   VBAT >= trip_high + HYS_MAX      -> connected only
+#   in between                       -> BOTH, part-to-part and by history
+#
+# and every domain that ranges over cells enumerates BOTH states wherever
+# both are physical, so no product claim silently picks the benign one.
+# ==========================================================================
+BATFET_STATES = ("connected", "uvlo_open")
+
+
+def buvlo_band_V(spec=None):
+    """(falling-trip low, falling-trip high, rising re-connect high)."""
+    s = BQ25185 if spec is None else spec
+    lo = s["vbuvlo_typ_V"] * (1.0 - s["vbuvlo_declared_tolerance"])
+    hi = s["vbuvlo_typ_V"] * (1.0 + s["vbuvlo_declared_tolerance"])
+    return round(lo, 6), round(hi, 6), round(hi + s["vbuvlo_hys_max_V"], 6)
+
+
+def batfet_states_at(vbat, spec=None):
+    """Every BATFET state a cell at `vbat` can physically be in."""
+    lo, _hi, reconnect = buvlo_band_V(spec)
+    if vbat <= lo + 1e-12:
+        return ("uvlo_open",)
+    if vbat >= reconnect - 1e-12:
+        return ("connected",)
+    return BATFET_STATES
+
+
+# ==========================================================================
+# D-796 / D796-02.  AN AMBIGUOUS DATASHEET SENTENCE IS A NAMED ASSUMPTION.
+#
+# SLUSF65B 6.3.7.6: "If the charge current is reduced to 0, the battery
+# supplies the current needed by the SYS output."  It does not say whether the
+# input FET is ALSO throttled once TREG has taken the charge to zero (so the
+# cell discharges into SYS with an adapter present), or whether the sentence
+# only restates 6.3.3 supplement.  D-795 silently chose the benign reading and
+# published a no-discharge table that is ambient- and TREG-independent.
+#
+# D-796 relies on NEITHER reading.  A no-discharge claim is published only
+# where the zero-charge junction stays BELOW the LOW end of the declared TREG
+# band -- there TREG can never fold the charge to zero, so the sentence cannot
+# apply under either reading.  The junction claim is unaffected: under the
+# throttling reading the input FET dissipates LESS, so the benign reading is
+# the adverse one for heat and that is the one the junction bound uses.
+# C-PWR-CHARGE-01 step 6 is the discriminating first-article measurement.
+# ==========================================================================
+CHARGER_MODEL_ASSUMPTIONS = dict(
+    treg_zero_charge_sys_source=dict(
+        status="AMBIGUOUS_IN_THE_PRIMARY_SOURCE_NOT_RELIED_ON",
+        text="SLUSF65B 6.3.7.6: 'If the charge current is reduced to 0, the "
+             "battery supplies the current needed by the SYS output.'",
+        readings=dict(
+            restates_supplement="the input keeps carrying what it can; the "
+                                "cell supplies only a shortfall (6.3.3)",
+            throttles_the_input="once TREG has folded the charge to zero the "
+                                "input is reduced and the cell discharges "
+                                "into SYS with the adapter attached"),
+        no_discharge_claim="conditioned: published only where the zero-"
+                           "charge junction is below TREG's declared LOW end "
+                           "(90 C) at every ambient 0..40 C, so TREG cannot "
+                           "reach zero charge and neither reading applies",
+        junction_claim="uses the restates_supplement reading, which keeps "
+                       "the input FET carrying the load and is therefore the "
+                       "HOTTER of the two",
+        discriminating_measurement="C-PWR-CHARGE-01 step 6 (40 C, high "
+                                   "source corner, mid/high cell)"),
+    batfet_below_vbuvlo=dict(
+        status="PRIMARY_SOURCE",
+        text="SLUSF65B 6.3.3 / 6.3.7.2: supplement requires VBAT > VBUVLO; "
+             "BUVLO disconnects BAT from SYS",
+        consequence="below the trip a load above the input-carrying limit "
+                    "collapses SYS; it is never solved as SUPPLEMENT"),
+    treg_limit_cycle=dict(
+        status="MODEL_CONSEQUENCE",
+        text="where the charge is held by the DPPM loop at an input limit, "
+             "reducing the charge PROGRAM changes nothing until it falls "
+             "below the held charge, and then SYS leaps back to regulation "
+             "and the junction drops below TREG; no static TREG equilibrium "
+             "exists and the part cycles between the two",
+        consequence="the HOT, low-charge phase is published as the state "
+                    "(adverse for the enclosure air and the charge time); it "
+                    "is never labelled TREG and never carries a junction "
+                    "below the threshold that would make TREG active",
+        junction="the junction is bounded by the threshold itself: the loop "
+                 "acts on TJ, and the phases alternate on the loop's "
+                 "timescale, far faster than the package's thermal time "
+                 "constant, so the die averages to TREG.  DECLARED -- "
+                 "SLUSF65B publishes no loop bandwidth; C-PWR-CHARGE-01 "
+                 "step 6 and C-THERM-01 observe the package temperature"))
+
 
 def programmed_charge_A(vbat, spec=None, ichg_corner="max", vlowv_V=None):
     """What the CC/precharge loop asks for at this cell, before any fold.
@@ -2831,8 +2960,16 @@ def charger_state(p_sys_W, vbat, ilim_corner="max", vbus_corner="max",
                   spec=None, treg_folds_charge_to_zero=False,
                   vbus_V=None, path_ohm=None, source_key=None,
                   previous_mode=None, sweep=0.0, ichg_corner="max",
-                  ichg_program_A=None, charge_loop=None, vlowv_V=None):
+                  ichg_program_A=None, charge_loop=None, vlowv_V=None,
+                  batfet="connected"):
     """ONE physically consistent BQ25185 operating point.  Pure.
+
+    D-796 / D796-08: `batfet` is "connected" or "uvlo_open".  Below VBUVLO
+    (`batfet_states_at`) the BATFET cannot supplement, and a load the input
+    cannot carry has NO static operating point (SYS collapses) -- the solver
+    returns None and never a SUPPLEMENT state.  A "uvlo_open" request at a
+    cell that cannot be under the trip, or "connected" at one that must be,
+    is refused the same way, so a label cannot be attached to the wrong cell.
 
     D-795 / R14-03 CORRECTS THE CONTROL MODEL, AND THE CORRECTION IS ONE
     SENTENCE OF SLUSF65B 6.3.2 THAT D-794 DID NOT FOLLOW:
@@ -2874,6 +3011,8 @@ def charger_state(p_sys_W, vbat, ilim_corner="max", vbus_corner="max",
     IPRECHG below VLOWV, or -- `ichg_program_A` -- a thermal fold.
     """
     s = BQ25185 if spec is None else spec
+    if batfet not in batfet_states_at(vbat, s):
+        return None
     th = charger_thresholds(s, sweep)
     ilim = s["ilim_max_A"] if ilim_corner == "max" else s["ilim_min_A"]
     if vbus_V is None or path_ohm is None:
@@ -3011,17 +3150,30 @@ def charger_state(p_sys_W, vbat, ilim_corner="max", vbus_corner="max",
                     "the CC loop pulls SYS to VDPPM = %.4f V and the load "
                     "alone exceeds the input there: entry by necessity"
                     % v_dppm)
+            elif batfet != "connected":
+                # D-796 / D796-08: the comparator has nothing to switch on --
+                # BUVLO holds BAT off SYS -- so SYS below the cell is simply
+                # where the input leaves it.
+                threshold_used = ("BATFET disconnected by BUVLO: no "
+                                  "supplement comparator acts")
             elif vs0 <= v_sup_enter + 1e-12:
                 supplementing = True
                 threshold_used = ("VBSUP1: SYS is below VBAT - %.4f V"
                                   % th["vbsup1_V"])
             elif vs0 <= v_sup_exit + 1e-12:
                 hysteresis_band = True
-                supplementing = (previous_mode == "SUPPLEMENT")
+                supplementing = (previous_mode == "SUPPLEMENT"
+                                 and batfet == "connected")
                 threshold_used = (
                     "inside the VBSUP1/VBSUP2 hysteresis band "
                     "[%.4f, %.4f] V; previous mode %r decides"
                     % (v_sup_enter, v_sup_exit, previous_mode))
+            if supplementing and batfet != "connected":
+                # D-796 / D796-08.  BUVLO has disconnected BAT from SYS: the
+                # shortfall cannot be drawn from the cell.  SYS collapses
+                # (brown-out; SLUSF65B 6.3.7.5 system-short hiccup) -- there
+                # is no static operating point to report.
+                return None
             if not supplementing:
                 vsys, i_in, i_sys, regulated = vs0, i_in0, i_sys0, reg0
                 mode = "NO_CHARGE"
@@ -3081,6 +3233,7 @@ def charger_state(p_sys_W, vbat, ilim_corner="max", vbus_corner="max",
         ilim_corner=ilim_corner, vbus_corner=vbus_corner,
         ichg_corner=ichg_corner,
         source_key=source_key,
+        batfet=batfet,
         previous_mode=previous_mode,
         ilim_A=ilim, vbus_source_V=vbus, path_ohm=path,
         vin_pin_V=round(v_pin, 6),
@@ -3147,7 +3300,8 @@ def charger_state(p_sys_W, vbat, ilim_corner="max", vbus_corner="max",
             v_dppm=v_dppm, v_sup_enter=v_sup_enter, v_sup_exit=v_sup_exit,
             hysteresis_band=hysteresis_band, previous_mode=previous_mode,
             batfet_off_node_V=batfet_off_node_V,
-            ichg_nominal=nominal_prog, charge_loop=loop))
+            ichg_nominal=nominal_prog, charge_loop=loop,
+            batfet=batfet, buvlo_trip_low_V=buvlo_band_V(s)[0]))
 
 
 def charger_junction(st, ambient_C, r_sys_K_per_W, theta_ja_C_per_W,
@@ -3163,19 +3317,94 @@ def charger_junction(st, ambient_C, r_sys_K_per_W, theta_ja_C_per_W,
     return air + theta_ja_C_per_W * st[heat_key], air, internal
 
 
+TREG_EQUILIBRIUM_TOL_K = 0.05
+# The hot phase of a TREG limit cycle: a state whose charge is NOT set by the
+# program -- held by DPPM at an input limit, or (at a cell low enough that the
+# CC loop drags SYS below the entry threshold) already supplementing.
+LIMIT_CYCLE_HOT_BRANCHES = ("ILIM", "VINDPM", "DPPM", "SUPPLEMENT")
+
+
+def charger_thermal_problems(st):
+    """D-796 / R15-01.  A thermal label must be held by the loop it names.
+
+    SLUSF65B 6.3.7.6: the device "reduces the charge current WHEN TJ REACHES
+    the thermal regulation threshold".  TREG is a loop that becomes active
+    BECAUSE the junction is at the threshold, so:
+
+      * a state labelled TREG, or with `treg_active`, must have its junction
+        AT the threshold -- except the zero-charge end, where TREG has done
+        all it can and the junction may sit ABOVE it, and the limit-cycle hot
+        phase, which is above it by construction;
+      * a CHARGING state whose junction is ABOVE the threshold with TREG not
+        active is a state the thermal loop would not leave alone.
+    """
+    th = st.get("thermal")
+    why = []
+    if not isinstance(th, dict):
+        return ["no thermal block"]
+    tj, treg = th["junction_C"], th["treg_C"]
+    regime = th.get("regime")
+    if st["mode"] == "TREG" or th.get("treg_active"):
+        if tj < treg - TREG_EQUILIBRIUM_TOL_K:
+            why.append("a TREG-active state whose junction %.3f C is BELOW "
+                       "the %.1f C threshold that would activate the loop"
+                       % (tj, treg))
+        if regime == "TREG_EQUILIBRIUM" and tj > treg + TREG_EQUILIBRIUM_TOL_K:
+            why.append("a TREG equilibrium above its threshold")
+        if regime == "TREG_AT_ZERO_CHARGE" and st["charge_A"] > 1e-9:
+            why.append("TREG at zero charge with a charge current")
+    if st["mode"] == "TREG" and regime not in ("TREG_EQUILIBRIUM",
+                                               "TREG_AT_ZERO_CHARGE"):
+        why.append("a TREG branch not produced by the thermal solve")
+    if (not th.get("treg_active") and st["charge_A"] > 1e-9
+            and tj > treg + TREG_EQUILIBRIUM_TOL_K):
+        why.append("a charging state at %.3f C, above TREG, with the "
+                   "thermal loop inactive" % tj)
+    if regime == "TREG_LIMIT_CYCLE_HOT_PHASE":
+        if st["mode"] not in LIMIT_CYCLE_HOT_BRANCHES:
+            why.append("a limit-cycle hot phase that is neither DPPM-held "
+                       "nor supplementing")
+        if tj < treg - TREG_EQUILIBRIUM_TOL_K:
+            why.append("a limit-cycle hot phase below TREG")
+        cold = (th.get("limit_cycle") or {}).get("cold_phase_junction_C")
+        if cold is None or cold >= treg - TREG_EQUILIBRIUM_TOL_K:
+            why.append("a limit cycle whose cold phase does not sit below "
+                       "TREG -- a static equilibrium existed")
+    return why
+
+
 def charger_operating_point(p_sys_W, vbat, ambient_C, r_sys_K_per_W,
                             theta_ja_C_per_W, treg_C, delivered_out_W=0.0,
                             **kw):
-    """D-795 / R14-03 + R14-04.  THE CHARGER WITH ITS THERMAL LOOP CLOSED.
+    """D-795 / R14-03 + R14-04, CORRECTED BY D-796 / R15-01.
 
     SLUSF65B 6.3.7.6: "the device monitors the junction temperature of the
     die and reduces the charge current when TJ reaches the thermal regulation
-    threshold (TREG)."  The fold is a LOOP, not an assumption: the charge
-    program is reduced until the junction sits at TREG, and because a smaller
-    charge current takes the input off its limit, SYS rises back toward
-    regulation and the input FET's own drop shrinks with it.  If even a zero
-    charge current leaves the junction above TREG, TREG has done all it can
-    and the state is solved with no charge.
+    threshold (TREG)."  The fold is a LOOP.  Three outcomes, each labelled by
+    the loop that actually holds it (`thermal.regime`):
+
+      NO_TREG                 the unfolded state is at or below TREG.
+      TREG_EQUILIBRIUM        a reduced program puts the junction AT TREG.
+      TREG_AT_ZERO_CHARGE     even zero charge leaves the junction at or
+                              above TREG; TREG has done all it can.
+      TREG_LIMIT_CYCLE_HOT_PHASE
+                              ROUND-15 R15-01.  D-795 bisected the program
+                              for "junction <= TREG" and reported whatever it
+                              landed on as TREG -- 44 of 480 corners came back
+                              labelled TREG with the junction up to 21 K BELOW
+                              the threshold.  The cause is a discontinuity:
+                              while the DPPM loop holds the charge at an input
+                              limit, a lower PROGRAM changes nothing until it
+                              drops below the held charge, and then SYS leaps
+                              back to regulation, the input FET's drop
+                              collapses and the junction falls below TREG, so
+                              the loop releases, the program rises, and the
+                              part falls back into the DPPM-held state.  No
+                              static TREG state exists.  The HOT, low-charge
+                              phase is published -- labelled by its input
+                              loop, with the cold phase carried as evidence --
+                              because it is the adverse phase for the
+                              junction, the enclosure air AND the charge time.
     """
     st = charger_state(p_sys_W, vbat, **kw)
     if st is None:
@@ -3185,17 +3414,27 @@ def charger_operating_point(p_sys_W, vbat, ambient_C, r_sys_K_per_W,
         return charger_junction(x, ambient_C, r_sys_K_per_W,
                                 theta_ja_C_per_W, delivered_out_W)
 
-    def _attach(x, active):
+    def _attach(x, active, regime, extra=None):
         tj, air, internal = _tj(x)
-        return dict(x, thermal=dict(
+        th = dict(
             ambient_C=ambient_C, r_sys_K_per_W=r_sys_K_per_W,
             theta_ja_C_per_W=theta_ja_C_per_W, treg_C=treg_C,
             delivered_out_W=round(delivered_out_W, 6),
             internal_W=round(internal, 6), internal_air_C=round(air, 6),
-            junction_C=round(tj, 6), treg_active=bool(active)))
+            junction_C=round(tj, 6), treg_active=bool(active),
+            regime=regime)
+        if extra:
+            th.update(extra)
+        out = dict(x, thermal=th)
+        tp = charger_thermal_problems(out)
+        inv = dict(out["invariants"], thermal_problems=tp,
+                   thermal_label_is_held_by_its_loop=not tp)
+        inv["ok"] = bool(out["invariants"]["ok"] and not tp)
+        out["invariants"] = inv
+        return out
 
     if _tj(st)[0] <= treg_C + 1e-9:
-        return _attach(st, False)
+        return _attach(st, False, "NO_TREG")
     kw0 = dict(kw)
     kw0.pop("ichg_program_A", None)
     kw0.pop("charge_loop", None)
@@ -3204,10 +3443,10 @@ def charger_operating_point(p_sys_W, vbat, ambient_C, r_sys_K_per_W,
     if zero is None:
         return None
     if _tj(zero)[0] >= treg_C - 1e-9:
-        return _attach(zero, True)
+        return _attach(zero, True, "TREG_AT_ZERO_CHARGE")
     lo, hi = 0.0, st["controls"]["nominal_charge_program_A"]
     best = zero
-    for _ in range(48):
+    for _ in range(60):
         mid = 0.5 * (lo + hi)
         cand = charger_state(p_sys_W, vbat, ichg_program_A=mid,
                              charge_loop="TREG", **kw0)
@@ -3215,7 +3454,29 @@ def charger_operating_point(p_sys_W, vbat, ambient_C, r_sys_K_per_W,
             lo, best = mid, cand
         else:
             hi = mid
-    return _attach(best, True)
+    if _tj(best)[0] >= treg_C - TREG_EQUILIBRIUM_TOL_K:
+        return _attach(best, True, "TREG_EQUILIBRIUM")
+    # ---- no static equilibrium: the limit cycle ---------------------------
+    # The hot phase's charge is NOT set by the program (DPPM holds it, or the
+    # part is supplementing), so it is published at the NOMINAL program: the
+    # boundary program `hi` sits inside every checker's tolerance of the
+    # switch and would make the label depend on rounding.
+    hot = st
+    if hot["mode"] not in LIMIT_CYCLE_HOT_BRANCHES:
+        hot = charger_state(p_sys_W, vbat, ichg_program_A=hi,
+                            charge_loop="TREG", **kw0) or st
+    return _attach(hot, True, "TREG_LIMIT_CYCLE_HOT_PHASE", dict(
+        limit_cycle=dict(
+            program_band_A=[round(lo, 6), round(hi, 6)],
+            cold_phase_mode=best["mode"],
+            cold_phase_charge_A=best["charge_A"],
+            cold_phase_junction_C=round(_tj(best)[0], 6),
+            hot_phase_junction_C=round(_tj(hot)[0], 6),
+            time_average_junction_bound_C=treg_C,
+            why="the DPPM-held charge does not respond to the program until "
+                "the program falls below it; then SYS returns to regulation "
+                "and the junction drops below TREG, so no static TREG state "
+                "exists")))
 
 
 def charger_invariants(i_in, i_supp, i_sys, i_chg, vsys, vbat, v_pin, ron_in,
@@ -3226,7 +3487,7 @@ def charger_invariants(i_in, i_supp, i_sys, i_chg, vsys, vbat, v_pin, ron_in,
                        v_sup_enter=None, v_sup_exit=None,
                        hysteresis_band=False, previous_mode=None,
                        batfet_off_node_V=None, ichg_nominal=None,
-                       charge_loop=None):
+                       charge_loop=None, batfet=None, buvlo_trip_low_V=None):
     eps = 1e-6
     inv = dict(
         kcl_at_sys=bool(abs(i_in + i_supp - i_sys - i_chg) < 1e-6),
@@ -3271,6 +3532,10 @@ def charger_invariants(i_in, i_supp, i_sys, i_chg, vsys, vbat, v_pin, ron_in,
         cap = ilim if i_cap is None else i_cap
         ich = ichg_max
         why = []
+        # ---- D-796 / D796-08: no supplement HISTORY below the trip --------
+        if batfet == "uvlo_open" and previous_mode == "SUPPLEMENT":
+            why.append("a SUPPLEMENT history with the BATFET disconnected by "
+                       "BUVLO: the part cannot have been supplementing")
         # ---- universal: no input-side loop may be exceeded ---------------
         if i_in > cap + 1e-9:
             why.append("the input current exceeds the loop cap")
@@ -3354,13 +3619,22 @@ def charger_invariants(i_in, i_supp, i_sys, i_chg, vsys, vbat, v_pin, ron_in,
                 why.append("NO_CHARGE must neither charge nor supplement")
             if vsys > vsys_reg + 1e-9:
                 why.append("SYS above its regulation point")
-            if v_sup_enter is not None and vsys < v_sup_enter - 1e-9:
+            if v_sup_enter is not None and vsys < v_sup_enter - 1e-9 \
+                    and batfet != "uvlo_open":
                 why.append("SYS is below the supplement entry threshold")
             if v_sup_exit is not None and vsys < v_sup_exit - 1e-9 \
                     and previous_mode == "SUPPLEMENT":
                 why.append("the part was supplementing and SYS has not risen "
                            "back above the VBSUP2 exit threshold")
         elif mode == "SUPPLEMENT":
+            # D-796 / D796-08: SLUSF65B 6.3.3 -- no supplement at or under
+            # VBUVLO.  Judged on the BATFET label AND on the cell itself, so
+            # a mislabelled state cannot carry supplement below the trip.
+            if batfet is not None and batfet != "connected":
+                why.append("SUPPLEMENT with the BATFET disconnected by BUVLO")
+            if buvlo_trip_low_V is not None and vbat <= buvlo_trip_low_V + 1e-12:
+                why.append("SUPPLEMENT at a cell at or under the lowest "
+                           "VBUVLO trip: the BATFET cannot supply SYS")
             if i_chg > eps:
                 why.append("SUPPLEMENT must not charge")
             if vsys > vbat + 1e-9:

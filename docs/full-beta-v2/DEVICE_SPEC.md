@@ -47,7 +47,7 @@
 | NFC 5 V PA boost `U13` | fitted (§6.3 of this document still says FITTED — **that row is wrong even for Demo**) | **DNP.  NFC runs from the 3.3 V path** | Demo scope "Already unnecessary / DNP" |
 | Charger status decode | `STAT1` + `STAT2` both landed, full four-state decode | **`STAT2` (`U11.3`) UNCONNECTED.**  `STAT1` LOW = fault is directly observed; charging-versus-complete is an INFERENCE | owner decision 2026-09-17, D-742 |
 | Charge current / input limit | not previously fixed anywhere | **`ICHG` 769 mA typical (`R37` 390 Ω; 723.5…815.9 mA over the guaranteed `KISET` band, D-795), input limit 1100 mA (`R36` 13 kΩ), `VBATREG` 4.2 V** | D-743, re-stated D-795 |
-| Charging source | not previously stated | **charge from a 1 A or better USB source.**  A 500 mA-class port charges more slowly and will not complete a cycle inside the charger's 360 min safety timer | D-743 |
+| Charging source | not previously stated | **the NAMED adapter only: Raspberry Pi 15W USB-C Power Supply `KSA-15E-051300HU` (or its regional variant) on its own captive 1.5 m 18 AWG cable** — the source contract is ≥ **4.6128 V** at `U11` pin 10 with the charger drawing its 1.1 A input limit (`C-CHG-01`).  Every other adapter, cable or computer port is OUTSIDE the first-five contract (D-796 replaces D-743's generic source wording) | D-795 / D-796 |
 | Speaker `LS1` | on the BOM | **OFF-BOARD**, 152 mm flying leads (`aqroot-Demo-OFF-BOARD.csv`) | fab package |
 | Battery capacity | 2500–3000 mAh envelope | **2500 mAh first-five pack SELECTED: Adafruit Product 328**, protected 1S LiPo with genuine JST-PH. Supplier-linked 785060 specification permits ≤2C discharge (5 A for 2500 mAh); CTO-BAT-01 contract requires ≥2.675 A against the live D-753 2.229 A board envelope plus 20 % margin | CTO-BAT-01 |
 
@@ -319,7 +319,7 @@ sockets); the only on-board RF network is the 13.56 MHz NFC differential front e
 | **Exact fitted capacity** | **2500 mAh — Adafruit Product 328 selected for the first five (CTO-BAT-01).** Current supplier page specifies a protected pack with genuine JST-PH; its linked `785060` pack specification is pinned in-repo at SHA-256 `826149da…ecd3`, max pack 7.9 × 50.5 × 60.5 mm and max charge 1C. The primary pack specification §8.3.2 states discharge current **≤2C5A**; its own nominal-capacity row defines the C5 capacity as **2500 mAh**, so the derived limit is **2 × 2.5 Ah = 5.0 A**. That 5.0 A is a C-rate derivation, not a literal table row labelled “5 A max discharge.” The supplier's conservative charge recommendation is 1.2 A, above this board's 0.855 A worst programmed envelope. Incoming polarity must be meter-verified before D-781 retermination/mating. | **SELECTED · ENGINEERING-ONLY** | `assembly/SELECTED_BATTERY.json`; `checks/battery_pack_contract.py` |
 | Charger | `U11` **BQ25185DLHR** (1S Li-ion linear charger) | FITTED · INTERNAL | `01_power_tree.kicad_sch:U11` |
 | Charge current (ICHG) | **723.5…815.9 mA** (769 mA typical) — `R37` 390 Ω 1 % on ISET, `ICHG = KISET / RISET` with `KISET` 285 / 300 / 315 AΩ (SLUSF65B EC).  Input limit **995…1100 mA** at the 1050 mA setting and `VBATREG` **4.2 V** from `R36` 13 kΩ (Table 6-1).  **Charge time is a QUALIFICATION TARGET, not a derived figure** (D-795): see the charging section and `C-PWR-CHARGE-02`.  *(D-743's "full cycle ≈ 240–290 min" is RETIRED — it assumed no thermal regulation and no source limit.)* | **RESOLVED at D-743, re-stated at D-795** · ENGINEERING-ONLY | `01_power_tree.kicad_sch:R36,R37`; CTO_DECISIONS D-743; `evidence/d743-rail-ampacity.json` |
-| Charge source requirement | **1 A or better.**  The USB-C port is a plain 5.1 kΩ Rd sink and does not read the source's Rp advertisement; a 500 mA-class port is folded back by the charger's VINDPM and will not complete a cycle inside `tMAXCHG` | MARKETING-SAFE (state it as "charge from a 1 A USB adapter") | D-743 |
+| Charge source requirement | **the named Raspberry Pi 15W USB-C Power Supply (`KSA-15E-051300HU` or regional variant) on its captive 1.5 m 18 AWG cable, and nothing else, for the first five.**  The USB-C port is a plain 5.1 kΩ Rd sink and does not read the source's Rp advertisement, so the contract is a named part, not a current rating: ≥ 4.6128 V at `U11` pin 10 at the 1.1 A input limit (`C-CHG-01`).  A computer port or any other adapter/cable is OUTSIDE the contract | MARKETING-SAFE (state it as "charge with the supplied Raspberry Pi 15W USB-C adapter") | D-795 / D-796 |
 | Fuel gauge | `U14` **MAX17048G+T10** @ I²C 0x36 | FITTED | `01_power_tree.kicad_sch:U14` |
 | Power switch | `SW9` **JS102011SAQN** SPDT slide (hard rail off) | FITTED · EXTERNAL (right wall) | `01_power_tree.kicad_sch:SW9`; `R68` 0 Ω bypass must stay DNP |
 
@@ -525,16 +525,20 @@ power/NFC review, and CTO decisions.
 > that D-788 fitted to `J5.3` is also **retired** (D788-07/08/09/16); see
 > DELIVERY below.
 >
-> **The guarantee is the worst permitted mode.**  Either duplicated 3.3 V
+> **The guarantee is the worst SIZING case.**  Either duplicated 3.3 V
 > contact used **alone**, **one** mated ground contact, and the 5 V rail also
-> drawing its published 300 mA through that same ground:
+> drawing its full published 300 mA through that same ground.  That is a
+> SIZING case and NOT a permitted operating mode (D-796 / Round-15): both rails
+> together are admitted only at the declared **220 mA + 170 mA** pair, and no
+> accessory rail is admitted while a radio transmits.  The voltage guarantee is
+> taken at the heavier sizing case so it covers every admitted state:
 >
 > | condition, at the J5 mating interface | guaranteed voltage |
 > |---|---|
 > | no load | **3.069408 V** |
-> | 400 mA, worst permitted wiring, 5 V rail also at 300 mA | **2.805637 V** |
-> | 400 mA, best permitted wiring (`J5.22`, four grounds, 3.3 V rail alone) | **2.899731 V** |
-> | 400 mA, **header fully mated** (both 3.3 V contacts, all four grounds), 5 V rail also at 300 mA | **2.910494 V** |
+> | 400 mA, worst wiring, 5 V rail also at 300 mA (SIZING case) | **2.805637 V** |
+> | 400 mA, best wiring (`J5.22`, four grounds, 3.3 V rail alone) | **2.899731 V** |
+> | 400 mA, **header fully mated** (both 3.3 V contacts, all four grounds), 5 V rail also at 300 mA (SIZING case) | **2.910494 V** |
 >
 > **PUBLISHED MINIMUM: 2.80 V** — the worst mode, rounded DOWN onto a 10 mV
 > grid.  It is **DERIVED**, not asserted: `demo_feature_contract` F6 computes it
@@ -831,7 +835,152 @@ power/NFC review, and CTO decisions.
 > fuse (`R10-N02`).
 >
 >
-> ### **D-795 — CHARGING WHILE RUNNING: ONE JUNCTION-SAFE POWER, ONE NO-DISCHARGE TABLE, AND A COMPLETION TARGET**
+> ### **D-796 — CHARGING WHILE RUNNING, CORRECTED: EVERY STATE HELD BY THE LOOP IT NAMES, NO SUPPLEMENT UNDER THE BUVLO TRIP, AND A NO-DISCHARGE TABLE THAT DOES NOT DEPEND ON AN AMBIGUOUS SENTENCE**
+>
+> **THE CHARGING SOURCE IS A NAMED PART.**  Charge the first five **only** from the
+> **Raspberry Pi 15W USB-C Power Supply**, part `KSA-15E-051300HU` (US; regional
+> variants `KSA-15E-051300HE` EU, `KSA-15E-051300HK` UK, `KSA-15E-051300HA` AU/NZ/CN,
+> `KSA-15E-051300HI` IN), on its own **captive 1.5 m 18 AWG** USB-C cable, ruled at
+> **4.743 V / 5.457 V** (5.1 V ±7 %, product brief archived under
+> `hardware/demo/kicad/aqroot-demo/vendor/RPI/`).  The acceptance criterion is at least
+> **4.6128 V** at `U11` pin 10 with the charger drawing its 1.1 A input limit
+> (`C-CHG-01`).  A computer port and every other adapter or cable are OUTSIDE the
+> first-five contract; the table below REPORTS two such classes so the cost of leaving
+> the contract is visible, and no figure from those columns is an acceptance figure.
+>
+> **THREE PHYSICS CORRECTIONS (Round-15 `R15-01`, Fable `R15-01`/`R15-06`).**
+>
+> 1. **A thermal label is held by the loop it names.**  SLUSF65B §6.3.7.6 reduces the
+>    charge *when TJ reaches TREG*.  D-795 bisected the charge program and reported 44 of
+>    480 thermally-closed corners as `TREG` with the junction up to 21 K BELOW the
+>    threshold.  The cause is real physics: where the DPPM loop holds the charge at an
+>    input limit, a lower program changes nothing until it falls below the held charge,
+>    and then SYS leaps back to regulation and the junction drops below TREG — no static
+>    TREG state exists and the part cycles between the two phases.  D-796 publishes the
+>    HOT, low-charge phase of such a cycle (adverse for the enclosure air and the charge
+>    time), labelled by its own electrical loop and never as `TREG`; the die averages to
+>    the threshold because the loop acts far faster than the package's thermal time
+>    constant (a DECLARED assumption — SLUSF65B publishes no loop bandwidth).
+> 2. **No supplement at or under the BUVLO trip.**  SLUSF65B §6.3.3: the battery must
+>    be above VBUVLO to supplement SYS; §6.3.7.2: BUVLO disconnects BAT from SYS.  The
+>    falling trip is 3.0 V TYP (declared ±5 %: **2.85…3.15 V**) and a cell that fell
+>    through it re-connects no later than **3.34 V** (VBUVLO_HYS 190 mV MAX).  Every cell
+>    in that band is solved in BOTH BATFET states, and with the BATFET open a load the
+>    input cannot carry has **no operating point — SYS collapses** (brown-out, then the
+>    §6.3.7.5 system-short hiccup).  The lowest such input-carrying power on the named
+>    adapter is **2.85 W** published (3.035 W raw).  Charging itself continues under the
+>    trip (precharge).
+> 3. **The TREG-to-zero sentence is an ASSUMPTION, not a choice.**  SLUSF65B §6.3.7.6:
+>    *"If the charge current is reduced to 0, the battery supplies the current needed by
+>    the SYS output."*  It does not say whether the input is also throttled once TREG has
+>    taken the charge to zero.  D-795 silently chose the benign reading.  D-796 relies on
+>    neither: the model carries `treg_zero_charge_sys_source =
+>    AMBIGUOUS_IN_THE_PRIMARY_SOURCE_NOT_RELIED_ON`, and a no-discharge figure is published
+>    only where the zero-charge junction stays below TREG's declared LOW end (90 °C) at
+>    every ambient 0…40 °C — there TREG cannot fold the charge to zero and neither reading
+>    applies.  `C-PWR-CHARGE-01` step 6 is the discriminating first-article measurement.
+>
+> **JUNCTION-SAFE SYSTEM POWER: 3.900 W.**  Over the whole charging domain — every cell
+> from **2.850 V** to **4.221 V** in every BATFET state it can be in, both regulation
+> corners of the named adapter, both `ILIM` corners, five points of the declared ±50 %
+> sweep of the four TYP-only thresholds, both supplement histories where a supplement
+> history can exist, and 0 / 25 / 40 °C — the state `TREG` cannot reduce (the zero-charge
+> state) stays inside TI's 125 °C operating maximum wherever an operating point exists
+> (raw **4.137 W**, bounded at a 3.0 V cell on the low regulation corner where the
+> zero-charge state enters supplement).  Under the BUVLO trip a heavier load collapses SYS
+> instead, which dissipates nothing and is not a junction limit.  **This bounds the
+> junction; it does NOT say the battery never discharges.**
+>
+> **THE NO-DISCHARGE BOUNDARY IS A TABLE, AND EVERY ROW SAYS WHAT BINDS IT.**
+> Guard-banded (5 %, floored onto 0.05 W) and the minimum over every other axis,
+> INCLUDING ambient 0…40 °C.  **(T)** = TREG-conditioned: above this power the
+> zero-charge junction could reach TREG's low end at some ambient in the envelope, so no
+> no-discharge claim is made there.  **(C)** = under the BUVLO trip: nothing supplements,
+> and a heavier load collapses SYS.  An unmarked row is the supplement onset itself.
+>
+> | cell voltage | BATFET | rpi15w_high | rpi15w_low | generic_typec_24awg_2m *(outside the contract)* | unqualified_28awg_2m *(outside the contract)* |
+> |---|---|---|---|---|---|
+> | 2.850 V | uvlo_open | **2.45 W** (T) | **3.20 W** (C) | **2.95 W** (C) | **2.70 W** (C) |
+> | 3.000 V | connected / uvlo_open | **2.45 W** (T) | **2.85 W** (C) | **2.85 W** (C) | **2.85 W** (C) |
+> | 3.200 V | connected / uvlo_open | **2.45 W** (T) | **3.05 W** (C) | **3.05 W** (C) | **3.00 W** (C) |
+> | 3.400 V | connected | **2.45 W** (T) | **3.25 W** | **3.25 W** | **2.95 W** |
+> | 3.500 V | connected | **2.45 W** (T) | **3.35 W** | **3.35 W** (T) | **2.80 W** |
+> | 3.520 V | connected | **2.45 W** (T) | **3.35 W** | **3.35 W** (T) | **2.50 W** |
+> | 3.600 V | connected | **2.45 W** (T) | **3.45 W** | **3.45 W** (T) | **2.30 W** |
+> | 3.800 V | connected | **2.45 W** (T) | **3.60 W** (T) | **3.60 W** (T) | **1.65 W** |
+> | 4.000 V | connected | **2.45 W** (T) | **3.80 W** (T) | **2.20 W** | **0.95 W** |
+> | 4.100 V | connected | **2.45 W** (T) | **3.90 W** (T) | **1.35 W** | **0.60 W** |
+> | 4.200 V | connected | **2.45 W** (T) | **1.65 W** | **0.50 W** | **0.20 W** |
+> | 4.221 V | connected | **2.45 W** (T) | **0.90 W** | **0.30 W** | **0.10 W** |
+>
+> Its minimum over the qualified domain is **0.900 W**, at a full cell on the low
+> regulation corner, and there is **no useful universal no-discharge scalar**.  On the
+> HIGH regulation corner every row is **(T)** at 2.45 W: the 5.457 V source leaves the
+> most voltage across the input FET, so at 40 °C a heavier load could let TREG fold the
+> charge to zero — exactly the state whose SYS-source behaviour the datasheet leaves
+> open.  Above a row the battery may supply part of the load; that is ordinary
+> power-path behaviour (BATOCP stays active), not a safety condition.
+>
+> **CHARGE COMPLETION IS AN ENGINEERING QUALIFICATION TARGET.**  The pack record
+> publishes no capacity-versus-voltage curve and no charge-time figure, and a
+> distribution-free bound does not fit the timer under any modelled condition, so no
+> completion power is published.  The QUALIFICATION TARGET is: a full charge from the
+> 2.75 V cut-off, device idle, on the named adapter, terminates before **288 min** at
+> 25 °C.  288 min is 360 min × 0.8 — an engineering qualification target taken on
+> SLUSF65B's TYP-only `tMAXCHG`, not a datasheet guarantee.  `C-PWR-CHARGE-02` is the
+> measurement of record.
+>
+> **WHAT HAPPENS IF THE SAFETY TIMER EXPIRES FIRST — AN EXPLICIT FIRST-FIVE CONSEQUENCE.**
+> SLUSF65B §6.3.7.7: if charging has not terminated when `tMAXCHG` expires, **charging is
+> disabled and STAT1/STAT2 indicate a NON-RECOVERABLE fault**; it is cleared only by
+> toggling `CE` or the input power.  On this board `/CE` is **hard-tied** and cannot be
+> toggled by firmware, and `STAT2` is intentionally open, so the observable is `STAT1`
+> LOW.  **Recovery on the first five is to unplug the adapter and plug it back in**, which
+> starts a new cycle.  Firmware control of `CE` is a REV-B item, not a first-five
+> blocker.
+>
+> **WHAT THE STATUS PIN CAN AND CANNOT SAY.**  `STAT1` LOW is a directly observed fault
+> (recoverable versus non-recoverable is not distinguishable without `STAT2`).  `STAT1`
+> HIGH is non-faulted and AMBIGUOUS between charging and charge-complete/sleep, so
+> completion is never read from that pin by itself: it is judged from the measured battery
+> current falling to `ITERM` (10 % of `ICHG`), the cell at `VBATREG`, and the gauge.
+>
+> **THE CHARGING STATES THE PRODUCT CAN BE IN.**  Only combinations the production
+> permission table admits are listed as permitted — no accessory rail is admitted while a
+> radio transmits.  The heaviest admissible charging state is `display_audio` +
+> `acc_3v3_only` at **3.818 W**, inside the junction-safe power; its junction with the
+> charge folded to zero is **107.0 °C**, and the external ambient at which the internal
+> air reaches the pouch's own 40 °C charge window at that state is **28.7 °C**.
+>
+> **THE FIRMWARE CANNOT SEE THE CHARGER.**  This board has **no VBUS-present signal on any
+> MCU or expander pin** (`/01_POWER_TREE/VBUS_PRESENT` is bench-probed at `TP31.1`), so
+> the firmware cannot observe a charger being plugged or unplugged and does not stamp it.
+> Every accessory admission stamps its OWN request and reads the gauge only after the full
+> **1300 ms** post-request window (1293.75 ms at the MAX17048's tERR +3.5 %, rounded up);
+> a charger removed during that window or while a rail is live is caught by the settled
+> recheck and the periodic retention guard.  This is an **ACCEPTABLE FIRST-FIVE
+> LIMITATION**, and the charging restrictions above are a SUPERVISED operating condition
+> (`battery_pack_contract` **B8**; the pack has no thermistor).
+>
+> ### **COMMUNITY-PORT MEASUREMENT PLANE AND DELIVERY (current)**
+>
+> **MEASUREMENT PLANE.**  The published minimum voltage is the potential between the
+> `ACC_3V3_SW` contact and the `GND` contacts **at the J5 mating interface**.
+> The accessory's own plug, cable and connector are outside the guarantee.
+>
+> **DELIVERY — THERE IS NO MANUAL CONDUCTOR ON THIS BOARD.**  Both contacts are
+> delivered by routed copper alone: `J5.22` at **79.0 mΩ** measured, `J5.3` at
+> **224.4 mΩ**.  D-787 added two hand-soldered 28-AWG leads, D-788 reduced that
+> to one, and **D-789 removes it**: Round-8 raised four independent findings
+> against the remaining lead — a tinned tip that cannot fit a 1.00 mm pad, an
+> insertion into a through-hole already filled by J5's 0.635 mm square tail, a
+> route starting inside `BATTERY_SHADOW` and crossing `RIB_R3`, and an
+> acceptance that cannot be measured because the board's own copper stays in
+> parallel with it.  It bought **70 mV** on one of two duplicated contacts.
+> `TP12`/`TP25` remain as test points and **nothing is soldered to them**.  Each
+> duplicated contact is qualified **alone**.
+>
+> ### **D-795 — CHARGING WHILE RUNNING — HISTORICAL, SUPERSEDED BY D-796 ABOVE** *(its no-discharge table was TREG-independent and solved supplement under the BUVLO trip; both are RETIRED)*
 >
 > **THE CHARGING SOURCE IS A NAMED PART.**  Charge the first five **only** from the
 > **Raspberry Pi 15W USB-C Power Supply**, part `KSA-15E-051300HU` (US; regional
@@ -941,22 +1090,6 @@ power/NFC review, and CTO decisions.
 > linear capacity-distribution assumption without thermal regulation.  Round-14 reproduced
 > high-VBAT supplement on qualified sources under both; both figures are RETIRED.  D-792's
 > 4.063 W (rounded up across a supplement discontinuity) was RETIRED at D-793.*
->
-> **MEASUREMENT PLANE.**  The published minimum voltage is the potential between the
-> `ACC_3V3_SW` contact and the `GND` contacts **at the J5 mating interface**.
-> The accessory's own plug, cable and connector are outside the guarantee.
->
-> **DELIVERY — THERE IS NO MANUAL CONDUCTOR ON THIS BOARD.**  Both contacts are
-> delivered by routed copper alone: `J5.22` at **79.0 mΩ** measured, `J5.3` at
-> **224.4 mΩ**.  D-787 added two hand-soldered 28-AWG leads, D-788 reduced that
-> to one, and **D-789 removes it**: Round-8 raised four independent findings
-> against the remaining lead — a tinned tip that cannot fit a 1.00 mm pad, an
-> insertion into a through-hole already filled by J5's 0.635 mm square tail, a
-> route starting inside `BATTERY_SHADOW` and crossing `RIB_R3`, and an
-> acceptance that cannot be measured because the board's own copper stays in
-> parallel with it.  It bought **70 mV** on one of two duplicated contacts.
-> `TP12`/`TP25` remain as test points and **nothing is soldered to them**.  Each
-> duplicated contact is qualified **alone**.
 >
 > ---
 >

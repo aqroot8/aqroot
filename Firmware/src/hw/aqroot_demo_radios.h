@@ -352,6 +352,9 @@ enum class NfcQuiesceStep : uint8_t {
   SetDefaultIgnored,   // step 4
   OperationControl,    // step 7
   IdentityAfter,       // step 8
+  // D-796 / D796-10: a field-owning NFC session holds U9; the quiesce did
+  // not touch the part and proves nothing about its field.
+  OwnedBySession,
 };
 
 inline const char *nfcQuiesceStepName(NfcQuiesceStep s) {
@@ -368,6 +371,8 @@ inline const char *nfcQuiesceStepName(NfcQuiesceStep s) {
       return "Operation control 02h did not read 0x00";
     case NfcQuiesceStep::IdentityAfter:
       return "the ST25R3916 identity was lost after the quiesce";
+    case NfcQuiesceStep::OwnedBySession:
+      return "a field-owning NFC session holds U9; not touched";
   }
   return "unknown";
 }
@@ -440,6 +445,13 @@ inline NfcQuiesceReport st25r3916QuiesceReport(SpiBusB &bus) {
   auto best_effort_power_down = [&bus]() {
     (void)writeRegister(bus, kRegOperationControl, 0x00);
   };
+  // D-796 / D796-10: a field-owning session's field is ITS field.  The
+  // quiesce would challenge 11h and Set-default the part out from under it,
+  // so it refuses by name and touches nothing.
+  if (nfcFieldSessionOwnsU9(bus)) {
+    r.failed_at = NfcQuiesceStep::OwnedBySession;
+    return r;
+  }
   // 1  identity
   if (!readRegister(bus, kRegIcIdentity, &r.identity_before)) return r;
   if (!st25r3916IdentityIsValid(r.identity_before)) {
@@ -496,8 +508,21 @@ inline NfcQuiesceReport st25r3916QuiesceReport(SpiBusB &bus) {
 // D-795 / R14-02.  THE LIVENESS PROBE A CONFIRMED-QUIET PART MUST KEEP
 // PASSING.  Identity plus a one-pattern challenge on the same inert register,
 // restored to its default afterwards so nothing the quiesce proved is undone.
+//
+// D-796 / D796-10.  THIS PROBE WRITES REGISTER 11h, SO IT MAY ONLY RUN WHILE
+// NOTHING ELSE OWNS U9.  Register 11h is inert only while the field is off:
+// it is the No-response timer, which a FIELD-OWNING session arms for its own
+// transactions.  So while a session holds the ownership token
+// (`nfcFieldSessionOwnsU9`) this function returns false WITHOUT selecting the
+// part -- never a proof, never a write.  Callers use
+// `st25r3916LivenessProbe` below, which reports that case as `Deferred`
+// rather than as a lost part.
 inline bool st25r3916StillAlive(SpiBusB &bus, uint8_t *identity_out) {
   using namespace st25r3916_spi;
+  if (nfcFieldSessionOwnsU9(bus)) {
+    if (identity_out) *identity_out = 0x00;
+    return false;
+  }
   uint8_t id = 0x00, back = 0x00, restored = 0xFF;
   const bool read = readRegister(bus, kRegIcIdentity, &id);
   if (identity_out) *identity_out = id;
@@ -515,6 +540,23 @@ inline bool st25r3916StillAlive(SpiBusB &bus, uint8_t *identity_out) {
   // And the field is still where the quiesce left it.
   uint8_t op = 0xFF;
   return readRegister(bus, kRegOperationControl, &op) && op == 0x00;
+}
+
+// D-796 / D796-05 item 4 + D796-10.  THE PROBE THE SCHEDULER CALLS.
+//
+// Three answers, not two.  A part that answered the challenge is `Alive`; a
+// part that did not is `Lost` and revokes the OFF confirmation.  But a probe
+// that could not be RUN -- SPI-B already selected by another transaction, or
+// a field-owning session holding U9 -- is `Deferred`: it says nothing about
+// the part, and reporting it as `Lost` would revoke on a scheduling accident
+// while reporting it as `Alive` would extend a confirmation nobody checked.
+inline NfcLivenessResult st25r3916LivenessProbe(SpiBusB &bus,
+                                                uint8_t *identity_out) {
+  if (identity_out) *identity_out = 0x00;
+  if (nfcFieldSessionOwnsU9(bus)) return NfcLivenessResult::Deferred;
+  if (bus.selected() != SpiBDevice::None) return NfcLivenessResult::Deferred;
+  return st25r3916StillAlive(bus, identity_out) ? NfcLivenessResult::Alive
+                                                : NfcLivenessResult::Lost;
 }
 
 struct RadioQuiesce {

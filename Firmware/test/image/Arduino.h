@@ -18,6 +18,7 @@
 #include <stddef.h>
 #include <stdarg.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #include <string>
 #include <vector>
@@ -67,6 +68,20 @@ struct Recorder {
   // than it returns that many milliseconds EARLY, so a caller that delays
   // once and assumes the time has passed is caught.
   uint32_t delay_shortfall_ms = 0;
+  // D-796 / C-GAUGE-EPOCH-01 (Fable G10).  A STALLED FRESHNESS CLOCK.  With
+  // `clock_frozen` set -- or once the clock reaches `freeze_at_us` -- nothing
+  // advances the recording clock any more: not `delay()`, not
+  // `delayMicroseconds()`, not a `digitalRead()` poll.  `millis()` then
+  // returns the same value for ever, which is the condition the gauge window
+  // must FAIL CLOSED on rather than read as elapsed time.  `frozen_polls`
+  // bounds a shipped polling loop that spins on the frozen clock, so a mutant
+  // that hangs is reported as a FAILED claim rather than wedging the gate.
+  bool clock_frozen = false;
+  uint64_t freeze_at_us = ~uint64_t(0);
+  uint64_t frozen_polls = 0;
+  // D-796 / C-NFC-QUIESCE-01: when each console line was printed, so a
+  // revocation LATENCY can be measured from the image's own output.
+  std::vector<uint64_t> console_t_us;
   // What `digitalRead` returns.  Every pin idles HIGH, which is this board's
   // resting state for BOOT_N, WAKE_INT_N and the two I2C lines; the test sets
   // SPI-B MISO and SX1262 BUSY low, which is what a healthy radio presents.
@@ -94,6 +109,24 @@ inline Recorder &recorder() {
   return r;
 }
 
+// Every advance of the recording clock goes through here, so a frozen clock
+// is frozen for every caller alike.
+inline void advanceClockUs(uint64_t us) {
+  auto &r = recorder();
+  if (r.clock_frozen) return;
+  r.clock_us += us;
+  if (r.clock_us >= r.freeze_at_us) {
+    r.clock_us = r.freeze_at_us;
+    r.clock_frozen = true;
+  }
+}
+
+inline void consoleLine(const char *s) {
+  auto &r = recorder();
+  r.console.emplace_back(s ? s : "");
+  r.console_t_us.push_back(r.clock_us);
+}
+
 }  // namespace aqroot_hal
 
 // ---------------------------------------------------------------------------
@@ -103,13 +136,13 @@ inline void delay(uint32_t ms) {
   r.total_delay_ms += ms;
   const uint32_t real = (ms > r.delay_shortfall_ms) ? ms - r.delay_shortfall_ms
                                                      : ms;
-  r.clock_us += uint64_t(real) * 1000u;
+  aqroot_hal::advanceClockUs(uint64_t(real) * 1000u);
 }
 
 inline void delayMicroseconds(uint32_t us) {
   auto &r = aqroot_hal::recorder();
   r.delay_us_calls.push_back(us);
-  r.clock_us += us;
+  aqroot_hal::advanceClockUs(us);
 }
 
 inline uint32_t millis() {
@@ -179,7 +212,12 @@ inline void digitalWrite(uint8_t pin, uint8_t value) {
 // this test whatever a future edit does to it.
 inline int digitalRead(uint8_t pin) {
   auto &r = aqroot_hal::recorder();
-  ++r.clock_us;
+  if (r.clock_frozen && ++r.frozen_polls > 1000000u) {
+    printf("[FAIL] host: a shipped polling loop spun on a frozen clock\n");
+    fflush(stdout);
+    exit(1);
+  }
+  aqroot_hal::advanceClockUs(1);
   return pin < 64 ? int(r.pin_level[pin]) : HIGH;
 }
 
@@ -190,10 +228,8 @@ class HostSerial {
  public:
   void begin(uint32_t) {}
   operator bool() const { return true; }
-  void println() { aqroot_hal::recorder().console.emplace_back(""); }
-  void println(const char *s) {
-    aqroot_hal::recorder().console.emplace_back(s ? s : "");
-  }
+  void println() { aqroot_hal::consoleLine(""); }
+  void println(const char *s) { aqroot_hal::consoleLine(s); }
   void print(const char *s) { println(s); }
   void printf(const char *fmt, ...) {
     char buf[512];
@@ -201,7 +237,7 @@ class HostSerial {
     va_start(ap, fmt);
     vsnprintf(buf, sizeof(buf), fmt, ap);
     va_end(ap);
-    aqroot_hal::recorder().console.emplace_back(buf);
+    aqroot_hal::consoleLine(buf);
   }
   int available() {
     auto &r = aqroot_hal::recorder();

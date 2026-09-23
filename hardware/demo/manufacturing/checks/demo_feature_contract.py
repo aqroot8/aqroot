@@ -2260,8 +2260,11 @@ NORMAL_DUAL_INTERNAL_CEILING_A = I_INTERNAL  # no product-visible internal reser
 # point of the exercise.
 P3V3_NOT_A_CONSUMER = ("U12", "U20")
 P3V3_PASSIVE_PREFIXES = ("R", "C", "L", "TP", "MK", "FID", "BOSS", "#")
-LTC4368_TRIP = 0.050 / 0.015           # D-753's figure, KEPT so the decision
-                                       # that replaced it stays legible
+# D-796 / Round-15 D796-05 item 7: D-753's `LTC4368_TRIP = 50 mV / 15 mOhm`
+# (3.3333 A) was kept "so the decision that replaced it stays legible" and was
+# PRINTED in F6 as `ltc4368_trip_A` beside the live breaker object -- a second,
+# wrong breaker figure in the release report.  It is deleted; the ONLY breaker
+# authority is `breaker` (R75 10 mOhm: 3.9604 A minimum, 5 A typical).
 FUSE_A = 5.0                           # F1 0466005 one-shot
 # D-771.  AND THE CONVERTERS MUST BE ABLE TO SOURCE WHAT THE LIMITERS PERMIT.
 # Nothing in this repository had ever asked whether U12 and U21 can deliver the
@@ -4092,7 +4095,7 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
              breaker={k: (round(v, 4) if isinstance(v, float) else v)
                       for k, v in breaker.items()},
              first_trip_min_A=round(first_trip_min, 4),
-             ltc4368_trip_A=round(LTC4368_TRIP, 4), fuse_A=FUSE_A,
+             fuse_A=FUSE_A,
              vbat_corner_V=VBAT_CORNER, internal_3v3_A=I_INTERNAL)
     # Every state a USER can reach with CONFORMING accessories must stay under
     # the FIRST protection any unit can trip ...
@@ -4437,9 +4440,16 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
             _relabel("bq.vsys_reg_V", tag=apm.GUARANTEED_MAX,
                      role=apm.DEVICE_BOUND, condition="VBATREG <= 4.3 V"),
             apm.GUARANTEE_EVIDENCE_SHA256)[0])
+    # D-796 / R15-03 + R15-04: the Round-15 attacks (unrelated-row repin,
+    # fabricated header, three-edit TYP->MAX, direction flip, invented MAX,
+    # symbol mismatch, ...) re-pinned in memory; the document must refuse them
+    _ev_dc = _ge.destructive_controls(apm.registry())
     d["guarantees_are_bound_to_primary_rows"] = dict(
         ok=bool(_ev_ok), report=_ev, controls_refused=_ev_controls,
         every_control_is_refused=bool(all(_ev_controls.values())),
+        destructive_controls=_ev_dc,
+        every_destructive_control_caught=bool(_ev_dc and all(
+            _ev_dc.values())),
         found_by_this_audit=[
             "bq.vsys_reg_V: VSYS_REG is a TYP-only row (4.5 V); the "
             "guarantee is VSYS_REG_ACC -2/+2 %, now its own GUARANTEED entry",
@@ -4455,7 +4465,8 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
             "never held -- now a DECLARED supply requirement on the named "
             "adapter"])
     d["guarantees_are_bound_to_primary_rows_ok"] = bool(
-        _ev_ok and all(_ev_controls.values()))
+        _ev_ok and all(_ev_controls.values()) and _ev_dc
+        and all(_ev_dc.values()))
 
     # ---- D-787 / R6-A01: main +3V3 delivery is an explicit contract -------
     d["p3v3_setpoint"] = p3v3
@@ -5516,6 +5527,62 @@ IBAT_OCP_CONDITION_SOURCE = (
     "condition and is measured at first article (C-BAT-GATE-01).")
 
 
+# D-796 / Round-15 D796-06.  ONE SENTENCE SPLITTER FOR EVERY SEMANTIC SCAN.
+#
+# The stale-value scans split on `.`, `;` AND `:`, so "completion ceiling:
+# 1.150 W" became two fragments -- "completion ceiling:" and "1.150 W" -- and
+# a family that binds a number to the WORD beside it saw neither.  A colon
+# introduces the value; it does not end the claim.  Sentences end at . ; ! ?
+# (followed by whitespace) and at a blank line, nowhere else.
+def _d796_sentences(text):
+    return [x for x in re.split(r"(?<=[.;!?])\s+|\n\s*\n", text or "")
+            if x.strip()]
+
+
+def harness_current_text(env):
+    """D-796 / D796-05: the harness record's operative currents, from F6."""
+    m = env["modes_I_bat_A"]
+    sets = env["conforming_and_overcurrent_sets"]
+    rated = 2.6
+    ref = 2.9
+    wc = max(sets["conforming"], key=lambda k: m[k])
+    sf = max(("acc3v3_alone_at_its_limiter", "acc5v_alone_at_its_limiter"),
+             key=lambda k: m[k])
+    df_ = "both_limiters_in_fault"
+    ocp_max = env["ibat_ocp_A"][2]
+    brk = env["breaker"]["trip_min_A"]
+    fuse = env["fuse_A"]
+    rating = (
+        "D-796 / Round-15 D796-05.  GENERATED FROM demo_feature_contract F6 "
+        "-- do not hand-edit.  The worst CONFORMING battery current (%s, "
+        "with the internal +3V3 peak envelope) is %.4f A, INSIDE the %.1f A "
+        "rated current by %.1f %%.  A SINGLE accessory limiter in fault (%s) "
+        "reaches %.4f A, %.1f %% ABOVE the rated current and %.1f %% %s the "
+        "section 4.3 two-circuit reference derating value of %.1f A; it is a "
+        "NAMED BOUNDED EXCEPTION -- a fault, not an operating state -- below "
+        "the latching LTC4368 breaker minimum (%.4f A) and the F1 one-shot "
+        "fuse (%.0f A).  BOTH limiters in fault reach %.4f A, ABOVE the "
+        "BQ25185 BATOCP maximum (%.4f A), so the recoverable BATOCP hiccup "
+        "interrupts it and it is never a sustained harness current.  MEASURED "
+        "at C-BAT-PATH-01 and C-THERM-01." % (
+            wc, m[wc], rated, 100.0 * (rated - m[wc]) / rated, sf, m[sf],
+            100.0 * (m[sf] - rated) / rated,
+            100.0 * abs(ref - m[sf]) / ref,
+            "BELOW" if m[sf] < ref else "ABOVE", ref, brk, fuse, m[df_],
+            ocp_max))
+    acceptance = (
+        "first article: with an accessory drawing the %s limiter's maximum, "
+        "record the connector and lead temperature rise at the %.4f A "
+        "single-limiter fault excursion as well as at the %.4f A worst "
+        "conforming load; the rated-current exception above is accepted only "
+        "if the measured rise stays inside the 30 C figure" % (
+            "ACC_5V" if sf.startswith("acc5v") else "ACC_3V3", m[sf], m[wc]))
+    return dict(rating=rating, acceptance=acceptance,
+                worst_conforming=dict(state=wc, battery_A=m[wc]),
+                single_limiter_fault=dict(state=sf, battery_A=m[sf]),
+                both_limiters_in_fault_A=m[df_])
+
+
 def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
                        budget=None, ambient_C=None, pass_pair=None,
                        ocp_min_A=None, margin=None, board_forward=None,
@@ -6010,6 +6077,12 @@ def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
             at_top = solve(CELL_MAX_OCV_V, i3, i5, i_int)
             at_floor = solve(floor_cell, i3, i5, i_int) if floor_cell else None
             row["loads"][name] = dict(
+                # D-796 / R15-02: the physical load set travels with every
+                # network row, so the oracle can bind a key to its content.
+                acc_3v3_A=round(i3, 6), acc_5v_A=round(i5, 6),
+                demand_W=round(((i_int + i3) * v_3v3_V + i3 * i3 * r_a3)
+                               / ETA_U12 + ((i5 * v_acc5v_V + i5 * i5 * r_a5)
+                                            / ETA_U21 if i5 else 0.0), 9),
                 supported=bool(floor_cell is not None),
                 lowest_supported_cell_ocv_V=(round(floor_cell, 4)
                                              if floor_cell else None),
@@ -6562,10 +6635,26 @@ def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
     # rounded up across anything.
     _scan = [i * junction_safe_W / 40.0 for i in range(1, 41)]
     _scan_bad = []
+    # D-796 / R15-01 + D796-08: every thermally-closed state the release
+    # solves anywhere -- the dense scan and the completion domain -- must be
+    # labelled by a loop that holds it, and nothing supplements under the
+    # trip.
+    _thermal_label_bad, _uvlo_supplement_bad = [], []
     for w in _scan:
         jr = ara.charge_regime_junction(w, ambient_C=ara.AMBIENT_DESIGN_MAX_C)
         if not jr["the_unregulated_half_is_inside_the_operating_maximum"]:
             _scan_bad.append(round(w, 6))
+        for _k, _c in jr["corners"].items():
+            if _c.get("no_operating_point"):
+                continue
+            _tp = _c["invariants"].get("thermal_problems") or []
+            if _tp or not _c["invariants"]["ok"]:
+                _thermal_label_bad.append("%.4f W %s: %s" % (
+                    w, _k, (_tp or _c["invariants"].get(
+                        "branch_problems") or ["invariants"])[:1]))
+            if _c.get("batfet") == "uvlo_open" and (
+                    _c["mode"] == "SUPPLEMENT" or _c["supplement_A"] > 0):
+                _uvlo_supplement_bad.append("%.4f W %s" % (w, _k))
     _tj_max = ara.PACKAGE_JUNCTION["tj_operating_max_C"]
     _at_js = ara.charge_regime_junction(junction_safe_W,
                                         ambient_C=ara.AMBIENT_DESIGN_MAX_C)
@@ -6647,7 +6736,31 @@ def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
         d794_completion_ceiling_is_retired=True,
         measurement_of_record="C-PWR-CHARGE-02")
 
+    for _st in completion["_states"]:
+        _tp = _st["invariants"].get("thermal_problems") or []
+        if _tp:
+            _thermal_label_bad.append("%s: %s" % (_st["domain_key"], _tp[:1]))
+    for _r in regime["rows"]:
+        for _lab, _st in (_r.get("_evidence") or {}).items():
+            if isinstance(_st, dict) and _st.get("mode") == "SUPPLEMENT" \
+                    and _r["batfet"] == "uvlo_open":
+                _uvlo_supplement_bad.append("%s %s" % (_r["key"], _lab))
     charge_ceiling = dict(
+        no_cold_treg_state_anywhere=not _thermal_label_bad,
+        thermal_label_problems=_thermal_label_bad[:20],
+        no_supplement_at_or_under_vbuvlo=not _uvlo_supplement_bad,
+        supplement_under_the_trip=_uvlo_supplement_bad[:20],
+        model_assumptions=apm.CHARGER_MODEL_ASSUMPTIONS,
+        model_assumptions_are_published=bool(
+            apm.CHARGER_MODEL_ASSUMPTIONS.get("treg_zero_charge_sys_source",
+                                              {}).get("status")
+            == "AMBIGUOUS_IN_THE_PRIMARY_SOURCE_NOT_RELIED_ON"),
+        buvlo_band_V=dict(zip(("falling_trip_low", "falling_trip_high",
+                               "rising_reconnect_high"), apm.buvlo_band_V())),
+        input_carrying_below_vbuvlo_published_W=regime[
+            "input_carrying_below_vbuvlo_published_W"],
+        input_carrying_below_vbuvlo_raw_W=regime[
+            "input_carrying_below_vbuvlo_raw_W"],
         completion=charge_completion,
         domain=regime["domain"],
         regime_rows=len(regime["rows"]),
@@ -6731,6 +6844,20 @@ def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
         bursty_allowances=[dict(b) for b in ara.BURSTY_ALLOWANCES],
         bursty_time_averaged_A=ara.BURSTY_TIME_AVERAGED_A,
         states=states,
+        # D-796 / R15-02: the terms the oracle needs to re-derive each row's
+        # demand from its LOAD SET, so a key cannot carry another load's
+        # physics.
+        network_power_terms=dict(
+            v_3v3_V=v_3v3_V, v_acc5v_V=v_acc5v_V, r_a3_ohm=r_a3,
+            r_a5_ohm=r_a5, r_trunk_ohm=r_trunk, r_bat_ohm=r_bat,
+            eta_u12=ETA_U12, eta_u21=ETA_U21,
+            full_cell_V=CELL_MAX_OCV_V,
+            always_on_A=sum(ara.SUSTAINED_ALWAYS_ON.values()),
+            bursty_time_averaged_A=ara.BURSTY_TIME_AVERAGED_A,
+            optional_A=dict(ara.SUSTAINED_OPTIONAL),
+            published_budget_A=dict(budget),
+            declared_pair_A=dict(acc_3v3_A=round(dual_i3, 6),
+                                 acc_5v_A=round(dual_i5, 6))),
         derived_floors=derived,
         reference_state_key=ref_key,
         reference_state=ref,
@@ -7025,10 +7152,13 @@ def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
                         for r in charge_ceiling["permitted_while_charging"])
                 and len(charge_ceiling["no_discharge_envelope"])
                 == len(apm.USB_SOURCE_CLASSES) * len(ara.REGIME_VBAT_GRID_V)
+                # D-796: the BATFET axis and the history restriction under
+                # the trip make the domain the ORACLE's exact key set.
                 and charge_ceiling["regime_rows"] == len(
-                    apm.USB_SOURCE_CLASSES) * len(ara.REGIME_VBAT_GRID_V)
-                * len(ara.REGIME_ILIM_CORNERS) * len(ara.REGIME_SWEEP_POINTS)
-                * len(ara.REGIME_HISTORIES) * len(ara.REGIME_AMBIENTS_C)
+                    apo.expected_regime_keys())
+                and charge_ceiling["no_cold_treg_state_anywhere"]
+                and charge_ceiling["no_supplement_at_or_under_vbuvlo"]
+                and charge_ceiling["model_assumptions_are_published"]
                 and not charge_ceiling["completion"][
                     "universal_completion_claim_is_supportable"]
                 and charge_ceiling["completion"][
@@ -7101,6 +7231,23 @@ ORACLE_REQUIRED_MUTATIONS = (
     "drop_the_permitted_row_retention_proof",
     "corrupt_the_public_summary_only",
     "corrupt_the_raw_block_only",
+    # ---- D-796 / Round-15 R15-01/R15-02 + Fable R15-06/R15-11 ------------
+    # "Add destructive controls O01/O04/PM2-class and thermal-domain-collapse
+    # cases as permanent release regressions" and "independent negative
+    # controls for: cold TREG, supplement below UVLO, NO_CHARGE above DPPM
+    # with active CC program, charge folding above DPPM without TREG, and
+    # threshold/history inconsistencies."  Each must fail FOR ITS REASON.
+    "o01_a_vbat4221_key_carrying_a_4200_solve",
+    "o04_a_lowest_cell_row_carrying_a_full_cell_solve",
+    "pm2_the_canary_carrying_another_refused_states_physics",
+    "collapse_the_thermal_population_to_one_treg_state",
+    "a_regime_row_carrying_another_ambients_evidence",
+    "restore_a_cold_treg_state",
+    "restore_supplement_below_vbuvlo",
+    "restore_no_charge_above_dppm_with_the_cc_loop_active",
+    "fold_the_charge_above_dppm_without_treg",
+    "a_latched_supplement_with_no_history",
+    "a_supplement_history_under_the_trip",
 )
 
 
@@ -7144,27 +7291,34 @@ def _oracle_charger_states():
     states, refusals = [], []
     classes = {c["key"]: c for c in apm.USB_SOURCE_CLASSES}
     for vbat in apo.EXPECTED_CHARGER_CELLS_V:
-        for w in apo.EXPECTED_CHARGER_POWERS_W:
-            for ilim in apo.EXPECTED_ILIM_CORNERS:
-                for ck in apo.EXPECTED_SOURCE_CLASSES:
-                    cls = classes.get(ck)
-                    for prev in apo.EXPECTED_HISTORIES:
-                        for ic in apo.EXPECTED_ICHG_CORNERS:
-                            key = apo.charger_domain_key(vbat, w, ilim, ck,
-                                                         prev, ic)
-                            if cls is None:
-                                continue
-                            st = apm.charger_state(
-                                w, vbat, ilim, vbus_V=cls["vbus_V"],
-                                path_ohm=cls["path_ohm"], source_key=ck,
-                                previous_mode=prev, ichg_corner=ic)
-                            if st is not None:
-                                states.append(dict(st, domain_key=key))
-                            else:
+        # D-796 / D796-08: every BATFET state the cell admits, and no
+        # SUPPLEMENT history under the trip.
+        for bf in apm.batfet_states_at(vbat):
+            for w in apo.EXPECTED_CHARGER_POWERS_W:
+                for ilim in apo.EXPECTED_ILIM_CORNERS:
+                    for ck in apo.EXPECTED_SOURCE_CLASSES:
+                        cls = classes.get(ck)
+                        for prev in apo.histories_for(bf):
+                            for ic in apo.EXPECTED_ICHG_CORNERS:
+                                key = apo.charger_domain_key(
+                                    vbat, w, ilim, ck, prev, ic, bf)
+                                if cls is None:
+                                    continue
+                                st = apm.charger_state(
+                                    w, vbat, ilim, vbus_V=cls["vbus_V"],
+                                    path_ohm=cls["path_ohm"], source_key=ck,
+                                    previous_mode=prev, ichg_corner=ic,
+                                    batfet=bf)
+                                if st is not None:
+                                    states.append(dict(st, domain_key=key))
+                                    continue
                                 refusals.append(dict(
                                     domain_key=key, refused=True,
-                                    reason="no operating point",
-                                    vbat_V=vbat, system_W=w,
+                                    reason=("sys_collapse_below_vbuvlo"
+                                            if bf != "connected"
+                                            else "no operating point"),
+                                    vbat_V=vbat, system_W=w, batfet=bf,
+                                    previous_mode=prev, ichg_corner=ic,
                                     vbus_V=cls["vbus_V"],
                                     path_ohm=cls["path_ohm"],
                                     ilim_A=(apm.BQ25185["ilim_max_A"]
@@ -7180,6 +7334,16 @@ def _oracle_network_states(cell_net, pass_pair=None, board_forward=None):
     rows = []
     for st in cell_net["states"]:
         for load, v in st["loads"].items():
+            # D-796 / R15-02: every row carries the LOAD SET it claims, so the
+            # oracle re-derives its demand from the key rather than trusting
+            # the physics that happens to sit under it.
+            load_set = dict(modes=list(st["modes"]),
+                            internal_3v3_A=st["internal_3v3_A"],
+                            acc_3v3_A=v.get("acc_3v3_A"),
+                            acc_5v_A=v.get("acc_5v_A"),
+                            demand_W=v.get("demand_W"),
+                            lowest_supported_cell_ocv_V=v.get(
+                                "lowest_supported_cell_ocv_V"))
             for where in ("at_a_full_cell", "at_the_lowest_supported_cell"):
                 s = v.get(where)
                 if not s or "raw" not in s:
@@ -7187,7 +7351,7 @@ def _oracle_network_states(cell_net, pass_pair=None, board_forward=None):
                     # not an absent one, and it carries the named limits.
                     rows.append(dict(
                         key="%s/%s/%s" % (st["key"], load, where),
-                        refused=True,
+                        refused=True, load_set=load_set,
                         physical_limits=dict(v.get("limits_" + where) or {}),
                         binding_limit=list(v.get(
                             "binding_limit_at_the_floor") or [])))
@@ -7195,7 +7359,9 @@ def _oracle_network_states(cell_net, pass_pair=None, board_forward=None):
                 q = s["raw"]
                 rows.append(dict(
                     key="%s/%s/%s" % (st["key"], load, where),
+                    load_set=load_set,
                     cell_V=q["cell_V"], amps=q["amps"], node_V=q["node_V"],
+                    vsys_V=q["vsys_V"],
                     fixed_ohm=fixed, channels=spec["channels_in_series"],
                     channel_ohm=q["channel_ohm"]))
     return rows
@@ -7264,6 +7430,14 @@ def _oracle_transitions(cell_net):
         canary = dict(
             kind="table", transition="seeded_canary/d790_declared",
             state="d790_declared", post_node_V=None, floor_V=None,
+            # D-796 / R15-02: the canary's own LOAD SET, so a canary carrying
+            # another refused state's physics is caught by its content.
+            load_set=dict(modes=list(st["modes"]),
+                          internal_3v3_A=st["internal_3v3_A"],
+                          accessory="acc_3v3_only",
+                          acc_3v3_A=v.get("acc_3v3_A"),
+                          acc_5v_A=v.get("acc_5v_A"),
+                          demand_W=v.get("demand_W")),
             pre_ceiling_V=None,
             retention_floor_V=df["retention_floor_gridded_V"],
             permitted=bool(v.get("supported")),
@@ -7306,7 +7480,8 @@ def judge_independent_oracle(cell_net, board_forward=None, ambient_C=None):
     thermal_states = _cc["_completion"]["_states"]
     extra = dict(charger_refusals=charger_refusals, regime_rows=regime_rows,
                  regime_published=regime_published,
-                 thermal_states=thermal_states)
+                 thermal_states=thermal_states,
+                 network_terms=cell_net.get("network_power_terms"))
 
     def _audit(cs=None, tr=None, rj=None, path=None, net=None, **kw):
         args = dict(extra)
@@ -7318,6 +7493,32 @@ def judge_independent_oracle(cell_net, board_forward=None, ambient_C=None):
                          canonical_path if path is None else path,
                          network if net is None else net, **args)
     ok, rep = _audit()
+
+    # ---- D-796 / R15-01: the thermally-closed corners the charging-state
+    # junction figures are read from, re-judged by the ORACLE's own thermal
+    # label rule -- including every TREG limit-cycle hot phase.
+    _js = _cc["junction_safe_system_W"]
+    _corner_bad, _corner_n, _cycles = [], 0, 0
+    for _i in range(1, 41):
+        _jr = ara.charge_regime_junction(_i * _js / 40.0,
+                                         ambient_C=ara.AMBIENT_DESIGN_MAX_C)
+        for _k, _c in _jr["corners"].items():
+            if _c.get("no_operating_point"):
+                continue
+            _corner_n += 1
+            if (_c.get("thermal") or {}).get("regime") == \
+                    "TREG_LIMIT_CYCLE_HOT_PHASE":
+                _cycles += 1
+            _ok, _w = apo.charger_branch_is_valid(_c)
+            if not _ok and len(_corner_bad) < 8:
+                _corner_bad.append("%s @ %.4f W: %s" % (_k, _i * _js / 40.0,
+                                                        _w[:2]))
+            elif not _ok:
+                _corner_bad.append("...")
+    rep["regime_junction_corners"] = dict(
+        checked=_corner_n, limit_cycle_hot_phases=_cycles,
+        problems=_corner_bad, ok=not _corner_bad)
+    ok = bool(ok and not _corner_bad and _corner_n > 0)
 
     # ---- THE MUTATIONS.  Each must be CAUGHT, for its own reason. ---------
     def _mut_halve_package_heat():
@@ -7569,7 +7770,205 @@ def judge_independent_oracle(cell_net, board_forward=None, ambient_C=None):
     def _mut_drop_thermal():
         return _audit(thermal_states=[])[0]
 
+    # ==================================================================
+    # D-796 / ROUND-15.  EACH CONTROL MUST FAIL FOR ITS OWN REASON: the
+    # audit is refused AND the refusal names the defect the control plants.
+    # ==================================================================
+    def _refused_for(reason, **kw):
+        o, r = _audit(**kw)
+        return bool(o or reason not in json.dumps(r, default=str))
+
+    def _swap_content(states, key_from, key_to):
+        by = {x.get("domain_key"): x for x in states}
+        out = []
+        for x in states:
+            k = x.get("domain_key")
+            if key_to(k) and key_from(k) in by:
+                out.append(dict(by[key_from(k)], domain_key=k))
+            else:
+                out.append(x)
+        return out
+
+    def _mut_o01():
+        bad = _swap_content(
+            charger_states, lambda k: k.replace("vbat4.221/", "vbat4.200/"),
+            lambda k: (k or "").startswith("vbat4.221/"))
+        return _refused_for("labelled a 4.221 V cell", cs=bad)
+
+    def _mut_o04():
+        by = {n["key"]: n for n in network}
+        bad = []
+        for n in network:
+            if n["key"].endswith("/at_the_lowest_supported_cell"):
+                src = by.get(n["key"].replace("at_the_lowest_supported_cell",
+                                              "at_a_full_cell"))
+                if src is not None and not src.get("refused") and \
+                        not n.get("refused"):
+                    n = dict(src, key=n["key"])
+            bad.append(n)
+        return _refused_for("carries a FULL-cell solve", net=bad)
+
+    def _mut_pm2():
+        other = next(n for n in network if n.get("refused")
+                     and not n["key"].startswith("d790_declared/"))
+        bad_tr = []
+        for t in transitions:
+            if t.get("transition") == apo.REQUIRED_SEEDED_REJECTION:
+                t = dict(t, load_set=dict(other["load_set"],
+                                          accessory=apo.CANARY_ACCESSORY),
+                         physical_limits={"at_a_full_cell":
+                                          other["physical_limits"],
+                                          "at_the_lowest_supported_cell":
+                                          other["physical_limits"]})
+            bad_tr.append(t)
+        bad_rj = [dict(t) if t.get("transition")
+                  != apo.REQUIRED_SEEDED_REJECTION else next(
+                      x for x in bad_tr if x.get("transition")
+                      == apo.REQUIRED_SEEDED_REJECTION) for t in rejected]
+        return _refused_for("is labelled d790_declared", tr=bad_tr,
+                            rj=bad_rj)
+
+    def _mut_thermal_collapse():
+        one = next(st for st in thermal_states
+                   if st["thermal"]["regime"] == "TREG_EQUILIBRIUM")
+        return _refused_for("thermal population", thermal_states=[one])
+
+    def _mut_regime_ambient():
+        by = {r["key"]: r for r in regime_rows}
+        bad = []
+        for r in regime_rows:
+            if r["key"].endswith("/amb40"):
+                src = by[r["key"][:-len("amb40")] + "amb0"]
+                r = dict(src, key=r["key"])
+            bad.append(r)
+        return _refused_for("the key says", regime_rows=bad)
+
+    def _cold_treg_states():
+        """D-795's own behaviour: a bisected program labelled TREG with the
+        junction below the threshold."""
+        out = []
+        for st in thermal_states:
+            th = st["thermal"]
+            if th["regime"] != "TREG_EQUILIBRIUM":
+                out.append(st)
+                continue
+            c = st["controls"]
+            kw = dict(ilim_corner=st["ilim_corner"],
+                      ichg_corner=st["ichg_corner"],
+                      vbus_V=st["vbus_source_V"], path_ohm=st["path_ohm"],
+                      source_key=st["source_key"], sweep=c["sweep"],
+                      batfet=st["batfet"])
+            cold = apm.charger_state(st["system_W"], st["vbat_V"],
+                                     ichg_program_A=c["charge_program_A"]
+                                     * 0.6, charge_loop="TREG", **kw)
+            tj, air, internal = apm.charger_junction(
+                cold, th["ambient_C"], th["r_sys_K_per_W"],
+                th["theta_ja_C_per_W"], th["delivered_out_W"])
+            out.append(dict(cold, domain_key=st["domain_key"],
+                            thermal=dict(th, junction_C=round(tj, 6),
+                                         internal_air_C=round(air, 6),
+                                         internal_W=round(internal, 6))))
+        return out
+
+    def _mut_cold_treg():
+        return _refused_for("COLD TREG", thermal_states=_cold_treg_states())
+
+    def _d795_spec():
+        # D-795's BUVLO semantics: nothing stopped a 2.85 V cell supplementing
+        return dict(apm.BQ25185, vbuvlo_typ_V=2.0)
+
+    def _mut_supplement_below_uvlo():
+        bad_cs, bad_ref = list(charger_states), []
+        for r in charger_refusals:
+            if r.get("batfet") != "uvlo_open":
+                bad_ref.append(r)
+                continue
+            k = apo.parse_charger_key(r["domain_key"])
+            st = apm.charger_state(
+                r["system_W"], r["vbat_V"], k["ilim"], spec=_d795_spec(),
+                vbus_V=r["vbus_V"], path_ohm=r["path_ohm"],
+                source_key=k["source"], previous_mode=r["previous_mode"],
+                ichg_corner=r["ichg_corner"])
+            if st is None:
+                bad_ref.append(r)
+                continue
+            bad_cs.append(dict(st, batfet="uvlo_open",
+                               domain_key=r["domain_key"]))
+        return _refused_for("supplement at or under VBUVLO", cs=bad_cs,
+                            charger_refusals=bad_ref)
+
+    def _mut_no_charge_above_dppm():
+        bad = []
+        for st in charger_states:
+            tu = st["controls"]["threshold_used"] or ""
+            if st["mode"] == "SUPPLEMENT" and tu.startswith("the CC loop"):
+                nc = apm.charger_state(
+                    st["system_W"], st["vbat_V"], st["ilim_corner"],
+                    vbus_V=st["vbus_source_V"], path_ohm=st["path_ohm"],
+                    source_key=st["source_key"],
+                    previous_mode=st["previous_mode"],
+                    ichg_corner=st["ichg_corner"], ichg_program_A=0.0,
+                    charge_loop="CC", batfet=st["batfet"])
+                if nc is not None:
+                    st = dict(nc, domain_key=st["domain_key"])
+            bad.append(st)
+        return _refused_for("NO_CHARGE above VDPPM", cs=bad)
+
+    def _mut_fold_without_treg():
+        bad = []
+        for st in charger_states:
+            if st["mode"] == "SYS_REG" and st["charge_A"] > 0.1:
+                f = apm.charger_state(
+                    st["system_W"], st["vbat_V"], st["ilim_corner"],
+                    vbus_V=st["vbus_source_V"], path_ohm=st["path_ohm"],
+                    source_key=st["source_key"],
+                    previous_mode=st["previous_mode"],
+                    ichg_corner=st["ichg_corner"],
+                    ichg_program_A=st["charge_A"] * 0.5, charge_loop="CC",
+                    batfet=st["batfet"])
+                if f is not None:
+                    st = dict(f, domain_key=st["domain_key"])
+            bad.append(st)
+        return _refused_for("no thermal regulation", cs=bad)
+
+    def _mut_latched_without_history():
+        bad = []
+        for st in charger_states:
+            k = st["domain_key"]
+            if st["mode"] == "SUPPLEMENT" and "/SUPPLEMENT/" in k and \
+                    st["controls"]["inside_the_supplement_hysteresis_band"]:
+                st = dict(st, previous_mode=None)
+            bad.append(st)
+        return _refused_for("labelled history", cs=bad)
+
+    def _mut_history_under_trip():
+        bad = []
+        for st in charger_states:
+            if st.get("batfet") == "uvlo_open" and \
+                    st.get("previous_mode") == "NO_CHARGE":
+                st = dict(st, previous_mode="SUPPLEMENT",
+                          domain_key=st["domain_key"].replace(
+                              "/NO_CHARGE/", "/SUPPLEMENT/"))
+            bad.append(st)
+        return _refused_for("SUPPLEMENT history with the BATFET "
+                            "disconnected", cs=bad)
+
     muts = {
+        "o01_a_vbat4221_key_carrying_a_4200_solve": _mut_o01,
+        "o04_a_lowest_cell_row_carrying_a_full_cell_solve": _mut_o04,
+        "pm2_the_canary_carrying_another_refused_states_physics": _mut_pm2,
+        "collapse_the_thermal_population_to_one_treg_state":
+            _mut_thermal_collapse,
+        "a_regime_row_carrying_another_ambients_evidence":
+            _mut_regime_ambient,
+        "restore_a_cold_treg_state": _mut_cold_treg,
+        "restore_supplement_below_vbuvlo": _mut_supplement_below_uvlo,
+        "restore_no_charge_above_dppm_with_the_cc_loop_active":
+            _mut_no_charge_above_dppm,
+        "fold_the_charge_above_dppm_without_treg": _mut_fold_without_treg,
+        "a_latched_supplement_with_no_history":
+            _mut_latched_without_history,
+        "a_supplement_history_under_the_trip": _mut_history_under_trip,
         "collapse_the_charger_domain_to_one_row_per_mode":
             _mut_one_row_per_mode,
         "delete_the_supplement_history": _mut_delete_supplement_history,
@@ -7603,6 +8002,41 @@ def judge_independent_oracle(cell_net, board_forward=None, ambient_C=None):
     rep["every_required_mutation_is_caught"] = bool(all(caught.values()))
     rep["required_mutations"] = list(ORACLE_REQUIRED_MUTATIONS)
     rep["mutation_reasons"] = {
+        "o01_a_vbat4221_key_carrying_a_4200_solve":
+            "Round-15 O01: a key is a claim about the state it labels; the "
+            "oracle parses every key and requires the state's cell, power, "
+            "ILIM, source physics, history, ICHG corner and BATFET to equal "
+            "it",
+        "o04_a_lowest_cell_row_carrying_a_full_cell_solve":
+            "Round-15 O04: a lowest-supported-cell row must be solved at that "
+            "row's own floor, strictly below a full cell",
+        "pm2_the_canary_carrying_another_refused_states_physics":
+            "Round-15 PM2: the canary's load set must be exactly "
+            "d790_declared at acc_3v3_only, re-derived from the oracle's own "
+            "product definition",
+        "collapse_the_thermal_population_to_one_treg_state":
+            "Round-15: the thermally-closed population is an exact multiset "
+            "over source x ambient x scenario x cell x BATFET",
+        "a_regime_row_carrying_another_ambients_evidence":
+            "Round-15: a regime row's fields and evidence must be the ones "
+            "its key names, ambient included",
+        "restore_a_cold_treg_state":
+            "Round-15 R15-01: TREG is a loop that becomes active BECAUSE the "
+            "junction reaches the threshold; a TREG label on a cold state is "
+            "a state the loop would not hold",
+        "restore_supplement_below_vbuvlo":
+            "SLUSF65B 6.3.3: no supplement at or under VBUVLO; the solve "
+            "there is a SYS collapse",
+        "restore_no_charge_above_dppm_with_the_cc_loop_active":
+            "the CC loop pulls a zero-charge node above VBAT + VDPPM down; "
+            "that NO_CHARGE state has no controller holding it",
+        "fold_the_charge_above_dppm_without_treg":
+            "only TREG may fold the charge with SYS above VBAT + VDPPM",
+        "a_latched_supplement_with_no_history":
+            "inside the VBSUP1/VBSUP2 band the history decides; a latched "
+            "supplement without one is not the state its key names",
+        "a_supplement_history_under_the_trip":
+            "under the trip the part cannot have been supplementing",
         "collapse_the_charger_domain_to_one_row_per_mode":
             "the charger domain is an exact key multiset the oracle declares; "
             "one surviving row per branch name is thousands of missing keys",
@@ -8252,6 +8686,33 @@ def main():
               and math.isfinite(policy_single) and math.isfinite(policy_dual)
               and math.isfinite(policy_retention))
 
+    # ---- D-796 / Round-15 D796-05 item 1.  THE HARNESS RECORD'S CURRENTS
+    # ARE F6's, GENERATED.  D-795's record said a single-limiter fault
+    # "can reach 2.7536 A" and the worst conforming current was "2.1597 A";
+    # F6 said 2.8628 A and 2.2689 A.  A technician running the fault test
+    # would have measured against a number the model had moved away from.
+    _harness_txt = harness_current_text(env)
+    _harness_files = (ROOT / "docs/full-beta-v2/assembly/BATTERY_HARNESS.json",
+                      ROOT / "hardware/demo/fab/aqroot-Demo-BATTERY-HARNESS.json")
+    _harness_bad = []
+    for _hf in _harness_files:
+        _hj = json.loads(_hf.read_text(encoding="utf-8")) if _hf.exists() \
+            else {}
+        if (_hj.get("controlling_rating") or {}).get(
+                "conforming_vs_fault") != _harness_txt["rating"]:
+            _harness_bad.append("%s: controlling_rating.conforming_vs_fault "
+                                "is not the F6-generated text" % _hf.name)
+        if _harness_txt["acceptance"] not in (_hj.get("acceptance") or []):
+            _harness_bad.append("%s: the fault-test acceptance line is not "
+                                "the F6-generated one" % _hf.name)
+        _flat_h = json.dumps(_hj)
+        for _stale in ("2.7536", "2.1597", "d792_conforming_vs_fault"):
+            if _stale in _flat_h:
+                _harness_bad.append("%s still carries %r" % (_hf.name, _stale))
+    env["harness_currents_are_generated_from_f6"] = dict(
+        generated=_harness_txt, problems=_harness_bad, ok=not _harness_bad)
+    env_ok = env_ok and not _harness_bad
+
     # ---- F12: THE COMPLETE CELL-TO-LOAD NETWORK (D-791 / D790-A03) --------
     # Solved with the SAME live path resistances, the SAME derived rail
     # voltages and the SAME switch RONs F6 just used, so the two clauses
@@ -8729,17 +9190,34 @@ def main():
 
     def _charge_envelope_markdown():
         classes = [c for c in apm.USB_SOURCE_CLASSES]
-        head = ("| cell voltage | "
+        # D-796 / D796-02 + D796-08: every cell is marked with WHAT binds
+        # it -- (T) the zero-charge junction could reach TREG's low end at
+        # some ambient 0..40 C above it, so the row is TREG-CONDITIONED;
+        # (C) under the BUVLO trip, where nothing supplements and a heavier
+        # load collapses SYS.  An unmarked row is the supplement onset.
+        head = ("| cell voltage | BATFET | "
                 + " | ".join("%s%s" % (c["key"], "" if c["rules"]
                                        else " *(outside the contract)*")
                              for c in classes) + " |")
-        rows = [head, "|---|" + "---|" * len(classes)]
+        rows = [head, "|---|---|" + "---|" * len(classes)]
         env_ = {(e["source_class"], e["vbat_V"]): e
                 for e in _cc_env["no_discharge_envelope"]}
+
+        def _cell(e):
+            nd = e["no_discharge_published_W"]
+            carry = e.get("input_carrying_published_W")
+            b = set(e.get("no_discharge_bindings") or [])
+            mark = ""
+            if carry is not None and nd >= carry - 1e-9:
+                mark = " (C)"
+            elif "treg_could_fold_the_charge_to_zero" in b and (
+                    carry is None or nd < carry - 1e-9):
+                mark = " (T)"
+            return "**%.2f W**%s" % (nd, mark)
         for v in ara.REGIME_VBAT_GRID_V:
-            rows.append("| %.3f V | %s |" % (v, " | ".join(
-                "**%.2f W**" % env_[(c["key"], v)]["no_discharge_published_W"]
-                for c in classes)))
+            bf = " / ".join(apm.batfet_states_at(v))
+            rows.append("| %.3f V | %s | %s |" % (v, bf, " | ".join(
+                _cell(env_[(c["key"], v)]) for c in classes)))
         return "\n".join(rows)
 
     _env_md = _charge_envelope_markdown()
@@ -8871,6 +9349,70 @@ def main():
                     r"sub-GHz)", re.I),
          re.compile(r"not an admissible|sizing envelope|cannot reach|refuse",
                     re.I)),
+        # ---- D-796 / Round-15 D796-05 + D796-06.  ROLE-BOUND FAMILIES. ----
+        # Each binds a CLAIM to the role it is made in, so a number or a
+        # phrase that is legitimate in one role cannot be used in another.
+        ("a generic charging-source rule instead of the named adapter",
+         re.compile(r"1\s*A or better|1\s*A USB (?:adapter|source|charger)|"
+                    r"\bany (?:5 ?V )?USB(?:-C)? (?:source|adapter|charger|"
+                    r"port)\b|USB 2\.0 (?:computer |host )?(?:port|host)?"
+                    r".{0,40}?\b(?:is|are) (?:acceptable|sufficient|"
+                    r"qualified|fine)\b", re.I),
+         re.compile(r"\bOUTSIDE\b|\boutside the contract|\bnot\b|cannot|"
+                    r"never", re.I)),
+        ("a radio transmitting beside an accessory rail called admitted",
+         re.compile(r"(?:(?:radio|transmit\w*|\bTX\b|sub-GHz|Wi-Fi)\W.{0,80}?"
+                    r"(?:accessory|Community[- ]Port) rails?|(?:accessory|"
+                    r"Community[- ]Port) rails?.{0,60}?(?:while|with|beside|"
+                    r"alongside).{0,40}?(?:radio|transmit\w*|\bTX\b))"
+                    r".{0,80}?\b(?:permitted|allowed|admitted|supported|"
+                    r"coexist\w*)\b", re.I),
+         re.compile(r"refus|\bnot\b|never|cannot|\bno accessory rail", re.I)),
+        ("the full 400 + 300 mA pair called a permitted mode",
+         re.compile(r"(?:400\s*mA\s*\+\s*300\s*mA|both (?:published )?"
+                    r"(?:accessory )?budgets (?:at once|together|"
+                    r"simultaneously)).{0,120}?\b(?:permitted|allowed|"
+                    r"admitted|an operating mode|may be drawn)\b", re.I),
+         re.compile(r"sizing|\bnot\b|refus|never|220\s*mA", re.I)),
+        ("a completion power or ceiling",
+         re.compile(r"(?:charge[- ]completion|full[- ]charge|completion)\s+"
+                    r"(?:power|ceiling)\b.{0,40}?\d\.\d{2,3}\s*W", re.I),
+         re.compile(r"no completion power|QUALIFICATION TARGET|not published",
+                    re.I)),
+        ("the 288 min qualification target called a datasheet guarantee",
+         re.compile(r"288\s*min.{0,80}?\b(?:guarantee[ds]?|GUARANTEED|"
+                    r"datasheet (?:limit|timeout))\b|\bguarantee[ds]?\b.{0,60}?"
+                    r"288\s*min", re.I),
+         re.compile(r"not (?:a )?(?:datasheet )?guarantee|TYP-only|"
+                    r"engineering qualification target|not GUARANTEED", re.I)),
+        ("STAT1 alone read as charge completion",
+         re.compile(r"STAT1.{0,80}?\b(?:shows|indicates|signals|confirms|"
+                    r"identif\w+|means|reports)\b.{0,40}?(?:complet\w*|"
+                    r"terminat\w*|fully charged|full charge)", re.I),
+         re.compile(r"cannot|\bnot\b|ambiguous|STAT2|inference|infer", re.I)),
+        ("the archived EastRising module specification called unobtainable",
+         re.compile(r"(?:EastRising|ER-TFT035IPS-6).{0,160}?(?:not "
+                    r"obtainable|unobtainable|could not be obtained|is not "
+                    r"archived|not available here)", re.I),
+         re.compile(r"was wrong|withdrawn|false", re.I)),
+        ("a no-discharge figure called independent of ambient or TREG",
+         re.compile(r"no[- ]discharge.{0,160}?(?:independent of (?:the )?"
+                    r"(?:ambient|TREG)|ambient[- ]independent|TREG[- ]"
+                    r"independent|at any ambient)", re.I),
+         re.compile(r"\bnot\b|never", re.I)),
+        ("a supplement below the BUVLO trip",
+         re.compile(r"supplement\w*.{0,80}?(?:at|below|under) (?:the )?"
+                    r"(?:2\.85\s*V|VBUVLO|BUVLO|UVLO trip)", re.I),
+         re.compile(r"cannot|\bnot\b|never|\bno supplement|collaps", re.I)),
+        ("an earlier release called the current one",
+         re.compile(r"\b(?:current|this) (?:release|review target|candidate)"
+                    r"\W.{0,60}?\bD-79[0-5]\b", re.I),
+         re.compile(r"REJECTED|rejected|parent|D-796", re.I)),
+        ("an outside-contract source figure used as a qualified one",
+         re.compile(r"\b(?:qualified|acceptance|accept(?:ed|s)?)\b.{0,80}?"
+                    r"(?:generic_typec_24awg_2m|unqualified_28awg_2m)", re.I),
+         re.compile(r"OUTSIDE|outside the contract|\bnot\b|REPORTED|never",
+                    re.I)),
     )
 
     def _false_claim_scan(text, where):
@@ -8903,9 +9445,14 @@ def main():
         return found
     _fc_docs = ("docs/full-beta-v2/DEVICE_SPEC.md",
                 "docs/full-beta-v2/AQROOT_DEMO_FAB_HANDOFF.md",
+                "docs/full-beta-v2/CURRENT_STATE.md",
                 "docs/full-beta-v2/assembly/FIRST_FIVE_ASSEMBLY_PLAN.md",
                 "docs/full-beta-v2/assembly/BATTERY_HARNESS.json",
                 "docs/full-beta-v2/assembly/OFF_BOARD_BOM.md",
+                # D-796 / D796-05 item 8: the second manual traveler and the
+                # acceptance register are operative documents too.
+                "hardware/demo/fab/aqroot-Demo-ACC-3V3-REINFORCEMENT.json",
+                "docs/full-beta-v2/assembly/RELEASE_ACCEPTANCE_REGISTER.json",
                 "hardware/demo/fab/aqroot-Demo-FAB-NOTES.md")
     _fc_found = []
     _fc_texts = {}
@@ -8916,6 +9463,22 @@ def main():
         _fc_texts[r_] = t_
         _fc_found += _false_claim_scan(t_, r_)
     _WRONG_INSTRUCTIONS = (
+        # ---- D-796 / Round-15: the escaped classes, permanent -----------
+        "Charge the first five from a 1 A or better USB source.",
+        "Any USB-C adapter is acceptable for the first five.",
+        "A USB 2.0 computer port is acceptable for charging.",
+        "While a sub-GHz radio transmits, both accessory rails are "
+        "permitted.",
+        "The full 400 mA + 300 mA pair is a permitted operating mode.",
+        "The charge-completion ceiling: 1.150 W.",
+        "The 288 min charge timeout is a datasheet guarantee.",
+        "STAT1 HIGH indicates that charging is complete.",
+        "The EastRising module specification is not obtainable, so the "
+        "panel draw is declared.",
+        "The no-discharge table is independent of ambient and TREG.",
+        "At 2.85 V the battery supplements SYS below the VBUVLO trip.",
+        "The current review target is D-795.",
+        "The acceptance figure is the generic_typec_24awg_2m row.",
         "Charging the device from a USB 2.0 computer port satisfies the "
         "adapter contract, and while plugged in the firmware stamps the "
         "charger unplug as a load edge.",
@@ -9150,7 +9713,7 @@ def main():
     )
     _fa_flat = re.sub(r"\s+", " ", _fa_txt)
     _fa_contradictions = []
-    for _sent in re.split(r"(?<=[.;:])\s+", _fa_flat):
+    for _sent in _d796_sentences(_fa_flat):
         if any(f in _sent for f in _FA_FENCE):
             continue
         _hit = sorted({_tok for _rx in _FA_CLAIMS for _tok in _rx.findall(_sent)
@@ -9239,6 +9802,13 @@ def main():
                    r".{0,30}?(\d\.\d{2})\s*V", re.I),
     )
 
+    _radios_h = ROOT / "Firmware/src/hw/aqroot_demo_bringup_app.h"
+    _m_nfc = re.search(r"static_assert\(kNfcRevocationDeadlineMs\s*==\s*"
+                       r"(\d+)",
+                       _radios_h.read_text(encoding="utf-8", errors="replace")
+                       if _radios_h.exists() else "")
+    _NFC_REVOCATION_BOUND_MS = int(_m_nfc.group(1)) if _m_nfc else None
+
     def _norm_families():
         _pair = df["declared_simultaneous_pair"]
         _cc = _cc_ceiling
@@ -9271,7 +9841,10 @@ def main():
                             for k in ("no_discharge_published_W",
                                       "junction_published_W",
                                       "no_discharge_raw_W",
-                                      "junction_raw_W")}
+                                      "junction_raw_W",
+                                      "input_carrying_published_W",
+                                      "input_carrying_raw_W")
+                            if e.get(k) is not None}
                          | {"%.3f" % r["system_W"] for r in
                             _cc["permitted_while_charging"]
                             + _cc["refused_while_charging"]},
@@ -9348,7 +9921,10 @@ def main():
                             for k in ("min_A", "typ_A", "max_A")}
                          | {"%.4f" % v for k, v in
                             env["converter_capability_A"].items()
-                            if isinstance(v, float)},
+                            if isinstance(v, float)}
+                         # D-796: a sentence about a LIMITER IN FAULT quotes
+                         # the battery current it causes -- F6's own figure.
+                         | {"%.4f" % v for v in env["modes_I_bat_A"].values()},
                  patterns=(
                      re.compile(r"(\d\.\d{4})\s*A.{0,60}?"
                                 r"(?:ILIM|limiter|current limit)", re.I),
@@ -9419,7 +9995,81 @@ def main():
                           .hexdigest()},
                  patterns=(
                      re.compile(r"(?:\bcurrent\b|this release|CURRENT|"
-                                r"D-795).{0,160}?\b([0-9a-f]{64})\b"),)),
+                                r"D-796).{0,160}?\b([0-9a-f]{64})\b"),)),
+            # ---- D-796 / Round-15 D796-06.  ROLE-BOUND NUMERIC FAMILIES. --
+            dict(key="gauge_window",
+                 what="the MAX17048 post-request gauge window",
+                 allowed={"1300", "1293.75", "250", "258.75"},
+                 patterns=(
+                     re.compile(r"(\d{3,4}(?:\.\d{1,2})?)\s*ms\**\s+"
+                                r"(?:post-load|post-request|post-edge|gauge|"
+                                r"freshness|admission)[ -]?(?:\w+ )?window",
+                                re.I),
+                     re.compile(r"(?:post-load|post-request|post-edge|gauge|"
+                                r"freshness|admission) window.{0,40}?"
+                                r"(\d{3,4}(?:\.\d{1,2})?)\s*ms", re.I))),
+            # D-796 / D796-05 item 4: the NFC OFF-confirmation revocation
+            # deadline is the FIRMWARE's own static_assert'ed bound, read from
+            # the header, never a typed number.
+            dict(key="nfc_revocation",
+                 what="the NFC liveness revocation deadline",
+                 allowed={"%d" % _NFC_REVOCATION_BOUND_MS} if
+                 _NFC_REVOCATION_BOUND_MS else set(),
+                 patterns=(
+                     re.compile(r"(?:revok\w*|revocation)\b.{0,80}?\bwithin\s*"
+                                r"\**(\d+(?:\.\d+)?)\s*(?:ms|s)\b", re.I),)),
+            dict(key="quiet_row",
+                 what="the quiet (no optional mode) rail-edge row",
+                 allowed={"%.2f" % r["floor_gridded_V"]
+                          for r in df["rail_edge_table"]
+                          if not r["modes"] and r["floor_gridded_V"]},
+                 patterns=(
+                     re.compile(r"\bquiet\b.{0,40}?\b(?:row|floor)\b\**\s*"
+                                r"(?:is|of|at|=|:)?\s*\**(\d\.\d{2})\s*V",
+                                re.I),
+                     # the value FOLLOWS the row it names; a number before
+                     # "quiet row" belongs to the preceding clause
+                     )),
+            dict(key="audio_row",
+                 what="the audio rail-edge row",
+                 allowed={"%.2f" % r["floor_gridded_V"]
+                          for r in df["rail_edge_table"]
+                          if r["modes"] == ["audio at the capped level"]
+                          and r["floor_gridded_V"]},
+                 patterns=(
+                     re.compile(r"\baudio\b.{0,40}?\b(?:row|floor)\b\**\s*"
+                                r"(?:is|of|at|=|:)?\s*\**(\d\.\d{2})\s*V",
+                                re.I),
+                     # the value FOLLOWS the row it names; a number before
+                     # "audio row" belongs to the preceding clause
+                     )),
+            dict(key="harness_currents",
+                 what="the battery-harness conforming and fault currents",
+                 requires=re.compile(r"battery|harness|\bJ4\b|Micro-Lock|"
+                                     r"\bpack\b", re.I),
+                 allowed={"%.4f" % v for v in env["modes_I_bat_A"].values()}
+                         | {"%.4f" % env["breaker"]["trip_min_A"],
+                            "%.4f" % env["ibat_ocp_A"][2]},
+                 patterns=(
+                     re.compile(r"(\d\.\d{4})\s*A\**.{0,100}?(?:fault|"
+                                r"conforming|excursion|overcurrent)", re.I),
+                     re.compile(r"(?:fault|conforming|excursion|overcurrent)"
+                                r".{0,100}?(\d\.\d{4})\s*A", re.I))),
+            dict(key="qualified_no_discharge",
+                 what="a no-discharge figure stated for the NAMED adapter",
+                 allowed={"%.2f" % e["no_discharge_published_W"]
+                          for e in _cc["no_discharge_envelope"]
+                          if e["qualified"]}
+                         | {"%.3f" % _cc["universal_no_discharge_published_W"],
+                            "%.2f" % _cc["universal_no_discharge_published_W"],
+                            "%.3f" % _cc["universal_no_discharge_raw_W"]},
+                 patterns=(
+                     re.compile(r"(?:named adapter|qualified|rpi15w_(?:high|"
+                                r"low)).{0,100}?no[- ]discharge.{0,60}?"
+                                r"(\d\.\d{2,3})\s*W", re.I),
+                     re.compile(r"no[- ]discharge.{0,60}?(\d\.\d{2,3})\s*W"
+                                r".{0,60}?(?:named adapter|qualified|"
+                                r"rpi15w_(?:high|low))", re.I))),
             dict(key="p3v3_peak_envelope",
                  what="the internal +3V3 peak current envelope",
                  allowed={"%.6f" % apm.peak_A()},
@@ -9443,6 +10093,8 @@ def main():
         # because nothing scanned it.
         "docs/full-beta-v2/assembly/BATTERY_HARNESS.json",
         "docs/full-beta-v2/assembly/OFF_BOARD_BOM.md",
+        "hardware/demo/fab/aqroot-Demo-ACC-3V3-REINFORCEMENT.json",
+        "docs/full-beta-v2/assembly/RELEASE_ACCEPTANCE_REGISTER.json",
     )
 
     # A FENCE IS A BLOCK PROPERTY AS WELL AS A SENTENCE PROPERTY.
@@ -9484,10 +10136,13 @@ def main():
             if fenced:
                 continue
             flat = re.sub(r"\s+", " ", block)
-            for sent in re.split(r"(?<=[.;:])\s+", flat):
+            for sent in _d796_sentences(flat):
                 if any(f in sent for f in _NORM_FENCE):
                     continue
                 for fam in families:
+                    if fam.get("requires") is not None and \
+                            not fam["requires"].search(sent):
+                        continue
                     hits = sorted({t for rx in fam["patterns"]
                                    for t in rx.findall(sent)})
                     for tok in hits:
@@ -9554,7 +10209,7 @@ def main():
             if _fenced:
                 continue
             _flat = re.sub(r"\s+", " ", _block)
-            for _sent in re.split(r"(?<=[.;:])\s+", _flat):
+            for _sent in _d796_sentences(_flat):
                 if any(f in _sent for f in _NORM_FENCE):
                     continue
                 if _ILIM_GUARANTEE.search(_sent) or \
@@ -9630,6 +10285,32 @@ def main():
     _ctrl_fenced = _norm_scan(
         "The RETIRED single-rail floor was 3.55 V and the retired charge-time "
         "ceiling was 4.063 W.", _norm_fams)
+    # ---- D-796 / Round-15 D796-06: the escaped NUMERIC classes, each an
+    # injected current sentence that must be caught by its own family.
+    _d796_numeric_injections = dict(
+        colon_split_completion_ceiling=(
+            "charge_time_ceiling", "The completion ceiling while charging: "
+            "1.150 W."),
+        gauge_window_1000_ms=(
+            "gauge_window", "Admissions read the gauge after a 1000 ms "
+            "post-request window."),
+        quiet_row_3_85=("quiet_row", "The quiet row floor is 3.85 V."),
+        audio_row_3_80=("audio_row", "The audio row floor is 3.80 V."),
+        nfc_one_second_deadline=(
+            "nfc_revocation", "With a rail live, the OFF confirmation is "
+            "revoked within 1 s."),
+        stale_fault_current=(
+            "harness_currents", "Record the battery-harness rise at the "
+            "2.7536 A fault excursion."),
+        outside_contract_figure_as_qualified=(
+            "qualified_no_discharge", "On the named adapter the no-discharge "
+            "figure is 2.20 W."),
+    )
+    _d796_numeric_caught = {}
+    for _nm, (_fam, _txt) in _d796_numeric_injections.items():
+        _hits = _norm_scan(_txt, _norm_fams)
+        _d796_numeric_caught[_nm] = bool(any(h["family"] == _fam
+                                             for h in _hits))
     cell_net["no_normative_document_states_a_retired_operating_value"][
         "controls_refused"] = dict(
         a_defenced_historical_heading_exposes_its_retired_figures=bool(
@@ -9645,7 +10326,8 @@ def main():
                 "3.600 W charge-regime ceiling, and a charge completes below "
                 "1.150 W on every qualified source class.", "control")) >= 2),
         the_current_values_are_not_flagged=bool(not _ctrl_current),
-        an_explicitly_fenced_sentence_is_exempt=bool(not _ctrl_fenced))
+        an_explicitly_fenced_sentence_is_exempt=bool(not _ctrl_fenced),
+        **{"d796_" + k: v for k, v in _d796_numeric_caught.items()})
     cell_net["no_normative_document_states_a_retired_operating_value"][
         "control_detail"] = dict(
         defenced_findings=_ctrl_defenced[:8],
