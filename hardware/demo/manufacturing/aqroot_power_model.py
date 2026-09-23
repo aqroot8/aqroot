@@ -170,26 +170,36 @@ RULING_TAGS = ROLE_ALLOWS[DEVICE_BOUND]
 #     condition is the D-789 defect (a row read at the wrong condition) with
 #     the condition simply omitted.
 # ==========================================================================
-GUARANTEED_ROWS = {
-    # key: (document token, row/condition token)
-    "mcu.ivdd_supply_requirement_A": ("Espressif", "Table 6-2"),
-    "path.microlock_contact_initial_max_ohm": ("5055700003-PS", "6.1.1"),
-    "path.microlock_contact_aged_max_ohm": ("5055700003-PS", "6."),
-    "path.crimp_max_ohm": ("5055700003-PS", "6.1.4"),
-    "path.pack_ac_impedance_max_ohm": ("785060", "section 3"),
-    "path.r75_sense_nominal_ohm": ("schematic", "R75"),
-    "path.r75_sense_tolerance": ("schematic", "R75"),
-    "path.inner_copper_thickness_m": ("stackup", "0.5 oz"),
-    "passpair.rds_hot_ratio_published": ("AO4800", "RDS(on)"),
-    "usb.vbus_source_max_V": ("USB 2.0", "table 7-7"),
-    "usb.vbus_source_min_V": ("USB 2.0", "table 7-7"),
-    "bq.vsys_reg_V": ("SLUSF65B", "VSYS_REG"),
-    "bq.ron_in_max_ohm": ("SLUSF65B", "RON_IN"),
-    "bq.ron_bat_max_ohm": ("SLUSF65B", "RON_BAT"),
-    "bq.ilim_min_A": ("SLUSF65B", "Table 6-1"),
-    "bq.ilim_max_A": ("SLUSF65B", "Table 6-1"),
-    "bq.vlowv_max_V": ("SLUSF65B", "VLOWV"),
-}
+# D-795 / R14-06.  THE ROWS ARE NO LONGER A DICT IN THIS FILE.
+#
+# D-794's `GUARANTEED_ROWS` lived here, which meant a TYP could be upgraded
+# to a guarantee by two edits in one file: the tag and the dict.  The rows now
+# live in `evidence/guaranteed-rows.json`, whose sha256 is PINNED below, and
+# `checks/guarantee_evidence.py` re-finds every row in the archived primary
+# document's own text at release time and refuses one whose column semantics
+# are not MIN or MAX.  This table is a READ-ONLY view of that file, kept so
+# `audit_tags` can still name the document and row it expects.
+GUARANTEE_EVIDENCE_SHA256 = (
+    "e41c0e29198d68e54640ee86ac34e21b4acd96c032adee02fefd0178e5c7988a")
+
+
+def _load_guaranteed_rows():
+    import json as _json
+    import os as _os
+    path = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)),
+                         "evidence", "guaranteed-rows.json")
+    try:
+        with open(path, encoding="utf-8") as fh:
+            ev = _json.load(fh)
+    except (OSError, ValueError):
+        return {}
+    docs = ev.get("documents") or {}
+    return {k: (docs.get(v["document"], {}).get("token", v["document"]),
+                v.get("row_token", ""))
+            for k, v in (ev.get("rows") or {}).items()}
+
+
+GUARANTEED_ROWS = _load_guaranteed_rows()
 # The repository's own convention: a value this programme DECLARES opens its
 # source text with the word.  That is a precise marker, not a word search --
 # a source that merely mentions a declaration elsewhere is not itself one.
@@ -402,12 +412,15 @@ BACKLIGHT_BOOST = dict(
     diode_vf_max_V=0.710,
     iq_max_A=0.45e-3,
     headline_efficiency=0.90,
-    # PRIMARY at D-792: the module datasheet's own NORMAL forward-current band,
-    # 110 mA MIN / 120 mA TYP, 6-chip parallel.  There is no MAX column, so this
-    # is the top of the normal band rather than an absolute maximum -- and the
-    # clause it feeds is one-sided: the converter's setpoint must be INSIDE it.
+    # PRIMARY at D-792: the module datasheet's own NORMAL forward current,
+    # 6-chip parallel.  D-795 / Round-14 CORRECTS THE TRANSCRIPTION: in the
+    # archived section 4.4 table the MIN column is BLANK, 110 mA is in the TYP
+    # column and 120 mA is in the MAX column -- D-792 read them as 110 MIN /
+    # 120 TYP with "no MAX column".  So 120 mA IS the panel's published
+    # maximum, and the one-sided clause it feeds -- the converter's setpoint
+    # must not exceed it -- is now a clause against a real MAX.
     panel_led_max_A=0.120,
-    panel_led_normal_min_A=0.110,
+    panel_led_typ_A=0.110,
     panel_led_dimming_A=0.090,
     panel_led_vf_typ_V=3.0,
     panel_led_source=(
@@ -489,13 +502,14 @@ BACKLIGHT_BOOST = dict(
         "D-792: EastRising ER-TFT035IPS-6 datasheet section 4.4 Backlight "
         "Characteristics, archived at vendor/EASTRISING/"
         "eastrising-er-tft035ips-6-datasheet.pdf -- Vf 3.0 TYP / 3.2 V MAX at "
-        "If = 120 mA, 6-chip parallel; forward current Normal Ipn 110 MIN / "
-        "120 mA TYP with NO max column; dimming Ipd at Lf = 90 mA; LED life "
-        "30 kh at Ta = 25 C.  The 3.2 V MAX Vf is the ruling forward voltage "
-        "and it CONFIRMS D-079's transcribed 2.9-3.2 V range.  The 120 mA is "
-        "the top of the panel's own NORMAL forward-current band and the "
-        "converter is set to 118.835 mA maximum, which is inside it; the "
-        "clause below is that the converter cannot overdrive the panel."),
+        "If = 120 mA, 6-chip parallel; forward current Normal Ipn 110 mA TYP "
+        "/ 120 mA MAX (the MIN column is blank -- D-795 corrects D-792's "
+        "'110 MIN / 120 TYP'); dimming Ipd at Lf = 90 mA; LED life 30 kh at "
+        "Ta = 25 C.  The 3.2 V MAX Vf is the ruling forward voltage and it "
+        "CONFIRMS D-079's transcribed 2.9-3.2 V range.  The 120 mA is the "
+        "panel's published MAXIMUM forward current and the converter is set "
+        "to 118.835 mA maximum, which is under it; the clause below is that "
+        "the converter cannot overdrive the panel."),
     # A LOWER INPUT COSTS MORE INPUT CURRENT, so this is a declared FLOOR on
     # U17's own VIN and the clause below proves the rail model never goes under
     # it.  3.069408 V heavy-load rail minimum less about 49 mV of declared
@@ -1574,18 +1588,19 @@ FUSE_MAX_OHM = tag(
 # corners are now computed from the nominal and the tolerance so the sentence
 # and the number cannot disagree again.
 R75_NOMINAL_OHM = tag(
-    "path.r75_sense_nominal_ohm", 0.010, GUARANTEED_MAX,
-    "the fitted 10 mOhm LTC4368 sense element: schematic 01_power_tree "
-    "designator R75, 10 mOhm 1 %, D-771.  The purchased-part record and the "
-    "BOM carry the same row and F13 pins the exact identity.",
-    condition="the schematic R75 row: 10 mOhm nominal, 1 % tolerance",
-    ruling=False)
+    "path.r75_sense_nominal_ohm", 0.010, DERIVED,
+    "the ORDERED value of the fitted sense element, Bourns "
+    "CRA2512-FZ-R010ELF, resistance code R010 = 0.010 ohm (Bourns CRA series "
+    "datasheet, archived vendor/BOURNS).  A nominal is not a bound; the "
+    "tolerance below is.  D-795 / R14-06 re-tags it: D-794 called a nominal "
+    "GUARANTEED_MAX and cited the schematic as the document.",
+    condition="resistance code R010", ruling=False)
 R75_TOLERANCE = tag(
     "path.r75_sense_tolerance", 0.01, GUARANTEED_MAX,
-    "the fitted part is a 1 % tolerance sense resistor: schematic "
-    "01_power_tree designator R75, D-771.",
-    condition="the schematic R75 row: 1 % over the part's rated range",
-    ruling=False)
+    "Bourns CRA series datasheet, How to Order, Resistance Tolerance: "
+    "F = +/-1 %, the tolerance code of the fitted CRA2512-FZ-R010ELF "
+    "(archived vendor/BOURNS/bourns-cra-series.pdf).",
+    condition="ordering code F", ruling=False)
 R75_OHM = tag(
     "path.r75_sense_max_ohm", round(0.010 * 1.01, 6), DERIVED,
     "the fitted 10 mOhm 1 % LTC4368 sense element at its HIGH corner: "
@@ -1771,10 +1786,14 @@ def board_forward_itemisation(measured=None):
 # a stated widening over the geometric estimate.
 RHO_CU_OHM_M = 1.72e-8
 INNER_CU_THICKNESS_M = tag(
-    "path.inner_copper_thickness_m", 15.2e-6, GUARANTEED_MAX,
-    "the board's own stackup: In1..In4 are 0.0152 mm (0.5 oz), F.Cu and B.Cu "
-    "are 0.035 mm (1 oz).  JLC06161H-7628, declared in the .kicad_pcb "
-    "stackup and checked by keepout_stackup_contract.",
+    "path.inner_copper_thickness_m", 15.2e-6, DECLARED_ESTIMATE,
+    "DECLARED: the ORDERED stackup, In1..In4 0.0152 mm (0.5 oz), JLC06161H-"
+    "7628, declared in the .kicad_pcb stackup and checked by "
+    "keepout_stackup_contract.  An order parameter is not a manufacturer "
+    "guarantee and the fab's thickness tolerance is not archived here; "
+    "D-795 / R14-06 re-tags D-794's GUARANTEED_MAX.  C-BAT-PATH-01 "
+    "measures the path it feeds.",
+    measurement_of_record="C-BAT-PATH-01",
     condition="0.5 oz inner copper", ruling=False)
 GND_PLANE_SHEET_OHM_PER_SQ = tag(
     "path.gnd_plane_sheet_ohm_per_square", round(
@@ -1944,7 +1963,7 @@ LTC4368_GATE_SOURCE = (
 BAT_RAW_MAX_V = 4.221
 
 AO4800_HOT_RATIO_PUBLISHED = tag(
-    "passpair.rds_hot_ratio_published", round(0.040 / 0.027, 6), GUARANTEED_MAX,
+    "passpair.rds_hot_ratio_published", round(0.040 / 0.027, 6), DERIVED,
     "AOS AO4800 Rev 6.1 RDS(on) at VGS = 10 V, ID = 6.9 A: 27 mOhm MAX at "
     "TJ = 25 C and 40 mOhm MAX at TJ = 125 C.  The ratio of two MAXIMUM rows "
     "of the same die.",
@@ -2256,18 +2275,8 @@ def conduction_ceiling_A(air_C, drive_V, ratio=None, spec=None):
 # TREG (6.3.7) is orthogonal to all of them: it folds the CHARGE current and
 # nothing else, and it is modelled by `treg_folds_charge_to_zero`.
 # ==========================================================================
-USB_VBUS_MAX_V = tag(
-    "usb.vbus_source_max_V", 5.25, GUARANTEED_MAX,
-    "USB 2.0 specification table 7-7: VBUS at a high-power host/hub port is "
-    "4.75 V minimum to 5.25 V maximum.  The MAXIMUM is the corner that costs "
-    "the most heat in the BQ25185's input FET, because that element drops "
-    "VIN - VSYS.",
-    condition="a high-power host/hub port, measured at the port")
-USB_VBUS_MIN_V = tag(
-    "usb.vbus_source_min_V", 4.75, GUARANTEED_MIN,
-    "USB 2.0 specification table 7-7, the low end of the same row.  It is the "
-    "corner that decides whether the charger can hold VSYS_REG at all.",
-    condition="a high-power host/hub port, measured at the port")
+
+
 # ==========================================================================
 # D-793 / R12-02.  THE ADAPTER AND CABLE ARE A CONTRACT, NOT A CONSTANT.
 #
@@ -2314,6 +2323,68 @@ USB_BOARD_COPPER_OHM = tag(
     measurement_of_record="C-CHG-01")
 
 
+# ==========================================================================
+# D-795 / R14-03 + Fable R14-07.  THE SOURCE CONTRACT NAMES A PART.
+#
+# ROUND-14: "Source contract must name an actual obtainable adapter/cable:
+# e.g. appropriate 5 V >=1.5 A BC1.2/USB-C source and qualified cable; a USB
+# 2.0 500 mA host must not be described as satisfying a 1.1 A contract."
+#
+# D-794's contract said "a USB 2.0 high-power port ... able to deliver at
+# least 1.100 A" -- and a USB 2.0 high-power port is a 500 mA port.  The
+# sentence was self-contradictory, and its 4.75..5.25 V band was quoted from a
+# USB 2.0 table this repository does not hold.
+#
+# THE QUALIFIED SOURCE IS NOW ONE PURCHASABLE PART WITH ITS OWN CABLE: the
+# Raspberry Pi 15W USB-C Power Supply, KSA-15E-051300Hx (product numbers
+# SC0445/SC0218 US, SC0444/SC0217 EU, SC0443/SC0216 UK, SC0523/SC0219 AU/NZ/CN,
+# SC0478/SC0479 IN), archived at vendor/RPI/rpi-15w-usb-c-psu-product-brief.pdf:
+# +5.1 V DC, 3.0 A nominal, load regulation +/-5 %, line regulation +/-2 %,
+# a CAPTIVE 1.5 m 18 AWG cable, USB Type-C, 0..40 C ambient.  The two
+# regulation terms are taken as ADDITIVE, so the adapter is ruled at
+# 5.1 V x (1 -/+ 0.07) = 4.743 / 5.457 V.  Because the cable is captive there
+# is exactly ONE mated connector pair in the path.
+#
+# Generic sources are REPORTED, not ruled: a Type-C/BC1.2 adapter at 4.75 V
+# on a 2 m 24 AWG cable (the D-794 "worst qualified" class) and on a 2 m
+# 28 AWG phone cable, so what leaving the contract costs is a number.  A
+# USB 2.0 host port is outside the contract outright: 500 mA cannot meet a
+# 1.1 A input limit.
+# ==========================================================================
+AWG18_STRANDED_MAX_OHM_PER_M = tag(
+    "usb.awg18_stranded_max_ohm_per_m", 0.0228, DECLARED_ESTIMATE,
+    "DECLARED.  18 AWG is 0.823 mm2 and 0.02095 ohm/m solid at 20 C, "
+    "carried at the same 9 % stranded margin as 24 and 28 AWG.",
+    condition="20 C", ruling=False)
+RPI_PSU_NOMINAL_V = 5.1
+RPI_PSU_REGULATION = tag(
+    "usb.rpi15w_regulation_fraction", 0.07, DECLARED_ENGINEERING_BOUND,
+    "DECLARED from the Raspberry Pi 15W USB-C Power Supply product brief "
+    "(vendor/RPI): load regulation +/-5 % and line regulation +/-2 %, taken "
+    "as additive.  A regulation specification on a product brief is not an "
+    "EC MIN/MAX row, so it is a declared SUPPLY requirement that C-CHG-01 "
+    "measures.",
+    condition="+5.1 V DC output, 0..3.0 A, 100-240 Vac",
+    role=SUPPLY_REQUIREMENT)
+RPI_PSU_PART = dict(
+    manufacturer="Raspberry Pi Ltd",
+    part_number="KSA-15E-051300HU",
+    part_numbers_by_region={
+        "US": "KSA-15E-051300HU", "EU": "KSA-15E-051300HE",
+        "UK": "KSA-15E-051300HK", "AU/NZ/CN": "KSA-15E-051300HA",
+        "IN": "KSA-15E-051300HI"},
+    product_numbers={"US": ("SC0445", "SC0218"), "EU": ("SC0444", "SC0217"),
+                     "UK": ("SC0443", "SC0216"),
+                     "AU/NZ/CN": ("SC0523", "SC0219"),
+                     "IN": ("SC0478", "SC0479")},
+    name="Raspberry Pi 15W USB-C Power Supply",
+    cable="captive, 1.5 m, 18 AWG, USB Type-C plug",
+    source_document="hardware/demo/kicad/aqroot-demo/vendor/RPI/"
+                    "rpi-15w-usb-c-psu-product-brief.pdf",
+    source_sha256="6df7bb5c05165cbf80978c05a36070a763523bb5a1cdf6724b87a1a6e673bd89",
+    operating_ambient_C=(0.0, 40.0))
+
+
 def _usb_path(awg_ohm_per_m, length_m, pairs=2):
     return round(2.0 * length_m * awg_ohm_per_m
                  + pairs * USB_MATED_PAIR_OHM + USB_BOARD_COPPER_OHM, 6)
@@ -2321,51 +2392,57 @@ def _usb_path(awg_ohm_per_m, length_m, pairs=2):
 
 # key, vbus at the adapter, path to U11 VIN, whether the release RULES on it.
 USB_SOURCE_CLASSES = (
-    dict(key="short_low_loss", vbus_V=5.25,
-         path_ohm=_usb_path(AWG24_STRANDED_MAX_OHM_PER_M, 0.5),
+    dict(key="rpi15w_high", vbus_V=round(RPI_PSU_NOMINAL_V
+                                         * (1.0 + RPI_PSU_REGULATION), 6),
+         path_ohm=_usb_path(AWG18_STRANDED_MAX_OHM_PER_M, 1.5, pairs=1),
          rules=True,
-         what="0.5 m of 24 AWG at the HIGH end of the USB VBUS band.  This "
-              "is the corner that leaves the most voltage at U11's VIN pin "
-              "and therefore the MOST HEAT in its linear input FET."),
-    dict(key="nominal_1m", vbus_V=4.75,
-         path_ohm=_usb_path(AWG24_STRANDED_MAX_OHM_PER_M, 1.0),
+         what="the NAMED adapter at the HIGH end of its regulation band, on "
+              "its own captive 1.5 m 18 AWG cable.  The corner that leaves "
+              "the most voltage at U11's VIN pin and so the MOST HEAT in its "
+              "linear input FET."),
+    dict(key="rpi15w_low", vbus_V=round(RPI_PSU_NOMINAL_V
+                                        * (1.0 - RPI_PSU_REGULATION), 6),
+         path_ohm=_usb_path(AWG18_STRANDED_MAX_OHM_PER_M, 1.5, pairs=1),
          rules=True,
-         what="1 m of 24 AWG at the low end of the VBUS band -- the cable "
-              "this product is shipped with."),
-    dict(key="worst_qualified", vbus_V=4.75,
+         what="the NAMED adapter at the LOW end of its regulation band on "
+              "the same cable.  The corner that decides VINDPM and the "
+              "no-discharge envelope."),
+    dict(key="generic_typec_24awg_2m", vbus_V=4.75,
          path_ohm=_usb_path(AWG24_STRANDED_MAX_OHM_PER_M, 2.0),
-         rules=True,
-         what="2 m of 24 AWG at the low end of the VBUS band.  THE WORST "
-              "CABLE THE PUBLISHED CONTRACT ADMITS, and the class that "
-              "decides the charge-time ceiling."),
+         rules=False,
+         what="ANY 5 V Type-C / BC1.2 adapter at 4.75 V on a separate 2 m "
+              "24 AWG cable -- D-794's 'worst qualified' class.  OUTSIDE the "
+              "first-five contract; REPORTED."),
     dict(key="unqualified_28awg_2m", vbus_V=4.75,
          path_ohm=_usb_path(AWG28_STRANDED_MAX_OHM_PER_M, 2.0),
          rules=False,
-         what="2 m of 28 AWG -- a cheap phone cable, OUTSIDE the published "
-              "contract.  REPORTED so the cost of ignoring the contract is a "
-              "number, not a warning."),
+         what="2 m of 28 AWG -- a cheap phone cable, OUTSIDE the contract.  "
+              "REPORTED so the cost of ignoring the contract is a number."),
 )
 USB_QUALIFIED_MAX_OHM = tag(
     "usb.qualified_source_path_max_ohm",
     max(c["path_ohm"] for c in USB_SOURCE_CLASSES if c["rules"]),
     DECLARED_ENGINEERING_BOUND,
-    "the worst source path the PUBLISHED charging contract admits: 2 m of "
-    "24 AWG power conductors, two mated USB pairs and the board's own VBUS "
-    "copper.  This is the number the charge-time ceiling is derived at, and "
-    "it is a CONTRACT -- see usb_source_contract().",
+    "the source path the PUBLISHED charging contract admits: the named "
+    "adapter's captive 1.5 m 18 AWG cable, ONE mated USB-C pair and the "
+    "board's own VBUS copper.  A CONTRACT -- see usb_source_contract().",
     role=POLICY_BUDGET)
 USB_VBUS_MAX_V = tag(
-    "usb.vbus_source_max_V", 5.25, GUARANTEED_MAX,
-    "USB 2.0 specification table 7-7: VBUS at a high-power host/hub port is "
-    "4.75 V minimum to 5.25 V maximum.  The MAXIMUM is the corner that costs "
-    "the most heat in the BQ25185's input FET, because that element drops "
-    "VIN - VSYS.",
-    condition="a high-power host/hub port, measured at the port")
+    "usb.vbus_source_max_V", max(c["vbus_V"] for c in USB_SOURCE_CLASSES
+                                 if c["rules"]),
+    DECLARED_ENGINEERING_BOUND,
+    "DECLARED SUPPLY REQUIREMENT: the named adapter's 5.1 V at +7 % "
+    "(load + line regulation, vendor/RPI product brief).  D-794 tagged a "
+    "USB 2.0 table-7-7 figure GUARANTEED_MAX with no archived document; it "
+    "is a requirement on the supply, not a device guarantee.",
+    condition="the named adapter, 0..3.0 A", role=SUPPLY_REQUIREMENT)
 USB_VBUS_MIN_V = tag(
-    "usb.vbus_source_min_V", 4.75, GUARANTEED_MIN,
-    "USB 2.0 specification table 7-7, the low end of the same row.  It is the "
-    "corner that decides whether the charger can hold VSYS_REG at all.",
-    condition="a high-power host/hub port, measured at the port")
+    "usb.vbus_source_min_V", min(c["vbus_V"] for c in USB_SOURCE_CLASSES
+                                 if c["rules"]),
+    DECLARED_ENGINEERING_BOUND,
+    "DECLARED SUPPLY REQUIREMENT: the named adapter's 5.1 V at -7 % "
+    "(vendor/RPI product brief).",
+    condition="the named adapter, 0..3.0 A", role=SUPPLY_REQUIREMENT)
 USB_PATH_MAX_OHM = USB_QUALIFIED_MAX_OHM
 USB_PATH_MIN_OHM = min(c["path_ohm"] for c in USB_SOURCE_CLASSES)
 
@@ -2395,9 +2472,16 @@ def usb_source_contract(ichg_A=None):
         qualified_source_path_max_ohm=USB_QUALIFIED_MAX_OHM,
         # ---- the CURRENT half ------------------------------------------
         required_source_current_A=round(i, 4),
-        required_source_capability="a USB 2.0 high-power port or a dedicated "
-                                   "charging port able to deliver at least "
-                                   "%.3f A at 4.75 V or more" % i,
+        required_source_capability=(
+            "the named adapter -- %s, part %s (regional variants %s) -- on "
+            "its own captive %s.  A USB 2.0 host port is OUTSIDE the "
+            "contract: 500 mA cannot meet a %.3f A input limit"
+            % (RPI_PSU_PART["name"], RPI_PSU_PART["part_number"],
+               ", ".join(sorted(RPI_PSU_PART["part_numbers_by_region"]
+                                .values())),
+               RPI_PSU_PART["cable"], i)),
+        named_adapter=dict(RPI_PSU_PART),
+        a_usb2_host_port_satisfies_the_contract=False,
         vindpm_threshold_at_a_full_cell_V=round(vindpm_worst, 4),
         vindpm_kind_at_a_full_cell=vindpm_kind,
         vin_pin_stays_above_vindpm_on_every_qualified_class=bool(all(
@@ -2415,12 +2499,14 @@ def usb_source_contract(ichg_A=None):
             "%.3f A at all leaves the input current limit unreached and has "
             "the same effect.  Neither is a safety condition; both change "
             "the published charge time." % i),
-        operator_rule="charge from the supplied adapter and cable, or from a "
-                      "USB 2.0 source rated for at least %.2f A and a cable "
-                      "with 24 AWG or heavier power conductors no longer "
-                      "than 2 m.  A 28 AWG 2 m cable is OUTSIDE this "
-                      "contract and lowers the charge-time system-power "
-                      "ceiling." % i,
+        operator_rule="charge the first five ONLY from the named Raspberry "
+                      "Pi 15W USB-C Power Supply (%s or its regional "
+                      "variant) on its own captive cable.  Any other "
+                      "adapter or cable -- including a 5 V Type-C source "
+                      "on a separate 2 m cable -- is OUTSIDE the contract; "
+                      "a USB 2.0 computer port (500 mA) cannot meet the "
+                      "%.2f A input limit at all." % (
+                          RPI_PSU_PART["part_number"], i),
         measurement_of_record="C-CHG-01")
 
 # ==========================================================================
@@ -2476,150 +2562,28 @@ PACK_RATED_CAPACITY_AH = tag(
     role=POLICY_BUDGET)
 
 
-def _cc_minutes(span, cap):
-    """Time to deliver `cap` ampere-hours over a swept CC span.
-
-    THE MODELLING ASSUMPTION, STATED: the rated capacity is delivered while
-    the terminal voltage rises LINEARLY from VLOWV to VBATREG, so each equal
-    voltage step carries an equal share of the charge.  A real 1S LiPo puts
-    most of its capacity in the flat 3.6..4.0 V region, where the charge
-    current here is HIGHEST, and comparatively little above 4.0 V where DPPM
-    and VINDPM throttle it -- so this assumption is CONSERVATIVE in exactly
-    the region that decides the answer.  `CV_TAPER_ALLOWANCE_MIN` is added
-    on top for the constant-voltage tail, which is not modelled at all.
-    """
-    n = len(span) - 1
-    if n <= 0:
-        return None
-    dq = cap / float(n)
-    total_h = 0.0
-    for k in range(n):
-        # the step is judged at the WORSE of its two endpoints
-        i = min(span[k]["charge_A"], span[k + 1]["charge_A"])
-        if i <= 1e-6:
-            return None
-        total_h += dq / i
-    return round(total_h * 60.0 + CV_TAPER_ALLOWANCE_MIN, 1)
-
-
-def charge_timer_report(system_W_scenarios, spec=None, capacity_Ah=None,
-                        ilim_corner="min", steps=25):
-    """Fast-charge current over the CC span, and the tMAXCHG margin.
-
-    `system_W_scenarios` is {name: system_W}.  For each enumerated source
-    class the cell is swept from VLOWV to VBATREG at the GUARANTEED-MINIMUM
-    input current limit -- the conservative corner for charge TIME, which is
-    the opposite corner from the one that rules on HEAT -- and the smallest
-    charge current anywhere on that span decides an UPPER BOUND on the time
-    to deliver the pack's rated capacity.
-
-    The bound is deliberately crude in one direction only: it charges the
-    WHOLE rated capacity at the WORST current the span reaches.  A real cycle
-    is faster.  What it must never do is claim a cycle completes when the
-    corrected physics says the charge current is a trickle.
-    """
-    s = BQ25185 if spec is None else spec
-    cap = PACK_RATED_CAPACITY_AH if capacity_Ah is None else capacity_Ah
-    vlo, vhi = VLOWV_MAX_V, s["vbatreg_V"]
-    rows = []
-    for name, p_sys in sorted(system_W_scenarios.items()):
-        for cls in USB_SOURCE_CLASSES:
-            span = []
-            for k in range(steps + 1):
-                vb = vlo + (vhi - vlo) * k / float(steps)
-                st = charger_state(p_sys, vb, ilim_corner,
-                                   vbus_V=cls["vbus_V"],
-                                   path_ohm=cls["path_ohm"],
-                                   source_key=cls["key"])
-                span.append(dict(vbat_V=round(vb, 4),
-                                 mode=(None if st is None else st["mode"]),
-                                 charge_A=(0.0 if st is None
-                                           else st["charge_A"])))
-            i_min = min(x["charge_A"] for x in span)
-            i_start = span[0]["charge_A"]
-            minutes = _cc_minutes(span, cap)
-            floor_bound = (None if i_min <= 1e-6
-                           else round(cap / i_min * 60.0 + CV_TAPER_ALLOWANCE_MIN, 1))
-            rows.append(dict(
-                every_step_at_the_worst_current_minutes=floor_bound,
-                scenario=name, system_W=round(p_sys, 6),
-                source_class=cls["key"], source_rules=cls["rules"],
-                ilim_corner=ilim_corner,
-                charge_A_at_VLOWV=round(i_start, 6),
-                worst_charge_A_over_the_cc_span=round(i_min, 6),
-                modes_seen=sorted({x["mode"] for x in span if x["mode"]}),
-                upper_bound_cc_minutes=minutes,
-                tmaxchg_min=TMAXCHG_MIN,
-                completes_inside_tmaxchg=bool(
-                    minutes is not None and minutes <= TMAXCHG_MIN),
-                margin_min=(None if minutes is None
-                            else round(TMAXCHG_MIN - minutes, 1))))
-    # ---- the SYSTEM POWER at which each class stops completing ----------
-    #
-    # This is the number an operator can act on, and it needs no invented
-    # "idle" load state: it is a property of the class and the pack alone.
-    per_class = []
-    for cls in USB_SOURCE_CLASSES:
-        def _ok(w, _c=cls):
-            sp = []
-            for k in range(steps + 1):
-                vb = vlo + (vhi - vlo) * k / float(steps)
-                st = charger_state(w, vb, ilim_corner, vbus_V=_c["vbus_V"],
-                                   path_ohm=_c["path_ohm"])
-                sp.append(dict(charge_A=(0.0 if st is None
-                                         else st["charge_A"])))
-            m = _cc_minutes(sp, cap)
-            return m is not None and m <= TMAXCHG_MIN
-        lo, hi = 0.0, 8.0
-        if not _ok(lo):
-            limit = 0.0
-        elif _ok(hi):
-            limit = hi
-        else:
-            for _ in range(80):
-                mid = 0.5 * (lo + hi)
-                if _ok(mid):
-                    lo = mid
-                else:
-                    hi = mid
-            limit = lo
-        per_class.append(dict(
-            source_class=cls["key"], rules=cls["rules"],
-            what=cls["what"],
-            system_W_that_still_completes=round(limit, 4),
-            completes_at_any_load=bool(limit >= hi - 1e-9)))
-    return dict(
-        rows=rows,
-        per_source_class=per_class,
-        charge_time_qualified_classes=[
-            c["source_class"] for c in per_class
-            if c["rules"] and c["system_W_that_still_completes"] > 0.0],
-        capacity_Ah=cap,
-        cc_span_V=[vlo, vhi],
-        tmaxchg_min=TMAXCHG_MIN,
-        tprechg_min=round(TMAXCHG_MIN * TPRECHG_FRACTION, 1),
-        ilim_corner=ilim_corner,
-        idle_rows=[r for r in rows if r["scenario"] == "idle"],
-        every_qualified_class_completes_when_idle=bool(all(
-            r["completes_inside_tmaxchg"] for r in rows
-            if r["scenario"] == "idle" and r["source_rules"])),
-        scenarios_that_do_not_complete=sorted({
-            "%s / %s" % (r["scenario"], r["source_class"]) for r in rows
-            if r["source_rules"] and not r["completes_inside_tmaxchg"]}),
-        what_this_is="the CHARGE-TIME question, which is NOT the charge-time "
-                     "LOAD CEILING.  The ceiling bounds heat and battery "
-                     "discharge; this bounds whether a cycle finishes before "
-                     "the BQ25185's own 360 min safety timer latches a "
-                     "non-recoverable fault (SLUSF65B 6.3.7.7).",
-        measurement_of_record="C-PWR-CHARGE-01")
+# D-795 / R14-04: `_cc_minutes` and `charge_timer_report` -- D-794's completion
+# model, which distributed the rated capacity LINEARLY over VLOWV..VBATREG, took
+# no thermal regulation and treated the TYP-only 360 min timer as a limit -- are
+# REMOVED rather than left beside their replacement.  The completion question
+# is answered by `audit_rail_ampacity.charge_completion_estimate`, which closes
+# the TREG loop, uses no capacity distribution and is a QUALIFICATION TARGET.
 
 
 BQ25185 = dict(
     reference="U11", part="BQ25185", package="DLH0010A",
-    vsys_reg_V=tag("bq.vsys_reg_V", 4.5, GUARANTEED_MAX,
-                   "TI SLUSF65B EC: VSYS_REG 4.5 V at VBATREG <= 4.3 V.",
-                   condition="-2/+2 % accuracy"),
-    vsys_reg_accuracy=0.02,
+    # D-795 / R14-06: VSYS_REG is a TYP-only row (4.5 V); the guarantee is
+    # VSYS_REG_ACC, -2 / +2 %.  D-794 tagged the nominal GUARANTEED_MAX.
+    vsys_reg_V=tag("bq.vsys_reg_V", 4.5, TYPICAL,
+                   "TI SLUSF65B EC: VSYS_REG 4.5 V at VBATREG <= 4.3 V -- a "
+                   "TYP column and nothing else.  The ruling figure is this "
+                   "nominal at the GUARANTEED VSYS_REG_ACC below.",
+                   ruling=False),
+    vsys_reg_accuracy=tag(
+        "bq.vsys_reg_accuracy", 0.02, GUARANTEED_MAX,
+        "TI SLUSF65B EC: VSYS_REG_ACC, SYS regulation accuracy, -2 / +2 % "
+        "at VIN = 5V, VBAT = 3.6V, RSYS = 100 ohm.",
+        condition="VIN = 5 V, VBAT = 3.6 V, RSYS = 100 ohm"),
     vminsys_V=tag("bq.vminsys_V", 3.8, TYPICAL,
                   "TI SLUSF65B EC: VMINSYS 3.8 V in battery-tracking mode.",
                   ruling=False),
@@ -2639,17 +2603,84 @@ BQ25185 = dict(
         "covers the rest of the cell range.  The same two numbers F6 rules "
         "with, so the two models cannot disagree."),
     ilim_min_A=tag("bq.ilim_min_A", 0.995, GUARANTEED_MIN,
-                   "TI SLUSF65B Table 6-1, the ILIM = 1050 mA row that "
-                   "R36 = 13 kOhm programs: 995 / 1050 / 1100 mA.",
+                   "TI SLUSF65B EC: ILIM, Input current limit, VIN = 5V, "
+                   "ILIM = 1050mA: 995 / 1050 / 1100 mA -- the setting "
+                   "R36 = 13 kOhm programs per Table 6-1.  D-795 / R14-06: "
+                   "D-794 cited Table 6-1 for these currents, and that table "
+                   "is a resistor map that holds none of them.",
                    condition="VIN = 5 V at the 1050 mA ILIM setting, "
                              "-40..125 C"),
     ilim_max_A=tag("bq.ilim_max_A", 1.100, GUARANTEED_MAX,
-                   "TI SLUSF65B Table 6-1, the same row's high end.",
+                   "TI SLUSF65B EC: ILIM, Input current limit, VIN = 5V, "
+                   "ILIM = 1050mA -- the same row's MAX column.",
                    condition="VIN = 5 V at the 1050 mA ILIM setting, "
                              "-40..125 C"),
     ichg_A=tag("bq.ichg_A", 0.769, DERIVED,
                "this board's own R37 = 390 ohm charge-current programming "
-               "(D-743)."),
+               "(D-743), at the TYPICAL KISET.  REPORTED; D-795 rules at the "
+               "band below.", ruling=False),
+    # ---- D-795 / R14-04.  THE CHARGE CURRENT IS A BAND, NOT A TYPICAL. ----
+    #
+    # D-794 carried ICHG as ONE number, 769 mA -- KISET 300 A.Ohm over
+    # R37 = 390 ohm -- in BOTH the heat derivation and the completion one.
+    # SLUSF65B publishes KISET as 285 / 300 / 315 A.Ohm with a MIN and a MAX,
+    # and R37 is a 1 % part, so the programmed current is a band whose ends
+    # answer DIFFERENT questions: the high end is the adverse corner for
+    # package heat, the low end for charge time.
+    kiset_min_AOhm=tag(
+        "bq.kiset_min_AOhm", 285.0, GUARANTEED_MIN,
+        "TI SLUSF65B EC: KISET, 285 / 300 / 315 A.Ohm, "
+        "10mA < ICHG < 1000mA -- the MIN column.",
+        condition="10 mA < ICHG < 1000 mA"),
+    kiset_max_AOhm=tag(
+        "bq.kiset_max_AOhm", 315.0, GUARANTEED_MAX,
+        "TI SLUSF65B EC: KISET, 285 / 300 / 315 A.Ohm, "
+        "10mA < ICHG < 1000mA -- the MAX column.",
+        condition="10 mA < ICHG < 1000 mA"),
+    r37_iset_ohm=390.0, r37_tolerance=0.01,
+    ichg_min_A=tag(
+        "bq.ichg_min_A", round(285.0 / (390.0 * 1.01), 6), DERIVED,
+        "KISET MIN 285 A.Ohm over R37 at its +1 % end (390 ohm x 1.01): the "
+        "LOWEST programmed fast-charge current, adverse for charge time."),
+    ichg_max_A=tag(
+        "bq.ichg_max_A", round(315.0 / (390.0 * 0.99), 6), DERIVED,
+        "KISET MAX 315 A.Ohm over R37 at its -1 % end (390 ohm x 0.99): the "
+        "HIGHEST programmed fast-charge current, adverse for package heat."),
+    iprechg_fraction=tag(
+        "bq.iprechg_fraction", 0.20, TYPICAL,
+        "TI SLUSF65B EC: IPRECHG 20 % of ICHG for VBAT < VLOWV.",
+        ruling=False),
+    iprechg_accuracy=tag(
+        "bq.iprechg_accuracy", 0.10, GUARANTEED_MAX,
+        "TI SLUSF65B EC: IPRECHG_ACC, precharge current accuracy, -10 / +10 % "
+        "at Fast charge current >= 40mA.",
+        condition="Fast charge current >= 40 mA"),
+    vlowv_min_V=tag(
+        "bq.vlowv_min_V", 2.9, GUARANTEED_MIN,
+        "TI SLUSF65B EC: VLOWV 2.9 / 3.0 / 3.1 V, VBAT rising -- below the "
+        "MIN the part is certainly in precharge.",
+        condition="VBAT rising"),
+    vbuvlo_typ_V=tag(
+        "bq.vbuvlo_typ_V", 3.0, TYPICAL,
+        "TI SLUSF65B EC: VBUVLO, battery UVLO, VBAT falling, 3 V typical.",
+        ruling=False),
+    treg_typ_C=tag(
+        "bq.treg_typ_C", 100.0, TYPICAL,
+        "TI SLUSF65B EC: TREG, typical junction temperature regulation, "
+        "100 C.  TYP only.", ruling=False),
+    treg_declared_band_K=tag(
+        "bq.treg_declared_band_K", 10.0, DECLARED_ENGINEERING_BOUND,
+        "DECLARED.  TREG has a TYP column and nothing else, so the thermal "
+        "fold is modelled at 100 C +/- 10 K: the HIGH end (110 C) is the "
+        "adverse one for the junction, the LOW end (90 C) for charge time.",
+        condition="applied either way to the 100 C typical",
+        role=POLICY_BUDGET),
+    tmaxchg_declared_tolerance=tag(
+        "bq.tmaxchg_declared_tolerance", 0.20, DECLARED_ENGINEERING_BOUND,
+        "DECLARED.  tMAXCHG has a TYP column (360 min) and nothing else; a "
+        "completion ESTIMATE is judged against 360 min x (1 - 0.20) = "
+        "288 min so a typical timer is never read as a limit.",
+        role=POLICY_BUDGET),
     # ---- D-794 / R13-02.  THE CONTROL-LOOP THRESHOLDS, FROM THE EC TABLE.
     #
     # Each of these is a DIFFERENT physical loop with its own threshold, and
@@ -2772,52 +2803,75 @@ def vindpm_threshold_V(vbat, spec=None, thresholds=None):
     return t["vindpm_fixed_V"], "fixed_3v6"
 
 
+CHARGER_BRANCH_NAMES = ("SYS_REG", "CC_PATH_LIMITED", "TREG", "ILIM",
+                        "VINDPM", "DPPM", "NO_CHARGE", "SUPPLEMENT")
+
+
+def programmed_charge_A(vbat, spec=None, ichg_corner="max", vlowv_V=None):
+    """What the CC/precharge loop asks for at this cell, before any fold.
+
+    `ichg_corner` picks the end of the KISET x R37 band.  Below VLOWV the
+    part is in PRECHARGE at IPRECHG = 20 % of ICHG, +/-10 %; the precharge
+    accuracy is taken in the SAME direction as the ICHG corner so a heat
+    question and a time question each get their own adverse end.  Returns
+    (amps, kind).
+    """
+    s = BQ25185 if spec is None else spec
+    ichg = {"max": s["ichg_max_A"], "min": s["ichg_min_A"],
+            "typ": s["ichg_A"]}[ichg_corner]
+    vlowv = s["vlowv_min_V"] if vlowv_V is None else vlowv_V
+    if vbat < vlowv:
+        acc = {"max": 1.0 + s["iprechg_accuracy"],
+               "min": 1.0 - s["iprechg_accuracy"], "typ": 1.0}[ichg_corner]
+        return ichg * s["iprechg_fraction"] * acc, "PRECHARGE"
+    return ichg, "CC"
+
+
 def charger_state(p_sys_W, vbat, ilim_corner="max", vbus_corner="max",
                   spec=None, treg_folds_charge_to_zero=False,
                   vbus_V=None, path_ohm=None, source_key=None,
-                  previous_mode=None, sweep=0.0):
+                  previous_mode=None, sweep=0.0, ichg_corner="max",
+                  ichg_program_A=None, charge_loop=None, vlowv_V=None):
     """ONE physically consistent BQ25185 operating point.  Pure.
 
-    D-794 / R13-02 REBUILT THE BRANCH STRUCTURE FROM THE PRIMARY DATASHEET.
-    Every regulating loop in SLUSF65B is now a SEPARATE branch with its own
-    threshold and its own defining inequalities:
+    D-795 / R14-03 CORRECTS THE CONTROL MODEL, AND THE CORRECTION IS ONE
+    SENTENCE OF SLUSF65B 6.3.2 THAT D-794 DID NOT FOLLOW:
 
-      SYS_REG          6.3.5.  The input FET is a SERIES PASS element and
-                       drops VIN - VSYS_REG.  It limits SYS from above and has
-                       NO authority over the charge current, which stays at
-                       the programmed ICHG.  D-793 folded charge here, which
-                       is the defect R13-02 names.
-      CC_PATH_LIMITED  the input FET is fully enhanced and SYS is wherever the
-                       source resistance leaves it.  Charge still at ICHG.
-                           VSYS^2 - (VBUS - ICHG.Rsrc).VSYS + P.Rsrc = 0
-                       and the stable root is the high one.
-      ILIM             6.3.6.  The input current limit binds and the charge
-                       current takes the remainder.
-      VINDPM           6.3.1.  The IN pin has fallen to VBAT + VINDPM_TRACK
-                       (VBAT > 3.5 V) or to the fixed 3.6 V, and the loop
-                       reduces the INPUT CURRENT to hold it there.
-      DPPM             6.3.2.  SYS has fallen to VBAT + VDPPM and the loop
-                       reduces the CHARGE current to hold it there:
-                           VSYS = VBAT + VDPPM,  IIN = (VBUS - VSYS)/Rsrc,
-                           ICHG = IIN - P/VSYS
-      NO_CHARGE        charge has folded to zero and the input still carries
-                       the whole load, with SYS above the supplement entry
-                       threshold.
-      SUPPLEMENT       6.3.3.  SYS has fallen to VBAT - VBSUP1 and the BATFET
-                       conducts.  Solved by bisection on the residual
-                           r(VSYS) = VBAT - (P/VSYS - IIN(VSYS)).Ron_bat - VSYS
-                       with IIN itself min(ILIM, VINDPM cap, source).
+        "If the sum of the charging and load currents exceeds the preset
+         maximum input current, the input DPM loop reduces the input current.
+         If SYS drops below the DPPM voltage threshold, the charging current
+         is reduced by the DPPM loop through the BATFET."
 
-    HYSTERESIS AND MODE HISTORY.  VBSUP1 (40 mV) and VBSUP2 (20 mV) are
-    DIFFERENT thresholds, so between VBAT - 40 mV and VBAT - 20 mV the branch
-    depends on where the part already was.  `previous_mode` carries that, and
-    the returned state names both the threshold it used and whether the point
-    lies inside the hysteresis band.
+    ILIM and VINDPM are INPUT loops.  They cut the INPUT current, and it is
+    the resulting fall of SYS to VBAT + VDPPM that makes the DPPM loop fold
+    the charge.  D-794's ILIM/VINDPM branches held SYS at the 4.41 V
+    regulation point and folded the charge by fiat -- a charge current below
+    the program with SYS far above the DPPM node, which no loop in the part
+    produces.  Round-14 reproduced it and R14-03 names it.  The branches are
+    now:
 
-    `vbus_V` / `path_ohm` name a SOURCE CLASS explicitly.  `sweep` moves the
-    four TYPICAL branch thresholds by a signed fraction, which is how the
-    published ceiling is derived over their uncertainty instead of over one
-    unpublished typical.
+      SYS_REG          6.3.5.  The input FET drops VIN - VSYS_REG as a series
+                       pass element; charge at the PROGRAM.
+      CC_PATH_LIMITED  the input FET fully enhanced; SYS is what the source
+                       leaves; charge at the PROGRAM.
+      TREG             6.3.7.6.  Thermal regulation has reduced the charge
+                       PROGRAM; SYS is at regulation or path-limited and ABOVE
+                       the DPPM node.  The ONLY branch in which a folded charge
+                       current coexists with SYS above VBAT + VDPPM, and it
+                       needs the junction at TREG to be legitimate -- which is
+                       why `charge_loop="TREG"` is set only by
+                       `charger_operating_point`, the thermal solve.
+      ILIM / VINDPM /  6.3.1 / 6.3.2 / 6.3.6.  SYS HELD AT VBAT + VDPPM by the
+      DPPM            DPPM loop, the input current at whichever input-side
+                       limit binds -- ILIM, VINDPM, or the source path itself
+                       with the FET fully on -- and the charge current is what
+                       is left:  ICHG = IIN - P / (VBAT + VDPPM).
+      NO_CHARGE        the charge has folded to zero; the input carries the
+                       load alone with SYS above the supplement entry.
+      SUPPLEMENT       6.3.3.  The BATFET conducts BAT -> SYS.
+
+    The PROGRAM is ICHG (at `ichg_corner` of the KISET x R37 band), or
+    IPRECHG below VLOWV, or -- `ichg_program_A` -- a thermal fold.
     """
     s = BQ25185 if spec is None else spec
     th = charger_thresholds(s, sweep)
@@ -2832,7 +2886,15 @@ def charger_state(p_sys_W, vbat, ilim_corner="max", vbus_corner="max",
     ron_in = s["ron_in_max_ohm"]
     ron_bat = s["ron_bat_max_ohm"] * s["ron_bat_vbat_allowance"]
     vsys_reg = s["vsys_reg_V"] * (1.0 - s["vsys_reg_accuracy"])
-    ichg_max = 0.0 if treg_folds_charge_to_zero else s["ichg_A"]
+    nominal_prog, prog_kind = programmed_charge_A(vbat, s, ichg_corner,
+                                                  vlowv_V)
+    if treg_folds_charge_to_zero:
+        ichg_max, loop = 0.0, "TREG"
+    elif ichg_program_A is not None:
+        ichg_max = max(0.0, min(nominal_prog, ichg_program_A))
+        loop = charge_loop or "TREG"
+    else:
+        ichg_max, loop = nominal_prog, prog_kind
     r_src = path + ron_in
     v_vindpm, vindpm_kind = vindpm_threshold_V(vbat, s, th)
     v_dppm = vbat + th["vdppm_V"]
@@ -2847,10 +2909,10 @@ def charger_state(p_sys_W, vbat, ilim_corner="max", vbus_corner="max",
     input_loop = "ILIM" if ilim <= i_vindpm_cap else "VINDPM"
 
     def _node(i_chg):
-        """VSYS with this charge current, no supplement.
+        """VSYS with this charge current and the input NOT current-limited.
 
         The SYS regulator can only pull SYS DOWN, so the node is the lower of
-        its regulation point and what the source leaves.
+        its regulation point and the STABLE (high) root the source leaves.
         """
         i_sys_reg = p_sys_W / vsys_reg
         if vbus - (i_sys_reg + i_chg) * r_src >= vsys_reg - 1e-15:
@@ -2868,132 +2930,135 @@ def charger_state(p_sys_W, vbat, ilim_corner="max", vbus_corner="max",
     i_supp = 0.0
     hysteresis_band = False
     threshold_used = None
-    # D-794 / R13-02.  THE COMPARATOR INPUT.  VBSUP1/VBSUP2 watch the node as
-    # it would be WITH THE BATFET OFF; once the BATFET conducts the node rises
-    # by the supplement drop, and judging the thresholds against the RAISED
-    # node is what makes the two of them chatter instead of latch.
     batfet_off_node_V = None
+    regulated = False
 
-    # ---- 1. The charge loop wants ICHG.  Can every input-side loop and the
-    #         DPPM loop live with that? -----------------------------------
-    full = _node(ichg_max)
-    if (ichg_max > 0.0 and full is not None and full[1] <= i_cap + 1e-12
+    # ---- 1. The charge loop gets its PROGRAM, and no input-side loop binds.
+    full = _node(ichg_max) if ichg_max > 0.0 else None
+    if (full is not None and full[1] <= i_cap + 1e-12
             and full[0] >= v_dppm - 1e-12):
         vsys, i_in, i_sys, regulated = full
         i_chg = ichg_max
-        mode = "SYS_REG" if regulated else "CC_PATH_LIMITED"
-        threshold_used = "none: no loop is folding the charge current"
-    else:
-        # ---- 2. An input-side loop binds, or DPPM does. -----------------
-        #
-        # Take the input cap first.  If the node it leaves is still above the
-        # DPPM threshold, the branch is named for the loop that bound.
-        cand = None
-        if ichg_max > 0.0:
-            i_sys_reg = p_sys_W / vsys_reg
-            if vbus - i_cap * r_src >= vsys_reg - 1e-15:
-                vs_cap, reg_cap = vsys_reg, True
-            else:
-                vs_cap, reg_cap = vbus - i_cap * r_src, False
-            if vs_cap > 0.0:
-                i_sys_cap = p_sys_W / vs_cap
-                i_chg_cap = i_cap - i_sys_cap
-                if i_chg_cap >= -1e-12 and vs_cap >= v_dppm - 1e-12:
-                    cand = (vs_cap, i_cap, i_sys_cap,
-                            max(0.0, min(ichg_max, i_chg_cap)), reg_cap,
-                            input_loop)
-        if cand is not None:
-            vsys, i_in, i_sys, i_chg, regulated, mode = cand
-            threshold_used = ("the input current limit"
-                              if mode == "ILIM" else
-                              "the VINDPM threshold %.4f V (%s)"
-                              % (v_vindpm, vindpm_kind))
+        if loop == "TREG" and ichg_max < nominal_prog - 1e-12:
+            mode = "TREG"
+            threshold_used = ("TREG: the thermal loop has reduced the charge "
+                              "program to %.6f A; SYS stays above VDPPM"
+                              % ichg_max)
         else:
-            # ---- 3. DPPM: hold SYS at VBAT + VDPPM by folding charge. ----
-            dppm = None
-            if ichg_max > 0.0 and v_dppm > 0.0:
-                i_in_d = min(i_cap, (vbus - v_dppm) / r_src)
-                i_sys_d = p_sys_W / v_dppm
-                i_chg_d = i_in_d - i_sys_d
-                if -1e-12 <= i_chg_d <= ichg_max + 1e-12 and v_dppm < vsys_reg:
-                    dppm = (v_dppm, i_in_d, i_sys_d,
-                            max(0.0, min(ichg_max, i_chg_d)))
-            if dppm is not None:
-                vsys, i_in, i_sys, i_chg = dppm
-                mode, regulated = "DPPM", False
-                threshold_used = "VDPPM = VBAT + %.4f V" % th["vdppm_V"]
+            mode = "SYS_REG" if regulated else "CC_PATH_LIMITED"
+            threshold_used = ("none: the charge current is the %s program"
+                              % loop)
+    else:
+        # ---- 2. DPPM holds SYS at VBAT + VDPPM; an input-side limit sets
+        #         IIN; the charge takes what is left. ----------------------
+        dppm = None
+        if ichg_max > 0.0 and 0.0 < v_dppm < vsys_reg:
+            i_src_d = max(0.0, (vbus - v_dppm) / r_src)
+            i_in_d = min(i_cap, i_src_d)
+            i_sys_d = p_sys_W / v_dppm
+            i_chg_d = i_in_d - i_sys_d
+            if -1e-12 <= i_chg_d <= ichg_max + 1e-12:
+                if i_src_d < i_cap:
+                    which = "DPPM"
+                else:
+                    which = input_loop
+                dppm = (v_dppm, i_in_d, i_sys_d,
+                        max(0.0, min(ichg_max, i_chg_d)), which)
+        if dppm is not None:
+            vsys, i_in, i_sys, i_chg, mode = dppm
+            threshold_used = (
+                "SYS held at VDPPM = VBAT + %.4f V by the DPPM loop; the input "
+                "current is set by %s" % (
+                    th["vdppm_V"],
+                    {"ILIM": "the input current limit",
+                     "VINDPM": "VINDPM at %.4f V (%s)" % (v_vindpm,
+                                                         vindpm_kind),
+                     "DPPM": "the source path with the input FET fully "
+                             "enhanced"}[mode]))
+        else:
+            # ---- 3. No charge at all.  Can the input carry the load? ------
+            zero = _node(0.0)
+            i_chg = 0.0
+            if zero is not None and zero[1] <= i_cap + 1e-12:
+                vs0, i_in0, i_sys0, reg0 = zero
             else:
-                # ---- 4. No charge at all.  Can the input carry the load? --
-                zero = _node(0.0)
+                vs0 = vbus - i_cap * r_src
+                if vs0 > vsys_reg:
+                    vs0 = vsys_reg
+                i_in0, i_sys0, reg0 = i_cap, (
+                    p_sys_W / vs0 if vs0 > 0.0 else float("inf")), False
+            supplementing = False
+            batfet_off_node_V = vs0
+            if vs0 <= 0.0 or i_sys0 > i_in0 + 1e-12:
+                supplementing = True
+                batfet_off_node_V = None
+                threshold_used = ("the input cannot carry the load with "
+                                  "the BATFET off at all")
+            elif ichg_max > 0.0 and vs0 > v_dppm + 1e-12:
+                # D-795 / R14-03.  NO EQUILIBRIUM ABOVE THE DPPM NODE.  The
+                # zero-charge node sits ABOVE VBAT + VDPPM, so the CC loop --
+                # which is active, the program being non-zero -- ramps the
+                # charge current up and pulls SYS down to VDPPM; there the
+                # DPPM loop would fold the charge, but the LOAD ALONE already
+                # exceeds what the input can deliver at that node (the DPPM
+                # branch above found no non-negative charge).  SYS keeps
+                # falling and the BATFET conducts.  D-794 reported NO_CHARGE
+                # here with SYS 1 V above the cell, which is a state no loop in
+                # the part holds -- R14-03's inequality is what caught it.
+                supplementing = True
+                batfet_off_node_V = None
+                threshold_used = (
+                    "the CC loop pulls SYS to VDPPM = %.4f V and the load "
+                    "alone exceeds the input there: entry by necessity"
+                    % v_dppm)
+            elif vs0 <= v_sup_enter + 1e-12:
+                supplementing = True
+                threshold_used = ("VBSUP1: SYS is below VBAT - %.4f V"
+                                  % th["vbsup1_V"])
+            elif vs0 <= v_sup_exit + 1e-12:
+                hysteresis_band = True
+                supplementing = (previous_mode == "SUPPLEMENT")
+                threshold_used = (
+                    "inside the VBSUP1/VBSUP2 hysteresis band "
+                    "[%.4f, %.4f] V; previous mode %r decides"
+                    % (v_sup_enter, v_sup_exit, previous_mode))
+            if not supplementing:
+                vsys, i_in, i_sys, regulated = vs0, i_in0, i_sys0, reg0
+                mode = "NO_CHARGE"
+                if threshold_used is None:
+                    threshold_used = ("the charge current has folded to "
+                                      "zero and the BATFET is still off")
+            else:
+                # ---- 4. SUPPLEMENT, bisected. --------------------------
+                mode = "SUPPLEMENT"
+                regulated = False
+                if threshold_used is None:
+                    threshold_used = ("VBSUP1: the input cannot carry the "
+                                      "load")
+
+                def _i_in_at(vs):
+                    return max(0.0, min(i_cap, (vbus - vs) / r_src))
+
+                def _resid(vs):
+                    return vbat - (p_sys_W / vs - _i_in_at(vs)) * ron_bat - vs
+
+                lo, hi = 1e-3, vbat
+                if _resid(hi) >= 0.0:
+                    return None
+                for _ in range(90):
+                    mid = 0.5 * (lo + hi)
+                    if _resid(mid) >= 0.0:
+                        lo = mid
+                    else:
+                        hi = mid
+                vs = 0.5 * (lo + hi)
+                if vs <= 0.2:
+                    return None
+                vsys = vs
+                i_in = _i_in_at(vsys)
+                i_sys = p_sys_W / vsys
+                i_supp = max(0.0, i_sys - i_in)
                 i_chg = 0.0
-                if zero is not None and zero[1] <= i_cap + 1e-12:
-                    vs0, i_in0, i_sys0, reg0 = zero
-                else:
-                    # The input is pinned at its cap and the node is whatever
-                    # that leaves; the load will want more than that.
-                    vs0 = vbus - i_cap * r_src
-                    if vs0 > vsys_reg:
-                        vs0 = vsys_reg
-                    i_in0, i_sys0, reg0 = i_cap, (
-                        p_sys_W / vs0 if vs0 > 0.0 else float("inf")), False
-                # THE HYSTERESIS.  Entry needs SYS below VBAT - VBSUP1; exit
-                # needs it back above VBAT - VBSUP2.  Between them the answer
-                # is the mode the part was already in.
-                supplementing = False
-                batfet_off_node_V = vs0
-                if vs0 <= 0.0 or i_sys0 > i_in0 + 1e-12:
-                    supplementing = True
-                    batfet_off_node_V = None
-                    threshold_used = ("the input cannot carry the load with "
-                                      "the BATFET off at all")
-                elif vs0 <= v_sup_enter + 1e-12:
-                    supplementing = True
-                    threshold_used = ("VBSUP1: SYS is below VBAT - %.4f V"
-                                      % th["vbsup1_V"])
-                elif vs0 <= v_sup_exit + 1e-12:
-                    hysteresis_band = True
-                    supplementing = (previous_mode == "SUPPLEMENT")
-                    threshold_used = (
-                        "inside the VBSUP1/VBSUP2 hysteresis band "
-                        "[%.4f, %.4f] V; previous mode %r decides"
-                        % (v_sup_enter, v_sup_exit, previous_mode))
-                if not supplementing:
-                    vsys, i_in, i_sys, regulated = vs0, i_in0, i_sys0, reg0
-                    mode = "NO_CHARGE"
-                    if threshold_used is None:
-                        threshold_used = ("the charge current has folded to "
-                                          "zero and the BATFET is still off")
-                else:
-                    # ---- 5. SUPPLEMENT, bisected. -----------------------
-                    mode = "SUPPLEMENT"
-                    regulated = False
-                    if threshold_used is None:
-                        threshold_used = (
-                            "VBSUP1: the input cannot carry the load")
-
-                    def _i_in_at(vs):
-                        return max(0.0, min(i_cap, (vbus - vs) / r_src))
-
-                    def _resid(vs):
-                        return vbat - (p_sys_W / vs - _i_in_at(vs)) * ron_bat - vs
-
-                    lo, hi = 1e-3, vbat
-                    if _resid(hi) >= 0.0:
-                        return None
-                    for _ in range(400):
-                        mid = 0.5 * (lo + hi)
-                        if _resid(mid) >= 0.0:
-                            lo = mid
-                        else:
-                            hi = mid
-                    vs = 0.5 * (lo + hi)
-                    if vs <= 0.2:
-                        return None
-                    vsys = vs
-                    i_in = _i_in_at(vsys)
-                    i_sys = p_sys_W / vsys
-                    i_supp = max(0.0, i_sys - i_in)
-                    i_chg = 0.0
 
     v_pin = vbus - i_in * path
     # ---- the dissipation, priced as the PHYSICS and not as a resistor ------
@@ -3005,18 +3070,16 @@ def charger_state(p_sys_W, vbat, ilim_corner="max", vbus_corner="max",
     p_stored = vbat * i_chg
     p_from_cell = vbat * i_supp
     p_cable = i_in * i_in * path
-    # D-793 / R12-02 + R12-04.  THE TERMINAL-POWER BALANCE IS AN INDEPENDENT
-    # ORACLE NOW.  D-792 DEFINED `total_dissipation_W` as
-    # `p_in + p_from_cell - p_sys - p_stored` and then "checked" energy
-    # balance by asserting that same expression equals it -- which is 0 = 0.
-    # The check that means something is that the TERMINAL balance equals the
-    # sum of the INTERNAL loss elements, computed from different quantities:
-    #     P_in + VBAT.I_supp - P_sys - VBAT.I_chg  ==  P_pkg + I_in^2.Rpath
+    p_ron_only = i_in * i_in * ron_in
+    p_treg_cannot = p_input_fet + p_batfet
+    # D-793 / R12-02 + R12-04: the TERMINAL balance against the sum of the
+    # INTERNAL loss elements -- two different sets of quantities.
     p_diss_total = p_in + p_from_cell - p_sys_W - p_stored
     p_loss_sum = p_pkg + p_cable
     return dict(
         mode=mode,
         ilim_corner=ilim_corner, vbus_corner=vbus_corner,
+        ichg_corner=ichg_corner,
         source_key=source_key,
         previous_mode=previous_mode,
         ilim_A=ilim, vbus_source_V=vbus, path_ohm=path,
@@ -3026,18 +3089,17 @@ def charger_state(p_sys_W, vbat, ilim_corner="max", vbus_corner="max",
         input_A=round(i_in, 6), system_A=round(i_sys, 6),
         charge_A=round(i_chg, 6), supplement_A=round(i_supp, 6),
         input_fet_W=round(p_input_fet, 6),
-        input_fet_resistive_only_W=round(i_in * i_in * ron_in, 6),
+        input_fet_resistive_only_W=round(p_ron_only, 6),
         charge_fet_W=round(p_charge_fet, 6),
         batfet_W=round(p_batfet, 6),
         cable_W=round(p_cable, 6),
         package_W=round(p_pkg, 6),
-        package_W_treg_cannot_reduce=round(p_input_fet + p_batfet, 6),
+        package_W_treg_cannot_reduce=round(p_treg_cannot, 6),
         source_W=round(p_in, 6), stored_W=round(p_stored, 6),
         from_cell_W=round(p_from_cell, 6),
         total_dissipation_W=round(p_diss_total, 6),
         internal_loss_sum_W=round(p_loss_sum, 6),
         terminal_vs_loss_residual_W=round(p_diss_total - p_loss_sum, 12),
-        # ---- D-794 / R13-02.  THE CONTROLS, NAMED AND REPORTED. ----------
         controls=dict(
             vsys_reg_V=round(vsys_reg, 6),
             vindpm_threshold_V=round(v_vindpm, 6),
@@ -3050,6 +3112,10 @@ def charger_state(p_sys_W, vbat, ilim_corner="max", vbus_corner="max",
             ilim_cap_A=round(ilim, 6),
             vindpm_cap_A=(None if i_vindpm_cap == float("inf")
                           else round(i_vindpm_cap, 6)),
+            charge_program_A=round(ichg_max, 6),
+            nominal_charge_program_A=round(nominal_prog, 6),
+            charge_program_kind=prog_kind,
+            charge_loop=loop,
             threshold_used=threshold_used,
             inside_the_supplement_hysteresis_band=bool(hysteresis_band),
             batfet_off_comparator_node_V=(
@@ -3061,10 +3127,17 @@ def charger_state(p_sys_W, vbat, ilim_corner="max", vbus_corner="max",
                  i_supp=i_supp, v_pin=v_pin, vbus=vbus, path=path,
                  ron_in=ron_in, ron_bat=ron_bat, ilim=ilim,
                  vsys_reg=vsys_reg, p_sys=p_sys_W, vbat=vbat,
-                 ichg_max=ichg_max, i_cap=i_cap,
+                 ichg_max=ichg_max, ichg_nominal=nominal_prog, i_cap=i_cap,
                  v_vindpm=v_vindpm, v_dppm=v_dppm,
                  v_sup_enter=v_sup_enter, v_sup_exit=v_sup_exit,
-                 batfet_off_node_V=batfet_off_node_V),
+                 batfet_off_node_V=batfet_off_node_V,
+                 # D-795 / R14-05: EVERY printed heat field has a raw twin,
+                 # so a corruption of either copy is visible.
+                 p_input_fet=p_input_fet, p_charge_fet=p_charge_fet,
+                 p_batfet=p_batfet, p_pkg=p_pkg, p_cable=p_cable,
+                 p_in=p_in, p_stored=p_stored, p_from_cell=p_from_cell,
+                 p_diss_total=p_diss_total, p_loss_sum=p_loss_sum,
+                 p_ron_only=p_ron_only, p_treg_cannot=p_treg_cannot),
         invariants=charger_invariants(
             i_in, i_supp, i_sys, i_chg, vsys, vbat, v_pin, ron_in,
             p_in, p_from_cell, p_sys_W, p_stored, p_diss_total,
@@ -3073,7 +3146,76 @@ def charger_state(p_sys_W, vbat, ilim_corner="max", vbus_corner="max",
             ichg_max=ichg_max, i_cap=i_cap, v_vindpm=v_vindpm,
             v_dppm=v_dppm, v_sup_enter=v_sup_enter, v_sup_exit=v_sup_exit,
             hysteresis_band=hysteresis_band, previous_mode=previous_mode,
-            batfet_off_node_V=batfet_off_node_V))
+            batfet_off_node_V=batfet_off_node_V,
+            ichg_nominal=nominal_prog, charge_loop=loop))
+
+
+def charger_junction(st, ambient_C, r_sys_K_per_W, theta_ja_C_per_W,
+                     delivered_out_W=0.0, heat_key="package_W"):
+    """The two thermal relations the release uses, applied to one state.
+
+    Internal air = ambient + R_SYS x (everything dissipated INSIDE the
+    enclosure); junction = air + thetaJA x package heat.
+    """
+    internal = (st["source_W"] + st["from_cell_W"] - st["stored_W"]
+                - delivered_out_W)
+    air = ambient_C + r_sys_K_per_W * internal
+    return air + theta_ja_C_per_W * st[heat_key], air, internal
+
+
+def charger_operating_point(p_sys_W, vbat, ambient_C, r_sys_K_per_W,
+                            theta_ja_C_per_W, treg_C, delivered_out_W=0.0,
+                            **kw):
+    """D-795 / R14-03 + R14-04.  THE CHARGER WITH ITS THERMAL LOOP CLOSED.
+
+    SLUSF65B 6.3.7.6: "the device monitors the junction temperature of the
+    die and reduces the charge current when TJ reaches the thermal regulation
+    threshold (TREG)."  The fold is a LOOP, not an assumption: the charge
+    program is reduced until the junction sits at TREG, and because a smaller
+    charge current takes the input off its limit, SYS rises back toward
+    regulation and the input FET's own drop shrinks with it.  If even a zero
+    charge current leaves the junction above TREG, TREG has done all it can
+    and the state is solved with no charge.
+    """
+    st = charger_state(p_sys_W, vbat, **kw)
+    if st is None:
+        return None
+
+    def _tj(x):
+        return charger_junction(x, ambient_C, r_sys_K_per_W,
+                                theta_ja_C_per_W, delivered_out_W)
+
+    def _attach(x, active):
+        tj, air, internal = _tj(x)
+        return dict(x, thermal=dict(
+            ambient_C=ambient_C, r_sys_K_per_W=r_sys_K_per_W,
+            theta_ja_C_per_W=theta_ja_C_per_W, treg_C=treg_C,
+            delivered_out_W=round(delivered_out_W, 6),
+            internal_W=round(internal, 6), internal_air_C=round(air, 6),
+            junction_C=round(tj, 6), treg_active=bool(active)))
+
+    if _tj(st)[0] <= treg_C + 1e-9:
+        return _attach(st, False)
+    kw0 = dict(kw)
+    kw0.pop("ichg_program_A", None)
+    kw0.pop("charge_loop", None)
+    zero = charger_state(p_sys_W, vbat, ichg_program_A=0.0,
+                         charge_loop="TREG", **kw0)
+    if zero is None:
+        return None
+    if _tj(zero)[0] >= treg_C - 1e-9:
+        return _attach(zero, True)
+    lo, hi = 0.0, st["controls"]["nominal_charge_program_A"]
+    best = zero
+    for _ in range(48):
+        mid = 0.5 * (lo + hi)
+        cand = charger_state(p_sys_W, vbat, ichg_program_A=mid,
+                             charge_loop="TREG", **kw0)
+        if cand is not None and _tj(cand)[0] <= treg_C:
+            lo, best = mid, cand
+        else:
+            hi = mid
+    return _attach(best, True)
 
 
 def charger_invariants(i_in, i_supp, i_sys, i_chg, vsys, vbat, v_pin, ron_in,
@@ -3083,7 +3225,8 @@ def charger_invariants(i_in, i_supp, i_sys, i_chg, vsys, vbat, v_pin, ron_in,
                        ichg_max=None, i_cap=None, v_vindpm=None, v_dppm=None,
                        v_sup_enter=None, v_sup_exit=None,
                        hysteresis_band=False, previous_mode=None,
-                       batfet_off_node_V=None):
+                       batfet_off_node_V=None, ichg_nominal=None,
+                       charge_loop=None):
     eps = 1e-6
     inv = dict(
         kcl_at_sys=bool(abs(i_in + i_supp - i_sys - i_chg) < 1e-6),
@@ -3133,46 +3276,79 @@ def charger_invariants(i_in, i_supp, i_sys, i_chg, vsys, vbat, v_pin, ron_in,
             why.append("the input current exceeds the loop cap")
         if v_vindpm is not None and v_pin < v_vindpm - 1e-6 and i_in > 1e-9:
             why.append("the IN pin is below the VINDPM threshold")
+        # ---- D-795 / R14-03: THE PHYSICAL INEQUALITY D-794 BROKE. --------
+        # A charge current below the NOMINAL program while SYS sits above the
+        # DPPM node has exactly one legitimate cause in SLUSF65B: thermal
+        # regulation.  ILIM and VINDPM cut the INPUT; only the DPPM loop at
+        # VBAT + VDPPM folds the charge.
+        if (ichg_nominal is not None and v_dppm is not None
+                and i_chg < ichg_nominal - 1e-9 and vsys > v_dppm + 1e-9
+                and charge_loop != "TREG"):
+            why.append("a charge current below the program with SYS above "
+                       "VBAT + VDPPM and no thermal regulation active: no "
+                       "loop in the BQ25185 produces that state")
+        if mode in ("SYS_REG", "CC_PATH_LIMITED", "TREG"):
+            if ich is not None and abs(i_chg - ich) > 1e-9:
+                why.append("%s charges at the charge PROGRAM by definition"
+                           % mode)
+            if v_dppm is not None and vsys < v_dppm - 1e-9:
+                why.append("SYS is below VDPPM: the DPPM loop has control")
+            if i_in > cap + 1e-9:
+                why.append("an input-side loop is exceeded")
         if mode == "SYS_REG":
             if abs(vsys - vsys_reg) > 1e-9:
                 why.append("SYS is not at its regulation point")
             if v_pin - i_in * ron_in < vsys - 1e-9:
                 why.append("the input cannot hold the regulation point")
-            if ich is not None and i_chg < ich - 1e-9:
+            if ichg_nominal is not None and i_chg < ichg_nominal - 1e-9:
                 why.append("SYS_REG folds no charge: a folded charge current "
-                           "belongs to ILIM, VINDPM, DPPM or TREG")
+                           "belongs to DPPM or TREG")
         elif mode == "CC_PATH_LIMITED":
-            if ich is not None and i_chg < ich - 1e-9:
-                why.append("CC_PATH_LIMITED charges at ICHG by definition")
+            if ichg_nominal is not None and i_chg < ichg_nominal - 1e-9:
+                why.append("CC_PATH_LIMITED charges at the nominal program")
             if vsys > vsys_reg + 1e-9:
                 why.append("SYS above its regulation point")
             if abs(vsys - (vbus - i_in * r_src)) > 1e-6:
                 why.append("SYS is not what the source and RON_IN leave")
-            if v_dppm is not None and vsys < v_dppm - 1e-9:
-                why.append("SYS is below VDPPM: the DPPM loop has control")
-        elif mode in ("ILIM", "VINDPM"):
-            if i_in < cap - 1e-9:
-                why.append("the branch is named for a loop that is not at "
-                           "its limit")
-            if ich is not None and i_chg > ich + 1e-9:
-                why.append("more charge current than the CC loop programs")
-            if i_supp > eps:
-                why.append("an input-limited branch may not supplement")
-            if v_dppm is not None and vsys < v_dppm - 1e-9:
-                why.append("SYS is below VDPPM: the DPPM loop has control")
-            if mode == "VINDPM" and v_vindpm is not None \
-                    and abs(v_pin - v_vindpm) > 1e-6:
-                why.append("VINDPM claimed with the IN pin off its threshold")
-        elif mode == "DPPM":
+        elif mode == "TREG":
+            if charge_loop != "TREG":
+                why.append("a TREG branch with no thermal loop behind it")
+            if ichg_nominal is not None and i_chg > ichg_nominal - 1e-9:
+                why.append("a TREG branch that folds nothing")
+            if vsys > vsys_reg + 1e-9:
+                why.append("SYS above its regulation point")
+        elif mode in ("ILIM", "VINDPM", "DPPM"):
+            # 6.3.2: every charge-folding branch holds SYS at VBAT + VDPPM.
             if v_dppm is None or abs(vsys - v_dppm) > 1e-9:
-                why.append("DPPM does not hold SYS at VBAT + VDPPM")
+                why.append("%s must hold SYS at VBAT + VDPPM: the input loop "
+                           "cuts the INPUT and only DPPM folds the charge"
+                           % mode)
             if vsys <= vbat:
                 why.append("6.3.2: SYS is maintained ABOVE the battery while "
                            "the DPPM loop is in control")
             if i_supp > eps:
-                why.append("DPPM may not supplement")
+                why.append("a DPPM-held branch may not supplement")
             if ich is not None and i_chg > ich + 1e-9:
-                why.append("more charge current than the CC loop programs")
+                why.append("more charge current than the program")
+            held = (vbus - vsys) / r_src
+            if mode == "ILIM":
+                if abs(i_in - ilim) > 1e-9 or ilim > held + 1e-9:
+                    why.append("ILIM claimed with the input not at ILIM")
+                if v_vindpm is not None and ilim > (vbus - v_vindpm) / path \
+                        + 1e-9:
+                    why.append("VINDPM binds before ILIM at this source")
+            elif mode == "VINDPM":
+                if v_vindpm is None or abs(v_pin - v_vindpm) > 1e-6:
+                    why.append("VINDPM claimed with the IN pin off its "
+                               "threshold")
+                if i_in > ilim + 1e-9:
+                    why.append("VINDPM claimed above ILIM")
+            else:
+                if abs(i_in - held) > 1e-6:
+                    why.append("DPPM (source-limited) with the input FET not "
+                               "fully enhanced")
+                if i_in > cap + 1e-9:
+                    why.append("DPPM with an input-side loop exceeded")
         elif mode == "NO_CHARGE":
             if i_chg > eps or i_supp > eps:
                 why.append("NO_CHARGE must neither charge nor supplement")

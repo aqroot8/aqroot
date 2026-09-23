@@ -15,6 +15,7 @@
 // settings it needs rather than inheriting whatever the last caller left
 // behind.
 
+#include <stddef.h>
 #include <stdint.h>
 
 #ifdef ARDUINO
@@ -257,6 +258,10 @@ inline DeviceIdentity probeSt25r3916(SpiBusB &bus) {
 //   READ, `11` is a direct command.  So `0x42` reads 02h and `0xC1` is Set
 //   default.
 //
+// [D-795 / R14-02: THE PARAGRAPH BELOW IS D-794's ARGUMENT AND IT WAS ONE
+// STEP SHORT.  A 0x00 read-back is also what an unanswering bus returns.  The
+// liveness-qualified sequence that replaces it follows this block.]
+//
 // SO THE MECHANISM IS EXACT AND IT IS VERIFIABLE.  Set default returns the
 // part to power-up state, which is Power-down with `tx_en` = 0 and `en` = 0 --
 // the field OFF, by the datasheet's own definition of the power-on state.  The
@@ -280,62 +285,236 @@ inline DeviceIdentity probeSt25r3916(SpiBusB &bus) {
 // thermal protection where a reset put it, which is the "reinitialize
 // configuration as required" half of R13-03.
 // ===========================================================================
-inline bool st25r3916Quiesce(SpiBusB &bus, uint8_t *opcontrol_out) {
-  // Table 11: {00, A5..A0} write, {01, A5..A0} read, {11, ...} direct command.
-  const uint8_t kRegisterRead = 0x40;
-  const uint8_t kRegisterWrite = 0x00;
-  const uint8_t kSetDefault = 0xC1;          // Table 13, section 4.4.1
-  const uint8_t kRegOperationControl = 0x02;  // Table 21
-  // Section 4.1: the overheat-protection frame, required after Set default.
-  const uint8_t kOverheatFrame[3] = {0xFC, 0x04, 0x10};
+// ===========================================================================
+// D-795 / R14-02.  A SAFE-LOOKING DEFAULT IS NOT A RESPONSE.
+//
+// ROUND-14, IN ITS OWN WORDS: "An all-zero/unreadable U9 SPI response must
+// NEVER count as confirmed FIELD OFF merely because Operation Control reset
+// value is 0x00.  A retained physical field with ignored commands and
+// zero-filled reads was reproduced while software set confirmed_off=1,
+// allowed accessory power and released the burst slot."
+//
+// IT REPRODUCES, AND THE REASON IS ONE SENTENCE OF D-794's OWN ARGUMENT.
+// D-794 read Operation control back and accepted 0x00 -- and 0x00 is ALSO
+// what a MISO line reads when nothing is driving it low-to-high: a U9 whose
+// chip select never asserts, a MISO pulled down, a part with no supply.  The
+// value that proves the field is off is the same value that proves nothing
+// answered.  So the read-back is only a verification once it has been
+// preceded by a proof that the part on the other end is ALIVE and IS an
+// ST25R3916, and followed by a proof that it still is.
+//
+// THE SEQUENCE, EVERY STEP FROM DS12484 Rev 3:
+//
+//   1  IDENTITY.  IC identity 3Fh (section 4.5.80, Table 117, read only):
+//      ic_type4..0 = 0b00101.  With those five bits fixed the byte lies in
+//      0x28..0x2F, so neither an all-zero nor an all-ones bus can pass.
+//
+//   2  CHALLENGE.  No-response timer register 2, 11h (section 4.5.23,
+//      Table 50: type RW, every bit default 0).  Write 0x5A, read it back;
+//      write 0xA5, read it back.  Two complementary patterns prove that
+//      writes LAND and that reads are LIVE -- a stuck line cannot return both
+//      and a bus that echoes the previous byte returns the wrong one.  The
+//      register is chosen because it is inert: it defines a timeout that only
+//      runs once a transmission has ENDED or a Start No-response timer
+//      command is sent (Table 49's comment), and neither happens here.
+//
+//   3  SET DEFAULT, C1h (section 4.4.1, Table 13 operation mode ALL):
+//      "resets all registers to their default state".
+//
+//   4  PROOF THAT SET DEFAULT RAN.  11h must now read 0x00, its Table 50
+//      default -- it held 0xA5 a moment ago.  A part that ignores Set default
+//      is caught HERE, by a register that has no other reason to change,
+//      rather than being inferred from 02h (which a part might hold at 0x00
+//      for another reason).
+//
+//   5  THE OVERHEAT FRAME, FCh / 04h / 10h, which section 4.1 requires after
+//      power-on AND after Set default.
+//
+//   6  OPERATION CONTROL WRITTEN TO 0x00 EXPLICITLY.  R14-02 notes that the
+//      archived text has a Set-default ambiguity; writing Table 21's all-zero
+//      power-down value directly removes the dependency on it.
+//
+//   7  OPERATION CONTROL READ BACK, 02h == 0x00: `en`, `rx_en`, `tx_en`, `wu`
+//      and `en_fd_c` all clear -- Power-down, no oscillator, no transmitter.
+//
+//   8  IDENTITY AGAIN.  The zero in step 7 is only meaningful if the part is
+//      still the one that answered step 1.
+//
+// ANY failure leaves the field UNKNOWN.  UNKNOWN refuses accessory power by
+// name and owns the burst slot; `DemoBringupApp` keeps asking until it is
+// proved, and revokes a confirmation the moment liveness is lost again.
+// ===========================================================================
+enum class NfcQuiesceStep : uint8_t {
+  Confirmed = 0,
+  NoBus,               // the SPI-B hold was refused
+  IdentityBefore,      // step 1
+  ChallengeWrite,      // step 2
+  SetDefaultIgnored,   // step 4
+  OperationControl,    // step 7
+  IdentityAfter,       // step 8
+};
 
-  uint8_t op = 0xFF;
+inline const char *nfcQuiesceStepName(NfcQuiesceStep s) {
+  switch (s) {
+    case NfcQuiesceStep::Confirmed: return "confirmed";
+    case NfcQuiesceStep::NoBus: return "SPI-B hold refused";
+    case NfcQuiesceStep::IdentityBefore:
+      return "no live ST25R3916 identity before the quiesce";
+    case NfcQuiesceStep::ChallengeWrite:
+      return "the 11h register challenge did not read back";
+    case NfcQuiesceStep::SetDefaultIgnored:
+      return "Set default did not reset 11h to its 0x00 default";
+    case NfcQuiesceStep::OperationControl:
+      return "Operation control 02h did not read 0x00";
+    case NfcQuiesceStep::IdentityAfter:
+      return "the ST25R3916 identity was lost after the quiesce";
+  }
+  return "unknown";
+}
+
+struct NfcQuiesceReport {
+  bool confirmed = false;
+  NfcQuiesceStep failed_at = NfcQuiesceStep::NoBus;
+  uint8_t identity_before = 0x00;
+  uint8_t identity_after = 0x00;
+  uint8_t challenge_readback[2] = {0x00, 0x00};
+  uint8_t after_set_default = 0xFF;
+  uint8_t operation_control = 0xFF;
+};
+
+// DS12484 Rev 3 Table 117: ic_type4..0 = 0b00101 in bits 7..3.
+inline bool st25r3916IdentityIsValid(uint8_t identity) {
+  return uint8_t((identity >> 3) & 0x1F) == 0x05;
+}
+
+namespace st25r3916_spi {
+// Table 11: {00, A5..A0} write, {01, A5..A0} read, {11, ...} direct command.
+constexpr uint8_t kRegisterRead = 0x40;
+constexpr uint8_t kRegisterWrite = 0x00;
+constexpr uint8_t kSetDefault = 0xC1;            // Table 13, section 4.4.1
+constexpr uint8_t kRegOperationControl = 0x02;   // Table 21
+constexpr uint8_t kRegNoResponseTimer2 = 0x11;   // Table 50, RW, default 0x00
+constexpr uint8_t kRegIcIdentity = 0x3F;         // Table 117, RO
+constexpr uint8_t kChallenge[2] = {0x5A, 0xA5};
+
+// One framed transfer of `n` bytes; returns false if the bus hold is refused.
+inline bool frame(SpiBusB &bus, const uint8_t *out, uint8_t *in, size_t n) {
   SPI.beginTransaction(SPISettings(4000000, MSBFIRST, SPI_MODE1));
+  bool ok = false;
   {
     SpiBusB::Hold hold(bus, SpiBDevice::St25r3916);
-    if (!hold.ok()) {
-      SPI.endTransaction();
-      if (opcontrol_out) *opcontrol_out = op;
-      return false;
+    if (hold.ok()) {
+      for (size_t i = 0; i < n; ++i) {
+        const uint8_t r = SPI.transfer(out[i]);
+        if (in) in[i] = r;
+      }
+      ok = true;
     }
-    SPI.transfer(kSetDefault);
   }
   SPI.endTransaction();
+  return ok;
+}
+inline bool readRegister(SpiBusB &bus, uint8_t addr, uint8_t *value) {
+  const uint8_t out[2] = {uint8_t(kRegisterRead | (addr & 0x3F)), 0x00};
+  uint8_t in[2] = {0, 0};
+  if (!frame(bus, out, in, 2)) return false;
+  *value = in[1];
+  return true;
+}
+inline bool writeRegister(SpiBusB &bus, uint8_t addr, uint8_t value) {
+  const uint8_t out[2] = {uint8_t(kRegisterWrite | (addr & 0x3F)), value};
+  return frame(bus, out, nullptr, 2);
+}
+inline bool command(SpiBusB &bus, uint8_t code) {
+  return frame(bus, &code, nullptr, 1);
+}
+}  // namespace st25r3916_spi
+
+inline NfcQuiesceReport st25r3916QuiesceReport(SpiBusB &bus) {
+  using namespace st25r3916_spi;
+  NfcQuiesceReport r;
+  // Once a live ST25R3916 has been identified, every failure path below still
+  // WRITES Table 21's power-down value before it returns.  The write is never
+  // TRUSTED -- the verdict stays UNKNOWN -- but a part that is half-answering
+  // is more likely to be quiet after it than before, and it costs nothing.
+  auto best_effort_power_down = [&bus]() {
+    (void)writeRegister(bus, kRegOperationControl, 0x00);
+  };
+  // 1  identity
+  if (!readRegister(bus, kRegIcIdentity, &r.identity_before)) return r;
+  if (!st25r3916IdentityIsValid(r.identity_before)) {
+    r.failed_at = NfcQuiesceStep::IdentityBefore;
+    return r;
+  }
+  // 2  challenge
+  for (int i = 0; i < 2; ++i) {
+    if (!writeRegister(bus, kRegNoResponseTimer2, kChallenge[i]) ||
+        !readRegister(bus, kRegNoResponseTimer2, &r.challenge_readback[i])) {
+      r.failed_at = NfcQuiesceStep::NoBus;
+      return r;
+    }
+    if (r.challenge_readback[i] != kChallenge[i]) {
+      r.failed_at = NfcQuiesceStep::ChallengeWrite;
+      best_effort_power_down();
+      return r;
+    }
+  }
+  // 3  Set default
+  if (!command(bus, kSetDefault)) return r;
   // The part re-initialises; give the oscillator and regulator teardown the
-  // same order of settling the CC1101 path allows, then restore the thermal
-  // protection section 4.1 requires after this command.
+  // same order of settling the CC1101 path allows.
   delay(1);
-  SPI.beginTransaction(SPISettings(4000000, MSBFIRST, SPI_MODE1));
-  {
-    SpiBusB::Hold hold(bus, SpiBDevice::St25r3916);
-    if (!hold.ok()) {
-      SPI.endTransaction();
-      if (opcontrol_out) *opcontrol_out = op;
-      return false;
-    }
-    for (uint8_t b : kOverheatFrame) SPI.transfer(b);
+  // 4  Set default really ran
+  if (!readRegister(bus, kRegNoResponseTimer2, &r.after_set_default)) return r;
+  if (r.after_set_default != 0x00) {
+    r.failed_at = NfcQuiesceStep::SetDefaultIgnored;
+    best_effort_power_down();
+    return r;
   }
-  SPI.endTransaction();
-  // READ BACK.  This, and not the ACK, is the physical verification.
-  SPI.beginTransaction(SPISettings(4000000, MSBFIRST, SPI_MODE1));
-  {
-    SpiBusB::Hold hold(bus, SpiBDevice::St25r3916);
-    if (!hold.ok()) {
-      SPI.endTransaction();
-      if (opcontrol_out) *opcontrol_out = op;
-      return false;
-    }
-    SPI.transfer(uint8_t(kRegisterRead | (kRegOperationControl & 0x3F)));
-    op = SPI.transfer(0x00);
+  // 5  the overheat frame, section 4.1
+  const uint8_t overheat[3] = {0xFC, 0x04, 0x10};
+  if (!frame(bus, overheat, nullptr, 3)) return r;
+  // 6  Operation control written to its all-zero power-down value
+  if (!writeRegister(bus, kRegOperationControl, 0x00)) return r;
+  // 7  and read back
+  if (!readRegister(bus, kRegOperationControl, &r.operation_control)) return r;
+  if (r.operation_control != 0x00) {
+    r.failed_at = NfcQuiesceStep::OperationControl;
+    return r;
   }
-  SPI.endTransaction();
-  (void)kRegisterWrite;
-  if (opcontrol_out) *opcontrol_out = op;
-  // Table 21: every bit defaults to 0, and that is Power-down -- no
-  // oscillator, no regulator, no transmitter.  `tx_en` alone is not enough to
-  // check: `en` set with `tx_en` clear still runs the analogue front end, and
-  // a part that answered 0xFF answered nothing.
-  return op == 0x00;
+  // 8  still alive, still an ST25R3916
+  if (!readRegister(bus, kRegIcIdentity, &r.identity_after)) return r;
+  if (!st25r3916IdentityIsValid(r.identity_after)) {
+    r.failed_at = NfcQuiesceStep::IdentityAfter;
+    return r;
+  }
+  r.failed_at = NfcQuiesceStep::Confirmed;
+  r.confirmed = true;
+  return r;
+}
+
+// D-795 / R14-02.  THE LIVENESS PROBE A CONFIRMED-QUIET PART MUST KEEP
+// PASSING.  Identity plus a one-pattern challenge on the same inert register,
+// restored to its default afterwards so nothing the quiesce proved is undone.
+inline bool st25r3916StillAlive(SpiBusB &bus, uint8_t *identity_out) {
+  using namespace st25r3916_spi;
+  uint8_t id = 0x00, back = 0x00, restored = 0xFF;
+  const bool read = readRegister(bus, kRegIcIdentity, &id);
+  if (identity_out) *identity_out = id;
+  if (!read || !st25r3916IdentityIsValid(id)) return false;
+  if (!writeRegister(bus, kRegNoResponseTimer2, kChallenge[1]) ||
+      !readRegister(bus, kRegNoResponseTimer2, &back) ||
+      back != kChallenge[1]) {
+    return false;
+  }
+  if (!writeRegister(bus, kRegNoResponseTimer2, 0x00) ||
+      !readRegister(bus, kRegNoResponseTimer2, &restored) ||
+      restored != 0x00) {
+    return false;
+  }
+  // And the field is still where the quiesce left it.
+  uint8_t op = 0xFF;
+  return readRegister(bus, kRegOperationControl, &op) && op == 0x00;
 }
 
 struct RadioQuiesce {
@@ -349,6 +528,9 @@ struct RadioQuiesce {
   // permission is refused.
   bool nfc_confirmed = false;
   uint8_t nfc_operation_control = 0xFF;
+  // D-795 / R14-02: the whole liveness-qualified report, so the console can
+  // say WHICH step failed rather than only that it did.
+  NfcQuiesceReport nfc;
   bool nfcFieldStateIsUnknown() const { return !nfc_confirmed; }
   bool ok() const {
     return cc1101_confirmed && sx1262_confirmed && nfc_confirmed;
@@ -424,7 +606,9 @@ inline RadioQuiesce quiesceRadios(SpiBusB &bus) {
   // D-794 / R13-03: the NFC front end is a powered peripheral that can be
   // sustaining a material load, and it is quiesced on the same path and to
   // the same standard as the other two.
-  r.nfc_confirmed = st25r3916Quiesce(bus, &r.nfc_operation_control);
+  r.nfc = st25r3916QuiesceReport(bus);
+  r.nfc_confirmed = r.nfc.confirmed;
+  r.nfc_operation_control = r.nfc.operation_control;
   return r;
 }
 

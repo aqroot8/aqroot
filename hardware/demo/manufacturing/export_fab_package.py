@@ -532,7 +532,9 @@ def stackup_process_notes(board):
         "battery current this enclosure supports indefinitely at the %.0f C "
         "top of the ambient range -- the junction reaches **%.2f C**, "
         "against TI's own %.0f C operating maximum and %.2f K below a 150 C "
-        "Tg.  THIS is the figure the Tg requirement is justified against."
+        "Tg.  THIS is the figure the Tg requirement is justified against.  "
+        "It is a SIZING envelope -- a battery current, not a state a user or a "
+        "technician puts the product in (D-795)."
         % (_th["sustained_A"], _th["ambient_C"], _th["sustained_tj_C"],
            _th["tj_operating_max_C"], 150.0 - _th["sustained_tj_C"]),
         "  - At the PEAK ELECTRICAL ENVELOPE -- every internal subsystem at "
@@ -795,10 +797,90 @@ def export_fab_notes(out):
     lines += battery_harness_notes()
     lines += acc_3v3_reinforcement_notes()
     lines += stackup_process_notes(board)
+    lines += routed_slot_notes(out, board)
     lines += placement_convention_notes(out, board)
+    lines += acceptance_register_notes()
     (out / "aqroot-Demo-FAB-NOTES.md").write_text("\n".join(lines),
                                                   encoding="utf-8")
     return [r[0] for r in rules], vrows, grows, mrows, nrows
+
+
+# D-795 / Round-14 (Fable).  THE DRILL FILE HAS ROUTED SLOTS AND THE NOTES
+# NEVER SAID SO.  "Confirm G85 plated/non-plated slot statements are
+# explicitly accepted by fab CAM."  A CAM operator who reads the notes and not
+# the Excellon file would not know the PTH file carries G85 slot moves at all;
+# they are read out of the exported drill files here, attributed to the pad
+# they sit in, and stated with their plating so B09 has something to accept.
+def routed_slot_notes(out, board):
+    import re as _re
+    import pcbnew
+    rows = []
+    for kind, pattern in (("PLATED", "*-PTH.drl"), ("NON-PLATED", "*-NPTH.drl")):
+        for f in sorted((out / "gerbers").glob(pattern)):
+            tools, tool = {}, None
+            for line in f.read_text(encoding="utf-8").splitlines():
+                m = _re.match(r"^T(\d+)C([0-9.]+)", line)
+                if m:
+                    tools[m.group(1)] = float(m.group(2))
+                    continue
+                m = _re.match(r"^T(\d+)$", line)
+                if m:
+                    tool = m.group(1)
+                    continue
+                m = _re.match(r"^X([-0-9.]+)Y([-0-9.]+)G85X([-0-9.]+)"
+                              r"Y([-0-9.]+)", line)
+                if m and tool is not None:
+                    x1, y1, x2, y2 = (float(v) for v in m.groups())
+                    width = tools.get(tool, 0.0)
+                    length = ((x2 - x1) ** 2 + (y2 - y1) ** 2) ** 0.5 + width
+                    cx, cy = (x1 + x2) / 2.0, -(y1 + y2) / 2.0
+                    ref = "?"
+                    best = None
+                    for fp in board.GetFootprints():
+                        for pd in fp.Pads():
+                            q = pd.GetPosition()
+                            dd = ((q.x / 1e6 - cx) ** 2 + (q.y / 1e6 - cy) ** 2)
+                            if best is None or dd < best:
+                                best, ref = dd, "%s.%s" % (fp.GetReference(),
+                                                           pd.GetNumber())
+                    rows.append((kind, f.name, width, length, cx, cy, ref))
+    lines = ["## Routed slots (Excellon G85) -- manufacturer acceptance B09",
+             ""]
+    if not rows:
+        lines += ["The drill files carry NO routed slot.", ""]
+        return lines
+    lines += ["The drill files carry **%d routed slot%s** as Excellon `G85` "
+              "moves.  Each is a SLOT, not a round hole, and must be "
+              "fabricated as one with the plating stated; confirm in the CAM "
+              "acceptance (B09) that no slot has been re-interpreted as a "
+              "drilled hole." % (len(rows), "" if len(rows) == 1 else "s"), "",
+              "| plating | file | width mm | length mm | centre (x, y) mm | pad |",
+              "|---|---|---|---|---|---|"]
+    for kind, fn, w, l, cx, cy, ref in rows:
+        lines.append("| %s | `%s` | %.3f | %.3f | (%.3f, %.3f) | `%s` |"
+                     % (kind, fn, w, l, cx, cy, ref))
+    lines.append("")
+    return lines
+
+
+# D-795 / Round-14 D795-07.  "Enumerate B01-B14 and FA01-FA10 IN-TREE, not
+# only by name."  The manufacturer's half is printed into the notes the
+# manufacturer reads, from the one register the first-article plan and the
+# handoff also carry.
+ACCEPTANCE_REGISTER = ROOT / "docs/full-beta-v2/assembly/RELEASE_ACCEPTANCE_REGISTER.json"
+
+
+def acceptance_register_notes():
+    reg = json.loads(ACCEPTANCE_REGISTER.read_text(encoding="utf-8"))
+    lines = ["## Manufacturer / CAM written acceptance -- B01-B14", "",
+             "Every item below is **PENDING** and needs the manufacturer's "
+             "WRITTEN acceptance before an order is placed.  The register is "
+             "`docs/full-beta-v2/assembly/RELEASE_ACCEPTANCE_REGISTER.json`.",
+             "", "| id | item | status |", "|---|---|---|"]
+    for b in reg["manufacturer_cam"]:
+        lines.append("| **%s** | %s | PENDING |" % (b["id"], b["item"]))
+    lines.append("")
+    return lines
 
 
 # D-737.  THE PROFILE IS NOT A RECTANGLE AND THE PACKAGE NEVER SAID SO.

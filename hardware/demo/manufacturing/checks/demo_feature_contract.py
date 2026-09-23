@@ -3159,27 +3159,19 @@ def fold_manufacturer(name):
     return re.sub(r"\s+", " ", key).strip()
 
 
-def _word_boundary_truncation_rule(table=None):
-    """D-793 / R12-07.  A truncation is accepted only when it ends on a WORD
-    BOUNDARY of the canonical name and leaves at least two whole words.
-
-    Built over a LOCAL table, so the claim tests the RULE rather than which
-    spellings happen to be reviewed into `MFR_ALIASES`.
-    """
-    table = {"acme micro devices": "acme micro devices"} if table is None \
-        else table
+def _no_truncation_rule_exists():
+    """D-795 / R14-07.  Over a LOCAL table, a word-boundary truncation, a
+    two-word prefix and a shared prefix all stay THEMSELVES."""
     saved = dict(MFR_CANONICAL)
     try:
         MFR_CANONICAL.clear()
-        MFR_CANONICAL.update(table)
-        word_boundary = canonical_manufacturer("acme micro")
-        mid_word = canonical_manufacturer("acme micro dev")
-        too_short = canonical_manufacturer("acme")
-        one_word = canonical_manufacturer("acmemicro")
-        return bool(word_boundary == "acme micro devices"
-                    and mid_word == "acme micro dev"
-                    and too_short == "acme"
-                    and one_word == "acmemicro")
+        MFR_CANONICAL.update({"acme micro devices": "acme micro devices",
+                              "acme micro systems": "acme micro systems"})
+        return bool(canonical_manufacturer("acme micro") == "acme micro"
+                    and canonical_manufacturer("acme micro dev")
+                    == "acme micro dev"
+                    and canonical_manufacturer("Acme Micro Devices Inc.")
+                    == "acme micro devices")
     finally:
         MFR_CANONICAL.clear()
         MFR_CANONICAL.update(saved)
@@ -3209,76 +3201,37 @@ def _aos_alias_is_the_only_route():
                 and without != "alpha & omega semiconductor")
 
 
-def _ambiguous_truncation_is_refused(table=None):
-    """D-793 / R12-07.  A prefix that two different canonical names share
-    must resolve to NEITHER of them.
-
-    Built over a local two-company table so the claim does not depend on which
-    companies happen to be in `MFR_ALIASES` this week.
-    """
-    table = {"acme micro devices": "acme micro devices",
-             "acme micro systems": "acme micro systems"} if table is None \
-        else table
-    saved = dict(MFR_CANONICAL)
-    try:
-        MFR_CANONICAL.clear()
-        MFR_CANONICAL.update(table)
-        shared = canonical_manufacturer("acme micro")
-        exact = canonical_manufacturer("acme micro devices")
-        return shared == "acme micro" and exact == "acme micro devices"
-    finally:
-        MFR_CANONICAL.clear()
-        MFR_CANONICAL.update(saved)
-
-
 MFR_CANONICAL = {}
 for _group in MFR_ALIASES:
     for _name in _group:
         MFR_CANONICAL[fold_manufacturer(_name)] = _group[0]
 
 
-# D-793 / R12-07.  THE TRUNCATION RULE, TIGHTENED.
+# D-795 / R14-07 (Astra) + Fable R14-09.  NO TRUNCATION, NO PREFIX, NO RULE.
 #
-# Round-12 asks that "legitimate legal spellings (e.g. Samsung Electro-
-# Mechanics Co., Ltd.) must pass; near-match/counterfeit/cross-manufacturer
-# names must fail".  The legal-form fold above is what makes the first half
-# work.  The second half needs the PREFIX rule to be narrow: `startswith` on a
-# bare character count would fold "Murata Elec" into "murata electronics" and
-# would equally fold a name that merely happens to share a prefix.  A
-# truncation is only accepted when it ends on a WORD BOUNDARY of the canonical
-# name and leaves at least two whole words, so a distributor's truncated
-# column still matches and a name that continues differently does not.
-MFR_TRUNCATION_MIN_CHARS = 8
-MFR_TRUNCATION_MIN_WORDS = 2
+# ROUND-14: "Remove ALL generic manufacturer prefix/fuzzy fallbacks for
+# critical exact-part identity.  Only reviewed exact aliases/abbreviations may
+# canonicalize.  'Alpha and' must NOT canonicalize to AOS."
+#
+# IT REPRODUCES, AND THE RULE THAT DID IT WAS D-793's TIGHTENED ONE.  A
+# truncation that ended on a word boundary and kept two whole words was
+# accepted as the company it truncated -- so "Alpha and" (two words, nine
+# characters, a word boundary of "alpha and omega semiconductor") resolved to
+# Alpha & Omega Semiconductor, the one manufacturer whose exact identity the
+# pass pair depends on.  A character rule cannot know which two-word prefixes
+# are companies.  The fallback is REMOVED: a name canonicalises only by exact
+# match, after case, spacing, commas and a trailing legal form are folded,
+# against the REVIEWED alias table.  A distributor spelling that is genuinely
+# the company goes into that table, by name, where a reviewer can see it.
 
 
 def canonical_manufacturer(name):
-    """Fold case, spacing, commas and trailing legal forms, then apply the
-    alias table."""
+    """Fold case, spacing, commas and trailing legal forms, then look the
+    result up in the REVIEWED alias table.  Nothing else."""
     if not name:
         return None
     key = fold_manufacturer(name)
-    if key in MFR_CANONICAL:
-        return MFR_CANONICAL[key]
-    hits = set()
-    for known, canon in MFR_CANONICAL.items():
-        if known == key or not known.startswith(key):
-            continue
-        if len(key) < MFR_TRUNCATION_MIN_CHARS:
-            continue
-        if len(key.split()) < MFR_TRUNCATION_MIN_WORDS:
-            continue
-        rest = known[len(key):]
-        if rest and not rest.startswith(" "):
-            continue                   # mid-word: not a truncation, a
-                                       # different name that starts the same
-        hits.add(canon)
-    # An ambiguous truncation is NOT a match: it names two companies, and
-    # picking one of them is how a cross-manufacturer collision becomes an
-    # agreement.
-    if len(hits) == 1:
-        return next(iter(hits))
-    return key
+    return MFR_CANONICAL.get(key, key)
 
 
 def schematic_part_rows(refs):
@@ -4387,7 +4340,7 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
     # 4  A guarantee with its CONDITION removed -- the D-789 defect, spelled
     #    as an omission rather than as a wrong row.
     _role_controls["a_guarantee_with_no_stated_condition"] = bool(
-        apm.audit_tags(_relabel("bq.vsys_reg_V", condition=None))[
+        apm.audit_tags(_relabel("bq.vsys_reg_accuracy", condition=None))[
             "invalid_ruling_use"])
     # 5  A SUPPLY REQUIREMENT relabelled a device bound -- R12-05's ESP32
     #    IVDD instance, kept alive as a control rather than as a memory.
@@ -4417,6 +4370,92 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
             "must refuse it.")
     d["every_role_misclassification_control_is_refused"] = bool(
         all(_role_controls.values()))
+
+    # ======================================================================
+    # D-795 / R14-06.  EVERY GUARANTEE IS RE-FOUND IN ITS PRIMARY DOCUMENT.
+    #
+    # ROUND-14: "a TYP-only row cannot become GUARANTEED by changing the tag
+    # plus adding a row to a mutable allow-list. ... do not let two source
+    # edits manufacture certainty."  `checks/guarantee_evidence.py` binds
+    # every GUARANTEED_* to an archived document by sha256, re-finds the
+    # verbatim row in that document's own extracted text, and requires a MIN
+    # or MAX column (or a MAX word, a <= sign, a +/- code) behind the value.
+    # The controls are Round-14's own counterexamples.
+    # ======================================================================
+    import guarantee_evidence as _ge
+    _ev_ok, _ev = _ge.audit(apm.registry(), apm.GUARANTEE_EVIDENCE_SHA256)
+    _ev_doc = json.loads(_ge.EVIDENCE.read_text(encoding="utf-8"))
+
+    def _ev_with(rows_over, reg=None, pinned=None):
+        ev2 = json.loads(json.dumps(_ev_doc))
+        ev2["rows"].update(rows_over)
+        ok, rep_ = _ge.audit(reg if reg is not None else apm.registry(),
+                             apm.GUARANTEE_EVIDENCE_SHA256, evidence=ev2)
+        return ok
+
+    _vdppm = [r for r in apm.registry() if r["key"] == "bq.vdppm_V"][0]
+    _ev_controls = dict(
+        # the D-794 two-edit upgrade: re-tag a TYP row and add its REAL line
+        # to the evidence -- the header has no MIN or MAX column
+        a_typ_row_retagged_with_its_real_line_is_refused=not _ev_with(
+            {"bq.vdppm_V": dict(
+                document="SLUSF65B", row_token="VDPPM",
+                row_lines=["VDPPM 0.1 V"], semantics="MAX",
+                columns_header=["TYP"], columns=["0.1"], value_token="0.1",
+                scale=1.0, condition="VBAT = 3.6 V")},
+            reg=_relabel("bq.vdppm_V", tag=apm.GUARANTEED_MAX,
+                         role=apm.DEVICE_BOUND,
+                         condition="VBAT = 3.6 V")),
+        # ...and with a FABRICATED MAX column the row is not in the document
+        a_fabricated_max_column_is_not_in_the_document=not _ev_with(
+            {"bq.vdppm_V": dict(
+                document="SLUSF65B", row_token="VDPPM",
+                row_lines=["VDPPM 0.1 0.15 V"], semantics="MAX",
+                columns_header=["TYP", "MAX"], columns=["0.1", "0.15"],
+                value_token="0.15", scale=1.0, condition="VBAT = 3.6 V")},
+            reg=_relabel("bq.vdppm_V", tag=apm.GUARANTEED_MAX,
+                         value=0.15, role=apm.DEVICE_BOUND,
+                         condition="VBAT = 3.6 V")),
+        # Astra's Round-13 relabel has no evidence row at all
+        astras_relabel_has_no_primary_row=not _ge.audit(
+            _relabel("passpair.rds_hot_ratio_ruling",
+                     tag=apm.GUARANTEED_MAX, role=apm.DEVICE_BOUND),
+            apm.GUARANTEE_EVIDENCE_SHA256)[0],
+        # an evidence file edited without re-pinning its sha256
+        an_unpinned_evidence_edit_is_refused=not _ge.audit(
+            apm.registry(), "0" * 64)[0],
+        # a guarantee whose condition says it is a typical
+        a_typical_condition_is_refused=not _ge.audit(
+            _relabel("bq.ron_in_max_ohm", condition="typical at 25 C"),
+            apm.GUARANTEE_EVIDENCE_SHA256)[0],
+        # a value that is not the row's
+        a_value_that_is_not_the_rows_is_refused=not _ge.audit(
+            _relabel("bq.ilim_max_A", value=1.150),
+            apm.GUARANTEE_EVIDENCE_SHA256)[0],
+        # D-795 found: D-794's VSYS_REG GUARANTEED_MAX was a TYP-only row
+        d794s_vsys_reg_guarantee_is_refused=not _ge.audit(
+            _relabel("bq.vsys_reg_V", tag=apm.GUARANTEED_MAX,
+                     role=apm.DEVICE_BOUND, condition="VBATREG <= 4.3 V"),
+            apm.GUARANTEE_EVIDENCE_SHA256)[0])
+    d["guarantees_are_bound_to_primary_rows"] = dict(
+        ok=bool(_ev_ok), report=_ev, controls_refused=_ev_controls,
+        every_control_is_refused=bool(all(_ev_controls.values())),
+        found_by_this_audit=[
+            "bq.vsys_reg_V: VSYS_REG is a TYP-only row (4.5 V); the "
+            "guarantee is VSYS_REG_ACC -2/+2 %, now its own GUARANTEED entry",
+            "bq.ilim_min_A / bq.ilim_max_A: cited Table 6-1, which is a "
+            "resistor map; the 995/1100 mA figures are the EC ILIM row",
+            "passpair.rds_hot_ratio_published: a ratio of two MAX rows is "
+            "not a guaranteed maximum ratio -- DERIVED",
+            "path.r75_sense_nominal_ohm: a nominal is not a bound -- DERIVED; "
+            "the tolerance is bound to Bourns' own F = +/-1 % code",
+            "path.inner_copper_thickness_m: an ORDER parameter with no "
+            "archived fab tolerance -- DECLARED_ESTIMATE",
+            "usb.vbus_source_max_V / min_V: a USB 2.0 table this repository "
+            "never held -- now a DECLARED supply requirement on the named "
+            "adapter"])
+    d["guarantees_are_bound_to_primary_rows_ok"] = bool(
+        _ev_ok and all(_ev_controls.values()))
 
     # ---- D-787 / R6-A01: main +3V3 delivery is an explicit contract -------
     d["p3v3_setpoint"] = p3v3
@@ -4939,6 +4978,7 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
           and d["every_ruling_input_carries_a_provenance_tag"]
           and d["the_provenance_rule_refuses_a_typical_bound"]
           and d["every_role_misclassification_control_is_refused"]
+          and d["guarantees_are_bound_to_primary_rows_ok"]
           and d["p3v3_divider_parts_have_a_published_temperature_coefficient"]
           and d["p3v3_reinforcement_is_exact_and_bounded"]
           and d["the_reinforcement_record_quotes_the_derived_delivery_ok"]
@@ -6472,308 +6512,191 @@ def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
         delivered_out_W=i3b * v_3v3_V + i5b * v_acc5v_V)
 
     # ======================================================================
-    # D-792 / R11-03.  THE CHARGE REGIME HAS A LOAD CEILING, AND IT IS DERIVED.
+    # D-795 / R14-03 + R14-04.  THE CHARGE REGIME IS TWO CLAIMS, AND ONLY ONE
+    # OF THEM IS A SCALAR.
     #
-    # ROUND-11, IN ITS OWN WORDS: "Recompute charger/thermal/ambient limits; do
-    # not rely on thermal shutdown as normal control."
+    # ROUND-14: "3.600 W is NOT a universal no-battery-discharge ceiling. ...
+    # Re-derive any published no-discharge/regime ceiling over the full
+    # domain.  If no useful universal scalar exists, publish a VBAT/source-
+    # conditioned envelope instead of inventing one.  C-PWR-CHARGE-01 must
+    # name VBAT/source/ambient conditions."
     #
-    # IT IS RIGHT, AND THE PHYSICAL SOLVER IS WHAT MADE IT VISIBLE.  D-791's
-    # arithmetic priced the input path as IIN^2 x RON_IN and got 0.569 W.  The
-    # BQ25185's input path is not a resistor; it is a LINEAR PASS ELEMENT, and
-    # while the device supplements it is dropping VIN - VSYS across it.  At the
-    # reference state's own 5.65 W the solver puts SYS at 3.05 V against a
-    # 5.195 V VIN pin and the input FET dissipates 2.36 W in a DLH package with
-    # a 68.3 C/W JEDEC theta-JA.  That is a 161 K rise: the part would reach
-    # TSHUT and stop, which is protection acting as control -- exactly what
-    # R11-03 says must not be the answer.
+    # D-794 derived ONE ceiling at ONE mid-charge cell (3.2 V), from a solver
+    # that held SYS at its 4.41 V regulation point while an input loop was
+    # binding.  Both are corrected in `aqroot_power_model.charger_state`; the
+    # domain is now every cell from 2.85 V to 4.221 V, every source class,
+    # both ILIM corners, five points of the threshold sweep, both supplement
+    # histories and three ambients -- `ara.charge_regime_envelope`.  What it
+    # gives:
     #
-    # SO THE ANSWER IS A CEILING, NOT A PASS MARK.  The largest sustained
-    # SYSTEM POWER for which the half TREG cannot reduce stays inside TI's
-    # operating maximum is SOLVED here, and the states the product may be in
-    # while an adapter is attached are enumerated against it.
+    #   JUNCTION-SAFE SYSTEM POWER -- a genuine universal scalar, because TREG
+    #   folds the charge and only the zero-charge state can exceed 125 C.
     #
-    # AND IT CANNOT BE A FIRMWARE RULE, WHICH IS WHY IT IS A PUBLISHED ONE.
-    # This board has NO VBUS-present signal on any MCU or expander pin (D-776's
-    # bench-only register records `/01_POWER_TREE/VBUS_PRESENT` as probed at
-    # TP31.1 and reaching no readable pad), so the firmware cannot know an
-    # adapter is attached and must not pretend to.  The restriction is
-    # therefore of the same kind as the pouch's own charge window: a SUPERVISED
-    # operating condition, published in DEVICE_SPEC and in the first-article
-    # procedure, alongside the supervised first-five charging `battery_pack_
-    # contract` B8 already requires.
+    #   NO-DISCHARGE ENVELOPE -- a TABLE by VBAT and source class.  Battery-
+    #   tracking VINDPM squeezes the input as the cell fills, so the boundary
+    #   falls steeply near 4.2 V; it is published per row and its universal
+    #   minimum is reported as what it is.
     # ======================================================================
-    # ======================================================================
-    # D-794 / R13-02.  THE BRANCH BOUNDARIES ARE SWEPT, BECAUSE TI PUBLISHES
-    # THEM AS TYPICALS.
-    #
-    # ROUND-13: "Sweep all branch boundaries and round the published ceiling
-    # downward with explicit guardband."  VDPPM, VBSUP1, VBSUP2 and
-    # VINDPM_TRACK have a TYP column and nothing else in SLUSF65B, and the
-    # supplement discontinuity is a FUNCTION of them.  A ceiling derived at
-    # one unpublished typical is D-793's 4.063 W defect in a different place:
-    # a number that is correct only if a typical is a limit.
-    #
-    # Every ceiling question below is therefore asked at EVERY point of the
-    # declared sweep and answered by the WORST one -- the hottest junction and
-    # the earliest supplement onset over the whole band.
-    # ======================================================================
-    CHARGE_SWEEP_POINTS = (-1.0, -0.5, -0.25, 0.0, 0.25, 0.5, 1.0)
-    CHARGE_SWEEPS = tuple(round(p * apm.CHARGER_BRANCH_THRESHOLD_SWEEP, 6)
-                          for p in CHARGE_SWEEP_POINTS)
-    # Both mode histories, because the VBSUP1/VBSUP2 hysteresis makes the
-    # branch depend on where the part already was.  A ceiling that assumed the
-    # benign history would be a ceiling for one direction of approach only.
-    CHARGE_HISTORIES = (None, "SUPPLEMENT")
+    regime = ara.charge_regime_envelope(
+        delivered_out_W=0.0, keep_evidence=True)
+    junction_safe_W = regime["junction_safe_published_W"]
+    nd_universal_W = regime["universal_no_discharge_published_W"]
+    _q_env = [e for e in regime["envelope"] if e["qualified"]]
 
-    def charge_junction_at(system_W, delivered_W=0.0):
-        """The WORST junction over the declared threshold sweep and both
-        supplement histories.  Returns (junction_C, the ruling report)."""
-        worst_C, worst_r = None, None
-        for sw in CHARGE_SWEEPS:
-            for hist in CHARGE_HISTORIES:
-                r = ara.charge_regime_junction(
-                    system_W, ambient_C=ambient_C, delivered_out_W=delivered_W,
-                    sweep=sw, previous_mode=hist)
-                c = r["junction_with_charge_folded_back_C"]
-                if worst_C is None or c > worst_C:
-                    worst_C, worst_r = c, r
-        return worst_C, worst_r
+    def _no_discharge_up_to_vbat(system_W):
+        """The highest grid cell at which EVERY qualified class still carries
+        `system_W` without supplement, on the published (guard-banded)
+        envelope.  None if even the lowest cell does not."""
+        ok_v = None
+        for v in ara.REGIME_VBAT_GRID_V:
+            rows_v = [e for e in _q_env if e["vbat_V"] == v]
+            if all(e["no_discharge_published_W"] >= system_W - 1e-12
+                   for e in rows_v):
+                ok_v = v
+            else:
+                break
+        return ok_v
 
-    def charge_is_supplementing(system_W):
-        """True when ANY ruling source class, at ANY point of the declared
-        threshold sweep, under EITHER mode history, puts the part in
-        SUPPLEMENT.
-
-        D-793 / R12-02.  The supplement onset is a DISCONTINUITY, not a knee:
-        SYS collapses from the input-FET-held value to the cell, the input
-        FET's drop triples and the junction steps tens of kelvin in one
-        millivolt of load.  A published ceiling that sits above it -- or that
-        ROUNDS UP across it -- is not a ceiling at all.
-
-        D-794 / R13-02 adds the sweep: the onset MOVES with VBSUP1 and VDPPM,
-        and those are typicals.
-        """
-        for sw in CHARGE_SWEEPS:
-            for hist in CHARGE_HISTORIES:
-                r = ara.charge_regime_junction(
-                    system_W, ambient_C=ambient_C, sweep=sw,
-                    previous_mode=hist)
-                if any(c["mode"] == "SUPPLEMENT"
-                       for c in r["corners"].values() if c.get("source_rules")):
-                    return True
-        return False
-
+    # A dense scan BELOW the junction-safe figure over the whole domain grid,
+    # at the top of the ambient envelope -- the published number is never
+    # rounded up across anything.
+    _scan = [i * junction_safe_W / 40.0 for i in range(1, 41)]
+    _scan_bad = []
+    for w in _scan:
+        jr = ara.charge_regime_junction(w, ambient_C=ara.AMBIENT_DESIGN_MAX_C)
+        if not jr["the_unregulated_half_is_inside_the_operating_maximum"]:
+            _scan_bad.append(round(w, 6))
     _tj_max = ara.PACKAGE_JUNCTION["tj_operating_max_C"]
-    # ---- (a) the junction-limited ceiling --------------------------------
-    _lo, _hi = 0.0, max(charge_system_W, 8.0)
-    if charge_junction_at(_hi)[0] <= _tj_max:
-        tj_ceiling_W = _hi
-    elif charge_junction_at(_lo)[0] > _tj_max:
-        tj_ceiling_W = 0.0
-    else:
-        for _ in range(120):
-            _mid = 0.5 * (_lo + _hi)
-            if charge_junction_at(_mid)[0] <= _tj_max:
-                _lo = _mid
-            else:
-                _hi = _mid
-        tj_ceiling_W = _lo
-    # ---- (b) the supplement discontinuity --------------------------------
-    _lo, _hi = 0.0, max(charge_system_W, 8.0)
-    if not charge_is_supplementing(_hi):
-        cliff_W = _hi
-    elif charge_is_supplementing(1e-6):
-        cliff_W = 0.0
-    else:
-        for _ in range(120):
-            _mid = 0.5 * (_lo + _hi)
-            if charge_is_supplementing(_mid):
-                _hi = _mid
-            else:
-                _lo = _mid
-        cliff_W = _lo
-    raw_ceiling_W = min(tj_ceiling_W, cliff_W)
-    # ---- (c) the PUBLISHED figure, rounded DOWN, with a guardband --------
-    #
-    # ROUND-12, IN ITS OWN WORDS: "Current published charge-time load ceiling
-    # 4.063 W rounds UP across a solver branch boundary from exact
-    # 4.06293325 W ... Define a CONSERVATIVE published ceiling with explicit
-    # criterion and guardband; never round upward across a discontinuity."
-    #
-    # BOTH HALVES REPRODUCE.  D-792 bisected for the junction limit, got
-    # 4.06293325 W and PRINTED 4.063 W, and the exact solver at 4.063 W is in
-    # a different branch with a 155.4 C junction -- past TSHUT, let alone past
-    # the 125 C operating maximum.  The published number was 39.6 K of
-    # junction on the wrong side of a cliff, bought by `round(..., 6)`.
-    #
-    # It cannot happen again by construction: the published figure is the raw
-    # ceiling reduced by a DECLARED guardband and then FLOORED onto a 0.05 W
-    # grid, and the clauses below evaluate the real solver AT the published
-    # number and over a dense scan below it.
-    CHARGE_CEILING_GUARDBAND = 0.05
-    CHARGE_CEILING_GRID_W = 0.05
-    charge_W_ceiling = (math.floor(raw_ceiling_W
-                                   * (1.0 - CHARGE_CEILING_GUARDBAND)
-                                   / CHARGE_CEILING_GRID_W + 1e-12)
-                        * CHARGE_CEILING_GRID_W)
-    _tj_at_ceiling, _r_at_ceiling = charge_junction_at(charge_W_ceiling)
-    _scan = [i * charge_W_ceiling / 200.0 for i in range(1, 201)]
-    _scan_bad = [round(w, 6) for w in _scan
-                 if charge_junction_at(w)[0] > _tj_max
-                 or charge_is_supplementing(w)]
-    # How big the cliff actually is, reported so the guardband is not an
-    # adjective.
-    _below = charge_junction_at(cliff_W * (1.0 - 1e-9))[0] if cliff_W else None
-    _above = charge_junction_at(cliff_W * (1.0 + 1e-6))[0] if cliff_W else None
-    # Which (state, accessory configuration) pairs fit under the ceiling.
+    _at_js = ara.charge_regime_junction(junction_safe_W,
+                                        ambient_C=ara.AMBIENT_DESIGN_MAX_C)
+    # Which (state, accessory configuration) pairs are junction-safe while
+    # charging, and up to which cell voltage the named adapter carries them
+    # without the battery supplementing.
     charge_permitted, charge_refused = [], []
     for _st in states:
         for _name in PUBLISHED_LOADS:
-            _i3, _i5 = next((a, b) for n, a, b in LOADS if n == _name)
+            _i3, _i5 = next((a_, b_) for n, a_, b_ in LOADS if n == _name)
             _sys_W = ((_st["internal_3v3_A"] + _i3) * v_3v3_V / ETA_U12
                       + (_i5 * v_acc5v_V / ETA_U21 if _i5 else 0.0))
-            _tj, _r = charge_junction_at(_sys_W,
-                                        _i3 * v_3v3_V + _i5 * v_acc5v_V)
-            _row = dict(state=_st["key"], load=_name,
-                        system_W=round(_sys_W, 6),
-                        junction_with_charge_folded_back_C=_tj,
-                        mode=_r["mode"],
-                        internal_air_C=_r["internal_air_C"],
-                        inside_the_published_ceiling=bool(
-                            _sys_W <= charge_W_ceiling + 1e-12),
-                        charge_ambient_ceiling_C=_r[
-                            "charge_ambient_ceiling_C"])
-            (charge_permitted if (_tj <= _tj_max
-                                  and _sys_W <= charge_W_ceiling + 1e-12)
+            _jr = ara.charge_regime_junction(
+                _sys_W, ambient_C=ambient_C,
+                delivered_out_W=_i3 * v_3v3_V + _i5 * v_acc5v_V)
+            # D-795: only a combination the PRODUCTION permission table admits
+            # may be published as a state the product can be in while
+            # charging.  A radio transmitting beside a live rail is refused
+            # by the rail edge, so it is REPORTED here and never "permitted".
+            _bits_ = sum(1 << list(MODE_NAMES).index(m_)
+                         for m_ in _st.get("modes", []))
+            _rails_ = (0 if _name == "no_accessory" else
+                       2 if _name.startswith("both") else 1)
+            _adm_ = (_rails_ == 0 or any(
+                r_["permitted"] for r_ in rail_rows
+                if r_["mode_bits"] == _bits_ and r_["rails"] == _rails_))
+            _row = dict(
+                admissible_in_production=bool(_adm_),
+                state=_st["key"], load=_name, system_W=round(_sys_W, 6),
+                junction_with_charge_folded_back_C=_jr[
+                    "junction_with_charge_folded_back_C"],
+                hottest_operating_junction_C=_jr[
+                    "hottest_operating_junction_C"],
+                internal_air_C=_jr["internal_air_C"],
+                charge_ambient_ceiling_C=_jr["charge_ambient_ceiling_C"],
+                inside_the_junction_safe_power=bool(
+                    _sys_W <= junction_safe_W + 1e-12),
+                no_discharge_up_to_vbat_V=_no_discharge_up_to_vbat(_sys_W))
+            (charge_permitted if (_row["inside_the_junction_safe_power"]
+                                  and _jr["junction_with_charge_folded_back_C"]
+                                  <= _tj_max
+                                  and _row["admissible_in_production"])
              else charge_refused).append(_row)
-    # ======================================================================
-    # D-794 / ROUND-13 FABLE DELTA.  TWO DIFFERENT CEILINGS, TWO DIFFERENT
-    # GUARANTEES, AND D-793 PUBLISHED ONE NAME FOR BOTH.
-    #
-    # `charge_W_ceiling` above bounds HEAT and BATTERY DISCHARGE: above it the
-    # BATFET supplements or TI's junction operating maximum is exceeded.  It
-    # says NOTHING about whether a charge cycle finishes.  The corrected
-    # D-794 solver makes the gap unmissable -- at the 3.600 W ceiling the
-    # input current limit leaves so little for the battery that NO qualified
-    # source class terminates inside the BQ25185's own 360 min safety timer,
-    # which latches a NON-RECOVERABLE fault when it expires (SLUSF65B
-    # 6.3.7.7).  So the completion question gets its OWN derived ceiling, its
-    # own name and its own published guardband.
-    # ======================================================================
-    charge_timer = apm.charge_timer_report({
-        "idle": 0.0,
-        "housekeeping_only": 0.35,
-        "the_reference_state": round(charge_system_W, 6),
-        "at_the_regime_ceiling": charge_W_ceiling,
-    })
-    _completion_raw_W = min(
-        (c["system_W_that_still_completes"]
-         for c in charge_timer["per_source_class"] if c["rules"]),
-        default=0.0)
-    completion_W_ceiling = (math.floor(_completion_raw_W
-                                       * (1.0 - CHARGE_CEILING_GUARDBAND)
-                                       / CHARGE_CEILING_GRID_W + 1e-12)
-                            * CHARGE_CEILING_GRID_W)
-    _completion_rows = apm.charge_timer_report(
-        {"at_the_completion_ceiling": completion_W_ceiling})["rows"]
+
+    # ---- D-795 / R14-04.  COMPLETION IS A QUALIFICATION TARGET. ----------
+    completion = ara.charge_completion_estimate(keep_states=True)
+    # The mutation controls R14-04 requires: each ablated domain must be
+    # REFUSED as not the full one, so no future edit can shrink the domain
+    # and quietly make a universal completion claim look supportable.
+    _req = ara.completion_required_domain()
+    _ablations = dict(
+        remove_treg=dict(_req, treg_C=1000.0),
+        remove_ambient=dict(_req, ambients_C=[25.0]),
+        alter_the_timer=dict(_req, timer_min=apm.TMAXCHG_MIN * 2.0),
+        alter_the_cv_tail=dict(_req, cv_tail_min=0.0),
+        omit_a_source_class=dict(_req, source_classes=_req[
+            "source_classes"][:1]),
+    )
+    _ablation_refused = {}
+    for _k, _dom in _ablations.items():
+        _e = ara.charge_completion_estimate(domain=_dom)
+        _ablation_refused[_k] = bool(not _e["the_domain_is_the_full_required_one"])
     charge_completion = dict(
-        system_W_ceiling=round(completion_W_ceiling, 6),
-        raw_W=round(_completion_raw_W, 6),
-        guardband=CHARGE_CEILING_GUARDBAND,
-        grid_W=CHARGE_CEILING_GRID_W,
-        tmaxchg_min=charge_timer["tmaxchg_min"],
-        tprechg_min=charge_timer["tprechg_min"],
-        cv_taper_allowance_min=apm.CV_TAPER_ALLOWANCE_MIN,
-        capacity_Ah=charge_timer["capacity_Ah"],
-        per_source_class=charge_timer["per_source_class"],
-        rows=charge_timer["rows"],
-        at_the_published_completion_ceiling=[
-            r for r in _completion_rows if r["source_rules"]],
-        every_qualified_class_completes_at_the_published_ceiling=bool(all(
-            r["completes_inside_tmaxchg"] for r in _completion_rows
-            if r["source_rules"])),
-        the_regime_ceiling_is_not_a_completion_ceiling=bool(
-            completion_W_ceiling < charge_W_ceiling - 1e-12),
-        no_qualified_class_completes_at_the_regime_ceiling=bool(not any(
-            r["completes_inside_tmaxchg"] for r in charge_timer["rows"]
-            if r["source_rules"]
-            and r["scenario"] == "at_the_regime_ceiling")),
-        idle_completes_on_every_qualified_class=bool(all(
-            r["completes_inside_tmaxchg"] for r in charge_timer["rows"]
-            if r["source_rules"] and r["scenario"] == "idle")),
-        what_it_guarantees="that a fast-charge cycle DELIVERS THE PACK'S "
-                           "RATED CAPACITY and terminates before the "
-                           "BQ25185's 360 min tMAXCHG safety timer expires, "
-                           "on every source class the published cable "
-                           "contract admits, at the GUARANTEED-MINIMUM input "
-                           "current limit.",
-        what_the_regime_ceiling_guarantees="that the battery does not "
-                                           "DISCHARGE while the adapter is "
-                                           "attached and that U11's junction "
-                                           "stays inside TI's 125 C "
-                                           "operating maximum.  It is NOT a "
-                                           "charge-time guarantee and D-793 "
-                                           "published one name for both.",
-        measurement_of_record="C-PWR-CHARGE-01")
+        estimate_rows=completion["rows"],
+        domain=completion["domain"],
+        required_domain=completion["required_domain"],
+        the_domain_is_the_full_required_one=completion[
+            "the_domain_is_the_full_required_one"],
+        every_row_completes_on_the_estimate=completion[
+            "every_row_completes_on_the_estimate"],
+        rows_that_do_not_complete=completion["rows_that_do_not_complete"],
+        universal_completion_claim_is_supportable=completion[
+            "universal_completion_claim_is_supportable"],
+        why_never_universal=completion["why_never_universal"],
+        qualification_target=completion["qualification_target"],
+        ablation_controls_refused=_ablation_refused,
+        every_ablation_is_refused=bool(all(_ablation_refused.values())),
+        d794_published_completion_W=1.150,
+        d794_completion_ceiling_is_retired=True,
+        measurement_of_record="C-PWR-CHARGE-02")
+
     charge_ceiling = dict(
         completion=charge_completion,
-        renamed_at_d794=("`charge_time_system_power_ceiling_W` is renamed "
-                         "`charge_regime_system_power_ceiling_W`: it bounds "
-                         "HEAT and BATTERY DISCHARGE, not charge TIME.  The "
-                         "completion question has its own derived ceiling."),
+        domain=regime["domain"],
+        regime_rows=len(regime["rows"]),
+        junction_safe_system_W=junction_safe_W,
+        junction_safe_raw_W=regime["junction_safe_raw_W"],
+        junction_safe_ruling_row=regime["junction_safe_ruling_row"],
+        no_discharge_envelope=regime["envelope"],
+        universal_no_discharge_published_W=nd_universal_W,
+        universal_no_discharge_raw_W=regime["universal_no_discharge_raw_W"],
+        universal_no_discharge_ruling_row=regime[
+            "universal_no_discharge_ruling_row"],
+        a_useful_universal_no_discharge_scalar_exists=bool(
+            nd_universal_W >= max((r["system_W"] for r in charge_permitted
+                                   if r["state"] == "display_only"
+                                   and r["load"] == "no_accessory"),
+                                  default=float("inf"))),
+        guardband=regime["guardband"], grid_W=regime["grid_W"],
         tj_operating_max_C=_tj_max,
         ambient_C=ambient_C,
-        system_W_ceiling=round(charge_W_ceiling, 6),
-        junction_limited_ceiling_W=round(tj_ceiling_W, 6),
-        supplement_discontinuity_W=round(cliff_W, 6),
-        raw_ceiling_W=round(raw_ceiling_W, 6),
-        guardband=CHARGE_CEILING_GUARDBAND,
-        grid_W=CHARGE_CEILING_GRID_W,
-        binding_criterion=("the supplement discontinuity"
-                           if cliff_W <= tj_ceiling_W
-                           else "TI's junction operating maximum"),
-        discontinuity_junction_step_K=(
-            None if (_below is None or _above is None)
-            else round(_above - _below, 3)),
-        junction_at_the_published_ceiling_C=_tj_at_ceiling,
-        mode_at_the_published_ceiling=_r_at_ceiling["mode"],
-        ruling_source_class_at_the_published_ceiling=_r_at_ceiling.get(
-            "ruling_source_class"),
-        source_contract=apm.usb_source_contract(),
-        the_published_ceiling_is_below_the_raw_one=bool(
-            charge_W_ceiling < raw_ceiling_W - 1e-12),
-        the_published_ceiling_is_inside_the_junction_maximum=bool(
-            _tj_at_ceiling <= _tj_max),
-        no_ruling_corner_supplements_at_the_published_ceiling=bool(
-            not charge_is_supplementing(charge_W_ceiling)),
         dense_scan_points=len(_scan),
         dense_scan_violations=_scan_bad,
-        the_whole_range_below_the_ceiling_is_clean=bool(not _scan_bad),
-        d792_published_W=4.063,
-        d792_was_above_its_own_raw_ceiling=True,
-        d792_junction_at_its_published_number_C=155.436,
+        the_whole_range_below_the_junction_safe_power_is_clean=bool(
+            not _scan_bad),
+        junction_at_the_junction_safe_power_C=_at_js[
+            "junction_with_charge_folded_back_C"],
+        hottest_operating_junction_at_the_junction_safe_power_C=_at_js[
+            "hottest_operating_junction_C"],
+        source_contract=apm.usb_source_contract(),
         reference_state_system_W=round(charge_system_W, 6),
-        the_reference_state_is_inside_it=bool(
-            charge_system_W <= charge_W_ceiling + 1e-9),
+        reference_state_is_junction_safe=bool(
+            charge_system_W <= junction_safe_W + 1e-9),
         permitted_while_charging=charge_permitted,
         refused_while_charging=charge_refused,
-        every_permitted_row_is_inside_the_published_ceiling=bool(all(
-            r["inside_the_published_ceiling"] for r in charge_permitted)),
-        the_quiet_state_with_no_accessory_is_permitted=bool(any(
+        the_quiet_state_with_no_accessory_is_junction_safe=bool(any(
             r["state"] == "display_only" and r["load"] == "no_accessory"
             for r in charge_permitted)),
         there_is_no_vbus_present_signal=True,
-        why="TREG folds back the CHARGE current and nothing else.  The SYSTEM "
-            "load crosses the same package through a LINEAR input FET, and "
-            "once it exceeds what the source can deliver the battery "
-            "supplements through the BATFET as well -- a DISCONTINUITY, "
-            "because a constant-power load into a current-limited source has "
-            "no stable point between the input-held node and the cell.  The "
-            "published ceiling is the lower of TI's junction maximum and "
-            "that discontinuity, reduced by a declared guardband and floored "
-            "onto a 0.05 W grid, and it is a DERIVED, SUPERVISED restriction "
-            "rather than a reliance on TSHUT.",
-        measurement_of_record="C-THERM-01 and C-PWR-CHARGE-01")
+        d794_published_regime_W=3.600,
+        d794_regime_ceiling_is_retired_as_a_no_discharge_claim=True,
+        _regime=regime, _completion=completion,
+        why="TREG folds the CHARGE, and a smaller charge takes the input "
+            "off its limit so SYS returns to regulation; what TREG cannot "
+            "reduce is the zero-charge state, and THAT is what the junction-"
+            "safe power bounds, over the whole domain.  Whether the battery "
+            "discharges is a different question with a VBAT-dependent answer, "
+            "because battery-tracking VINDPM squeezes the input as the cell "
+            "fills; it is a table, never a scalar.",
+        measurement_of_record="C-THERM-01, C-PWR-CHARGE-01 and "
+                              "C-PWR-CHARGE-02")
     out = dict(
         cell=dict(CELL), cell_max_ocv_V=CELL_MAX_OCV_V,
         cell_max_ocv_basis=CELL_MAX_OCV_BASIS,
@@ -7085,46 +7008,34 @@ def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
     # D790-A02 asks a declared restriction to be.
     out["the_charge_regime_is_bounded_in_the_half_treg_cannot_reach"] = dict(
         charge_split, load_ceiling=charge_ceiling,
-        # THE CLAUSE IS ABOUT THE CEILING, NOT ABOUT ONE STATE.  A pass mark at
-        # the reference state would have hidden R11-03's finding; a ceiling
-        # with an enumerated permitted set states it.  What must hold is that a
-        # ceiling EXISTS, that the quiet no-accessory state is under it -- the
-        # product has to be chargeable at all -- and that the ambient at which
-        # the internal air reaches the pouch's own charge window is positive
-        # for every state the product declares chargeable.
-        # D-793 / R12-02 adds the five clauses that make the PUBLISHED number
-        # safe rather than merely derived: it is strictly below the raw
-        # ceiling (never rounded up across the discontinuity), the real solver
-        # at that exact number is inside TI's junction maximum, no ruling
-        # source class supplements there, a 200-point scan of everything
-        # BELOW it is clean, and the enumerated permitted set agrees with the
-        # scalar instead of quietly exceeding it.
-        ok=bool(charge_ceiling["system_W_ceiling"] > 0.0
+        # D-795 / R14-03 + R14-04.  What must hold: a junction-safe power
+        # EXISTS and is clean below; the quiet state is under it; the
+        # no-discharge envelope is published per row over the full domain;
+        # completion is NOT claimed universally, and every ablation of its
+        # domain is refused.
+        ok=bool(charge_ceiling["junction_safe_system_W"] > 0.0
                 and charge_ceiling[
-                    "the_quiet_state_with_no_accessory_is_permitted"]
+                    "the_whole_range_below_the_junction_safe_power_is_clean"]
+                and charge_ceiling[
+                    "junction_at_the_junction_safe_power_C"] <= _tj_max
+                and charge_ceiling[
+                    "the_quiet_state_with_no_accessory_is_junction_safe"]
                 and charge_ceiling["permitted_while_charging"]
-                and charge_ceiling[
-                    "the_published_ceiling_is_below_the_raw_one"]
-                and charge_ceiling[
-                    "the_published_ceiling_is_inside_the_junction_maximum"]
-                and charge_ceiling[
-                    "no_ruling_corner_supplements_at_the_published_ceiling"]
-                and charge_ceiling[
-                    "the_whole_range_below_the_ceiling_is_clean"]
-                and charge_ceiling[
-                    "every_permitted_row_is_inside_the_published_ceiling"]
                 and all(r["charge_ambient_ceiling_C"] > 0.0
                         for r in charge_ceiling["permitted_while_charging"])
-                # ---- D-794: the COMPLETION ceiling, separately -----------
-                and charge_ceiling["completion"]["system_W_ceiling"] > 0.0
+                and len(charge_ceiling["no_discharge_envelope"])
+                == len(apm.USB_SOURCE_CLASSES) * len(ara.REGIME_VBAT_GRID_V)
+                and charge_ceiling["regime_rows"] == len(
+                    apm.USB_SOURCE_CLASSES) * len(ara.REGIME_VBAT_GRID_V)
+                * len(ara.REGIME_ILIM_CORNERS) * len(ara.REGIME_SWEEP_POINTS)
+                * len(ara.REGIME_HISTORIES) * len(ara.REGIME_AMBIENTS_C)
+                and not charge_ceiling["completion"][
+                    "universal_completion_claim_is_supportable"]
                 and charge_ceiling["completion"][
-                    "every_qualified_class_completes_at_the_published_ceiling"]
-                and charge_ceiling["completion"][
-                    "idle_completes_on_every_qualified_class"]
-                and charge_ceiling["completion"][
-                    "the_regime_ceiling_is_not_a_completion_ceiling"]
-                and charge_ceiling["completion"][
-                    "no_qualified_class_completes_at_the_regime_ceiling"]))
+                    "the_domain_is_the_full_required_one"]
+                and charge_ceiling["completion"]["every_ablation_is_refused"]
+                and not charge_ceiling["source_contract"][
+                    "a_usb2_host_port_satisfies_the_contract"]))
     out["the_charge_regime_is_bounded_in_the_half_treg_cannot_reach_ok"] = bool(
         out["the_charge_regime_is_bounded_in_the_half_treg_cannot_reach"]["ok"])
     out["ok"] = bool(
@@ -7171,6 +7082,21 @@ ORACLE_REQUIRED_MUTATIONS = (
     # only; both must fail".  Every one of them passed the whole D-793 suite.
     "delete_every_permission_table_row",
     "delete_every_network_state",
+    # ---- D-795 / R14-05 + Fable R14-13/R14-15 ---------------------------
+    # "Partial-domain collapses (one row per mode, delete SUPPLEMENT history,
+    # delete selected network rows) must fail ... Raw-only or summary-only
+    # corruption [of the heat fields] must fail."
+    "collapse_the_charger_domain_to_one_row_per_mode",
+    "delete_the_supplement_history",
+    "delete_selected_network_rows",
+    "drop_the_charger_refusals",
+    "delete_the_full_cell_regime_rows",
+    "inflate_the_published_no_discharge_figure",
+    "inflate_the_published_junction_safe_figure",
+    "corrupt_the_heat_summary_only",
+    "corrupt_the_heat_raw_only",
+    "restore_d794_sys_reg_under_an_input_loop",
+    "drop_the_thermally_closed_states",
     "duplicate_a_named_transition_key",
     "drop_the_permitted_row_retention_proof",
     "corrupt_the_public_summary_only",
@@ -7205,34 +7131,47 @@ def _oracle_scalars(ambient_C=None):
 # it -- and BOTH supplement-hysteresis directions.  The ILIM corners and every
 # enumerated source class are crossed with them, so the branch set the oracle
 # sees is a FUNCTION OF THE DEVICE, not of the release's luck.
-ORACLE_CHARGER_CELLS_V = (3.2, 3.7, 4.2)
-ORACLE_CHARGER_POWERS_W = (0.0, 0.25, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.25,
-                           3.38, 3.4, 3.6, 4.0, 4.2, 4.5, 5.0, 5.65)
-ORACLE_CHARGER_HISTORIES = (None, "NO_CHARGE", "SUPPLEMENT")
+# D-795 / R14-05.  THE CHARGER DOMAIN IS THE ORACLE'S, NOT THIS FILE'S.
+#
+# D-794 declared the cells, powers and histories HERE and the oracle only
+# asked whether the resulting branch NAMES were all present.  The axes now
+# live in `aqroot_power_oracle` and this function iterates THEM, so the
+# canonical side cannot shrink the domain it is judged over; an unsolved point
+# is delivered as a REFUSAL with the inputs the oracle needs to re-check it.
 
 
 def _oracle_charger_states():
-    """Solved charger states over an INDEPENDENTLY CONSTRUCTED domain.
-
-    Every (cell, power, ILIM corner, source class, mode history) point in the
-    product is solved.  The expected BRANCH SET is then checked by the oracle's
-    own `completeness()` against `REQUIRED_CHARGER_BRANCHES`, which is the
-    device's control-loop list -- so deleting a corner of this domain makes
-    the release FAIL rather than quietly shrinking what was proven.
-    """
-    out = []
-    for vbat in ORACLE_CHARGER_CELLS_V:
-        for w in ORACLE_CHARGER_POWERS_W:
-            for ilim in ("max", "min"):
-                for cls in apm.USB_SOURCE_CLASSES:
-                    for prev in ORACLE_CHARGER_HISTORIES:
-                        st = apm.charger_state(
-                            w, vbat, ilim, vbus_V=cls["vbus_V"],
-                            path_ohm=cls["path_ohm"],
-                            source_key=cls["key"], previous_mode=prev)
-                        if st is not None:
-                            out.append(st)
-    return out
+    states, refusals = [], []
+    classes = {c["key"]: c for c in apm.USB_SOURCE_CLASSES}
+    for vbat in apo.EXPECTED_CHARGER_CELLS_V:
+        for w in apo.EXPECTED_CHARGER_POWERS_W:
+            for ilim in apo.EXPECTED_ILIM_CORNERS:
+                for ck in apo.EXPECTED_SOURCE_CLASSES:
+                    cls = classes.get(ck)
+                    for prev in apo.EXPECTED_HISTORIES:
+                        for ic in apo.EXPECTED_ICHG_CORNERS:
+                            key = apo.charger_domain_key(vbat, w, ilim, ck,
+                                                         prev, ic)
+                            if cls is None:
+                                continue
+                            st = apm.charger_state(
+                                w, vbat, ilim, vbus_V=cls["vbus_V"],
+                                path_ohm=cls["path_ohm"], source_key=ck,
+                                previous_mode=prev, ichg_corner=ic)
+                            if st is not None:
+                                states.append(dict(st, domain_key=key))
+                            else:
+                                refusals.append(dict(
+                                    domain_key=key, refused=True,
+                                    reason="no operating point",
+                                    vbat_V=vbat, system_W=w,
+                                    vbus_V=cls["vbus_V"],
+                                    path_ohm=cls["path_ohm"],
+                                    ilim_A=(apm.BQ25185["ilim_max_A"]
+                                            if ilim == "max" else
+                                            apm.BQ25185["ilim_min_A"]),
+                                    sweep=0.0))
+    return states, refusals
 
 
 def _oracle_network_states(cell_net, pass_pair=None, board_forward=None):
@@ -7244,6 +7183,14 @@ def _oracle_network_states(cell_net, pass_pair=None, board_forward=None):
             for where in ("at_a_full_cell", "at_the_lowest_supported_cell"):
                 s = v.get(where)
                 if not s or "raw" not in s:
+                    # D-795 / R14-05: an unsolved corner is a REFUSAL row,
+                    # not an absent one, and it carries the named limits.
+                    rows.append(dict(
+                        key="%s/%s/%s" % (st["key"], load, where),
+                        refused=True,
+                        physical_limits=dict(v.get("limits_" + where) or {}),
+                        binding_limit=list(v.get(
+                            "binding_limit_at_the_floor") or [])))
                     continue
                 q = s["raw"]
                 rows.append(dict(
@@ -7342,14 +7289,35 @@ def _oracle_transitions(cell_net):
 def judge_independent_oracle(cell_net, board_forward=None, ambient_C=None):
     scalars = _oracle_scalars(ambient_C)
     registry = apm.registry()
-    charger_states = _oracle_charger_states()
+    charger_states, charger_refusals = _oracle_charger_states()
     transitions, rejected = _oracle_transitions(cell_net)
     network = _oracle_network_states(cell_net, board_forward=board_forward)
     canonical_path = apm.upstream_fixed_ohm("max", board_forward)
     board_20C = sum((board_forward or {}).get(x["key"], x["ohm_20C"])
                     for x in apm.BOARD_FORWARD_SEGMENTS)
-    ok, rep = apo.audit(registry, scalars, charger_states, transitions,
-                        rejected, board_20C, canonical_path, network)
+    _cc = cell_net["the_charge_regime_is_bounded_in_the_half_treg_cannot_reach"][
+        "load_ceiling"]
+    regime_rows = _cc["_regime"]["rows"]
+    regime_published = dict(
+        universal_no_discharge_published_W=_cc[
+            "universal_no_discharge_published_W"],
+        junction_safe_published_W=_cc["junction_safe_system_W"],
+        envelope=_cc["no_discharge_envelope"])
+    thermal_states = _cc["_completion"]["_states"]
+    extra = dict(charger_refusals=charger_refusals, regime_rows=regime_rows,
+                 regime_published=regime_published,
+                 thermal_states=thermal_states)
+
+    def _audit(cs=None, tr=None, rj=None, path=None, net=None, **kw):
+        args = dict(extra)
+        args.update(kw)
+        return apo.audit(registry, scalars,
+                         charger_states if cs is None else cs,
+                         transitions if tr is None else tr,
+                         rejected if rj is None else rj, board_20C,
+                         canonical_path if path is None else path,
+                         network if net is None else net, **args)
+    ok, rep = _audit()
 
     # ---- THE MUTATIONS.  Each must be CAUGHT, for its own reason. ---------
     def _mut_halve_package_heat():
@@ -7359,7 +7327,7 @@ def judge_independent_oracle(cell_net, board_forward=None, ambient_C=None):
             st["package_W_treg_cannot_reduce"] = (
                 st["package_W_treg_cannot_reduce"] * 0.5)
         o, _ = apo.audit(registry, scalars, bad, transitions, rejected,
-                         board_20C, canonical_path, network)
+                         board_20C, canonical_path, network, **extra)
         return o
 
     def _mut_delete_energy_oracle():
@@ -7381,11 +7349,19 @@ def judge_independent_oracle(cell_net, board_forward=None, ambient_C=None):
             st["package_W"] = round(st["package_W"] * 0.5, 6)
             st["package_W_treg_cannot_reduce"] = round(
                 st["package_W_treg_cannot_reduce"] * 0.5, 6)
+            # D-795: both COPIES are halved together, so the raw/summary
+            # equality gate cannot see it and only the energy accounting can.
+            q = dict(st["raw"])
+            q["p_pkg"] = q["p_pkg"] * 0.5
+            q["p_treg_cannot"] = q["p_treg_cannot"] * 0.5
+            st["raw"] = q
+            st["package_W"] = round(q["p_pkg"], 6)
+            st["package_W_treg_cannot_reduce"] = round(q["p_treg_cannot"], 6)
         with_term, _ = apo.audit(registry, scalars, bad, transitions,
-                                 rejected, board_20C, canonical_path, network)
+                                 rejected, board_20C, canonical_path, network, **extra)
         without_term, _ = apo.audit(registry, scalars, bad, transitions,
                                     rejected, board_20C, canonical_path,
-                                    network, without_energy_oracle=True)
+                                    network, without_energy_oracle=True, **extra)
         # CAUGHT means: refused with the accounting, and NOT refused without.
         return bool(with_term or not without_term)
 
@@ -7394,12 +7370,12 @@ def judge_independent_oracle(cell_net, board_forward=None, ambient_C=None):
                if t["transition"] not in ("first_rail_5v",
                                           "second_rail_3v3")]
         o, _ = apo.audit(registry, scalars, charger_states, bad, rejected,
-                         board_20C, canonical_path, network)
+                         board_20C, canonical_path, network, **extra)
         return o
 
     def _mut_discard_failed_post_states():
         o, _ = apo.audit(registry, scalars, charger_states, transitions, [],
-                         board_20C, canonical_path, network)
+                         board_20C, canonical_path, network, **extra)
         return o
 
     def _mut_reverse_gauge_error():
@@ -7415,13 +7391,13 @@ def judge_independent_oracle(cell_net, board_forward=None, ambient_C=None):
                                      + t2["retention_floor_V"]) * 0.5 - g
             bad.append(t2)
         o, _ = apo.audit(registry, scalars, charger_states, bad, rejected,
-                         board_20C, canonical_path, network)
+                         board_20C, canonical_path, network, **extra)
         return o
 
     def _mut_omit_return_path():
         o, _ = apo.audit(registry, scalars, charger_states, transitions,
                          rejected, board_20C,
-                         canonical_path - apm.gnd_return_ohm(), network)
+                         canonical_path - apm.gnd_return_ohm(), network, **extra)
         return o
 
     # ==================================================================
@@ -7435,13 +7411,13 @@ def judge_independent_oracle(cell_net, board_forward=None, ambient_C=None):
         """Astra: "deleted every F14 table row"."""
         bad = [t for t in transitions if t.get("kind") != "table"]
         o, _ = apo.audit(registry, scalars, charger_states, bad, rejected,
-                         board_20C, canonical_path, network)
+                         board_20C, canonical_path, network, **extra)
         return o
 
     def _mut_delete_network_states():
         """Astra: "deleted every F14 network state"."""
         o, _ = apo.audit(registry, scalars, charger_states, transitions,
-                         rejected, board_20C, canonical_path, [])
+                         rejected, board_20C, canonical_path, [], **extra)
         return o
 
     def _mut_duplicate_a_key():
@@ -7457,7 +7433,7 @@ def judge_independent_oracle(cell_net, board_forward=None, ambient_C=None):
         if first is not None:
             bad = bad + [dict(first)]
         o, _ = apo.audit(registry, scalars, charger_states, bad, rejected,
-                         board_20C, canonical_path, network)
+                         board_20C, canonical_path, network, **extra)
         return o
 
     def _mut_drop_row_retention():
@@ -7475,7 +7451,7 @@ def judge_independent_oracle(cell_net, board_forward=None, ambient_C=None):
                 t2["post_node_with_worst_burst_V"] = None
             bad.append(t2)
         o, _ = apo.audit(registry, scalars, charger_states, bad,
-                         rejected, board_20C, canonical_path, network)
+                         rejected, board_20C, canonical_path, network, **extra)
         return o
 
     def _mut_corrupt_summary_only():
@@ -7494,7 +7470,7 @@ def judge_independent_oracle(cell_net, board_forward=None, ambient_C=None):
                     s[k] = round(s[k] * 0.5 + 0.001, 6)
             bad.append(s)
         o, _ = apo.audit(registry, scalars, bad, transitions, rejected,
-                         board_20C, canonical_path, network)
+                         board_20C, canonical_path, network, **extra)
         return o
 
     def _mut_corrupt_raw_only():
@@ -7510,10 +7486,103 @@ def judge_independent_oracle(cell_net, board_forward=None, ambient_C=None):
             s["raw"] = q
             bad.append(s)
         o, _ = apo.audit(registry, scalars, bad, transitions, rejected,
-                         board_20C, canonical_path, network)
+                         board_20C, canonical_path, network, **extra)
         return o
 
+    # ==================================================================
+    # D-795 / R14-05.  THE ROUND-14 COLLAPSES, AS CONTROLS.
+    # ==================================================================
+    def _mut_one_row_per_mode():
+        seen, bad = set(), []
+        for st in charger_states:
+            if st["mode"] not in seen:
+                seen.add(st["mode"])
+                bad.append(st)
+        return _audit(cs=bad)[0]
+
+    def _mut_delete_supplement_history():
+        return _audit(cs=[st for st in charger_states
+                          if st.get("previous_mode") != "SUPPLEMENT"])[0]
+
+    def _mut_delete_selected_network_rows():
+        return _audit(net=[n for i, n in enumerate(network) if i % 7 != 3])[0]
+
+    def _mut_drop_refusals():
+        return _audit(charger_refusals=[])[0]
+
+    def _mut_delete_full_cell_regime_rows():
+        return _audit(regime_rows=[r for r in regime_rows
+                                   if r["vbat_V"] < 4.2])[0]
+
+    def _mut_inflate_nd():
+        pub = dict(regime_published)
+        pub["universal_no_discharge_published_W"] = 3.600
+        return _audit(regime_published=pub)[0]
+
+    def _mut_inflate_js():
+        pub = dict(regime_published)
+        pub["junction_safe_published_W"] = (
+            regime_published["junction_safe_published_W"] + 0.25)
+        return _audit(regime_published=pub)[0]
+
+    def _mut_heat_summary_only():
+        bad = []
+        for st in charger_states:
+            s2 = dict(st)
+            for k in ("input_fet_W", "charge_fet_W", "batfet_W",
+                      "total_dissipation_W", "internal_loss_sum_W"):
+                s2[k] = round(s2[k] * 0.5, 6)
+            bad.append(s2)
+        return _audit(cs=bad)[0]
+
+    def _mut_heat_raw_only():
+        bad = []
+        for st in charger_states:
+            s2 = dict(st)
+            q = dict(s2["raw"])
+            for k in ("p_input_fet", "p_charge_fet", "p_batfet",
+                      "p_diss_total", "p_loss_sum"):
+                q[k] = q[k] * 0.5
+            s2["raw"] = q
+            bad.append(s2)
+        return _audit(cs=bad)[0]
+
+    def _mut_d794_sys_reg_under_ilim():
+        """Put back D-794's physics: an ILIM state with SYS at 4.41 V and the
+        charge folded by fiat."""
+        bad = []
+        for st in charger_states:
+            s2 = dict(st)
+            if s2["mode"] in ("ILIM", "VINDPM"):
+                q = dict(s2["raw"])
+                v = q["vsys_reg"]
+                q["vsys"] = v
+                q["i_sys"] = q["p_sys"] / v
+                q["i_chg"] = max(0.0, q["i_in"] - q["i_sys"])
+                s2["raw"] = q
+                s2["vsys_V"] = round(v, 6)
+                s2["system_A"] = round(q["i_sys"], 6)
+                s2["charge_A"] = round(q["i_chg"], 6)
+            bad.append(s2)
+        return _audit(cs=bad)[0]
+
+    def _mut_drop_thermal():
+        return _audit(thermal_states=[])[0]
+
     muts = {
+        "collapse_the_charger_domain_to_one_row_per_mode":
+            _mut_one_row_per_mode,
+        "delete_the_supplement_history": _mut_delete_supplement_history,
+        "delete_selected_network_rows": _mut_delete_selected_network_rows,
+        "drop_the_charger_refusals": _mut_drop_refusals,
+        "delete_the_full_cell_regime_rows": _mut_delete_full_cell_regime_rows,
+        "inflate_the_published_no_discharge_figure": _mut_inflate_nd,
+        "inflate_the_published_junction_safe_figure": _mut_inflate_js,
+        "corrupt_the_heat_summary_only": _mut_heat_summary_only,
+        "corrupt_the_heat_raw_only": _mut_heat_raw_only,
+        "restore_d794_sys_reg_under_an_input_loop":
+            _mut_d794_sys_reg_under_ilim,
+        "drop_the_thermally_closed_states": _mut_drop_thermal,
         "delete_every_permission_table_row": _mut_delete_table_rows,
         "delete_every_network_state": _mut_delete_network_states,
         "duplicate_a_named_transition_key": _mut_duplicate_a_key,
@@ -7534,6 +7603,36 @@ def judge_independent_oracle(cell_net, board_forward=None, ambient_C=None):
     rep["every_required_mutation_is_caught"] = bool(all(caught.values()))
     rep["required_mutations"] = list(ORACLE_REQUIRED_MUTATIONS)
     rep["mutation_reasons"] = {
+        "collapse_the_charger_domain_to_one_row_per_mode":
+            "the charger domain is an exact key multiset the oracle declares; "
+            "one surviving row per branch name is thousands of missing keys",
+        "delete_the_supplement_history":
+            "every SUPPLEMENT-history key is missing and the (branch, "
+            "history) populations and the hysteresis demonstration go empty",
+        "delete_selected_network_rows":
+            "the network domain is an exact multiset of solved rows and "
+            "physical refusals, so a deleted row is a missing key",
+        "drop_the_charger_refusals":
+            "an unsolved point may not simply vanish: without its refusal "
+            "row the domain is short",
+        "delete_the_full_cell_regime_rows":
+            "the regime claims range over 2.85..4.221 V and the high-VBAT "
+            "rows are exactly where the no-discharge boundary collapses",
+        "inflate_the_published_no_discharge_figure":
+            "the oracle recomputes the universal no-discharge minimum from "
+            "the rows and refuses a published figure that is not its floor",
+        "inflate_the_published_junction_safe_figure":
+            "the same, for the junction-safe power",
+        "corrupt_the_heat_summary_only":
+            "every printed heat field is equality-gated to its raw twin",
+        "corrupt_the_heat_raw_only":
+            "the raw heat twins are re-derived from the raw TERMINALS",
+        "restore_d794_sys_reg_under_an_input_loop":
+            "ILIM/VINDPM must hold SYS at VBAT + VDPPM; a folded charge above "
+            "that node without TREG is refused by the physical inequality",
+        "drop_the_thermally_closed_states":
+            "the TREG branch is only exercised by thermally-closed states; "
+            "without them a branch of the device goes unchecked",
         "halve_the_charger_package_heat":
             "the terminal-power balance no longer equals the internal loss "
             "sum -- the identity D-792 compared with itself",
@@ -8349,7 +8448,12 @@ def main():
     # charge window.
     _cc = cell_net["the_charge_regime_is_bounded_in_the_half_treg_cannot_reach"][
         "load_ceiling"]
-    _need["charge_system_W_ceiling"] = "**%.3f W**" % _cc["system_W_ceiling"]
+    # D-795 / R14-03: the JUNCTION-SAFE power is the one charge scalar.
+    _need["charge_junction_safe_W"] = "**%.3f W**" % _cc["junction_safe_system_W"]
+    _need["charge_no_discharge_universal_W"] = (
+        "**%.3f W**" % _cc["universal_no_discharge_published_W"])
+    _need["charge_named_adapter"] = "`%s`" % _cc["source_contract"][
+        "named_adapter"]["part_number"]
     # D-794 / ROUND-13 FABLE DELTA.  TWO CEILINGS, TWO NAMES, BOTH PUBLISHED.
     #
     # ROUND-13: "Rename/explain any charger 'ceiling' according to what it
@@ -8360,8 +8464,11 @@ def main():
     # DISCHARGE.  Charging to full inside the BQ25185's 360 min tMAXCHG on the
     # worst qualified cable needs a far lighter system load, and that is a
     # separate derivation with its own guardband.  Both are now published.
-    _need["charge_completion_W_ceiling"] = ("**%.3f W**"
-                                            % _cc["completion"]["system_W_ceiling"])
+    # D-795 / R14-04: completion is a QUALIFICATION TARGET with its own
+    # measurement of record -- the document must say so in those words.
+    _need["charge_completion_is_a_qualification_target"] = (
+        "QUALIFICATION TARGET")
+    _need["charge_completion_measurement"] = "`C-PWR-CHARGE-02`"
     _heaviest = (max(_cc["permitted_while_charging"],
                      key=lambda r: r["system_W"])
                  if _cc["permitted_while_charging"] else None)
@@ -8452,9 +8559,12 @@ def main():
                                 % (_up["harness_hot_aged_max_ohm"] * 1000.0),
         "upstream_fixed_max": "**%.3f m\u03a9**"
                               % (_up["fixed_series_max_ohm"] * 1000.0),
-        "charge_system_W_ceiling": "**%.3f W**" % _cc["system_W_ceiling"],
-        "charge_completion_W_ceiling": ("**%.3f W**"
-                                        % _cc["completion"]["system_W_ceiling"]),
+        "charge_junction_safe_W": "**%.3f W**" % _cc["junction_safe_system_W"],
+        "charge_no_discharge_universal_W": (
+            "**%.3f W**" % _cc["universal_no_discharge_published_W"]),
+        "charge_named_adapter": "`%s`" % _cc["source_contract"][
+            "named_adapter"]["part_number"],
+        "charge_completion_is_a_qualification_target": "QUALIFICATION TARGET",
         "charge_junction_folded_back": "**%.1f \u00b0C**" % _heaviest[
             "junction_with_charge_folded_back_C"],
         "charge_ambient_ceiling": "**%.1f \u00b0C**" % _heaviest[
@@ -8609,6 +8719,231 @@ def main():
         not _perm_missing)
     cell_net_ok = cell_net_ok and not _perm_missing
 
+    # ======================================================================
+    # D-795 / R14-03.  THE NO-DISCHARGE ENVELOPE IS GENERATED, LIKE THE
+    # PERMISSION TABLE, BECAUSE IT IS A TABLE AND NOT A SCALAR.
+    # ======================================================================
+    _cc_env = cell_net[
+        "the_charge_regime_is_bounded_in_the_half_treg_cannot_reach"][
+            "load_ceiling"]
+
+    def _charge_envelope_markdown():
+        classes = [c for c in apm.USB_SOURCE_CLASSES]
+        head = ("| cell voltage | "
+                + " | ".join("%s%s" % (c["key"], "" if c["rules"]
+                                       else " *(outside the contract)*")
+                             for c in classes) + " |")
+        rows = [head, "|---|" + "---|" * len(classes)]
+        env_ = {(e["source_class"], e["vbat_V"]): e
+                for e in _cc_env["no_discharge_envelope"]}
+        for v in ara.REGIME_VBAT_GRID_V:
+            rows.append("| %.3f V | %s |" % (v, " | ".join(
+                "**%.2f W**" % env_[(c["key"], v)]["no_discharge_published_W"]
+                for c in classes)))
+        return "\n".join(rows)
+
+    _env_md = _charge_envelope_markdown()
+    _env_docs = ("docs/full-beta-v2/DEVICE_SPEC.md",
+                 "docs/full-beta-v2/AQROOT_DEMO_FAB_HANDOFF.md",
+                 "docs/full-beta-v2/assembly/FIRST_FIVE_ASSEMBLY_PLAN.md")
+
+    def _flat(rel):
+        f_ = ROOT / rel
+        t_ = f_.read_text(encoding="utf-8", errors="replace") if f_.exists() \
+            else ""
+        return "\n".join(re.sub(r"^\s*>\s?", "", ln).rstrip()
+                         for ln in t_.splitlines())
+    _env_missing = [r_ for r_ in _env_docs if _env_md not in _flat(r_)]
+    cell_net["the_no_discharge_envelope_is_generated_into_the_documents"] = dict(
+        documents=list(_env_docs), missing=_env_missing, generated=_env_md,
+        ok=not _env_missing,
+        why="R14-03: the no-discharge boundary is VBAT- and source-"
+            "conditioned; a document may carry it only as this generated "
+            "table, never as a scalar")
+    cell_net_ok = cell_net_ok and not _env_missing
+
+    # ======================================================================
+    # D-795 / R14 D795-07.  B01-B14 AND FA01-FA10, IN-TREE.
+    # ======================================================================
+    _reg_path = ROOT / "docs/full-beta-v2/assembly/RELEASE_ACCEPTANCE_REGISTER.json"
+    _reg = json.loads(_reg_path.read_text(encoding="utf-8"))
+    _fa_plan = (FIRST_FIVE_ASSEMBLY.read_text(encoding="utf-8",
+                                              errors="replace")
+                if FIRST_FIVE_ASSEMBLY.exists() else "")
+    _reg_problems = []
+    if [b["id"] for b in _reg["manufacturer_cam"]] != [
+            "B%02d" % i for i in range(1, 15)]:
+        _reg_problems.append("the manufacturer register is not exactly "
+                             "B01..B14")
+    if [f_["id"] for f_ in _reg["first_article"]] != [
+            "FA%02d" % i for i in range(1, 11)]:
+        _reg_problems.append("the first-article register is not exactly "
+                             "FA01..FA10")
+    _step_rows = set(re.findall(r"^\| \*\*`?([^|*`]+?)`?\*\* \|", _fa_plan,
+                                re.M))
+    for f_ in _reg["first_article"]:
+        for st_ in f_["steps"]:
+            if st_ not in _step_rows:
+                _reg_problems.append("%s names the step %r and the first-"
+                                     "article plan has no such step row"
+                                     % (f_["id"], st_))
+    _claimed = {st_ for f_ in _reg["first_article"] for st_ in f_["steps"]}
+    for st_ in sorted(x for x in _step_rows
+                      if x.startswith("C-") or x.endswith("-01")):
+        if st_ not in _claimed:
+            _reg_problems.append("first-article step %r belongs to no FA "
+                                 "group" % st_)
+
+    def _register_markdown():
+        rows = ["| group | what it validates | steps |", "|---|---|---|"]
+        for f_ in _reg["first_article"]:
+            rows.append("| **%s** | %s | %s |" % (
+                f_["id"], f_["title"],
+                ", ".join("`%s`" % x for x in f_["steps"])))
+        rows += ["", "| id | manufacturer / CAM written acceptance | status |",
+                 "|---|---|---|"]
+        for b in _reg["manufacturer_cam"]:
+            rows.append("| **%s** | %s | PENDING |" % (b["id"], b["item"]))
+        return "\n".join(rows)
+    _reg_md = _register_markdown()
+    _reg_docs = ("docs/full-beta-v2/assembly/FIRST_FIVE_ASSEMBLY_PLAN.md",
+                 "docs/full-beta-v2/AQROOT_DEMO_FAB_HANDOFF.md")
+    for r_ in _reg_docs:
+        if _reg_md not in _flat(r_):
+            _reg_problems.append("%s does not carry the generated B/FA "
+                                 "register" % r_)
+    _notes = ROOT / "hardware/demo/fab/aqroot-Demo-FAB-NOTES.md"
+    _notes_t = (_notes.read_text(encoding="utf-8", errors="replace")
+                if _notes.exists() else "")
+    for b in _reg["manufacturer_cam"]:
+        if ("| **%s** | %s | PENDING |" % (b["id"], b["item"])) not in _notes_t:
+            _reg_problems.append("the exported fab notes do not carry %s"
+                                 % b["id"])
+        if b["fab_note_token"].lower() not in _notes_t.lower():
+            _reg_problems.append("the fab notes never mention %r, which %s "
+                                 "asks the manufacturer to accept"
+                                 % (b["fab_note_token"], b["id"]))
+    cell_net["b01_b14_and_fa01_fa10_are_enumerated_in_tree"] = dict(
+        register=str(_reg_path.relative_to(ROOT)), generated=_reg_md,
+        problems=_reg_problems, ok=not _reg_problems)
+    cell_net_ok = cell_net_ok and not _reg_problems
+
+    # ======================================================================
+    # D-795 / R14 D795-07.  FALSE ACTIVE CLAIMS, AND WRONG INSTRUCTIONS
+    # INJECTED IN SCRATCH.
+    #
+    # "Correct DEVICE_SPEC claim that charger plug/unplug is stamped as a load
+    # epoch; hardware cannot observe these edges."  And: "Append believable
+    # wrong active instructions in scratch and require failure."  The scan
+    # below is over whitespace-normalised SENTENCES of every normative
+    # document, and a sentence carrying a supersession marker is exempt.
+    # ======================================================================
+    _FALSE_CLAIM_FENCE = ("SUPERSEDE", "supersede", "HISTORICAL",
+                          "historical", "RETIRED", "retired", "WITHDRAWN",
+                          "withdrawn", "D-794 said", "D-794 published",
+                          "D-794 claimed", "was wrong")
+    _FALSE_CLAIMS = (
+        ("charger plug/unplug stamped as a load edge",
+         re.compile(r"(?:plug\w*|unplug\w*).{0,80}?(?:stamp\w*|load[- ]edge|"
+                    r"load epoch)", re.I),
+         re.compile(r"cannot (?:see|observe)|not observ|unobservable|"
+                    r"no VBUS-present|cannot stamp|is not stamped", re.I)),
+        ("the accessory budgets called guaranteed",
+         re.compile(r"(?:400 mA|300 mA|accessory budget\w*).{0,60}?"
+                    r"\bguarantee[ds]?\b", re.I),
+         re.compile(r"not (?:a )?guarantee|never guarantee|DECLARED AND "
+                    r"QUALIFIED|no document may|may not call|rather than "
+                    r"guarantee|instead of guarantee", re.I)),
+        ("a universal no-discharge charge ceiling",
+         re.compile(r"(?:battery (?:does|will) not discharge|no[- ]battery[- ]"
+                    r"discharge|never discharges).{0,120}?\d\.\d{2,3}\s*W",
+                    re.I),
+         re.compile(r"at cell|VBAT|cell voltage|conditioned|envelope|table",
+                    re.I)),
+        ("a universal completion guarantee",
+         re.compile(r"(?:charge|cycle)\w*.{0,60}?(?:completes?|terminates?)"
+                    r".{0,80}?(?:every|all|any)\b.{0,40}?(?:source|cable|"
+                    r"class)", re.I),
+         re.compile(r"QUALIFICATION TARGET|estimate|not (?:a )?guarantee|"
+                    r"C-PWR-CHARGE-02", re.I)),
+        ("the sizing envelope instructed as a thermal test state",
+         re.compile(r"C-THERM-01.{0,200}?(?:sub-GHz radio transmitting|ONE "
+                    r"sub-GHz)", re.I),
+         re.compile(r"not an admissible|sizing envelope|cannot reach|refuse",
+                    re.I)),
+    )
+
+    def _false_claim_scan(text, where):
+        found = []
+        # A markdown heading carrying a supersession marker fences every line
+        # under it up to the next heading at the same or a shallower level --
+        # the same rule the stale-value scan applies.
+        kept, fence_level = [], None
+        for ln in text.splitlines():
+            ln2 = re.sub(r"^\s*>\s?", "", ln)
+            m_ = re.match(r"^(#{1,6})\s", ln2)
+            if m_:
+                lvl = len(m_.group(1))
+                if fence_level is not None and lvl <= fence_level:
+                    fence_level = None
+                if fence_level is None and any(
+                        t_ in ln2 for t_ in _FALSE_CLAIM_FENCE + (
+                            "SUPERSEDED",)):
+                    fence_level = lvl
+            if fence_level is None:
+                kept.append(ln2)
+        body = "\n".join(kept)
+        for sent in re.split(r"(?<=[.!?])\s+|\n\s*\n", body):
+            flat = re.sub(r"\s+", " ", sent)
+            if any(tok in flat for tok in _FALSE_CLAIM_FENCE):
+                continue
+            for name, pat, neg in _FALSE_CLAIMS:
+                if pat.search(flat) and not neg.search(flat):
+                    found.append("%s: %s: %s" % (where, name, flat[:160]))
+        return found
+    _fc_docs = ("docs/full-beta-v2/DEVICE_SPEC.md",
+                "docs/full-beta-v2/AQROOT_DEMO_FAB_HANDOFF.md",
+                "docs/full-beta-v2/assembly/FIRST_FIVE_ASSEMBLY_PLAN.md",
+                "docs/full-beta-v2/assembly/BATTERY_HARNESS.json",
+                "docs/full-beta-v2/assembly/OFF_BOARD_BOM.md",
+                "hardware/demo/fab/aqroot-Demo-FAB-NOTES.md")
+    _fc_found = []
+    _fc_texts = {}
+    for r_ in _fc_docs:
+        f_ = ROOT / r_
+        t_ = f_.read_text(encoding="utf-8", errors="replace") if f_.exists() \
+            else ""
+        _fc_texts[r_] = t_
+        _fc_found += _false_claim_scan(t_, r_)
+    _WRONG_INSTRUCTIONS = (
+        "Charging the device from a USB 2.0 computer port satisfies the "
+        "adapter contract, and while plugged in the firmware stamps the "
+        "charger unplug as a load edge.",
+        "The 400 mA and 300 mA accessory budgets are guaranteed by TI.",
+        "The battery does not discharge while charging below 3.600 W.",
+        "A full charge completes inside the timer on every qualified source "
+        "class at 1.150 W.",
+        "For C-THERM-01 hold the display at full brightness with ONE sub-GHz "
+        "radio transmitting and both accessory rails on.",
+    )
+    _injected_caught = {}
+    for i_, w_ in enumerate(_WRONG_INSTRUCTIONS):
+        caught = []
+        for r_, t_ in _fc_texts.items():
+            # Injected at the TOP, in current text: an instruction appended
+            # under a fenced historical heading would be history, correctly.
+            head, _, rest = t_.partition("\n")
+            caught.append(bool(_false_claim_scan(
+                head + "\n\n" + w_ + "\n\n" + rest, r_ + "+scratch")))
+        _injected_caught["instruction_%d" % (i_ + 1)] = bool(all(caught))
+    cell_net["no_normative_document_states_a_false_active_claim"] = dict(
+        documents=list(_fc_docs), found=_fc_found,
+        scratch_injections=list(_WRONG_INSTRUCTIONS),
+        every_scratch_injection_is_caught_in_every_document=_injected_caught,
+        ok=bool(not _fc_found and all(_injected_caught.values())))
+    cell_net_ok = cell_net_ok and cell_net[
+        "no_normative_document_states_a_false_active_claim"]["ok"]
+
     _fa_txt = (FIRST_FIVE_ASSEMBLY.read_text(encoding="utf-8", errors="replace")
                if FIRST_FIVE_ASSEMBLY.exists() else "")
     _fa_floors = {
@@ -8632,13 +8967,66 @@ def main():
     # technician can actually reach is the same modes at the DECLARED
     # SIMULTANEOUS PAIR, and its figures are emitted here so the procedure
     # moves with the model.
-    _ref_state = next(
-        (st for st in cell_net["states"]
-         if st["key"] == cell_net["reference_state_key"]), None)
+    # ======================================================================
+    # D-795 / Round-14 D795-07.  C-THERM-01 HOLDS A STATE THE PRODUCT CAN BE
+    # IN.
+    #
+    # ROUND-14: "FIRST_FIVE thermal procedure must use an actually admissible
+    # production state OR explicitly define a bounded qualification-only
+    # fixture/image.  Do not instruct an impossible TX+rails production
+    # combination.  Rename any conductor/thermal 'published sustained
+    # reference state' that is a sizing envelope but not an admissible user
+    # state."
+    #
+    # D-794 re-based C-THERM-01 onto `display_subghz` at the declared pair --
+    # and the production permission table REFUSES every accessory rail while
+    # a sub-GHz transmitter is keyed.  A technician running the shipped image
+    # cannot reach it.  `display_subghz` stays what it genuinely is, the
+    # SUSTAINED SIZING ENVELOPE the conductors and the enclosure are sized
+    # against; C-THERM-01 now holds the HEAVIEST state the rail-edge table
+    # ADMITS with both rails at the declared pair.
+    # ======================================================================
+    _names = list(df["mode_names"])
+    _rail2 = {r["mode_bits"]: r for r in df["rail_edge_table"]
+              if r["rails"] == 2}
+
+    def _bits(st_):
+        return sum(1 << _names.index(m) for m in st_.get("modes", []))
+    _admissible = [st_ for st_ in cell_net["states"]
+                   if _rail2.get(_bits(st_), {}).get("permitted")
+                   and st_["loads"]["both_rails_at_the_declared_pair"][
+                       "supported"]]
+    _ref_state = max(_admissible, key=lambda x: x["internal_3v3_A"],
+                     default=None)
+    cell_net["heaviest_admissible_thermal_state"] = dict(
+        key=(_ref_state or {}).get("key"),
+        admissible_states=[x["key"] for x in _admissible],
+        sizing_envelope_state=cell_net["reference_state_key"],
+        the_sizing_envelope_is_not_admissible=bool(
+            not _rail2.get(_bits(next(
+                x for x in cell_net["states"]
+                if x["key"] == cell_net["reference_state_key"])), {}).get(
+                    "permitted")),
+        why="the production rail-edge table refuses every accessory rail "
+            "while a radio transmits, so the sizing envelope is a CONDUCTOR "
+            "AND ENCLOSURE sizing case, not a state a user or a technician "
+            "can put the product in")
     _ref_pair = ((_ref_state or {}).get("loads", {})
                  .get("both_rails_at_the_declared_pair") or {})
     _ref_point = _ref_pair.get("at_the_lowest_supported_cell") or {}
+    _pol_h = (ROOT / "Firmware/src/hw/aqroot_accessory_power_policy.h"
+              ).read_text(encoding="utf-8")
+    _us = int(re.search(r"kGaugeWorstCaseWindowUs == (\d+)u", _pol_h).group(1))
+    _ms = int(re.search(r"kGaugePostLoadConversionMs == (\d+),", _pol_h)
+              .group(1))
     _fa_scenarios = {
+        # D-795 / Round-14: the steps the round asked to be EXECUTABLE.
+        "C-THERM-01 admissible state": "`%s`" % (_ref_state or {}).get("key"),
+        "C-GAUGE-EPOCH-01 exists": "**`C-GAUGE-EPOCH-01`**",
+        "C-GAUGE-EPOCH-01 window": "**%d ms**" % _ms,
+        "C-GAUGE-EPOCH-01 derivation": "**%.2f ms**" % (_us / 1000.0),
+        "C-NFC-QUIESCE-01 exists": "**`C-NFC-QUIESCE-01`**",
+        "C-NFC-TUNE-01 exists": "**`C-NFC-TUNE-01`**",
         "C-THERM-01 battery current": "**%.4f A**" % _ref_point.get("amps", 0.0),
         "C-THERM-01 junction": "**%.2f \u00b0C**"
                                % _ref_point.get("bq25185_junction_C", 0.0),
@@ -8646,17 +9034,26 @@ def main():
                                    % _ref_point.get("internal_air_C", 0.0),
         "C-THERM-01 R_SYS": "**%.4f K/W**"
                             % ara.system_thermal_resistance_K_per_W(),
-        "C-PWR-CHARGE-01 ceiling": "**%.3f W**" % _cc["system_W_ceiling"],
-        "C-PWR-CHARGE-01 junction": "**%.3f \u00b0C**"
-                                    % _cc["junction_at_the_published_ceiling_C"],
-        "C-PWR-CHARGE-01 branch": "`%s`" % _cc["mode_at_the_published_ceiling"],
+        # D-795 / R14-03: the step names its SOURCE, its AMBIENT and its
+        # CELL-VOLTAGE conditions, and the figure it is measured against.
+        "C-PWR-CHARGE-01 junction-safe power": (
+            "**%.3f W**" % _cc["junction_safe_system_W"]),
+        "C-PWR-CHARGE-01 junction": (
+            "**%.3f \u00b0C**" % _cc["junction_at_the_junction_safe_power_C"]),
+        "C-PWR-CHARGE-01 named source": "`%s`" % _cc["source_contract"][
+            "named_adapter"]["part_number"],
+        "C-PWR-CHARGE-01 ambient": "**%.0f \u00b0C** ambient" % (
+            ara.AMBIENT_DESIGN_MAX_C),
+        "C-PWR-CHARGE-01 cell conditions": "**%.3f V** and **%.3f V**" % (
+            ara.REGIME_VBAT_GRID_V[0], ara.REGIME_VBAT_GRID_V[-1]),
         "C-CHG-01 VIN pin": "**%.4f V**"
                             % _cc["source_contract"]["min_vin_pin_V"],
         "C-CHG-01 input limit": "**%.1f A**"
                                 % _cc["source_contract"][
                                     "required_source_current_A"],
-        "C-PWR-CHARGE-01 completion ceiling": (
-            "**%.3f W**" % _cc["completion"]["system_W_ceiling"]),
+        "C-PWR-CHARGE-02 exists": "**`C-PWR-CHARGE-02`**",
+        "C-PWR-CHARGE-02 timer": "**%.0f min**" % _cc["completion"][
+            "required_domain"]["timer_min"],
         "the reference state is a state the model supports": (
             "" if _ref_pair.get("supported") else
             "THE REFERENCE STATE HAS NO OPERATING POINT"),
@@ -8826,6 +9223,11 @@ def main():
     # of scan is ALREADY a sentence, so the character class is redundant as
     # well as harmful: these use `.` and a longer reach.
     _NORM_FLOOR_CLAIMS = (
+        # D-795 / R14 D795-07: NUMBER-FIRST instructions -- "hold the pack at
+        # 3.55 V to enable a rail" names no floor word at all.
+        re.compile(r"(\d\.\d{2})\s*V\**.{0,50}?(?:to enable|before "
+                   r"enabling|enables? (?:a|the|one|both|either) "
+                   r"(?:first |second |accessory )?rail)", re.I),
         re.compile(r"(\d\.\d{2})\s*V\**.{0,60}?"
                    r"(?:single-rail|dual-rail|retention)(?:-rail)?\s*floor",
                    re.I),
@@ -8856,14 +9258,23 @@ def main():
                     if v is not None},
                  patterns=_FA_CLAIMS + _NORM_FLOOR_CLAIMS),
             dict(key="charge_time_ceiling",
-                 what="the supervised charge-time system-power ceiling",
-                 allowed={"%.3f" % _cc["system_W_ceiling"],
-                          "%.3f" % _cc["completion"]["system_W_ceiling"],
-                          "%.3f" % _cc["raw_ceiling_W"],
-                          "%.3f" % _cc["supplement_discontinuity_W"],
-                          "%.3f" % _cc["junction_limited_ceiling_W"],
-                          "%.3f" % _cc["reference_state_system_W"],
-                          "%.3f" % _cc["completion"]["raw_W"]},
+                 what="the charge-regime system-power figures",
+                 # D-795 / R14-03: D-794's 3.600 W "regime ceiling" and
+                 # 1.150 W "completion ceiling" are NOT in this set.  Either
+                 # may appear only in a FENCED historical sentence.
+                 allowed={"%.3f" % _cc["junction_safe_system_W"],
+                          "%.3f" % _cc["junction_safe_raw_W"],
+                          "%.3f" % _cc["universal_no_discharge_published_W"],
+                          "%.3f" % _cc["universal_no_discharge_raw_W"],
+                          "%.3f" % _cc["reference_state_system_W"]}
+                         | {"%.3f" % e[k] for e in _cc["no_discharge_envelope"]
+                            for k in ("no_discharge_published_W",
+                                      "junction_published_W",
+                                      "no_discharge_raw_W",
+                                      "junction_raw_W")}
+                         | {"%.3f" % r["system_W"] for r in
+                            _cc["permitted_while_charging"]
+                            + _cc["refused_while_charging"]},
                  patterns=(
                      re.compile(r"(\d\.\d{3})\s*W\**.{0,140}?charg", re.I),
                      re.compile(r"charg.{0,140}?(\d\.\d{3})\s*W", re.I))),
@@ -8958,11 +9369,21 @@ def main():
                           "%.1f" % ara.PACKAGE_JUNCTION["tj_operating_max_C"],
                           "%.1f" % ara.AMBIENT_DESIGN_MAX_C,
                           "%.1f" % _cr["junction_with_charge_folded_back_C"],
-                          "%.1f" % _cc["junction_at_the_published_ceiling_C"],
+                          "%.1f" % _cc["junction_at_the_junction_safe_power_C"],
                           "%.1f" % _cc[
-                              "d792_junction_at_its_published_number_C"],
-                          "%.1f" % _cc["discontinuity_junction_step_K"],
-                          "%.1f" % ara.PACKAGE_JUNCTION["tshut_rising_C"]},
+                              "hottest_operating_junction_at_the_junction_"
+                              "safe_power_C"],
+                          "%.1f" % apm.BQ25185["treg_typ_C"],
+                          "%.1f" % (apm.BQ25185["treg_typ_C"]
+                                    + apm.BQ25185["treg_declared_band_K"]),
+                          "%.1f" % (apm.BQ25185["treg_typ_C"]
+                                    - apm.BQ25185["treg_declared_band_K"]),
+                          "%.1f" % ara.PACKAGE_JUNCTION["tshut_rising_C"]}
+                         | {"%.1f" % r[k] for r in
+                            _cc["permitted_while_charging"]
+                            + _cc["refused_while_charging"]
+                            for k in ("junction_with_charge_folded_back_C",
+                                      "charge_ambient_ceiling_C")},
                  patterns=(
                      re.compile(r"(\d{2,3}\.\d)\s*\u00b0?\s*C"
                                 r".{0,120}?(?:junction|charging state|"
@@ -8987,6 +9408,18 @@ def main():
                                 r"source path|adapter).{0,100}?"
                                 r"(\d\.\d{4})\s*(?:\u03a9|Ohm|ohm)",
                                 re.I))),
+            # ---- D-795 / R14 D795-07: RELEASE IDENTITY. ------------------
+            # A board or MANIFEST digest stated as CURRENT must be the one on
+            # disk.  D-794's 0db6f2c2... is legal only behind a fence.
+            dict(key="release_identity",
+                 what="a board or MANIFEST sha256 stated as the current one",
+                 allowed={hashlib.sha256(rl.BOARD.read_bytes()).hexdigest(),
+                          hashlib.sha256((ROOT / "hardware/demo/fab/"
+                                          "MANIFEST.json").read_bytes())
+                          .hexdigest()},
+                 patterns=(
+                     re.compile(r"(?:\bcurrent\b|this release|CURRENT|"
+                                r"D-795).{0,160}?\b([0-9a-f]{64})\b"),)),
             dict(key="p3v3_peak_envelope",
                  what="the internal +3V3 peak current envelope",
                  allowed={"%.6f" % apm.peak_A()},
@@ -9005,6 +9438,11 @@ def main():
         "docs/full-beta-v2/CURRENT_STATE.md",
         "docs/full-beta-v2/assembly/FIRST_FIVE_ASSEMBLY_PLAN.md",
         "hardware/demo/fab/aqroot-Demo-FAB-NOTES.md",
+        # D-795 / R14 D795-07: the harness record's OPERATIVE acceptance
+        # carried D-792's 132.282 / 249.782 mOhm limits for three releases
+        # because nothing scanned it.
+        "docs/full-beta-v2/assembly/BATTERY_HARNESS.json",
+        "docs/full-beta-v2/assembly/OFF_BOARD_BOM.md",
     )
 
     # A FENCE IS A BLOCK PROPERTY AS WELL AS A SENTENCE PROPERTY.
@@ -9179,11 +9617,16 @@ def main():
     _ctrl_injected = _norm_scan(
         "The current single-rail floor is 3.55 V and the current charge-time "
         "ceiling is 4.063 W.", _norm_fams)
+    # D-795 / R14-03: D-794's own two charge figures, stated as current.
+    _ctrl_injected_d794 = _norm_scan(
+        "While charging, the battery does not discharge below the 3.600 W "
+        "charge-regime ceiling, and a charge completes below 1.150 W.",
+        _norm_fams)
     _ctrl_current = _norm_scan(
         "The current single-rail floor is %.2f V and the current charge-time "
         "ceiling is %.3f W."
         % (df["enable_first_rail_floor_gridded_V"],
-           _cc_ceiling["system_W_ceiling"]), _norm_fams)
+           _cc_ceiling["junction_safe_system_W"]), _norm_fams)
     _ctrl_fenced = _norm_scan(
         "The RETIRED single-rail floor was 3.55 V and the retired charge-time "
         "ceiling was 4.063 W.", _norm_fams)
@@ -9193,6 +9636,14 @@ def main():
             len(_ctrl_defenced) >= 4),
         an_unfenced_retired_floor_or_ceiling_is_caught=bool(
             len(_ctrl_injected) >= 2),
+        # 3.600 W is a legitimate ENVELOPE row at some cells, so the number
+        # alone is not stale; the unconditioned CLAIM is, and the false-claim
+        # scan is what refuses it.  Both instruments together must bite.
+        d794s_retired_regime_and_completion_figures_are_caught=bool(
+            len(_ctrl_injected_d794) + len(_false_claim_scan(
+                "While charging, the battery does not discharge below the "
+                "3.600 W charge-regime ceiling, and a charge completes below "
+                "1.150 W on every qualified source class.", "control")) >= 2),
         the_current_values_are_not_flagged=bool(not _ctrl_current),
         an_explicitly_fenced_sentence_is_exempt=bool(not _ctrl_fenced))
     cell_net["no_normative_document_states_a_retired_operating_value"][
@@ -9748,7 +10199,8 @@ def main():
     # statement about the evidence.  Section 4.3's Electrical Characteristics
     # table carries VCI 2.5/2.8/3.3 V and VDDI 1.65/2.8/3.3 V and no supply
     # current at all, and section 4.4 gives the backlight string (Vf 3.2 V MAX
-    # at If = 120 mA, Ipn 110 MIN / 120 mA TYP) which the converter model now
+    # at If = 120 mA, Ipn 110 mA TYP / 120 mA MAX -- D-795 corrects D-792's
+    # '110 MIN / 120 TYP') which the converter model now
     # cites as PRIMARY.  The allowance therefore stands, as a DECLARED_ESTIMATE
     # with a first-article measurement of record, and what Round-10 asked for
     # instead -- "a defensible conservative allowance / sensitivity and bounded
@@ -10716,18 +11168,25 @@ def main():
          != _norm_cap_mfr("Samsung Electro-Mechanics")
          and _norm_cap_mfr("Viking Tech") != _norm_cap_mfr("Vishay")
          and _norm_cap_mfr("Diodes Zetex") != _norm_cap_mfr("Diodes Inc")),
-        # A TRUNCATION IS ACCEPTED ONLY ON A WORD BOUNDARY, so a distributor's
-        # short column still matches and a name that continues differently
-        # does not.
-        ("f13p_a_truncation_must_end_on_a_word_boundary",
-         _word_boundary_truncation_rule()),
-        # AN AMBIGUOUS TRUNCATION NAMES TWO COMPANIES AND IS THEREFORE NOT A
-        # MATCH -- picking one of them is how a collision becomes an
-        # agreement.
-        ("f13q_an_ambiguous_truncation_resolves_to_neither_company",
-         canonical_manufacturer(
-             "zz ambiguous", ) == "zz ambiguous"
-         and _ambiguous_truncation_is_refused()),
+        # D-795 / R14-07: NO TRUNCATION OF ANY KIND CANONICALISES.  Astra's
+        # exact case first, then the shapes D-793's word-boundary rule used
+        # to accept, then the same shapes over a local table so the claim
+        # tests the ABSENCE OF A RULE rather than this week's aliases.
+        ("f13p_alpha_and_is_not_aos",
+         canonical_manufacturer("Alpha and") != "alpha & omega semiconductor"
+         and canonical_manufacturer("Alpha &") != "alpha & omega semiconductor"
+         and canonical_manufacturer("Alpha and Omega Semi")
+         != "alpha & omega semiconductor"
+         and canonical_manufacturer("alpha and omega semicond")
+         != "alpha & omega semiconductor"),
+        ("f13q_no_prefix_or_truncation_ever_canonicalises",
+         canonical_manufacturer("Murata Elec") != "murata electronics"
+         and canonical_manufacturer("Texas Instr") != "texas instruments"
+         and canonical_manufacturer("Samsung Electro")
+         != "samsung electro-mechanics"
+         and canonical_manufacturer("Analog Devices Inc./Max")
+         != "analog devices"
+         and _no_truncation_rule_exists()),
         # ...and the fold is still NOT a similarity metric: it folds case,
         # spacing, commas and a trailing legal form, and nothing else.
         ("f13r_the_fold_touches_nothing_but_case_space_comma_legal_form",
@@ -11514,7 +11973,17 @@ def main():
                approved_unrouted=ledger["approved_unrouted"]["expected"],
                features=rows, checks=checks,
                all_pass=all(c["ok"] for c in checks.values()))
-    text = json.dumps(out, indent=1, sort_keys=True)
+    # D-795: the regime/completion EVIDENCE (thousands of solved states the
+    # oracle re-checks in memory) is not written out; every published figure
+    # and every row's ceilings are.
+    def _public(x):
+        if isinstance(x, dict):
+            return {k: _public(v) for k, v in x.items()
+                    if not str(k).startswith("_")}
+        if isinstance(x, list):
+            return [_public(v) for v in x]
+        return x
+    text = json.dumps(_public(out), indent=1, sort_keys=True)
     if args.out:
         args.out.write_text(text + "\n", encoding="utf-8")
     print(text)

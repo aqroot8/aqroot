@@ -1,0 +1,314 @@
+{
+ "decision": "D-795 / R14-06",
+ "documents": {
+  "BOURNS_CRA": {
+   "path": "hardware/demo/kicad/aqroot-demo/vendor/BOURNS/bourns-cra-series.pdf",
+   "sha256": "1f164410b98c77f69adae78fea4fba158b47fd35c14c241f5af7321b380ee362",
+   "token": "Bourns"
+  },
+  "ESPRESSIF": {
+   "path": "hardware/demo/kicad/aqroot-demo/vendor/Espressif/esp32-s3-wroom-1-datasheet.pdf",
+   "sha256": "27d71971da07c280c6068d08c74720d1a25b8f20cf8494dc1765bdd28d40d435",
+   "token": "Espressif"
+  },
+  "MOLEX_PS": {
+   "path": "hardware/demo/kicad/aqroot-demo/vendor/MOLEX/molex-5055700003-PS-A1.pdf",
+   "sha256": "0218c6300aa4e4b4906e7607b7e033ece51c2adc6439ae8be90ce8e659942440",
+   "token": "5055700003-PS"
+  },
+  "PACK": {
+   "path": "hardware/demo/kicad/aqroot-demo/vendor/BATTERY/adafruit-328-785060-specification.pdf",
+   "sha256": "826149daa4aa9ba3ab7b635993a022d6521572a44d1d0588171468507b58ecd3",
+   "token": "785060"
+  },
+  "SLUSF65B": {
+   "path": "hardware/demo/kicad/aqroot-demo/vendor/BQ25185/ti-bq25185-slusf65b-2026-08.pdf",
+   "sha256": "c73ed7d63e6532bb05e26df30edd37c6ac2de310c1222a84a77625e15e133684",
+   "token": "SLUSF65B"
+  }
+ },
+ "rows": {
+  "bq.ilim_max_A": {
+   "columns": [
+    "995",
+    "1050",
+    "1100"
+   ],
+   "columns_header": [
+    "MIN",
+    "TYP",
+    "MAX"
+   ],
+   "condition": "VIN = 5 V, ILIM = 1050 mA",
+   "document": "SLUSF65B",
+   "row_lines": [
+    "VIN = 5V, ILIM = 1050mA 995 1050 1100 mA"
+   ],
+   "row_token": "ILIM",
+   "scale": 0.001,
+   "semantics": "MAX",
+   "value_token": "1100"
+  },
+  "bq.ilim_min_A": {
+   "columns": [
+    "995",
+    "1050",
+    "1100"
+   ],
+   "columns_header": [
+    "MIN",
+    "TYP",
+    "MAX"
+   ],
+   "condition": "VIN = 5 V, ILIM = 1050 mA",
+   "document": "SLUSF65B",
+   "row_lines": [
+    "VIN = 5V, ILIM = 1050mA 995 1050 1100 mA"
+   ],
+   "row_token": "ILIM",
+   "scale": 0.001,
+   "semantics": "MIN",
+   "value_token": "995"
+  },
+  "bq.iprechg_accuracy": {
+   "columns": [
+    "-10",
+    "10"
+   ],
+   "columns_header": [
+    "MIN",
+    "MAX"
+   ],
+   "condition": "Fast charge current >= 40 mA",
+   "document": "SLUSF65B",
+   "row_lines": [
+    "IPRECHG_ACC Precharge current accuracy Fast charge current ≥ 40mA -10 10 %"
+   ],
+   "row_token": "IPRECHG_ACC",
+   "scale": 0.01,
+   "semantics": "MAX",
+   "value_token": "10"
+  },
+  "bq.kiset_max_AOhm": {
+   "columns": [
+    "285",
+    "300",
+    "315"
+   ],
+   "columns_header": [
+    "MIN",
+    "TYP",
+    "MAX"
+   ],
+   "condition": "10 mA < ICHG < 1000 mA",
+   "document": "SLUSF65B",
+   "row_lines": [
+    "KISET 10mA < ICHG < 1000mA 285 300 315 AΩ"
+   ],
+   "row_token": "KISET",
+   "scale": 1.0,
+   "semantics": "MAX",
+   "value_token": "315"
+  },
+  "bq.kiset_min_AOhm": {
+   "columns": [
+    "285",
+    "300",
+    "315"
+   ],
+   "columns_header": [
+    "MIN",
+    "TYP",
+    "MAX"
+   ],
+   "condition": "10 mA < ICHG < 1000 mA",
+   "document": "SLUSF65B",
+   "row_lines": [
+    "KISET 10mA < ICHG < 1000mA 285 300 315 AΩ"
+   ],
+   "row_token": "KISET",
+   "scale": 1.0,
+   "semantics": "MIN",
+   "value_token": "285"
+  },
+  "bq.ron_bat_max_ohm": {
+   "columns": [
+    "115",
+    "140"
+   ],
+   "columns_header": [
+    "TYP",
+    "MAX"
+   ],
+   "condition": "VBAT = 4.5 V, IBAT = 400 mA",
+   "document": "SLUSF65B",
+   "row_lines": [
+    "RON_BAT Battery FET on-resistance VBAT = 4.5V, IBAT = 400mA 115 140 mΩ"
+   ],
+   "row_token": "RON_BAT",
+   "scale": 0.001,
+   "semantics": "MAX",
+   "value_token": "140"
+  },
+  "bq.ron_in_max_ohm": {
+   "columns": [
+    "330",
+    "470"
+   ],
+   "columns_header": [
+    "TYP",
+    "MAX"
+   ],
+   "condition": "VIN = 5 V, IIN = 1 A",
+   "document": "SLUSF65B",
+   "row_lines": [
+    "RON_IN Input FET on-resistance VIN = 5V, IIN = 1A 330 470 mΩ"
+   ],
+   "row_token": "RON_IN",
+   "scale": 0.001,
+   "semantics": "MAX",
+   "value_token": "470"
+  },
+  "bq.vlowv_max_V": {
+   "columns": [
+    "2.9",
+    "3",
+    "3.1"
+   ],
+   "columns_header": [
+    "MIN",
+    "TYP",
+    "MAX"
+   ],
+   "condition": "VBAT rising",
+   "document": "SLUSF65B",
+   "row_lines": [
+    "VLOWV VBAT rising 2.9 3 3.1 V"
+   ],
+   "row_token": "VLOWV",
+   "scale": 1.0,
+   "semantics": "MAX",
+   "value_token": "3.1"
+  },
+  "bq.vlowv_min_V": {
+   "columns": [
+    "2.9",
+    "3",
+    "3.1"
+   ],
+   "columns_header": [
+    "MIN",
+    "TYP",
+    "MAX"
+   ],
+   "condition": "VBAT rising",
+   "document": "SLUSF65B",
+   "row_lines": [
+    "VLOWV VBAT rising 2.9 3 3.1 V"
+   ],
+   "row_token": "VLOWV",
+   "scale": 1.0,
+   "semantics": "MIN",
+   "value_token": "2.9"
+  },
+  "bq.vsys_reg_accuracy": {
+   "columns": [
+    "-2",
+    "2"
+   ],
+   "columns_header": [
+    "MIN",
+    "MAX"
+   ],
+   "condition": "VIN = 5 V, VBAT = 3.6 V, RSYS = 100 ohm",
+   "document": "SLUSF65B",
+   "row_lines": [
+    "VSYS_REG_ACC SYS regulation accuracy VIN = 5V, VBAT = 3.6V, RSYS = 100Ω -2 2 %"
+   ],
+   "row_token": "VSYS_REG_ACC",
+   "scale": 0.01,
+   "semantics": "MAX",
+   "value_token": "2"
+  },
+  "mcu.ivdd_supply_requirement_A": {
+   "columns": [
+    "0.5",
+    "—",
+    "—"
+   ],
+   "columns_header": [
+    "MIN",
+    "TYP",
+    "MAX"
+   ],
+   "condition": "Recommended Operating Conditions",
+   "document": "ESPRESSIF",
+   "row_lines": [
+    "IV DD Current delivered by external power supply 0.5 — — A"
+   ],
+   "row_token": "Table 6-2",
+   "scale": 1.0,
+   "semantics": "MIN",
+   "value_token": "0.5"
+  },
+  "path.crimp_max_ohm": {
+   "condition": "crimped portion, dry circuit",
+   "document": "MOLEX_PS",
+   "row_lines": [
+    "6.1.4 measured by dry circuit, 20 mV MAX., 5 milliohms MAX."
+   ],
+   "row_token": "6.1.4",
+   "scale": 0.001,
+   "semantics": "MAX_WORD",
+   "value_token": "5"
+  },
+  "path.microlock_contact_aged_max_ohm": {
+   "condition": "after 6.2.6 repeated insertion/withdrawal and every later exposure",
+   "document": "MOLEX_PS",
+   "row_lines": [
+    "Repeated Contact 40 milliohms",
+    "6.2.6 cycles repeatedly at speed rate of 10",
+    "Insertion / Withdrawal Resistance MAX."
+   ],
+   "row_token": "6.",
+   "scale": 0.001,
+   "semantics": "MAX_WORD",
+   "value_token": "40"
+  },
+  "path.microlock_contact_initial_max_ohm": {
+   "condition": "mated, dry circuit, conductor resistance subtracted",
+   "document": "MOLEX_PS",
+   "row_lines": [
+    "6.1.1 Contact Resistance conductor resistance. Refer to paragraph 8 20 milliohms MAX."
+   ],
+   "row_token": "6.1.1",
+   "scale": 0.001,
+   "semantics": "MAX_WORD",
+   "value_token": "20"
+  },
+  "path.pack_ac_impedance_max_ohm": {
+   "condition": "AC 1 kHz after 50 % charge, 25 C",
+   "document": "PACK",
+   "row_lines": [
+    "Impedance ≤35mΩ AC 1KHz after 50% charge,25℃"
+   ],
+   "row_token": "section 3",
+   "scale": 0.001,
+   "semantics": "LE_SIGN",
+   "value_token": "35"
+  },
+  "path.r75_sense_tolerance": {
+   "condition": "ordering code F",
+   "document": "BOURNS_CRA",
+   "row_lines": [
+    "• F = ±1 %"
+   ],
+   "row_token": "Resistance Tolerance",
+   "scale": 0.01,
+   "semantics": "TOLERANCE_CODE",
+   "value_token": "1"
+  }
+ },
+ "schema": "aqroot-guarantee-evidence/1",
+ "what": "every GUARANTEED_* primitive, bound to an ARCHIVED primary document by sha256 and to the VERBATIM row it is read from; re-found in the document's own text at every release run by checks/guarantee_evidence.py"
+}

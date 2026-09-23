@@ -58,8 +58,10 @@ namespace aqroot {
 // SUPERSEDES that derivation: ADI 19-6171 Rev.7 says the register is the
 // AVERAGE OF FOUR conversions updated every 250 ms, so one update leaves
 // three quarters of the average describing the load as it was BEFORE the
-// step.  The governing interval is `kGaugePostLoadConversionMs` (1000 ms),
-// enforced by the load epoch inside `readFuelCellVoltage`.
+// step.  The governing interval is `kGaugePostLoadConversionMs` -- 1000 ms at
+// D-794, 1300 ms since D-795 / R14-01 derived it at the slow end of tERR and
+// with the straddling conversion counted -- enforced by the load epoch inside
+// `readFuelCellVoltage`.
 //
 // This constant is RETAINED as the ELECTRICAL settling allowance -- the time
 // the node itself needs to reach its new operating point before any
@@ -77,6 +79,14 @@ constexpr uint32_t kBatteryGuardPeriodMs = 500;
 // retries it.  Liveness: an unconfirmed radio state refuses accessory power,
 // so a board that gave up would refuse it forever.
 constexpr uint32_t kRadioQuiescePeriodMs = 250;
+// D-795 / R14-01.  How many times the gauge reader re-reads the clock before
+// it gives up on a window it cannot confirm spent.  A delay that returns a
+// tick early costs one more attempt; a clock that never advances costs all of
+// them and yields NO reading.
+constexpr unsigned kGaugeWindowWaitAttempts = 8;
+// D-795 / R14-02.  How often a confirmed-quiet ST25R3916 is asked to prove it
+// is still alive.  Liveness lost after an OFF confirmation REVOKES it.
+constexpr uint32_t kNfcLivenessPeriodMs = 1000;
 
 // What `releaseExpanderResetLines()` could prove.  D-788 / R7-D787-08 made the
 // diagnostic honest; D788-06 makes it EXECUTABLE.
@@ -173,6 +183,9 @@ class DemoBringupApp : public AccessoryLoadAuthority {
   bool radioPhysicalStateIsKnown() override { return radios_quiesced_; }
   void noteRadiosQuiesced(bool confirmed) {
     radios_quiesced_ = confirmed;
+    // D-795 / R14-01: a confirmed quiesce may just have stopped a retained
+    // transmitter, which is a load edge the gauge average still contains.
+    if (confirmed) noteMaterialLoadEdge("the sub-GHz radio quiesce");
     if (!confirmed) {
       log_("radio quiesce: NOT CONFIRMED -- the physical transmit state of "
            "U7/U8 is UNKNOWN.  Sub-GHz TX is treated as KEYED and accessory "
@@ -202,11 +215,14 @@ class DemoBringupApp : public AccessoryLoadAuthority {
   // arbiter and none of them should have to learn a second rule.  A confirmed
   // quiesce releases it.
   // =========================================================================
-  void noteNfcFieldQuiesced(bool confirmed, uint8_t operation_control = 0xFF) {
+  void noteNfcFieldQuiesced(bool confirmed, uint8_t operation_control = 0xFF,
+                            const char *why = nullptr) {
     nfc_field_confirmed_off_ = confirmed;
     nfc_operation_control_ = operation_control;
     if (confirmed) {
       burst_.end(BurstLoad::NfcField);
+      // D-795 / R14-01: the quiesce may have dropped a retained carrier.
+      noteMaterialLoadEdge("the NFC field quiesce");
       return;
     }
     // Take the slot on behalf of the part.  `begin` refuses if something else
@@ -215,16 +231,57 @@ class DemoBringupApp : public AccessoryLoadAuthority {
     (void)burst_.begin(BurstLoad::NfcField);
     char line[288];
     snprintf(line, sizeof(line),
-             "NFC quiesce: NOT CONFIRMED -- ST25R3916 Operation control reads "
-             "0x%02X, not the 0x00 power-up state Set default produces "
-             "(DS12484 Rev 3 Table 21).  The field state is UNKNOWN, the "
+             "NFC quiesce: NOT CONFIRMED (%s; Operation control reads "
+             "0x%02X) -- a live, identified ST25R3916 must prove the field "
+             "off (D-795 / R14-02).  The field state is UNKNOWN, the "
              "burst slot is held on U9's behalf, and accessory power is "
              "refused until a confirmed quiesce.",
+             why == nullptr ? "no liveness proof" : why,
              unsigned(operation_control));
     log_(line);
   }
 
   bool nfcFieldConfirmedOff() const { return nfc_field_confirmed_off_; }
+
+  // ===========================================================================
+  // D-795 / R14-02.  AN OFF CONFIRMATION IS HELD ONLY WHILE THE PART KEEPS
+  // ANSWERING.
+  //
+  // ROUND-14: "Invalid identity/liveness after a previous OFF confirmation
+  // must revoke authority."  A part that answered the quiesce and then stops
+  // answering is a part whose field this image can no longer see -- a brown-
+  // out and re-power, a lifted pin, a chip select that stopped asserting.
+  // Its field is UNKNOWN again, so it takes the burst slot back, every rail
+  // that was granted while it was confirmed is shed, and the loop's quiesce
+  // retry has to prove it all over again.
+  bool nfcLivenessDue() {
+    if (!nfc_field_confirmed_off_) return false;
+    const uint32_t now = millis();
+    if (nfc_liveness_started_ && now - last_nfc_liveness_ms_ < kNfcLivenessPeriodMs) {
+      return false;
+    }
+    nfc_liveness_started_ = true;
+    last_nfc_liveness_ms_ = now;
+    return true;
+  }
+  void noteNfcLiveness(bool alive, uint8_t identity) {
+    if (alive || !nfc_field_confirmed_off_) return;
+    nfc_field_confirmed_off_ = false;
+    ++nfc_revocations_;
+    (void)burst_.begin(BurstLoad::NfcField);
+    char line[240];
+    snprintf(line, sizeof(line),
+             "NFC OFF confirmation REVOKED: the ST25R3916 no longer proves "
+             "liveness (identity 0x%02X); the field state is UNKNOWN, the "
+             "burst slot is held on U9's behalf and accessory power is "
+             "refused until a confirmed quiesce (D-795 / R14-02)",
+             unsigned(identity));
+    log_(line);
+    if (acc3v3_ || acc5v_ || accessory_i2c_) {
+      forceAccessoriesOff("the ST25R3916 field state became UNKNOWN");
+    }
+  }
+  uint32_t nfcRevocations() const { return nfc_revocations_; }
   uint8_t nfcOperationControl() const { return nfc_operation_control_; }
 
   AccessoryLoadState accessoryLoadState() const {
@@ -246,6 +303,18 @@ class DemoBringupApp : public AccessoryLoadAuthority {
   // broken peripheral on a bring-up console.
   bool burstAllowed(BurstLoad which, const char *what) {
     if (which == BurstLoad::None) return false;
+    // D-795 / R14-02: UNKNOWN owns the slot even if a reset cleared the
+    // arbiter or another holder released it -- the rule is the field state,
+    // not the arbiter's bookkeeping of it.
+    if (!nfc_field_confirmed_off_ && which != BurstLoad::NfcField) {
+      char unknown[200];
+      snprintf(unknown, sizeof(unknown),
+               "%s REFUSED: the ST25R3916 field state is UNKNOWN and U9 owns "
+               "the burst slot until a liveness-qualified quiesce "
+               "(D-795 / R14-02)", what);
+      log_(unknown);
+      return false;
+    }
     if (burst_.active() == BurstLoad::None) return true;
     char line[224];
     snprintf(line, sizeof(line),
@@ -266,7 +335,8 @@ class DemoBringupApp : public AccessoryLoadAuthority {
     const int rails = accessoryRailsOn();
     if (rails <= 0) return true;
     float v = 0.0f;
-    const bool read = readFuelCellVoltage(&v);
+    const bool read = readFuelCellVoltageForAdmission(what);
+    v = last_admission_vcell_;
     if (accessoryModeEntryAllowed(read, v, rails, after)) return true;
     const float required = accessoryModeEntryFloor(after, rails);
     char line[224];
@@ -297,7 +367,13 @@ class DemoBringupApp : public AccessoryLoadAuthority {
     after.subghz_tx = true;
     return modeEntryAllowed(after, "sub-GHz TX");
   }
-  void noteSubGhzTransmitting(bool on) override { subghz_tx_ = on; }
+  void noteSubGhzTransmitting(bool on) override {
+    // D-795 / R14-01: keying and unkeying a PA are both material load edges.
+    if (on != subghz_tx_) {
+      noteMaterialLoadEdge(on ? "sub-GHz TX keying" : "sub-GHz TX unkeying");
+    }
+    subghz_tx_ = on;
+  }
   bool subGhzTransmitting() const { return subghz_tx_; }
 
   // ---- The Wi-Fi/BLE radio.  No production caller in this image yet; the
@@ -307,7 +383,13 @@ class DemoBringupApp : public AccessoryLoadAuthority {
     after.wifi_tx = true;
     return modeEntryAllowed(after, "Wi-Fi / BLE radio");
   }
-  void noteWifiRadioActive(bool on) { wifi_tx_ = on; }
+  void noteWifiRadioActive(bool on) {
+    if (on != wifi_tx_) {
+      noteMaterialLoadEdge(on ? "the Wi-Fi/BLE radio starting"
+                              : "the Wi-Fi/BLE radio stopping");
+    }
+    wifi_tx_ = on;
+  }
   bool wifiRadioActive() const { return wifi_tx_; }
 
   // -------------------------------------------------------------------------
@@ -349,8 +431,40 @@ class DemoBringupApp : public AccessoryLoadAuthority {
   // clears the epoch -- not an ACK, not a qualification, not a successful
   // read.
   bool readFuelCellVoltage(float *volts) {
-    waitForPostLoadConversion();
+    // D-795 / R14-01: a window that could not be spent is not a reading.
+    if (!waitForPostLoadConversion()) {
+      if (volts) *volts = 0.0f;
+      return false;
+    }
     return gauge_.readVcell(bus_, volts);
+  }
+
+  // ===========================================================================
+  // D-795 / R14-01.  A NEW ADMISSION OWES A FRESH POST-REQUEST WINDOW.
+  //
+  // This board cannot see a charger being plugged or unplugged: there is no
+  // VBUS-present signal on any MCU or expander pin (D-776).  So an adapter
+  // pulled out a moment before the operator presses '5' changes the node the
+  // gauge reads with NOTHING in the firmware to stamp it, and the average the
+  // permission would be granted on is still the charging-era one -- which
+  // over-states the cell by the charge current times the path, exactly the
+  // D-794 observation about the gauge node while charging.
+  //
+  // The only defence that covers an edge the firmware cannot observe is to
+  // make the ADMISSION ITSELF an epoch: every rail enable and every mode entry
+  // with a rail live stamps its own request and reads only once the whole
+  // window since the request has passed.  Whatever happened before the
+  // request -- announced or not -- is then out of the average.
+  bool readFuelCellVoltageForAdmission(const char *what) {
+    char label[96];
+    snprintf(label, sizeof(label), "the %s admission request",
+             what == nullptr ? "accessory" : what);
+    // The epoch keeps a POINTER, so the label must outlive the call: copy it
+    // into the member buffer the epoch is allowed to point at.
+    snprintf(admission_label_, sizeof(admission_label_), "%s", label);
+    load_epoch_.noteAdmissionRequest(millis(), admission_label_);
+    last_admission_vcell_ = 0.0f;
+    return readFuelCellVoltage(&last_admission_vcell_);
   }
 
   // A material change in what the board draws.  Call AFTER the new load is
@@ -360,24 +474,47 @@ class DemoBringupApp : public AccessoryLoadAuthority {
     load_epoch_.noteMaterialLoadEdge(millis(), what);
   }
 
-  // Spend whatever is left of the averaging window.  Returns the number of
-  // milliseconds actually waited, which is what the host tests claim on.
-  uint32_t waitForPostLoadConversion() {
-    const uint32_t remaining = load_epoch_.remainingMs(millis());
-    if (remaining > 0) {
-      char line[200];
-      snprintf(line, sizeof(line),
-               "gauge: VCELL still averages conversions from before %s; "
-               "waiting %lu ms for a post-load conversion before any "
-               "permission (D-794 / R13-01, ADI 19-6171 Rev.7: four averaged "
-               "conversions at 250 ms)",
-               load_epoch_.what(), (unsigned long)remaining);
-      log_(line);
+  // Spend whatever is left of the averaging window.
+  //
+  // D-795 / R14-01: "Loop on an elapsed deadline; do not merely delay once and
+  // assume time advanced enough."  ESP32 Arduino's `delay()` is
+  // `vTaskDelay(ms / portTICK_PERIOD_MS)`, which blocks for between n-1 and n
+  // tick periods, so one delay of the remainder can return a tick EARLY -- and
+  // a delay is not a clock.  The loop re-reads `millis()` and only returns
+  // once the elapsed time since the epoch is genuinely past the window.  It is
+  // BOUNDED: a clock that does not advance makes this return false, and the
+  // caller treats that as no measurement (fail-closed), never as a fresh one.
+  bool waitForPostLoadConversion() {
+    bool logged = false;
+    last_wait_ms_ = 0;
+    for (unsigned attempt = 0; attempt < kGaugeWindowWaitAttempts; ++attempt) {
+      const uint32_t remaining = load_epoch_.remainingMs(millis());
+      if (remaining == 0) {
+        load_epoch_.noteWindowSpent(millis());
+        return true;
+      }
+      if (!logged) {
+        logged = true;
+        char line[240];
+        snprintf(line, sizeof(line),
+                 "gauge: VCELL still averages conversions from before %s; "
+                 "waiting %lu ms for a post-load conversion before any "
+                 "permission (D-795 / R14-01, ADI 19-6171 Rev.7: five "
+                 "periods at tERR +3.5 %%)",
+                 load_epoch_.what(), (unsigned long)remaining);
+        log_(line);
+      }
       delay(remaining);
+      last_wait_ms_ += remaining;
     }
-    load_epoch_.noteWindowSpent(millis());
-    return remaining;
+    log_("gauge: the post-load window could NOT be confirmed spent -- the "
+         "clock did not advance; no VCELL reading is taken (fail-closed)");
+    return false;
   }
+  uint32_t lastGaugeWaitMs() const { return last_wait_ms_; }
+  uint32_t loadEpochEdgeMs() const { return load_epoch_.edgeMs(); }
+  uint32_t loadEpochEdges() const { return load_epoch_.edges(); }
+  uint32_t loadEpochAdmissions() const { return load_epoch_.admissions(); }
 
   bool gaugeConversionIsPostLoad() const {
     return load_epoch_.conversionIsPostLoad(millis());
@@ -435,8 +572,11 @@ class DemoBringupApp : public AccessoryLoadAuthority {
         return false;
       }
     }
-    float v = 0.0f;
-    const bool read = readFuelCellVoltage(&v);
+    // D-795 / R14-01: the enable edge is an ADMISSION, and it reads only
+    // after a full window since the request -- see
+    // `readFuelCellVoltageForAdmission`.
+    const bool read = readFuelCellVoltageForAdmission("accessory rail");
+    const float v = last_admission_vcell_;
     // D-792 / R11-04: the floor is a TABLE lookup on the observable mode set
     // and the rail count, not a scalar that cannot see what else is on.
     const AccessoryLoadState modes = accessoryLoadState();
@@ -746,6 +886,9 @@ class DemoBringupApp : public AccessoryLoadAuthority {
     // after re-running the SPI init -- may put it back up.
     display_up_ = false;
     bool acked = expanders_.setDisplayReset(bus_, true);
+    // D-795 / R14-01: a panel held in reset draws differently from a running
+    // one; the assertion is a load edge in its own right.
+    if (acked) noteMaterialLoadEdge("the display reset being asserted");
     delay(20);
     acked = expanders_.setDisplayReset(bus_, false) && acked;
     delay(20);
@@ -879,6 +1022,10 @@ class DemoBringupApp : public AccessoryLoadAuthority {
     // re-applied rather than assumed to have survived.  The display is no
     // longer up, whatever the caller last thought.
     display_up_ = false;
+    // D-795 / R14-01: recovery rewrote the boot-safe latch -- every enable
+    // off, every reset asserted and released -- which is as material a load
+    // edge as this image makes.
+    noteMaterialLoadEdge("the expander recovery");
     // D-793 / R12-03.  RECOVERY RE-ASSERTS AND RE-RELEASES U2.P01, WHICH IS
     // THE SX1262's RESET, SO THE RADIO STATE THIS OBJECT BELIEVED IS NO
     // LONGER PROVEN.  Invalidating it here is the liveness half of the rule:
@@ -981,6 +1128,7 @@ class DemoBringupApp : public AccessoryLoadAuthority {
         const bool ok = expanders_.setAccessoryI2cBuffer(bus_, want);
         if (ok) accessory_i2c_ = want;
         afterAccessoryChange();
+        if (ok) noteMaterialLoadEdge("the accessory I2C buffer step");
         reportAccessoryCommand("ACC_PWR_EN", want, ok, accessory_i2c_);
         return true;
       }
@@ -1026,10 +1174,18 @@ class DemoBringupApp : public AccessoryLoadAuthority {
   // not true.
   bool nfc_field_confirmed_off_ = false;
   uint8_t nfc_operation_control_ = 0xFF;
+  // D-795 / R14-02: the liveness schedule and how often it revoked.
+  bool nfc_liveness_started_ = false;
+  uint32_t last_nfc_liveness_ms_ = 0;
+  uint32_t nfc_revocations_ = 0;
   // D-793 / R12-08.
   BurstArbiter burst_;
   // D-794 / R13-01: when the board's load last changed materially.
   GaugeLoadEpoch load_epoch_;
+  // D-795 / R14-01: the admission read and the label its epoch points at.
+  float last_admission_vcell_ = 0.0f;
+  char admission_label_[96] = "none";
+  uint32_t last_wait_ms_ = 0;
   uint32_t last_recovery_ms_ = 0;
   uint32_t last_gauge_requal_ms_ = 0;
   uint32_t last_battery_guard_ms_ = 0;

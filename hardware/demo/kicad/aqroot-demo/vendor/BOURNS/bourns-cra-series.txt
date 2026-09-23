@@ -1,0 +1,340 @@
+                               AUTOMOTIVE
+                                                                Features                                                       Applications
+                                      G R A DE                  n Special alloy resistor                                       n Power supplies
+
+
+
+                    NT
+                 IA
+            M d
+          CO an
+              PL
+        00 HS
+      Q2 o                                                      n Power rating at 70 °C: 3 W                                   n Stepper motor drives
+    C- *R
+
+                                                                n Low thermal EMF <40 µV/°C                                    n Input amplifiers
+                                                                n Inductance less than 5 nH
+   AE
+
+
+
+
+                  R0                                            n RoHS compliant*
+                    10                                          n AEC-Q200 compliant
+
+
+                                                                CRA2512 - High Power Current Sense Chip Resistor
+
+  Electrical Characteristics                                                                                                        Additional Information
+                                                                                                                                 Click these links for more information:
+   Characteristic		                                                               CRA2512
+   Power Rating @ 70 °C		                                                             3W
+   Operating Temperature Range		                                             -55 °C to +170 °C
+                                                                                                                                  PRODUCT     TECHNICAL INVENTORY    SAMPLES     CONTACT
+   Derated to Zero Load at		                                                        +170 °C                                                    LIBRARY
+   Maximum Working Current		                                                       (P / R)1/2
+   Insulation Resistance		                                                    > 100 megohms
+                                                                                                                                    Recommended Solder Pad Layout
+   Resistance Range                                                            0.010 - 0.100 Ω
+   Resistance Tolerance		                                                        ±1 %, ±5 %                                                                L         B
+
+   Temperature Coefficient                                                       ±50 PPM/°C
+
+                                                                                                                                                                                         A
+
+
+  Performance Characteristics
+                                                                                                                                            Cu TRACE
+                                                                                                                                                                         SENSING TRACE
+   Test                           Conditions                                           Specification
+                                  -55 ˚C to + 150 ˚C,
+  Thermal Shock                                                                        ΔR < ±0.5 %                                   Model                A              B         L
+		                                1000 Cycles, 15 minutes
+  Short Time Overload             5 X Rated Power for 5 seconds                        ΔR < ±0.5 %                                 CRA2512               4.0          2.1     4.1
+  Low Temperature                                                                                                                 		                   (0.157)      (0.083) (0.161)
+                                  -55 ˚C for 24 hours                                  ΔR < ±0.5 %
+  Storage
+                                                                                                                                                                  MM
+  High Temperature                                                                                                                            DIMENSIONS:
+                                                                                                                                                               (INCHES)
+                                  1000 hours @ + 170 ˚C                                ΔR < ±1.0 %
+  Exposure
+                                  + 85 ˚C, 85 % RH, 10 % Bias,
+  Bias Humidity                                                                        ΔR < ±0.5 %
+		                                1000 hours                                                                                        Construction
+  Mechanical Shock                100 g’s for 6 milliseconds, 5 pulses                 ΔR < ±0.5 %
+                                                                                                                                                          Overcoat
+                                  Frequency varied 10 to 2000 KHz
+  Vibration                                                                            ΔR < ±0.5 %                                Ni / Sn
+		                                in one minute, 3 directions, 12 hours
+                                                                                                                                  Plating
+                                  1000 hours at rated power at
+   Load Life                                                                           ΔR < ±1.0 %
+                                  +70 ˚C, 1.5 hours on, 0.5 hours off
+   Resistance to Solder           +260 ˚C Solder, 10-12 second dwell,                  ΔR < ±0.5 %
+   Heat                            25 mm/second emergence                                                                                                            Metal Alloy Plate
+                                  MIL-STD-202 Method 106, 0 % power
+  Moisture Resistance                                                                  ΔR < ±0.5 %
+		                                (7a and 7b not required)
+
+
+
+
+           CALIFORNIA WARNING: Can expose you to lead, a carcinogen and reproductive toxicant.
+            See www.P65Warnings.ca.gov
+*RoHS Directive 2015/863, Mar 31, 2015 and Annex.
+Specifications are subject to change without notice.
+Users should verify actual device performance in their specific applications.
+The products described herein and this document are subject to specific legal disclaimers as set forth on the last page of this document, and at www.bourns.com/docs/legal/disclaimer.pdf.
+                    CRA2512 - High Power Current Sense Chip Resistor
+
+        Product Dimensions
+                                                         A
+                                                                                                                                                        T
+
+
+                                                                                        B
+
+                                                                                                               C                       C
+                                                C               C
+
+
+                         Model A B C                                                                                                         T
+                         					                                                                                                                                         DIMENSIONS:
+                                                                                                                                                                                         MM
+                                                                                                                                                                                      (INCHES)
+                                                6.40 ± 0.20       3.20 ± 0.20                            0.90 ± 0.20                  0.90 ± 0.20
+                           CRA2512
+                         		                   (0.252 ± 0.008)   (0.126 ± 0.008)                        (0.035 ± 0.008)              (0.035 ± 0.008)
+
+
+
+        CRA2512 Resistance Values Available                           Soldering Profile
+                                                                    Can be soldered in accordance with IPC/JEDEC-J-STD-020.
+           Code               R Value       Code    R Value
+                                                                                             275
+          R010                 0.010        R047      0.047                                            <1> Maximum of 20 seconds between                                         260 °C peak
+                                                                                                          +255 °C and +260 °C
+          R015                 0.015        R050      0.050                                                                                             <1> 255 °C
+
+
+          R020                 0.020        R060      0.060                                  225
+                                                                                                                                                       220 °C
+          R022                 0.022        R070      0.070
+                                                                                                                                             190 °C                  90 - 150
+                                                                          Temperature (°C)
+
+
+
+
+          R025                 0.025        R075      0.075                                  175
+                                                                                                                                                                     seconds
+
+          R030                 0.030        R080      0.080                                        150 °C                                                                                      Ramp Down
+                                                                                                                                                                                               6 °C/second
+          R040                 0.040        R100      0.100
+                                                                                             125
+                                                                                                                                60 - 120 seconds
+Consult factory for other resistance values.
+                                                                                                                                                            10 seconds minimum
+
+                                                                                             75
+        Derating Curve                                                                                                   Ramp Up
+                                                                                                                         3 °C/second maximum
+
+                                                                                             25
+ Power Ratio (%)
+
+
+
+
+                   100                                                                             0                50                 100              150                200          250                  300
+                                                                                                                                                      Time (seconds)
+
+
+
+                                                                      How to Order
+                     -55               70              170
+                                                                    			                                                                                          CRA 2512 - F Z - R020 E LF
+                               Ambient Temperature (°C)
+                                                                    Model
+                                                                    (CRA = Precision Chip Resistor
+                                                                    Size
+        Environmental Specifications                                    2512 = 2512 Size
+                                                                    Resistance Tolerance
+Moisture Sensitivity Level.......................... 1                  • F = ±1 %
+                                                                        • J = ±5 %
+                                                                    TCR (PPM/°C)
+                                                                        • Z = ±50 PPM/°C
+                                                                    Resistance Value
+                                                                        “R” (decimal point) followed by three significant digits (example: R025 = 0.025 ohm)
+                                                                    Packaging
+                                                                        • E = 4000 pieces on 180 mm (7 inch) reel
+                                                                    Termination
+                                                                        • LF = Tin-plated (RoHS compliant)
+
+
+
+
+Specifications are subject to change without notice.
+Users should verify actual device performance in their specific applications.
+The products described herein and this document are subject to specific legal disclaimers as set forth on the last page of this document, and at www.bourns.com/docs/legal/disclaimer.pdf.
+                                                                                                                                                                                                                                         1.75 ± 0.1
+                                                                                                                                         EMBOSSED TAPE                                                                                (0.069 ± 0.004)
+                                                                                                                                                                                1.5 +0.1/-0                               1.5               5.5 ± 0.05
+                                                                                                                                         TOP TAPE                                             DIA.
+                                                                                                                                                                            (0.059 +0.004/-0)                           (0.059)          (0.217 ± 0.002)
+                                                                                                                                                                                                                       DIA. MIN.
+
+
+                                                                                                                                                                                                                                            12.0 ± 0.2
+                                                                                                                                                                                                                                         (0.472 ± 0.008)
+
+
+                                                                                                                                     RESISTOR                                                                                             6.9 ± 0.2
+                                                                                                                                                  3.60 ± 0.20                                                                         (0.272 ± 0.008)
+
+       CRA2512 - High Power Current Sense Chip Resistor
+                                                                                                                                                                                              2.0 ± 0.05                  4.0 ± 0.05
+                                                                                                                                                (0.142 ± 0.008)
+                                                                                                                                                                      4.0 ± 0.1            (0.079 ± 0.002)             (0.157 ± 0.002)
+                                                                                                                                       1.2 ± 0.15                 (0.157 ± 0.004)
+                                                                                                                                    (0.047 ± 0.006)
+                                                                                                                                                                      USER DIRECTION OF FEED
+
+   Packaging Dimensions (Conforms to EIA RS-481A)
+
+                                                                                                                  1.75 ± 0.1
+                 EMBOSSED TAPE                                                                                 (0.069 ± 0.004)
+                                                        1.5 +0.1/-0                                1.5               5.5 ± 0.05
+                 TOP TAPE                                              DIA.                                                                                                            13.0 ± 1.0
+                                                     (0.059 +0.004/-0)                           (0.059)          (0.217 ± 0.002)                                                   (0.512 ± 0.039)
+                                                                                                DIA. MIN.                                                                                 DIA.
+
+                                                                                                                                                                                                                      180 +0/-3
+                                                                                                                     12.0 ± 0.2                                                                                    (7.09 +0/-0.118)
+                                                                                                                  (0.472 ± 0.008)                                                                                        DIA.
+                                                                                                                                                                                                               60.0
+                                                                                                                                                                                                             (2.362)
+                                                                                                                                                                                                              MIN.
+              RESISTOR                                                                                             6.9 ± 0.2
+                                                                                                                                                                                                               DIA.
+                           3.60 ± 0.20                                                                         (0.272 ± 0.008)
+                                                                       2.0 ± 0.05                  4.0 ± 0.05
+                         (0.142 ± 0.008)
+                                              4.0 ± 0.1             (0.079 ± 0.002)             (0.157 ± 0.002)
+               1.2 ± 0.15                  (0.157 ± 0.004)
+            (0.047 ± 0.006)
+                                               USER DIRECTION OF FEED                                                                                                             15.4 ± 2.0
+                                                                                                                                                                               (0.606 ± 0.079)
+                                                                                                                                MM
+                                                                                                          DIMENSIONS:                                                             13.0 ± 1.0
+                                                                                                                             (INCHES)
+                                                                                                                                                                               (0.512 ± 0.039)
+
+
+
+
+                                                                13.0 ± 1.0
+                                                             (0.512 ± 0.039)
+                                                                   DIA.
+
+                                                                                                180 +0/-3
+                                                                                            (7.09 +0/-0.118)
+                                                                                                  DIA.
+                                                                                        60.0
+                                                                                      (2.362)
+                                                                                       MIN.
+                                                                                        DIA.
+
+
+
+
+                                                           15.4 ± 2.0
+                                                        (0.606 ± 0.079)
+                                                           13.0 ± 1.0
+                                                        (0.512 ± 0.039)
+
+
+
+
+REV. 07/26
+Specifications are subject to change without notice.
+Users should verify actual device performance in their specific applications.
+The products described herein and this document are subject to specific legal disclaimers as set forth on the last page of this document, and at www.bourns.com/docs/legal/disclaimer.pdf.
+        Legal Disclaimer Notice
+
+This legal disclaimer applies to purchasers and users of Bourns® products manufactured by or on behalf of Bourns, Inc. and its affiliates (collectively,
+“Bourns”).
+
+Unless otherwise expressly indicated in writing, Bourns® products and data sheets relating thereto are subject to change without notice. Users should check
+for and obtain the latest relevant information and verify that such information is current and complete before placing orders for Bourns® products.
+
+The characteristics and parameters of a Bourns® product set forth in its data sheet are based on laboratory conditions, and statements regarding the
+suitability of products for certain “typical” applications are based on Bourns’ knowledge of typical requirements in generic applications. Bourns assumes
+that “typical” applications include failsafe/backup features to address critical risks to users and are designed to allow rework of Bourns® product to
+avoid scrap of a device solely due to malfunctioning Bourns® product. The characteristics and parameters of a Bourns® product in a user application
+may vary from the data sheet characteristics and parameters due to (i) the combination of the Bourns® product with other components in the user’s
+application, or (ii) the environment of the user application itself. The characteristics and parameters of a Bourns® product also can and do vary in
+different applications and actual performance may vary over time. Thus, users should always verify the actual performance of the Bourns® product in
+their specific devices and applications and make their own independent judgments regarding the suitability of Bourns® product and the amount of
+additional test margin to design into their device or application to compensate for differences between laboratory and real-world conditions.
+
+Unless Bourns has explicitly designated an individual Bourns® product as meeting the requirements of a particular industry standard (e.g., IATF
+16949) or a particular qualification (e.g., UL listed or recognized), Bourns is not responsible for any failure of an individual Bourns® product to meet
+the requirements of such industry standard or particular qualification even if such industry standard or qualification is a “state of art”. Users of Bourns®
+products are responsible for ensuring compliance with safety-related requirements and standards applicable to their devices or applications.
+
+Bourns® products are not recommended, authorized or intended for use in applications where failure or malfunction may result in personal injury,
+death, or severe property or environmental damage, such as without limitation nuclear, life-critical medical and certain automotive and aviation
+applications. Except as set forth in the bullet points below or unless expressly and specifically approved in writing on a case-by-case basis by an
+authorized Bourns’ representative, use of any Bourns® products in such unauthorized high-risk applications is at the user’s sole risk.
+
+     • Bourns considers implantable/invasive devices and devices/procedures designed as life-supporting or life-sustaining by the U.S. Food and Drug
+       Administration or equivalent organizations outside of the United States as “life-critical” medical applications. Bourns expressly identifies those
+       Bourns® standard products that are suitable for use in typical medical applications that are not life-critical in its publication entitled “Bourns
+       Medical Grade Component Guide.”
+
+     • Bourns expressly identifies those Bourns® standard products that are suitable for use in typical automotive applications associated with any
+       Automate Safety Integrity Level (ASIL) in its publication entitled “Bourns Automotive Grade Component Guide.” Bourns’ designation of Bourns®
+       product as compliant with the AEC-Q standard does not by itself mean that Bourns has approved such product for use in an automotive
+       application.
+
+     • Bourns expressly identifies Bourns® standard products that are suitable for use in the typical aviation applications/systems requiring System
+       Design Assurance Level (RTCA DO-254 DAL) of C, D or E in its publication entitled “Bourns Civilian Aerospace/Aviation Grade Component Guide.”
+       Bourns does not test its products for compliance with United States Federal Aviation Administration standards or any other generally equivalent
+       governmental organization standard applicable to products designed or manufactured for use in aviation applications. Use of Bourns® standard
+       components in aviation applications associated with RTCA DO-254 DAL A or B without proper approval noted above shall be at the user’s sole
+       risk.
+
+     • Bourns will review and authorize on a case-by-case basis the use of Bourns® standard products which are at least AEC-Q compliant in space-
+       related civil applications (rockets, satellites) with a negotiated cross-waiver and indemnity agreement.
+
+The use and level of testing applicable to Bourns® custom products shall be negotiated on a case-by-case basis by Bourns and the user for which such
+Bourns® custom products are specially designed. Absent a written agreement between Bourns and the user regarding the use and level of such testing,
+the above provisions applicable to Bourns® standard products shall also apply to such Bourns® custom products.
+
+Use of Bourns® products or Bourns’ technology in military/defense applications must be reviewed with Bourns for compliance with applicable export
+control laws and embargoes. Users shall not sell, transfer, export or re-export (which includes transfers within a country) any Bourns® products or
+technology or technical data for use in activities which involve the design, development, production, use or stockpiling of nuclear, chemical or
+biological weapons or missiles, nor shall they use Bourns® products or technology or technical data in any facility which engages in activities relating
+to such devices. Further, Bourns® products and Bourns’ technology and technical data may not under any circumstance be exported or re-exported to
+countries subject to international sanctions or embargoes. Bourns® products and technology may not, without prior authorization from Bourns and/or
+the Government of a country where such product/technology is designed and/or manufactured, be resold, transferred, or re-exported (including within
+the same country) to any party not eligible to receive commodities, software, and technical data originating in such country.
+
+To the maximum extent permitted by applicable law, Bourns disclaims (i) any and all liability for special, punitive, consequential, incidental or indirect
+damages or lost revenues or lost profits, and (ii) any and all implied warranties (those not based on parameters specified in Bourns’ data sheets and/or
+specifications), including implied warranties of fitness for particular purpose, non-infringement and merchantability.
+
+For your convenience, copies of this Legal Disclaimer Notice with German, Spanish, Japanese, Traditional Chinese and Simplified Chinese bilingual versions are
+available at:
+                                         Web Page: https://www.bourns.com/legal/disclaimers-terms-and-policies
+                                                PDF: https://www.bourns.com/docs/Legal/disclaimer.pdf
+
+
+
+
+                                                                                                                                                    K2540 05/26R
+

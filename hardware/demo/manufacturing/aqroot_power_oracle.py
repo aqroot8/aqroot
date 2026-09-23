@@ -75,8 +75,12 @@ TOL_PATH_OHM = 5e-6
 # ==========================================================================
 PRIMITIVES = {
     # --- the USB source ---------------------------------------------------
-    "usb.vbus_source_max_V": 5.25,          # USB 2.0 table 7-7
-    "usb.vbus_source_min_V": 4.75,          # USB 2.0 table 7-7
+    # D-795: the NAMED adapter, 5.1 V x (1 +/- 0.07) -- load +/-5 % plus
+    # line +/-2 %, Raspberry Pi 15W USB-C PSU product brief, by hand.
+    "usb.rpi15w_regulation_fraction": 0.07,
+    "usb.vbus_source_max_V": 5.457,
+    "usb.vbus_source_min_V": 4.743,
+    "usb.awg18_stranded_max_ohm_per_m": 0.0228,
     # --- the BQ25185 (TI SLUSF65B) ---------------------------------------
     "bq.vsys_reg_V": 4.5,
     "bq.ron_in_max_ohm": 0.470,
@@ -85,6 +89,14 @@ PRIMITIVES = {
     "bq.ilim_min_A": 0.995,
     "bq.ilim_max_A": 1.100,
     "bq.ichg_A": 0.769,
+    # D-795 / R14-04: the programmed charge current is a BAND.
+    "bq.kiset_min_AOhm": 285.0,
+    "bq.kiset_max_AOhm": 315.0,
+    "bq.iprechg_fraction": 0.20,
+    "bq.iprechg_accuracy": 0.10,
+    "bq.vlowv_min_V": 2.9,
+    "bq.treg_typ_C": 100.0,
+    "bq.treg_declared_band_K": 10.0,
     # D-794 / R13-02.  THE FOUR CONTROL-LOOP THRESHOLDS, read off the same EC
     # table by hand.  Each is a DIFFERENT physical loop and the oracle checks
     # each branch against its own.
@@ -175,8 +187,30 @@ def primitives_agree(registry, scalars):
 # names below are re-derived from SLUSF65B 6.3.1/6.3.2/6.3.3/6.3.5/6.3.6 and
 # every inequality here is written out from the primitives rather than
 # imported.
-CHARGER_BRANCHES = ("SYS_REG", "CC_PATH_LIMITED", "ILIM", "VINDPM",
+CHARGER_BRANCHES = ("SYS_REG", "CC_PATH_LIMITED", "TREG", "ILIM", "VINDPM",
                     "DPPM", "NO_CHARGE", "SUPPLEMENT")
+# D-795: R37, read off the schematic by hand (390 R 1 %, UNI-ROYAL
+# 0603WAF3900T5E).  The oracle derives the ICHG band from it and KISET itself.
+ORACLE_R37_OHM = 390.0
+ORACLE_R37_TOLERANCE = 0.01
+
+
+def oracle_charge_program(vbat, ichg_corner):
+    """The CC / precharge program, from primitives, independently."""
+    p = PRIMITIVES
+    if ichg_corner == "max":
+        ichg = p["bq.kiset_max_AOhm"] / (ORACLE_R37_OHM
+                                         * (1.0 - ORACLE_R37_TOLERANCE))
+        acc = 1.0 + p["bq.iprechg_accuracy"]
+    elif ichg_corner == "min":
+        ichg = p["bq.kiset_min_AOhm"] / (ORACLE_R37_OHM
+                                         * (1.0 + ORACLE_R37_TOLERANCE))
+        acc = 1.0 - p["bq.iprechg_accuracy"]
+    else:
+        ichg, acc = p["bq.ichg_A"], 1.0
+    if vbat < p["bq.vlowv_min_V"]:
+        return ichg * p["bq.iprechg_fraction"] * acc, "PRECHARGE"
+    return ichg, "CC"
 # The branches that MUST appear somewhere in the derivation for it to have
 # exercised the physics at all.  `completeness()` rules on this.
 CHARGER_BRANCHES_THAT_FOLD_CHARGE = ("ILIM", "VINDPM", "DPPM")
@@ -230,6 +264,19 @@ DUPLICATED_STATE_FIELDS = (
     ("ilim_A", "ilim", None),
     ("vbus_source_V", "vbus", None),
     ("path_ohm", "path", None),
+    # ---- D-795 / R14-05 (Fable R14-13/15): EVERY printed heat field. ------
+    ("input_fet_W", "p_input_fet", 6),
+    ("charge_fet_W", "p_charge_fet", 6),
+    ("batfet_W", "p_batfet", 6),
+    ("package_W", "p_pkg", 6),
+    ("cable_W", "p_cable", 6),
+    ("source_W", "p_in", 6),
+    ("stored_W", "p_stored", 6),
+    ("from_cell_W", "p_from_cell", 6),
+    ("total_dissipation_W", "p_diss_total", 6),
+    ("internal_loss_sum_W", "p_loss_sum", 6),
+    ("input_fet_resistive_only_W", "p_ron_only", 6),
+    ("package_W_treg_cannot_reduce", "p_treg_cannot", 6),
 )
 DUPLICATED_CONTROL_FIELDS = (
     ("vsys_reg_V", "vsys_reg", 6),
@@ -240,6 +287,8 @@ DUPLICATED_CONTROL_FIELDS = (
     ("input_current_cap_A", "i_cap", 6),
     ("ilim_cap_A", "ilim", 6),
     ("batfet_off_comparator_node_V", "batfet_off_node_V", 6),
+    ("charge_program_A", "ichg_max", 6),
+    ("nominal_charge_program_A", "ichg_nominal", 6),
 )
 
 
@@ -326,6 +375,16 @@ def charger_residuals(st, scalars):
     w_cable = i_in * i_in * path
     terminal = vbus * i_in + vbat * i_supp - p_sys - vbat * i_chg
     r_energy = terminal - (w_pkg + w_cable)
+    # D-795 / R14-05: the raw heat twins must equal what the raw TERMINALS
+    # say, so a raw-only corruption of a heat field cannot hide behind a
+    # matching summary.
+    for key, want in (("p_input_fet", w_input_fet), ("p_charge_fet",
+                                                      w_charge_fet),
+                      ("p_batfet", w_batfet), ("p_pkg", w_pkg),
+                      ("p_cable", w_cable), ("p_diss_total", terminal),
+                      ("p_loss_sum", w_pkg + w_cable)):
+        if key in q:
+            r_energy = max(r_energy, abs(q[key] - want), key=abs)
     return dict(
         vin_pin_V=r_vpin, kcl_A=r_kcl, constant_power_W=r_load,
         package_W=r_pkg, package_treg_W=r_pkg_treg,
@@ -347,33 +406,8 @@ def vindpm_threshold(vbat):
     return p["bq.vindpm_fixed_V"]
 
 
-def charger_branch_is_valid(st):
-    """The branch INEQUALITIES, from primitives, independently.
-
-    R13-02: "F14 must independently check the physical branch conditions, not
-    repeat the same control assumptions."  So every threshold below is built
-    from this module's own PRIMITIVES and every inequality is stated here in
-    full.  Nothing is read out of the state's `controls` block except the
-    declared THRESHOLD SWEEP, which is an input to the derivation rather than
-    a claim about it -- and the sweep is applied here independently too.
-    """
+def _oracle_thresholds(vbat, sweep):
     p = PRIMITIVES
-    ctrl = st.get("controls") or {}
-    sweep = float(ctrl.get("sweep") or 0.0)
-    treg = bool(ctrl.get("treg_folds_charge_to_zero"))
-    vsys_reg = p["bq.vsys_reg_V"] * 0.98
-    ron_in = p["bq.ron_in_max_ohm"]
-    ron_bat = p["bq.ron_bat_max_ohm"] * p["bq.ron_bat_vbat_allowance"]
-    ichg = 0.0 if treg else p["bq.ichg_A"]
-    ilim = st["ilim_A"]
-    path = st["path_ohm"]
-    vbus = st["vbus_source_V"]
-    r_src = path + ron_in
-    vsys, vbat, v_pin = st["vsys_V"], st["vbat_V"], st["vin_pin_V"]
-    i_in, i_chg, i_supp = st["input_A"], st["charge_A"], st["supplement_A"]
-    mode = st["mode"]
-    # The four thresholds, swept in the SAME declared directions the canonical
-    # derivation uses.  Written out, not imported.
     v_dppm = vbat + p["bq.vdppm_V"] * (1.0 + sweep)
     v_sup_enter = vbat - p["bq.vbsup1_V"] * (1.0 - sweep)
     v_sup_exit = vbat - p["bq.vbsup2_V"] * (1.0 - sweep)
@@ -382,77 +416,154 @@ def charger_branch_is_valid(st):
     else:
         v_vindpm = p["bq.vindpm_fixed_V"] * (
             1.0 + sweep * p["bq.fixed_vindpm_sweep_ratio"])
+    return v_dppm, v_sup_enter, v_sup_exit, v_vindpm
+
+
+def charger_branch_is_valid(st):
+    """The branch INEQUALITIES, from primitives, independently.
+
+    D-795 / R14-03: "F14 must not share the same wrong branch semantics.  Add
+    an independent physical inequality: ICHG < programmed ICHG with SYS above
+    VBAT+VDPPM is invalid unless a documented control such as TREG is
+    active."  So the program is recomputed HERE from KISET, R37 and the
+    precharge row; ILIM, VINDPM and DPPM must all hold SYS at VBAT + VDPPM;
+    and a folded charge above that node is legal only in the TREG branch --
+    whose junction the oracle re-derives from the state's own thermal block
+    and requires to sit at the TREG threshold it names.
+    """
+    p = PRIMITIVES
+    ctrl = st.get("controls") or {}
+    sweep = float(ctrl.get("sweep") or 0.0)
+    vsys_reg = p["bq.vsys_reg_V"] * 0.98
+    ron_in = p["bq.ron_in_max_ohm"]
+    ron_bat = p["bq.ron_bat_max_ohm"] * p["bq.ron_bat_vbat_allowance"]
+    ilim = st["ilim_A"]
+    path = st["path_ohm"]
+    vbus = st["vbus_source_V"]
+    r_src = path + ron_in
+    vsys, vbat, v_pin = st["vsys_V"], st["vbat_V"], st["vin_pin_V"]
+    i_in, i_chg, i_supp = st["input_A"], st["charge_A"], st["supplement_A"]
+    mode = st["mode"]
+    loop = ctrl.get("charge_loop")
+    nominal, kind = oracle_charge_program(vbat, st.get("ichg_corner", "max"))
+    if ctrl.get("treg_folds_charge_to_zero"):
+        prog = 0.0
+    elif loop == "TREG":
+        prog = min(nominal, float(ctrl.get("charge_program_A") or 0.0))
+    else:
+        prog = nominal
+    v_dppm, v_sup_enter, v_sup_exit, v_vindpm = _oracle_thresholds(vbat,
+                                                                   sweep)
     i_vindpm_cap = max(0.0, (vbus - v_vindpm) / path) if path > 0 else 1e18
     cap = min(ilim, i_vindpm_cap)
     off_node = ctrl.get("batfet_off_comparator_node_V")
+    # The public fields are rounded to 1e-6; a voltage re-derived through a
+    # ~1.5 ohm source path from a rounded current can move by a few 1e-6.
+    tol = 5e-6
 
     why = []
     if mode not in CHARGER_BRANCHES:
         why.append("unknown branch %r" % (mode,))
         return False, why
     # ---- universal ------------------------------------------------------
-    if i_in > cap + 1e-6:
+    if i_in > cap + tol:
         why.append("the input current exceeds the binding input-side loop")
-    if i_in > 1e-9 and v_pin < v_vindpm - 1e-6:
+    if i_in > 1e-9 and v_pin < v_vindpm - tol:
         why.append("the IN pin sits below the VINDPM threshold")
     if i_supp > 1e-9 and i_chg > 1e-9:
         why.append("charging and supplementing at the same time")
-    if i_chg > ichg + 1e-9:
-        why.append("more charge current than the CC loop programs")
-    if vsys > vsys_reg + 1e-9:
+    if i_chg > prog + tol:
+        why.append("more charge current than the program")
+    if vsys > vsys_reg + tol:
         why.append("SYS above its regulation point")
     if min(i_in, i_chg, i_supp, st["system_A"]) < -1e-12:
         why.append("a negative current")
+    if abs(float(ctrl.get("nominal_charge_program_A", nominal)) - nominal) \
+            > tol:
+        why.append("the state's nominal program is not KISET / R37 (%s)"
+                   % kind)
+    # ---- D-795 / R14-03: THE PHYSICAL INEQUALITY ------------------------
+    if i_chg < nominal - tol and vsys > v_dppm + tol and loop != "TREG":
+        why.append("a charge current below the %s program with SYS above "
+                   "VBAT + VDPPM and no thermal regulation: no loop in the "
+                   "part produces it" % kind)
     # ---- per branch -----------------------------------------------------
+    if mode in ("SYS_REG", "CC_PATH_LIMITED", "TREG"):
+        if abs(i_chg - prog) > tol:
+            why.append("%s charges at the program" % mode)
+        if vsys < v_dppm - tol:
+            why.append("SYS is below VDPPM: the DPPM loop has control")
     if mode == "SYS_REG":
-        if abs(vsys - vsys_reg) > 1e-6:
+        if abs(vsys - vsys_reg) > tol:
             why.append("SYS is not at its regulation point")
-        if i_chg < ichg - 1e-9:
-            why.append("SYS regulation has no authority over the charge "
-                       "current: a folded charge current is ILIM, VINDPM, "
-                       "DPPM or TREG")
-        if vbus - i_in * r_src < vsys_reg - 1e-6:
+        if vbus - i_in * r_src < vsys_reg - tol:
             why.append("the source cannot hold the regulation point claimed")
     elif mode == "CC_PATH_LIMITED":
-        if i_chg < ichg - 1e-9:
-            why.append("CC_PATH_LIMITED charges at ICHG by definition")
-        if abs(vsys - (vbus - i_in * r_src)) > 1e-6:
+        if abs(vsys - (vbus - i_in * r_src)) > tol:
             why.append("SYS is not what the source and RON_IN leave")
-        if vsys < v_dppm - 1e-9:
-            why.append("SYS is below VDPPM: the DPPM loop has control")
-        if i_in > cap - 1e-9 and cap < 1e17:
-            why.append("an input-side loop is at its limit: the branch is "
-                       "ILIM or VINDPM, not CC_PATH_LIMITED")
-    elif mode in ("ILIM", "VINDPM"):
-        if i_in < cap - 1e-6:
-            why.append("the branch names a loop that is not at its limit")
-        if i_supp > 1e-9:
-            why.append("an input-limited branch may not supplement")
-        if vsys < v_dppm - 1e-9:
-            why.append("SYS is below VDPPM: the DPPM loop has control")
-        if mode == "ILIM" and ilim > i_vindpm_cap + 1e-9:
-            why.append("VINDPM binds before ILIM at this source")
-        if mode == "VINDPM":
-            if i_vindpm_cap > ilim + 1e-9:
-                why.append("ILIM binds before VINDPM at this source")
-            if abs(v_pin - v_vindpm) > 1e-6:
-                why.append("VINDPM claimed with the IN pin off its threshold")
-    elif mode == "DPPM":
-        if abs(vsys - v_dppm) > 1e-6:
-            why.append("DPPM does not hold SYS at VBAT + VDPPM")
+    elif mode == "TREG":
+        if loop != "TREG":
+            why.append("TREG claimed with no thermal loop")
+        th = st.get("thermal")
+        if not isinstance(th, dict):
+            why.append("a TREG state carries no thermal evidence")
+        else:
+            internal = (st["source_W"] + st["from_cell_W"] - st["stored_W"]
+                        - th.get("delivered_out_W", 0.0))
+            tj = (th["ambient_C"] + th["r_sys_K_per_W"] * internal
+                  + th["theta_ja_C_per_W"] * st["package_W"])
+            if tj > th["treg_C"] + 0.01:
+                why.append("a TREG state whose junction %.3f C is above the "
+                           "TREG threshold it names" % tj)
+            if i_chg < nominal - tol and tj < th["treg_C"] - 30.0:
+                why.append("a TREG fold with the junction far below TREG")
+    elif mode in ("ILIM", "VINDPM", "DPPM"):
+        if abs(vsys - v_dppm) > tol:
+            why.append("%s must hold SYS at VBAT + VDPPM" % mode)
         if vsys <= vbat:
-            why.append("6.3.2: SYS is maintained ABOVE the battery while the "
-                       "DPPM loop is in control")
+            why.append("6.3.2: SYS is maintained ABOVE the battery")
         if i_supp > 1e-9:
-            why.append("DPPM may not supplement")
+            why.append("a DPPM-held branch may not supplement")
+        held = (vbus - v_dppm) / r_src
+        # PRECEDENCE.  The DPPM loop holds SYS at VBAT + VDPPM only because
+        # the program CANNOT be delivered above it.  If it can, this branch
+        # is a state no loop is in.
+        p_sys = st["system_W"]
+        i_reg = p_sys / vsys_reg + prog
+        if vbus - i_reg * r_src >= vsys_reg:
+            full_node, full_in = vsys_reg, i_reg
+        else:
+            b = vbus - prog * r_src
+            d = b * b - 4.0 * p_sys * r_src
+            full_node = 0.5 * (b + math.sqrt(d)) if d >= 0 else None
+            full_in = (None if full_node is None
+                       else p_sys / full_node + prog)
+        if full_node is not None and full_in <= cap + 1e-9 \
+                and full_node >= v_dppm - 1e-9 and prog > 0.0:
+            why.append("%s claimed while the full program is deliverable "
+                       "above VDPPM" % mode)
+        if mode == "ILIM":
+            if abs(i_in - ilim) > tol or ilim > i_vindpm_cap + 1e-9 \
+                    or ilim > held + 1e-9:
+                why.append("ILIM claimed where ILIM does not bind")
+        elif mode == "VINDPM":
+            if abs(v_pin - v_vindpm) > tol or i_vindpm_cap > ilim + 1e-9 \
+                    or i_vindpm_cap > held + 1e-9:
+                why.append("VINDPM claimed where VINDPM does not bind")
+        else:
+            if abs(i_in - held) > tol or held > cap + 1e-9:
+                why.append("source-limited DPPM claimed where an input loop "
+                           "binds")
     elif mode == "NO_CHARGE":
         if i_chg > 1e-9 or i_supp > 1e-9:
             why.append("NO_CHARGE must neither charge nor supplement")
-        if abs(vsys - min(vsys_reg, vbus - i_in * r_src)) > 1e-6:
+        if abs(vsys - min(vsys_reg, vbus - i_in * r_src)) > tol:
             why.append("SYS is not what the regulator and the source leave")
+        if prog > 1e-9 and vsys > v_dppm + tol:
+            why.append("NO_CHARGE above VDPPM with the CC loop active: the "
+                       "loop would pull SYS down to VDPPM")
         if vsys < v_sup_enter - 1e-9:
-            why.append("SYS is below the supplement ENTRY threshold and the "
-                       "BATFET would be conducting")
+            why.append("SYS is below the supplement ENTRY threshold")
         if st.get("previous_mode") == "SUPPLEMENT" and vsys < v_sup_exit - 1e-9:
             why.append("the part was supplementing and SYS has not risen "
                        "back above VBAT - VBSUP2")
@@ -461,12 +572,11 @@ def charger_branch_is_valid(st):
             why.append("SUPPLEMENT must not charge")
         if vsys > vbat + 1e-9:
             why.append("supplementing into a node ABOVE the cell")
-        if abs(vsys - (vbat - i_supp * ron_bat)) > 1e-6:
+        if abs(vsys - (vbat - i_supp * ron_bat)) > tol:
             why.append("SYS is not the cell less the BATFET drop")
         held = (vbus - vsys) / r_src
-        if i_in < min(cap, held) - 1e-6:
+        if i_in < min(cap, held) - tol:
             why.append("the input is delivering less than it could")
-        # The COMPARATOR input is the BATFET-OFF node, not the solved one.
         if off_node is not None:
             if off_node > v_sup_enter + 1e-9:
                 if not (st.get("previous_mode") == "SUPPLEMENT"
@@ -474,6 +584,138 @@ def charger_branch_is_valid(st):
                     why.append("supplement entered with the BATFET-off node "
                                "above VBAT - VBSUP1 and nothing to latch it")
     return (not why), why
+
+
+# ==========================================================================
+# D-795 / R14-05.  AN INDEPENDENT CLASSIFIER, SO A MODE POPULATION IS EXACT.
+#
+# Round-14: "Supplement/no-charge/other required mode-history populations
+# must be exact and nonempty."  A population can only be EXACT if the oracle
+# knows, for every point, which branch the part must be in -- so the oracle
+# builds EVERY branch's candidate state from its own closed forms, keeps the
+# ones its own inequalities accept, and the canonical answer has to be the
+# one that survives.  It is an elimination, not a second copy of the
+# canonical control flow.
+# ==========================================================================
+def _candidate(mode, vsys, i_in, i_chg, i_supp, p_sys, vbat, vbus, path,
+               ilim, sweep, prev, ichg_corner, off_node):
+    return dict(mode=mode, vsys_V=vsys, vbat_V=vbat,
+                vin_pin_V=vbus - i_in * path, input_A=i_in, charge_A=i_chg,
+                supplement_A=i_supp,
+                system_A=(p_sys / vsys if vsys > 0 else 0.0),
+                ilim_A=ilim, path_ohm=path, vbus_source_V=vbus,
+                previous_mode=prev, ichg_corner=ichg_corner,
+                system_W=p_sys,
+                controls=dict(sweep=sweep, charge_loop=None,
+                              batfet_off_comparator_node_V=off_node))
+
+
+def independent_branches(p_sys, vbat, vbus, path, ilim, sweep, prev,
+                         ichg_corner):
+    """Every branch whose own candidate passes the oracle's inequalities."""
+    p = PRIMITIVES
+    vsys_reg = p["bq.vsys_reg_V"] * 0.98
+    ron_in = p["bq.ron_in_max_ohm"]
+    ron_bat = p["bq.ron_bat_max_ohm"] * p["bq.ron_bat_vbat_allowance"]
+    r_src = path + ron_in
+    prog, _ = oracle_charge_program(vbat, ichg_corner)
+    v_dppm, v_sup_enter, v_sup_exit, v_vindpm = _oracle_thresholds(vbat,
+                                                                   sweep)
+    cap = min(ilim, max(0.0, (vbus - v_vindpm) / path))
+    args = (p_sys, vbat, vbus, path, ilim, sweep, prev, ichg_corner)
+    cands = []
+
+    def high_root(ichg):
+        b = vbus - ichg * r_src
+        d = b * b - 4.0 * p_sys * r_src
+        if d < 0:
+            return None
+        return 0.5 * (b + math.sqrt(d))
+
+    # full program, regulated
+    cands.append(_candidate("SYS_REG", vsys_reg, p_sys / vsys_reg + prog,
+                            prog, 0.0, *args, None))
+    v = high_root(prog)
+    if v is not None and v < vsys_reg:
+        cands.append(_candidate("CC_PATH_LIMITED", v,
+                                (vbus - v) / r_src, prog, 0.0, *args, None))
+    # DPPM-held
+    held = max(0.0, (vbus - v_dppm) / r_src)
+    for mode, i_in in (("ILIM", ilim),
+                       ("VINDPM", max(0.0, (vbus - v_vindpm) / path)),
+                       ("DPPM", held)):
+        i_chg = i_in - p_sys / v_dppm
+        if -1e-12 <= i_chg:
+            cands.append(_candidate(mode, v_dppm, i_in, max(0.0, i_chg), 0.0,
+                                    *args, None))
+    # no charge: the zero-charge node
+    v0 = high_root(0.0)
+    off = None
+    if v0 is not None:
+        v0 = min(v0, vsys_reg)
+        i0 = p_sys / v0 if v0 > 0 else 0.0
+        if i0 <= cap + 1e-12:
+            off = v0
+            cands.append(_candidate("NO_CHARGE", v0, i0, 0.0, 0.0, *args,
+                                    None))
+    # CC-loop necessity: an off node above VDPPM is not an equilibrium
+    off_for_sup = off
+    if off is not None and prog > 0.0 and off > v_dppm + 1e-12:
+        off_for_sup = None
+    # supplement, bisected independently
+    def resid(vs):
+        i_in = max(0.0, min(cap, (vbus - vs) / r_src))
+        return vbat - (p_sys / vs - i_in) * ron_bat - vs
+    lo, hi = 1e-3, vbat
+    if resid(hi) < 0.0:
+        for _ in range(90):
+            mid = 0.5 * (lo + hi)
+            if resid(mid) >= 0.0:
+                lo = mid
+            else:
+                hi = mid
+        vs = 0.5 * (lo + hi)
+        if vs > 0.2:
+            i_in = max(0.0, min(cap, (vbus - vs) / r_src))
+            i_supp = max(0.0, p_sys / vs - i_in)
+            cands.append(_candidate("SUPPLEMENT", vs, i_in, 0.0, i_supp,
+                                    *args, off_for_sup))
+    valid = []
+    for c in cands:
+        ok, _ = charger_branch_is_valid(c)
+        if ok:
+            valid.append(c["mode"])
+    # PRECEDENCE BETWEEN FAMILIES.  A charging branch that is physical
+    # excludes the no-charge ones: the CC loop takes the input first and the
+    # BATFET only conducts when nothing else can hold SYS.
+    charging = {"SYS_REG", "CC_PATH_LIMITED", "TREG", "ILIM", "VINDPM",
+                "DPPM"}
+    if charging & set(valid):
+        valid = [v for v in valid if v in charging]
+    # The hysteresis band is the one place two candidates may BOTH be
+    # physical; the history decides, exactly as the part does.
+    if "NO_CHARGE" in valid and "SUPPLEMENT" in valid:
+        valid = ["SUPPLEMENT"] if prev == "SUPPLEMENT" else ["NO_CHARGE"]
+    return sorted(set(valid))
+
+
+def max_deliverable_W(vbat, vbus, path, ilim, sweep):
+    """The most a constant-power load at SYS can be given at all -- input at
+    its cap plus the battery through the BATFET -- scanned, so a refusal of
+    'no operating point' can be checked against physics."""
+    p = PRIMITIVES
+    ron_in = p["bq.ron_in_max_ohm"]
+    ron_bat = p["bq.ron_bat_max_ohm"] * p["bq.ron_bat_vbat_allowance"]
+    r_src = path + ron_in
+    _, _, _, v_vindpm = _oracle_thresholds(vbat, sweep)
+    cap = min(ilim, max(0.0, (vbus - v_vindpm) / path))
+    best = 0.0
+    n = 4000
+    for k in range(1, n):
+        vs = 0.2 + (vbat - 0.2) * k / n
+        i_in = max(0.0, min(cap, (vbus - vs) / r_src))
+        best = max(best, vs * (i_in + (vbat - vs) / ron_bat))
+    return best
 
 
 def charger_junction_C(st, scalars, delivered_out_W=0.0):
@@ -653,8 +895,8 @@ REQUIRED_RAIL_ORDERS = ("3v3_first", "5v_first")
 # D-794 / R13-02 + R13-04.  EVERY branch the device has must be exercised by
 # the derivation, not a subset of them.  A branch that is never solved is a
 # branch whose inequalities were never checked.
-REQUIRED_CHARGER_BRANCHES = ("SYS_REG", "CC_PATH_LIMITED", "ILIM", "VINDPM",
-                             "DPPM", "NO_CHARGE", "SUPPLEMENT")
+REQUIRED_CHARGER_BRANCHES = ("SYS_REG", "CC_PATH_LIMITED", "TREG", "ILIM",
+                             "VINDPM", "DPPM", "NO_CHARGE", "SUPPLEMENT")
 # D-793 / R12-04: at least one post-state must be REJECTED BY NAME, so the
 # inclusion invariant cannot be true merely because nothing was tried.
 REQUIRED_SEEDED_REJECTION = "seeded_canary/d790_declared"
@@ -725,6 +967,254 @@ def expected_named_transitions():
     return out
 
 
+# ==========================================================================
+# D-795 / R14-05.  THE CHARGER, REGIME AND NETWORK DOMAINS, DECLARED HERE.
+#
+# ROUND-14: "F14 still passes when required network corners or charger
+# histories are removed while superficial mode/branch names remain.
+# Independently define the FULL semantic key domain for network states,
+# charger source/BAT/threshold/history points, permission transitions and
+# refusals.  Require exact key MULTISETS, not minimum counts or branch-name
+# presence.  Every expected point must either be solved or carry an
+# independently checkable physical refusal."
+#
+# D-794 checked that every branch NAME appeared somewhere.  One row per mode
+# satisfied it; so did deleting every SUPPLEMENT-history row.  The domain is
+# now a product of declared axes, the canonical side must deliver EXACTLY that
+# multiset, and each point is either a solved state whose branch the oracle's
+# own elimination agrees with, or a refusal the oracle can re-check.
+# ==========================================================================
+EXPECTED_CHARGER_CELLS_V = (2.85, 3.2, 3.52, 3.7, 4.2, 4.221)
+EXPECTED_CHARGER_POWERS_W = (0.0, 0.25, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.3,
+                             3.6, 4.0, 4.5, 5.0, 5.65, 7.0,
+                             # beyond what the input plus the BATFET can
+                             # deliver at the low cells: the domain CONTAINS
+                             # refusals by construction, so dropping them is
+                             # a missing key rather than an invisible edit
+                             15.0, 30.0)
+EXPECTED_ILIM_CORNERS = ("max", "min")
+EXPECTED_SOURCE_CLASSES = ("rpi15w_high", "rpi15w_low",
+                           "generic_typec_24awg_2m", "unqualified_28awg_2m")
+EXPECTED_QUALIFIED_SOURCE_CLASSES = ("rpi15w_high", "rpi15w_low")
+EXPECTED_HISTORIES = (None, "NO_CHARGE", "SUPPLEMENT")
+EXPECTED_ICHG_CORNERS = ("max", "min")
+# (mode, previous mode) populations that MUST be non-empty -- and the one
+# behaviour the hysteresis exists for: a point whose branch the history
+# DECIDES.
+REQUIRED_MODE_HISTORY_POPULATIONS = (
+    ("SYS_REG", None), ("CC_PATH_LIMITED", None), ("ILIM", None),
+    ("VINDPM", None), ("DPPM", None), ("SUPPLEMENT", None),
+    ("SUPPLEMENT", "SUPPLEMENT"), ("NO_CHARGE", None),
+    ("NO_CHARGE", "NO_CHARGE"), ("SUPPLEMENT", "NO_CHARGE"))
+EXPECTED_REGIME_VBAT_GRID_V = (2.85, 3.0, 3.2, 3.4, 3.5, 3.52, 3.6, 3.8, 4.0,
+                               4.1, 4.2, 4.221)
+EXPECTED_REGIME_SWEEP_FRACTIONS = (-1.0, -0.5, 0.0, 0.5, 1.0)
+EXPECTED_REGIME_HISTORIES = (None, "SUPPLEMENT")
+EXPECTED_REGIME_AMBIENTS_C = (0.0, 25.0, 40.0)
+REGIME_GUARDBAND = 0.05
+REGIME_GRID_W = 0.05
+
+
+def charger_domain_key(vbat, p_sys, ilim, source, hist, ichg):
+    return "vbat%.3f/p%.3f/ilim_%s/%s/%s/ichg_%s" % (
+        vbat, p_sys, ilim, source, hist or "none", ichg)
+
+
+def expected_charger_keys():
+    out = []
+    for v in EXPECTED_CHARGER_CELLS_V:
+        for w in EXPECTED_CHARGER_POWERS_W:
+            for il in EXPECTED_ILIM_CORNERS:
+                for c in EXPECTED_SOURCE_CLASSES:
+                    for h in EXPECTED_HISTORIES:
+                        for ic in EXPECTED_ICHG_CORNERS:
+                            out.append(charger_domain_key(v, w, il, c, h, ic))
+    return out
+
+
+def expected_regime_keys():
+    sw0 = PRIMITIVES["bq.branch_threshold_sweep"]
+    out = []
+    for c in EXPECTED_SOURCE_CLASSES:
+        for v in EXPECTED_REGIME_VBAT_GRID_V:
+            for il in EXPECTED_ILIM_CORNERS:
+                for f in EXPECTED_REGIME_SWEEP_FRACTIONS:
+                    for h in EXPECTED_REGIME_HISTORIES:
+                        for a in EXPECTED_REGIME_AMBIENTS_C:
+                            out.append("%s/vbat%.3f/ilim_%s/sweep%+.3f/%s/"
+                                       "amb%.0f" % (c, v, il, round(f * sw0, 6),
+                                                    h or "none", a))
+    return out
+
+
+def _floor_to_grid(x):
+    return (math.floor(x * (1.0 - REGIME_GUARDBAND) / REGIME_GRID_W + 1e-12)
+            * REGIME_GRID_W)
+
+
+def charger_domain_problems(charger_states, charger_refusals):
+    """Exact keys; every solved point agrees with the independent
+    classifier; every refusal is physically re-checked."""
+    why = []
+    got = ([st.get("domain_key") for st in charger_states]
+           + [r.get("domain_key") for r in charger_refusals])
+    why += _multiset_problems("charger domain", got, expected_charger_keys())
+    pops = {}
+    by_key = {}
+    disagreements = 0
+    for st in charger_states:
+        k = st.get("domain_key")
+        by_key[k] = st
+        pops[(st["mode"], st.get("previous_mode"))] = pops.get(
+            (st["mode"], st.get("previous_mode")), 0) + 1
+        want = independent_branches(
+            st["system_W"], st["vbat_V"], st["vbus_source_V"], st["path_ohm"],
+            st["ilim_A"], float((st.get("controls") or {}).get("sweep") or 0.0),
+            st.get("previous_mode"), st.get("ichg_corner", "max"))
+        if want != [st["mode"]]:
+            disagreements += 1
+            if disagreements <= 8:
+                why.append("charger point %s: the canonical branch is %r but "
+                           "the independent elimination leaves %r"
+                           % (k, st["mode"], want))
+    if disagreements > 8:
+        why.append("... and %d more branch disagreements" % (disagreements - 8))
+    if not charger_refusals:
+        why.append("the charger refusal set is EMPTY, but the declared domain "
+                   "contains powers no source-plus-BATFET can deliver")
+    for r in charger_refusals:
+        pmax = max_deliverable_W(r["vbat_V"], r["vbus_V"], r["path_ohm"],
+                                 r["ilim_A"], r.get("sweep", 0.0))
+        if r["system_W"] <= pmax * (1.0 + 1e-6):
+            why.append("charger point %s is REFUSED as having no operating "
+                       "point, but the input plus the BATFET can deliver "
+                       "%.4f W against the %.4f W asked"
+                       % (r.get("domain_key"), pmax, r["system_W"]))
+    for pair in REQUIRED_MODE_HISTORY_POPULATIONS:
+        if not pops.get(pair):
+            why.append("the (branch, history) population %r is EMPTY" %
+                       (pair,))
+    # the hysteresis is DEMONSTRATED, not assumed
+    latched = 0
+    for st in charger_states:
+        if st.get("previous_mode") != "SUPPLEMENT" or st["mode"] != "SUPPLEMENT":
+            continue
+        k0 = st["domain_key"].replace("/SUPPLEMENT/", "/none/")
+        other = by_key.get(k0)
+        if other is not None and other["mode"] == "NO_CHARGE":
+            latched += 1
+    if not latched:
+        why.append("no point in the domain shows the VBSUP1/VBSUP2 "
+                   "hysteresis deciding the branch: the history axis is not "
+                   "exercised")
+    return why, dict(
+        expected_points=len(expected_charger_keys()),
+        solved=len(charger_states), refused=len(charger_refusals),
+        populations={"%s/%s" % (m, h or "none"): n
+                     for (m, h), n in sorted(pops.items(),
+                                             key=lambda x: repr(x))},
+        points_where_history_decides=latched,
+        classifier_disagreements=disagreements)
+
+
+def regime_problems(rows, published, scalars):
+    """Every regime row exists exactly once, its evidence brackets its own
+    ceiling, and every PUBLISHED figure is the oracle's own minimum."""
+    why = []
+    got = [r.get("key") for r in rows]
+    why += _multiset_problems("charge regime", got, expected_regime_keys())
+    tj_max = scalars["tj_operating_max_C"]
+    bad = 0
+    for r in rows:
+        ev = r.get("_evidence")
+        if not isinstance(ev, dict):
+            why.append("regime row %s carries no evidence" % r.get("key"))
+            bad += 1
+            continue
+        for label in ("no_discharge_at", "junction_at"):
+            st = ev.get(label)
+            if st is None:
+                if (label == "no_discharge_at" and r["no_discharge_W"] > 0) or \
+                        (label == "junction_at" and r["junction_W"] > 0):
+                    why.append("regime row %s: no %s state" % (r["key"], label))
+                continue
+            ok, w = charger_branch_is_valid(st)
+            dok, dw = raw_summary_divergence(st)
+            if not ok or not dok:
+                bad += 1
+                if bad <= 6:
+                    why.append("regime row %s: the %s state is not physical: "
+                               "%s" % (r["key"], label, (w + dw)[:2]))
+        nd_at, nd_above = ev.get("no_discharge_at"), ev.get("no_discharge_above")
+        if r["no_discharge_W"] < 7.99:
+            if nd_at is not None and nd_at["mode"] == "SUPPLEMENT":
+                why.append("regime row %s: the no-discharge ceiling is itself "
+                           "in SUPPLEMENT" % r["key"])
+            if nd_above is not None and nd_above["mode"] != "SUPPLEMENT":
+                why.append("regime row %s: just ABOVE the no-discharge ceiling "
+                           "the part is still not supplementing -- the "
+                           "ceiling is not the boundary" % r["key"])
+        th = ev.get("thermal") or {}
+
+        def tj(st):
+            internal = (st["source_W"] + st["from_cell_W"] - st["stored_W"]
+                        - th.get("delivered_out_W", 0.0))
+            return (th["ambient_C"] + th["r_sys_K_per_W"] * internal
+                    + th["theta_ja_C_per_W"] * st["package_W"])
+        if th.get("r_sys_K_per_W") != scalars["r_sys_K_per_W"] or \
+                th.get("theta_ja_C_per_W") != scalars["theta_ja_C_per_W"]:
+            why.append("regime row %s is solved on a thermal model the "
+                       "oracle was not given" % r["key"])
+        j_at, j_above = ev.get("junction_at"), ev.get("junction_above")
+        if r["junction_W"] < 7.99:
+            if j_at is not None and tj(j_at) > tj_max + 1e-6:
+                why.append("regime row %s: the junction ceiling is over %.1f C"
+                           % (r["key"], tj_max))
+            if j_above is not None and tj(j_above) <= tj_max:
+                why.append("regime row %s: just ABOVE the junction ceiling the "
+                           "junction is still inside the maximum" % r["key"])
+        if abs(r["ceiling_W"] - min(r["no_discharge_W"], r["junction_W"])) \
+                > 1e-6:
+            why.append("regime row %s: the ceiling is not the lower of its two "
+                       "limits" % r["key"])
+    # ---- the PUBLISHED figures, recomputed from the rows ------------------
+    q = [r for r in rows if r.get("source_class")
+         in EXPECTED_QUALIFIED_SOURCE_CLASSES]
+    if q and published:
+        u_nd = min(r["no_discharge_W"] for r in q)
+        u_tj = min(r["junction_W"] for r in q)
+        for key, want in (("universal_no_discharge_published_W",
+                           _floor_to_grid(u_nd)),
+                          ("junction_safe_published_W", _floor_to_grid(u_tj))):
+            if abs(float(published.get(key, -1.0)) - want) > 1e-6:
+                why.append("the published %s is %r; the oracle's minimum over "
+                           "the qualified domain floors to %.6f"
+                           % (key, published.get(key), want))
+        env = {(e["source_class"], e["vbat_V"]): e
+               for e in published.get("envelope", [])}
+        for c in EXPECTED_SOURCE_CLASSES:
+            for v in EXPECTED_REGIME_VBAT_GRID_V:
+                sel = [r for r in rows if r["source_class"] == c
+                       and abs(r["vbat_V"] - v) < 1e-9]
+                e = env.get((c, v))
+                if not sel or e is None:
+                    why.append("the published envelope has no row for %s at "
+                               "%.3f V" % (c, v))
+                    continue
+                for pub, field in (("no_discharge_published_W",
+                                    "no_discharge_W"),
+                                   ("junction_published_W", "junction_W")):
+                    want = _floor_to_grid(min(r[field] for r in sel))
+                    if abs(e[pub] - want) > 1e-6:
+                        why.append("envelope %s/%.3f V %s is %r, the oracle "
+                                   "floors to %.6f" % (c, v, pub, e[pub],
+                                                       want))
+    elif not published:
+        why.append("no published regime figures were handed to the oracle")
+    return why, dict(expected_rows=len(expected_regime_keys()),
+                     rows_seen=len(rows), rows_with_bad_evidence=bad)
+
+
 def _multiset_problems(what, got, want):
     """Exact multiset equality, reported as missing / extra / duplicated."""
     why = []
@@ -750,7 +1240,9 @@ def _multiset_problems(what, got, want):
 
 
 def completeness(transitions, charger_states, rejected_post_states,
-                 residual_worst_W, residual_worst_V, network_states=()):
+                 residual_worst_W, residual_worst_V, network_states=(),
+                 charger_refusals=None, regime_rows=None,
+                 regime_published=None, thermal_states=None, scalars=None):
     """R12-04's mandatory invariants, ANDed into the verdict."""
     keys = {t.get("transition") for t in transitions}
     orders = set()
@@ -767,9 +1259,39 @@ def completeness(transitions, charger_states, rejected_post_states,
     for o in REQUIRED_RAIL_ORDERS:
         if o not in orders:
             problems.append("rail order %r is not enumerated" % o)
+    thermal_branches = {s.get("mode") for s in (thermal_states or [])}
     for b in REQUIRED_CHARGER_BRANCHES:
-        if b not in branches:
+        if b not in branches and b not in thermal_branches:
             problems.append("charger branch %r is never exercised" % b)
+    # ---- D-795 / R14-05: the exact charger and regime domains --------------
+    if charger_refusals is None:
+        problems.append("the charger domain was handed with no refusal set: "
+                        "an unsolved point could simply have been dropped")
+        charger_extra = {}
+    else:
+        cp, charger_extra = charger_domain_problems(charger_states,
+                                                    charger_refusals)
+        problems += cp
+    if regime_rows is None:
+        problems.append("the charge-regime rows were not handed to the "
+                        "oracle: the published regime claims are unbound")
+        regime_extra = {}
+    else:
+        rp, regime_extra = regime_problems(regime_rows, regime_published,
+                                           scalars or {})
+        problems += rp
+    if not thermal_states:
+        problems.append("no thermally-closed charger state was handed to the "
+                        "oracle, so the TREG branch was never checked")
+    else:
+        if "TREG" not in thermal_branches:
+            problems.append("no thermally-closed state exercises TREG")
+        for st in thermal_states:
+            ok, w = charger_branch_is_valid(st)
+            if not ok:
+                problems.append("thermal state %s is not physical: %s"
+                                % (st.get("domain_key"), w[:2]))
+                break
     # ---- D-794 / R13-04.  EXACT MULTISETS OVER THE CONSTRUCTED DOMAIN -----
     got_table = [t.get("transition") for t in transitions
                  if t.get("kind") == "table"
@@ -790,33 +1312,41 @@ def completeness(transitions, charger_states, rejected_post_states,
     # key twice, and every live state represented.  Astra's "delete every
     # network state" and a duplicated key both fail that, and so does
     # silently dropping one state's rows.
-    want_net = set()
+    # D-795 / R14-05: the network domain is an EXACT multiset now.  D-794
+    # could only bound it on both sides because a refused state solves at
+    # fewer corners; every unsolved corner is now delivered as a REFUSAL row
+    # carrying the named physical limits it fails, so "delete selected
+    # network rows" is a missing key rather than a smaller set.
+    want_net = []
     for state in EXPECTED_CELL_NET_STATES:
         for cfg in EXPECTED_ACCESSORY_CONFIGURATIONS:
             for corner in EXPECTED_CELL_CORNERS:
-                want_net.add("%s/%s/%s" % (state, cfg, corner))
+                want_net.append("%s/%s/%s" % (state, cfg, corner))
     got_net = [n.get("key") for n in network_states]
-    seen_net = {}
-    for k in got_net:
-        seen_net[k] = seen_net.get(k, 0) + 1
-    if not got_net:
-        problems.append("the cell-to-load network domain is EMPTY: nothing "
-                        "was re-derived by KVL at all")
-    for k in sorted(seen_net):
-        if k not in want_net:
-            problems.append("network state %r is not in the constructed "
-                            "domain" % (k,))
-        elif seen_net[k] > 1:
-            problems.append("network state %r appears %d times" %
-                            (k, seen_net[k]))
+    if not [n for n in network_states if not n.get("refused")]:
+        problems.append("the cell-to-load network domain has no SOLVED row: "
+                        "nothing was re-derived by KVL at all")
+    problems += _multiset_problems("network", got_net, want_net)
+    for n in network_states:
+        if not n.get("refused"):
+            continue
+        lim = n.get("physical_limits")
+        if not isinstance(lim, dict) or not lim:
+            problems.append("network refusal %r carries no physical limits"
+                            % (n.get("key"),))
+        elif all(bool(x) for x in lim.values()):
+            problems.append("network refusal %r passes every limit it names, "
+                            "so its refusal is not physical" % (n.get("key"),))
     states_present = {(k or "").split("/")[0] for k in got_net}
     for state in EXPECTED_CELL_NET_STATES:
         if state == EXPECTED_RETIRED_CELL_NET_STATE:
             continue
-        if state not in states_present:
-            problems.append("cell-to-load state %r contributes no network "
-                            "row: its KVL was never independently checked"
-                            % (state,))
+        solved = [n for n in network_states if not n.get("refused")
+                  and (n.get("key") or "").startswith(state + "/")]
+        if not solved:
+            problems.append("cell-to-load state %r contributes no SOLVED "
+                            "network row: its KVL was never independently "
+                            "checked" % (state,))
 
     # ---- the refusal count is a NUMBER, not a Boolean --------------------
     #
@@ -902,6 +1432,8 @@ def completeness(transitions, charger_states, rejected_post_states,
             for r in rejected_post_states)),
         worst_power_residual_W=residual_worst_W,
         worst_voltage_residual_V=residual_worst_V,
+        charger_domain=charger_extra, regime_domain=regime_extra,
+        thermal_states_checked=len(thermal_states or []),
         problems=problems,
         method="R12-04 convergence requirement 3: transition/state "
                "completeness is a HARD VERDICT REQUIREMENT, never "
@@ -915,7 +1447,8 @@ def completeness(transitions, charger_states, rejected_post_states,
 def audit(registry, scalars, charger_states, transitions,
           rejected_post_states, board_forward_ohm_20C,
           canonical_source_path_ohm, network_states=(),
-          without_energy_oracle=False):
+          without_energy_oracle=False, charger_refusals=None,
+          regime_rows=None, regime_published=None, thermal_states=None):
     """`without_energy_oracle` ABLATES THE ENERGY ACCOUNTING ENTIRELY.
 
     It removes both halves of it: the TERMINAL-vs-INTERNAL identity (what
@@ -971,6 +1504,8 @@ def audit(registry, scalars, charger_states, transitions,
     # The cell-to-load network states, re-checked by KVL alone.
     net_rows = []
     for ns in network_states:
+        if ns.get("refused"):
+            continue
         node = node_from_network(ns["cell_V"], ns["amps"], ns["fixed_ohm"],
                                  ns["channels"], ns["channel_ohm"])
         drop = pass_fet_drop_V(ns["amps"], ns["channels"], ns["channel_ohm"])
@@ -989,7 +1524,12 @@ def audit(registry, scalars, charger_states, transitions,
 
     comp_ok, comp = completeness(transitions, charger_states,
                                  rejected_post_states, worst_W, worst_V,
-                                 network_states=network_states)
+                                 network_states=network_states,
+                                 charger_refusals=charger_refusals,
+                                 regime_rows=regime_rows,
+                                 regime_published=regime_published,
+                                 thermal_states=thermal_states,
+                                 scalars=scalars)
     ok = bool(prim_ok and comp_ok
               and all(r["ok"] for r in charger_rows)
               and all(r["ok"] for r in net_rows)

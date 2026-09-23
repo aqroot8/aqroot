@@ -46,7 +46,7 @@
 | GPIO expanders | three PCAL9535A — `U2`, `U3`, `U23` | **two.  `U23` is REMOVED** | Demo scope |
 | NFC 5 V PA boost `U13` | fitted (§6.3 of this document still says FITTED — **that row is wrong even for Demo**) | **DNP.  NFC runs from the 3.3 V path** | Demo scope "Already unnecessary / DNP" |
 | Charger status decode | `STAT1` + `STAT2` both landed, full four-state decode | **`STAT2` (`U11.3`) UNCONNECTED.**  `STAT1` LOW = fault is directly observed; charging-versus-complete is an INFERENCE | owner decision 2026-09-17, D-742 |
-| Charge current / input limit | not previously fixed anywhere | **`ICHG` 769 mA (`R37` 390 Ω), input limit 1100 mA (`R36` 13 kΩ), `VBATREG` 4.2 V** | D-743 |
+| Charge current / input limit | not previously fixed anywhere | **`ICHG` 769 mA typical (`R37` 390 Ω; 723.5…815.9 mA over the guaranteed `KISET` band, D-795), input limit 1100 mA (`R36` 13 kΩ), `VBATREG` 4.2 V** | D-743, re-stated D-795 |
 | Charging source | not previously stated | **charge from a 1 A or better USB source.**  A 500 mA-class port charges more slowly and will not complete a cycle inside the charger's 360 min safety timer | D-743 |
 | Speaker `LS1` | on the BOM | **OFF-BOARD**, 152 mm flying leads (`aqroot-Demo-OFF-BOARD.csv`) | fab package |
 | Battery capacity | 2500–3000 mAh envelope | **2500 mAh first-five pack SELECTED: Adafruit Product 328**, protected 1S LiPo with genuine JST-PH. Supplier-linked 785060 specification permits ≤2C discharge (5 A for 2500 mAh); CTO-BAT-01 contract requires ≥2.675 A against the live D-753 2.229 A board envelope plus 20 % margin | CTO-BAT-01 |
@@ -318,7 +318,7 @@ sockets); the only on-board RF network is the 13.56 MHz NFC differential front e
 | Envelope | ≈ **2500–3000 mAh** target; cell envelope 57 × 75 × 8.0 mm MAX (D-243) | TARGET · CAD-TO-VERIFY | CTO_DECISIONS D-071/D-243; OFF_BOARD_BOM.md |
 | **Exact fitted capacity** | **2500 mAh — Adafruit Product 328 selected for the first five (CTO-BAT-01).** Current supplier page specifies a protected pack with genuine JST-PH; its linked `785060` pack specification is pinned in-repo at SHA-256 `826149da…ecd3`, max pack 7.9 × 50.5 × 60.5 mm and max charge 1C. The primary pack specification §8.3.2 states discharge current **≤2C5A**; its own nominal-capacity row defines the C5 capacity as **2500 mAh**, so the derived limit is **2 × 2.5 Ah = 5.0 A**. That 5.0 A is a C-rate derivation, not a literal table row labelled “5 A max discharge.” The supplier's conservative charge recommendation is 1.2 A, above this board's 0.855 A worst programmed envelope. Incoming polarity must be meter-verified before D-781 retermination/mating. | **SELECTED · ENGINEERING-ONLY** | `assembly/SELECTED_BATTERY.json`; `checks/battery_pack_contract.py` |
 | Charger | `U11` **BQ25185DLHR** (1S Li-ion linear charger) | FITTED · INTERNAL | `01_power_tree.kicad_sch:U11` |
-| Charge current (ICHG) | **769 mA** — `R37` 390 Ω on ISET, `ICHG = KISET / RISET` with `KISET` 300 AΩ (SLUSF65B §6.1.1.4).  Input limit **1100 mA** and `VBATREG` **4.2 V** from `R36` 13 kΩ (Table 6-1).  Full cycle ≈ 240–290 min against the part's **360 min** `tMAXCHG` safety timer | **RESOLVED at D-743** · ENGINEERING-ONLY | `01_power_tree.kicad_sch:R36,R37`; CTO_DECISIONS D-743; `evidence/d743-rail-ampacity.json` |
+| Charge current (ICHG) | **723.5…815.9 mA** (769 mA typical) — `R37` 390 Ω 1 % on ISET, `ICHG = KISET / RISET` with `KISET` 285 / 300 / 315 AΩ (SLUSF65B EC).  Input limit **995…1100 mA** at the 1050 mA setting and `VBATREG` **4.2 V** from `R36` 13 kΩ (Table 6-1).  **Charge time is a QUALIFICATION TARGET, not a derived figure** (D-795): see the charging section and `C-PWR-CHARGE-02`.  *(D-743's "full cycle ≈ 240–290 min" is RETIRED — it assumed no thermal regulation and no source limit.)* | **RESOLVED at D-743, re-stated at D-795** · ENGINEERING-ONLY | `01_power_tree.kicad_sch:R36,R37`; CTO_DECISIONS D-743; `evidence/d743-rail-ampacity.json` |
 | Charge source requirement | **1 A or better.**  The USB-C port is a plain 5.1 kΩ Rd sink and does not read the source's Rp advertisement; a 500 mA-class port is folded back by the charger's VINDPM and will not complete a cycle inside `tMAXCHG` | MARKETING-SAFE (state it as "charge from a 1 A USB adapter") | D-743 |
 | Fuel gauge | `U14` **MAX17048G+T10** @ I²C 0x36 | FITTED | `01_power_tree.kicad_sch:U14` |
 | Power switch | `SW9` **JS102011SAQN** SPDT slide (hard rail off) | FITTED · EXTERNAL (right wall) | `01_power_tree.kicad_sch:SW9`; `R68` 0 Ω bypass must stay DNP |
@@ -809,9 +809,13 @@ power/NFC review, and CTO decisions.
 > | `display_wifi_subghz` | Wi-Fi / BLE TX, sub-GHz TX | **1.1120 A** | **not supported** | **not supported** | **not supported** | **4.026 V** | **not supported** |
 > | `d790_declared` | Wi-Fi / BLE TX, sub-GHz TX, audio at the capped level | **1.2320 A** | **not supported** | **not supported** | **not supported** | **not supported** | **not supported** |
 >
-> **THE PUBLISHED SUSTAINED REFERENCE STATE IS `display_subghz`** — both
+> **THE SUSTAINED SIZING ENVELOPE IS `display_subghz`** — both
 > Community-Port rails at the declared simultaneous pair, the display at full
-> brightness, and **ONE sub-GHz radio transmitting**.  Adding a second
+> brightness, and **ONE sub-GHz radio transmitting**.  **It is NOT an admissible
+> user state** (D-795): the production permission table refuses every accessory rail
+> while a radio transmits.  It is the case the conductors and the enclosure are
+> SIZED against, and the first-article thermal step holds the heaviest ADMISSIBLE
+> state, `display_audio`, instead.  Adding a second
 > transmitting radio or the audio amplifier raises the cell floor, and the table
 > says by how much rather than leaving it implied.  `d790_declared` is retained
 > as the NEGATIVE CONTROL: F12 fails if it ever starts passing without the
@@ -827,133 +831,116 @@ power/NFC review, and CTO decisions.
 > fuse (`R10-N02`).
 >
 >
-> ### **D-793, CORRECTED AT D-794 — THE CHARGE REGIME IS A LOAD CEILING, NOT A PASS MARK**
+> ### **D-795 — CHARGING WHILE RUNNING: ONE JUNCTION-SAFE POWER, ONE NO-DISCHARGE TABLE, AND A COMPLETION TARGET**
 >
-> D-790 stated that the charge regime "needs no bound, by design", because
-> SLUSF65B 6.3.7.6 reduces the CHARGE current at `TREG` = 100 °C.  `D790-A02`
-> is right that this does not universally cap SYS-load heat, and `R11-03` is
-> right about what D-791 then did with that: it computed VSYS, IIN, ICHG and
-> ISUPP from four independent formulas and never asked whether they could
-> coexist.  The released model could hold `SYS` at **4.41 V** while a **3.2 V**
-> battery "supplemented" into it, which a passive BATFET cannot do, and it priced
-> the input path as `IIN² × RON_IN` when the BQ25185's input path is a **LINEAR
-> PASS ELEMENT** dropping `VIN − VSYS`.
+> **THE CHARGING SOURCE IS A NAMED PART.**  Charge the first five **only** from the
+> **Raspberry Pi 15W USB-C Power Supply**, part `KSA-15E-051300HU` (US; regional
+> variants `KSA-15E-051300HE` EU, `KSA-15E-051300HK` UK, `KSA-15E-051300HA` AU/NZ/CN,
+> `KSA-15E-051300HI` IN; product numbers SC0445/SC0218 and siblings), on its own
+> **captive 1.5 m 18 AWG** USB-C cable.  Its product brief (archived at
+> `hardware/demo/kicad/aqroot-demo/vendor/RPI/`) gives +5.1 V with ±5 % load and ±2 %
+> line regulation, which this model rules at **4.743 V / 5.457 V**.  A **USB 2.0
+> computer port is outside the contract** — 500 mA cannot meet the programmed 1.1 A
+> input limit — and so is any other adapter or a separate cable; both are REPORTED in
+> the table below so the cost of leaving the contract is a number.  The acceptance
+> criterion is measured at the pin it is defined at: at least **4.6128 V** at `U11`
+> pin 10 with the charger drawing its programmed 1.1 A (`C-CHG-01`).
 >
-> **THERE IS NOW A PHYSICAL MODE SOLVER.**  `aqroot_power_model.charger_state`
-> solves ONE mode — voltage regulation, input current limit, DPPM, BATFET
-> conduction direction, charge / no-charge — with **KCL, KVL and energy balance
-> as hard invariants**, so a state that supplements from a battery BELOW the node
-> it is supplementing cannot exist.  Both `ILIM` corners and both `VBUS` corners
-> are solved and the worse package dissipation rules.
+> **THE CONTROL MODEL WAS CORRECTED AT D-795.**  SLUSF65B §6.3.2: when the load plus the
+> charge exceed the input limit, *"the input DPM loop reduces the input current.  If SYS
+> drops below the DPPM voltage threshold, the charging current is reduced by the DPPM
+> loop."*  ILIM and VINDPM cut the INPUT; SYS then falls to `VBAT + VDPPM` and only the
+> DPPM loop folds the charge.  The solver now holds SYS at that node in every
+> charge-folding branch, treats thermal regulation (`TREG`) as the one loop that may fold
+> the charge with SYS above it, and closes that thermal loop explicitly.  The programmed
+> charge current is the guaranteed `KISET` band over `R37` at 1 %: **723.5…815.9 mA**
+> (769 mA typical), with 20 % precharge below `VLOWV`.
 >
-> | path | carries | does `TREG` reduce it? |
-> |---|---|---|
-> | INPUT FET | the whole system load plus the charge current, capped by `ILIM`, as a LINEAR drop of `VIN − VSYS` | **no** |
-> | CHARGE FET | `ICHG` from `SYS` down to `VBAT` | **yes** |
-> | BATFET, supplement mode (§6.3.3) | whatever the system asks for beyond the input limit, and only while `VSYS < VBAT` | **no** |
+> **JUNCTION-SAFE SYSTEM POWER: **3.900 W**.**  Over the WHOLE charging domain — every
+> cell from **2.850 V** (VBUVLO less a declared 5 %) to **4.221 V**, both regulation corners
+> of the named adapter, both `ILIM` corners, five points of the declared ±50 % sweep of
+> the four TYP-only thresholds, both supplement histories and 0 / 25 / 40 °C ambient — the
+> part `TREG` cannot reduce (the zero-charge state) stays inside TI's 125 °C operating
+> maximum up to this system power.  `TREG` folds the charge whenever the junction reaches
+> it, and its declared high end (110 °C) is below that maximum.  **This bounds the
+> junction.  It does NOT say the battery never discharges.**
 >
-> **AND THE ANSWER IS A CEILING.**  Priced as the linear element it is, the
-> reference state's own 5.65 W of system load puts the input FET at 2.209 W and
-> the junction at 215.8 °C — the part would reach `TSHUT` and stop, which is
-> protection acting as control, and `R11-03` is explicit that this must not be
-> the answer.  So the largest sustained SYSTEM POWER for which the half `TREG`
-> cannot reach stays inside TI's 125 °C operating maximum is SOLVED:
+> **THE NO-DISCHARGE BOUNDARY IS A TABLE, NOT A SCALAR.**  Battery-tracking `VINDPM`
+> (`VBAT` + 330 mV typical, swept) squeezes the input as the cell fills, so the system
+> power the adapter carries WITHOUT the battery supplementing depends on the cell voltage
+> and the source.  Guard-banded (5 %, floored onto 0.05 W), minimum over every other axis:
 >
-> **CHARGE-REGIME SYSTEM POWER CEILING: **3.600 W**, at 40 °C ambient.**
+> | cell voltage | rpi15w_high | rpi15w_low | generic_typec_24awg_2m *(outside the contract)* | unqualified_28awg_2m *(outside the contract)* |
+> |---|---|---|---|---|
+> | 2.850 V | **3.40 W** | **3.20 W** | **2.95 W** | **2.70 W** |
+> | 3.000 V | **2.85 W** | **2.85 W** | **2.85 W** | **2.85 W** |
+> | 3.200 V | **3.05 W** | **3.05 W** | **3.05 W** | **3.00 W** |
+> | 3.400 V | **3.25 W** | **3.25 W** | **3.25 W** | **2.95 W** |
+> | 3.500 V | **3.35 W** | **3.35 W** | **3.35 W** | **2.80 W** |
+> | 3.520 V | **3.35 W** | **3.35 W** | **3.35 W** | **2.50 W** |
+> | 3.600 V | **3.45 W** | **3.45 W** | **3.45 W** | **2.30 W** |
+> | 3.800 V | **3.60 W** | **3.60 W** | **3.60 W** | **1.65 W** |
+> | 4.000 V | **3.80 W** | **3.80 W** | **2.20 W** | **0.95 W** |
+> | 4.100 V | **3.90 W** | **3.90 W** | **1.35 W** | **0.60 W** |
+> | 4.200 V | **4.00 W** | **1.65 W** | **0.50 W** | **0.20 W** |
+> | 4.221 V | **4.00 W** | **0.90 W** | **0.30 W** | **0.10 W** |
 >
-> **D-794 / `R13-02` + THE ROUND-13 FABLE DELTA RENAMED IT, BECAUSE THE OLD
-> NAME CLAIMED SOMETHING IT DOES NOT PROVE.**  D-793 called this the
-> *charge-TIME* ceiling.  It is not one.  What it guarantees is that **the
-> battery does not DISCHARGE while the adapter is attached** and that `U11`'s
-> junction stays inside TI's 125 °C operating maximum.  Whether a cycle also
-> *finishes* — delivers the pack's rated 2.5 Ah and terminates before the
-> BQ25185's **360 min** `tMAXCHG` safety timer expires — is a different
-> question with a different answer, because on a throttled source the charge
-> current is what folds back first.  Both are derived and both are published:
+> Its minimum over the qualified domain is **0.900 W**, at a full cell on the low
+> regulation corner — there is **no useful universal no-discharge scalar**, and none is
+> published.  Near full charge the battery may supply part of any heavier system load:
+> that is ordinary power-path behaviour (BATOCP stays active), not a safety condition, and
+> it is why a full charge is taken with the product idle.
 >
-> | ceiling | value | what it actually guarantees |
-> |---|---:|---|
-> | **charge-regime system power** | **3.600 W** | the battery does not discharge while charging, and `U11` stays inside its operating maximum |
-> | **charge-COMPLETION system power** | **1.150 W** | a fast-charge cycle delivers the rated capacity and terminates inside `tMAXCHG`, on **every** source class the published cable contract admits, at the GUARANTEED-MINIMUM input current limit |
+> **CHARGE COMPLETION IS A QUALIFICATION TARGET, NOT A DERIVED CLAIM.**  The pack record
+> (Adafruit 328 / 785060) publishes the rated capacity, the 4.2 V CC/CV cut-off and the
+> 2.75 V discharge cut-off, and **no capacity-versus-voltage curve and no charge-time
+> figure**.  A distribution-free bound — the whole rated capacity charged at the WORST
+> TREG-closed current anywhere on `VLOWV`…`VBATREG`, plus DECLARED precharge and CV-tail
+> allowances, against the TYP-only 360 min `tMAXCHG` taken at −20 % (288 min) — does not
+> fit the timer under any modelled condition, so no completion power is published.  The
+> **QUALIFICATION TARGET** is: a full charge from the 2.75 V cut-off, device idle, on the
+> named adapter, terminates before **288 min** at 25 °C; `C-PWR-CHARGE-02` is the
+> measurement of record.
 >
-> At the regime ceiling **no** qualified source class completes inside
-> `tMAXCHG`; at the completion ceiling **every** one does, with the worst
-> qualified 2 m cable leaving **13.8 min** of margin.  Both figures are reduced
-> by a declared 5 % guardband and floored onto a 0.05 W grid, and F12 refuses a
-> release in which either is not printed here from the computed value.
+> **THE CHARGING STATES THE PRODUCT CAN BE IN.**  Only combinations the production
+> permission table admits are listed as permitted — a radio transmitting beside a live
+> Community-Port rail is refused by the rail edge.  The heaviest admissible charging state
+> is `display_audio` + `acc_3v3_only`, whose junction with the charge folded to zero is
+> **107.0 °C**; the external ambient at which the internal air reaches the pouch's own
+> 40 °C charge window at that state is **28.7 °C**.  A lighter load raises it.
 >
-> **THE OBSERVED GAUGE-NODE BEHAVIOUR WHILE CHARGING, WHICH IS PHYSICS AND NOT
-> A DEFECT.**  The MAX17048 reads `BAT_PROTECTED_P`, which is on the SYS side
-> of the pass pair and `R75`.  While the charger is delivering current INTO the
-> cell, that current flows through those same elements in the charging
-> direction, so the node the gauge reads sits ABOVE the cell's own terminal
-> voltage by `I_chg` times the path resistance.  Two consequences follow and
-> both are expected first-five behaviour:
->
-> * a reported `VCELL` taken while charging over-states the cell, so an
->   accessory permission granted on it would be granted on an optimistic
->   reading — which is why the permission floors are derived at the DISCHARGE
->   network and why the D-794 / `R13-01` load epoch treats plugging and
->   unplugging as material load edges;
-> * **unplugging may trigger a safe retention shed.**  The node falls by that
->   same product the instant the charge current stops, and if a rail was live
->   near the retention floor the settled recheck sheds the 5 V rail first.  That
->   is the retention rule doing exactly its job on a real node movement, not a
->   fault, and it is recorded here so a first-five operator who sees it does not
->   report it as one.
->
-> **AND THE NUMBER IS ROUNDED DOWN, ON PURPOSE.**  D-792 published **4.063 W**,
-> which its own bisection had produced as 4.06293325 W and then `round()`ed
-> UPWARD across a **branch discontinuity**: at exactly 4.063 W the solver is in
-> a different regime — the input current limit binds, `SYS` collapses from the
-> input-held node to the cell, the BATFET supplements and the junction is
-> **155.4 °C**, past `TSHUT`, let alone past the 125 °C operating maximum.  A
-> constant-power load into a current-limited source has no stable point between
-> those two regimes, so the step is real and it is **30.9 K** of junction wide.
-> The published figure is now the lower of TI's junction maximum and that
-> discontinuity, reduced by a declared **5 %** guardband and FLOORED onto a
-> 0.05 W grid; the real solver is evaluated AT the published number and over a
-> 200-point scan of everything below it, and no ruling source class supplements
-> anywhere in that range.
->
-> **THE CHARGING SOURCE IS A PUBLISHED CONTRACT NOW, NOT A CONSTANT.**  D-792
-> carried one declared 0.200 Ω for "the cable, both mated USB connector pairs
-> and the board's own VBUS copper" and called it pessimistic for a 2 m 28 AWG
-> cable.  It is not: 2 m of 28 AWG is about 0.85 Ω on its own.  **Charge the
-> Demo from the supplied adapter and cable, or from a USB 2.0 source and a cable
-> with 24 AWG or heavier power conductors no longer than 2 m.**  That is a
-> source path of at most **0.4472 Ω** and it is a MEASURABLE acceptance
-> criterion — at least **4.2581 V** at `U11` pin 10 with the charger drawing its
-> programmed 1.1 A input limit, measured at first article as `C-CHG-01`.  A
-> cable outside that contract lowers the ceiling and the sensitivity is
-> published beside the number rather than left as a warning.
->
-> The heaviest combination under the ceiling is `display_wifi` + `no_accessory`,
-> whose junction with the charge current folded all the way to zero is
-> **104.4 °C**.  `display_only` + `acc_3v3_only` at its full published 400 mA is
-> also permitted.  What is REFUSED while an adapter is attached is the 5 V
-> accessory rail, the declared simultaneous pair, and every state with two
-> radios keyed.
->
-> **THIS CANNOT BE A FIRMWARE RULE, WHICH IS WHY IT IS A PUBLISHED ONE.**  This
+> **THE FIRMWARE CANNOT SEE THE CHARGER, AND THE DOCUMENT NO LONGER SAYS IT CAN.**  This
 > board has **no VBUS-present signal on any MCU or expander pin** —
-> `/01_POWER_TREE/VBUS_PRESENT` is bench-probed at `TP31.1` and reaches no
-> readable pad — so the firmware cannot know an adapter is attached and must not
-> pretend to.  The restriction is of the same kind as the pouch's own charge
-> window: a SUPERVISED operating condition, published here and in the
-> first-article procedure.
+> `/01_POWER_TREE/VBUS_PRESENT` is bench-probed at `TP31.1` and reaches no readable pad —
+> so the firmware **cannot observe a charger being plugged or unplugged and does not
+> stamp it**.  D-794's sentence that the load epoch "treats plugging and unplugging as
+> material load edges" was false and is withdrawn.  What covers that unobservable edge
+> instead is the D-795 admission rule: **every accessory admission stamps its own request
+> and reads the gauge only after a full 1300 ms post-request window**, so a charging-era
+> average — which over-states the cell by the charge current times the path — can never
+> authorise a rail.  This is an **ACCEPTABLE FIRST-FIVE LIMITATION**: a charger removed
+> DURING that window, or while a rail is already live, is caught by the post-enable
+> settled recheck and the periodic retention guard, and unplugging may therefore trigger a
+> safe retention shed, which is the retention rule acting on a real node movement.
 >
-> **AND THE POUCH'S CHARGE WINDOW IS A DIFFERENT, TIGHTER LIMIT.**  The fitted
-> 785060 publishes **0…40 °C for CHARGE** against 0…60 °C for discharge, and
-> the cell sits in the internal air.  "Charge at up to 40 °C ambient" is
-> therefore not a statement this enclosure can make.  What is derivable is the
-> external ambient at which the internal air REACHES that limit, and at the
-> heaviest permitted charging state that is **24.5 °C**.  A lighter system load
-> raises it.  This is a SUPERVISED operating condition a human can observe —
-> `battery_pack_contract` **B8** already requires supervised first-five
-> charging and the pack has no thermistor; D-791 put a number on the
-> supervision and D-792 puts the load ceiling beside it.
+> **THE GAUGE ITSELF IS UNCHANGED; THE WINDOW IS.**  The MAX17048 reads `BAT_PROTECTED_P`,
+> on the SYS side of the pass pair and `R75`, so while charging the node the gauge reads
+> sits above the cell's own terminal by `I_chg` times the path resistance.
 >
+> **THIS CANNOT BE A FIRMWARE RULE, WHICH IS WHY IT IS A PUBLISHED ONE.**  With no
+> VBUS-present signal the charging restrictions above are a SUPERVISED operating condition,
+> of the same kind as the pouch's own charge window, published here and in the
+> first-article procedure; `battery_pack_contract` **B8** requires supervised first-five
+> charging and the pack has no thermistor.
+>
+> #### *D-793 / D-794 charge text — HISTORICAL, SUPERSEDED BY D-795 ABOVE*
+>
+> *D-794 published a "charge-regime ceiling" of 3.600 W derived at ONE 3.2 V cell from a
+> solver that held SYS at its regulation point while an input loop was binding, called it a
+> no-discharge guarantee, and published a 1.150 W "charge-completion ceiling" from a
+> linear capacity-distribution assumption without thermal regulation.  Round-14 reproduced
+> high-VBAT supplement on qualified sources under both; both figures are RETIRED.  D-792's
+> 4.063 W (rounded up across a supplement discontinuity) was RETIRED at D-793.*
 >
 > **MEASUREMENT PLANE.**  The published minimum voltage is the potential between the
 > `ACC_3V3_SW` contact and the `GND` contacts **at the J5 mating interface**.

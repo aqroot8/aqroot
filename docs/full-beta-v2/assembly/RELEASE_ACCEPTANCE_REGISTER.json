@@ -1,0 +1,161 @@
+{
+ "decision": "D-795 / R14 D795-07",
+ "what": "the IN-TREE enumeration of the manufacturer/CAM written-acceptance items B01-B14 and the first-article validation groups FA01-FA10 that every release since D-789 has named only by count.  B01-B08 are Astra's Round-8 list, verbatim in substance.  B09-B14 and FA01-FA10 are this programme's own in-tree definition: the reviews added them by COUNT and the repository never held their text, so they are defined HERE, each mapped to a concrete step or fab-note item, and demo_feature_contract F12 refuses a release in which any FA group names a step the first-article plan does not contain.",
+ "status": "EVERY ITEM PENDING -- pre-order analytical closure does not close any of these",
+ "manufacturer_cam": [
+  {
+   "id": "B01",
+   "item": "exact 6-layer stack (JLC06161H-7628), copper weights, finished thickness 1.5744 +/- 0.10 mm and ENIG, with no house-default substitution",
+   "fab_note_token": "ENIG"
+  },
+  {
+   "id": "B02",
+   "item": "every land-intersecting via resin-filled, planarised and copper-capped (POFV) as listed in the fab notes",
+   "fab_note_token": "POFV"
+  },
+  {
+   "id": "B03",
+   "item": "the 38 sub-floor vias the fab notes list under 'SUB-FLOOR VIAS', at the stated finished sizes",
+   "fab_note_token": "SUB-FLOOR VIAS"
+  },
+  {
+   "id": "B04",
+   "item": "mask and stencil apertures, including the U9/U12 pads and the NFC tuning terminals",
+   "fab_note_token": "stencil"
+  },
+  {
+   "id": "B05",
+   "item": "the J3 NPTH concession",
+   "fab_note_token": "J3"
+  },
+  {
+   "id": "B06",
+   "item": "MK1's acoustic port: unplated and unfilled",
+   "fab_note_token": "MK1"
+  },
+  {
+   "id": "B07",
+   "item": "exact BOM, consignment, rotation and pin-1 per the CPL, the manual travelers, and 100 % electrical test",
+   "fab_note_token": "BARE-BOARD ELECTRICAL TEST"
+  },
+  {
+   "id": "B08",
+   "item": "J4 finished barrels >= 0.70 mm and the exact tip/crimp/strain-relief process",
+   "fab_note_token": "J4"
+  },
+  {
+   "id": "B09",
+   "item": "the FOUR PLATED ROUTED SLOTS (Excellon G85) in the PTH drill file at J3's shield tabs, accepted as plated slots and not re-interpreted as round holes",
+   "fab_note_token": "G85"
+  },
+  {
+   "id": "B10",
+   "item": "the declared stackup used without substitution for the RF feeds and the USB pair drawn on it",
+   "fab_note_token": "Do not substitute"
+  },
+  {
+   "id": "B11",
+   "item": "the named soldermask-bridge / mask-dam exceptions",
+   "fab_note_token": "mask"
+  },
+  {
+   "id": "B12",
+   "item": "Tg >= 150 C FR4 laminate, certified",
+   "fab_note_token": "Tg"
+  },
+  {
+   "id": "B13",
+   "item": "genuine-source allocation for the AOS AO4800 pass pair and the nine constrained fitted sourcing groups (consignment or authorised stock)",
+   "fab_note_token": "consign"
+  },
+  {
+   "id": "B14",
+   "item": "first-article inspection report for the bottom-terminated packages (X-ray of U11 DLH0010A, U9, U12 and the ESP32 module ground pad) before the remaining units are released",
+   "fab_note_token": "X-ray"
+  }
+ ],
+ "first_article": [
+  {
+   "id": "FA01",
+   "title": "rails and transients",
+   "steps": [
+    "C-PWR-TRANSIENT-01",
+    "C-DISP-01",
+    "C-MCU-01"
+   ]
+  },
+  {
+   "id": "FA02",
+   "title": "battery path and pass pair",
+   "steps": [
+    "C-BAT-PATH-01",
+    "C-BAT-GATE-01",
+    "J4 fit / pull / thermal"
+   ]
+  },
+  {
+   "id": "FA03",
+   "title": "charging source, regime and completion",
+   "steps": [
+    "C-CHG-01",
+    "C-PWR-CHARGE-01",
+    "C-PWR-CHARGE-02"
+   ]
+  },
+  {
+   "id": "FA04",
+   "title": "Community Port delivery and limits",
+   "steps": [
+    "C-ACC-01",
+    "C-ACC-02",
+    "C-ACC-ILIM-01"
+   ]
+  },
+  {
+   "id": "FA05",
+   "title": "thermal",
+   "steps": [
+    "C-THERM-01",
+    "Q11-TEMP-01"
+   ]
+  },
+  {
+   "id": "FA06",
+   "title": "gauge load epoch and timing",
+   "steps": [
+    "C-GAUGE-EPOCH-01"
+   ]
+  },
+  {
+   "id": "FA07",
+   "title": "radio and NFC retained state",
+   "steps": [
+    "C-RADIO-QUIESCE-01",
+    "C-NFC-QUIESCE-01"
+   ]
+  },
+  {
+   "id": "FA08",
+   "title": "NFC tuning and driver-rail PI",
+   "steps": [
+    "C-NFC-TUNE-01"
+   ]
+  },
+  {
+   "id": "FA09",
+   "title": "firmware abort and warm-image recovery",
+   "steps": [
+    "C-FW-ABORT-01",
+    "C-WARM-IMAGE-01"
+   ]
+  },
+  {
+   "id": "FA10",
+   "title": "harness, adhesive and speaker leads",
+   "steps": [
+    "C-SPK-01",
+    "C-ADH-01"
+   ]
+  }
+ ]
+}

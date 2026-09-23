@@ -578,6 +578,96 @@ PRODUCTION_CALLER_CONTROLS = [
                          !expanders_.u2().outputShadowValid() ||
                          !expanders_.u3().outputShadowValid();""",
      "    const bool pending = false;"),
+    # ---- D-795 / R14-01.  EVERY STAMP SITE, ONE CONTROL EACH.  Round-14:
+    # "Add host/hardware-map mutation controls for EACH stamp site.  Removing
+    # amplifier/backlight/rail/shed stamps must fail."  Each deletes exactly
+    # one `noteMaterialLoadEdge` and must be caught by the per-site claims in
+    # test_production_callers.cpp.
+    ("R14-01: the ACC_3V3_SW rail step is no longer stamped",
+     "aqroot_demo_bringup_app.h",
+     '        if (ok) noteMaterialLoadEdge("the ACC_3V3_SW step");',
+     "        (void)0;"),
+    ("R14-01: the ACC_5V_SW rail step is no longer stamped",
+     "aqroot_demo_bringup_app.h",
+     '        if (ok) noteMaterialLoadEdge("the ACC_5V_SW step");',
+     "        (void)0;"),
+    ("R14-01: the accessory I2C buffer step is no longer stamped",
+     "aqroot_demo_bringup_app.h",
+     '        if (ok) noteMaterialLoadEdge("the accessory I2C buffer step");',
+     "        (void)0;"),
+    ("R14-01: the backlight ramp is no longer stamped",
+     "aqroot_demo_bringup_app.h",
+     '        noteMaterialLoadEdge("the backlight ramp");',
+     "        (void)0;"),
+    ("R14-01: the amplifier edge (both directions) is no longer stamped",
+     "aqroot_demo_bringup_app.h",
+     """    if (acked) {
+      noteMaterialLoadEdge(on ? "the amplifier being energised"
+                              : "the amplifier being quieted");
+    }""",
+     "    (void)0;"),
+    ("R14-01: the display initialisation is no longer stamped",
+     "aqroot_demo_bringup_app.h",
+     """    noteMaterialLoadEdge(up ? "the ILI9488 display initialisation"
+                            : "the display going down");""",
+     "    (void)0;"),
+    ("R14-01: the display reset assertion is no longer stamped",
+     "aqroot_demo_bringup_app.h",
+     '    if (acked) noteMaterialLoadEdge("the display reset being asserted");',
+     "    (void)0;"),
+    ("R14-01: the full accessory shed is no longer stamped",
+     "aqroot_demo_bringup_app.h",
+     '    if (off5 || off3 || offbuf) noteMaterialLoadEdge("the accessory shed");',
+     "    (void)0;"),
+    ("R14-01: the ACC_5V_SW retention shed is no longer stamped",
+     "aqroot_demo_bringup_app.h",
+     '      if (off5) noteMaterialLoadEdge("the ACC_5V_SW shed");',
+     "      (void)0;"),
+    ("R14-01: the sub-GHz quiesce is no longer stamped",
+     "aqroot_demo_bringup_app.h",
+     '    if (confirmed) noteMaterialLoadEdge("the sub-GHz radio quiesce");',
+     "    (void)0;"),
+    ("R14-01: the NFC quiesce is no longer stamped",
+     "aqroot_demo_bringup_app.h",
+     '      noteMaterialLoadEdge("the NFC field quiesce");',
+     "      (void)0;"),
+    ("R14-01: sub-GHz keying is no longer stamped",
+     "aqroot_demo_bringup_app.h",
+     """      noteMaterialLoadEdge(on ? "sub-GHz TX keying" : "sub-GHz TX unkeying");""",
+     "      (void)0;"),
+    ("R14-01: the Wi-Fi/BLE radio is no longer stamped",
+     "aqroot_demo_bringup_app.h",
+     """      noteMaterialLoadEdge(on ? "the Wi-Fi/BLE radio starting"
+                              : "the Wi-Fi/BLE radio stopping");""",
+     "      (void)0;"),
+    ("R14-01: the expander recovery is no longer stamped",
+     "aqroot_demo_bringup_app.h",
+     '    noteMaterialLoadEdge("the expander recovery");',
+     "    (void)0;"),
+    ("R14-01: an admission no longer stamps its own request",
+     "aqroot_demo_bringup_app.h",
+     "    load_epoch_.noteAdmissionRequest(millis(), admission_label_);",
+     "    (void)0;"),
+    ("R14-01: the window is D-794's nominal 1000 ms again",
+     "aqroot_accessory_power_policy.h",
+     "    if (elapsed >= kGaugePostLoadConversionMs) return 0;\n"
+     "    return kGaugePostLoadConversionMs - elapsed;",
+     "    if (elapsed >= kGaugeD794NominalWindowMs) return 0;\n"
+     "    return kGaugeD794NominalWindowMs - elapsed;"),
+    # ---- D-795 / R14-02, at the app level.
+    ("R14-02: a lost NFC liveness no longer revokes the OFF confirmation",
+     "aqroot_demo_bringup_app.h",
+     "    if (alive || !nfc_field_confirmed_off_) return;",
+     "    if (alive || !nfc_field_confirmed_off_ || true) return;"),
+    ("R14-02: a revocation no longer sheds the rails granted under it",
+     "aqroot_demo_bringup_app.h",
+     '      forceAccessoriesOff("the ST25R3916 field state became UNKNOWN");',
+     "      (void)0;"),
+    ("R14-02: an UNKNOWN field no longer blocks a burst once the arbiter is "
+     "clear",
+     "aqroot_demo_bringup_app.h",
+     "    if (!nfc_field_confirmed_off_ && which != BurstLoad::NfcField) {",
+     "    if (false) {"),
 ]
 
 
@@ -609,24 +699,26 @@ PRODUCTION_IMAGE_CONTROLS = [
     ("the image quiesces the NFC front end but reports the field as "
      "CONFIRMED OFF regardless",
      "demo/main.cpp",
-     "  g_app.noteNfcFieldQuiesced(q.nfc_confirmed, q.nfc_operation_control);",
-     "  g_app.noteNfcFieldQuiesced(true, 0x00);"),
+     "  g_app.noteNfcFieldQuiesced(q.nfc_confirmed, q.nfc_operation_control,\n"
+     "                             nfcQuiesceStepName(q.nfc.failed_at));",
+     "  g_app.noteNfcFieldQuiesced(true, 0x00,\n"
+     "                             nfcQuiesceStepName(q.nfc.failed_at));"),
     # --- D-794 / R13-03: the field is commanded off but never VERIFIED.  A
     # part that ACKs the Set default and keeps driving RFO1/RFO2 is exactly
     # the state the read-back exists for.
-    ("the ST25R3916 quiesce trusts the Set default write instead of reading "
+    ("the ST25R3916 quiesce trusts the power-down write instead of reading "
      "the Operation control register back",
      "aqroot_demo_radios.h",
-     "  return op == 0x00;",
-     "  return true;"),
+     "  if (r.operation_control != 0x00) {",
+     "  if (false) {"),
     # --- D-794 / R13-03: "Do not assume 'stop all activities' is sufficient
     # for every retained state."  C2/C3h leaves the Operation control register
     # alone, so the carrier survives it (DS12484 Rev 3 section 4.4.2).
     ("the NFC quiesce sends Stop all activities instead of Set default, "
      "which leaves the Operation control register -- and the carrier -- alone",
      "aqroot_demo_radios.h",
-     "  const uint8_t kSetDefault = 0xC1;          // Table 13, section 4.4.1",
-     "  const uint8_t kSetDefault = 0xC3;          // Stop all activities"),
+     "constexpr uint8_t kSetDefault = 0xC1;            // Table 13, section 4.4.1",
+     "constexpr uint8_t kSetDefault = 0xC3;            // Stop all activities"),
     ("the CC1101 quiesce accepts ANY MARCSTATE at or above IDLE, which is "
      "every state including TX",
      "aqroot_demo_radios.h",
@@ -707,19 +799,25 @@ PRODUCTION_IMAGE_CONTROLS = [
     ("the gauge reader stops waiting for a post-load conversion, which is "
      "D-793's behaviour exactly",
      "aqroot_demo_bringup_app.h",
-     "    waitForPostLoadConversion();\n    return gauge_.readVcell(bus_, volts);",
+     "    if (!waitForPostLoadConversion()) {\n      if (volts) *volts = 0.0f;\n"
+     "      return false;\n    }\n    return gauge_.readVcell(bus_, volts);",
      "    return gauge_.readVcell(bus_, volts);"),
     ("the post-load window is shortened to D-779's one update, which leaves "
      "three quarters of the VCELL average describing the pre-load board",
      "aqroot_demo_bringup_app.h",
      "      delay(remaining);",
      "      delay(remaining / 4);"),
-    ("the display initialisation stops being a material load edge",
-     "aqroot_demo_bringup_app.h",
-     """    display_up_ = up;
-    noteMaterialLoadEdge(up ? "the ILI9488 display initialisation"
-                            : "the display going down");""",
-     "    display_up_ = up;"),
+    # D-795 / R14-01 RETIRES D-794's IMAGE-LEVEL "the display initialisation
+    # stops being a material load edge" CONTROL AS AN EQUIVALENT MUTANT AT
+    # THIS LEVEL, AND SAYS WHY RATHER THAN LEAVING IT PASSING VACUOUSLY.  Every
+    # admission now stamps its own request, and scenario (8) of
+    # test_production_image.cpp PROVES the panel never comes up with a rail
+    # live in the shipped image -- so the first VCELL reading after any panel
+    # edge is necessarily an admission and the display stamp cannot change a
+    # physical outcome here.  The stamp is kept (defence in depth) and its
+    # control moved to PRODUCTION_CALLER_CONTROLS, where the per-site claim
+    # sees it directly: "R14-01: the display initialisation is no longer
+    # stamped".
     ("the load epoch never reports anything outstanding, so an armed edge "
      "costs nothing and the reader is D-793's again",
      "aqroot_accessory_power_policy.h",
@@ -862,6 +960,76 @@ PRODUCTION_IMAGE_CONTROLS = [
      "demo/main.cpp",
      "  if (g_app.displayInitOwed()) {",
      "  if (false && g_app.displayInitOwed()) {"),
+    # ---- D-795 / R14-01, PHYSICALLY.  Each of these must be caught by the
+    # contamination audit or the outcome claims of the D-795 scenarios in
+    # test_production_image.cpp, over the nominal and tERR +3.5 % models.
+    ("R14-01 image: an admission no longer stamps its own request, so an "
+     "unannounced charger unplug is admitted on the charging-era average",
+     "aqroot_demo_bringup_app.h",
+     "    load_epoch_.noteAdmissionRequest(millis(), admission_label_);",
+     "    (void)0;"),
+    ("R14-01 image: the window is D-794's nominal 1000 ms again",
+     "aqroot_accessory_power_policy.h",
+     "    if (elapsed >= kGaugePostLoadConversionMs) return 0;\n"
+     "    return kGaugePostLoadConversionMs - elapsed;",
+     "    if (elapsed >= kGaugeD794NominalWindowMs) return 0;\n"
+     "    return kGaugeD794NominalWindowMs - elapsed;"),
+    ("R14-01 image: the wait delays ONCE and assumes the time has passed",
+     "aqroot_demo_bringup_app.h",
+     "      delay(remaining);\n      last_wait_ms_ += remaining;",
+     "      delay(remaining);\n      last_wait_ms_ += remaining;\n"
+     "      load_epoch_.noteWindowSpent(millis() + remaining);\n"
+     "      return true;"),
+    ("R14-01 image: the ACC_3V3_SW rail step is no longer stamped, so the "
+     "settled recheck reads an average that is still mostly pre-step",
+     "aqroot_demo_bringup_app.h",
+     '        if (ok) noteMaterialLoadEdge("the ACC_3V3_SW step");',
+     "        (void)0;"),
+    ("R14-01 image: the ACC_5V_SW retention shed is no longer stamped, so the "
+     "3.3 V rail is judged on the pre-shed average and lost",
+     "aqroot_demo_bringup_app.h",
+     '      if (off5) noteMaterialLoadEdge("the ACC_5V_SW shed");',
+     "      (void)0;"),
+    # ---- D-795 / R14-02.  EVERY LIVENESS STEP, ONE CONTROL EACH.
+    ("R14-02 image: the quiesce no longer proves identity BEFORE it trusts "
+     "the bus -- Astra's zero-filled read then confirms FIELD OFF",
+     "aqroot_demo_radios.h",
+     "  if (!st25r3916IdentityIsValid(r.identity_before)) {\n"
+     "    r.failed_at = NfcQuiesceStep::IdentityBefore;\n    return r;\n  }",
+     "  (void)0;"),
+    ("R14-02 image: the register challenge is dropped",
+     "aqroot_demo_radios.h",
+     "    if (r.challenge_readback[i] != kChallenge[i]) {",
+     "    if (false) {"),
+    ("R14-02 image: an ignored Set default is no longer detected",
+     "aqroot_demo_radios.h",
+     "  if (r.after_set_default != 0x00) {",
+     "  if (false) {"),
+    ("R14-02 image: the identity is not re-proved after the quiesce",
+     "aqroot_demo_radios.h",
+     "  if (!st25r3916IdentityIsValid(r.identity_after)) {",
+     "  if (false) {"),
+    ("R14-02 image: quiesceRadios is put back on D-794's Set-default-then-"
+     "02h-equals-zero verdict, with no liveness proof at all",
+     "aqroot_demo_radios.h",
+     "  r.nfc = st25r3916QuiesceReport(bus);\n  r.nfc_confirmed = r.nfc.confirmed;\n"
+     "  r.nfc_operation_control = r.nfc.operation_control;",
+     "  (void)st25r3916_spi::command(bus, st25r3916_spi::kSetDefault);\n"
+     "  (void)st25r3916_spi::readRegister(\n"
+     "      bus, st25r3916_spi::kRegOperationControl, &r.nfc_operation_control);\n"
+     "  r.nfc_confirmed = r.nfc_operation_control == 0x00;\n"
+     "  r.nfc.confirmed = r.nfc_confirmed;\n"
+     "  r.nfc.failed_at = NfcQuiesceStep::Confirmed;"),
+    ("R14-02 image: main never checks the liveness of a confirmed-quiet U9",
+     "demo/main.cpp",
+     "  serviceNfcLiveness();\n  g_app.periodicBatteryGuard();",
+     "  if (false) serviceNfcLiveness();\n  g_app.periodicBatteryGuard();"),
+    ("R14-02 image: the liveness probe trusts the identity alone",
+     "aqroot_demo_radios.h",
+     "  if (!writeRegister(bus, kRegNoResponseTimer2, kChallenge[1]) ||\n"
+     "      !readRegister(bus, kRegNoResponseTimer2, &back) ||\n"
+     "      back != kChallenge[1]) {\n    return false;\n  }",
+     "  (void)back;"),
 ]
 
 

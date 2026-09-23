@@ -181,7 +181,8 @@ static bool bringUpSpiBAndQuiesceRadios() {
   // D-794 / R13-03: the NFC front end is quiesced and verified on the same
   // path, and its verdict is reported separately because it gates a
   // different set of permissions -- the burst slot as well as the rails.
-  g_app.noteNfcFieldQuiesced(q.nfc_confirmed, q.nfc_operation_control);
+  g_app.noteNfcFieldQuiesced(q.nfc_confirmed, q.nfc_operation_control,
+                             nfcQuiesceStepName(q.nfc.failed_at));
   char detail[232];
   snprintf(detail, sizeof(detail),
            "CC1101 MARCSTATE=0x%02X (%s), SX1262 status=0x%02X (%s), "
@@ -189,7 +190,7 @@ static bool bringUpSpiBAndQuiesceRadios() {
            q.cc1101_marcstate, q.cc1101_confirmed ? "IDLE" : "NOT IDLE",
            q.sx1262_status, q.sx1262_confirmed ? "STANDBY" : "NOT STANDBY",
            q.nfc_operation_control,
-           q.nfc_confirmed ? "FIELD OFF (power-up state)"
+           q.nfc_confirmed ? "FIELD OFF, live identity 0x28..0x2F proved"
                            : "FIELD STATE UNKNOWN");
   report("radios quiesced after MCU reset (U7 SRES/SIDLE, U8 SetStandby, "
          "U9 Set default)", q.ok(), detail);
@@ -215,7 +216,21 @@ static void probeRadios() {
     }
     report(ids[i].device, ids[i].matches, detail);
   }
+  // D-795 / R14-02: a failed identity after an OFF confirmation revokes it.
+  g_app.noteNfcLiveness(ids[2].matches, uint8_t(ids[2].raw));
   SPI.end();
+}
+
+// D-795 / R14-02.  A CONFIRMED-QUIET ST25R3916 KEEPS PROVING IT IS ALIVE.
+static void serviceNfcLiveness() {
+  if (!g_app.nfcLivenessDue()) return;
+  g_selects.begin();
+  SPI.begin(AQROOT_PIN_SPI_B_SCK, AQROOT_PIN_SPI_B_MISO, AQROOT_PIN_SPI_B_MOSI,
+            -1);
+  uint8_t identity = 0x00;
+  const bool alive = st25r3916StillAlive(g_spi_b, &identity);
+  SPI.end();
+  g_app.noteNfcLiveness(alive, identity);
 }
 
 static const char *chargerText(ChargerState state) {
@@ -251,11 +266,14 @@ static void runDisplayInitialisation() {
   g_display.begin();
   g_display.testPattern();
   g_display.end();
-  g_app.noteDisplayInitialised(true);
   // The panel is WRITE-ONLY -- R112 is DNP -- so nothing here can confirm
   // the init took.  The backlight is raised so the operator can.
   pinMode(AQROOT_PIN_DISP_BL_PWM, OUTPUT);
   digitalWrite(AQROOT_PIN_DISP_BL_PWM, HIGH);
+  // D-795 / R14-01: stamped AFTER the backlight is raised, because the epoch
+  // is measured from the moment the new load is established and the
+  // backlight is most of it.
+  g_app.noteDisplayInitialised(true);
   Serial.println("display: four quadrants R/G/B/W, backlight ON.");
   Serial.println("  expect 320 wide x 480 tall, portrait, red top-left.");
   Serial.println("  R112 is DNP: there is NO read-back path -- confirm by eye.");
@@ -305,6 +323,9 @@ void setup() {
     return;
   }
 
+  // D-795: the app's rail flags are reconciled from the PHYSICAL latch the
+  // moment it is known, rather than trusted from whatever the object held.
+  g_app.afterAccessoryChange();
   scanI2c();
   releaseExpanderResetLines();
 
@@ -511,6 +532,8 @@ void loop() {
       (void)bringUpSpiBAndQuiesceRadios();
     }
   }
+  // D-795 / R14-02: liveness of a confirmed-quiet NFC front end.
+  serviceNfcLiveness();
   g_app.periodicBatteryGuard();
   // D-790 / D789-A09: any non-accessory command whose write did not land is
   // retried here until the physical latch confirms it.

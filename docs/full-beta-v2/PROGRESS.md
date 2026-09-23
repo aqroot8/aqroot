@@ -2,7 +2,9 @@
 
 **Status: LIVING DASHBOARD.**
 
-**D-794 (2026-09-22) — ROUND-13 FULL CONVERGENCE; EXTERNAL-REVIEW TARGET; NO OPEN OWNER DECISION.**
+**D-795 (2026-09-23) — ROUND-14 FULL CONVERGENCE; EXTERNAL-REVIEW TARGET; NO OPEN OWNER DECISION.**  R14-01..R14-07 and the Fable Work residuals closed with no copper moved: a 1300 ms gauge window with every admission its own epoch; liveness-qualified NFC OFF; the charger control model corrected over the full 2.85-4.221 V domain (junction-safe 3.900 W, no-discharge as a VBAT/source table, completion a qualification target); exact F14 domains; guarantees bound to hashed primary rows; B01-B14 / FA01-FA10 enumerated in-tree.  DO NOT ORDER.
+
+**D-794 (2026-09-22) — HISTORICAL, SUPERSEDED BY D-795.**
 Round-13 rejected D-793: Astra graded it **C — DO NOT ORDER** with seven findings and
 established **no unconditional PCB respin**; Fable graded B on reviewed scope and declared
 its own review INCOMPLETE.  `R13-01`…`R13-07`, every Fable delta and residual, and four

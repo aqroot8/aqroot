@@ -207,8 +207,16 @@ int main() {
     // THE CLAIM D788-04's EARLY-RETURN MUTANT BREAKS.  The permission may not
     // be granted without the production qualification having been executed,
     // and that qualification carries a >=300 ms settle.
-    claim("the production permission path spends the full gauge settle",
-          spent >= uint64_t(kFuelGaugeActiveSettleMs) * 1000u);
+    // D-795 / R14-01: the admission now also waits out a fresh post-request
+    // window, which would hide a skipped settle inside `spent`.  The settle
+    // is therefore measured up to the ADMISSION STAMP, which is taken only
+    // once the qualification has returned.
+    const uint64_t to_admission =
+        uint64_t(r.app.loadEpochEdgeMs()) * 1000u - before;
+    claim("the production permission path spends the full gauge settle "
+          "BEFORE the admission request is stamped",
+          to_admission >= uint64_t(kFuelGaugeActiveSettleMs) * 1000u
+          && spent >= to_admission);
     claim("the production permission path left the gauge qualified",
           r.gauge.activeReady());
     claim("the production permission path wrote HIBRT = 0x0000",
@@ -734,6 +742,183 @@ int main() {
                          "IR transmit") == 0
           && std::strcmp(burstLoadName(BurstLoad::MicroSdWrite),
                          "microSD write") == 0);
+  }
+
+  // =========================================================================
+  // D-795 / R14-01.  EVERY STAMP SITE, ONE CLAIM EACH.
+  //
+  // ROUND-14: "Bind every material internal load edge ... Add host/hardware-
+  // map mutation controls for EACH stamp site.  Removing amplifier/backlight/
+  // rail/shed stamps must fail."
+  //
+  // `test_production_image.cpp` proves PHYSICALLY that no reading the image
+  // acts on contains a pre-edge conversion.  For several sites that proof is
+  // carried by the ADMISSION epoch as well -- a backlight ramp can only run
+  // with both rails off, so the next VCELL reading is necessarily an
+  // admission, which stamps its own request -- and removing the site's own
+  // stamp would leave the physics green.  That is defence in depth, not a
+  // licence to drop the stamp, so every site is ALSO claimed here directly:
+  // after the operation, the epoch names that edge, and it was taken at the
+  // moment the operation finished.
+  // =========================================================================
+  {
+    auto stamped = [](Rig &r, const char *what) {
+      return std::strcmp(r.app.pendingLoadEdge(), what) == 0
+          && r.app.loadEpochEdgeMs() == millis();
+    };
+    auto edges_named = [](Rig &r, const char *what) {
+      return std::strcmp(r.app.pendingLoadEdge(), what) == 0;
+    };
+    {
+      Rig r;
+      r.bringUp();
+      r.bus.vcell_counts = 51200;              // 4.000 V
+      claim("R14-01 stamp: the ACC_3V3_SW rail step (on)",
+            r.app.handleAccessoryConsole('3') && r.app.acc3v3()
+            && edges_named(r, "the ACC_3V3_SW step"));
+      claim("R14-01 stamp: the accessory I2C buffer step",
+            r.app.handleAccessoryConsole('i') && r.app.accessoryI2c()
+            && stamped(r, "the accessory I2C buffer step"));
+      (void)r.app.handleAccessoryConsole('i');
+      claim("R14-01 stamp: the ACC_3V3_SW rail step (off)",
+            r.app.handleAccessoryConsole('3') && !r.app.acc3v3()
+            && stamped(r, "the ACC_3V3_SW step"));
+      claim("R14-01 stamp: the ACC_5V_SW rail step (on)",
+            r.app.handleAccessoryConsole('5') && r.app.acc5v()
+            && edges_named(r, "the ACC_5V_SW step"));
+      claim("R14-01 stamp: the ACC_5V_SW rail step (off)",
+            r.app.handleAccessoryConsole('5') && !r.app.acc5v()
+            && stamped(r, "the ACC_5V_SW step"));
+    }
+    {
+      Rig r;
+      r.bringUp();
+      claim("R14-01 stamp: the backlight ramp",
+            r.app.handleAccessoryConsole('l')
+            && stamped(r, "the backlight ramp"));
+      claim("R14-01 stamp: the amplifier being energised",
+            r.app.setAmplifierIntent(true)
+            && stamped(r, "the amplifier being energised"));
+      claim("R14-01 stamp: the amplifier being quieted",
+            r.app.setAmplifierIntent(false)
+            && stamped(r, "the amplifier being quieted"));
+      r.app.noteDisplayInitialised(true);
+      claim("R14-01 stamp: the display initialisation",
+            stamped(r, "the ILI9488 display initialisation"));
+      r.app.noteDisplayInitialised(false);
+      claim("R14-01 stamp: the display going down",
+            stamped(r, "the display going down"));
+      (void)r.app.releaseDisplayResetIntent();
+      claim("R14-01 stamp: the display reset being asserted",
+            edges_named(r, "the display reset being asserted"));
+      r.app.noteRadiosQuiesced(true);
+      claim("R14-01 stamp: the sub-GHz radio quiesce",
+            stamped(r, "the sub-GHz radio quiesce"));
+      r.app.noteNfcFieldQuiesced(true, 0x00);
+      claim("R14-01 stamp: the NFC field quiesce",
+            stamped(r, "the NFC field quiesce"));
+      r.app.noteSubGhzTransmitting(true);
+      claim("R14-01 stamp: sub-GHz TX keying", stamped(r, "sub-GHz TX keying"));
+      r.app.noteSubGhzTransmitting(false);
+      claim("R14-01 stamp: sub-GHz TX unkeying",
+            stamped(r, "sub-GHz TX unkeying"));
+      r.app.noteWifiRadioActive(true);
+      claim("R14-01 stamp: the Wi-Fi/BLE radio starting",
+            stamped(r, "the Wi-Fi/BLE radio starting"));
+      r.app.noteWifiRadioActive(false);
+      claim("R14-01 stamp: the Wi-Fi/BLE radio stopping",
+            stamped(r, "the Wi-Fi/BLE radio stopping"));
+    }
+    {
+      // The shed stamps.
+      Rig r;
+      r.bringUp();
+      r.bus.vcell_counts = 51200;
+      (void)r.app.handleAccessoryConsole('3');
+      r.app.forceAccessoriesOff("a D-795 stamp claim");
+      claim("R14-01 stamp: the accessory shed",
+            stamped(r, "the accessory shed"));
+      (void)r.app.handleAccessoryConsole('3');
+      (void)r.app.handleAccessoryConsole('5');
+      claim("both rails are live before the 5 V retention shed",
+            r.app.acc3v3() && r.app.acc5v());
+      r.bus.vcell_counts = uint16_t(3.15 / 78.125e-6);   // under retention
+      r.app.applyAccessoryRetention("a D-795 stamp claim");
+      claim("R14-01 stamp: the ACC_5V_SW shed",
+            !r.app.acc5v() && edges_named(r, "the ACC_5V_SW shed"));
+    }
+    {
+      // The admission stamps, and that they name the request.
+      Rig r;
+      r.bringUp();
+      r.bus.vcell_counts = 51200;
+      const uint32_t before = r.app.loadEpochAdmissions();
+      const uint32_t pressed = millis();
+      (void)r.app.accessoryBatteryAllows(false);
+      const uint32_t stamp = r.app.loadEpochEdgeMs();
+      claim("R14-01 stamp: a rail admission is its own epoch",
+            r.app.loadEpochAdmissions() == before + 1 && stamp >= pressed
+            && edges_named(r, "the accessory rail admission request"));
+      claim("...and the admission read waited the full window after it",
+            millis() - stamp >= kGaugePostLoadConversionMs);
+      (void)r.app.handleAccessoryConsole('3');
+      AccessoryLoadState after = r.app.accessoryLoadState();
+      after.amplifier_on = true;
+      const uint32_t asked = millis();
+      (void)r.app.modeEntryAllowed(after, "AMP_SD_MODE enable");
+      claim("R14-01 stamp: a mode entry with a rail live is its own epoch",
+            r.app.loadEpochEdgeMs() == asked
+            && edges_named(r, "the AMP_SD_MODE enable admission request"));
+    }
+    {
+      // Recovery.
+      Rig r;
+      claim("R14-01 stamp model: the expanders start unready", !r.app.acc3v3());
+      (void)r.app.serviceExpanderRecovery();
+      claim("R14-01 stamp: the expander recovery",
+            edges_named(r, "the expander recovery"));
+    }
+    {
+      // The window itself.
+      claim("R14-01: the post-load window is 1300 ms, five periods at tERR "
+            "+3.5 % rounded up, and not D-794's nominal 1000 ms",
+            kGaugePostLoadConversionMs == 1300
+            && kGaugeD794NominalWindowMs == 1000
+            && kGaugeWorstCaseWindowUs == 1293750u);
+    }
+  }
+
+  // =========================================================================
+  // D-795 / R14-02.  UNKNOWN OWNS THE SLOT, AND LIVENESS LOSS REVOKES.
+  // =========================================================================
+  {
+    Rig r;
+    r.bringUp();
+    r.bus.vcell_counts = 51200;
+    (void)r.app.handleAccessoryConsole('3');
+    claim("R14-02 model: a rail is live under a confirmed-quiet U9",
+          r.app.acc3v3() && r.app.nfcFieldConfirmedOff());
+    claim("a liveness probe is due on a confirmed-quiet part",
+          r.app.nfcLivenessDue());
+    claim("...and is not due again within its period", !r.app.nfcLivenessDue());
+    r.app.noteNfcLiveness(true, 0x2A);
+    claim("a live answer keeps the confirmation", r.app.nfcFieldConfirmedOff());
+    r.app.noteNfcLiveness(false, 0x00);
+    claim("R14-02: a lost identity REVOKES the OFF confirmation",
+          !r.app.nfcFieldConfirmedOff() && r.app.nfcRevocations() == 1);
+    claim("...and sheds the rail granted under it", !r.app.acc3v3());
+    claim("...and U9 takes the burst slot",
+          r.app.burstArbiter().active() == BurstLoad::NfcField);
+    r.app.burstArbiter().end(BurstLoad::NfcField);
+    claim("...and even with the arbiter cleared a microSD burst is refused "
+          "while the field is UNKNOWN",
+          !r.app.burstAllowed(BurstLoad::MicroSdWrite, "microSD test")
+          && logHas("U9 owns the burst slot"));
+    claim("...and so is a rail",
+          !r.app.accessoryBatteryAllows(false)
+          && logHas("the physical field state of U9"));
+    claim("no liveness probe is scheduled while UNKNOWN -- the quiesce retry "
+          "owns recovery", !r.app.nfcLivenessDue());
   }
 
   std::printf("\n%s -- %d failure(s)\n", failures ? "FAIL" : "PASS", failures);

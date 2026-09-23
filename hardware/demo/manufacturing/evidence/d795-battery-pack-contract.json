@@ -1,0 +1,175 @@
+{
+ "all_pass": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907",
+ "checks": {
+  "B10_D781_harness_rating_and_polarity_cover_live_board": {
+   "cavity_1": "BAT+ / red / J4.1",
+   "cavity_2": "GND / black / J4.2",
+   "conforming_margin_A": 0.3311,
+   "conforming_margin_pct": 14.59,
+   "conforming_max_battery_A": 2.2689,
+   "conforming_modes": [
+    "acc3v3_alone_at_its_budget",
+    "acc5v_alone_at_its_budget",
+    "both_at_the_declared_pair"
+   ],
+   "controlling_rating_A": 2.6,
+   "current_margin_A": 0.3311,
+   "current_margin_pct": 14.59,
+   "double_fault_basis": "BOTH limiters in fault at once is a DOUBLE fault. No connector rating governs it; what does is the protection ORDERING -- it must stay below the LATCHING LTC4368 breaker and below the F1 one-shot fuse so a user meets a recoverable BQ25185 BATOCP hiccup and not a latched board or a blown fuse. `demo_feature_contract` F6 is where that ordering is a clause.",
+   "double_fault_is_below_the_latching_breaker": true,
+   "double_fault_is_below_the_one_shot_fuse": true,
+   "double_fault_max_battery_A": 3.8236,
+   "double_fault_modes": [
+    "both_limiters_in_fault"
+   ],
+   "fault_exceeds_the_rated_current": true,
+   "fault_exception": "an accessory OVERCURRENT may reach 2.8628 A, which is 10.11 % above the section 4.2 rated current and INSIDE the section 4.3 two-circuit reference derating value of 2.9 A.  It is a fault, not an operating state; the rated current is a 30 C rise figure; and the excursion is bounded below the latching LTC4368 breaker and the F1 one-shot fuse.  MEASURED at C-BAT-PATH-01 and C-THERM-01.",
+   "fault_is_inside_the_reference_derating": true,
+   "fault_modes": [
+    "acc3v3_alone_at_its_limiter",
+    "acc5v_alone_at_its_limiter",
+    "both_at_their_guaranteed_currents",
+    "both_at_their_published_budgets"
+   ],
+   "fault_over_rated_pct": 10.11,
+   "live_max_battery_A": 2.8628,
+   "ok": true,
+   "rated_current_basis": "section 4.2 rated current at AWG26; section 6.1.5 gives 30 C MAX temperature rise AT that current",
+   "reference_derating_2_circuit_A": 2.9
+  },
+  "B1_exact_first_five_identity": {
+   "ok": true,
+   "supplier": "Adafruit Industries",
+   "supplier_sku": "328"
+  },
+  "B2_datasheet_is_pinned": {
+   "actual_sha256": "826149daa4aa9ba3ab7b635993a022d6521572a44d1d0588171468507b58ecd3",
+   "expected_sha256": "826149daa4aa9ba3ab7b635993a022d6521572a44d1d0588171468507b58ecd3",
+   "ok": true
+  },
+  "B3_capacity_is_the_selected_low_timer_margin_option": {
+   "capacity_mAh": 2500,
+   "ok": true
+  },
+  "B4_pack_fits_reserved_envelope": {
+   "dimensions_mm": {
+    "length": 60.5,
+    "thickness": 7.9,
+    "width": 50.5
+   },
+   "limits_mm": {
+    "length": 75.0,
+    "thickness": 8.0,
+    "width": 57.0
+   },
+   "ok": true
+  },
+  "B5_pack_discharge_covers_live_D753_envelope": {
+   "c5_capacity_Ah": 2.5,
+   "c5_multiplier": 2.0,
+   "datasheet_notation": "2C5A",
+   "derivation_is_pinned": true,
+   "derived_pack_max_discharge_A": 5.0,
+   "margin_ratio": 1.2,
+   "max_user_reachable_battery_A": 2.8628,
+   "ok": true,
+   "required_with_margin_A": 3.4354,
+   "stored_pack_max_discharge_A": 5.0
+  },
+  "B6_pack_charge_rating_covers_BQ25185_envelope": {
+   "board_required_A": 0.8547,
+   "ok": true,
+   "supplier_max_charge_A": 1.2
+  },
+  "B7_protection_connector_and_polarity_are_explicit": {
+   "board_positive_pin": "J4.1",
+   "connector": "genuine 2-pin JST-PH",
+   "incoming_polarity_check": true,
+   "ok": true,
+   "pcm": true
+  },
+  "B8_no_thermistor_requires_supervised_prototype_charging": {
+   "ok": true,
+   "permitted_charge_temp_C": [
+    0,
+    40
+   ],
+   "supervised": true,
+   "thermistor_present": false
+  },
+  "B9_D781_board_harness_identity_is_frozen": {
+   "battery_plug": "2137192021",
+   "battery_wire_AWG": 26,
+   "board_connector": "J4 D-781 manual pigtail -> Molex Micro-Lock Plus 2.0 5055700201",
+   "board_housing": "5055700201",
+   "board_wire_AWG": 26,
+   "ok": true,
+   "status": "FROZEN_FOR_FIRST_FIVE",
+   "strain_relief_tds": "hardware/demo/kicad/aqroot-demo/vendor/DOW/dowsil-3145-rtv-mil-a-46146-gray-11-1832-01-0323.pdf",
+   "strain_relief_tds_actual_sha256": "905af2ec4eafd4fe54fe748cab36450a121b4b04cedc375120299baefb38e115",
+   "strain_relief_tds_expected_sha256": "905af2ec4eafd4fe54fe748cab36450a121b4b04cedc375120299baefb38e115"
+  }
+ },
+ "contract": "battery_pack",
+ "controls_refused": {
+  "1p5A_discharge_variant_refused": true,
+  "24AWG_harness_mismatch_refused": true,
+  "2A_connector_rating_refused": true,
+  "700mA_charge_variant_refused": true,
+  "8p1mm_thick_variant_refused": true,
+  "datasheet_hash_tamper_refused": true,
+  "old_JST_board_header_refused": true,
+  "retinning_factory_board_pigtail_without_requalification_refused": true,
+  "reversed_harness_polarity_refused": true,
+  "skipped_polarity_check_refused": true,
+  "strain_relief_tds_hash_tamper_refused": true,
+  "undersized_finished_J4_hole_process_refused": true,
+  "unprotected_pack_refused": true,
+  "unqualified_strain_relief_material_refused": true,
+  "unsupervised_no_thermistor_refused": true,
+  "wrong_connector_refused": true
+ },
+ "decision": "CTO-BAT-01",
+ "requirements": {
+  "accessory_modes_A": {
+   "acc3v3_alone_at_its_budget": 2.1511,
+   "acc3v3_alone_at_its_limiter": 2.6344,
+   "acc5v_alone_at_its_budget": 2.2606,
+   "acc5v_alone_at_its_limiter": 2.8628,
+   "both_at_the_declared_pair": 2.2689,
+   "both_at_their_guaranteed_currents": 2.7577,
+   "both_at_their_published_budgets": 2.7381,
+   "both_limiters_in_fault": 3.8236
+  },
+  "board_sha256": "c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907",
+  "conforming_modes": [
+   "acc3v3_alone_at_its_budget",
+   "acc5v_alone_at_its_budget",
+   "both_at_the_declared_pair"
+  ],
+  "discharge_margin_ratio": 1.2,
+  "double_fault_modes": [
+   "both_limiters_in_fault"
+  ],
+  "fault_modes": [
+   "acc3v3_alone_at_its_limiter",
+   "acc5v_alone_at_its_limiter",
+   "both_at_their_guaranteed_currents",
+   "both_at_their_published_budgets"
+  ],
+  "ichg_nominal_A": 0.7692307692307693,
+  "latching_breaker_min_A": 3.9604,
+  "max_conforming_battery_A": 2.2689,
+  "max_double_fault_battery_A": 3.8236,
+  "max_user_reachable_battery_A": 2.8628,
+  "one_shot_fuse_A": 5.0,
+  "r37_ohm": 390.0,
+  "required_pack_charge_A": 0.8547008547008548,
+  "required_pack_discharge_A": 3.4353599999999997
+ },
+ "schema": 1,
+ "selected_record": "docs/full-beta-v2/assembly/SELECTED_BATTERY.json",
+ "verdict": "PASS"
+}

@@ -14,7 +14,21 @@
 
 ## 1. Authoritative HEAD
 
-> ### **D-794 REVIEW TARGET — THE EXACT FROZEN IDENTITY**
+> ### **D-795 REVIEW TARGET — THE EXACT FROZEN IDENTITY**
+>
+> | what | value |
+> |---|---|
+> | branch | `origin/aqroot-demo` |
+> | content commit | *recorded by the identity commit that follows it — a commit cannot contain its own SHA* |
+> | identity / post-commit verification commit | *the commit after the content commit* |
+> | board `aqroot-Beta-v2.kicad_pcb` sha256 | `c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907` |
+> | `hardware/demo/fab/MANIFEST.json` sha256 | recorded in [`evidence/d795-review-target.json`](../../hardware/demo/manufacturing/evidence/d795-review-target.json) |
+> | parent, REJECTED by Round-14 | `202996f64d8a3e1203345c0de2b712b3759020fb` (D-794 identity) |
+>
+> The board sha256 is IDENTICAL to the reviewed D-794 target: **no copper moved**.
+> **REVIEW TARGET, NOT A FABRICATION AUTHORIZATION.  DO NOT ORDER.**
+
+> ### **D-794 REVIEW TARGET — THE EXACT FROZEN IDENTITY**  *(**HISTORICAL** — REJECTED by Round-14)*
 >
 > | what | value |
 > |---|---|
@@ -108,7 +122,51 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
-> # **D-794 ROUND-13 FULL-CONVERGENCE CORRECTION — CURRENT EXTERNAL-REVIEW TARGET**
+> # **D-795 ROUND-14 FULL-CONVERGENCE CORRECTION — CURRENT EXTERNAL-REVIEW TARGET**
+>
+> **THIS IS A REVIEW TARGET, NOT A FABRICATION AUTHORIZATION.  DO NOT ORDER.**  Round-14
+> external review REJECTED D-794: Astra **C — DO NOT ORDER** with seven findings, Fable
+> Work **B** on its full scope with non-copper pre-order corrections.  **No copper, net,
+> footprint, placement, part value or protected-copper object moves at D-795.**
+> Connectivity is unchanged at **174 retained / 173 connected / one owner-approved
+> `U11.3` open / zero unapproved**.  `R14-01`…`R14-07` and every reproduced Fable Work
+> residual are closed; the full record is `CTO_DECISIONS.md` D-795.
+>
+> **THE THEME IS THAT A SAFE-LOOKING ANSWER IS NOT AN ANSWER UNTIL SOMETHING LIVE GAVE
+> IT.**  A gauge average that is partly from before the load, an all-zero SPI read that
+> looks like a powered-down NFC field, a charger ceiling solved at one cell voltage, a
+> completion time built on a capacity curve nobody published, a TYP row wearing a
+> guarantee because a dict said so — every one of them is a value that LOOKS like the
+> evidence it replaced.
+>
+> ### THE PRODUCT-FACING CONSEQUENCES, IN ONE PLACE
+>
+> * **No published accessory capability moves.**  400 mA / 300 mA per rail, DECLARED AND
+>   QUALIFIED, the declared simultaneous pair 220 mA + 170 mA, retention 3.20 V and both
+>   enable envelopes 3.85 V are unchanged.
+> * **An accessory rail now takes about 1.3 s to come on.**  Every admission waits a full
+>   1300 ms window after its own request, because the firmware cannot see a charger being
+>   unplugged and the gauge average must not be from before it.
+> * **Charging:** only from the named Raspberry Pi 15W USB-C Power Supply
+>   (`KSA-15E-051300HU` or its regional variant) on its captive cable.  Junction-safe
+>   system power **3.900 W** over the whole cell range; the no-discharge boundary is a
+>   VBAT/source table with a **0.900 W** minimum at a full cell; charge completion is a
+>   **QUALIFICATION TARGET** measured as `C-PWR-CHARGE-02`.  D-794's 3.600 W and 1.150 W
+>   are RETIRED.
+> * **NFC:** the field is confirmed off only by a live, identified ST25R3916; an
+>   unanswering bus leaves it UNKNOWN, which refuses accessory power and owns the burst
+>   slot.
+>
+> ### THE FOUR GATES
+>
+> | gate | status |
+> |---|---|
+> | **PRE-ORDER ANALYTICAL** | **CLOSED on this target** |
+> | **FAB / CAM ACCEPTANCE** | **PENDING** — B01–B14, now enumerated in `assembly/RELEASE_ACCEPTANCE_REGISTER.json` and in the fab notes |
+> | **FIRST-ARTICLE VALIDATION** | **PENDING** — FA01–FA10, enumerated in the same register and in `FIRST_FIVE_ASSEMBLY_PLAN` §7d |
+> | **PROCUREMENT** | **PENDING** — nine constrained fitted groups plus the AOS pass-pair allocation |
+
+> # **D-794 ROUND-13 FULL-CONVERGENCE CORRECTION — HISTORICAL, SUPERSEDED BY D-795 (its 1000 ms window, its NFC read-back, its 3.600 W / 1.150 W charge figures and its C-THERM-01 state are RETIRED)**
 >
 > **THIS IS A REVIEW TARGET, NOT A FABRICATION AUTHORIZATION. DO NOT ORDER.**
 > Round-13 external review REJECTED D-793.  Astra graded it **C — DO NOT ORDER**

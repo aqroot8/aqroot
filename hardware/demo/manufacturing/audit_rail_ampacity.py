@@ -813,26 +813,14 @@ SYSTEM_THERMAL = dict(
 # unregulated halves are reported SEPARATELY, and the clause asks the honest
 # question: is the UNREGULATED half alone inside TI's operating maximum, given
 # that the regulated half can be driven to zero?
-CHARGE_REGIME_INPUT = dict(
-    vin_V=5.0,
-    ron_in_max_ohm=0.470,
-    ron_in_typ_ohm=0.330,
-    vsys_reg_V=4.5,
-    vsys_reg_accuracy=0.02,
-    vbat_low_V=3.2,
-    ichg_A=0.769,
-    ilim_min_A=0.995, ilim_max_A=1.100,
-    source="TI SLUSF65B Electrical Characteristics: RON_IN 330 typ / 470 mOhm "
-           "MAX at VIN = 5 V, IIN = 1 A; VSYS_REG 4.5 V at VBATREG <= 4.3 V "
-           "with -2/+2 % accuracy; VMINSYS 3.8 V in battery-tracking mode.  "
-           "ILIM 995 / 1050 / 1100 mA at the ILIM = 1050 mA row, which is "
-           "what R36 = 13 kOhm programs (Table 6-1).  ICHG 769 mA is this "
-           "board's own R37 = 390 ohm programming (D-743).  Section 6.3.3: "
-           "when the system load exceeds the input limit the battery "
-           "SUPPLEMENTS through the BATFET, and BATOCP stays active.")
+# D-795: `CHARGE_REGIME_INPUT`, a TYPED duplicate of eight BQ25185 constants
+# (ICHG 0.769 A, ILIM 0.995/1.100 A, VSYS_REG 4.5 V, a fixed 3.2 V "mid-charge
+# cell"...) that D-792's one-canonical-model rule should have removed, sat here
+# UNREAD by any code.  It is deleted rather than corrected: every charger
+# constant lives in `aqroot_power_model.BQ25185` and nowhere else.
 CHARGE_REGIME = dict(
-    treg_C=100.0,
-    tshut_rising_C=150.0,
+    treg_C=apm.BQ25185["treg_typ_C"],
+    tshut_rising_C=apm.BQ25185["tshut_rising_C"],
     source="TI SLUSF65B 5.5 Electrical Characteristics: TREG typical "
            "junction temperature regulation 100 C, TSHUT_RISING 150 C; "
            "section 6.3.7.6 'During charging, to prevent the device from "
@@ -851,159 +839,472 @@ CHARGE_REGIME = dict(
                 "regime is the one bounded by the sustained envelope.")
 
 
+# ==========================================================================
+# D-795 / R14-03 + R14-04.  THE CHARGE REGIME OVER THE DOMAIN IT PROMISES.
+#
+# ROUND-14: "3.600 W is NOT a universal no-battery-discharge ceiling.  Both
+# reviews independently reproduce high-VBAT supplement on qualified sources.
+# D-794 derives the published regime ceiling from an insufficient battery-
+# voltage domain (notably low BAT around 3.2 V) while VINDPM tracks battery at
+# high BAT.  Sweep the FULL qualified battery domain through at least BUVLO to
+# 4.221 V, all source classes, source impedances, ILIM corners, VINDPM
+# thresholds, DPPM, supplement entry/exit histories, thermal regulation, and
+# temperature cases. ... If no useful universal scalar exists, publish a
+# VBAT/source-conditioned envelope instead of inventing one."
+#
+# THAT IS WHAT THIS DOES, AND THE ANSWER IS THAT NO USEFUL UNIVERSAL SCALAR
+# EXISTS.  Battery-tracking VINDPM rises with the cell (VBAT + 330 mV TYP,
+# swept), so a 4.75 V source on a qualified 2 m cable has almost nothing left
+# for the input by the time the cell is full: the battery supplements above a
+# few hundred milliwatts.  At the other end, the corrected DPPM physics (SYS
+# held at VBAT + VDPPM whenever an input loop binds) puts the no-discharge
+# boundary at ILIM x (VBAT + VDPPM), not at ILIM x VSYS_REG.  So the product
+# claim is TWO things, kept apart:
+#
+#   * a JUNCTION-SAFE system power, which IS universal over the domain,
+#     because TREG folds the charge and only the part TREG cannot reach is
+#     charged against TI's 125 C operating maximum; and
+#   * a NO-DISCHARGE ENVELOPE, conditioned on VBAT and source class, which is
+#     published as a table and never as a scalar.
+# ==========================================================================
+REGIME_VBAT_GRID_V = (2.85, 3.0, 3.2, 3.4, 3.5, 3.52, 3.6, 3.8, 4.0, 4.1,
+                      4.2, apm.BAT_RAW_MAX_V)
+REGIME_SWEEP_POINTS = (-1.0, -0.5, 0.0, 0.5, 1.0)
+REGIME_HISTORIES = (None, "SUPPLEMENT")
+REGIME_AMBIENTS_C = (0.0, 25.0, 40.0)
+REGIME_ILIM_CORNERS = ("max", "min")
+REGIME_GUARDBAND = 0.05
+REGIME_GRID_W = 0.05
+REGIME_BISECT_STEPS = 44
+
+
+def regime_domain():
+    """The exact semantic domain the regime claims range over."""
+    return dict(
+        vbat_grid_V=list(REGIME_VBAT_GRID_V),
+        vbat_lower_bound_basis=(
+            "VBUVLO 3.0 V TYP less a DECLARED 5 % = 2.85 V: below it the "
+            "BATFET has disconnected the cell and nothing is charged"),
+        vbat_upper_bound_basis="BAT_RAW_MAX_V 4.221 V, VBATREG at its "
+                               "+0.5 % accuracy",
+        sweeps=[round(x * apm.CHARGER_BRANCH_THRESHOLD_SWEEP, 6)
+                for x in REGIME_SWEEP_POINTS],
+        histories=list(REGIME_HISTORIES),
+        ambients_C=list(REGIME_AMBIENTS_C),
+        ilim_corners=list(REGIME_ILIM_CORNERS),
+        source_classes=[c["key"] for c in apm.USB_SOURCE_CLASSES],
+        qualified_source_classes=[c["key"] for c in apm.USB_SOURCE_CLASSES
+                                  if c["rules"]],
+        ichg_corner="max",
+        treg_high_C=round(apm.BQ25185["treg_typ_C"]
+                          + apm.BQ25185["treg_declared_band_K"], 6))
+
+
+def regime_row_key(cls_key, vbat, ilim, sweep, hist, amb):
+    return "%s/vbat%.3f/ilim_%s/sweep%+.3f/%s/amb%.0f" % (
+        cls_key, vbat, ilim, sweep, hist or "none", amb)
+
+
+def _bisect_max(pred, lo=0.0, hi=8.0, steps=REGIME_BISECT_STEPS):
+    if not pred(lo):
+        return 0.0
+    if pred(hi):
+        return hi
+    for _ in range(steps):
+        mid = 0.5 * (lo + hi)
+        if pred(mid):
+            lo = mid
+        else:
+            hi = mid
+    return lo
+
+
+def charge_regime_envelope(system=None, spec=None, delivered_out_W=0.0,
+                           keep_evidence=True):
+    """Every (source class, VBAT, ILIM corner, threshold sweep, history,
+    ambient) point, and the two ceilings at each.
+
+    NO-DISCHARGE: the largest system power at which the part is not in
+    SUPPLEMENT.  Independent of ambient and of TREG -- supplement onset is
+    where the charge has already folded to zero -- so it is solved once per
+    point and carried on every ambient row.
+
+    JUNCTION: the largest system power at which the part TREG CANNOT reduce
+    -- the state with the charge folded all the way to zero -- is inside TI's
+    125 C operating maximum.  TREG's declared high end (110 C) is below that
+    limit, so whenever TREG CAN act the junction sits at or below it; this is
+    the only half that can exceed 125 C.  The evidence is carried: the solved
+    state at the ceiling and just above it, so the independent oracle can
+    re-check the BRACKET rather than trust the bisection.
+    """
+    spec = PACKAGE_JUNCTION if spec is None else spec
+    system = SYSTEM_THERMAL if system is None else system
+    r_sys = system_thermal_resistance_K_per_W(system)
+    theta = spec["theta_ja_C_per_W"]
+    tj_max = spec["tj_operating_max_C"]
+    dom = regime_domain()
+    rows = []
+    for cls in apm.USB_SOURCE_CLASSES:
+        for vbat in REGIME_VBAT_GRID_V:
+            for ilim in REGIME_ILIM_CORNERS:
+                for sw in dom["sweeps"]:
+                    for hist in REGIME_HISTORIES:
+                        kw = dict(vbus_V=cls["vbus_V"],
+                                  path_ohm=cls["path_ohm"],
+                                  source_key=cls["key"], previous_mode=hist,
+                                  sweep=sw)
+
+                        def _st(p, zero=False):
+                            return apm.charger_state(
+                                p, vbat, ilim, treg_folds_charge_to_zero=zero,
+                                **kw)
+
+                        def _nd(p):
+                            st = _st(p)
+                            return st is not None and st["mode"] != "SUPPLEMENT"
+
+                        p_nd = _bisect_max(_nd)
+                        nd_at = _st(p_nd)
+                        nd_above = _st(p_nd * (1.0 + 1e-7) + 1e-7)
+                        for amb in REGIME_AMBIENTS_C:
+                            def _tj_ok(p):
+                                st = _st(p, zero=True)
+                                if st is None:
+                                    return False
+                                return apm.charger_junction(
+                                    st, amb, r_sys, theta,
+                                    delivered_out_W)[0] <= tj_max
+
+                            p_tj = _bisect_max(_tj_ok)
+                            tj_at = _st(p_tj, zero=True)
+                            tj_above = _st(p_tj * (1.0 + 1e-7) + 1e-7,
+                                           zero=True)
+                            ceiling = min(p_nd, p_tj)
+                            row = dict(
+                                key=regime_row_key(cls["key"], vbat, ilim, sw,
+                                                   hist, amb),
+                                source_class=cls["key"],
+                                qualified=bool(cls["rules"]),
+                                vbat_V=vbat, ilim_corner=ilim, sweep=sw,
+                                previous_mode=hist, ambient_C=amb,
+                                no_discharge_W=round(p_nd, 6),
+                                junction_W=round(p_tj, 6),
+                                ceiling_W=round(ceiling, 6),
+                                binding=("no_discharge" if p_nd <= p_tj
+                                         else "junction"),
+                                mode_at_no_discharge_ceiling=(
+                                    nd_at["mode"] if nd_at else None))
+                            if keep_evidence:
+                                row["_evidence"] = dict(
+                                    no_discharge_at=nd_at,
+                                    no_discharge_above=nd_above,
+                                    junction_at=tj_at,
+                                    junction_above=tj_above,
+                                    thermal=dict(
+                                        ambient_C=amb, r_sys_K_per_W=r_sys,
+                                        theta_ja_C_per_W=theta,
+                                        delivered_out_W=delivered_out_W,
+                                        tj_max_C=tj_max))
+                            rows.append(row)
+
+    def _floor(x):
+        return (math.floor(x * (1.0 - REGIME_GUARDBAND) / REGIME_GRID_W
+                           + 1e-12) * REGIME_GRID_W)
+
+    envelope = []
+    for cls in apm.USB_SOURCE_CLASSES:
+        for vbat in REGIME_VBAT_GRID_V:
+            sel = [r for r in rows if r["source_class"] == cls["key"]
+                   and r["vbat_V"] == vbat]
+            nd = min(r["no_discharge_W"] for r in sel)
+            tj = min(r["junction_W"] for r in sel)
+            envelope.append(dict(
+                source_class=cls["key"], qualified=bool(cls["rules"]),
+                vbat_V=vbat, rows=len(sel),
+                no_discharge_raw_W=round(nd, 6),
+                junction_raw_W=round(tj, 6),
+                no_discharge_published_W=round(_floor(nd), 6),
+                junction_published_W=round(_floor(tj), 6)))
+    q = [r for r in rows if r["qualified"]]
+    universal_nd = min(r["no_discharge_W"] for r in q)
+    universal_tj = min(r["junction_W"] for r in q)
+    worst_nd_row = min(q, key=lambda r: r["no_discharge_W"])
+    worst_tj_row = min(q, key=lambda r: r["junction_W"])
+    return dict(
+        domain=dom,
+        rows=rows,
+        row_count=len(rows),
+        envelope=envelope,
+        universal_no_discharge_raw_W=round(universal_nd, 6),
+        universal_no_discharge_published_W=round(_floor(universal_nd), 6),
+        universal_no_discharge_ruling_row=worst_nd_row["key"],
+        junction_safe_raw_W=round(universal_tj, 6),
+        junction_safe_published_W=round(_floor(universal_tj), 6),
+        junction_safe_ruling_row=worst_tj_row["key"],
+        guardband=REGIME_GUARDBAND, grid_W=REGIME_GRID_W,
+        tj_operating_max_C=tj_max,
+        what=("the no-discharge boundary is VBAT- and source-CONDITIONED and "
+              "is published as a table; the junction-safe system power is "
+              "universal over the domain.  D-794's 3.600 W was derived at "
+              "one mid-charge cell and is RETIRED."))
+
+
 def charge_regime_junction(system_W, ambient_C=None, spec=None, system=None,
                            charge=None, delivered_out_W=0.0, sweep=0.0,
-                           previous_mode=None):
-    """D-792 / R11-03.  The adapter-attached regime, solved as a PHYSICAL MODE.
+                           previous_mode=None, vbat_grid=None):
+    """D-795 / R14-03.  One system power, over the WHOLE charging domain.
 
-    D-791 computed VSYS, IIN, ICHG and ISUPP from four independent formulas
-    and could hold SYS at 4.41 V while a 3.2 V battery "supplemented" into it.
-    `aqroot_power_model.charger_state` solves ONE mode with KCL, KVL, BATFET
-    direction and energy balance as hard invariants, prices the input FET as
-    the LINEAR pass element it is rather than as a resistor, and takes ONE end
-    of the ILIM band per solved state.
-
-    Both ILIM/VBUS corners are solved and the WORSE package dissipation rules,
-    because which end is conservative is not the same question for the input
-    FET (high VBUS, high IIN) as for the BATFET (low ILIM, more supplement).
+    D-794 evaluated this at ONE cell voltage (VBATREG - 1.0 = 3.2 V) and
+    priced "TREG folded to zero" as the input-FET heat of the CHARGING state
+    -- at a node the DPPM loop holds near the cell -- rather than as the state
+    the part is in once the charge has actually folded, with SYS back at
+    regulation.  Both are corrected: every cell in the domain grid, every
+    source class and both ILIM corners are solved WITH THE THERMAL LOOP CLOSED
+    (`charger_operating_point`, TREG at its declared high end), the part TREG
+    cannot reduce is solved as its own zero-charge state, and the WORST of
+    each rules.
     """
     spec = PACKAGE_JUNCTION if spec is None else spec
     system = SYSTEM_THERMAL if system is None else system
     ambient_C = AMBIENT_DESIGN_MAX_C if ambient_C is None else ambient_C
     r_sys = system_thermal_resistance_K_per_W(system)
-    vbat = apm.BQ25185["vbatreg_V"] - 1.0      # a mid-charge cell, 3.2 V
-
-    # D-793 / R12-02.  THE SOURCE IS AN ENUMERATED CONTRACT, NOT TWO CORNERS.
-    # Every ILIM corner is solved against every QUALIFIED source class, and
-    # the unqualified class is solved too and REPORTED so the cost of
-    # charging from a cable outside the published contract is a number.
+    theta = spec["theta_ja_C_per_W"]
+    treg_high = (apm.BQ25185["treg_typ_C"]
+                 + apm.BQ25185["treg_declared_band_K"])
+    grid = REGIME_VBAT_GRID_V if vbat_grid is None else vbat_grid
     corners = {}
-    for ilim_corner in ("max", "min"):
-        for cls in apm.USB_SOURCE_CLASSES:
-            st = apm.charger_state(system_W, vbat, ilim_corner,
-                                   vbus_V=cls["vbus_V"],
-                                   path_ohm=cls["path_ohm"],
-                                   source_key=cls["key"],
-                                   previous_mode=previous_mode,
-                                   sweep=sweep)
-            if st is None:
-                continue
-            st = dict(st, source_rules=cls["rules"], source_what=cls["what"])
-            key = "ilim_%s__%s" % (ilim_corner, cls["key"])
-            p_internal = (st["source_W"] + st["from_cell_W"]
-                          - st["stored_W"] - delivered_out_W)
-            air = ambient_C + r_sys * p_internal
-            st = dict(st, internal_W=round(p_internal, 6),
-                      internal_air_C=round(air, 3),
-                      junction_with_charge_folded_back_C=round(
-                          air + spec["theta_ja_C_per_W"]
-                          * st["package_W_treg_cannot_reduce"], 3),
-                      junction_at_full_charge_current_C=round(
-                          air + spec["theta_ja_C_per_W"] * st["package_W"], 3))
-            corners[key] = st
-    ruling = [v for v in corners.values() if v.get("source_rules")]
-    worst = max(ruling or list(corners.values()),
-                key=lambda s: s["junction_with_charge_folded_back_C"])
-    unqualified = [v for v in corners.values() if not v.get("source_rules")]
-    worst_unqualified = (max(unqualified,
-                             key=lambda s: s[
-                                 "junction_with_charge_folded_back_C"])
-                         if unqualified else None)
+    for vbat in grid:
+        for ilim_corner in REGIME_ILIM_CORNERS:
+            for cls in apm.USB_SOURCE_CLASSES:
+                kw = dict(ilim_corner=ilim_corner, vbus_V=cls["vbus_V"],
+                          path_ohm=cls["path_ohm"], source_key=cls["key"],
+                          previous_mode=previous_mode, sweep=sweep)
+                st = apm.charger_operating_point(
+                    system_W, vbat, ambient_C, r_sys, theta, treg_high,
+                    delivered_out_W, **kw)
+                zero = apm.charger_state(system_W, vbat,
+                                         treg_folds_charge_to_zero=True, **kw)
+                if st is None or zero is None:
+                    corners["vbat%.3f/ilim_%s__%s" % (vbat, ilim_corner,
+                                                      cls["key"])] = dict(
+                        vbat_V=vbat, source_key=cls["key"],
+                        source_rules=cls["rules"], mode=None,
+                        no_operating_point=True)
+                    continue
+                tj0, air0, int0 = apm.charger_junction(
+                    zero, ambient_C, r_sys, theta, delivered_out_W)
+                full = apm.charger_state(system_W, vbat, **kw)
+                tjf = (apm.charger_junction(full, ambient_C, r_sys, theta,
+                                            delivered_out_W)[0]
+                       if full is not None else None)
+                corners["vbat%.3f/ilim_%s__%s" % (vbat, ilim_corner,
+                                                  cls["key"])] = dict(
+                    st, source_rules=cls["rules"], source_what=cls["what"],
+                    no_operating_point=False,
+                    internal_W=st["thermal"]["internal_W"],
+                    internal_air_C=st["thermal"]["internal_air_C"],
+                    junction_C=st["thermal"]["junction_C"],
+                    junction_with_charge_folded_back_C=round(tj0, 3),
+                    junction_at_full_charge_current_C=(
+                        None if tjf is None else round(tjf, 3)),
+                    zero_charge_mode=zero["mode"])
+    ruling = [v for v in corners.values()
+              if v.get("source_rules") and not v.get("no_operating_point")]
+    worst = max(ruling, key=lambda s: s["junction_with_charge_folded_back_C"])
+    hottest = max(ruling, key=lambda s: s["junction_C"])
+    supplementing = sorted(k for k, v in corners.items()
+                           if v.get("source_rules")
+                           and v.get("mode") == "SUPPLEMENT")
     air = worst["internal_air_C"]
     p_internal = worst["internal_W"]
     return dict(
         ambient_C=ambient_C, system_W=round(system_W, 6),
-        system_A=worst["system_A"],
-        # D-794 / R13-02: the declared branch-threshold sweep this point was
-        # solved at, so a ceiling derived over the sweep can say so.
-        branch_threshold_sweep=sweep,
-        previous_mode=previous_mode,
-        controls=worst.get("controls"),
+        branch_threshold_sweep=sweep, previous_mode=previous_mode,
+        vbat_grid_V=list(grid),
         corners=corners,
-        ruling_corner="%s / %s" % (worst["ilim_corner"],
-                                   worst.get("source_key")
-                                   or worst["vbus_corner"]),
+        ruling_corner=next(k for k, v in corners.items() if v is worst),
         ruling_source_class=worst.get("source_key"),
-        source_contract=apm.usb_source_contract(),
-        outside_the_published_cable_contract=(
-            None if worst_unqualified is None else dict(
-                source_class=worst_unqualified.get("source_key"),
-                path_ohm=worst_unqualified["path_ohm"],
-                mode=worst_unqualified["mode"],
-                junction_with_charge_folded_back_C=worst_unqualified[
-                    "junction_with_charge_folded_back_C"],
-                what=worst_unqualified.get("source_what"),
-                why="REPORTED, not ruled on.  A cable outside the published "
-                    "contract is an operator condition, and this is what it "
-                    "costs at this system load.")),
         mode=worst["mode"],
-        ilim_band_A=[apm.BQ25185["ilim_min_A"], apm.BQ25185["ilim_max_A"]],
-        input_current_A=worst["input_A"],
-        charge_current_A=worst["charge_A"],
-        supplement_current_A=worst["supplement_A"],
-        vsys_V=worst["vsys_V"], vbat_low_V=vbat,
-        vin_pin_V=worst["vin_pin_V"],
-        ron_in_max_ohm=apm.BQ25185["ron_in_max_ohm"],
-        unregulated_input_fet_W=worst["input_fet_W"],
-        input_fet_priced_as_a_resistor_would_have_been_W=worst[
-            "input_fet_resistive_only_W"],
-        unregulated_batfet_supplement_W=worst["batfet_W"],
-        regulated_charge_fet_W=worst["charge_fet_W"],
-        package_dissipation_W=worst["package_W"],
-        package_dissipation_treg_cannot_reduce_W=worst[
-            "package_W_treg_cannot_reduce"],
-        internal_W=round(p_internal, 6),
-        internal_air_C=round(air, 3),
+        zero_charge_mode_at_the_ruling_corner=worst["zero_charge_mode"],
+        hottest_operating_junction_C=hottest["junction_C"],
+        hottest_operating_corner=next(k for k, v in corners.items()
+                                      if v is hottest),
         junction_with_charge_folded_back_C=worst[
             "junction_with_charge_folded_back_C"],
         junction_at_full_charge_current_C=worst[
             "junction_at_full_charge_current_C"],
+        internal_W=round(p_internal, 6),
+        internal_air_C=round(air, 3),
         tj_operating_max_C=spec["tj_operating_max_C"],
-        treg_C=CHARGE_REGIME["treg_C"],
+        treg_high_C=treg_high,
         the_unregulated_half_is_inside_the_operating_maximum=bool(
             worst["junction_with_charge_folded_back_C"]
             <= spec["tj_operating_max_C"]),
-        every_corner_is_physically_consistent=bool(
-            all(s["invariants"]["ok"] for s in corners.values())),
-        invariants_checked=sorted(
-            k for k in next(iter(corners.values()))["invariants"]
-            if k != "ok" and not k.endswith("_A")),
+        supplementing_qualified_corners=supplementing,
+        supplements_somewhere_in_the_domain=bool(supplementing),
+        highest_vbat_without_supplement_on_every_qualified_class_V=(
+            max((v for v in grid if not any(
+                corners.get("vbat%.3f/ilim_%s__%s" % (v, il, c["key"]),
+                            {}).get("mode") == "SUPPLEMENT"
+                for il in REGIME_ILIM_CORNERS for c in apm.USB_SOURCE_CLASSES
+                if c["rules"])), default=None)),
+        every_corner_is_physically_consistent=bool(all(
+            s["invariants"]["ok"] for s in corners.values()
+            if not s.get("no_operating_point"))),
         pouch_charge_limit_C=POUCH_CHARGE_LIMIT_C,
         the_air_is_inside_the_pouch_charge_window=bool(
             air <= POUCH_CHARGE_LIMIT_C),
         charge_ambient_ceiling_C=round(
             POUCH_CHARGE_LIMIT_C - r_sys * p_internal, 2),
-        charge_ambient_basis=(
-            "the external ambient at which R_SYS x P_internal puts the "
-            "internal air exactly at the pouch's published 40 C charge limit, "
-            "at this system load.  A LIGHTER system load raises it; the "
-            "published figure is for the sustained reference state."),
+        source_contract=apm.usb_source_contract(),
         what_treg_can_and_cannot_do=(
-            "TREG folds back the CHARGE current, which removes "
-            "`regulated_charge_fet_W` and nothing else.  It cannot reduce the "
-            "SYSTEM load, which crosses the same package through the input "
-            "FET and -- once the system asks for more than the input limit "
-            "can supply -- through the BATFET in supplement mode as well.  "
-            "The clause therefore asks whether the junction is inside TI's "
-            "operating maximum with the charge current folded ALL the way to "
-            "zero, which is the most TREG can ever do."),
-        what_d792_corrected=(
-            "R11-03.  D-791 pinned VSYS at 4.41 V, took the input current at "
-            "the HIGH end of the ILIM band and the charge current at the LOW "
-            "end of the SAME band in one state, and computed a POSITIVE "
-            "battery supplement into a node 1.2 V above the cell -- which a "
-            "passive BATFET cannot do.  It also priced the input path as "
-            "IIN^2 x RON, which understates a linear pass element dropping "
-            "VIN - VSYS by more than 3x once the device is supplementing.  "
-            "The solver now enforces the BATFET direction, KCL, KVL and "
-            "energy balance, and reports what the resistive figure would "
-            "have been beside what the physics gives."),
-        why_the_input_is_the_cap=(
-            "ILIM is programmed to 1050 mA typical (R36 = 13 kOhm, SLUSF65B "
-            "Table 6-1), so the adapter cannot deliver more than its own "
-            "band whatever the system asks for.  A model that let the input "
-            "current follow the system load would put 12 W into a 5 V port."),
+            "TREG folds back the CHARGE current, and because a smaller charge "
+            "takes the input off its limit, SYS rises back to regulation and "
+            "the input FET's drop shrinks with it.  What TREG cannot reduce "
+            "is the zero-charge state: the SYSTEM load through the input FET, "
+            "and the BATFET once the source cannot carry it."),
         source=apm.BQ25185["source"])
+
+
+COMPLETION_SYSTEM_SCENARIOS_W = (("idle", 0.0), ("housekeeping", 0.35),
+                                 ("display_quiet", 1.0))
+COMPLETION_PRECHARGE_CAPACITY_SHARE = 0.05
+
+
+def completion_required_domain():
+    """What a completion claim has to range over before it may be universal."""
+    return dict(
+        ambients_C=sorted(REGIME_AMBIENTS_C),
+        source_classes=sorted(c["key"] for c in apm.USB_SOURCE_CLASSES
+                              if c["rules"]),
+        treg_C=round(apm.BQ25185["treg_typ_C"]
+                     - apm.BQ25185["treg_declared_band_K"], 6),
+        ichg_corner="min", ilim_corner="min",
+        timer_min=round(apm.TMAXCHG_MIN
+                        * (1.0 - apm.BQ25185["tmaxchg_declared_tolerance"]),
+                        6),
+        cv_tail_min=apm.CV_TAPER_ALLOWANCE_MIN,
+        precharge_share=COMPLETION_PRECHARGE_CAPACITY_SHARE,
+        sweep=round(apm.CHARGER_BRANCH_THRESHOLD_SWEEP, 6))
+
+
+def charge_completion_estimate(domain=None, scenarios=None, system=None,
+                               spec=None, steps=23, keep_states=False):
+    """D-795 / R14-04.  A BOUNDED ESTIMATE, NEVER A GUARANTEE.
+
+    ROUND-14: "Current charge_timer_report omits thermal regulation/foldback
+    and lacks a bounded real charge trajectory.  Include TREG in the
+    completion calculation using the same declared thermal model, source
+    class, BAT voltage trajectory, charge-current tolerance, precharge if
+    applicable, CC/CV behavior, termination requirements, timer tolerance, and
+    ambient. ... If primary pack evidence cannot analytically support a
+    universal completion power, narrow the claim to a qualification target
+    and make physical full-charge timing a first-article measurement of
+    record."
+
+    WHAT THE PRIMARY EVIDENCE SUPPORTS.  The Adafruit 328 / 785060 pack
+    specification gives the rated capacity (2500 mAh at 0.2 C5A), the charge
+    cut-off (4.2 V CC/CV) and the discharge cut-off (2.75 V).  It gives NO
+    capacity-versus-voltage curve and NO charge-time figure.  So:
+
+      * the CC part is bounded WITHOUT any capacity-distribution assumption:
+        the whole rated capacity is charged at the WORST current the TREG-
+        closed operating point reaches anywhere on VLOWV..VBATREG -- the
+        opposite of D-794's linear-distribution model, which Round-14
+        rejected as unproven;
+      * the precharge part and the CV tail are DECLARED allowances (a 5 %
+        capacity share at the minimum precharge current, and 60 min), because
+        nothing in the pack record bounds either;
+      * the timer is taken at 360 min x (1 - 0.20) because tMAXCHG is a TYP.
+
+    A result that "completes" is therefore an ESTIMATE conditioned on two
+    declarations, and the product claim built on it is a QUALIFICATION
+    TARGET whose measurement of record is C-PWR-CHARGE-02.
+    """
+    spec = PACKAGE_JUNCTION if spec is None else spec
+    system = SYSTEM_THERMAL if system is None else system
+    d = completion_required_domain() if domain is None else dict(domain)
+    scen = COMPLETION_SYSTEM_SCENARIOS_W if scenarios is None else scenarios
+    r_sys = system_thermal_resistance_K_per_W(system)
+    theta = spec["theta_ja_C_per_W"]
+    s = apm.BQ25185
+    cap = apm.PACK_RATED_CAPACITY_AH
+    vlo, vhi = apm.VLOWV_MAX_V, s["vbatreg_V"]
+    i_pre_min, _ = apm.programmed_charge_A(vlo - 0.5, ichg_corner="min")
+    rows = []
+    states = []
+    for cls in apm.USB_SOURCE_CLASSES:
+        if cls["key"] not in d["source_classes"]:
+            continue
+        for amb in d["ambients_C"]:
+            for name, p_sys in scen:
+                span = []
+                for k in range(steps + 1):
+                    vb = vlo + (vhi - vlo) * k / float(steps)
+                    st = apm.charger_operating_point(
+                        p_sys, vb, amb, r_sys, theta, d["treg_C"],
+                        ilim_corner=d["ilim_corner"],
+                        ichg_corner=d["ichg_corner"],
+                        vbus_V=cls["vbus_V"], path_ohm=cls["path_ohm"],
+                        source_key=cls["key"], sweep=d["sweep"])
+                    if st is not None and keep_states:
+                        states.append(dict(st, domain_key="completion/%s/"
+                                           "amb%.0f/%s/vbat%.4f" % (
+                                               cls["key"], amb, name, vb)))
+                    span.append(dict(
+                        vbat_V=round(vb, 4),
+                        mode=None if st is None else st["mode"],
+                        charge_A=0.0 if st is None else st["charge_A"],
+                        treg_active=bool(st and st["thermal"]["treg_active"])))
+                i_min = min(x["charge_A"] for x in span)
+                pre_min = (d["precharge_share"] * cap / i_pre_min * 60.0)
+                cc_min = (None if i_min <= 1e-6 else cap / i_min * 60.0)
+                total = (None if cc_min is None
+                         else cc_min + d["cv_tail_min"] + pre_min)
+                rows.append(dict(
+                    source_class=cls["key"], ambient_C=amb, scenario=name,
+                    system_W=p_sys,
+                    worst_charge_A_over_the_cc_span=round(i_min, 6),
+                    treg_active_somewhere_on_the_span=bool(
+                        any(x["treg_active"] for x in span)),
+                    modes_seen=sorted({x["mode"] for x in span if x["mode"]}),
+                    cc_upper_bound_min=(None if cc_min is None
+                                        else round(cc_min, 1)),
+                    precharge_allowance_min=round(pre_min, 1),
+                    cv_tail_allowance_min=d["cv_tail_min"],
+                    estimate_upper_bound_min=(None if total is None
+                                              else round(total, 1)),
+                    timer_min=d["timer_min"],
+                    completes_on_the_estimate=bool(
+                        total is not None and total <= d["timer_min"])))
+    req = completion_required_domain()
+    domain_problems = [k for k in req if d.get(k) != req[k]]
+    return dict(
+        domain=d, required_domain=req,
+        domain_problems=domain_problems,
+        the_domain_is_the_full_required_one=not domain_problems,
+        rows=rows,
+        every_row_completes_on_the_estimate=bool(all(
+            r["completes_on_the_estimate"] for r in rows)),
+        rows_that_do_not_complete=[
+            "%s/%s/amb%.0f" % (r["source_class"], r["scenario"],
+                               r["ambient_C"])
+            for r in rows if not r["completes_on_the_estimate"]],
+        # A universal completion claim needs the FULL domain AND every row to
+        # complete AND no declared allowance in the bound.  The last can never
+        # hold on this pack record, so the claim is never universal here.
+        universal_completion_claim_is_supportable=False,
+        why_never_universal=(
+            "the pack record publishes no capacity-vs-voltage curve and no "
+            "CV-tail bound, so the precharge share and the CV tail are "
+            "DECLARED; an estimate that rests on a declaration is a "
+            "qualification target, not a guarantee"),
+        _states=states,
+        qualification_target=(
+            "a full charge from the pack's 2.75 V cut-off terminates (STAT1 "
+            "shows no fault, BATFET off at ITERM) before 288 min on the "
+            "qualified adapter and cable"),
+        measurement_of_record="C-PWR-CHARGE-02")
 
 
 # D-790 / D789-A01 + D789-A02.  THE PASS PAIR IS A HEAT SOURCE, AND ITS

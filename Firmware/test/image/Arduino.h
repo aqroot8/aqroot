@@ -58,6 +58,15 @@ struct Recorder {
   int spi_begin_calls = 0;
   int i2s_installs = 0;
   bool pin_low[64] = {false};
+  // D-795 / R14-02: how often each pin has been driven from HIGH to LOW, so a
+  // SPI peripheral model can see a chip-select FRAME begin -- which is when a
+  // real part resets its own SPI state machine.
+  uint32_t low_edges[64] = {0};
+  // D-795 / R14-01: an RTOS delay is `vTaskDelay(ms / portTICK_PERIOD_MS)`
+  // and can return up to a tick early.  With this set, every delay longer
+  // than it returns that many milliseconds EARLY, so a caller that delays
+  // once and assumes the time has passed is caught.
+  uint32_t delay_shortfall_ms = 0;
   // What `digitalRead` returns.  Every pin idles HIGH, which is this board's
   // resting state for BOOT_N, WAKE_INT_N and the two I2C lines; the test sets
   // SPI-B MISO and SX1262 BUSY low, which is what a healthy radio presents.
@@ -92,7 +101,9 @@ inline void delay(uint32_t ms) {
   auto &r = aqroot_hal::recorder();
   r.delay_ms_calls.push_back(ms);
   r.total_delay_ms += ms;
-  r.clock_us += uint64_t(ms) * 1000u;
+  const uint32_t real = (ms > r.delay_shortfall_ms) ? ms - r.delay_shortfall_ms
+                                                     : ms;
+  r.clock_us += uint64_t(real) * 1000u;
 }
 
 inline void delayMicroseconds(uint32_t us) {
@@ -148,6 +159,7 @@ inline void digitalWrite(uint8_t pin, uint8_t value) {
   auto &r = aqroot_hal::recorder();
   if (value == LOW) {
     ++r.digital_writes_low;
+    if (pin < 64 && !r.pin_low[pin]) ++r.low_edges[pin];
     if (pin < 64) r.pin_low[pin] = true;
   } else if (pin < 64) {
     r.pin_low[pin] = false;

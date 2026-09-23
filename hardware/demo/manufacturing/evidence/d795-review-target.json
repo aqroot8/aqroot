@@ -1,0 +1,209 @@
+{
+ "beta_v2_untouched": true,
+ "board": "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_changes": [],
+ "board_sha256": "c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907",
+ "branch": "aqroot-demo",
+ "closed_here": {
+  "astra_round_14": [
+   "R14-01",
+   "R14-02",
+   "R14-03",
+   "R14-04",
+   "R14-05",
+   "R14-06",
+   "R14-07"
+  ],
+  "fable_work_round_14": [
+   "R14-01",
+   "R14-02",
+   "R14-03",
+   "R14-04",
+   "R14-05",
+   "R14-06",
+   "R14-07",
+   "R14-08",
+   "R14-09",
+   "R14-10",
+   "R14-11",
+   "R14-12",
+   "R14-13",
+   "R14-14",
+   "R14-15"
+  ],
+  "found_by_this_closeout": [
+   "the PTH drill file carries four PLATED ROUTED SLOTS (G85) at J3's shield tabs and the fab notes never stated them -- now read from the drills, stated, and B09",
+   "NO_CHARGE above the DPPM node with the CC loop active has no equilibrium: the part supplements (caught by the new R14-03 inequality)",
+   "bq.vsys_reg_V was a TYP-only row tagged GUARANTEED_MAX; the guarantee is VSYS_REG_ACC",
+   "the ILIM 995/1100 mA figures cited Table 6-1, a resistor map; they are the EC ILIM row",
+   "a ratio of two MAX rows, R75's nominal, the inner copper thickness and a USB 2.0 VBUS band nobody archived were tagged guarantees",
+   "DEVICE_SPEC's summary claimed 'full cycle ~240-290 min' (D-743) -- retired",
+   "the charging 'permitted' set included combinations the production permission table refuses",
+   "an unread typed duplicate of eight charger constants (CHARGE_REGIME_INPUT) in audit_rail_ampacity -- deleted",
+   "ICHG was one typical in both the heat and the time derivations -- now the KISET x R37 band",
+   "the boot did not reconcile the app's rail flags from the physical latch until the first later command",
+   "the EastRising backlight row was transcribed 110 MIN / 120 TYP; it is 110 TYP / 120 MAX"
+  ],
+  "mandatory_items": [
+   "D795-01",
+   "D795-02",
+   "D795-03",
+   "D795-04",
+   "D795-05",
+   "D795-06",
+   "D795-07"
+  ]
+ },
+ "content_commit": "this commit -- the identity commit that follows records its SHA",
+ "decision": "D-795",
+ "identity_note": "A commit cannot contain its own SHA, so the reviewable target is the PAIR: a CONTENT commit carrying every engineering change, and an IDENTITY commit that records the content commit's SHA here and in the normative documents.",
+ "manifest": "hardware/demo/fab/MANIFEST.json",
+ "manifest_sha256": "4f292c36411648c04c9e145eab59a0716ca16200f61f162f5da8fb299a5adc05",
+ "no_copper_change": true,
+ "order_status": {
+  "FAB_CAM_ACCEPTANCE": "PENDING (B01-B14)",
+  "FIRST_ARTICLE_VALIDATION": "PENDING (FA01-FA10)",
+  "PRE_ORDER_ANALYTICAL": "CLOSED on this target",
+  "PROCUREMENT": "PENDING"
+ },
+ "parent_rejected_by_round_14": "202996f64d8a3e1203345c0de2b712b3759020fb",
+ "product_facing": {
+  "accessory_budgets": "400 mA / 300 mA per rail, DECLARED AND QUALIFIED, unchanged; declared pair 220 mA + 170 mA unchanged",
+  "charging_source": "Raspberry Pi 15W USB-C Power Supply KSA-15E-051300HU (regional variants), captive 1.5 m 18 AWG",
+  "completion": "QUALIFICATION TARGET, C-PWR-CHARGE-02",
+  "gauge_window_derivation": "5 x 250 ms x 1.035 = 1293.75 ms, rounded up",
+  "gauge_window_ms": 1300,
+  "junction_safe_system_W": 3.9,
+  "no_discharge": "VBAT/source table; universal minimum 0.900 W (not a useful scalar)",
+  "retired": [
+   "3.600 W regime ceiling",
+   "1.150 W completion ceiling",
+   "1000 ms gauge window",
+   "02h==0 NFC read-back as proof"
+  ]
+ },
+ "recorded_in": [
+  "docs/full-beta-v2/CTO_DECISIONS.md -- D-795",
+  "docs/full-beta-v2/CURRENT_STATE.md -- D-795 block and section 1",
+  "docs/full-beta-v2/CHANGELOG.md -- D-795",
+  "docs/full-beta-v2/DEVICE_SPEC.md",
+  "docs/full-beta-v2/AQROOT_DEMO_FAB_HANDOFF.md",
+  "docs/full-beta-v2/assembly/FIRST_FIVE_ASSEMBLY_PLAN.md",
+  "docs/full-beta-v2/assembly/RELEASE_ACCEPTANCE_REGISTER.json"
+ ],
+ "release_verification": {
+  "contract_regression": {
+   "all_children_exited_zero": true,
+   "all_contracts_pass": true,
+   "all_ran": true,
+   "baseline": "d794",
+   "contracts_run": 19,
+   "contracts_with_substantive_difference": [
+    "demo_feature",
+    "firmware_hw_map"
+   ],
+   "emitted_baseline": "d795",
+   "why_a_substantive_difference_is_expected": "D-795 deliberately changes the verification architecture of exactly these two: demo_feature gained the corrected charger physics, the 2880-row regime domain, the completion domain controls, the oracle's exact charger/regime/network domains with eleven new destructive controls, the guarantee-evidence audit and the document machinery; firmware_hw_map gained the D-795 gauge and NFC host-test scenarios and 50+ new mutation controls.  pour_partition differs only in its recorded ref_commit."
+  },
+  "demo_feature_contract": {
+   "checks": "F1-F14, 14 of 14",
+   "verdict": "PASS"
+  },
+  "fab_package_contract": {
+   "note": "FAB14 assembly-drawing release label D-795",
+   "verdict": "PASS"
+  },
+  "firmware_hw_map_contract": {
+   "checks": "H1-H8",
+   "every_host_test_mutation_caught": true,
+   "verdict": "PASS"
+  },
+  "host_tests": {
+   "compiled_with": "g++ -std=c++17 -Wall -Wextra -Werror",
+   "tests": {
+    "test_accessory_power_policy": {
+     "caught": 16,
+     "claims": 83,
+     "mutation_controls": 16,
+     "verdict": "PASS"
+    },
+    "test_expander_order": {
+     "caught": 16,
+     "claims": 123,
+     "mutation_controls": 16,
+     "verdict": "PASS"
+    },
+    "test_fuel_gauge_safety": {
+     "caught": 4,
+     "claims": 37,
+     "mutation_controls": 4,
+     "verdict": "PASS"
+    },
+    "test_production_callers": {
+     "caught": 48,
+     "claims": 158,
+     "mutation_controls": 48,
+     "verdict": "PASS"
+    },
+    "test_production_image": {
+     "caught": 51,
+     "claims": 184,
+     "mutation_controls": 51,
+     "verdict": "PASS"
+    },
+    "test_production_timing": {
+     "caught": 8,
+     "claims": 17,
+     "mutation_controls": 8,
+     "verdict": "PASS"
+    },
+    "test_spi_bus_b": {
+     "caught": 9,
+     "claims": 43,
+     "mutation_controls": 9,
+     "verdict": "PASS"
+    },
+    "test_timing_policy": {
+     "caught": 6,
+     "claims": 10,
+     "mutation_controls": 6,
+     "verdict": "PASS"
+    }
+   },
+   "total_claims": 655,
+   "total_mutation_controls": 158
+  },
+  "kicad_drc_and_schematic_parity": {
+   "identical_in_count_and_class_to_the_reviewed_d794_baseline": true,
+   "note": "the same 17 unconnected nets; only KiCad's choice of endpoint pairs differs",
+   "schematic_parity_items": 246,
+   "unconnected_items": 17,
+   "violations": 199
+  },
+  "platformio": {
+   "all_success": true,
+   "environments": [
+    "esp32-s3-aqroot",
+    "wokwi",
+    "esp32-s3-aqroot-dm",
+    "aqroot-demo"
+   ],
+   "from_clean": true
+  },
+  "rail_ampacity": {
+   "all_ok": true
+  },
+  "routing_ledger": {
+   "approved_unrouted_edges": 1,
+   "connected_retained_nets": 173,
+   "open_retained_nets": 1,
+   "raw_board_ratsnest": 17,
+   "retained_multi_pad_nets": 174,
+   "retained_open_edges": 1,
+   "unapproved_open_edges": 0,
+   "unapproved_open_retained_nets": 0
+  },
+  "sourcing": "nine constrained fitted groups, identical to D-794; plus the AOS pass-pair allocation"
+ },
+ "what": "REVIEW TARGET, NOT A FABRICATION AUTHORIZATION.  DO NOT ORDER."
+}

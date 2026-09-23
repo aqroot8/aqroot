@@ -30,6 +30,7 @@
 //       test/image/image_main.cpp && /tmp/t
 
 #include <cstdint>
+#include <cstdlib>
 #include <cstdio>
 #include <cstring>
 #include <string>
@@ -144,6 +145,49 @@ class Board : public aqroot_hal::I2cModel {
   uint16_t conversions[4] = {0, 0, 0, 0};
   bool conversions_primed = false;
 
+  // =========================================================================
+  // D-795 / R14-01.  THE TIMING MODEL ROUND-14 SAID D-794's WAS NOT.
+  //
+  //   PERIOD.  `conversion_period_us` is 250 000 at the nominal time base and
+  //   258 750 at tERR +3.5 %, the slow end ADI 19-6171 Rev.7 publishes.
+  //
+  //   PHASE.  `conversion_phase_us` places the part's own conversion grid
+  //   anywhere relative to the image's clock; the tests SWEEP it, because the
+  //   worst case is a conversion that completes just before the edge and a
+  //   read that lands just before the next one.
+  //
+  //   APERTURE.  With `integrating_conversions` each conversion is the MEAN
+  //   of the node over its whole period -- the conservative reading of "the
+  //   average of four ADC conversions" -- so the conversion that is running
+  //   when an edge lands integrates both sides of it.  Without it each
+  //   conversion is an instantaneous sample at its completion, which is
+  //   D-794's model.
+  //
+  //   EXTERNAL EVENTS.  `external_events` are node changes the FIRMWARE CANNOT
+  //   SEE -- a charger unplugged, a pack sagging on its own -- modelled as an
+  //   offset added from a given instant.  They exist for the unannounced
+  //   source-change counterexample Astra reproduced.
+  //
+  // THE CONTAMINATION AUDIT.  Every VCELL read records whether any of the four
+  // conversions in the average began before a node edge that precedes the
+  // read.  Edges the FIRMWARE made (accessory latches, the panel) and edges it
+  // could not see are counted separately, because the rule is different: no
+  // read may be contaminated by the firmware's own edges, and no ADMISSION
+  // read may be contaminated by anything.
+  // =========================================================================
+  uint64_t conversion_period_us = 250000;
+  uint64_t conversion_phase_us = 0;
+  bool integrating_conversions = false;
+  struct ExternalEvent { uint64_t t_us; double offset_V; };
+  std::vector<ExternalEvent> external_events;
+  struct VcellRead {
+    uint64_t t_us;
+    uint16_t counts;
+    bool firmware_edge_contaminated;
+    bool external_edge_contaminated;
+  };
+  std::vector<VcellRead> vcell_reads;
+
   static uint16_t quantise(double volts) {
     if (volts < 0.0) volts = 0.0;
     double counts = volts / double(Max17048Guard::kVcellLsbV);
@@ -172,39 +216,118 @@ class Board : public aqroot_hal::I2cModel {
     return up;
   }
 
-  double nodeAt(uint64_t t_us) const {
+  double externalOffsetAt(uint64_t t_us) const {
+    double off = 0.0;
+    for (const auto &e : external_events) {
+      if (e.t_us > t_us) break;
+      off = e.offset_V;
+    }
+    return off;
+  }
+
+  // The node as the FIRMWARE's own switching leaves it, and as everything
+  // else does.
+  double firmwareNodeAt(uint64_t t_us) const {
     double v = ocv_V;
     if (displayUpAt(t_us)) v -= display_sag_V;
     if (accessoryOnAt(t_us, AQROOT_U3_ACC_3V3_EN)) v -= acc3v3_sag_V;
     if (accessoryOnAt(t_us, AQROOT_U3_ACC_5V_SW_EN)) v -= acc5v_sag_V;
     return v;
   }
+  double nodeAt(uint64_t t_us) const {
+    return firmwareNodeAt(t_us) + externalOffsetAt(t_us);
+  }
+
+  double conversionValue(uint64_t end_us) const {
+    if (!integrating_conversions) return nodeAt(end_us) + gauge_error_V;
+    const uint64_t start_us =
+        end_us > conversion_period_us ? end_us - conversion_period_us : 0;
+    const int n = 64;
+    double sum = 0.0;
+    for (int i = 1; i <= n; ++i) {
+      sum += nodeAt(start_us + (end_us - start_us) * uint64_t(i) / n);
+    }
+    return sum / n + gauge_error_V;
+  }
+
+  // Completion time of the k-th conversion on the part's own grid.
+  uint64_t conversionEnd(int64_t k) const {
+    const int64_t t = int64_t(conversion_phase_us)
+                    + k * int64_t(conversion_period_us);
+    return t < 0 ? 0 : uint64_t(t);
+  }
+  int64_t lastCompletedConversion(uint64_t now_us) const {
+    if (now_us < conversion_phase_us) return -1;
+    return int64_t((now_us - conversion_phase_us) / conversion_period_us);
+  }
+
+  // Candidate edge instants, of each kind, in (from, to].
+  bool firmwareEdgeIn(uint64_t from, uint64_t to) const {
+    auto changed = [this](uint64_t t) {
+      return firmwareNodeAt(t) != firmwareNodeAt(t == 0 ? 0 : t - 1);
+    };
+    for (const auto &e : latch_events) {
+      if (e.t_us > from && e.t_us <= to && changed(e.t_us)) return true;
+    }
+    for (const auto &w : aqroot_hal::recorder().digital_writes) {
+      if (w.pin == AQROOT_PIN_DISP_BL_PWM && w.t_us > from && w.t_us <= to
+          && changed(w.t_us)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  bool externalEdgeIn(uint64_t from, uint64_t to) const {
+    for (const auto &e : external_events) {
+      if (e.t_us > from && e.t_us <= to
+          && externalOffsetAt(e.t_us) != externalOffsetAt(e.t_us - 1)) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   void advanceConversions() {
     if (!physical_conversions) return;
     const uint64_t now_us = aqroot_hal::recorder().clock_us;
-    if (!conversions_primed) {
-      conversions_primed = true;
-      last_conversion_ms = uint32_t(now_us / 1000u);
-      const uint16_t c = quantise(nodeAt(now_us) + gauge_error_V);
-      for (uint16_t &x : conversions) x = c;
-      vcell_counts = c;
-      return;
+    const int64_t last = lastCompletedConversion(now_us);
+    uint32_t sum = 0;
+    for (int64_t k = last - 3; k <= last; ++k) {
+      sum += quantise(conversionValue(conversionEnd(k)));
     }
-    uint64_t tick_us = uint64_t(last_conversion_ms) * 1000u;
-    while (now_us >= tick_us + uint64_t(kGaugeVcellUpdateMs) * 1000u) {
-      tick_us += uint64_t(kGaugeVcellUpdateMs) * 1000u;
-      conversions[0] = conversions[1];
-      conversions[1] = conversions[2];
-      conversions[2] = conversions[3];
-      conversions[3] = quantise(nodeAt(tick_us) + gauge_error_V);
-    }
-    last_conversion_ms = uint32_t(tick_us / 1000u);
     // The register is the AVERAGE of the four, and it is the average that is
     // stale -- not one sample of it.
-    const uint32_t sum = uint32_t(conversions[0]) + conversions[1]
-                       + conversions[2] + conversions[3];
     vcell_counts = uint16_t(sum / 4u);
+  }
+
+  // The earliest instant any conversion in the present average saw.
+  uint64_t oldestApertureStart(uint64_t now_us) const {
+    const uint64_t end = conversionEnd(lastCompletedConversion(now_us) - 3);
+    if (!integrating_conversions) return end;
+    return end > conversion_period_us ? end - conversion_period_us : 0;
+  }
+
+  void recordVcellRead() {
+    const uint64_t now_us = aqroot_hal::recorder().clock_us;
+    const uint64_t from = physical_conversions ? oldestApertureStart(now_us)
+                                               : now_us;
+    // A read is contaminated when an edge lies after the oldest aperture
+    // start: some conversion in the average began on the pre-edge board.
+    // (For an instantaneous sample an edge AT the sample instant is already
+    // seen by it, hence `>` in the interval tests.)
+    vcell_reads.push_back({now_us, vcell_counts,
+                           physical_conversions && firmwareEdgeIn(from, now_us),
+                           physical_conversions && externalEdgeIn(from, now_us)});
+  }
+  int firmwareContaminatedReads() const {
+    int n = 0;
+    for (const auto &r : vcell_reads) n += r.firmware_edge_contaminated;
+    return n;
+  }
+  int externalContaminatedReads() const {
+    int n = 0;
+    for (const auto &r : vcell_reads) n += r.external_edge_contaminated;
+    return n;
   }
 
   bool shouldFail(uint8_t address, uint8_t reg, bool writing) const {
@@ -294,6 +417,7 @@ class Board : public aqroot_hal::I2cModel {
         // and that is the defect Round-13 reproduced.
         if (!asleep()) advanceConversions();
         value = vcell_counts;
+        recordVcellRead();
       } else if (reg == 0x08) value = 0x0012;   // VERSION
       for (size_t i = 0; i < length; ++i) {
         data[i] = uint8_t(value >> (8 * (length - 1 - i)));   // MSB first
@@ -353,6 +477,16 @@ class Cc1101Stub : public aqroot_hal::SpiModel {
     const bool sx = r.pin_low[AQROOT_PIN_SX1262_CS_N];
     if (cc) return cc1101(out);
     if (sx) return sx1262(out);
+    // D-795 / R14-02: U9 answers only inside ITS OWN chip-select frame, and a
+    // new frame resets its SPI state machine -- which is what keeps a display
+    // or microSD transfer on another select from being parsed as NFC traffic.
+    if (!r.pin_low[AQROOT_PIN_NFC_CS_N]) return 0xFF;
+    if (r.low_edges[AQROOT_PIN_NFC_CS_N] != nfc_frame_) {
+      nfc_frame_ = r.low_edges[AQROOT_PIN_NFC_CS_N];
+      nfc_pending_read_ = false;
+      nfc_pending_write_ = 0;
+      nfc_overheat_bytes_ = 0;
+    }
     return st25r3916(out);
   }
 
@@ -389,42 +523,81 @@ class Cc1101Stub : public aqroot_hal::SpiModel {
   uint8_t nfc_ic_identity = 0x2A;          // DS12484 Table 117 default
   bool nfc_ignores_set_default = false;
   bool nfc_stop_all_activities_is_enough = false;
+  // ---- D-795 / R14-02.  THE BUS FAULTS A SAFE-LOOKING VALUE CAN HIDE. ----
+  //
+  // Each is a physical condition in which the part is NOT answering, and in
+  // which D-794 could still read 0x00 back from 02h and call the field off.
+  // The retained field itself is untouched by every one of them: a dead read
+  // path says nothing about the carrier.
+  bool nfc_zero_fill = false;       // MISO reads 0x00 on every byte
+  bool nfc_ff_fill = false;         // MISO reads 0xFF on every byte
+  bool nfc_stale_reply = false;     // every read returns the PREVIOUS read's value
+  bool nfc_ignores_writes = false;  // register writes do not land
+  // Operation control that will not clear: neither Set default nor a direct
+  // 02h write moves it, while every other register behaves.
+  bool nfc_opcontrol_sticky = false;
+  // The part answers until it receives Set default and is DEAD after it --
+  // a brown-out mid-sequence.  Every later read is zero, which is exactly the
+  // "safe-looking" value D-794 accepted.
+  bool nfc_dies_after_set_default = false;
+  bool nfc_dead_ = false;
+  uint8_t nfc_regs[64] = {0};       // register space A
   int nfc_set_default_commands = 0;
   int nfc_stop_all_commands = 0;
   int nfc_operation_control_reads = 0;
   int nfc_operation_control_reads_while_field_up = 0;
   int nfc_overheat_frames = 0;
+  int nfc_identity_reads = 0;
+  int nfc_challenge_writes = 0;
+  int nfc_operation_control_zero_writes = 0;
   bool nfcFieldIsUp() const { return (nfc_operation_control & 0x88) != 0; }
 
  private:
+  uint8_t nfcRead(uint8_t addr) {
+    if (addr == 0x02) return uint8_t(nfc_operation_control);
+    if (addr == 0x3F) return nfc_ic_identity;
+    return nfc_regs[addr & 0x3F];
+  }
   uint8_t st25r3916(uint8_t out) {
     // DS12484 Rev 3 Table 11: the first two bits of the first byte are the
     // mode.  00 = register write, 01 = register read, 11 = direct command.
+    const bool dead = nfc_zero_fill || nfc_ff_fill || nfc_dead_;
+    const uint8_t idle = nfc_ff_fill ? 0xFF : 0x00;
     if (nfc_pending_read_) {
       nfc_pending_read_ = false;
+      if (dead) return idle;
       if (nfc_read_addr_ == 0x02) {
         ++nfc_operation_control_reads;
         if (nfcFieldIsUp()) ++nfc_operation_control_reads_while_field_up;
-        return uint8_t(nfc_operation_control);
       }
-      // DS12484 Rev 3 Table 117: ic_type4..0 = 0b00101 and ic_rev2..0.
-      // 0x2A is the documented power-up value; the probe asserts the
-      // TYPE half and reports the revision.
-      if (nfc_read_addr_ == 0x3F) return nfc_ic_identity;
-      return 0x00;
+      if (nfc_read_addr_ == 0x3F) ++nfc_identity_reads;
+      const uint8_t now = nfcRead(nfc_read_addr_);
+      if (nfc_stale_reply) {
+        const uint8_t prev = nfc_last_read_value_;
+        nfc_last_read_value_ = now;
+        return prev;
+      }
+      nfc_last_read_value_ = now;
+      return now;
     }
     if (nfc_pending_write_ > 0) {
       --nfc_pending_write_;
-      if (nfc_write_addr_ == 0x02) nfc_operation_control = out;
+      if (dead || nfc_ignores_writes) return idle;
+      if (nfc_write_addr_ == 0x02) {
+        if (nfc_opcontrol_sticky) return 0x00;
+        nfc_operation_control = out;
+        if (out == 0x00) ++nfc_operation_control_zero_writes;
+      } else {
+        if (nfc_write_addr_ == 0x11) ++nfc_challenge_writes;
+        nfc_regs[nfc_write_addr_ & 0x3F] = out;
+      }
       return 0x00;
     }
-    if (nfc_overheat_bytes_ > 0) { --nfc_overheat_bytes_; return 0x00; }
+    if (nfc_overheat_bytes_ > 0) { --nfc_overheat_bytes_; return idle; }
+    if (dead) return idle;
     // DS12484 Rev 3 Table 13: FCh is the Test access direct command, "Enable
     // R/W access to Test register", and section 4.1 requires the three-byte
-    // frame FCh / 04h / 10h after power-on AND after Set default.  It is
-    // matched before the generic direct-command branch because its two
-    // trailing bytes are a register write into the TEST space, not the
-    // ordinary one.
+    // frame FCh / 04h / 10h after power-on AND after Set default.
     if (out == 0xFC) {
       ++nfc_overheat_frames;
       nfc_overheat_bytes_ = 2;
@@ -434,14 +607,16 @@ class Cc1101Stub : public aqroot_hal::SpiModel {
     if (mode == 0xC0) {                        // direct command
       if (out == 0xC0 || out == 0xC1) {        // Set default, section 4.4.1
         ++nfc_set_default_commands;
-        if (!nfc_ignores_set_default) nfc_operation_control = 0x00;
+        if (!nfc_ignores_set_default) {
+          // "resets all registers to their default state"
+          if (!nfc_opcontrol_sticky) nfc_operation_control = 0x00;
+          for (uint8_t &r : nfc_regs) r = 0x00;
+        }
+        if (nfc_dies_after_set_default) nfc_dead_ = true;
         return 0x00;
       }
       if (out == 0xC2 || out == 0xC3) {        // Stop all activities, 4.4.2
         ++nfc_stop_all_commands;
-        // Section 4.4.2 stops the FIFO, transmission/reception and the
-        // timers.  It does NOT touch the Operation control register, so the
-        // carrier keeps running -- unless this control says otherwise.
         if (nfc_stop_all_activities_is_enough) nfc_operation_control = 0x00;
         return 0x00;
       }
@@ -460,8 +635,10 @@ class Cc1101Stub : public aqroot_hal::SpiModel {
     return 0x00;
   }
 
+  uint32_t nfc_frame_ = 0;
   bool nfc_pending_read_ = false;
   uint8_t nfc_read_addr_ = 0;
+  uint8_t nfc_last_read_value_ = 0x00;
   int nfc_pending_write_ = 0;
   uint8_t nfc_write_addr_ = 0;
   int nfc_overheat_bytes_ = 0;
@@ -1333,7 +1510,12 @@ int main() {
     setup();
     claim("R13-03 control: a part that ignores Set default is NOT reported "
           "quiesced", rec().consoleHas("FIELD STATE UNKNOWN"));
-    claim("...and the field really is still up", radio.nfcFieldIsUp());
+    // D-795 / R14-02: the image still WRITES the power-down value once a live
+    // part has been identified -- best effort, never trusted -- so the claim
+    // is about the VERDICT, which must stay UNKNOWN whatever the write did.
+    claim("...and a Set default that did not land is detected by the 11h "
+          "register it should have reset, not inferred from 02h",
+          radio.nfc_regs[0x11] == 0xA5);
     claim("...and the image says the field state is UNKNOWN by name",
           rec().consoleHas("NFC quiesce: NOT CONFIRMED"));
     press("3");
@@ -1347,12 +1529,11 @@ int main() {
     press("d");
     pump(2);
     claim("...and a microSD burst is refused because the NFC field holds the "
-          "arbiter", rec().consoleHas("NFC field is already drawing its "
-                                      "burst"));
+          "arbiter", rec().consoleHas("U9 owns the burst slot"));
     press("x");
     pump(2);
     claim("...and so is an IR burst", rec().consoleCount(
-        "NFC field is already drawing its burst") >= 2);
+        "U9 owns the burst slot") >= 2);
   }
   {
     // THE SECOND NEGATIVE CONTROL, AND R13-03 ASKS FOR IT BY NAME: "Do not
@@ -1367,9 +1548,9 @@ int main() {
     radio.nfc_stop_all_activities_is_enough = false;
     rigWithRetainedRadio(radio);
     setup();
-    claim("R13-03 control: Stop all activities alone does not clear the "
-          "Operation control register, so the field survives it",
-          radio.nfcFieldIsUp());
+    claim("R13-03 control: the image never relies on Stop all activities, "
+          "which DS12484 section 4.4.2 says leaves Operation control alone",
+          radio.nfc_stop_all_commands == 0);
     claim("...and the image refuses rather than reporting a quiesce",
           rec().consoleHas("FIELD STATE UNKNOWN"));
   }
@@ -1387,7 +1568,7 @@ int main() {
           rec().consoleHas("NFC quiesce: NOT CONFIRMED"));
     radio.nfc_ignores_set_default = false;         // the part starts answering
     const int before = radio.nfc_set_default_commands;
-    for (int i = 0; i < 8 && radio.nfcFieldIsUp(); ++i) {
+    for (int i = 0; i < 8; ++i) {
       delay(kRadioQuiescePeriodMs + 10);
       loop();
     }
@@ -1539,6 +1720,8 @@ int main() {
     g_board.ocv_V = 3.980;
     g_board.display_sag_V = 0.160;
     g_board.gauge_error_V = 0.0;
+    g_board.conversion_phase_us = 125000;    // off the image's clock grid
+    delay(10);                               // and off t = 0
     g_board.advanceConversions();            // prime at the pre-display node
     const uint16_t before = g_board.vcell_counts;
     aqroot_hal::recorder().digital_writes.push_back(
@@ -1555,6 +1738,489 @@ int main() {
           double(before - after_one) * lsb < 0.160 * 0.30);
     claim("...and only after FOUR updates does it describe the present load",
           double(before - after_four) * lsb > 0.160 * 0.98);
+  }
+
+  // =========================================================================
+  // D-795 / R14-01.  THE TIMING MODELS ROUND-14 ASKED FOR, EVERY ONE OF THEM.
+  //
+  // ROUND-14: "Add independent timing models at nominal and +3.5%,
+  // integrating/straddling conversion, phase sweep, same-value conversions,
+  // and the exact stale-enable counterexamples."
+  //
+  // Every scenario below runs the REAL image over the board model with the
+  // contamination audit on, so the claim is not "the image waited" but "no
+  // reading the image acted on contained a conversion that began before an
+  // edge it had to see".
+  // =========================================================================
+  struct TimingModel { uint64_t period_us; bool integrating; uint64_t phase_us; };
+  std::vector<TimingModel> models;
+  for (uint64_t period : {uint64_t(250000), uint64_t(258750)}) {
+    for (bool integ : {false, true}) {
+      for (uint64_t phase : {uint64_t(0), uint64_t(37000), uint64_t(91000),
+                             uint64_t(125000), uint64_t(173000),
+                             uint64_t(211000), uint64_t(249000)}) {
+        models.push_back({period, integ, phase});
+      }
+    }
+  }
+  auto apply = [](const TimingModel &m) {
+    g_board.physical_conversions = true;
+    g_board.conversion_period_us = m.period_us;
+    g_board.integrating_conversions = m.integrating;
+    g_board.conversion_phase_us = m.phase_us;
+  };
+
+  // ---- (1) ASTRA'S p -> 3 AND p -> 5, OVER EVERY TIMING MODEL. -------------
+  //
+  // Reported before the panel 3.980 V, after it 3.780 V, against the 3.80 V
+  // quiet-row floor.  A single pre-edge conversion in the average is worth
+  // 50 mV of the 200 mV step, so ANY contamination flips the answer.
+  {
+    int refused = 0, energised = 0, contaminated = 0, runs = 0;
+    for (const char *rail : {"3", "5"}) {
+      for (const auto &m : models) {
+        rig();
+        apply(m);
+        g_board.ocv_V = 3.960;
+        g_board.display_sag_V = 0.200;
+        g_board.acc3v3_sag_V = 0.600;
+        g_board.acc5v_sag_V = 0.600;
+        g_board.gauge_error_V = +0.020;
+        setup();
+        press("p");
+        pump(2);
+        press(rail);
+        pump(3);
+        ++runs;
+        const bool r3 = rail[0] == '3';
+        refused += rec().consoleHas(r3 ? "ACC_3V3_SW REFUSED"
+                                       : "ACC_5V_SW REFUSED");
+        bool on = false;
+        for (const auto &e : g_board.latch_events) {
+          on = on || Pcal9535a::bitOf(e.u3_output, r3 ? AQROOT_U3_ACC_3V3_EN
+                                                      : AQROOT_U3_ACC_5V_SW_EN);
+        }
+        energised += on;
+        contaminated += g_board.firmwareContaminatedReads()
+                      + g_board.externalContaminatedReads();
+      }
+    }
+    char name[200];
+    snprintf(name, sizeof(name),
+             "R14-01: Astra's p -> 3 and p -> 5 are REFUSED at the edge under "
+             "all %d timing models (nominal and tERR +3.5 %%, instantaneous "
+             "and integrating, seven phases)", runs);
+    claim(name, refused == runs);
+    claim("...and no rail was ever physically energised in any of them",
+          energised == 0);
+    claim("...and no reading any of them acted on contained a conversion "
+          "that began before the panel came up", contaminated == 0);
+  }
+
+  // ---- (2) THE POSITIVE CONTROL OVER THE SAME MODELS. ----------------------
+  {
+    int granted = 0, runs = 0, contaminated = 0;
+    for (const auto &m : models) {
+      rig();
+      apply(m);
+      g_board.ocv_V = 4.150;
+      g_board.display_sag_V = 0.160;
+      g_board.acc3v3_sag_V = 0.120;
+      g_board.gauge_error_V = +0.020;
+      setup();
+      press("p");
+      pump(2);
+      press("3");
+      pump(3);
+      ++runs;
+      granted += Pcal9535a::bitOf(g_board.u3_output, AQROOT_U3_ACC_3V3_EN)
+                 && !rec().consoleHas("ACCESSORY FAIL-CLOSED");
+      contaminated += g_board.firmwareContaminatedReads();
+    }
+    claim("R14-01 positive control: a pack that can carry the rail gets it "
+          "under every timing model, and keeps it through the settled recheck",
+          granted == runs);
+    claim("...and the settled recheck itself read only post-step conversions",
+          contaminated == 0);
+  }
+
+  // ---- (3) THE UNANNOUNCED SOURCE CHANGE. ----------------------------------
+  //
+  // Astra: "an UNANNOUNCED external source/node change immediately before an
+  // accessory request."  While the charger is attached its current raises the
+  // node the gauge reads (D-794 documented this); the firmware cannot see the
+  // unplug.  Charging-era reading 3.760 + 0.100 + 0.020 = 3.880 V clears the
+  // 3.80 V floor; the honest post-unplug reading 3.780 V does not.
+  {
+    int refused = 0, runs = 0, contaminated = 0, energised = 0;
+    for (const auto &m : models) {
+      for (uint64_t lead_us : {uint64_t(0), uint64_t(10000), uint64_t(120000)}) {
+        rig();
+        apply(m);
+        g_board.ocv_V = 3.760;
+        g_board.gauge_error_V = +0.020;
+        g_board.external_events.push_back({0, +0.100});   // charging from boot
+        setup();
+        delay(3000);                    // long enough that nothing is pending
+        g_board.external_events.push_back({rec().clock_us - lead_us, 0.0});
+        press("3");
+        pump(3);
+        ++runs;
+        refused += rec().consoleHas("ACC_3V3_SW REFUSED");
+        energised += Pcal9535a::bitOf(g_board.u3_output, AQROOT_U3_ACC_3V3_EN);
+        contaminated += g_board.externalContaminatedReads();
+      }
+    }
+    claim("R14-01: a charger unplugged 0, 10 or 120 ms before the request -- "
+          "an edge the firmware CANNOT see -- does not grant the rail on the "
+          "charging-era average, under any timing model", refused == runs
+          && energised == 0);
+    claim("...and the admission read contained no conversion from before the "
+          "unplug: the request is its own epoch", contaminated == 0);
+  }
+
+  // ---- (4) SAME-VALUE CONVERSIONS: the rule is TIME, never a value change. --
+  {
+    rig();
+    g_board.physical_conversions = true;
+    g_board.ocv_V = 4.100;               // nothing sags; every conversion equal
+    setup();
+    delay(3000);
+    const uint64_t pressed = rec().clock_us;
+    press("3");
+    pump(1);
+    uint64_t first_read = 0;
+    for (const auto &r : g_board.vcell_reads) {
+      if (r.t_us >= pressed) { first_read = r.t_us; break; }
+    }
+    claim("R14-01 same-value conversions: with an unchanging node the "
+          "admission STILL waits the full window after the request -- "
+          "freshness is not inferred from a reading that moved",
+          first_read >= pressed + uint64_t(kGaugePostLoadConversionMs) * 1000u);
+    claim("...and the rail is granted once it has",
+          Pcal9535a::bitOf(g_board.u3_output, AQROOT_U3_ACC_3V3_EN));
+  }
+
+  // ---- (5) THE DEADLINE LOOP: a delay that returns early is not a clock. ---
+  {
+    int late_enough = 0, runs = 0, contaminated = 0;
+    for (const auto &m : models) {
+      rig();
+      apply(m);
+      aqroot_hal::recorder().delay_shortfall_ms = 10;
+      g_board.ocv_V = 3.760;
+      g_board.gauge_error_V = +0.020;
+      g_board.external_events.push_back({0, +0.100});
+      setup();
+      delay(3000);
+      const uint64_t pressed = rec().clock_us;
+      g_board.external_events.push_back({pressed, 0.0});
+      press("3");
+      pump(1);
+      ++runs;
+      uint64_t first_read = 0;
+      for (const auto &r : g_board.vcell_reads) {
+        if (r.t_us >= pressed) { first_read = r.t_us; break; }
+      }
+      late_enough += first_read
+          >= pressed + uint64_t(kGaugePostLoadConversionMs) * 1000u;
+      contaminated += g_board.externalContaminatedReads();
+    }
+    claim("R14-01: with every delay returning 10 ms early the admission read "
+          "is still taken at least the full window after the request -- the "
+          "wait loops on an elapsed deadline", late_enough == runs);
+    claim("...and so it is still uncontaminated", contaminated == 0);
+  }
+
+  // ---- (6) THE RAIL STEP IS AN EPOCH: the settled recheck reads post-step. -
+  {
+    int shed_at_recheck = 0, runs = 0, contaminated = 0;
+    for (const auto &m : models) {
+      rig();
+      apply(m);
+      g_board.ocv_V = 4.150;
+      g_board.acc3v3_sag_V = 0.980;      // settles at 3.19 V reported
+      g_board.gauge_error_V = +0.020;
+      setup();
+      press("3");
+      pump(1);
+      ++runs;
+      shed_at_recheck += rec().consoleHas(
+          "ACC_3V3_SW requested on, acknowledged yes, state after "
+          "reconciliation OFF");
+      contaminated += g_board.firmwareContaminatedReads();
+    }
+    claim("R14-01: a rail whose settled node is under retention is shed BY "
+          "THE SETTLED RECHECK itself, under every timing model",
+          shed_at_recheck == runs);
+    claim("...because that recheck waited out the window from the rail step, "
+          "not from the request", contaminated == 0);
+  }
+
+  // ---- (7) THE 5 V SHED IS AN EPOCH: the 3.3 V rail is judged post-shed. ---
+  {
+    int kept = 0, runs = 0, contaminated = 0, shed5 = 0;
+    for (const auto &m : models) {
+      rig();
+      apply(m);
+      g_board.ocv_V = 4.200;
+      g_board.acc3v3_sag_V = 0.100;
+      g_board.acc5v_sag_V = 0.200;
+      g_board.gauge_error_V = +0.020;
+      setup();
+      press("3");
+      pump(1);
+      press("5");
+      pump(1);
+      // The pack sags on its own: both rails now leave 3.12 V reported, under
+      // retention; the 3.3 V rail alone leaves 3.32 V, over it.
+      g_board.external_events.push_back({rec().clock_us, -0.780});
+      press("");
+      for (int i = 0; i < 12; ++i) {
+        delay(kBatteryGuardPeriodMs);
+        loop();
+      }
+      ++runs;
+      shed5 += rec().consoleHas("ACC_5V_SW SHED");
+      kept += Pcal9535a::bitOf(g_board.u3_output, AQROOT_U3_ACC_3V3_EN)
+              && !Pcal9535a::bitOf(g_board.u3_output, AQROOT_U3_ACC_5V_SW_EN);
+      contaminated += g_board.firmwareContaminatedReads();
+    }
+    claim("R14-01: a pack sag sheds the 5 V rail first under every timing "
+          "model", shed5 == runs);
+    claim("...and the 3.3 V rail is KEPT, because the next retention read "
+          "waited out the window from the 5 V shed instead of reading the "
+          "pre-shed average", kept == runs);
+    claim("...and no retention read contained a conversion from before a "
+          "firmware edge", contaminated == 0);
+  }
+
+  // ---- (8) THE PANEL NEVER COMES UP WITH A RAIL LIVE. ----------------------
+  //
+  // The only path in the shipped image on which the panel could come up while
+  // an accessory rail is on is the DEFERRED one: 'p' is pressed with both
+  // rails off, the DISP_RST_N release NACKs and is left pending, the operator
+  // enables a rail, and the release lands on a `loop()` retry (D-791 /
+  // D790-A07).  It is NOT reachable, and this scenario is the proof: a NACKed
+  // U2 write invalidates U2's output shadow, `DemoExpanders::service()` treats
+  // an invalid shadow as an unfinished safety transaction (D-783) and sheds
+  // every rail on its next pass, and that pass runs BEFORE the deferred retry
+  // in the same loop iteration.  So every VCELL reading after a panel edge
+  // is necessarily an ADMISSION, which stamps its own request -- which is why
+  // the display stamp is carried by a per-site claim in
+  // test_production_callers.cpp rather than by physics here.
+  {
+    int lit_with_rail = 0, runs = 0, contaminated = 0, ended_off = 0;
+    for (const auto &m : models) {
+      rig();
+      apply(m);
+      g_board.ocv_V = 4.100;
+      g_board.acc3v3_sag_V = 0.250;
+      g_board.display_sag_V = 0.700;
+      g_board.gauge_error_V = +0.020;
+      setup();
+      g_board.fail_address = AQROOT_EXP_U2_ADDR;
+      g_board.fail_reg = Pcal9535a::kRegOutput0;
+      g_board.fail_writes = true;
+      g_board.fail_reads = false;
+      press("p");
+      pump(1);
+      press("3");
+      pump(1);
+      g_board.fail_address = -1;         // U2 answers again
+      press("");
+      for (int i = 0; i < 10; ++i) {
+        delay(kBatteryGuardPeriodMs);
+        loop();
+      }
+      ++runs;
+      bool lit = false;
+      for (const auto &w : rec().digital_writes) {
+        if (w.pin == AQROOT_PIN_DISP_BL_PWM && w.value != LOW
+            && g_board.accessoryOnAt(w.t_us, AQROOT_U3_ACC_3V3_EN)) {
+          lit = true;
+        }
+      }
+      lit_with_rail += lit;
+      ended_off += !Pcal9535a::bitOf(g_board.u3_output, AQROOT_U3_ACC_3V3_EN);
+      contaminated += g_board.firmwareContaminatedReads();
+    }
+    claim("R14-01: on the deferred reset-release path the panel NEVER comes up "
+          "with an accessory rail live, under any timing model -- the invalid "
+          "U2 shadow sheds the rails first", lit_with_rail == 0);
+    claim("...and the rail ends physically off", ended_off == runs);
+    claim("...and no reading was contaminated by a firmware edge",
+          contaminated == 0);
+  }
+
+  // =========================================================================
+  // D-795 / R14-02.  NFC OFF MUST REQUIRE LIVE COMMUNICATION.
+  //
+  // ROUND-14: "Zero, 0xFF, stale reply, ignored Set default, wrong identity,
+  // invalid chip-select/read path, and later liveness loss must keep NFC
+  // UNKNOWN. ... Add production-image retained-field tests for zero read, FF
+  // read, stale safe read, ignored write, invalid identity, recovery, and MCU
+  // reset."
+  // =========================================================================
+  struct NfcFault { const char *name; void (*arm)(Cc1101Stub &); };
+  const NfcFault faults[] = {
+      {"an all-zero MISO (dead read path / unasserted chip select)",
+       [](Cc1101Stub &r) { r.nfc_zero_fill = true; }},
+      {"an all-ones MISO", [](Cc1101Stub &r) { r.nfc_ff_fill = true; }},
+      {"a stale reply (every read returns the previous one)",
+       [](Cc1101Stub &r) { r.nfc_stale_reply = true; }},
+      {"register writes that do not land",
+       [](Cc1101Stub &r) { r.nfc_ignores_writes = true; }},
+      {"an ignored Set default",
+       [](Cc1101Stub &r) { r.nfc_ignores_set_default = true; }},
+      {"a wrong identity (not ic_type 0b00101)",
+       [](Cc1101Stub &r) { r.nfc_ic_identity = 0x12; }},
+      {"an Operation control register that will not clear",
+       [](Cc1101Stub &r) { r.nfc_opcontrol_sticky = true; }},
+      {"a part that dies after Set default (every later read is zero)",
+       [](Cc1101Stub &r) { r.nfc_dies_after_set_default = true; }},
+  };
+  for (const auto &f : faults) {
+    Cc1101Stub radio;
+    radio.transmitting = false;
+    radio.nfc_operation_control = 0x88;          // the retained field
+    f.arm(radio);
+    rigWithRetainedRadio(radio);
+    setup();
+    char name[240];
+    snprintf(name, sizeof(name),
+             "R14-02: %s leaves the NFC field UNKNOWN, never confirmed OFF",
+             f.name);
+    claim(name, rec().consoleHas("FIELD STATE UNKNOWN")
+                && !rec().consoleHas("FIELD OFF, live identity"));
+    press("3");
+    pump(2);
+    claim("...and accessory power is refused by name",
+          rec().consoleHas("the physical field state of U9")
+          && !Pcal9535a::bitOf(g_board.u3_output, AQROOT_U3_ACC_3V3_EN));
+    press("d");
+    pump(1);
+    press("x");
+    pump(1);
+    claim("...and U9 owns the burst slot: microSD and IR are both refused",
+          rec().consoleCount("U9 owns the burst slot") >= 2);
+  }
+  {
+    // AN UNIDENTIFIED PART IS NEVER COMMANDED.  Whatever answers on U9's chip
+    // select with the wrong identity is not sent a register challenge, a Set
+    // default or a power-down write -- the image does not poke a device it
+    // has not identified.
+    Cc1101Stub radio;
+    radio.transmitting = false;
+    radio.nfc_ic_identity = 0x12;
+    rigWithRetainedRadio(radio);
+    setup();
+    claim("R14-02: a part with the wrong identity is never sent a challenge, "
+          "a Set default or a power-down write",
+          radio.nfc_challenge_writes == 0 && radio.nfc_set_default_commands == 0
+          && radio.nfc_operation_control_zero_writes == 0);
+  }
+  {
+    // THE ZERO-FILL CASE IS THE ONE ASTRA REPRODUCED, AND ITS WHOLE POINT IS
+    // THAT 02h READS 0x00.
+    Cc1101Stub radio;
+    radio.transmitting = false;
+    radio.nfc_operation_control = 0x88;
+    radio.nfc_zero_fill = true;
+    rigWithRetainedRadio(radio);
+    setup();
+    claim("R14-02 Astra's case: with a zero-filled bus the retained field is "
+          "physically still up and the image does not say otherwise",
+          radio.nfcFieldIsUp() && rec().consoleHas("FIELD STATE UNKNOWN"));
+  }
+  {
+    // RECOVERY: the fault clears and the loop proves the field off.
+    Cc1101Stub radio;
+    radio.transmitting = false;
+    radio.nfc_operation_control = 0x88;
+    radio.nfc_zero_fill = true;
+    rigWithRetainedRadio(radio);
+    setup();
+    radio.nfc_zero_fill = false;
+    for (int i = 0; i < 8; ++i) {
+      delay(kRadioQuiescePeriodMs + 10);
+      loop();
+    }
+    claim("R14-02 recovery: once the part answers, the loop's retry proves "
+          "the field off", !radio.nfcFieldIsUp()
+          && rec().consoleHas("FIELD OFF, live identity"));
+    press("3");
+    pump(2);
+    claim("...and accessory power is then granted",
+          Pcal9535a::bitOf(g_board.u3_output, AQROOT_U3_ACC_3V3_EN));
+  }
+  {
+    // LATER LIVENESS LOSS REVOKES A CONFIRMATION.
+    Cc1101Stub radio;
+    radio.transmitting = false;
+    radio.nfc_operation_control = 0x88;
+    rigWithRetainedRadio(radio);
+    setup();
+    press("3");
+    pump(2);
+    claim("R14-02: a healthy U9 is confirmed and the rail is granted",
+          Pcal9535a::bitOf(g_board.u3_output, AQROOT_U3_ACC_3V3_EN));
+    radio.nfc_zero_fill = true;                  // the part stops answering
+    press("");
+    for (int i = 0; i < 4; ++i) {
+      delay(kNfcLivenessPeriodMs + 10);
+      loop();
+    }
+    claim("...and when it stops answering the OFF confirmation is REVOKED",
+          rec().consoleHas("NFC OFF confirmation REVOKED"));
+    claim("...and the rail granted under it is SHED",
+          !Pcal9535a::bitOf(g_board.u3_output, AQROOT_U3_ACC_3V3_EN));
+    press("d");
+    pump(1);
+    claim("...and U9 owns the burst slot again",
+          rec().consoleHas("U9 owns the burst slot"));
+    press("3");
+    pump(2);
+    claim("...and a new rail request is refused until it is reconfirmed",
+          !Pcal9535a::bitOf(g_board.u3_output, AQROOT_U3_ACC_3V3_EN));
+  }
+  {
+    // LIVENESS IS MORE THAN AN IDENTITY.  A part whose writes stop landing
+    // still answers the identity register, and can no longer be commanded
+    // off -- so the liveness probe's challenge, not its identity read, is
+    // what revokes.
+    Cc1101Stub radio;
+    radio.transmitting = false;
+    radio.nfc_operation_control = 0x88;
+    rigWithRetainedRadio(radio);
+    setup();
+    press("3");
+    pump(2);
+    radio.nfc_ignores_writes = true;
+    press("");
+    for (int i = 0; i < 4; ++i) {
+      delay(kNfcLivenessPeriodMs + 10);
+      loop();
+    }
+    claim("R14-02: a part whose writes stop landing is REVOKED by the "
+          "liveness challenge even though its identity still reads",
+          rec().consoleHas("NFC OFF confirmation REVOKED")
+          && !Pcal9535a::bitOf(g_board.u3_output, AQROOT_U3_ACC_3V3_EN));
+  }
+  {
+    // MCU RESET WITH A HEALTHY PART: the full sequence ran, in order.
+    Cc1101Stub radio;
+    radio.transmitting = false;
+    radio.nfc_operation_control = 0x88;
+    rigWithRetainedRadio(radio);
+    setup();
+    claim("R14-02: the quiesce proves identity TWICE, runs the 11h challenge "
+          "both ways and writes 02h = 0x00 explicitly after Set default",
+          radio.nfc_identity_reads >= 2 && radio.nfc_challenge_writes >= 2
+          && radio.nfc_operation_control_zero_writes >= 1
+          && radio.nfc_set_default_commands >= 1);
+    claim("...and the field is off and confirmed",
+          !radio.nfcFieldIsUp() && rec().consoleHas("FIELD OFF, live identity"));
   }
 
   std::printf("\n%s -- %d failure(s)\n", failures ? "FAIL" : "PASS", failures);

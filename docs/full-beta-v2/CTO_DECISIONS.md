@@ -1,3 +1,203 @@
+## D-795 — **ROUND-14 FULL CONVERGENCE: A GAUGE AVERAGE FROM BEFORE THE LOAD, A FIELD CONFIRMED OFF BY A DEAD BUS, A CHARGER CEILING SOLVED AT ONE CELL, AND A GUARANTEE MADE OF TWO EDITS**
+
+    authority  board c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907
+    manifest   recorded in evidence/d795-review-target.json
+    content    the D-795 content commit; see evidence/d795-review-target.json
+    identity   the post-commit verification record commit that follows it
+    parent     202996f64d8a3e1203345c0de2b712b3759020fb (D-794, REJECTED by Round-14)
+    scope      R14-01..R14-07 (Astra), every reproduced Fable Work R14-01..R14-15
+               residual, and the new-defect sweep this closeout performed
+    copper     NONE.  No copper, net, footprint, placement, part value or
+               protected-copper object moves.
+    order      HOLD.  External-review target only.  B01-B14 (CAM), FA01-FA10
+               (first article) and procurement remain outstanding; both lists
+               are now enumerated IN-TREE.
+    owner      NO NEW OWNER DECISION IS REQUIRED.  One product statement is
+               NARROWED (charging-while-running is a conditioned envelope, not a
+               scalar) and one is re-classified (completion becomes a
+               qualification target); no promised capability is removed.
+
+Round-14 rejected D-794.  **Astra** graded it **C — DO NOT ORDER** with seven findings;
+**Fable Work** graded B on its full scope with multiple non-copper pre-order corrections.
+Neither established an unconditional respin, and none is made.
+
+**THE THEME IS THAT A SAFE-LOOKING ANSWER IS NOT AN ANSWER UNTIL SOMETHING LIVE GAVE IT.**
+Every Round-14 finding is a value that LOOKS like the evidence it replaced: a gauge
+average partly from before the load, a zero read that looks like a powered-down field, a
+ceiling solved at one cell voltage, a completion time built on an unpublished capacity
+curve, and a typical wearing a guarantee because a dict in the same file said so.
+
+### 1 — `R14-01`: THE GAUGE WINDOW, AND THE EDGE THE FIRMWARE CANNOT SEE
+
+**THE WINDOW.**  ADI 19-6171 Rev.7 publishes tERR **±3.5 %** for the time base, and VCELL
+is an average of four *conversions*, not samples, so the conversion running when the load
+lands integrates both sides of it.  A reading is post-edge only once four conversions have
+COMPLETED that each STARTED after the edge: five periods at the slow end,
+5 × 250 ms × 1.035 = **1293.75 ms**, rounded up to **1300 ms**.  Every term is a
+`static_assert`.  D-794's 1000 ms left the oldest conversion pre-edge on a slow part.
+
+**THE LOOP.**  `waitForPostLoadConversion` re-reads `millis()` until the window is spent,
+because an RTOS `delay()` can return a tick early; it is bounded, and a clock that does not
+advance yields NO reading (fail-closed), never a fresh one.
+
+**THE EDGE THE FIRMWARE CANNOT SEE.**  This board has no VBUS-present signal on a readable
+pin, so a charger unplugged just before a rail request changes the node with nothing to
+stamp it, and the charging-era average over-states the cell.  **Every admission — a rail
+enable, or a mode entry with a rail live — now stamps its OWN REQUEST as an epoch** and
+reads only after the full window since it.  Whatever changed before the request is out of
+the average.  A change DURING the window is covered by the settled recheck and the periodic
+guard, which are kept; D-794's DEVICE_SPEC sentence claiming plug/unplug was stamped is
+withdrawn and the limitation is stated as an ACCEPTABLE FIRST-FIVE LIMITATION.
+
+**EVERY INTERNAL EDGE IS STAMPED**, through one method: display init, teardown and reset
+assertion, the backlight ramp, the amplifier both ways, each rail step, the I2C buffer,
+both sheds, the sub-GHz and NFC quiesce, sub-GHz keying, Wi-Fi, and expander recovery.
+The boot now reconciles the app's rail flags from the physical latch (found by this
+closeout: the flags were only reconciled on the first later command).
+
+**THE REGRESSION IS A TIMING MODEL, NOT A NUMBER.**  `test_production_image.cpp`'s MAX17048
+is stateless over the part's own conversion grid: period 250 ms or 258.75 ms, seven phases,
+instantaneous or integrating apertures, and external node events the firmware cannot see.
+A **contamination audit** records, for every VCELL read, whether any contributing conversion
+began before an edge — firmware edges for every read, external edges for admissions.
+Astra's `p` → `3` and `p` → `5`, the positive control, the unannounced unplug at 0/10/120 ms,
+same-value conversions, delays that return 10 ms early, the settled recheck and the 5 V shed
+each run under all 28 models with zero contaminated reads.  One scenario PROVES the panel
+never comes up with a rail live on the deferred reset-release path (an invalid U2 shadow
+sheds the rails first), which is why the display stamp's image-level control is retired as
+equivalent there and carried by a per-site claim instead.  **Nineteen per-stamp caller
+controls and five image controls** each delete one stamp or restore D-794's behaviour, and
+every one is caught.
+
+### 2 — `R14-02`: FIELD OFF REQUIRES A LIVE PART
+
+D-794 accepted `02h == 0x00` — which is also what a MISO line reads when nothing answers.
+The quiesce is now eight DS12484 steps: IC identity (3Fh, `ic_type` 0b00101) → a
+complementary challenge on the inert No-response timer register 2 (11h, Table 50, RW,
+default 0) → Set default → **11h back at 0x00, proving Set default ran** → the §4.1 overheat
+frame → Operation control **written** to 0x00 → read back 0x00 → identity again.  After a
+live identity, every failure path still writes the power-down value (never trusted).  A
+confirmed-quiet part is re-proved every second (identity + challenge + 02h); a failure
+REVOKES the confirmation, takes the burst slot and sheds the rails, and an UNKNOWN field
+blocks microSD and IR regardless of the arbiter.  The production-image stub now frames on
+chip select and models zero-fill, FF-fill, stale reply, ignored writes, ignored Set default,
+wrong identity, a sticky Operation control and a part that dies after Set default; an
+unidentified part is never commanded at all.  **Ten NFC mutation controls, all caught.**
+
+### 3 — `R14-03` + Fable R14-04/06/07: THE CHARGER CONTROL MODEL, AND WHAT IT PROMISES
+
+**THE PHYSICS WAS WRONG IN ONE SENTENCE.**  SLUSF65B §6.3.2: ILIM and VINDPM reduce the
+INPUT current; SYS then falls and only the DPPM loop at `VBAT + VDPPM` folds the charge.
+D-794 held SYS at 4.41 V under an input loop and folded the charge by fiat.  Every
+charge-folding branch now holds SYS at the DPPM node; **TREG** is a real branch, closed
+against the declared thermal model (`charger_operating_point`); ICHG is the guaranteed
+**KISET** band over `R37` at 1 % (**723.5…815.9 mA**) with 20 % precharge below VLOWV.
+The new independent inequality — *a folded charge with SYS above `VBAT + VDPPM` is invalid
+unless TREG is the loop* — immediately caught a SECOND D-794 error: a `NO_CHARGE` state
+with SYS above the DPPM node while the CC loop is active has no equilibrium (the CC loop
+pulls SYS to VDPPM, where the load alone exceeds the input), so the part supplements.
+
+**THE DOMAIN IS THE ONE THE CLAIM PROMISES.**  2880 rows: four source classes × twelve cells
+from 2.850 V (VBUVLO less 5 %) to 4.221 V × two ILIM corners × five sweep points × two
+histories × 0/25/40 °C.  Result: the **junction-safe system power is 3.900 W** (raw
+4.136754 W) and it is universal; the **no-discharge boundary has no useful universal scalar**
+(0.900 W at a full cell, raw 0.996765 W) and is published as a generated VBAT/source table.
+D-794's 3.600 W is RETIRED as a no-discharge claim.
+
+**THE SOURCE IS A PART.**  The Raspberry Pi 15W USB-C Power Supply, `KSA-15E-051300HU` and
+regional variants, captive 1.5 m 18 AWG, product brief archived (sha256 `6df7bb5c…`), ruled
+at 5.1 V ± 7 %.  D-794's "USB 2.0 high-power port … at least 1.100 A" was self-contradictory
+(a USB 2.0 port is 500 mA) and quoted a USB table the repository never held; a USB 2.0 host
+is now explicitly outside the contract, and generic Type-C / phone cables are REPORTED classes.
+The adapter is in `OFF_BOARD_BOM`, qty 5.
+
+### 4 — `R14-04`: COMPLETION IS A QUALIFICATION TARGET
+
+The pack record publishes capacity and cut-offs and **no capacity-vs-voltage curve**.  A
+distribution-free bound — the whole capacity at the worst TREG-closed current on
+VLOWV…VBATREG, plus DECLARED precharge (5 %) and CV-tail (60 min) allowances, against
+360 min × 0.8 — does not fit under any modelled condition, so **no completion power is
+published**.  The QUALIFICATION TARGET is termination before 288 min from the 2.75 V cut-off,
+idle, named adapter, 25 °C; **`C-PWR-CHARGE-02`** is the measurement of record.  Five
+ablation controls (remove TREG, remove ambient, alter the timer, alter the CV tail, omit a
+source class) are each refused as not the required domain.  D-794's 1.150 W and its linear
+capacity model (`charge_timer_report`) are REMOVED.
+
+### 5 — `R14-05`: F14 DOMAINS ARE EXACT MULTISETS
+
+The oracle now DECLARES the charger domain (six cells × seventeen powers × two ILIM × four
+sources × three histories × two ICHG corners, including powers no source-plus-BATFET can
+deliver) and the canonical side iterates THAT.  Every point is either a solved state whose
+branch an **independent candidate-elimination classifier** agrees with (all points agree),
+or a refusal re-checked against the oracle's own maximum-deliverable-power scan.  Ten
+(branch, history) populations must be non-empty and the hysteresis must be DEMONSTRATED at
+some point.  The 2880 regime rows must arrive exactly, each with its bracketing evidence
+(the state at and just above each ceiling), and the published universal figures and every
+envelope cell are recomputed by the oracle.  The network domain is an exact multiset of
+solved rows and physically-evidenced refusals.  Twelve printed heat fields now have raw
+twins, equality-gated, and the raw twins are re-derived from the raw terminals.  **Eleven
+new destructive controls** (one row per mode, SUPPLEMENT history deleted, network rows
+deleted, refusals dropped, full-cell regime rows deleted, both published figures inflated,
+heat summary-only and raw-only corruption, D-794's SYS-at-regulation under ILIM, thermal
+states dropped) — all caught.
+
+### 6 — `R14-07` (Astra) / R14-09 (Fable): IDENTITY AND PROVENANCE
+
+**No truncation.**  D-793's word-boundary rule accepted "Alpha and" as Alpha & Omega
+Semiconductor.  The fallback is removed; only exact reviewed aliases canonicalise.
+
+**A guarantee is bound to a primary row.**  `evidence/guaranteed-rows.json` (sha256 pinned in
+the model) binds every GUARANTEED_* key to an archived document by sha256 and to the verbatim
+row, which `checks/guarantee_evidence.py` re-finds in the document's own extracted text and
+requires to sit in a MIN/MAX column (or behind a MAX word, a ≤ sign or a ± code).  The
+Round-14 counterexamples — a TYP row re-tagged with its real line, a fabricated MAX column,
+Astra's Round-13 relabel, an un-re-pinned edit, a "typical" condition, a wrong value — are
+all refused.  **The audit found six D-794 mis-tags:** `bq.vsys_reg_V` was a TYP-only row
+(the guarantee is `VSYS_REG_ACC` ±2 %, now its own entry); the ILIM currents cited Table 6-1,
+a resistor map; a ratio of two MAX rows was called a guaranteed maximum; `R75`'s nominal was
+a "guarantee" (its ±1 % is now bound to the archived Bourns CRA "F" code); the inner copper
+thickness is an order parameter; and the USB VBUS band cited a table never archived.
+
+### 7 — `R14-06` + Fable R14-08/10/11/12/14: DOCUMENTS THAT DESCRIBE EXECUTABLE STATES
+
+The fab handoff carries a D-795 status block with the gate count and release identity.  The
+battery-harness record's operative acceptance quotes the current 177.478 / 355.204 mΩ limits
+and its design intent no longer claims radio + rail concurrency the policy refuses.
+`C-THERM-01` holds the heaviest ADMISSIBLE state, `display_audio` at the declared pair; the
+old reference state is renamed the SUSTAINED SIZING ENVELOPE.  The EastRising backlight
+transcription is corrected to **110 mA TYP / 120 mA MAX**.  **B01–B14 and FA01–FA10 are
+enumerated in `assembly/RELEASE_ACCEPTANCE_REGISTER.json`**, generated into the plan, the
+handoff and the fab notes; F12 refuses a group that names a missing step.  New executable
+steps: `C-GAUGE-EPOCH-01`, `C-NFC-QUIESCE-01`, `C-NFC-TUNE-01`, `C-PWR-CHARGE-02`.  The
+stale-value scan now reads the harness record and the off-board BOM, catches number-first
+floor instructions and a stale release digest; a false-claim scan catches plug/unplug
+"stamped", "guaranteed" budgets, an unconditioned no-discharge ceiling, a universal
+completion claim and the sizing envelope used as a test state — and five believable wrong
+instructions injected into scratch copies of every normative document are all caught.
+
+### 8 — FOUND BY THIS CLOSEOUT (the new-defect sweep)
+
+* **The drill file carries four PLATED ROUTED SLOTS (G85) at `J3`'s shield tabs and the fab
+  notes never said so.**  They are now read out of the exported drills and stated, and are
+  B09.
+* **`NO_CHARGE` above the DPPM node** (section 3) and **`VSYS_REG` as a guarantee**
+  (section 6).
+* **DEVICE_SPEC's summary row said "full cycle ≈ 240–290 min"** — a completion claim from
+  D-743 with no thermal regulation and no source limit.  RETIRED.
+* **The charging "permitted" set included combinations production refuses** (a radio beside
+  a live rail).  Only admissible states are published now; the heaviest is
+  `display_audio` + `acc_3v3_only`.
+* **A typed duplicate of eight charger constants** (`CHARGE_REGIME_INPUT`) survived, unread,
+  in `audit_rail_ampacity`.  Deleted.
+* **ICHG was one typical in both the heat and the time derivations.**  Now the KISET band.
+
+### WHAT IS NOT CLAIMED
+
+D-795 is an ANALYTICAL closure.  No copper moved.  CAM acceptance (B01–B14), first article
+(FA01–FA10), procurement and enclosure/CAD remain downstream; the gauge window, the NFC
+liveness, the charger regime and completion, the ILIM limits and the thermal model are all
+still to be measured on hardware, and the steps that measure them now exist.
+
 ## D-794 — **ROUND-13 FULL CONVERGENCE: A GAUGE READING THAT PREDATES THE LOAD IT AUTHORISES, A CHARGER MODEL WITH TWO NAMES FOR FOUR CONTROL LOOPS, AN NFC FIELD WHOSE DATASHEET WAS IN THE ARCHIVE, AND A DOMAIN THE ORACLE WAS HANDED INSTEAD OF CONSTRUCTING**
 
     authority  board c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907

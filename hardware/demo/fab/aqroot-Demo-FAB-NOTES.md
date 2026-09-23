@@ -191,10 +191,21 @@ Everything below is read out of the board file's own stackup block and is also c
 - **Solder-mask expansion is 0.000 mm board-wide** -- a pad's mask aperture IS its copper.  Do not apply a house expansion.
 - **LAMINATE: FR4 with Tg >= 150 C -- D-788 / R7-D787-04, restated at D-789 / D788-03 and RE-JUSTIFIED at D-790 / D789-A02.**  The board file declares FR4 and nothing more, and a house TG130 default is not an acceptable substitution.  TWO SENTENCES THIS NOTE USED TO CARRY ARE WITHDRAWN.  D-788 called 105 C "the laminate's maximum continuous operating temperature"; nothing in this repository publishes an MOT for a Tg-150 FR4, so that claimed a specification it did not have.  105 C is a DECLARED CONDUCTOR-SIZING limit in `audit_rail_ampacity` for copper heated by its own current, and the named narrow-run exceptions meet it with more than 50 K to spare (the `U11.2` package-land neck reaches a 52.3 C predicted peak).  D-789 D-789's own Tg justification -- a BQ25185 junction computed with TI's JEDEC RthetaJA referenced to the EXTERNAL ambient -- is RETIRED: a JEDEC thermal resistance is measured in OPEN STILL AIR, which this sealed 85 x 160 x 23 mm enclosure is not.  D-790 replaced it with TJ = TA + R_SYS x P_internal + thetaJA x P_U11, where R_SYS is the enclosure's own declared 3.25 K/W and P_internal also carries the UPSTREAM losses -- the four pass-pair channels, R75, F1 and the pack's own PCM and harness, all of which are under the same lid.  WHAT THE Tg REQUIREMENT ACTUALLY PROTECTS is the hottest point on this board, which is that junction.
 
-  - At the DECLARED SUSTAINED THERMAL ENVELOPE -- the 1.7745 A battery current this enclosure supports indefinitely at the 40 C top of the ambient range -- the junction reaches **102.16 C**, against TI's own 125 C operating maximum and 47.84 K below a 150 C Tg.  THIS is the figure the Tg requirement is justified against.
+  - At the DECLARED SUSTAINED THERMAL ENVELOPE -- the 1.7745 A battery current this enclosure supports indefinitely at the 40 C top of the ambient range -- the junction reaches **102.16 C**, against TI's own 125 C operating maximum and 47.84 K below a 150 C Tg.  THIS is the figure the Tg requirement is justified against.  It is a SIZING envelope -- a battery current, not a state a user or a technician puts the product in (D-795).
   - At the PEAK ELECTRICAL ENVELOPE -- every internal subsystem at its published maximum with both accessory rails at their published budgets, concurrently, which is the CONDUCTOR-SIZING and PROTECTION-ORDERING basis and is NOT a steady state -- the same model gives **178.42 C** at the 2.7 A the copper is sized for.  That is above TI's 125 C operating maximum AND above its 150 C thermal shutdown, which is exactly why the sustained envelope is derived and published separately and why `demo_feature_contract` F12 proves the cell-to-load network CANNOT HOLD the peak envelope as an operating point.  A board that could sit there would shut its charger down; this one cannot get there.  (D-790 printed 142.8 C here; the itemised upstream path of R11-07 and the missing ESP32-S3 baseline of R11-02 have since raised it, and D-794 / R13-06 DERIVES it here rather than repeating a literal.)
   - Both figures EXCLUDE the accepted narrow run's own copper dissipation, which enters the same package through the same pin; `audit_rail_ampacity`'s `BAT_PROTECTED_P` row adds it and is the RULING figure.  A TG130 build has no margin at either and is refused.  State the laminate and its Tg on the acknowledgement, and see `C-THERM-01`, which MEASURES R_SYS rather than assuming it.
 - **100% BARE-BOARD ELECTRICAL TEST (flying probe or fixture) IS REQUIRED ON EVERY DELIVERED PCB CIRCUIT, against the final accepted netlist; panel-level sampling is not sufficient.**  This is a 6-layer board with resin-filled, cap-plated via-in-pad under fine-pitch parts: an open in a filled barrel is not findable at assembly and not repairable after it.  Provide traceable test confirmation with the lot.
+
+## Routed slots (Excellon G85) -- manufacturer acceptance B09
+
+The drill files carry **4 routed slots** as Excellon `G85` moves.  Each is a SLOT, not a round hole, and must be fabricated as one with the plating stated; confirm in the CAM acceptance (B09) that no slot has been re-interpreted as a drilled hole.
+
+| plating | file | width mm | length mm | centre (x, y) mm | pad |
+|---|---|---|---|---|---|
+| PLATED | `aqroot-Beta-v2-PTH.drl` | 0.600 | 1.400 | (38.680, 141.625) | `J3.SH` |
+| PLATED | `aqroot-Beta-v2-PTH.drl` | 0.600 | 1.700 | (38.680, 145.805) | `J3.SH` |
+| PLATED | `aqroot-Beta-v2-PTH.drl` | 0.600 | 1.400 | (47.320, 141.625) | `J3.SH` |
+| PLATED | `aqroot-Beta-v2-PTH.drl` | 0.600 | 1.700 | (47.320, 145.805) | `J3.SH` |
 
 ## Component placement (CPL) convention -- READ BEFORE PROGRAMMING THE PLACER
 
@@ -210,3 +221,24 @@ Everything below is read out of the board file's own stackup block and is also c
 - Polarised and pin-1 references are called out individually in `docs/full-beta-v2/assembly/FIRST_FIVE_ASSEMBLY_PLAN.md`, which is normative for the first five units.
 
 > **A placement preview is REQUIRED before the first unit is built.**  Render the loaded CPL against the assembly drawings (`aqroot-Demo-assembly-top.pdf`, `aqroot-Demo-assembly-bottom.pdf`) and confirm side and rotation for at least `U1`, `J1`, `J5`, `U11`, `U12` and `U21` before release to the line. **`J4` is intentionally absent from the CPL at D-781 because it is a manual wire land, not a placed component; verify J4 polarity, rear-wire entry, joint height and strain relief against the battery-harness work instruction instead.**
+
+## Manufacturer / CAM written acceptance -- B01-B14
+
+Every item below is **PENDING** and needs the manufacturer's WRITTEN acceptance before an order is placed.  The register is `docs/full-beta-v2/assembly/RELEASE_ACCEPTANCE_REGISTER.json`.
+
+| id | item | status |
+|---|---|---|
+| **B01** | exact 6-layer stack (JLC06161H-7628), copper weights, finished thickness 1.5744 +/- 0.10 mm and ENIG, with no house-default substitution | PENDING |
+| **B02** | every land-intersecting via resin-filled, planarised and copper-capped (POFV) as listed in the fab notes | PENDING |
+| **B03** | the 38 sub-floor vias the fab notes list under 'SUB-FLOOR VIAS', at the stated finished sizes | PENDING |
+| **B04** | mask and stencil apertures, including the U9/U12 pads and the NFC tuning terminals | PENDING |
+| **B05** | the J3 NPTH concession | PENDING |
+| **B06** | MK1's acoustic port: unplated and unfilled | PENDING |
+| **B07** | exact BOM, consignment, rotation and pin-1 per the CPL, the manual travelers, and 100 % electrical test | PENDING |
+| **B08** | J4 finished barrels >= 0.70 mm and the exact tip/crimp/strain-relief process | PENDING |
+| **B09** | the FOUR PLATED ROUTED SLOTS (Excellon G85) in the PTH drill file at J3's shield tabs, accepted as plated slots and not re-interpreted as round holes | PENDING |
+| **B10** | the declared stackup used without substitution for the RF feeds and the USB pair drawn on it | PENDING |
+| **B11** | the named soldermask-bridge / mask-dam exceptions | PENDING |
+| **B12** | Tg >= 150 C FR4 laminate, certified | PENDING |
+| **B13** | genuine-source allocation for the AOS AO4800 pass pair and the nine constrained fitted sourcing groups (consignment or authorised stock) | PENDING |
+| **B14** | first-article inspection report for the bottom-terminated packages (X-ray of U11 DLH0010A, U9, U12 and the ESP32 module ground pad) before the remaining units are released | PENDING |

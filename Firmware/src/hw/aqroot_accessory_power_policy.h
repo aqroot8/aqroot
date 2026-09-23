@@ -310,9 +310,11 @@ inline bool vcellIsPlausible(float vcell) {
 // contains four pre-load conversions.  One update later it contains three.
 // Only after FOUR updates is every conversion in the average post-load, so the
 // interval after which the register is guaranteed to describe the present load
-// is 4 x 250 ms = 1000 ms.  ADI publishes no separate ADC conversion period
-// and no way to observe which conversions are in the average, so four updates
-// is the only bound that can be STATED rather than assumed.
+// is 4 x 250 ms = 1000 ms AT THE NOMINAL TIME BASE -- D-794's figure, which
+// D-795 / R14-01 below RETIRES for the part's published tERR and for the
+// conversion that straddles the edge.  ADI publishes no way to observe which
+// conversions are in the average, so the bound has to be STATED from the
+// published timing rather than assumed.
 //
 // D-779'S 400 ms WAS DERIVED AGAINST THE OTHER FACT.  Its own comment says so:
 // "the MAX17048 updates VCELL about every 250 ms ... 400 ms covers one update
@@ -329,14 +331,104 @@ inline bool vcellIsPlausible(float vcell) {
 // ===========================================================================
 constexpr uint32_t kGaugeVcellUpdateMs = 250;
 constexpr unsigned kGaugeVcellAveragedConversions = 4;
-// The interval after a load edge at which every conversion in the VCELL
-// average is guaranteed post-load.
-constexpr uint32_t kGaugePostLoadConversionMs =
-    kGaugeVcellUpdateMs * kGaugeVcellAveragedConversions;
-static_assert(kGaugePostLoadConversionMs == 1000,
-              "ADI 19-6171 Rev.7: four averaged conversions at a 250 ms "
-              "update rate is a 1000 ms window");
 
+// ===========================================================================
+// D-795 / R14-01.  D-794's 1000 ms WAS THE NOMINAL WINDOW, AND THE RELEASE'S
+// OWN TIMING MODEL SAYS THE PART IS NOT NOMINAL.
+//
+// ROUND-14: "D-794's 1000 ms post-load window is not conservative under the
+// release's own MAX17048 timing model when active conversion period is within
+// the +3.5% time-base tolerance or when a conversion straddles the load edge.
+// ... Use a bound that guarantees all contributing conversions are post-edge
+// under +3.5% timing error and scheduling quantization."
+//
+// BOTH HALVES REPRODUCE, AND EACH IS A PUBLISHED FACT D-794 DID NOT USE.
+//
+//   THE TIME BASE.  ADI 19-6171 Rev.7 EC table, "Time Base Accuracy", tERR,
+//   active and hibernate modes: -3.5 / +/-1 / +3.5 %.  A part at the slow end
+//   converts every 258.75 ms, not every 250 ms, and four of those are
+//   1035 ms.  D-794's 1000 ms left the oldest conversion of the average
+//   pre-edge on every such part.
+//
+//   THE STRADDLING CONVERSION.  ADI describes VCELL as the average of four
+//   ADC CONVERSIONS, not four instantaneous samples.  A conversion is an
+//   integration over its own period, and the one that is running when the
+//   load edge lands integrates both sides of it.  D-794's model pushed an
+//   instantaneous sample at each tick, so it could not see that conversion
+//   at all.  Treated conservatively -- as the datasheet does not say how long
+//   the integration aperture is, the whole period is assumed -- the average
+//   is post-edge only once FOUR conversions have COMPLETED that each STARTED
+//   after the edge: the straddling one, plus four, is five periods.
+//
+// So the window is five periods at the slow end of tERR, rounded UP to the
+// next 10 ms:  5 x 250 ms x 1.035 = 1293.75 ms  ->  1300 ms.  The 6.25 ms of
+// rounding is also the allowance for the 1 ms quantization of `millis()` and
+// for the gap between the load being established and the stamp being taken;
+// both are three orders of magnitude inside it.  The static_asserts below
+// make every term of that sentence a compile-time fact.
+// ===========================================================================
+constexpr uint32_t kGaugeTimeBaseTolerancePpm = 35000;   // tERR +3.5 %
+// The conversion that straddles the edge contaminates the average and does
+// not count toward the four.
+constexpr unsigned kGaugeStraddlingConversions = 1;
+constexpr unsigned kGaugeContributingPeriods =
+    kGaugeVcellAveragedConversions + kGaugeStraddlingConversions;
+// Microseconds, exact: 5 x 250 000 us x 1.035 = 1 293 750 us.
+constexpr uint64_t kGaugeWorstCaseWindowUs =
+    uint64_t(kGaugeContributingPeriods) * kGaugeVcellUpdateMs * 1000u *
+    (1000000u + kGaugeTimeBaseTolerancePpm) / 1000000u;
+// Rounded UP to the next 10 ms.
+constexpr uint32_t kGaugePostLoadConversionMs =
+    uint32_t((kGaugeWorstCaseWindowUs + 9999u) / 10000u * 10u);
+static_assert(kGaugeWorstCaseWindowUs == 1293750u,
+              "ADI 19-6171 Rev.7: five 250 ms periods at tERR +3.5 % are "
+              "1293.75 ms");
+static_assert(kGaugePostLoadConversionMs == 1300,
+              "the post-load window is 1293.75 ms rounded up to 1300 ms");
+static_assert(uint64_t(kGaugePostLoadConversionMs) * 1000u
+                  >= kGaugeWorstCaseWindowUs + 1000u,
+              "the rounding must also cover one millis() quantum");
+// D-794's figure, kept as a named retired value so a test can prove the new
+// window is not it.
+constexpr uint32_t kGaugeD794NominalWindowMs =
+    kGaugeVcellUpdateMs * kGaugeVcellAveragedConversions;
+static_assert(kGaugePostLoadConversionMs > kGaugeD794NominalWindowMs,
+              "D-795 retires D-794's nominal 1000 ms window");
+
+// ===========================================================================
+// D-795 / R14-01.  A LOAD EPOCH IS GENERIC STATE, AND A NEW ADMISSION OWES A
+// FRESH WINDOW OF ITS OWN.
+//
+// ROUND-14: "Admission freshness must be GENERIC load-epoch state, not
+// scattered display-only special cases. ... Astra also reproduced an
+// UNANNOUNCED external source/node change immediately before an accessory
+// request.  Firmware cannot observe charger plug/unplug on this hardware. ...
+// make every new accessory admission conservatively require a fresh
+// post-request observation window."
+//
+// THAT IS THE ARCHITECTURE NOW, AND IT HAS TWO PARTS.
+//
+//   1.  EVERY MATERIAL LOAD EDGE THE FIRMWARE MAKES IS STAMPED, through ONE
+//       method, `noteMaterialLoadEdge`: display init and teardown, the
+//       backlight, the amplifier both ways, each accessory rail step, each
+//       shed, the radio and NFC quiesce, sub-GHz and Wi-Fi keying, expander
+//       recovery and the boot itself.  Every RETENTION read honours the
+//       newest stamp.
+//
+//   2.  EVERY NEW ADMISSION -- a rail enable, or a mode entry while a rail is
+//       live -- STAMPS ITS OWN REQUEST as an epoch before it reads.  The
+//       reason is the edge the firmware CANNOT stamp: this board has no
+//       VBUS-present signal on any readable pin (D-776), so a charger being
+//       unplugged a moment before the operator presses '5' changes the node
+//       with nothing to note it.  Whatever changed before the request, the
+//       reading the permission is granted on is made entirely of conversions
+//       that STARTED after it.  An external change DURING the window is not
+//       claimed to be covered; that is what the post-enable settled recheck
+//       and the periodic retention guard are for, and both are kept.
+//
+// The request stamp is a stamp like any other -- it can only move the epoch
+// LATER -- so it composes with part 1 rather than replacing it.
+// ===========================================================================
 class GaugeLoadEpoch {
  public:
   // A material change in what the board draws.  `now_ms` is the moment the
@@ -345,13 +437,24 @@ class GaugeLoadEpoch {
     armed_ = true;
     edge_ms_ = now_ms;
     what_ = (what == nullptr) ? "an unnamed load edge" : what;
+    ++edges_;
+  }
+
+  // D-795 / R14-01.  An ADMISSION asks for a post-request observation.
+  // Unobservable external edges (charger plug/unplug) are covered by this and
+  // by nothing else, so it is a separate, named entry point.
+  void noteAdmissionRequest(uint32_t now_ms, const char *what) {
+    noteMaterialLoadEdge(now_ms, what);
+    ++admissions_;
   }
 
   bool armed() const { return armed_; }
   const char *what() const { return what_; }
   uint32_t edgeMs() const { return edge_ms_; }
+  uint32_t edges() const { return edges_; }
+  uint32_t admissions() const { return admissions_; }
 
-  // How much longer the VCELL average may still contain pre-load conversions.
+  // How much longer the VCELL average may still contain pre-edge conversions.
   uint32_t remainingMs(uint32_t now_ms) const {
     if (!armed_) return 0;
     const uint32_t elapsed = now_ms - edge_ms_;     // wraps correctly
@@ -374,6 +477,8 @@ class GaugeLoadEpoch {
  private:
   bool armed_ = false;
   uint32_t edge_ms_ = 0;
+  uint32_t edges_ = 0;
+  uint32_t admissions_ = 0;
   const char *what_ = "none";
 };
 

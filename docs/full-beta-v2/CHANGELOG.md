@@ -1,3 +1,38 @@
+## D-795 — 2026-09-23 — ROUND-14 FULL CONVERGENCE: A GAUGE AVERAGE FROM BEFORE THE LOAD, A FIELD CONFIRMED OFF BY A DEAD BUS, A CHARGER CEILING SOLVED AT ONE CELL, AND A GUARANTEE MADE OF TWO EDITS
+
+Round-14 external review **REJECTED D-794** (Astra **C — DO NOT ORDER**, seven findings;
+Fable Work **B**, non-copper pre-order corrections).  **`R14-01`…`R14-07` and every
+reproduced Fable Work residual are closed.**  **NO COPPER** — board sha256 unchanged;
+`hardware/beta-v2` untouched.
+
+* **`R14-01`** gauge window **1300 ms** (five periods at tERR +3.5 %, 1293.75 ms rounded up),
+  a bounded deadline loop, every admission its OWN epoch (covers the unobservable charger
+  unplug), every internal load edge stamped; a stateless MAX17048 timing model (two time
+  bases, seven phases, integrating apertures, external events) with a contamination audit;
+  19 + 5 new mutation controls, all caught.
+* **`R14-02`** ST25R3916 OFF requires a live, identified part: identity, register challenge,
+  Set default proved by 11h, explicit 02h write, read-back, identity again; periodic liveness
+  revokes and sheds; UNKNOWN owns the burst slot.  Ten NFC mutation controls.
+* **`R14-03`** charger solver corrected (ILIM/VINDPM hold SYS at VDPPM; TREG a real loop; ICHG
+  the KISET band); 2880-row regime domain; **junction-safe 3.900 W**; no-discharge published
+  as a VBAT/source table (0.900 W minimum); named adapter Raspberry Pi 15W USB-C PSU
+  `KSA-15E-051300HU`; D-794's 3.600 W retired.
+* **`R14-04`** completion is a **QUALIFICATION TARGET** (`C-PWR-CHARGE-02`); D-794's 1.150 W and
+  its linear capacity model removed; five ablation controls.
+* **`R14-05`** F14 exact domains: oracle-declared charger domain with physically-checked
+  refusals and an independent branch classifier, exact regime rows with bracket evidence,
+  exact network multiset, twelve heat fields equality-gated; eleven new destructive controls.
+* **`R14-06`/`R14-07`** no manufacturer truncation ("Alpha and" ≠ AOS); guarantees bound to
+  hashed primary rows re-found in the archived documents; six D-794 mis-tags corrected.
+* **Documents** D-795 handoff block, harness record current values, `C-THERM-01` on an
+  admissible state, EastRising 110 TYP / 120 MAX, B01–B14 / FA01–FA10 in-tree, four new
+  executable first-article steps, false-claim scan with scratch injections.
+* **Found by this closeout** G85 plated slots undocumented in the fab notes; `NO_CHARGE`
+  above DPPM; `VSYS_REG` mis-tag; D-743's "240–290 min" claim; inadmissible charging states
+  published as permitted; an unread typed duplicate of the charger constants.
+
+REVIEW TARGET, NOT A FABRICATION AUTHORIZATION.  DO NOT ORDER.
+
 ## D-794 — 2026-09-22 — ROUND-13 FULL CONVERGENCE: A GAUGE READING THAT PREDATES THE LOAD IT AUTHORISES, A CHARGER MODEL WITH TWO NAMES FOR FOUR CONTROL LOOPS, AN NFC FIELD WHOSE DATASHEET WAS IN THE ARCHIVE, AND A DOMAIN THE ORACLE WAS HANDED INSTEAD OF CONSTRUCTING
 
 Round-13 external review **REJECTED D-793**.  Astra graded it **C — DO NOT ORDER** with
