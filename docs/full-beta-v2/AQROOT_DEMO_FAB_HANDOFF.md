@@ -11,7 +11,8 @@
 > protected-copper object moves at D-795** — the board sha256 is unchanged at
 > `c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907`.  Connectivity is
 > **174 retained / 173 connected / one owner-approved `U11.3` open / zero unapproved**.
-> The exact release identity — content commit, identity commit and MANIFEST sha256 — is
+> The D-795 content commit is `ffa59d101dbac0b209dcb975b3eca688012f6f52`; the current MANIFEST sha256 is
+> `4f292c36411648c04c9e145eab59a0716ca16200f61f162f5da8fb299a5adc05`; the identity commit and the post-commit verification are
 > recorded in `hardware/demo/manufacturing/evidence/d795-review-target.json`.
 >
 > **GATES ON THIS TARGET.**  19/19 standing contracts, `F1`–`F14`, `H1`–`H8` with every

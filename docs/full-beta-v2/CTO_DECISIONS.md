@@ -1,8 +1,8 @@
 ## D-795 — **ROUND-14 FULL CONVERGENCE: A GAUGE AVERAGE FROM BEFORE THE LOAD, A FIELD CONFIRMED OFF BY A DEAD BUS, A CHARGER CEILING SOLVED AT ONE CELL, AND A GUARANTEE MADE OF TWO EDITS**
 
     authority  board c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907
-    manifest   recorded in evidence/d795-review-target.json
-    content    the D-795 content commit; see evidence/d795-review-target.json
+    manifest   4f292c36411648c04c9e145eab59a0716ca16200f61f162f5da8fb299a5adc05
+    content    ffa59d101dbac0b209dcb975b3eca688012f6f52
     identity   the post-commit verification record commit that follows it
     parent     202996f64d8a3e1203345c0de2b712b3759020fb (D-794, REJECTED by Round-14)
     scope      R14-01..R14-07 (Astra), every reproduced Fable Work R14-01..R14-15

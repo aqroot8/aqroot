@@ -54,8 +54,9 @@
    "D795-07"
   ]
  },
- "content_commit": "this commit -- the identity commit that follows records its SHA",
+ "content_commit": "ffa59d101dbac0b209dcb975b3eca688012f6f52",
  "decision": "D-795",
+ "identity_commit": "this commit -- it records the content commit's SHA; a commit cannot contain its own",
  "identity_note": "A commit cannot contain its own SHA, so the reviewable target is the PAIR: a CONTENT commit carrying every engineering change, and an IDENTITY commit that records the content commit's SHA here and in the normative documents.",
  "manifest": "hardware/demo/fab/MANIFEST.json",
  "manifest_sha256": "4f292c36411648c04c9e145eab59a0716ca16200f61f162f5da8fb299a5adc05",
@@ -67,6 +68,40 @@
   "PROCUREMENT": "PENDING"
  },
  "parent_rejected_by_round_14": "202996f64d8a3e1203345c0de2b712b3759020fb",
+ "post_commit_verification": {
+  "beta_v2_untouched": true,
+  "board_sha256": "c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907",
+  "demo_feature_contract": {
+   "checks": "F1-F14, 14 of 14",
+   "verdict": "PASS"
+  },
+  "fab_package_contract": {
+   "verdict": "PASS"
+  },
+  "firmware_hw_map_contract": {
+   "checks": "H1-H8",
+   "note": "every host-test mutation caught",
+   "verdict": "PASS"
+  },
+  "manifest_sha256": "4f292c36411648c04c9e145eab59a0716ca16200f61f162f5da8fb299a5adc05",
+  "platformio": {
+   "all_success": true,
+   "environments": [
+    "esp32-s3-aqroot",
+    "wokwi",
+    "esp32-s3-aqroot-dm",
+    "aqroot-demo"
+   ]
+  },
+  "routing_ledger": {
+   "approved_unrouted_edges": 1,
+   "connected_retained_nets": 173,
+   "retained_multi_pad_nets": 174,
+   "unapproved_open_edges": 0
+  },
+  "run_against": "ffa59d101dbac0b209dcb975b3eca688012f6f52, clean tree",
+  "worktree_clean": true
+ },
  "product_facing": {
   "accessory_budgets": "400 mA / 300 mA per rail, DECLARED AND QUALIFIED, unchanged; declared pair 220 mA + 170 mA unchanged",
   "charging_source": "Raspberry Pi 15W USB-C Power Supply KSA-15E-051300HU (regional variants), captive 1.5 m 18 AWG",
