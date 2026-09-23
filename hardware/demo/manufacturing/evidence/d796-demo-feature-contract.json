@@ -15472,7 +15472,7 @@
      },
      "release_identity": {
       "allowed": [
-       "1eff3181cc57d80b46b145105450ccefb71d9b58b9a10357857d573195486cc7",
+       "9ef4e648753ef3f16ae14835e1aa7cdf83901c4da24fc1dc9287536341ce68c0",
        "c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907"
       ],
       "what": "a board or MANIFEST sha256 stated as the current one"

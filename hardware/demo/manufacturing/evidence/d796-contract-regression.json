@@ -145,7 +145,7 @@
    "claimed": [],
    "comparable": false,
    "contract": "pour_partition",
-   "difference": "$.ref_commit: '3eb6a6d3dd753fb561cce08cfb6f2d70429af559' vs '451d7dba46e813425c844ccc9fa3b189a4f54977'",
+   "difference": "$.ref_commit: 'e96f1f47f28e29d0090dc63a84493ffae027c407' vs '451d7dba46e813425c844ccc9fa3b189a4f54977'",
    "difference_excluding_inputs": null,
    "emitted_baseline": "d796-pour_partition-contract.json",
    "identical": false,
@@ -155,7 +155,7 @@
       "451d7dba46e813425c844ccc9fa3b189a4f54977"
      ],
      [
-      "3eb6a6d3dd753fb561cce08cfb6f2d70429af559"
+      "e96f1f47f28e29d0090dc63a84493ffae027c407"
      ]
     ]
    },

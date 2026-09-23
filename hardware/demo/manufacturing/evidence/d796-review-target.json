@@ -67,7 +67,7 @@
  },
  "identity_commit": "the commit that records the content commit's SHA; a commit cannot contain its own",
  "manifest": "hardware/demo/fab/MANIFEST.json",
- "manifest_sha256": "1eff3181cc57d80b46b145105450ccefb71d9b58b9a10357857d573195486cc7",
+ "manifest_sha256": "9ef4e648753ef3f16ae14835e1aa7cdf83901c4da24fc1dc9287536341ce68c0",
  "no_copper_change": true,
  "order_status": {
   "FAB_CAM_ACCEPTANCE": "PENDING (B01-B14)",
