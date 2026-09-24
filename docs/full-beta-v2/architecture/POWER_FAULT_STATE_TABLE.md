@@ -46,8 +46,9 @@ Scope: analysis only. No schematic, PCB or hardware file was created or modified
 > D-269's clearance to `U11.2`'s `BAT` escape and `U11.4`'s `GND` land — against
 > this board's published 0.200 mm minimum width.  The window is set by the
 > DLH0010A pinout (`BAT` is pin 2, `STAT2` pin 3), so it moves with neither
-> placement nor rotation.  `R128` and `TP7` are retained so the signal stays
-> probeable for bench work and a Rev-B respin.
+> placement nor rotation.  `R128` and `TP7` are retained for a Rev-B respin
+> and as a bodge landing; **`TP7` is NOT connected to `U11.3`** (D-798,
+> Round-17 `R17-04`) and does not observe the charger's `STAT2` on this board.
 >
 > **THIS TABLE HAD THE DECODE RIGHT AND THE SCHEMATIC DID NOT.**  Row 189 here
 > reads *"charging; `STAT1` HIGH, `STAT2` LOW"*, which matches **SLUSF65B

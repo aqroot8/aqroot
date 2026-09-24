@@ -194,11 +194,15 @@ Both `/INT` pins are open-drain and wire-OR onto `WAKE_INT_N` (R3 10 k to
    distinction** — the opposite way round from what D-734 and the owner decision
    assumed while working from the inverted table.  Firmware must treat `STAT1`
    LOW as a real charger fault and surface it; and it must label any
-   charging-versus-complete claim as an **INFERENCE** drawn from `VBUS_PRESENT`
-   and the **MAX17048** voltage and state-of-charge trend.  The no-battery limit
+   charging-versus-complete claim as an **INFERENCE** drawn from the
+   **MAX17048** voltage and state-of-charge trend (the `VBUS_PRESENT` net is
+   NOT readable by firmware on this board, D-776).  The no-battery limit
    cycle toggles `STAT2` while `STAT1` stays HIGH, so it is not observable here
-   either.  `R128` and `TP7` are retained so `STAT2` stays probeable at `TP7` for
-   bench bring-up and a Rev-B respin; they must not be depopulated.
+   either.  `R128` and `TP7` are retained for a Rev-B respin and as the landing
+   for a bodge wire from `U11.3`; they must not be depopulated.  **D-798
+   (Round-17 `R17-04`): `TP7` does NOT observe `STAT2` on this board** — the
+   routing ledger puts `TP7`, `R128` and `U2.19` on one copper island and
+   `U11.3` alone on the other, so `TP7` reads only `R128`'s pull-up.
 
 ---
 

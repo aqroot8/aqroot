@@ -957,7 +957,7 @@ def _regime_point(cls, vbat, bf, ilim, sw, hist, r_sys, theta, tj_max,
 
     def _nd(p):
         st = _st(p)
-        return st is not None and st["mode"] != "SUPPLEMENT"
+        return st is not None and st["mode"] not in apm.SUPPLEMENTING_MODES
 
     def _reachable(p):
         """D-797 / D797-01.  The states the part can actually be in at `p`
@@ -973,7 +973,7 @@ def _regime_point(cls, vbat, bf, ilim, sw, hist, r_sys, theta, tj_max,
         TREG had already folded is a history that reaches it.  None: no
         static operating point at all."""
         full = _st(p)
-        if full is not None and full["mode"] == "SUPPLEMENT":
+        if full is not None and full["mode"] in apm.SUPPLEMENTING_MODES:
             return [full]
         z = _st(p, zero=True)
         return None if z is None else [z]
@@ -1036,7 +1036,7 @@ def _regime_point(cls, vbat, bf, ilim, sw, hist, r_sys, theta, tj_max,
         above_regime = None
         if _hot is not None:
             _tj_hot = _tj(_hot)
-            if _hot["mode"] == "SUPPLEMENT":
+            if _hot["mode"] in apm.SUPPLEMENTING_MODES:
                 above_regime = ("TSHUT_PROTECTION_CYCLE" if _tj_hot
                                 >= apm.BQ25185["tshut_rising_C"]
                                 else "SUPPLEMENT_ABSORBING")
@@ -1292,7 +1292,7 @@ def charge_regime_junction(system_W, ambient_C=None, spec=None, system=None,
                 # What TREG cannot improve on: the zero-charge state -- or,
                 # if the part is supplementing, the SUPPLEMENT itself, which
                 # is absorbing and carries no charge to fold.
-                if st is not None and st["mode"] == "SUPPLEMENT":
+                if st is not None and st["mode"] in apm.SUPPLEMENTING_MODES:
                     zero = apm.charger_state(
                         system_W, vbat, treg_folds_charge_to_zero=True,
                         **dict(kw, previous_mode="SUPPLEMENT"))
@@ -1338,7 +1338,7 @@ def charge_regime_junction(system_W, ambient_C=None, spec=None, system=None,
     hottest = max(ruling, key=lambda s: s["junction_C"])
     supplementing = sorted(k for k, v in corners.items()
                            if v.get("source_rules")
-                           and v.get("mode") == "SUPPLEMENT")
+                           and v.get("mode") in apm.SUPPLEMENTING_MODES)
     air = worst["internal_air_C"]
     p_internal = worst["internal_W"]
     return dict(
@@ -1368,7 +1368,7 @@ def charge_regime_junction(system_W, ambient_C=None, spec=None, system=None,
         supplements_somewhere_in_the_domain=bool(supplementing),
         highest_vbat_without_supplement_on_every_qualified_class_V=(
             max((v for v in grid if not any(
-                c_.get("mode") == "SUPPLEMENT"
+                c_.get("mode") in apm.SUPPLEMENTING_MODES
                 for c_ in corners.values()
                 if c_.get("source_rules") and c_.get("vbat_V") == v)),
                 default=None)),

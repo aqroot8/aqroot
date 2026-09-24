@@ -1,3 +1,35 @@
+## D-798 — 2026-09-24 — ROUND-17 TARGETED CONVERGENCE: A SUPPLEMENT JUDGED ON ITS OWN COMPARATOR, A SUPERVISED MATRIX BUILT FROM EVERYTHING THE IMAGE ADMITS, A COMPLETION THAT NEEDS A VALID RECORD, AND A TEST POINT ON THE WRONG ISLAND
+
+Round-17 external review **REJECTED D-797** (Astra **B**, Fable Work **B** — six bounded
+non-PCB corrections; no respin established).  **Astra `R17-01`…`R17-06` and every
+reproduced Fable Work Round-17 residual are closed (D798-01…D798-08).**  **NO COPPER** —
+board sha256 unchanged.
+
+* **Charger (D798-01):** a supplementing part is judged on the BQ25185's actual VBSUP2 exit
+  comparator (SLUSF65B §6.3.3: the BATFET is not regulated).  A drop of at least `VBSUP2`
+  is a static `SUPPLEMENT`; a smaller one settles in the band (`NO_CHARGE`, path-limited
+  input only) or relaxes between the comparators (`SUPPLEMENT_CYCLE`, carried at its
+  floor).  The charging-safe table is unchanged (**2.700 W** universal).  New F14 controls
+  for retention too late and exit too early.
+* **Supervised charging (D798-02):** a generated matrix over all eight mode sets × every
+  published load; `display_audio` + 5 V rail and + declared pair are **REFUSED WHILE
+  CHARGING**; one rule (**4.10 V**) on the pack's open-circuit lower bound `OCV_lb`, measured
+  at J4 with the charge current and bounded by the model's declared pack DC resistance.
+* **Completion (D798-03):** `classify_charge_end` classifies only a valid, time-stamped,
+  finite, in-range record with `STAT1` known, derives the junction from the package, and
+  requires the transition to agree with the present measurement and the CV band.
+* **`TP7` (D798-04):** does not observe `STAT2`; the instruction is withdrawn and an F12
+  clause resolves every probe instruction to copper islands.
+* **F14 publication (D798-05):** the envelope is validated as an exact key multiset before
+  projection; six controls.
+* **First article (D798-06):** RECORD ONLY is declared per observation; one that falsifies a
+  published assumption is RECORD + ESCALATE with its re-runs.
+* **Documents (D798-07/08):** table header context, the supervised-threshold and
+  refused-mode families, Fable Q7/Q13/Q14 reconstructed as permanent injections; step 7's
+  onset wording; the Wi-Fi/BLE refusal holds on battery too.
+
+**REVIEW TARGET, NOT A FABRICATION AUTHORIZATION.  DO NOT ORDER.**
+
 ## D-797 — 2026-09-23 — ROUND-16 FOCUSED CONVERGENCE: A SUPPLEMENT THAT CANNOT LEAVE, A BOUNDARY PROVED AT THE WRONG POWER, A CACHE THAT REMEMBERED AN OBJECT, AND A GUARANTEE WHOSE MEANING WAS EDITABLE
 
 Round-16 external review **REJECTED D-796** (Astra **B**, Fable Work **B** — engineering

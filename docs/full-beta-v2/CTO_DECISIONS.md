@@ -1,3 +1,182 @@
+## D-798 — **ROUND-17 TARGETED CONVERGENCE: A SUPPLEMENT JUDGED ON ITS OWN COMPARATOR, A SUPERVISED MATRIX BUILT FROM EVERYTHING THE IMAGE ADMITS, A COMPLETION THAT NEEDS A VALID RECORD, AND A TEST POINT ON THE WRONG ISLAND**
+
+    authority  board c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907
+    manifest   recorded in hardware/demo/manufacturing/evidence/d798-review-target.json
+    content    the D-798 content commit (recorded by the identity commit that follows it)
+    parent     1a0b68f1b8f1fdf6e68db0e5b06503bf9439521c (D-797 identity, REJECTED by Round-17)
+    scope      D798-01..D798-08: Astra R17-01..R17-06 and every reproduced Fable Work
+               Round-17 residual, plus this closeout's own new-defect sweep
+    copper     NONE.  No copper, net, footprint, placement, part value or
+               protected-copper object moves.
+    order      HOLD.  External-review target only.  B01-B14 (CAM), FA01-FA10
+               (first article) and procurement remain outstanding.
+    owner      NO OWNER DECISION IS REQUIRED.  The two combinations newly REFUSED
+               WHILE CHARGING (amplifier + 5 V rail, amplifier + declared pair)
+               remain fully available on battery; no published capability moves.
+
+Round-17 rejected D-797.  **Astra** and **Fable Work** both graded it **B — six bounded
+non-PCB corrections**; neither established a respin.  None is made.  Every witness below
+was REPRODUCED on the D-797 tree before it was fixed.
+
+### 1 — `R17-01` + Fable `R17-02` / D798-01: THE SUPPLEMENT IS JUDGED ON THE ACTUAL VBSUP2 EXIT COMPARATOR
+
+**REPRODUCED.**  Astra's witness — 3.800 W, VBAT 3.800 V, source 5.457 V / 0.1184 Ω, ILIM
+0.995 A, SUPPLEMENT history, zero charge program — gave D-797 a STATIC `SUPPLEMENT` with
+`SYS` = 3.798967 V against a 3.780 V exit.  D-797 retained a supplement wherever any
+shortfall existed at `SYS = VBAT`, which is not the part's comparator.
+
+**The physics, from the primary source.**  SLUSF65B §6.3.3: supplement starts when `VSYS <
+VBAT − VBSUP1` (40 mV) and stops when `SYS` "rises within the battery voltage to VBSUP2"
+(20 mV), and "the battery supplement current is not regulated" — the BATFET is ON, so the
+supplementing `SYS` is the cell less `RON_BAT` × the shortfall.  Three outcomes:
+
+* **STATIC** — the drop is at least `VBSUP2`: `SYS` sits at or under the exit; `SUPPLEMENT`.
+* **SETTLES** — the drop is under `VBSUP2`, the comparator opens the BATFET, and `SYS`
+  (falling: with the BATFET off and `SYS` below the cell no charge flows and the input's
+  surplus is negative there) meets a BATFET-off node INSIDE the band.  That needs the input
+  current to RISE as `SYS` falls, which only a path-limited input does: `NO_CHARGE`, the
+  cell no longer discharging.
+* **CYCLES** — the drop is under `VBSUP2` and no such node exists (the input capped by
+  ILIM or VINDPM, both a constant current): `SYS` falls back to the VBSUP1 entry, the
+  BATFET closes, `SYS` jumps above the exit, and the part relaxes between the comparators.
+  New branch `SUPPLEMENT_CYCLE`: the cell supplies the shortfall on a duty cycle.  TI gives
+  no cycle rate, so the model carries it at its FLOOR (`SYS = VBAT − VBSUP1`) — the largest
+  input-FET drop, the largest shortfall and the lowest `SYS`: the adverse end for junction,
+  discharge and brown-out (`CHARGER_MODEL_ASSUMPTIONS.comparator_cycle`, DECLARED envelope).
+
+Astra's witness is now `SUPPLEMENT_CYCLE` at a 3.760 V floor.  Its TSHUT label stands, for
+the right reason: the heat is the input FET carrying ILIM with ~1.6 V across it, which is
+the same on either side of the comparator.  A static supplement is refused above the exit
+by the canonical invariants and by the oracle; the D-796 failure (exit onto an unreachable
+BATFET-off node) is still refused — 752 genuinely retained static supplements remain in the
+oracle domain, and 130 retained points now land in the cycle class (Astra's cell and power,
+3.8 V and 3.8 W, were added to the oracle's declared domain).
+
+**Boundaries regenerated.  The published charging-safe table is UNCHANGED** — universal
+**2.700 W**, **3.95 W** at a full cell — and so is the universal no-discharge figure
+(0.90 W).  That is physics, not a guardband: under a supplement history the cycle begins
+exactly at `ILIM_min × VBAT` (below it the input carries the load at `SYS = VBAT` and no
+supplement survives), which is where D-797's boundary sat.  The published rows are that
+physical boundary less the DECLARED 5 % guardband floored onto 0.05 W; D-797's "raw ...
+exactly" wording in its own record is annotated accordingly.  What moved: 2,554 regime
+rows' labels above the boundary, and non-ruling per-class junction figures on the
+outside-contract and low-regulation columns (the cycle floor is hotter than D-797's
+near-`VBAT` static node); in the generated no-discharge table two OUTSIDE-CONTRACT
+cells changed (`unqualified_28awg_2m` at 3.450 V 2.85 → 2.90 W; `generic_typec_24awg_2m`
+at 3.850 V gains the TREG mark) and the table is re-emitted.
+
+**Oracle.**  Independently: `oracle_supplementing_node`, `oracle_settle_node` (closed form:
+the high root of `P = V (VBUS − V) / R` on the path-limited stretch) and
+`oracle_supplement_verdict`; the candidate elimination builds the cycle candidate; a
+history's branch must be the comparator's verdict.  Judged at the state's full-precision
+load (a boundary probe sits 1e-7 W above an onset, under the public field's 1e-6 W
+rounding — found by this closeout's first run).  **Permanent controls:**
+`d798_a_static_supplement_retained_above_the_vbsup2_exit` (retention too LATE) and
+`d798_a_comparator_cycle_exited_to_the_hypothetical_node` (exit too EARLY), plus D-797's
+exit control re-aimed to cover cycles.  **F14: 46 of 46 controls caught.**
+
+### 2 — `R17-02` + Fable `R17-01` / D798-02: ONE SUPERVISED-CHARGING AUTHORITY, FROM EVERY ADMITTED COMBINATION
+
+**REPRODUCED.**  D-797 built the rule from `charge_permitted` only.  `display_audio` +
+`acc_5v_only` (4.146 W) and `display_audio` + the declared pair (4.171 W) are ADMITTED by
+the production rail edge on battery and have NO charging cell floor; they sat in
+`charge_refused` and no document told the supervisor.
+
+**The matrix** is now every one of the eight optional-mode sets × every published
+accessory load, each with one disposition: REFUSED BY FIRMWARE (on every source), ANY CELL,
+FIRMWARE FLOOR, SUPERVISED, REFUSED WHILE CHARGING.  Round-17's list: quiet + 3.3 V / 5 V /
+pair — SUPERVISED; `display_audio` + 3.3 V — SUPERVISED; `display_audio` + 5 V and + pair —
+**REFUSED WHILE CHARGING**; every no-rail internal mode — ANY CELL, or FIRMWARE FLOOR
+(`audio` + `sub-GHz TX`, reported 3.60 V), or REFUSED BY FIRMWARE (every Wi-Fi/BLE set).
+F12 requires the SUPERVISED rows to be exactly the states no reported floor can hold, and
+the matrix to be complete (32 rows).
+
+**The rule** is one generated sentence with one threshold (**4.10 V**).  **The quantity**
+is the pack's OPEN-CIRCUIT lower bound, because the envelope is solved on the cell (the
+onset is a zero-charge state, where `BAT` is the cell):
+`OCV_lb = V(J4) − max(I_BAT, 0) × 0.265 Ω − 0.010 V` with the adapter attached (0.265 Ω =
+the model's declared pack DC resistance 87.5 mΩ — AC 35 mΩ × 2.5, diffusion included — plus
+the hot-aged harness 177.5 mΩ), or `V(J4) − 0.071 V − 0.010 V` with it detached
+(`ICHG_max × pack DC`, the most elevation the model leaves after the adapter is removed).
+**No settling time is invented**: rather than wait out a relaxation the repository has no
+data for, the correction BOUNDS the un-relaxed elevation by the model's own declared
+resistances, and waiting only lowers the reading.  The console `VCELL` is not admissible:
+it reads `BAT_PROTECTED_P`, up to 0.647 V above the cell while charging (Fable measured the
+same offset family at ~0.54 V).  The firmware is NOT claimed to enforce any of it.  DEVICE_SPEC,
+CURRENT_STATE, the fab handoff and the first-five plan (C-THERM-01 included) carry the
+generated matrix, method and rule verbatim; F12 refuses a release where one does not.
+
+### 3 — `R17-03` + Fable `R17-03` / D798-03: COMPLETION NEEDS A VALID RECORD
+
+**REPRODUCED.**  `classify_charge_end` returned TERMINATED with `STAT1` missing or
+UNKNOWN, with NaN `VIN`/`VSYS`/`TJ`/`IIN`/`IBAT`, with a present `IBAT` of 0.500 A under a
+zero-current transition summary, and with a 3.70 V pack.  Now: a record is ONE window of at
+most 60 s of time-stamped samples (`VBAT`, `VSYS`, `VIN`, `IIN`, `IBAT`, package °C,
+`STAT1`); anything missing, non-finite, wrong-unit, out-of-range or outside the window, or
+`STAT1` other than HIGH/LOW, is FAULT / UNCLASSIFIED.  A supplied `tj_C` is refused: the
+junction is DERIVED as package + 5 × ΨJT (2.0 °C/W, SLUSF65B §5.3) × the record's own
+package heat + 2 K.  TERMINATED also needs the CV peak inside the VBATREG band at the pack
+(4.102–4.226 V), the present pack at or above VBATREG − VRCH (4.074 V), the present current
+at the meter floor, and a transition summary that runs into the present window.  TIMER
+EXPIRY remains separately positive.  **31 classifier cases in F12**, 21 new.
+
+### 4 — `R17-04` / D798-04: `TP7` IS NOT ON `U11.3`'s COPPER
+
+**REPRODUCED** on the routing ledger: `/BQ25185_STAT2` is two islands, `{R128.2, TP7.1,
+U2.19}` and `{U11.3}`.  D-797's instruction to probe `TP7` for `STAT2` is withdrawn from the
+plan (and annotated in D-797's record); the expander-dependency, power-fault and handoff
+texts that said `STAT2` stays "probeable at `TP7`" are corrected.  No probing option is
+retained: the only physical point is the `U11.3` land, and a bridge there is a latched
+charger fault.  **New F12 clause:** every normative sentence naming a test point together
+with a charger pin or status signal is resolved to COPPER islands, never the net name;
+D-797's sentence is a permanent control.
+
+### 5 — `R17-05` / D798-05: THE PUBLICATION IS A MULTISET BEFORE IT IS A TABLE
+
+**REPRODUCED**: a duplicate envelope row carrying 9.0 W ahead of the correct row passed —
+the oracle built a dict and the later row overwrote it.  The key multiset, each key's shape
+and every value's finiteness are now checked on the LIST; every row of a key is judged.
+Six permanent controls (bad-first, bad-last, identical copy, extra, missing, NaN).
+
+### 6 — `R17-06` / D798-06: RECORD ONLY IS PER OBSERVATION
+
+`FA_RECORD_OBSERVATIONS` declares every record-only observation of seven steps, whether it
+can falsify a published assumption, and its re-runs; the plan carries each as its own
+`(rN)` item.  A falsifying one — supplement onset under the published row, an earlier SYS
+collapse, a hotter charge record or internal air, a slower gauge cadence, a source outside
+the qualified domain, a loop where the model has none, ripple outside F6's rail limits —
+is RECORD + ESCALATE with its re-runs; the 40 °C completion time stays RECORD ONLY (not a
+contractual target).  Four new controls.
+
+### 7 — Fable `R17-05` / D798-07 + D798-08: THE DOCUMENT SHAPES
+
+A table's first column header now travels with the row label (`| STAT1 | meaning |` over
+`| HIGH | charge complete |` is a claim about STAT1).  New families: the supervised
+threshold (numeric, one generated value) and a refused-while-charging mode called
+permitted.  Fable's Q7 / Q13 / Q14 are named without their strings; each is reconstructed
+from the shape D798-07 names and, with value-first, table and alternative-verb forms, is a
+permanent injection caught in every operative document (**10 of 10**).  D798-08:
+`C-PWR-CHARGE-01` step 7 now states the physical onsets (3.43–3.91 W ascending, exit at
+3.38–3.74 W) so a missing supplement between the 3.20 W row and the onset is not called a
+discrepancy; the Wi-Fi/BLE refusal is stated to hold on battery too (the firmware applies
+the charging mode-entry table whenever no rail is live).
+
+### 8 — FOUND BY THIS CLOSEOUT
+
+* **The oracle's first port judged the comparator on the rounded public load** and
+  refused 17 boundary-probe states 1e-7 W above an onset — fixed at full precision.
+* **D-797 exit control and four victim selectors** named only `SUPPLEMENT`; re-aimed to
+  include the cycle so no control narrows silently.
+* **`AQROOT_DEMO_EXPANDER_DEPENDENCIES` still derived charging state from
+  `VBUS_PRESENT`**, which firmware cannot read (D-776); corrected.
+
+### WHAT IS NOT CLAIMED
+
+D-798 is an ANALYTICAL closure.  No copper moved.  The comparator cycle's rate, the pack's
+DC resistance behind the `OCV_lb` correction, the TREG-to-zero behaviour, the source range,
+the gauge cadence and the thermal model are all still to be measured on the first article;
+CAM acceptance (B01–B14), first article (FA01–FA10) and procurement remain downstream.
+
 ## D-797 — **ROUND-16 FOCUSED CONVERGENCE: A SUPPLEMENT THAT CANNOT LEAVE, A BOUNDARY PROVED AT THE WRONG POWER, A CACHE THAT REMEMBERED AN OBJECT, AND A GUARANTEE WHOSE MEANING WAS EDITABLE**
 
     authority  board c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907
@@ -45,7 +224,7 @@ the part is not in — and bounded the junction on the zero-charge state.  D-797
 
 ### 2 — D797-02: THE CHARGING ENVELOPE, THE FIRMWARE FLOORS, AND THE ONE CALL FLAGGED FOR THE OWNER
 
-The corrected boundary is `ILIM_min × VBAT` (raw 0.995 × cell, exactly): the charging-safe
+The corrected boundary is `ILIM_min × VBAT` (raw 0.995 × cell — *D-798: re-derived as the physical onset of the VBSUP2 comparator cycle under a supplement history; the published rows are that less a DECLARED 5 % guardband*): the charging-safe
 power is a TABLE by cell on a 50 mV grid, guard-banded 5 % and floored onto 0.05 W, with a
 **2.700 W** universal minimum at the lowest cell the BATFET can be connected at (2.86 V)
 and **3.95 W** at a full cell.  D-796's **3.900 W** is RETIRED.  Fable's 2.85 W is NOT
@@ -121,7 +300,7 @@ UNCLASSIFIED** (ESCALATE); **TIMER EXPIRY** only with every recoverable and latc
 excluded, the fault latched and a re-plug that restarts.  `classify_charge_end()` is the
 executable rule, and F12 runs ten controls on it (taper with DPPM / TREG / ILIM active is not
 termination; `STAT1` LOW alone, with TSHUT not excluded, self-clearing, or early is not a
-timer).  A high-impedance `TP7` probe is permitted as test instrumentation only.
+timer).  ~~A high-impedance `TP7` probe is permitted as test instrumentation only.~~ *(WITHDRAWN at D-798 / `R17-04`: `TP7` is not connected to `U11.3`.)*
 
 ### 6 — `R16-05` + Fable `R16-05` / D797-07: NORMATIVE CLAIMS BOUND SYMMETRICALLY AND IN TABLES
 

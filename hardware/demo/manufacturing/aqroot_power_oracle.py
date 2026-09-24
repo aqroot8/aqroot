@@ -202,7 +202,9 @@ def primitives_agree(registry, scalars):
 # every inequality here is written out from the primitives rather than
 # imported.
 CHARGER_BRANCHES = ("SYS_REG", "CC_PATH_LIMITED", "TREG", "ILIM", "VINDPM",
-                    "DPPM", "NO_CHARGE", "SUPPLEMENT")
+                    "DPPM", "NO_CHARGE", "SUPPLEMENT", "SUPPLEMENT_CYCLE")
+# D-798 / D798-01: the branches in which the CELL discharges into SYS.
+ORACLE_SUPPLEMENTING = ("SUPPLEMENT", "SUPPLEMENT_CYCLE")
 # D-795: R37, read off the schematic by hand (390 R 1 %, UNI-ROYAL
 # 0603WAF3900T5E).  The oracle derives the ICHG band from it and KISET itself.
 ORACLE_R37_OHM = 390.0
@@ -354,7 +356,7 @@ def thermal_label_problems(st):
         # so its junction is STATIC; at or above TSHUT_RISING the device's
         # own protection -- "stops charging and shuts down VSYS" (SLUSF65B
         # 6.3.7.6) -- is what acts, which is not an operating state.
-        if st["mode"] != "SUPPLEMENT":
+        if st["mode"] not in ORACLE_SUPPLEMENTING:
             why.append("an absorbing supplement regime on a %s state"
                        % st["mode"])
         if active:
@@ -376,7 +378,8 @@ def thermal_label_problems(st):
                        "a static TREG state existed and was not used")
     else:
         why.append("unknown thermal regime %r" % (regime,))
-    if st["mode"] == "SUPPLEMENT" and regime not in ORACLE_ABSORBING_REGIMES:
+    if st["mode"] in ORACLE_SUPPLEMENTING \
+            and regime not in ORACLE_ABSORBING_REGIMES:
         why.append("a SUPPLEMENT state labelled %r: it is absorbing and TREG "
                    "cannot act on it" % (regime,))
     if regime not in ("NO_TREG",) + ORACLE_ABSORBING_REGIMES and not active:
@@ -587,6 +590,67 @@ def _oracle_thresholds(vbat, sweep):
     return v_dppm, v_sup_enter, v_sup_exit, v_vindpm
 
 
+def oracle_supplementing_node(p_sys, vbat, vbus, path, cap):
+    """D-798 / D798-01, independently.  The SYS a supplementing part holds:
+    SLUSF65B 6.3.3 -- "the battery supplement current is not regulated" --
+    so the BATFET is ON and SYS is the cell less RON_BAT x the shortfall.
+    None where the input carries the whole load at SYS = VBAT."""
+    p = PRIMITIVES
+    ron_in = p["bq.ron_in_max_ohm"]
+    ron_bat = p["bq.ron_bat_max_ohm"] * p["bq.ron_bat_vbat_allowance"]
+    r_src = path + ron_in
+
+    def resid(vs):
+        i_in = max(0.0, min(cap, (vbus - vs) / r_src))
+        return vbat - (p_sys / vs - i_in) * ron_bat - vs
+    if resid(vbat) >= 0.0:
+        return None
+    lo, hi = 1e-3, vbat
+    for _ in range(90):
+        mid = 0.5 * (lo + hi)
+        if resid(mid) >= 0.0:
+            lo = mid
+        else:
+            hi = mid
+    vs = 0.5 * (lo + hi)
+    return vs if vs > 0.2 else None
+
+
+def oracle_settle_node(p_sys, vbus, path, cap, v_from, v_enter):
+    """D-798 / D798-01, independently.  Once the VBSUP2 comparator opens the
+    BATFET at `v_from`, SYS falls (the input's surplus is negative there)
+    until the input carries the load -- which, the input being a CONSTANT
+    current wherever ILIM or VINDPM caps it, can only happen on the path-
+    limited stretch, at the high root of  P = V (VBUS - V) / (R_PATH + RON_IN).
+    None if that root is not inside [VBAT - VBSUP1, v_from]."""
+    r_src = path + PRIMITIVES["bq.ron_in_max_ohm"]
+    d = vbus * vbus - 4.0 * p_sys * r_src
+    if d < 0.0:
+        return None
+    vh = 0.5 * (vbus + math.sqrt(d))
+    if vh > v_from + 1e-12 or vh <= v_enter + 1e-12:
+        return None
+    if (vbus - vh) / r_src > cap + 1e-12:
+        return None
+    return vh
+
+
+def oracle_supplement_verdict(p_sys, vbat, vbus, path, cap, sweep):
+    """(branch, supplementing node, settle node) the exit comparator gives a
+    part that is supplementing -- or (None, None, None) where the input
+    carries the load at SYS = VBAT."""
+    _d, v_enter, v_exit, _v = _oracle_thresholds(vbat, sweep)
+    node = oracle_supplementing_node(p_sys, vbat, vbus, path, cap)
+    if node is None:
+        return None, None, None
+    if node <= v_exit + 1e-12:
+        return "SUPPLEMENT", node, None
+    vh = oracle_settle_node(p_sys, vbus, path, cap, node, v_enter)
+    if vh is not None:
+        return "NO_CHARGE", node, vh
+    return "SUPPLEMENT_CYCLE", node, None
+
+
 def charger_branch_is_valid(st):
     """The branch INEQUALITIES, from primitives, independently.
 
@@ -643,7 +707,7 @@ def charger_branch_is_valid(st):
     if bf == "uvlo_open" and st.get("previous_mode") == "SUPPLEMENT":
         why.append("a SUPPLEMENT history with the BATFET disconnected by "
                    "BUVLO")
-    if (mode == "SUPPLEMENT" or i_supp > 1e-9) and (
+    if (mode in ORACLE_SUPPLEMENTING or i_supp > 1e-9) and (
             bf != "connected" or vbat <= oracle_buvlo_band()[0] + 1e-9):
         why.append("supplement at or under VBUVLO: SLUSF65B 6.3.3 -- the "
                    "BATFET cannot supply SYS there")
@@ -658,11 +722,35 @@ def charger_branch_is_valid(st):
     # carries the same 5 uA tolerance as every other public-field inequality.
     short_at_vbat = bool(bf == "connected"
                          and p_sys_ / vbat > i_in_at_vbat + tol)
+    # D-798 / D798-01: the VBSUP2 comparator on the ACTUAL supplementing SYS.
+    # Judged at the state's full-precision load: a boundary probe sits 1e-7 W
+    # above an onset, under the 1e-6 W rounding of the public field (the two
+    # are equality-gated against each other in `raw_summary_divergence`).
+    _p_exact = (st.get("raw") or {}).get("p_sys", p_sys_)
+    if not isinstance(_p_exact, (int, float)) or \
+            abs(_p_exact - p_sys_) > 6e-7:
+        _p_exact = p_sys_
+    verdict, sup_node, settle = (oracle_supplement_verdict(
+        _p_exact, vbat, vbus, path, cap, sweep) if bf == "connected"
+        else (None, None, None))
+    if bf == "connected":
+        short_at_vbat = bool(short_at_vbat or verdict is not None)
     if st.get("previous_mode") == "SUPPLEMENT" and short_at_vbat \
-            and mode != "SUPPLEMENT":
-        why.append("the part was supplementing and the input cannot carry "
-                   "the load at SYS = VBAT: %s is not reachable from that "
-                   "history (the actual SYS cannot rise to the exit)" % mode)
+            and verdict is not None and mode != verdict:
+        if verdict in ORACLE_SUPPLEMENTING and \
+                mode not in ORACLE_SUPPLEMENTING:
+            kind = ("EXIT TOO EARLY: the part was supplementing and %s is "
+                    "not reachable from that history (the D-796 defect -- "
+                    "a hypothetical BATFET-off node)" % mode)
+        elif mode == "SUPPLEMENT":
+            kind = ("RETENTION TOO LATE: a static supplement held above the "
+                    "VBSUP2 exit (the D-797 defect -- a bare shortfall at "
+                    "SYS = VBAT)")
+        else:
+            kind = "the wrong branch for that history"
+        why.append("%s; its supplementing SYS %.6f V against the VBSUP2 exit "
+                   "%.6f V makes the branch %s, not %s"
+                   % (kind, sup_node, v_sup_exit, verdict, mode))
     # ---- universal ------------------------------------------------------
     if i_in > cap + tol:
         why.append("the input current exceeds the binding input-side loop")
@@ -752,8 +840,13 @@ def charger_branch_is_valid(st):
         if vsys < v_sup_enter - 1e-9 and st.get("batfet") != "uvlo_open":
             why.append("SYS is below the supplement ENTRY threshold")
         if st.get("previous_mode") == "SUPPLEMENT" and vsys < v_sup_exit - 1e-9:
-            why.append("the part was supplementing and SYS has not risen "
-                       "back above VBAT - VBSUP2")
+            # D-798 / D798-01: inside the band with a SUPPLEMENT history only
+            # at the node the exit settled to.
+            if not (verdict == "NO_CHARGE" and settle is not None
+                    and abs(vsys - settle) <= tol):
+                why.append("the part was supplementing and SYS sits under "
+                           "VBAT - VBSUP2 at a node the exit comparator did "
+                           "not settle to")
     elif mode == "SUPPLEMENT":
         if i_chg > 1e-9:
             why.append("SUPPLEMENT must not charge")
@@ -771,6 +864,32 @@ def charger_branch_is_valid(st):
             if off_node > v_sup_enter + 1e-9:
                 why.append("supplement entered with the BATFET-off node "
                            "above VBAT - VBSUP1 and nothing to latch it")
+        # D-798 / D798-01: a STATIC supplement sits at or under the exit.
+        if vsys > v_sup_exit + tol:
+            why.append("a static SUPPLEMENT with SYS %.6f V above the VBSUP2 "
+                       "exit %.6f V: the comparator has opened the BATFET"
+                       % (vsys, v_sup_exit))
+    elif mode == "SUPPLEMENT_CYCLE":
+        # D-798 / D798-01: the comparator relaxation cycle, at its FLOOR.
+        if i_chg > 1e-9:
+            why.append("a supplement cycle must not charge")
+        if abs(vsys - v_sup_enter) > tol:
+            why.append("a supplement cycle is carried at its floor, "
+                       "VBAT - VBSUP1")
+        held = (vbus - vsys) / r_src
+        if abs(i_in - min(cap, held)) > tol:
+            why.append("the input is not delivering what it can at the "
+                       "cycle floor")
+        if verdict != "SUPPLEMENT_CYCLE":
+            why.append("a supplement cycle where the exit comparator gives "
+                       "%r" % (verdict,))
+        if abs(i_supp - (p_sys_ / vsys - i_in)) > 1e-5:
+            why.append("the cycle's shortfall is not the load less the input "
+                       "at its floor")
+        if off_node is not None and st.get("previous_mode") != "SUPPLEMENT":
+            if off_node > v_sup_enter + 1e-9:
+                why.append("a supplement cycle entered with the BATFET-off "
+                           "node above VBAT - VBSUP1 and nothing to latch it")
     # ---- D-796 / R15-01: every thermally-closed state, whatever its branch
     if isinstance(st.get("thermal"), dict):
         why += thermal_label_problems(st)
@@ -895,10 +1014,16 @@ def independent_candidates(p_sys, vbat, vbus, path, ilim, sweep, prev,
             i_supp = max(0.0, p_sys / vs - i_in)
             cands.append(_cand("SUPPLEMENT", vs, i_in, 0.0, i_supp,
                                     *args, off_for_sup))
+            # D-798 / D798-01: the comparator cycle, at its floor.
+            i_in_c = max(0.0, min(cap, (vbus - v_sup_enter) / r_src))
+            cands.append(_cand("SUPPLEMENT_CYCLE", v_sup_enter, i_in_c, 0.0,
+                               max(0.0, p_sys / v_sup_enter - i_in_c),
+                               *args, off_for_sup))
     if zero_program:
         # No program, no charging branch: with the charge folded to zero the
         # part is NO_CHARGE or SUPPLEMENT (or has no state at all).
-        cands = [c for c in cands if c["mode"] in ("NO_CHARGE", "SUPPLEMENT")]
+        cands = [c for c in cands
+                 if c["mode"] in ("NO_CHARGE",) + ORACLE_SUPPLEMENTING]
     valid, by_mode = [], {}
     for c in cands:
         ok, _ = charger_branch_is_valid(c)
@@ -917,14 +1042,19 @@ def independent_candidates(p_sys, vbat, vbus, path, ilim, sweep, prev,
     # is still supplementing: no charge can flow below the cell, and the
     # actual SYS cannot rise to the exit.  Checked from the oracle's own
     # closed form, not from the candidate list.
+    # D-798 / D798-01: and the branch it retains is the one the VBSUP2 exit
+    # comparator gives on the actual supplementing SYS.
     if prev == "SUPPLEMENT" and batfet == "connected":
         i_at_vbat = max(0.0, min(cap, (vbus - vbat) / r_src))
         if p_sys / vbat > i_at_vbat + 5e-6:
-            return [by_mode["SUPPLEMENT"]] if "SUPPLEMENT" in valid else []
-    # Otherwise, where both a no-charge node and a supplement solution are
-    # physical, the history decides, exactly as the part does.
-    if "NO_CHARGE" in valid and "SUPPLEMENT" in valid:
-        valid = ["SUPPLEMENT"] if prev == "SUPPLEMENT" else ["NO_CHARGE"]
+            verdict, _n, _s = oracle_supplement_verdict(p_sys, vbat, vbus,
+                                                        path, cap, sweep)
+            return [by_mode[verdict]] if verdict in valid else []
+    # Otherwise, where both a no-charge node and a supplementing solution
+    # are physical, the history decides, exactly as the part does.
+    sup_valid = [m for m in valid if m in ORACLE_SUPPLEMENTING]
+    if "NO_CHARGE" in valid and sup_valid:
+        valid = sup_valid if prev == "SUPPLEMENT" else ["NO_CHARGE"]
     # D-796 / D796-08: with the BATFET open, a NO_CHARGE node the CC loop
     # would pull down to VDPPM is not an equilibrium either -- there is no
     # supplement to end in, so SYS collapses and nothing is valid.
@@ -957,7 +1087,7 @@ def oracle_reachable(p_sys, vbat, cls, ilim, sweep, hist, batfet):
     full = independent_candidates(p_sys, vbat, cls["vbus_V"],
                                   cls["path_ohm"], ilim, sweep, hist, "max",
                                   batfet)
-    if len(full) == 1 and full[0]["mode"] == "SUPPLEMENT":
+    if len(full) == 1 and full[0]["mode"] in ORACLE_SUPPLEMENTING:
         return full
     zero = independent_candidates(p_sys, vbat, cls["vbus_V"],
                                   cls["path_ohm"], ilim, sweep, hist, "max",
@@ -1172,7 +1302,9 @@ REQUIRED_RAIL_ORDERS = ("3v3_first", "5v_first")
 # the derivation, not a subset of them.  A branch that is never solved is a
 # branch whose inequalities were never checked.
 REQUIRED_CHARGER_BRANCHES = ("SYS_REG", "CC_PATH_LIMITED", "TREG", "ILIM",
-                             "VINDPM", "DPPM", "NO_CHARGE", "SUPPLEMENT")
+                             "VINDPM", "DPPM", "NO_CHARGE", "SUPPLEMENT",
+                             # D-798 / D798-01
+                             "SUPPLEMENT_CYCLE")
 # D-793 / R12-04: at least one post-state must be REJECTED BY NAME, so the
 # inclusion invariant cannot be true merely because nothing was tried.
 REQUIRED_SEEDED_REJECTION = "seeded_canary/d790_declared"
@@ -1408,9 +1540,13 @@ def expected_named_transitions():
 # ==========================================================================
 # D-797 / D797-01: 3.4 V added -- Astra's retained-supplement cell, where the
 # BATFET-off node sits at 4.41 V while the supplementing SYS is under 3.4 V.
-EXPECTED_CHARGER_CELLS_V = (2.85, 3.2, 3.4, 3.52, 3.7, 4.2, 4.221)
+# D-798 / D798-01: 3.8 V and 3.8 W added -- Astra's Round-17 witness (the
+# 5.457 V / 0.1184 ohm class at ILIM_min with a SUPPLEMENT history), where
+# the supplementing SYS sits ABOVE the VBSUP2 exit and D-797 still held a
+# static supplement.
+EXPECTED_CHARGER_CELLS_V = (2.85, 3.2, 3.4, 3.52, 3.7, 3.8, 4.2, 4.221)
 EXPECTED_CHARGER_POWERS_W = (0.0, 0.25, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.3,
-                             3.6, 4.0, 4.5, 5.0, 5.65, 7.0,
+                             3.6, 3.8, 4.0, 4.5, 5.0, 5.65, 7.0,
                              # beyond what the input plus the BATFET can
                              # deliver at the low cells: the domain CONTAINS
                              # refusals by construction, so dropping them is
@@ -1429,7 +1565,9 @@ REQUIRED_MODE_HISTORY_POPULATIONS = (
     ("SYS_REG", None), ("CC_PATH_LIMITED", None), ("ILIM", None),
     ("VINDPM", None), ("DPPM", None), ("SUPPLEMENT", None),
     ("SUPPLEMENT", "SUPPLEMENT"), ("NO_CHARGE", None),
-    ("NO_CHARGE", "NO_CHARGE"), ("SUPPLEMENT", "NO_CHARGE"))
+    ("NO_CHARGE", "NO_CHARGE"), ("SUPPLEMENT", "NO_CHARGE"),
+    # D-798 / D798-01: the comparator cycle, from a supplement history
+    ("SUPPLEMENT_CYCLE", "SUPPLEMENT"))
 # D-797 / D797-02: 50 mV wide (firmware floors are read off it), plus 2.86 V --
 # the lowest cell at which the BATFET can be connected -- 3.52 V and 4.221 V.
 # Written out by hand so a narrowed canonical grid is a missing key.
@@ -1717,7 +1855,8 @@ def charger_domain_problems(charger_states, charger_refusals):
     # the hysteresis is DEMONSTRATED, not assumed
     latched = 0
     for st in charger_states:
-        if st.get("previous_mode") != "SUPPLEMENT" or st["mode"] != "SUPPLEMENT":
+        if st.get("previous_mode") != "SUPPLEMENT" \
+                or st["mode"] not in ORACLE_SUPPLEMENTING:
             continue
         k0 = st["domain_key"].replace("/SUPPLEMENT/", "/none/")
         other = by_key.get(k0)
@@ -1751,6 +1890,34 @@ def charger_domain_problems(charger_states, charger_refusals):
         why.append("no point enters SUPPLEMENT from a cold start at a cell at "
                    "or under 3.4 V: the Round-16 low-cell absorbing class is "
                    "not exercised")
+    # ---- D-798 / D798-01: THE ROUND-17 CLASSES MUST BE EXERCISED ---------
+    # (a) a SUPPLEMENT history, a shortfall at SYS = VBAT, and the actual
+    #     supplementing SYS ABOVE the VBSUP2 exit -- Astra's witness, which
+    #     D-797 held as a static supplement.  It must be the cycle here.
+    # (b) a SUPPLEMENT history whose drop holds SYS at or under the exit --
+    #     the truly retained static supplement D-796 dropped.
+    cycle_retained = static_retained = 0
+    for st in charger_states:
+        c = st.get("controls") or {}
+        if st.get("previous_mode") != "SUPPLEMENT" \
+                or st.get("batfet") != "connected":
+            continue
+        node = c.get("supplementing_node_V")
+        ex = c.get("supplement_exit_V")
+        if node is None or ex is None:
+            continue
+        if st["mode"] == "SUPPLEMENT_CYCLE" and node > ex:
+            cycle_retained += 1
+        if st["mode"] == "SUPPLEMENT" and node <= ex + 1e-6:
+            static_retained += 1
+    if not cycle_retained:
+        why.append("no point with a SUPPLEMENT history has its supplementing "
+                   "SYS above the VBSUP2 exit: the Round-17 exit class is "
+                   "not exercised")
+    if not static_retained:
+        why.append("no point retains a STATIC supplement under the VBSUP2 "
+                   "exit: the D-796 dropped-retention class is not "
+                   "exercised")
     return why, dict(
         expected_points=len(expected_charger_keys()),
         solved=len(charger_states), refused=len(charger_refusals),
@@ -1761,6 +1928,8 @@ def charger_domain_problems(charger_states, charger_refusals):
                                              key=lambda x: repr(x))},
         points_where_history_decides=latched,
         retained_supplements_above_a_high_off_node=retained_high_off,
+        retained_cycles_above_the_vbsup2_exit=cycle_retained,
+        retained_static_supplements_under_the_exit=static_retained,
         cold_start_supplements_at_or_under_3v4=cold_low,
         classifier_disagreements=disagreements,
         mislabelled_points=mislabelled)
@@ -1887,7 +2056,7 @@ def regime_row_problems(r, scalars):
         # one-step-below / one-step-above search in
         # `_independent_boundary_problems` decides it instead.
         if label.startswith("junction") and not (
-                _zero or (st["mode"] == "SUPPLEMENT"
+                _zero or (st["mode"] in ORACLE_SUPPLEMENTING
                           and st["charge_A"] <= 1e-12)):
             why.append("row %s: the %s state is %s -- neither the zero-charge "
                        "state nor an absorbing supplement"
@@ -1905,12 +2074,14 @@ def regime_row_problems(r, scalars):
     # ---- the electrical half: supplement onset, or collapse under the trip
     nd_at, nd_above = ev.get("no_discharge_at"), ev.get("no_discharge_above")
     if nd_e < REGIME_JUNCTION_UNBOUNDED_W - 0.01:
-        if nd_e > 0 and (nd_at is None or nd_at["mode"] == "SUPPLEMENT"):
+        if nd_e > 0 and (nd_at is None
+                         or nd_at["mode"] in ORACLE_SUPPLEMENTING):
             why.append("row %s: at the electrical no-discharge ceiling the "
                        "part is supplementing or has no state" % r["key"])
         p_above = nd_e * (1.0 + 1e-7) + 1e-7
         if want["batfet"] == "connected":
-            if nd_above is not None and nd_above["mode"] != "SUPPLEMENT":
+            if nd_above is not None \
+                    and nd_above["mode"] not in ORACLE_SUPPLEMENTING:
                 why.append("row %s: just ABOVE the no-discharge ceiling the "
                            "part is still not supplementing -- the ceiling "
                            "is not the boundary" % r["key"])
@@ -2052,15 +2223,17 @@ def _independent_boundary_problems(r, want, cls, th, scalars):
     if nd is not None:
         if nd > 2 * BOUNDARY_PROBE_ABS:
             m = modes(below(nd))
-            if not m or m == ["SUPPLEMENT"]:
+            if not m or (len(m) == 1 and m[0] in ORACLE_SUPPLEMENTING):
                 why.append("row %s: one step BELOW the published no-discharge "
                            "figure %.6f W the oracle finds %r" % (r["key"],
                                                                   nd, m))
         if nd < unb:
             m = modes(above(nd))
-            if want["batfet"] == "connected" and m != ["SUPPLEMENT"]:
+            if want["batfet"] == "connected" and not (
+                    len(m) == 1 and m[0] in ORACLE_SUPPLEMENTING):
                 why.append("row %s: one step ABOVE the published no-discharge "
-                           "figure %.6f W the oracle finds %r, not SUPPLEMENT"
+                           "figure %.6f W the oracle finds %r, not a "
+                           "supplementing branch"
                            % (r["key"], nd, m))
             if want["batfet"] != "connected" and m:
                 why.append("row %s: one step above the input-carrying figure "
@@ -2118,7 +2291,8 @@ def _independent_boundary_problems(r, want, cls, th, scalars):
             if rs:
                 c = rs[0]
                 ctj = oracle_candidate_tj(c, th)
-                lab = ("ZERO_CHARGE_ABOVE_TJ_MAX" if c["mode"] != "SUPPLEMENT"
+                lab = ("ZERO_CHARGE_ABOVE_TJ_MAX"
+                       if c["mode"] not in ORACLE_SUPPLEMENTING
                        else "TSHUT_PROTECTION_CYCLE"
                        if ctj >= PRIMITIVES["bq.tshut_rising_C"]
                        else "SUPPLEMENT_ABSORBING")
@@ -2163,14 +2337,64 @@ def regime_problems(rows, published, scalars):
                 why.append("the published %s is %r; the oracle's minimum over "
                            "the qualified domain floors to %.6f"
                            % (key, published.get(key), want))
-        env = {(e["source_class"], e["vbat_V"]): e
-               for e in published.get("envelope", [])}
+        # D-798 / D798-05 (Astra R17-05).  THE PUBLICATION IS A MULTISET
+        # BEFORE IT IS A TABLE.  D-797 projected the envelope into a dict and
+        # THEN looked rows up, so a duplicate (source, cell) row -- a bad
+        # figure first and the correct one after it -- was overwritten
+        # before anything read it.  The exact key multiset, each key's
+        # shape, and every published value's finiteness are checked on the
+        # LIST; the projection happens only once they are.
+        _env_list = published.get("envelope")
+        if not isinstance(_env_list, list):
+            why.append("the published envelope is not a list of rows")
+            _env_list = []
+        _pkeys, _pbad = [], 0
+        for e in _env_list:
+            if not isinstance(e, dict) or \
+                    not isinstance(e.get("source_class"), str) or \
+                    not isinstance(e.get("vbat_V"), (int, float)) or \
+                    isinstance(e.get("vbat_V"), bool) or \
+                    not math.isfinite(e["vbat_V"]):
+                _pbad += 1
+                why.append("a published envelope row has no valid (source "
+                           "class, cell) key: %r" % (
+                               (e.get("source_class"), e.get("vbat_V"))
+                               if isinstance(e, dict) else e,))
+                continue
+            _pkeys.append((e["source_class"], round(e["vbat_V"], 6)))
+            for f in ("no_discharge_published_W", "junction_published_W",
+                      "input_carrying_published_W", "no_discharge_raw_W",
+                      "junction_raw_W", "input_carrying_raw_W"):
+                x = e.get(f)
+                if x is not None and (
+                        not isinstance(x, (int, float))
+                        or isinstance(x, bool) or not math.isfinite(x)):
+                    why.append("envelope %s/%.3f V %s is not a finite "
+                               "number: %r" % (e["source_class"],
+                                               e["vbat_V"], f, x))
+        why += _multiset_problems(
+            "published envelope", _pkeys,
+            [(c, round(v, 6)) for c in EXPECTED_SOURCE_CLASSES
+             for v in EXPECTED_REGIME_VBAT_GRID_V])
+        for key in ("universal_no_discharge_published_W",
+                    "junction_safe_published_W"):
+            x = published.get(key)
+            if not isinstance(x, (int, float)) or isinstance(x, bool) or \
+                    not math.isfinite(x):
+                why.append("the published %s is not a finite number: %r"
+                           % (key, x))
+        env = {}
+        for e in _env_list:
+            if isinstance(e, dict) and isinstance(e.get("source_class"), str) \
+                    and isinstance(e.get("vbat_V"), (int, float)):
+                # EVERY row is judged: a duplicate is compared, not shadowed.
+                env.setdefault((e["source_class"], e["vbat_V"]), []).append(e)
         for c in EXPECTED_SOURCE_CLASSES:
             for v in EXPECTED_REGIME_VBAT_GRID_V:
                 sel = [r for r in rows if r["source_class"] == c
                        and abs(r["vbat_V"] - v) < 1e-9]
-                e = env.get((c, v))
-                if not sel or e is None:
+                es = env.get((c, v)) or []
+                if not sel or not es:
                     why.append("the published envelope has no row for %s at "
                                "%.3f V" % (c, v))
                     continue
@@ -2181,20 +2405,25 @@ def regime_problems(rows, published, scalars):
                 cr = [r["input_carrying_W"] for r in sel
                       if r.get("input_carrying_W") is not None]
                 cr_want = _floor_to_grid(min(cr)) if cr else None
-                for pub, want in (("no_discharge_published_W", nd_want),
-                                  ("junction_published_W", tj_want),
-                                  ("input_carrying_published_W", cr_want)):
-                    got_v = e.get(pub, "ABSENT")
-                    if (want is None) != (got_v is None) or (
-                            want is not None and (
-                                not isinstance(got_v, (int, float))
-                                or abs(got_v - want) > 1e-6)):
-                        why.append("envelope %s/%.3f V %s is %r, the oracle "
-                                   "floors to %r" % (c, v, pub, got_v, want))
-                if sorted(e.get("batfet_states") or []) != sorted(
-                        oracle_batfet_states(v)):
-                    why.append("envelope %s/%.3f V names BATFET states %r"
-                               % (c, v, e.get("batfet_states")))
+                for e in es:
+                    for pub, want in (("no_discharge_published_W", nd_want),
+                                      ("junction_published_W", tj_want),
+                                      ("input_carrying_published_W",
+                                       cr_want)):
+                        got_v = e.get(pub, "ABSENT")
+                        if (want is None) != (got_v is None) or (
+                                want is not None and (
+                                    not isinstance(got_v, (int, float))
+                                    or isinstance(got_v, bool)
+                                    or not math.isfinite(got_v)
+                                    or abs(got_v - want) > 1e-6)):
+                            why.append("envelope %s/%.3f V %s is %r, the "
+                                       "oracle floors to %r"
+                                       % (c, v, pub, got_v, want))
+                    if sorted(e.get("batfet_states") or []) != sorted(
+                            oracle_batfet_states(v)):
+                        why.append("envelope %s/%.3f V names BATFET states %r"
+                                   % (c, v, e.get("batfet_states")))
     elif not published:
         why.append("no published regime figures were handed to the oracle")
     return why, dict(expected_rows=len(expected_regime_keys()),

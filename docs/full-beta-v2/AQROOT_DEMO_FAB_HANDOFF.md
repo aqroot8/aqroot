@@ -2,27 +2,28 @@
 
 
 
-> # **STATUS: D-797 ROUND-16 FOCUSED-CONVERGENCE CORRECTION — EXTERNAL-REVIEW TARGET, BOARD AUTHORITY `c8eabd43` (2026-09-23).**
+> # **STATUS: D-798 ROUND-17 TARGETED-CONVERGENCE CORRECTION — EXTERNAL-REVIEW TARGET, BOARD AUTHORITY `c8eabd43` (2026-09-24).**
 >
-> **D-797 supersedes D-796, which Round-16 external review REJECTED.  THIS IS A REVIEW
+> **D-798 supersedes D-797, which Round-17 external review REJECTED.  THIS IS A REVIEW
 > TARGET, NOT A FABRICATION AUTHORIZATION — DO NOT ORDER.**  Astra and Fable Work both
-> graded D-796 **B — engineering design acceptable after specific non-PCB pre-order
-> corrections**; neither established a respin.  **No copper, net, footprint, placement,
-> part value or protected-copper object moves at D-797** — the board sha256 is unchanged
-> at `c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907`.  Connectivity is
+> graded D-797 **B — six bounded non-PCB corrections**; neither established a respin.
+> **No copper, net, footprint, placement, part value or protected-copper object moves at
+> D-798** — the board sha256 is unchanged at
+> `c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907`.  Connectivity is
 > **174 retained / 173 connected / one owner-approved `U11.3` open / zero unapproved**.
-> The D-797 content commit is `482bd5a8314537f48979085d54b01cc1688e9e78`; the current MANIFEST sha256 is
-> `abfa74b59660301394f27f49e316e1a0f11f390f5995c9ea5752a571e675eabc`; the identity commit and the post-commit
-> verification are recorded in `hardware/demo/manufacturing/evidence/d797-review-target.json`.
+> The D-798 content commit, the current MANIFEST sha256, the identity commit and the
+> post-commit verification are recorded in
+> `hardware/demo/manufacturing/evidence/d798-review-target.json`.  The rejected parent is
+> the D-797 identity commit `1a0b68f1b8f1fdf6e68db0e5b06503bf9439521c`.
 >
-> **GATES ON THIS TARGET.**  19/19 standing contracts, `F1`–`F14` (F14 now re-derives every
-> published charger boundary one step below and above from its own states, and audits by
-> content digest, never by object identity), `H1`–`H8` with every host-test mutation
-> caught, 4/4 PlatformIO environments, the fab-package contract, the guarantee-provenance
-> verifier against its independently pinned semantic schema, KiCad DRC and schematic
-> parity identical in count and class to the reviewed baseline.  **PRE-ORDER ANALYTICAL:
-> CLOSED on this target.  FAB/CAM ACCEPTANCE, FIRST-ARTICLE VALIDATION and PROCUREMENT:
-> PENDING.**
+> **GATES ON THIS TARGET.**  19/19 standing contracts, `F1`–`F14` (F14 now judges a
+> supplementing charger on the actual VBSUP2 exit comparator and validates the
+> publication as an exact key multiset before projecting it), `H1`–`H8` with every
+> host-test mutation caught, 4/4 PlatformIO environments, the fab-package contract, the
+> guarantee-provenance verifier against its independently pinned semantic schema, KiCad
+> DRC and schematic parity identical in count and class to the reviewed baseline.
+> **PRE-ORDER ANALYTICAL: CLOSED on this target.  FAB/CAM ACCEPTANCE, FIRST-ARTICLE
+> VALIDATION and PROCUREMENT: PENDING.**
 >
 > ### What changed, for a fabricator, an assembler and a technician
 >
@@ -31,27 +32,41 @@
 >   cable.  Every other adapter, cable or computer port is OUTSIDE the contract.
 > * **A SUPPLEMENTING CHARGER IS ABSORBING, SO THE CHARGING-SAFE POWER IS A TABLE BY
 >   CELL.**  While the battery supplements, no charge flows for thermal regulation to
->   fold, and a load above what the input carries at `SYS = VBAT` (about
->   `ILIM_min × VBAT`) keeps it there; on the high source corner that state reaches
->   `TSHUT` (a brown-out and reboot).  The charging-safe power is generated below; its
->   universal minimum is **2.700 W** at every cell.  D-796's universal 3.900 W is RETIRED.
+>   fold.  D-798 judges exit on the part's actual VBSUP2 comparator: a drop of at least
+>   `VBSUP2` is a static supplement, a smaller one opens the BATFET and — with the
+>   input capped — the part cycles between the two comparators, still discharging, from
+>   `ILIM_min × VBAT` upward; on the high source corner that state reaches `TSHUT` (a
+>   brown-out and reboot).  The charging-safe power is generated below; its universal
+>   minimum is **2.700 W** at every cell.  D-796's universal 3.900 W is RETIRED.
 > * **THE FIRMWARE HOLDS THE MODES.**  With no accessory rail live, `audio` +
 >   `sub-GHz TX` needs a reported **3.60 V**; every Wi-Fi/BLE row is refused (this image
->   has no Wi-Fi caller).
-> * **THE SUPERVISOR HOLDS THE RAILS.**  While charging, do not run an accessory rail with the adapter attached unless the pack is at or above **4.10 V**.
->   The firmware cannot see the adapter on this revision, so this extends the existing
->   supervised-charging condition (`battery_pack_contract` **B8**); on battery every
->   published budget is unchanged.
-> * **CHARGE COMPLETION IS CLASSIFIED, NEVER READ OFF A TAPER OR A PIN.**
+>   has no Wi-Fi caller), and because the firmware applies that table whenever no rail
+>   is live the Wi-Fi/BLE refusal holds on battery too.
+> * **THE SUPERVISOR HOLDS THE RAILS, BY A GENERATED MATRIX (D-798).**  Every
+>   combination the image admits has one disposition (below): SUPERVISED ones run
+>   with the adapter attached only while the pack's open-circuit lower bound `OCV_lb`
+>   is at or above the generated threshold; the amplifier with the 5 V rail or with
+>   the declared pair is REFUSED WHILE CHARGING.  The firmware cannot see the adapter
+>   on this revision, so this extends the existing supervised-charging condition
+>   (`battery_pack_contract` **B8**); on battery every published budget is unchanged.
+> * **`TP7` DOES NOT OBSERVE `STAT2` (D-798).**  It shares a copper island with `R128`
+>   and `U2.19`, not with the owner-approved open `U11.3`; no procedure probes it.
+> * **CHARGE COMPLETION IS CLASSIFIED, NEVER READ OFF A TAPER OR A PIN — AND ONLY FROM
+>   A VALID RECORD (D-798).**  A missing, unknown, non-finite, out-of-range or stale
+>   sample is **FAULT / UNCLASSIFIED**; the junction is derived from the package.
 >   `C-PWR-CHARGE-02` labels every record **TERMINATED**, **ACTIVE LIMITING**, **FAULT /
 >   UNCLASSIFIED** or **TIMER EXPIRY** from measurement.  If the safety timer expires the
 >   charger latches off; `/CE` is hard-tied, so the recovery on the first five is
 >   **unplug and re-plug the adapter**.  `STAT1` LOW is shared by every charger fault and
 >   alone never identifies the timer.  288 min is an engineering qualification target,
 >   not a datasheet guarantee.
-> * **EVERY FIRST-ARTICLE STEP STATES ITS OUTCOME.**  PASS inside the bound; otherwise
->   RECORD + ESCALATE and re-run the checks that consumed the input; record-only parts
->   say so.  `C-PWR-CHARGE-01` gains step 7, the low-cell supplement trap at 3.400 V.
+> * **EVERY FIRST-ARTICLE STEP STATES ITS OUTCOME, PER OBSERVATION (D-798).**  PASS
+>   inside the bound; otherwise RECORD + ESCALATE and re-run the checks that consumed the
+>   input.  A RECORD ONLY observation that falsifies a published assumption — a
+>   supplement onset below the published row, an earlier SYS collapse, a hotter charge
+>   record, a slower gauge cadence, a source outside the modelled domain — is RECORD +
+>   ESCALATE and re-runs the affected checks.  `C-PWR-CHARGE-01` step 7, the low-cell
+>   supplement trap at 3.400 V, now states the physical onsets it expects.
 > * **NFC: A LIVENESS PROBE THAT CANNOT RUN AT A GRANT REFUSES THE GRANT.**  The prior
 >   OFF confirmation is kept; nothing is revoked.
 > * **Unchanged:** retention **3.20 V**, first-rail enable **3.85 V**, second-rail enable
@@ -107,6 +122,47 @@
 > | audio at the capped level + sub-GHz TX | 2.887 W | 3.10 V | **3.60 V** |
 > | Wi-Fi / BLE TX + audio at the capped level + sub-GHz TX | 4.412 W | none | **NOT PERMITTED** |
 >
+> **D-798 — THE SUPERVISED-CHARGING MATRIX, ITS RULE AND ITS MEASUREMENT (generated by F12 from one authority).**  Round-17 (`R17-02`) found D-797's one-line rule incomplete: it was built only from the states already accepted as charging-safe, so two combinations the production image ADMITS on battery — the amplifier with the 5 V rail, and the amplifier with the declared pair — had no charging floor at any cell and no document said so.  The matrix below now covers EVERY optional-mode set the image knows (all eight) against every published accessory load, and gives each ONE disposition.  SUPERVISED CHARGING RULE (first five, D-798): with the adapter attached, a combination marked **SUPERVISED** may run only while the pack's open-circuit lower bound `OCV_lb` is at or above **4.10 V**; a combination marked **REFUSED WHILE CHARGING** may not run with the adapter attached at any cell; the firmware does not enforce either (there is no VBUS-present signal and `STAT2` is unrouted).
+>
+> | optional modes | accessory load | system power | while charging (adapter attached) |
+> |---|---|---|---|
+> | none | both rails at the declared pair | 3.741 W | **SUPERVISED** (`OCV_lb` at or above **4.10 V**) |
+> | none | acc 3v3 only | 3.388 W | **SUPERVISED** (`OCV_lb` at or above **4.10 V**) |
+> | none | acc 5v only | 3.716 W | **SUPERVISED** (`OCV_lb` at or above **4.10 V**) |
+> | none | no accessory | 1.955 W | **ANY CELL** |
+> | Wi-Fi / BLE TX | both rails at the declared pair | 5.267 W | **REFUSED BY FIRMWARE** (on battery too) |
+> | Wi-Fi / BLE TX | acc 3v3 only | 4.913 W | **REFUSED BY FIRMWARE** (on battery too) |
+> | Wi-Fi / BLE TX | acc 5v only | 5.242 W | **REFUSED BY FIRMWARE** (on battery too) |
+> | Wi-Fi / BLE TX | no accessory | 3.481 W | **REFUSED BY FIRMWARE** (on battery too) |
+> | audio at the capped level | both rails at the declared pair | 4.171 W | **REFUSED WHILE CHARGING** |
+> | audio at the capped level | acc 3v3 only | 3.818 W | **SUPERVISED** (`OCV_lb` at or above **4.10 V**) |
+> | audio at the capped level | acc 5v only | 4.146 W | **REFUSED WHILE CHARGING** |
+> | audio at the capped level | no accessory | 2.385 W | **ANY CELL** |
+> | Wi-Fi / BLE TX + audio at the capped level | both rails at the declared pair | 5.696 W | **REFUSED BY FIRMWARE** (on battery too) |
+> | Wi-Fi / BLE TX + audio at the capped level | acc 3v3 only | 5.343 W | **REFUSED BY FIRMWARE** (on battery too) |
+> | Wi-Fi / BLE TX + audio at the capped level | acc 5v only | 5.672 W | **REFUSED BY FIRMWARE** (on battery too) |
+> | Wi-Fi / BLE TX + audio at the capped level | no accessory | 3.911 W | **REFUSED BY FIRMWARE** (on battery too) |
+> | sub-GHz TX | both rails at the declared pair | 4.242 W | **REFUSED BY FIRMWARE** (on battery too) |
+> | sub-GHz TX | acc 3v3 only | 3.889 W | **REFUSED BY FIRMWARE** (on battery too) |
+> | sub-GHz TX | acc 5v only | 4.218 W | **REFUSED BY FIRMWARE** (on battery too) |
+> | sub-GHz TX | no accessory | 2.457 W | **ANY CELL** |
+> | Wi-Fi / BLE TX + sub-GHz TX | both rails at the declared pair | 5.768 W | **REFUSED BY FIRMWARE** (on battery too) |
+> | Wi-Fi / BLE TX + sub-GHz TX | acc 3v3 only | 5.415 W | **REFUSED BY FIRMWARE** (on battery too) |
+> | Wi-Fi / BLE TX + sub-GHz TX | acc 5v only | 5.743 W | **REFUSED BY FIRMWARE** (on battery too) |
+> | Wi-Fi / BLE TX + sub-GHz TX | no accessory | 3.982 W | **REFUSED BY FIRMWARE** (on battery too) |
+> | audio at the capped level + sub-GHz TX | both rails at the declared pair | 4.672 W | **REFUSED BY FIRMWARE** (on battery too) |
+> | audio at the capped level + sub-GHz TX | acc 3v3 only | 4.319 W | **REFUSED BY FIRMWARE** (on battery too) |
+> | audio at the capped level + sub-GHz TX | acc 5v only | 4.647 W | **REFUSED BY FIRMWARE** (on battery too) |
+> | audio at the capped level + sub-GHz TX | no accessory | 2.887 W | **FIRMWARE FLOOR** (the image refuses it below a reported **3.60 V**) |
+> | Wi-Fi / BLE TX + audio at the capped level + sub-GHz TX | both rails at the declared pair | 6.198 W | **REFUSED BY FIRMWARE** (on battery too) |
+> | Wi-Fi / BLE TX + audio at the capped level + sub-GHz TX | acc 3v3 only | 5.845 W | **REFUSED BY FIRMWARE** (on battery too) |
+> | Wi-Fi / BLE TX + audio at the capped level + sub-GHz TX | acc 5v only | 6.173 W | **REFUSED BY FIRMWARE** (on battery too) |
+> | Wi-Fi / BLE TX + audio at the capped level + sub-GHz TX | no accessory | 4.412 W | **REFUSED BY FIRMWARE** (on battery too) |
+>
+> **How `OCV_lb` is measured.**  `OCV_lb` = V(J4) − max(I_BAT, 0) × **0.265 Ω** − **0.010 V** with the adapter attached, or V(J4) − **0.071 V** − **0.010 V** with it detached.  V(J4) is a DMM reading (±0.010 V or better at 4.2 V) from J4.1 (`BAT_CONNECTOR_P`, red) to J4.2 (`GND`, black) on the board, and I_BAT is the charge current into the pack on the bench shunt at the same instant.  Take both immediately before the change the rule admits — enabling a rail with the adapter attached, or attaching the adapter with a rail live — once the DMM has held within 2 mV for 10 s.  No cell-relaxation wait is assumed: 0.265 Ω is the model's DECLARED pack DC resistance (87.5 mΩ, diffusion included) plus the hot-aged harness (177.5 mΩ), and 0.071 V is the most charge elevation the model leaves once the adapter is removed (ICHG_max × the pack DC resistance); waiting only lowers the reading.  The console `VCELL` is NOT admissible for this rule: while charging it reads `BAT_PROTECTED_P`, up to **0.647 V** above the cell.
+>
+> **Why a separate open-circuit bound.**  The charging-safe envelope is solved on the CELL: the supplement onset is a zero-charge state, where the charger's `BAT` pin is the cell.  While charging, every terminal reading sits ABOVE the cell by the charge current times whatever resistance lies between — so the console `VCELL` and a bare DMM reading are both charging-elevated, and neither is used as the cell voltage.  **REFUSED BY FIRMWARE** rows are refused by the production image on EVERY source, battery included: with no rail live the charging mode-entry table (which the firmware applies whenever no rail is live, because it cannot tell charging from discharging) refuses every Wi-Fi/BLE row, and with a rail live the D-792 rail edge refuses every radio.  Wi-Fi/BLE is therefore refused in every state on this revision, and this image has no Wi-Fi caller.  On battery, every published rail budget is unchanged.
+>
 > ### The no-discharge envelope (generated by F12)
 >
 > **(T)** = TREG-conditioned; **(C)** = under the BUVLO trip (nothing supplements; a
@@ -127,7 +183,7 @@
 > | 3.300 V | connected / uvlo_open | **2.45 W** (T) | **3.10 W** | **3.10 W** | **3.00 W** (C) |
 > | 3.350 V | connected | **2.45 W** (T) | **3.15 W** | **3.15 W** | **3.00 W** |
 > | 3.400 V | connected | **2.45 W** (T) | **3.20 W** | **3.20 W** | **2.95 W** |
-> | 3.450 V | connected | **2.45 W** (T) | **3.25 W** | **3.25 W** (T) | **2.85 W** |
+> | 3.450 V | connected | **2.45 W** (T) | **3.25 W** | **3.25 W** (T) | **2.90 W** |
 > | 3.500 V | connected | **2.45 W** (T) | **3.30 W** | **3.30 W** (T) | **2.80 W** |
 > | 3.520 V | connected | **2.45 W** (T) | **3.30 W** | **3.30 W** (T) | **2.40 W** |
 > | 3.550 V | connected | **2.45 W** (T) | **3.35 W** | **3.35 W** (T) | **2.35 W** |
@@ -136,7 +192,7 @@
 > | 3.700 V | connected | **2.45 W** (T) | **3.45 W** | **3.45 W** (T) | **1.90 W** |
 > | 3.750 V | connected | **2.45 W** (T) | **3.50 W** (T) | **3.50 W** (T) | **1.75 W** |
 > | 3.800 V | connected | **2.45 W** (T) | **3.55 W** (T) | **3.55 W** (T) | **1.60 W** |
-> | 3.850 V | connected | **2.45 W** (T) | **3.60 W** (T) | **3.30 W** | **1.45 W** |
+> | 3.850 V | connected | **2.45 W** (T) | **3.60 W** (T) | **3.30 W** (T) | **1.45 W** |
 > | 3.900 V | connected | **2.45 W** (T) | **3.65 W** (T) | **2.90 W** | **1.30 W** |
 > | 3.950 V | connected | **2.45 W** (T) | **3.70 W** (T) | **2.55 W** | **1.10 W** |
 > | 4.000 V | connected | **2.45 W** (T) | **3.75 W** (T) | **2.15 W** | **0.95 W** |
@@ -180,7 +236,7 @@
 >
 > ### **THE FOUR GATES, KEPT APART ON PURPOSE**
 >
-> | gate | D-797 status |
+> | gate | D-798 status |
 > |---|---|
 > | **PRE-ORDER ANALYTICAL** | **CLOSED on this target** |
 > | **FAB / CAM ACCEPTANCE** | **PENDING** — B01–B14 above |
@@ -188,7 +244,7 @@
 > | **PROCUREMENT** | **PENDING** — nine constrained fitted groups plus the AOS pass-pair allocation, `SOURCING_LEDGER.md` §4a |
 
 
-> # **D-796 ROUND-15 FULL-CONVERGENCE CORRECTION — HISTORICAL, SUPERSEDED BY THE D-797 BLOCK ABOVE (REJECTED by Round-16)**
+> # **D-796 ROUND-15 FULL-CONVERGENCE CORRECTION — HISTORICAL, SUPERSEDED BY THE D-798 BLOCK ABOVE (REJECTED by Round-16)**
 >
 > **D-796 supersedes D-795, which Round-15 external review REJECTED.  THIS IS A REVIEW
 > TARGET, NOT A FABRICATION AUTHORIZATION — DO NOT ORDER.**  Astra and Fable Work both
@@ -1494,7 +1550,9 @@ lost); all four PlatformIO environments build SUCCESS.
    0.575 mm against a ≈2.6 mm thermal length.  **First-article thermal
    measurement at the 3.0 V corner with both accessory rails loaded.**
 2. **`U11.3` / `STAT2` intentionally unconnected**, owner-approved (D-742), with
-   `R128`/`TP7` retained for probe and bodge.
+   `R128`/`TP7` retained as a Rev-B / bodge landing.  `TP7` is NOT connected to
+   `U11.3` (D-798, Round-17 `R17-04`): it reads only `R128`'s pull-up and
+   does not observe `STAT2`.
 3. **The 1.6 % compound-fault margin** above — measure `IBAT_OCP` behaviour with
    a deliberately overloaded 5 V accessory at first article.
 4. **The 5 V rail's −5.2 % low corner** (4.69 V at the connector at the bottom of

@@ -1,0 +1,93 @@
+{
+ "beta_v2_untouched": true,
+ "board": "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_changes": [],
+ "board_sha256": "c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907",
+ "branch": "aqroot-demo",
+ "closed_here": {
+  "astra_round_17": [
+   "R17-01",
+   "R17-02",
+   "R17-03",
+   "R17-04",
+   "R17-05",
+   "R17-06"
+  ],
+  "fable_work_round_17": {
+   "R17_01": "closed: the supervised-charging matrix over every admitted combination, one rule, a measurement method (D798-02)",
+   "R17_02": "closed: supplement exit judged on the actual VBSUP2 comparator (D798-01)",
+   "R17_03": "closed with Astra R17-03: completion classified only from a valid record (D798-03)",
+   "R17_05": "closed: table header context, supervised-threshold and refused-mode families; Q7/Q13/Q14 reconstructed from their named shapes as permanent injections (D798-07)"
+  },
+  "found_by_this_closeout": [
+   "the first oracle port judged the comparator on the rounded public load and refused 17 boundary-probe states 1e-7 W above an onset; fixed at full precision",
+   "D-797's exit control and four victim selectors named only SUPPLEMENT; re-aimed to include SUPPLEMENT_CYCLE",
+   "AQROOT_DEMO_EXPANDER_DEPENDENCIES still inferred charging state from VBUS_PRESENT, which firmware cannot read (D-776); corrected",
+   "two of this closeout's own CURRENT_STATE sentences were refused by the new probe and completion families on the first release run; rephrased"
+  ],
+  "mandatory_items": [
+   "D798-01",
+   "D798-02",
+   "D798-03",
+   "D798-04",
+   "D798-05",
+   "D798-06",
+   "D798-07",
+   "D798-08"
+  ]
+ },
+ "content_commit": "this commit -- recorded by the identity commit that follows",
+ "decision": "D-798",
+ "gates": {
+  "battery_pack": "PASS (identical to d797)",
+  "demo_feature": "F1-F14 PASS; F14 46/46 mutation controls caught (8 new); oracle domain 7200 points, 0 classifier disagreements, 130 retained comparator cycles, 752 retained static supplements; F12: probe-to-copper 4/4 controls, Round-17 injections 10/10, Round-16 injections 21/21, FA outcome controls 8/8, completion classifier 31/31 cases",
+  "fab_package": "PASS",
+  "firmware_hw_map": "H1-H8 PASS; report identical to d797 apart from timing (firmware unchanged): 743 claims, 193/193 controls",
+  "guarantee_evidence": "17/17 GUARANTEED keys authenticated against the pinned semantic schema; 28/28 destructive controls caught",
+  "kicad_drc_parity": "identical in count and class to d797 (199 violations, 17 unconnected, 246 parity)",
+  "platformio": "4/4 (esp32-s3-aqroot, wokwi, esp32-s3-aqroot-dm, aqroot-demo)",
+  "protected_copper": "identical to d797",
+  "rail_ampacity": "all_ok",
+  "routing_ledger": {
+   "approved_unrouted_edges": 1,
+   "connected_retained_nets": 173,
+   "identical_to_d797": true,
+   "retained_multi_pad_nets": 174,
+   "unapproved_open_edges": 0
+  },
+  "sourcing": "nine constrained groups, unchanged from d797 (live re-sweep of the released BOM)",
+  "standing_contracts": "19/19 PASS (contract_regression vs d797: substantive difference only in demo_feature, by design; every other contract IDENTICAL, pour_partition differing only in its ref_commit input)"
+ },
+ "identity_commit": "the commit that follows -- a commit cannot contain its own SHA",
+ "manifest": "hardware/demo/fab/MANIFEST.json",
+ "manifest_sha256": "d59ebe13bd0ae794762ac66a292c4b360acee3a92be837af4a1d8522bc50c3ac",
+ "no_copper_change": true,
+ "order_status": {
+  "FAB_CAM_ACCEPTANCE": "PENDING (B01-B14)",
+  "FIRST_ARTICLE_VALIDATION": "PENDING (FA01-FA10)",
+  "PRE_ORDER_ANALYTICAL": "CLOSED on this target",
+  "PROCUREMENT": "PENDING"
+ },
+ "parent_rejected_by_round_17": "1a0b68f1b8f1fdf6e68db0e5b06503bf9439521c",
+ "product_facing": {
+  "charging_safe_full_cell_W": 3.95,
+  "charging_safe_table_changed": false,
+  "charging_safe_universal_W": 2.7,
+  "published_accessory_capability_unchanged": true,
+  "refused_while_charging": [
+   "display_audio + acc_5v_only",
+   "display_audio + both_rails_at_the_declared_pair"
+  ],
+  "supervised_charging_quantity": "OCV_lb = V(J4) - max(I_BAT,0) x 0.265 ohm - 0.010 V (adapter attached); V(J4) - 0.071 V - 0.010 V (detached)",
+  "supervised_charging_threshold_V": 4.1,
+  "supplement_branches": [
+   "SUPPLEMENT (static, SYS at or under VBAT - VBSUP2)",
+   "SUPPLEMENT_CYCLE (comparator relaxation, carried at VBAT - VBSUP1)",
+   "NO_CHARGE (settled inside the band, path-limited input)"
+  ],
+  "tp7_observes_stat2": false,
+  "universal_no_discharge_W": 0.9,
+  "wifi_ble": "REFUSED BY FIRMWARE on every source, battery included"
+ },
+ "schema": 1
+}

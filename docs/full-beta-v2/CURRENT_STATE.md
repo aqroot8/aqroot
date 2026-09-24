@@ -14,7 +14,28 @@
 
 ## 1. Authoritative HEAD
 
-> ### **D-797 REVIEW TARGET — THE EXACT FROZEN IDENTITY**
+> ### **D-798 REVIEW TARGET — THE EXACT FROZEN IDENTITY**
+>
+> | what | value |
+> |---|---|
+> | branch | `origin/aqroot-demo` |
+> | content commit | *recorded by the identity / post-commit verification commit that follows it* |
+> | identity / post-commit verification commit | *that commit — a commit cannot contain its own SHA, so the reviewable target is the PAIR* |
+> | board `aqroot-Beta-v2.kicad_pcb` sha256 | `c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907` |
+> | `hardware/demo/fab/MANIFEST.json` sha256 | *recorded in `evidence/d798-review-target.json`* |
+> | parent, REJECTED by Round-17 | `1a0b68f1b8f1fdf6e68db0e5b06503bf9439521c` (D-797 identity) |
+>
+> The board sha256 is IDENTICAL to the reviewed D-797 target: **no copper moved**.
+> D-798 applies the BQ25185's actual VBSUP2 exit comparator to a supplementing part,
+> generates the supervised-charging matrix from every combination the image admits with
+> one rule and a measurement method, classifies charge completion only from a valid
+> record, withdraws the instruction to probe `STAT2` at `TP7` (which is not connected to
+> `U11.3`), validates the F14 publication as a
+> multiset before projecting it, makes first-article RECORD ONLY per observation, and
+> closes the Round-17 document shapes.  The full record is `evidence/d798-review-target.json`.
+> **REVIEW TARGET, NOT A FABRICATION AUTHORIZATION.  DO NOT ORDER.**
+
+> ### **D-797 REVIEW TARGET — THE EXACT FROZEN IDENTITY**  *(**HISTORICAL** — REJECTED by Round-17)*
 >
 > | what | value |
 > |---|---|
@@ -163,7 +184,69 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
-> # **D-797 ROUND-16 FOCUSED-CONVERGENCE CORRECTION — CURRENT EXTERNAL-REVIEW TARGET**
+> # **D-798 ROUND-17 TARGETED-CONVERGENCE CORRECTION — CURRENT EXTERNAL-REVIEW TARGET**
+>
+> **THIS IS A REVIEW TARGET, NOT A FABRICATION AUTHORIZATION.  DO NOT ORDER.**  Round-17 external review REJECTED D-797: Astra and Fable Work both graded it **B — six bounded non-PCB corrections**, with no respin established.  **No copper, net, footprint, placement, part value or protected-copper object moves at D-798.**  Connectivity is unchanged at **174 retained / 173 connected / one owner-approved `U11.3` open / zero unapproved**.  `D798-01`…`D798-08` are closed; the full record is `CTO_DECISIONS.md` D-798.
+>
+> ### THE PRODUCT-FACING CONSEQUENCES, IN ONE PLACE
+>
+> * **The charger model applies the real VBSUP2 exit comparator.**  SLUSF65B §6.3.3's BATFET is not regulated, so a supplementing `SYS` is the cell less `RON_BAT` × the shortfall.  With a drop of at least `VBSUP2` the supplement is STATIC; with less, the comparator opens the BATFET and the part either settles at a BATFET-off node inside the band (`NO_CHARGE`) or, with the input capped, relaxes between the two comparators (`SUPPLEMENT_CYCLE`, still discharging).  The charging-safe table is UNCHANGED (universal minimum **2.700 W**): the cycle begins at `ILIM_min × VBAT`, exactly where D-797's boundary sat, and its adapter-side heat is the same.
+> * **Supervised charging is a generated MATRIX with one rule and a measurement method** (below).  The amplifier with the 5 V rail, and the amplifier with the declared pair, are **REFUSED WHILE CHARGING**; Wi-Fi/BLE is refused by the firmware on every source, battery included.
+> * **Charge completion** is never read from `STAT1` alone: it is classified only from a VALID record — every sample present, finite, in unit and range and inside one ≤ 60 s window, `STAT1` known, the junction derived from the package, and the BATFET-off transition agreeing with the present current.
+> * **`TP7` does not observe `STAT2`** on this board: it shares a copper island with `R128` and `U2.19`, not with `U11.3`.
+> * **No published accessory capability moves.**  400 mA / 300 mA per rail, DECLARED AND QUALIFIED, the declared simultaneous pair 220 mA + 170 mA, retention 3.20 V and both enable envelopes 3.85 V; the quiet row **3.80 V** and the audio row **3.85 V**; the **1300 ms** post-request gauge window; charge only from the named Raspberry Pi 15W USB-C Power Supply (`KSA-15E-051300HU` or its regional variant) on its captive cable.
+>
+> ### THE SUPERVISED-CHARGING MATRIX, RULE AND MEASUREMENT (generated)
+>
+> SUPERVISED CHARGING RULE (first five, D-798): with the adapter attached, a combination marked **SUPERVISED** may run only while the pack's open-circuit lower bound `OCV_lb` is at or above **4.10 V**; a combination marked **REFUSED WHILE CHARGING** may not run with the adapter attached at any cell; the firmware does not enforce either (there is no VBUS-present signal and `STAT2` is unrouted).
+>
+> | optional modes | accessory load | system power | while charging (adapter attached) |
+|---|---|---|---|
+| none | both rails at the declared pair | 3.741 W | **SUPERVISED** (`OCV_lb` at or above **4.10 V**) |
+| none | acc 3v3 only | 3.388 W | **SUPERVISED** (`OCV_lb` at or above **4.10 V**) |
+| none | acc 5v only | 3.716 W | **SUPERVISED** (`OCV_lb` at or above **4.10 V**) |
+| none | no accessory | 1.955 W | **ANY CELL** |
+| Wi-Fi / BLE TX | both rails at the declared pair | 5.267 W | **REFUSED BY FIRMWARE** (on battery too) |
+| Wi-Fi / BLE TX | acc 3v3 only | 4.913 W | **REFUSED BY FIRMWARE** (on battery too) |
+| Wi-Fi / BLE TX | acc 5v only | 5.242 W | **REFUSED BY FIRMWARE** (on battery too) |
+| Wi-Fi / BLE TX | no accessory | 3.481 W | **REFUSED BY FIRMWARE** (on battery too) |
+| audio at the capped level | both rails at the declared pair | 4.171 W | **REFUSED WHILE CHARGING** |
+| audio at the capped level | acc 3v3 only | 3.818 W | **SUPERVISED** (`OCV_lb` at or above **4.10 V**) |
+| audio at the capped level | acc 5v only | 4.146 W | **REFUSED WHILE CHARGING** |
+| audio at the capped level | no accessory | 2.385 W | **ANY CELL** |
+| Wi-Fi / BLE TX + audio at the capped level | both rails at the declared pair | 5.696 W | **REFUSED BY FIRMWARE** (on battery too) |
+| Wi-Fi / BLE TX + audio at the capped level | acc 3v3 only | 5.343 W | **REFUSED BY FIRMWARE** (on battery too) |
+| Wi-Fi / BLE TX + audio at the capped level | acc 5v only | 5.672 W | **REFUSED BY FIRMWARE** (on battery too) |
+| Wi-Fi / BLE TX + audio at the capped level | no accessory | 3.911 W | **REFUSED BY FIRMWARE** (on battery too) |
+| sub-GHz TX | both rails at the declared pair | 4.242 W | **REFUSED BY FIRMWARE** (on battery too) |
+| sub-GHz TX | acc 3v3 only | 3.889 W | **REFUSED BY FIRMWARE** (on battery too) |
+| sub-GHz TX | acc 5v only | 4.218 W | **REFUSED BY FIRMWARE** (on battery too) |
+| sub-GHz TX | no accessory | 2.457 W | **ANY CELL** |
+| Wi-Fi / BLE TX + sub-GHz TX | both rails at the declared pair | 5.768 W | **REFUSED BY FIRMWARE** (on battery too) |
+| Wi-Fi / BLE TX + sub-GHz TX | acc 3v3 only | 5.415 W | **REFUSED BY FIRMWARE** (on battery too) |
+| Wi-Fi / BLE TX + sub-GHz TX | acc 5v only | 5.743 W | **REFUSED BY FIRMWARE** (on battery too) |
+| Wi-Fi / BLE TX + sub-GHz TX | no accessory | 3.982 W | **REFUSED BY FIRMWARE** (on battery too) |
+| audio at the capped level + sub-GHz TX | both rails at the declared pair | 4.672 W | **REFUSED BY FIRMWARE** (on battery too) |
+| audio at the capped level + sub-GHz TX | acc 3v3 only | 4.319 W | **REFUSED BY FIRMWARE** (on battery too) |
+| audio at the capped level + sub-GHz TX | acc 5v only | 4.647 W | **REFUSED BY FIRMWARE** (on battery too) |
+| audio at the capped level + sub-GHz TX | no accessory | 2.887 W | **FIRMWARE FLOOR** (the image refuses it below a reported **3.60 V**) |
+| Wi-Fi / BLE TX + audio at the capped level + sub-GHz TX | both rails at the declared pair | 6.198 W | **REFUSED BY FIRMWARE** (on battery too) |
+| Wi-Fi / BLE TX + audio at the capped level + sub-GHz TX | acc 3v3 only | 5.845 W | **REFUSED BY FIRMWARE** (on battery too) |
+| Wi-Fi / BLE TX + audio at the capped level + sub-GHz TX | acc 5v only | 6.173 W | **REFUSED BY FIRMWARE** (on battery too) |
+| Wi-Fi / BLE TX + audio at the capped level + sub-GHz TX | no accessory | 4.412 W | **REFUSED BY FIRMWARE** (on battery too) |
+>
+> **How `OCV_lb` is measured.**  `OCV_lb` = V(J4) − max(I_BAT, 0) × **0.265 Ω** − **0.010 V** with the adapter attached, or V(J4) − **0.071 V** − **0.010 V** with it detached.  V(J4) is a DMM reading (±0.010 V or better at 4.2 V) from J4.1 (`BAT_CONNECTOR_P`, red) to J4.2 (`GND`, black) on the board, and I_BAT is the charge current into the pack on the bench shunt at the same instant.  Take both immediately before the change the rule admits — enabling a rail with the adapter attached, or attaching the adapter with a rail live — once the DMM has held within 2 mV for 10 s.  No cell-relaxation wait is assumed: 0.265 Ω is the model's DECLARED pack DC resistance (87.5 mΩ, diffusion included) plus the hot-aged harness (177.5 mΩ), and 0.071 V is the most charge elevation the model leaves once the adapter is removed (ICHG_max × the pack DC resistance); waiting only lowers the reading.  The console `VCELL` is NOT admissible for this rule: while charging it reads `BAT_PROTECTED_P`, up to **0.647 V** above the cell.
+>
+> ### THE FOUR GATES
+>
+> | gate | status |
+> |---|---|
+> | **PRE-ORDER ANALYTICAL** | **CLOSED on this target** |
+> | **FAB / CAM ACCEPTANCE** | **PENDING** — B01–B14 in `assembly/RELEASE_ACCEPTANCE_REGISTER.json` and the fab notes |
+> | **FIRST-ARTICLE VALIDATION** | **PENDING** — FA01–FA10, enumerated in the same register and in `FIRST_FIVE_ASSEMBLY_PLAN` §7d |
+> | **PROCUREMENT** | **PENDING** — nine constrained fitted groups plus the AOS pass-pair allocation |
+
+> # **D-797 ROUND-16 FOCUSED-CONVERGENCE CORRECTION — HISTORICAL, SUPERSEDED BY D-798 (REJECTED by Round-17; its one-line supervised-charging rule is RETIRED)**
 >
 > **THIS IS A REVIEW TARGET, NOT A FABRICATION AUTHORIZATION.  DO NOT ORDER.**  Round-16
 > external review REJECTED D-796: Astra and Fable Work both graded it **B — engineering
@@ -184,8 +267,8 @@
 > * **Firmware:** with no accessory rail live, `audio` + `sub-GHz TX` needs a reported
 >   **3.60 V**; every Wi-Fi/BLE row is refused (no Wi-Fi caller ships).  A Deferred NFC
 >   liveness probe at a grant refuses that grant.
-> * **Supervised charging:** while charging, do not run an accessory rail with the adapter attached unless the pack is at or above **4.10 V**.
->   The firmware cannot see the adapter; on battery every published budget is unchanged.
+> * **Supervised charging (RETIRED at D-798 — superseded by the generated matrix):** a
+>   one-line pack-voltage rule for the accessory rails.
 > * **No published accessory capability moves.**  400 mA / 300 mA per rail, DECLARED AND
 >   QUALIFIED, the declared simultaneous pair 220 mA + 170 mA, retention 3.20 V and both
 >   enable envelopes 3.85 V; the quiet row **3.80 V** and the audio row **3.85 V**; the
