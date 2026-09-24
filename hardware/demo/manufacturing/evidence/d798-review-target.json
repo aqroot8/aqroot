@@ -36,7 +36,7 @@
    "D798-08"
   ]
  },
- "content_commit": "this commit -- recorded by the identity commit that follows",
+ "content_commit": "56213779e3ac9b457f85a7122b1d97dd26232ee1",
  "decision": "D-798",
  "gates": {
   "battery_pack": "PASS (identical to d797)",
@@ -58,7 +58,7 @@
   "sourcing": "nine constrained groups, unchanged from d797 (live re-sweep of the released BOM)",
   "standing_contracts": "19/19 PASS (contract_regression vs d797: substantive difference only in demo_feature, by design; every other contract IDENTICAL, pour_partition differing only in its ref_commit input)"
  },
- "identity_commit": "the commit that follows -- a commit cannot contain its own SHA",
+ "identity_commit": "this commit -- it records the content commit's SHA; a commit cannot contain its own",
  "manifest": "hardware/demo/fab/MANIFEST.json",
  "manifest_sha256": "d59ebe13bd0ae794762ac66a292c4b360acee3a92be837af4a1d8522bc50c3ac",
  "no_copper_change": true,
@@ -69,6 +69,42 @@
   "PROCUREMENT": "PENDING"
  },
  "parent_rejected_by_round_17": "1a0b68f1b8f1fdf6e68db0e5b06503bf9439521c",
+ "post_commit_verification": {
+  "battery_pack_contract": {
+   "verdict": "PASS"
+  },
+  "beta_v2_untouched": true,
+  "board_sha256": "c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907",
+  "demo_feature_contract": {
+   "checks": "F1-F14, 14 of 14",
+   "verdict": "PASS"
+  },
+  "fab_package_contract": {
+   "verdict": "PASS"
+  },
+  "firmware_hw_map_contract": {
+   "checks": "H1-H8",
+   "note": "743 claims, 193/193 controls caught",
+   "verdict": "PASS"
+  },
+  "guarantee_evidence": {
+   "note": "17/17 keys, 28/28 controls",
+   "verdict": "PASS"
+  },
+  "manifest_sha256": "d59ebe13bd0ae794762ac66a292c4b360acee3a92be837af4a1d8522bc50c3ac",
+  "platformio": {
+   "all_success": true,
+   "clean_build": true,
+   "environments": [
+    "esp32-s3-aqroot",
+    "wokwi",
+    "esp32-s3-aqroot-dm",
+    "aqroot-demo"
+   ]
+  },
+  "run_against": "56213779e3ac9b457f85a7122b1d97dd26232ee1, clean tree",
+  "worktree_clean": true
+ },
  "product_facing": {
   "charging_safe_full_cell_W": 3.95,
   "charging_safe_table_changed": false,

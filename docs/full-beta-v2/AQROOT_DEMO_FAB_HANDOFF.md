@@ -11,9 +11,9 @@
 > D-798** — the board sha256 is unchanged at
 > `c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907`.  Connectivity is
 > **174 retained / 173 connected / one owner-approved `U11.3` open / zero unapproved**.
-> The D-798 content commit, the current MANIFEST sha256, the identity commit and the
-> post-commit verification are recorded in
-> `hardware/demo/manufacturing/evidence/d798-review-target.json`.  The rejected parent is
+> The D-798 content commit is `56213779e3ac9b457f85a7122b1d97dd26232ee1`; the current MANIFEST sha256 is
+> `d59ebe13bd0ae794762ac66a292c4b360acee3a92be837af4a1d8522bc50c3ac`; the identity commit and the post-commit
+> verification are recorded in `hardware/demo/manufacturing/evidence/d798-review-target.json`.  The rejected parent is
 > the D-797 identity commit `1a0b68f1b8f1fdf6e68db0e5b06503bf9439521c`.
 >
 > **GATES ON THIS TARGET.**  19/19 standing contracts, `F1`–`F14` (F14 now judges a

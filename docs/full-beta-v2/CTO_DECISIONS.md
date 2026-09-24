@@ -1,8 +1,9 @@
 ## D-798 — **ROUND-17 TARGETED CONVERGENCE: A SUPPLEMENT JUDGED ON ITS OWN COMPARATOR, A SUPERVISED MATRIX BUILT FROM EVERYTHING THE IMAGE ADMITS, A COMPLETION THAT NEEDS A VALID RECORD, AND A TEST POINT ON THE WRONG ISLAND**
 
     authority  board c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907
-    manifest   recorded in hardware/demo/manufacturing/evidence/d798-review-target.json
-    content    the D-798 content commit (recorded by the identity commit that follows it)
+    manifest   d59ebe13bd0ae794762ac66a292c4b360acee3a92be837af4a1d8522bc50c3ac
+    content    56213779e3ac9b457f85a7122b1d97dd26232ee1
+    identity   the post-commit verification record commit that follows it
     parent     1a0b68f1b8f1fdf6e68db0e5b06503bf9439521c (D-797 identity, REJECTED by Round-17)
     scope      D798-01..D798-08: Astra R17-01..R17-06 and every reproduced Fable Work
                Round-17 residual, plus this closeout's own new-defect sweep
