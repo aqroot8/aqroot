@@ -11,9 +11,9 @@
 > value, firmware or protected-copper object moves at D-799** — the board sha256 is
 > unchanged at `c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907`.
 > Connectivity is **174 retained / 173 connected / one owner-approved `U11.3` open / zero
-> unapproved**.  The D-799 content commit, the current MANIFEST sha256, the identity
-> commit and the post-commit verification are recorded in
-> `hardware/demo/manufacturing/evidence/d799-review-target.json`.  The reviewed parent is
+> unapproved**.  The D-799 content commit is `ef5be983786c9e16bbb3b26d21261140c4ccd4eb`; the current MANIFEST sha256 is
+> `d2682e43833372524613d51f28dfdd5d70d57aed46d78d5bfd9e7f45015bb432`; the identity commit and the post-commit
+> verification are recorded in `hardware/demo/manufacturing/evidence/d799-review-target.json`.  The reviewed parent is
 > the D-798 identity commit `db2dfbf7ffd8de307b94799e0f144a6c316a307a`.
 >
 > **GATES ON THIS TARGET.**  19/19 standing contracts, `F1`–`F14` (F12 now PROVES the

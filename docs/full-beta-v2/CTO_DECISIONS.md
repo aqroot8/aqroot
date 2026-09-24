@@ -1,8 +1,9 @@
 ## D-799 — **ROUND-18 FINAL-TARGETED CORRECTION: AN OPEN-CIRCUIT BOUND THAT IS A BOUND, A CHARGE RECORD THAT MUST BE POSSIBLE, A JUNCTION THAT IS AN INTERVAL, AND THREE VERIFIERS SCOPED TO WHAT THEY NAME**
 
     authority  board c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907
-    manifest   recorded in hardware/demo/manufacturing/evidence/d799-review-target.json
-    content    the D-799 content commit (recorded by the identity commit that follows it)
+    manifest   d2682e43833372524613d51f28dfdd5d70d57aed46d78d5bfd9e7f45015bb432
+    content    ef5be983786c9e16bbb3b26d21261140c4ccd4eb
+    identity   the post-commit verification record commit that follows it
     parent     db2dfbf7ffd8de307b94799e0f144a6c316a307a (D-798 identity, reviewed by Round-18)
     scope      D799-01..D799-04: Astra R18-01..R18-03 and Fable Work R18-01..R18-03
     copper     NONE.  No copper, net, footprint, placement, part value, firmware or

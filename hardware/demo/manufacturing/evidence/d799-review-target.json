@@ -29,7 +29,7 @@
   ],
   "witnesses": "evidence/d799-round18-witnesses.json (every witness reproduced on db2dfbf7 before it was fixed)"
  },
- "content_commit": "this commit -- recorded by the identity commit that follows",
+ "content_commit": "ef5be983786c9e16bbb3b26d21261140c4ccd4eb",
  "decision": "D-799",
  "gates": {
   "demo_feature": "F1-F14 PASS; F12: OCV_lb proof 0 violations (D-798 formula refused on 5/5 witness classes, 5/5 ablations refused), completion classifier 47/47 cases, FA thermal triggers 7/7 cases + 2/2 controls, probe-to-copper 15/15 controls, Round-17 injections 15/15, Round-16 injections 21/21, FA outcome controls 10/10; F14 46/46 mutation controls, oracle domain 7200 points, 0 classifier disagreements",
@@ -50,7 +50,7 @@
   "sourcing": "nine constrained groups, unchanged from d798 (live re-sweep of the released BOM, evidence/d799-sourcing-sweep.json)",
   "standing_contracts": "19/19 PASS (contract_regression vs d798: substantive difference only in demo_feature, by design; every other contract IDENTICAL, pour_partition differing only in its ref_commit input)"
  },
- "identity_commit": "the commit that follows -- a commit cannot contain its own SHA",
+ "identity_commit": "this commit -- it records the content commit's SHA; a commit cannot contain its own",
  "manifest": "hardware/demo/fab/MANIFEST.json",
  "manifest_sha256": "d2682e43833372524613d51f28dfdd5d70d57aed46d78d5bfd9e7f45015bb432",
  "no_copper_change": true,
@@ -62,6 +62,42 @@
   "PROCUREMENT": "PENDING"
  },
  "parent_reviewed_by_round_18": "db2dfbf7ffd8de307b94799e0f144a6c316a307a",
+ "post_commit_verification": {
+  "battery_pack_contract": {
+   "verdict": "PASS"
+  },
+  "beta_v2_untouched": true,
+  "board_sha256": "c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907",
+  "demo_feature_contract": {
+   "checks": "F1-F14, 14 of 14",
+   "verdict": "PASS"
+  },
+  "fab_package_contract": {
+   "verdict": "PASS"
+  },
+  "firmware_hw_map_contract": {
+   "checks": "H1-H8",
+   "note": "743 claims, 193/193 controls caught",
+   "verdict": "PASS"
+  },
+  "guarantee_evidence": {
+   "note": "17/17 keys, 28/28 controls",
+   "verdict": "PASS"
+  },
+  "manifest_sha256": "d2682e43833372524613d51f28dfdd5d70d57aed46d78d5bfd9e7f45015bb432",
+  "platformio": {
+   "all_success": true,
+   "clean_build": true,
+   "environments": [
+    "esp32-s3-aqroot",
+    "wokwi",
+    "esp32-s3-aqroot-dm",
+    "aqroot-demo"
+   ]
+  },
+  "run_against": "ef5be983786c9e16bbb3b26d21261140c4ccd4eb, clean tree",
+  "worktree_clean": true
+ },
  "product_facing": {
   "charge_end_classes": [
    "TERMINATED",
