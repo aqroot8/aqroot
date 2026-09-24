@@ -1,3 +1,130 @@
+## D-799 — **ROUND-18 FINAL-TARGETED CORRECTION: AN OPEN-CIRCUIT BOUND THAT IS A BOUND, A CHARGE RECORD THAT MUST BE POSSIBLE, A JUNCTION THAT IS AN INTERVAL, AND THREE VERIFIERS SCOPED TO WHAT THEY NAME**
+
+    authority  board c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907
+    manifest   recorded in hardware/demo/manufacturing/evidence/d799-review-target.json
+    content    the D-799 content commit (recorded by the identity commit that follows it)
+    parent     db2dfbf7ffd8de307b94799e0f144a6c316a307a (D-798 identity, reviewed by Round-18)
+    scope      D799-01..D799-04: Astra R18-01..R18-03 and Fable Work R18-01..R18-03
+    copper     NONE.  No copper, net, footprint, placement, part value, firmware or
+               protected-copper object moves.
+    order      HOLD.  External-review target only.  B01-B14 (CAM), FA01-FA10
+               (first article) and procurement remain outstanding.
+    owner      NO OWNER DECISION IS REQUIRED.  No published capability, table or
+               threshold moves; the supervised rule's 4.10 V is unchanged and only
+               the measured quantity behind it is corrected.
+
+Round-18 graded D-798 **Astra B** (three bounded pre-order corrections) and **Fable Work
+A** (three Low residuals); neither established a respin and none is made.  Every witness
+below was REPRODUCED on the D-798 tree (`db2dfbf7`) before it was fixed.
+
+### 1 — `R18-01` + Fable `R18-01` / D799-01: `OCV_lb` IS A PROVED LOWER BOUND
+
+**REPRODUCED**, with a known pack OCV of 4.050 V under the model's own declared pack
+(35 mΩ ohmic + 52.5 mΩ polarization = the declared 87.5 mΩ DC) and hot-aged harness:
+(a) a 400 mA charge current read low by 10 mA + 2 % with the DMM at its +10 mV limit gave
+`OCV_lb` 4.0547 V; (b) the current fallen from ICHG_max to 50 mA with the polarization
+still stored gave 4.0802 V; (c) a 50 mΩ bench shunt between J4 and the pack gave 4.0600 V;
+(d) the detached residual ICHG_max × 87.5 mΩ = 71.38 mV had been printed ROUNDED DOWN to
+0.071 V (4.0504 V at the DMM limit); (e) a current recorded discharge-positive gave
+4.1460 V.  Every one is ABOVE the true 4.050 V.
+
+**The method.**  The pack is the linear equivalent circuit the model already declares:
+an ohmic part plus any number of polarization branches, their sum at most the declared DC
+resistance.  A branch's voltage is at most its resistance × the largest CHARGE current in
+the pack's history, whatever its time constant — so **no relaxation time is assumed**.
+The declared domain charges the pack only through this board's BQ25185, whose highest
+programmed current is ICHG_max = 0.816 A (rounded up).  The worst split of the pack's
+resistance between ohmic and polarization parts gives
+`V(J4) − OCV ≤ I_up × (harness + R_ins) + max(I_up, ICHG_max) × R_pack_DC`, with
+`I_up = |I| + 10 mA + 2 %·|I|` — the MAGNITUDE, so the sign convention cannot matter — and
+`R_ins` the current meter's burden plus added leads between J4 and the pack (0 for a clamp,
+admitted up to 0.100 Ω).  With the adapter DETACHED there is no charge source, the present
+current is a discharge (it only lowers V(J4)) and only the residual term remains: `V(J4)
+− 0.010 V − 0.072 V`.  Every subtracted term is rounded UP to the millivolt and the
+bound DOWN.  One function, `supervised_ocv_lower_bound`, computes it and the generated
+paragraph in DEVICE_SPEC, CURRENT_STATE, the fab handoff and the first-five plan prints
+the same outward-rounded figures (0.010 V, 177.5 mΩ, 0.816 A, 87.5 mΩ, 0.072 V).
+
+**Proof (F12 `the_supervised_ocv_bound_is_a_true_lower_bound`).**  Three independent
+attacks find NO record where `OCV_lb` exceeds the true OCV: a corner adversary over a
+record grid (every DMM and current-error corner in both sign conventions, the ohmic /
+polarization split in nine steps, harness and insertion from zero to their maxima,
+polarization anywhere between the discharge and charge history bounds); a time-domain
+simulation of 400 random two-branch packs (time constants 1 s to 5.5 h) through random
+charge / taper / discharge / recharge / detach histories with in-spec meter errors and
+random sign conventions; and the five Round-18 witnesses (the rounding one swept across
+sub-millivolt OCVs so the final floor cannot hide it).  D-798's formula is refused on all
+five witness classes; five ablations of the new one — no current uncertainty, no
+insertion term, pack at the present current only, residual rounded down, sign trusted —
+are each refused.  The 4.10 V threshold, the matrix and every table are UNCHANGED; in
+practice a SUPERVISED combination now needs a nearly full pack (detached, V(J4) at least
+4.182 V; attached near the end of the taper, about 4.20 V at 50 mA).  The declared pack DC
+resistance remains the one DECLARED input; C-PWR-CHARGE-01 step 7 / C-THERM-01 record
+it and the relaxation of V(J4) after the charge is interrupted, RECORD + ESCALATE if either
+exceeds the declared figure.
+
+### 2 — `R18-02` / D799-02: A CHARGE-END RECORD MUST BE PHYSICALLY POSSIBLE
+
+**REPRODUCED**: `VIN` 4.57 V, `VSYS` 4.65 V, `IIN` +0.30 A, pack 4.12 V → TERMINATED; a
+transition summary with `vsys_min` 5.50 V over a sample inside it at 4.41 V → TERMINATED.
+`charge_end_consistency_problems` now runs after validity and before any heat or
+termination class: `SYS` above both `VIN` and the pack (a boost the linear U11 path cannot
+make); input current flowing in while `VIN < VSYS`; `SYS` above the VSYS_REG maximum
+(4.59 V); a charge current into the pack from a lower `SYS`, or with more charge power than
+the input delivers; a discharge into a higher `SYS`; transition extrema out of range; and
+any sample time-stamped INSIDE the transition below its minimum, above its peak or above its
+current maximum — with declared ±5 mV and ±(5 mA + 2 %) meter allowances.  Any finding is
+FAULT / UNCLASSIFIED; no summary is fabricated from a sample.  Nine exact contradictory
+cases and five nearby controls that must still classify TERMINATED are permanent; the
+D-798 DPPM fixture was itself contradictory (its present `VSYS` sat inside the transition
+below the summary's own minimum) and now carries a consistent summary.
+
+### 3 — `R18-03` / D799-03: THE JUNCTION IS AN INTERVAL
+
+**REPRODUCED**: `C-PWR-CHARGE-01` (r3) escalated a throttle "with the package, and so the
+junction, below TREG's 90 °C"; an 89 °C package at 1 W has a junction up to 101 °C.  The
+junction is now the interval package − 2 K … package + 5 × ΨJT (2.0 °C/W) × the package
+loss + 2 K (`u11_junction_interval`), and `judge_junction` gives BELOW only when the whole
+interval is under the band's low end, ABOVE only when it is at or over its high end, and
+INDETERMINATE otherwise.  The (r3) trigger escalates only BELOW; an overlap is
+INDETERMINATE / RECORD (`fa_throttle_observation`, seven F12 cases including the 89 °C /
+1 W witness and both edges of the band).  The classifier excludes TREG only BELOW,
+establishes it only ABOVE (110 °C), and returns the new class INDETERMINATE / RECORD for
+an overlap — still never TERMINATED; TSHUT is excluded only with the interval wholly
+below TSHUT_FALLING.  Package temperature and junction interval are recorded as separate
+quantities.  The comparator-cycle wording (model, DEVICE_SPEC, CURRENT_STATE) now states
+that each cycle is a DISCHARGE interval followed by a NON-SUPPLYING interval; the model
+establishes no charging pulse.
+
+### 4 — Fable `R18-02` / `R18-03` / D799-04: VERIFIERS SCOPED TO WHAT THEY NAME
+
+* **A — the OUTCOME clause ends at its cell.**  REPRODUCED: removing "F12" from the last
+  (rN) item of `C-PWR-CHARGE-01` and of `C-PWR-CHARGE-02` passed, because the parser read
+  to the end of the ROW and borrowed "F12" from the source column.  `fa_outcome_clause`
+  stops at the cell's unescaped `|`; both omissions are permanent controls (10 of 10).
+* **B — probe instructions resolve every written form to copper.**  REPRODUCED: `TP-7`,
+  `TP 7`, `test point 7` and `pin 3 of U11` were not recognised, and any "not connected"
+  anywhere in a sentence waived every claim in it.  Test points, driver pins (`U11.3`,
+  `U11 pin 3`, `pin 3 of U11`) and status nets (`STAT2`, `/BQ25185_STAT2`) are resolved
+  through the routing ledger's islands; a disconnection exempts a claim only when the
+  nearest mentions either side of the phrase are THAT test point and THAT pin.  Nine
+  Fable C1/C2b-style sentences are injected into every normative document and each must add
+  a finding; the STAT driver map is checked against the netlist.
+* **C — the exact Q13.**  REPRODUCED: the D-797 rule sentence at a stale 3.90 V ("do not
+  run an accessory rail with the adapter attached unless the pack is at or above **3.90
+  V**") passed beside the correct rule, because the supervised-threshold family knew only
+  the D-798 vocabulary.  Its role now includes the D-797 shape and close variants; the
+  exact wording, a plain copy, an enable variant, an only-if variant and a table form are
+  permanent injections refused in every operative document.
+
+### WHAT IS NOT CLAIMED
+
+D-799 is an ANALYTICAL and VERIFIER closure.  No copper and no firmware moved.  The pack's
+DC resistance and polarization behind `OCV_lb`, the comparator cycle's rate, the
+TREG-to-zero behaviour, the source range, the gauge cadence and the thermal model remain
+first-article measurements; CAM acceptance (B01–B14), first article (FA01–FA10) and
+procurement remain downstream.
+
 ## D-798 — **ROUND-17 TARGETED CONVERGENCE: A SUPPLEMENT JUDGED ON ITS OWN COMPARATOR, A SUPERVISED MATRIX BUILT FROM EVERYTHING THE IMAGE ADMITS, A COMPLETION THAT NEEDS A VALID RECORD, AND A TEST POINT ON THE WRONG ISLAND**
 
     authority  board c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907

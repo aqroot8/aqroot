@@ -2966,7 +2966,12 @@ CHARGER_MODEL_ASSUMPTIONS = dict(
                  "lowest SYS, the largest input-FET drop and the largest "
                  "shortfall, i.e. the adverse bound for junction, discharge "
                  "and brown-out.  The BATFET heat is bounded by "
-                 "(VBAT - SYS_floor) x shortfall.",
+                 "(VBAT - SYS_floor) x shortfall.  D-799 / D799-03 (Astra "
+                 "R18-03): each cycle is a DISCHARGE interval (BATFET on, "
+                 "the cell supplying the shortfall) followed by a NON-"
+                 "SUPPLYING interval (BATFET off, SYS still below the cell, "
+                 "so no charge flows); the model establishes no charging "
+                 "pulse anywhere in the cycle.",
             discriminating_measurement="C-PWR-CHARGE-01 step 7 (low cell, "
                                        "high source corner, a load just "
                                        "above ILIM x VBAT)"),

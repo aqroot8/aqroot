@@ -1,3 +1,26 @@
+## D-799 — 2026-09-24 — ROUND-18 FINAL-TARGETED CORRECTION: AN OPEN-CIRCUIT BOUND THAT IS A BOUND, A CHARGE RECORD THAT MUST BE POSSIBLE, A JUNCTION THAT IS AN INTERVAL, AND THREE VERIFIERS SCOPED TO WHAT THEY NAME
+
+Round-18 external review graded D-798 **Astra B** (three bounded corrections) and **Fable
+Work A** (three Low residuals); no respin.  **Astra `R18-01`…`R18-03` and Fable Work
+`R18-01`…`R18-03` are closed (D799-01…D799-04).**  **NO COPPER, NO FIRMWARE** — board
+sha256 unchanged.
+
+* **`OCV_lb` (D799-01):** a PROVED lower bound — DMM and current-meter uncertainty, the
+  current's magnitude, the meter's insertion resistance, the pack's drop and stored
+  polarization at max(I_up, ICHG_max) × the declared pack DC resistance, outward rounding.
+  A corner adversary, a time-domain pack simulation and the five Round-18 witnesses find
+  no violation; D-798's formula is refused on all five.  Threshold and matrix unchanged.
+* **Charge end (D799-02):** a record whose fields are together impossible is FAULT /
+  UNCLASSIFIED before any classification.
+* **Thermal (D799-03):** the junction is an interval from the package reading; an overlap
+  with TREG is INDETERMINATE / RECORD; the comparator cycle is discharge and non-supplying
+  intervals only.
+* **Verifiers (D799-04):** the OUTCOME clause ends at its cell; probe points resolve in
+  every written form with pair-scoped disconnection; the exact Round-17 Q13 sentence is a
+  permanent injection.
+
+**REVIEW TARGET, NOT A FABRICATION AUTHORIZATION.  DO NOT ORDER.**
+
 ## D-798 — 2026-09-24 — ROUND-17 TARGETED CONVERGENCE: A SUPPLEMENT JUDGED ON ITS OWN COMPARATOR, A SUPERVISED MATRIX BUILT FROM EVERYTHING THE IMAGE ADMITS, A COMPLETION THAT NEEDS A VALID RECORD, AND A TEST POINT ON THE WRONG ISLAND
 
 Round-17 external review **REJECTED D-797** (Astra **B**, Fable Work **B** — six bounded

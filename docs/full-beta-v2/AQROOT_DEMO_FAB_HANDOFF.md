@@ -2,23 +2,26 @@
 
 
 
-> # **STATUS: D-798 ROUND-17 TARGETED-CONVERGENCE CORRECTION — EXTERNAL-REVIEW TARGET, BOARD AUTHORITY `c8eabd43` (2026-09-24).**
+> # **STATUS: D-799 ROUND-18 FINAL-TARGETED CORRECTION — EXTERNAL-REVIEW TARGET, BOARD AUTHORITY `c8eabd43` (2026-09-24).**
 >
-> **D-798 supersedes D-797, which Round-17 external review REJECTED.  THIS IS A REVIEW
-> TARGET, NOT A FABRICATION AUTHORIZATION — DO NOT ORDER.**  Astra and Fable Work both
-> graded D-797 **B — six bounded non-PCB corrections**; neither established a respin.
-> **No copper, net, footprint, placement, part value or protected-copper object moves at
-> D-798** — the board sha256 is unchanged at
-> `c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907`.  Connectivity is
-> **174 retained / 173 connected / one owner-approved `U11.3` open / zero unapproved**.
-> The D-798 content commit is `56213779e3ac9b457f85a7122b1d97dd26232ee1`; the current MANIFEST sha256 is
-> `d59ebe13bd0ae794762ac66a292c4b360acee3a92be837af4a1d8522bc50c3ac`; the identity commit and the post-commit
-> verification are recorded in `hardware/demo/manufacturing/evidence/d798-review-target.json`.  The rejected parent is
-> the D-797 identity commit `1a0b68f1b8f1fdf6e68db0e5b06503bf9439521c`.
+> **D-799 supersedes D-798, which Round-18 external review reopened (Astra **B** — three
+> bounded analytical/procedure/verifier corrections; Fable Work **A** — three Low
+> residuals).  THIS IS A REVIEW TARGET, NOT A FABRICATION AUTHORIZATION — DO NOT ORDER.**
+> Neither reviewer established a respin.  **No copper, net, footprint, placement, part
+> value, firmware or protected-copper object moves at D-799** — the board sha256 is
+> unchanged at `c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907`.
+> Connectivity is **174 retained / 173 connected / one owner-approved `U11.3` open / zero
+> unapproved**.  The D-799 content commit, the current MANIFEST sha256, the identity
+> commit and the post-commit verification are recorded in
+> `hardware/demo/manufacturing/evidence/d799-review-target.json`.  The reviewed parent is
+> the D-798 identity commit `db2dfbf7ffd8de307b94799e0f144a6c316a307a`.
 >
-> **GATES ON THIS TARGET.**  19/19 standing contracts, `F1`–`F14` (F14 now judges a
-> supplementing charger on the actual VBSUP2 exit comparator and validates the
-> publication as an exact key multiset before projecting it), `H1`–`H8` with every
+> **GATES ON THIS TARGET.**  19/19 standing contracts, `F1`–`F14` (F12 now PROVES the
+> supervised `OCV_lb` a lower bound against a corner adversary, a time-domain pack
+> simulation and the five Round-18 witnesses, refuses a physically impossible
+> charge-end record, and judges first-article thermal triggers on a junction interval;
+> F14 judges a supplementing charger on the actual VBSUP2 exit comparator and
+> validates the publication as an exact key multiset), `H1`–`H8` with every
 > host-test mutation caught, 4/4 PlatformIO environments, the fab-package contract, the
 > guarantee-provenance verifier against its independently pinned semantic schema, KiCad
 > DRC and schematic parity identical in count and class to the reviewed baseline.
@@ -49,13 +52,25 @@
 >   the declared pair is REFUSED WHILE CHARGING.  The firmware cannot see the adapter
 >   on this revision, so this extends the existing supervised-charging condition
 >   (`battery_pack_contract` **B8**); on battery every published budget is unchanged.
+> * **`OCV_lb` IS A PROVED LOWER BOUND (D-799, Round-18 `R18-01`).**  The supervisor's
+>   open-circuit reading now carries the DMM and current-meter uncertainty, the
+>   current's MAGNITUDE (either sign convention), the current meter's insertion
+>   resistance between J4 and the pack, and the pack's drop and stored polarization
+>   together at max(I_up, ICHG_max) × the declared pack DC resistance — no relaxation
+>   time is assumed.  The matrix and the 4.10 V threshold are unchanged (method below).
 > * **`TP7` DOES NOT OBSERVE `STAT2` (D-798).**  It shares a copper island with `R128`
 >   and `U2.19`, not with the owner-approved open `U11.3`; no procedure probes it.
 > * **CHARGE COMPLETION IS CLASSIFIED, NEVER READ OFF A TAPER OR A PIN — AND ONLY FROM
->   A VALID RECORD (D-798).**  A missing, unknown, non-finite, out-of-range or stale
->   sample is **FAULT / UNCLASSIFIED**; the junction is derived from the package.
->   `C-PWR-CHARGE-02` labels every record **TERMINATED**, **ACTIVE LIMITING**, **FAULT /
->   UNCLASSIFIED** or **TIMER EXPIRY** from measurement.  If the safety timer expires the
+>   A VALID, PHYSICALLY POSSIBLE RECORD (D-798, D-799).**  A missing, unknown,
+>   non-finite, out-of-range or stale sample is **FAULT / UNCLASSIFIED**, and so is a
+>   record whose fields are together impossible (`SYS` above both `VIN` and the pack,
+>   input current against `VIN` below `VSYS`, `SYS` above VSYS_REG max, current flowing
+>   uphill, a transition summary contradicted by its own samples).  The junction is an
+>   INTERVAL from the package-top reading (package − 2 K … package + 5 × ΨJT × loss +
+>   2 K); an interval overlapping TREG's 90–110 °C band is **INDETERMINATE / RECORD**.
+>   `C-PWR-CHARGE-02` labels every record **TERMINATED**, **ACTIVE LIMITING**,
+>   **INDETERMINATE / RECORD**, **FAULT / UNCLASSIFIED** or **TIMER EXPIRY** from
+>   measurement.  If the safety timer expires the
 >   charger latches off; `/CE` is hard-tied, so the recovery on the first five is
 >   **unplug and re-plug the adapter**.  `STAT1` LOW is shared by every charger fault and
 >   alone never identifies the timer.  288 min is an engineering qualification target,
@@ -122,7 +137,7 @@
 > | audio at the capped level + sub-GHz TX | 2.887 W | 3.10 V | **3.60 V** |
 > | Wi-Fi / BLE TX + audio at the capped level + sub-GHz TX | 4.412 W | none | **NOT PERMITTED** |
 >
-> **D-798 — THE SUPERVISED-CHARGING MATRIX, ITS RULE AND ITS MEASUREMENT (generated by F12 from one authority).**  Round-17 (`R17-02`) found D-797's one-line rule incomplete: it was built only from the states already accepted as charging-safe, so two combinations the production image ADMITS on battery — the amplifier with the 5 V rail, and the amplifier with the declared pair — had no charging floor at any cell and no document said so.  The matrix below now covers EVERY optional-mode set the image knows (all eight) against every published accessory load, and gives each ONE disposition.  SUPERVISED CHARGING RULE (first five, D-798): with the adapter attached, a combination marked **SUPERVISED** may run only while the pack's open-circuit lower bound `OCV_lb` is at or above **4.10 V**; a combination marked **REFUSED WHILE CHARGING** may not run with the adapter attached at any cell; the firmware does not enforce either (there is no VBUS-present signal and `STAT2` is unrouted).
+> **D-798 — THE SUPERVISED-CHARGING MATRIX, ITS RULE AND ITS MEASUREMENT (generated by F12 from one authority).**  Round-17 (`R17-02`) found D-797's one-line rule incomplete: it was built only from the states already accepted as charging-safe, so two combinations the production image ADMITS on battery — the amplifier with the 5 V rail, and the amplifier with the declared pair — had no charging floor at any cell and no document said so.  The matrix below now covers EVERY optional-mode set the image knows (all eight) against every published accessory load, and gives each ONE disposition.  SUPERVISED CHARGING RULE (first five, D-799): with the adapter attached, a combination marked **SUPERVISED** may run only while the pack's open-circuit lower bound `OCV_lb` is at or above **4.10 V**; a combination marked **REFUSED WHILE CHARGING** may not run with the adapter attached at any cell; the firmware does not enforce either (there is no VBUS-present signal and `STAT2` is unrouted).
 >
 > | optional modes | accessory load | system power | while charging (adapter attached) |
 > |---|---|---|---|
@@ -159,9 +174,9 @@
 > | Wi-Fi / BLE TX + audio at the capped level + sub-GHz TX | acc 5v only | 6.173 W | **REFUSED BY FIRMWARE** (on battery too) |
 > | Wi-Fi / BLE TX + audio at the capped level + sub-GHz TX | no accessory | 4.412 W | **REFUSED BY FIRMWARE** (on battery too) |
 >
-> **How `OCV_lb` is measured.**  `OCV_lb` = V(J4) − max(I_BAT, 0) × **0.265 Ω** − **0.010 V** with the adapter attached, or V(J4) − **0.071 V** − **0.010 V** with it detached.  V(J4) is a DMM reading (±0.010 V or better at 4.2 V) from J4.1 (`BAT_CONNECTOR_P`, red) to J4.2 (`GND`, black) on the board, and I_BAT is the charge current into the pack on the bench shunt at the same instant.  Take both immediately before the change the rule admits — enabling a rail with the adapter attached, or attaching the adapter with a rail live — once the DMM has held within 2 mV for 10 s.  No cell-relaxation wait is assumed: 0.265 Ω is the model's DECLARED pack DC resistance (87.5 mΩ, diffusion included) plus the hot-aged harness (177.5 mΩ), and 0.071 V is the most charge elevation the model leaves once the adapter is removed (ICHG_max × the pack DC resistance); waiting only lowers the reading.  The console `VCELL` is NOT admissible for this rule: while charging it reads `BAT_PROTECTED_P`, up to **0.647 V** above the cell.
+> **How `OCV_lb` is measured (D-799, Round-18 `R18-01`: a PROVED lower bound).**  `OCV_lb` is a LOWER BOUND on the pack's open-circuit voltage, rounded DOWN to the millivolt (D-799).  With the adapter ATTACHED: `OCV_lb` = V(J4) − **0.010 V** − I_up × (**177.5 mΩ** + R_ins) − max(I_up, **0.816 A**) × **87.5 mΩ**, where I_up = |I_BAT| + **0.010 A** + **2 %** of |I_BAT| — the MAGNITUDE of the reading, whatever its sign convention — and R_ins is the current meter's series burden plus its added leads between J4 and the pack (0 for a clamp meter; at most **100 mΩ**).  With the adapter DETACHED (no charge source): `OCV_lb` = V(J4) − **0.010 V** − **0.072 V**.  Every subtracted term is rounded UP to the millivolt.  V(J4) is a DMM reading (±0.010 V or better at 4.2 V) from J4.1 (`BAT_CONNECTOR_P`, red) to J4.2 (`GND`, black) on the board, and I_BAT is the pack current on a bench meter (±(10 mA + 2 %) or better) at the same instant.  Take both immediately before the change the rule admits — enabling a rail with the adapter attached, or attaching the adapter with a rail live — once the DMM has held within 2 mV for 10 s.  No cell-relaxation time is assumed anywhere: 177.5 mΩ is the hot-aged harness; 87.5 mΩ is the model's DECLARED pack DC resistance, ohmic part and every polarization branch together, and max(I_up, 0.816 A) × 87.5 mΩ — **0.072 V** whenever I_up is at or below 0.816 A — bounds both the pack's own drop and every polarization its charge history can have stored, whatever the current is doing now, because this board's charger never charges above ICHG_max = 0.816 A; a pack charged from any other source is outside the method.  The console `VCELL` is NOT admissible for this rule: while charging it reads `BAT_PROTECTED_P`, up to **0.647 V** above the cell.
 >
-> **Why a separate open-circuit bound.**  The charging-safe envelope is solved on the CELL: the supplement onset is a zero-charge state, where the charger's `BAT` pin is the cell.  While charging, every terminal reading sits ABOVE the cell by the charge current times whatever resistance lies between — so the console `VCELL` and a bare DMM reading are both charging-elevated, and neither is used as the cell voltage.  **REFUSED BY FIRMWARE** rows are refused by the production image on EVERY source, battery included: with no rail live the charging mode-entry table (which the firmware applies whenever no rail is live, because it cannot tell charging from discharging) refuses every Wi-Fi/BLE row, and with a rail live the D-792 rail edge refuses every radio.  Wi-Fi/BLE is therefore refused in every state on this revision, and this image has no Wi-Fi caller.  On battery, every published rail budget is unchanged.
+> **Why a separate open-circuit bound.**  The charging-safe envelope is solved on the CELL: the supplement onset is a zero-charge state, where the charger's `BAT` pin is the cell.  While charging, every terminal reading sits ABOVE the cell by the charge current times whatever resistance lies between, AND by whatever polarization an earlier, higher charge current left stored in the pack — which does not follow the present current down (D-799, Round-18 `R18-01`) — so the console `VCELL` and a bare DMM reading are both charging-elevated, and neither is used as the cell voltage.  **REFUSED BY FIRMWARE** rows are refused by the production image on EVERY source, battery included: with no rail live the charging mode-entry table (which the firmware applies whenever no rail is live, because it cannot tell charging from discharging) refuses every Wi-Fi/BLE row, and with a rail live the D-792 rail edge refuses every radio.  Wi-Fi/BLE is therefore refused in every state on this revision, and this image has no Wi-Fi caller.  On battery, every published rail budget is unchanged.
 >
 > ### The no-discharge envelope (generated by F12)
 >
@@ -236,7 +251,7 @@
 >
 > ### **THE FOUR GATES, KEPT APART ON PURPOSE**
 >
-> | gate | D-798 status |
+> | gate | D-799 status |
 > |---|---|
 > | **PRE-ORDER ANALYTICAL** | **CLOSED on this target** |
 > | **FAB / CAM ACCEPTANCE** | **PENDING** — B01–B14 above |
@@ -244,7 +259,7 @@
 > | **PROCUREMENT** | **PENDING** — nine constrained fitted groups plus the AOS pass-pair allocation, `SOURCING_LEDGER.md` §4a |
 
 
-> # **D-796 ROUND-15 FULL-CONVERGENCE CORRECTION — HISTORICAL, SUPERSEDED BY THE D-798 BLOCK ABOVE (REJECTED by Round-16)**
+> # **D-796 ROUND-15 FULL-CONVERGENCE CORRECTION — HISTORICAL, SUPERSEDED BY THE D-799 BLOCK ABOVE (REJECTED by Round-16)**
 >
 > **D-796 supersedes D-795, which Round-15 external review REJECTED.  THIS IS A REVIEW
 > TARGET, NOT A FABRICATION AUTHORIZATION — DO NOT ORDER.**  Astra and Fable Work both

@@ -1,0 +1,31 @@
+{
+ "both_fail_the_full_gate": true,
+ "decision": "D-799",
+ "injections": {
+  "fable_c1_probe_net_name_hyphenated_tp": {
+   "all_pass": false,
+   "failing_f12_clauses": [
+    "every_probe_instruction_names_connected_copper"
+   ],
+   "findings": [
+    "docs/full-beta-v2/DEVICE_SPEC.md: U11.3 is not on TP7's copper (island ['R128.2', 'TP7.1', 'U2.19'])"
+   ],
+   "injected_into": "docs/full-beta-v2/DEVICE_SPEC.md (the correct D-799 rule present)",
+   "sentence": "Probe `/BQ25185_STAT2` at TP-7 during the charge to read the charger state."
+  },
+  "q13_exact_round17_wording": {
+   "all_pass": false,
+   "failing_f12_clauses": [
+    "no_normative_document_states_a_retired_operating_value"
+   ],
+   "findings": [
+    "docs/full-beta-v2/DEVICE_SPEC.md: supervised_threshold claims '3.90'"
+   ],
+   "injected_into": "docs/full-beta-v2/DEVICE_SPEC.md (the correct D-799 rule present)",
+   "sentence": "do not run an accessory rail with the adapter attached unless the pack is at or above **3.90 V**"
+  }
+ },
+ "permanent_controls": "the same shapes run on every release inside F12: round17_document_escapes_are_caught (q13_*), every_probe_instruction_names_connected_copper (d799_injection_*)",
+ "schema": 1,
+ "what": "D799-04B/C: full F1-F14 runs of checks/demo_feature_contract.py on a disposable worktree of the D-799 candidate with ONE sentence injected at the top of DEVICE_SPEC; the correct D-799 supervised rule and probe text remain present.  Each must FAIL the full gate on the intended clause."
+}

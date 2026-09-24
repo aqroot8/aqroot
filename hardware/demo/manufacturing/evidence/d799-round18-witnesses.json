@@ -1,0 +1,81 @@
+{
+ "R18_01_ocv_lb": {
+  "d798_formula_above_the_true_ocv": {
+   "a_current_read_low_dmm_at_limit": 4.054668,
+   "b_current_fallen_polarization_stored": 4.080206,
+   "c_50_mohm_shunt_between_j4_and_pack": 4.059991,
+   "d_detached_residual_rounded_down": 4.050387,
+   "e_current_recorded_discharge_positive": 4.145991
+  },
+  "d799_bound_on_the_same_records": {
+   "a": 4.012,
+   "b": 4.01,
+   "c": 3.997,
+   "d": 4.049,
+   "e": 3.998
+  },
+  "model": "true OCV 4.050 V; pack 35 mOhm ohmic + 52.5 mOhm polarization (= the declared 87.5 mOhm DC), hot-aged harness",
+  "proof": "F12 the_supervised_ocv_bound_is_a_true_lower_bound: 0 violations (corner adversary, 400-trial time-domain simulation, the five witnesses); D-798 formula refused on all five classes; five ablations refused"
+ },
+ "R18_02_charge_end": {
+  "boost_across_u11": {
+   "d798": "TERMINATED",
+   "d799": "FAULT / UNCLASSIFIED",
+   "record": "VIN 4.57 V, VSYS 4.65 V, IIN +0.30 A, pack 4.12 V"
+  },
+  "transition_minimum_above_its_sample": {
+   "d798": "TERMINATED",
+   "d799": "FAULT / UNCLASSIFIED",
+   "record": "transition vsys_min 5.50 V, sample inside it VSYS 4.41 V"
+  }
+ },
+ "R18_03_thermal": {
+  "d798_plan_r3": "escalated a throttle 'with the package, and so the junction, below TREG'",
+  "d799": "INDETERMINATE / RECORD",
+  "junction_interval_C": [
+   87.0,
+   101.0
+  ],
+  "record": "package 89 C, 1 W",
+  "treg_band_C": [
+   90.0,
+   110.0
+  ]
+ },
+ "decision": "D-799",
+ "fable_R18_02_fa_last_item": {
+  "C-GAUGE-EPOCH-01 last item without F12": {
+   "caught": true,
+   "other_cols_have": false
+  },
+  "C-NFC-TUNE-01 last item without F6": {
+   "caught": true,
+   "other_cols_have": false
+  },
+  "C-PWR-CHARGE-01 last item without F12": {
+   "caught": false,
+   "other_cols_have": true
+  },
+  "C-PWR-CHARGE-01 last item without F14": {
+   "caught": true,
+   "other_cols_have": false
+  },
+  "C-PWR-CHARGE-02 last item without F12": {
+   "caught": false,
+   "other_cols_have": true
+  },
+  "C-PWR-CHARGE-02 last item without F14": {
+   "caught": true,
+   "other_cols_have": false
+  }
+ },
+ "fable_R18_03_probe_forms_unrecognised": [
+  "pin 3 of U11 at TP-7",
+  "STAT2 at test point 7",
+  "U11.3 STAT2 at TP 7"
+ ],
+ "fable_R18_03_q13": "the D-797 rule sentence at 3.90 V passed beside the correct rule (family knew only D-798 vocabulary)",
+ "fable_R18_03_unrelated_disconnect_waived": "any 'not connected' in the sentence exempted every claim (D-798)",
+ "reproduced_on": "db2dfbf7ffd8de307b94799e0f144a6c316a307a (D-798 identity), before any fix",
+ "schema": 1
+}

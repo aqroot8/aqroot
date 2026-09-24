@@ -1,0 +1,87 @@
+{
+ "beta_v2_untouched": true,
+ "board": "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_changes": [],
+ "board_sha256": "c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907",
+ "branch": "aqroot-demo",
+ "closed_here": {
+  "astra_round_18": [
+   "R18-01",
+   "R18-02",
+   "R18-03"
+  ],
+  "fable_work_round_18": {
+   "R18_01": "closed with Astra R18-01: OCV_lb is a proved lower bound -- meter uncertainty, sign, insertion (shunt) path, stored polarization at the history-bound current, outward rounding (D799-01)",
+   "R18_02": "closed: the FA OUTCOME clause ends at its own table cell; both last-item F12 omissions are permanent controls (D799-04A)",
+   "R18_03": "closed: probe points, driver pins and status nets resolved to copper in every written form with pair-scoped disconnection; the exact Round-17 Q13 sentence is a permanent injection and fails the full F1-F14 gate (D799-04B/C)"
+  },
+  "found_by_this_closeout": [
+   "the D-798 DPPM classifier fixture was itself physically contradictory (a present VSYS inside the transition below the summary's own minimum); it now carries a consistent summary",
+   "the first proof run let a residual-rounded-down ablation through because the final floor to the millivolt absorbed it at an OCV of exactly 4.050 V; the rounding witness now sweeps sub-millivolt OCVs",
+   "the generated method printed 0.1775 ohm beside the word 'adapter' and the source-path family read it as an adapter figure; the method prints its resistances in milliohm"
+  ],
+  "full_gate_injections": "evidence/d799-full-gate-injections.json",
+  "mandatory_items": [
+   "D799-01",
+   "D799-02",
+   "D799-03",
+   "D799-04"
+  ],
+  "witnesses": "evidence/d799-round18-witnesses.json (every witness reproduced on db2dfbf7 before it was fixed)"
+ },
+ "content_commit": "this commit -- recorded by the identity commit that follows",
+ "decision": "D-799",
+ "gates": {
+  "demo_feature": "F1-F14 PASS; F12: OCV_lb proof 0 violations (D-798 formula refused on 5/5 witness classes, 5/5 ablations refused), completion classifier 47/47 cases, FA thermal triggers 7/7 cases + 2/2 controls, probe-to-copper 15/15 controls, Round-17 injections 15/15, Round-16 injections 21/21, FA outcome controls 10/10; F14 46/46 mutation controls, oracle domain 7200 points, 0 classifier disagreements",
+  "fab_package": "PASS (release label D-799 derived from the CHANGELOG; Gerber/drill differences are creation timestamps only)",
+  "firmware_hw_map": "H1-H8 PASS; identical to d798 (firmware unchanged): 743 claims, 193/193 controls",
+  "guarantee_evidence": "17/17 GUARANTEED keys authenticated against the pinned semantic schema; 28/28 destructive controls caught",
+  "kicad_drc_parity": "identical in count and class to d798 (199 violations, 17 unconnected, 246 parity)",
+  "platformio": "4/4 from clean (esp32-s3-aqroot, wokwi, esp32-s3-aqroot-dm, aqroot-demo)",
+  "protected_copper": "identical to d798 (15 nets / 406 objects)",
+  "rail_ampacity": "all_ok; report identical to d798",
+  "routing_ledger": {
+   "approved_unrouted_edges": 1,
+   "connected_retained_nets": 173,
+   "identical_to_d798": true,
+   "retained_multi_pad_nets": 174,
+   "unapproved_open_edges": 0
+  },
+  "sourcing": "nine constrained groups, unchanged from d798 (live re-sweep of the released BOM, evidence/d799-sourcing-sweep.json)",
+  "standing_contracts": "19/19 PASS (contract_regression vs d798: substantive difference only in demo_feature, by design; every other contract IDENTICAL, pour_partition differing only in its ref_commit input)"
+ },
+ "identity_commit": "the commit that follows -- a commit cannot contain its own SHA",
+ "manifest": "hardware/demo/fab/MANIFEST.json",
+ "manifest_sha256": "d2682e43833372524613d51f28dfdd5d70d57aed46d78d5bfd9e7f45015bb432",
+ "no_copper_change": true,
+ "no_firmware_change": true,
+ "order_status": {
+  "FAB_CAM_ACCEPTANCE": "PENDING (B01-B14)",
+  "FIRST_ARTICLE_VALIDATION": "PENDING (FA01-FA10)",
+  "PRE_ORDER_ANALYTICAL": "CLOSED on this target",
+  "PROCUREMENT": "PENDING"
+ },
+ "parent_reviewed_by_round_18": "db2dfbf7ffd8de307b94799e0f144a6c316a307a",
+ "product_facing": {
+  "charge_end_classes": [
+   "TERMINATED",
+   "ACTIVE LIMITING",
+   "INDETERMINATE / RECORD",
+   "FAULT / UNCLASSIFIED",
+   "TIMER EXPIRY",
+   "CHARGING"
+  ],
+  "charging_safe_full_cell_W": 3.95,
+  "charging_safe_table_changed": false,
+  "charging_safe_universal_W": 2.7,
+  "comparator_cycle": "discharge intervals and non-supplying intervals only; no charging pulse",
+  "junction": "an interval from the package-top reading: package - 2 K .. package + 5 x PSI_JT(2.0 C/W) x loss + 2 K",
+  "published_accessory_capability_unchanged": true,
+  "supervised_charging_quantity": "OCV_lb = V(J4) - 0.010 V - I_up x (177.5 mOhm + R_ins) - max(I_up, 0.816 A) x 87.5 mOhm, I_up = |I_BAT| + 10 mA + 2 %, R_ins <= 100 mOhm (adapter attached); V(J4) - 0.010 V - 0.072 V (detached); subtractive terms rounded up, the bound down",
+  "supervised_charging_threshold_V": 4.1,
+  "supervised_matrix_changed": false,
+  "tp7_observes_stat2": false,
+  "universal_no_discharge_W": 0.9
+ },
+ "schema": 1
+}
