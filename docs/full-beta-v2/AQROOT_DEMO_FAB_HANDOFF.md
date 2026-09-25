@@ -12,9 +12,10 @@
 > unchanged at `c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907`.  The
 > release FIRMWARE image changes (six fail-closed / bus / wrap defects, each host-tested
 > with a permanent mutation control).  Connectivity is **174 retained / 173 connected / one
-> owner-approved `U11.3` open / zero unapproved**.  The D-800 content commit, its MANIFEST
-> sha256 and the post-commit verification are recorded by the identity commit that follows
-> it, in `hardware/demo/manufacturing/evidence/d800-review-target.json`.  The reviewed parent
+> owner-approved `U11.3` open / zero unapproved**.  The D-800 content commit is
+> `6f28e39f3fd41ad763ac0f3668360d919d9d6c17`; the current MANIFEST sha256 is
+> `7b2c57e77d8162c184c2e1c1f92b57030219937ce42f5401c792caf0266e3aa2`; the identity commit and the post-commit
+> verification are recorded in `hardware/demo/manufacturing/evidence/d800-review-target.json`.  The reviewed parent
 > is the D-799 identity commit `4aa286e2d517f6acc64290e3c427f045dd109654`.
 >
 > **GATES ON THIS TARGET.**  19/19 standing contracts, `F1`–`F14` (F12 adds the Round-19

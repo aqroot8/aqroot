@@ -19,10 +19,10 @@
 > | what | value |
 > |---|---|
 > | branch | `origin/aqroot-demo` |
-> | content commit | *recorded by the identity / post-commit verification commit that follows it* |
-> | identity / post-commit verification commit | *that commit — a commit cannot contain its own SHA, so the reviewable target is the PAIR* |
+> | content commit | `6f28e39f3fd41ad763ac0f3668360d919d9d6c17` |
+> | identity / post-commit verification commit | *this commit — a commit cannot contain its own SHA, so the reviewable target is the PAIR* |
 > | board `aqroot-Beta-v2.kicad_pcb` sha256 | `c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907` |
-> | `hardware/demo/fab/MANIFEST.json` sha256 | *recorded in `evidence/d800-review-target.json`* |
+> | `hardware/demo/fab/MANIFEST.json` sha256 | `7b2c57e77d8162c184c2e1c1f92b57030219937ce42f5401c792caf0266e3aa2` |
 > | parent, reviewed by Round-19 | `4aa286e2d517f6acc64290e3c427f045dd109654` (D-799 identity) |
 >
 > The board sha256 is IDENTICAL to the reviewed D-799 target: **no copper moved**.  D-800

@@ -21,7 +21,7 @@
   },
   "witnesses": "evidence/d800-round19-witnesses.json (every witness reproduced on 4aa286e2 before it was fixed)"
  },
- "content_commit": "recorded by the identity commit that follows it",
+ "content_commit": "6f28e39f3fd41ad763ac0f3668360d919d9d6c17",
  "decision": "D-800",
  "firmware_changes": [
   "SPI released after the boot/periodic radio quiesce (the pinned core ignores a second SPI.begin while running)",
@@ -68,9 +68,9 @@
   "sourcing": "live re-sweep: nine constrained groups unchanged (evidence/d800-sourcing-sweep.json); J5/MK1 active at source (evidence/d800-broadline-check.json); genuine AO4800 allocation remains a gate",
   "standing_contracts": "19/19 PASS (contract_regression vs d799: substantive difference only in demo_feature, firmware_hw_map, mechanical_keepout, by design; all children exit 0)"
  },
- "identity_commit": "the commit that follows the content commit; it records the content SHA",
+ "identity_commit": "this commit -- it records the content commit's SHA; a commit cannot contain its own",
  "manifest": "hardware/demo/fab/MANIFEST.json",
- "manifest_sha256": "recorded by the identity commit (this file is written before the content commit)",
+ "manifest_sha256": "7b2c57e77d8162c184c2e1c1f92b57030219937ce42f5401c792caf0266e3aa2",
  "no_copper_change": true,
  "no_firmware_change": false,
  "order_status": {
@@ -80,5 +80,42 @@
   "PROCUREMENT": "PENDING (genuine AO4800 allocation + nine constrained groups)"
  },
  "parent_reviewed_by_round_19": "4aa286e2d517f6acc64290e3c427f045dd109654",
+ "post_commit_verification": {
+  "battery_pack_contract": {
+   "verdict": "PASS"
+  },
+  "beta_v2_untouched": true,
+  "board_sha256": "c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907",
+  "demo_feature_contract": {
+   "checks": "F1-F14, 14 of 14",
+   "verdict": "PASS"
+  },
+  "fab_package_contract": {
+   "checks": "FAB1-FAB16",
+   "verdict": "PASS"
+  },
+  "firmware_hw_map_contract": {
+   "checks": "H1-H8",
+   "note": "every host-test mutation caught, six D-800 image controls included",
+   "verdict": "PASS"
+  },
+  "guarantee_evidence": {
+   "note": "17/17 keys, 37/37 controls",
+   "verdict": "PASS"
+  },
+  "manifest_sha256": "7b2c57e77d8162c184c2e1c1f92b57030219937ce42f5401c792caf0266e3aa2",
+  "platformio": {
+   "all_success": true,
+   "clean_build": true,
+   "environments": [
+    "esp32-s3-aqroot",
+    "wokwi",
+    "esp32-s3-aqroot-dm",
+    "aqroot-demo"
+   ]
+  },
+  "run_against": "6f28e39f3fd41ad763ac0f3668360d919d9d6c17, clean tree",
+  "worktree_clean": true
+ },
  "schema": 1
 }

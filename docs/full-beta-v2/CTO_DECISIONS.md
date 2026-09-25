@@ -1,9 +1,9 @@
 ## D-800 — **ROUND-19 MAXIMUM-ASSURANCE FULL PRE-ORDER REVIEW AND CORRECTION: EIGHT KNOWN FINDINGS CLOSED, A FULL-SYSTEM RE-AUDIT, AND WHAT IT FOUND**
 
     authority  board c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907
-    manifest   recorded in evidence/d800-review-target.json (a MANIFEST cannot hash the
-               decision that names it)
-    content    recorded by the identity / post-commit verification commit that follows it
+    manifest   7b2c57e77d8162c184c2e1c1f92b57030219937ce42f5401c792caf0266e3aa2
+    content    6f28e39f3fd41ad763ac0f3668360d919d9d6c17
+    identity   the post-commit verification record commit that follows it
     parent     4aa286e2d517f6acc64290e3c427f045dd109654 (D-799 identity, reviewed by Round-19)
     scope      D800-KNOWN-01..08 (Astra R19-01..R19-03, Opus R19-01..R19-05, R19-07),
                Opus R19-06 dispositioned, the AO4800 / exact-part procurement gate re-run,
