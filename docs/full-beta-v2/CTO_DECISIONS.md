@@ -1,7 +1,8 @@
 ## D-801 — **ROUND-20 BOUNDED PRE-ORDER CORRECTION: AN EXECUTABLE FIRST-ARTICLE IMAGE, ONE MECHANICAL AUTHORITY, A GUARDED DEFAULT, AND NUMBERS THAT ARE GENERATED RATHER THAN COPIED**
 
     authority  board c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907
-    content    this commit
+    manifest   d6c80a1f005a1832e0ca5e4522ccf5be0fd05b18149aeabcf75b1830688b61d6
+    content    353da2144b88ff48ac4042837633aa0fe12419a8
     identity   the post-commit verification record commit that follows it
     parent     a252b7f11e0fff2ce30381e9f3f17e3d66bbea09 (D-800 identity, reviewed by Round-20)
     scope      D801-01..D801-10 (Astra R20-01..R20-06, Fable R20-01..R20-05 and the Fable

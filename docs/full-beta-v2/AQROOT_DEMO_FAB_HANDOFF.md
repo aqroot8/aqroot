@@ -12,10 +12,11 @@
 > `c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907`.  The release firmware
 > image's behaviour does not change; a separate, NON-PRODUCTION first-article image is added.
 > Connectivity is **174 retained / 173 connected / one owner-approved `U11.3` open / zero
-> unapproved**.  The D-801 content commit, the MANIFEST sha256 and the post-commit
-> verification are recorded in `hardware/demo/manufacturing/evidence/d801-review-target.json`
-> by the identity commit that follows the content commit.  The reviewed parent is the D-800
-> identity commit `a252b7f11e0fff2ce30381e9f3f17e3d66bbea09`.
+> unapproved**.  The D-801 content commit is
+> `353da2144b88ff48ac4042837633aa0fe12419a8`; the current MANIFEST sha256 is
+> `d6c80a1f005a1832e0ca5e4522ccf5be0fd05b18149aeabcf75b1830688b61d6`; the identity commit and the post-commit
+> verification are recorded in `hardware/demo/manufacturing/evidence/d801-review-target.json`.
+> The reviewed parent is the D-800 identity commit `a252b7f11e0fff2ce30381e9f3f17e3d66bbea09`.
 >
 > **PRE-ORDER ANALYTICAL: CLOSED on this target.  FAB/CAM ACCEPTANCE (B01–B14), FIRST-ARTICLE
 > VALIDATION (FA01–FA10; prerequisite `FAP-01` IMPLEMENTED, bench execution pending
