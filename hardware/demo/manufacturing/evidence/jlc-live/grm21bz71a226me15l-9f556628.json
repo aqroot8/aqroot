@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-20T19:33:36Z",
+ "fetched_utc": "2026-09-25T15:20:44Z",
  "keyword": "GRM21BZ71A226ME15L",
  "page_size": 25,
  "pages": 1,
@@ -33,32 +33,32 @@
    "componentPrices": [
     {
      "endNumber": 49,
-     "productPrice": 0.2972,
+     "productPrice": 0.2518,
      "startNumber": 1
     },
     {
      "endNumber": 149,
-     "productPrice": 0.2502,
+     "productPrice": 0.2108,
      "startNumber": 50
     },
     {
      "endNumber": 499,
-     "productPrice": 0.2273,
+     "productPrice": 0.1909,
      "startNumber": 150
     },
     {
      "endNumber": 2999,
-     "productPrice": 0.2068,
+     "productPrice": 0.1729,
      "startNumber": 500
     },
     {
      "endNumber": 5999,
-     "productPrice": 0.1906,
+     "productPrice": 0.1589,
      "startNumber": 3000
     },
     {
      "endNumber": -1,
-     "productPrice": 0.1872,
+     "productPrice": 0.1559,
      "startNumber": 6000
     }
    ],
@@ -74,7 +74,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 166415
+   "stockCount": 169698
   }
  ],
  "returned": 1,

@@ -1,0 +1,71 @@
+{
+ "beta_v2_untouched": true,
+ "board": "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_changes": [],
+ "board_sha256": "c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907",
+ "branch": "aqroot-demo",
+ "closed_here": {
+  "D801_01": "FAP-01 implemented: [env:aqroot-demo-fap01], assembly/FAP01_FIRST_ARTICLE_IMAGE.md, register FAP-01 IMPLEMENTED (bench execution pending hardware)",
+  "D801_02": "MECHANICAL_INTERFACE_SPEC / ledger / P1 / keep-outs / floorplan / IR_LEAD_FORMING / DEVICE_SPEC: MK1 B.Cu bottom-port, acoustic face F.Cu; D-162 15 mm heuristic SUPERSEDED (13.73 mm + IR_BARRIER + cone + C-IR-01); MK12 + 19 controls",
+  "D801_03": "H9: default_envs exactly aqroot-demo, 8/8 controls; bare pio run builds aqroot-demo only",
+  "D801_04": "F6 harness text: no BATOCP interruption claimed; 3.8236 A sizing coincidence vs 3.1480 A admitted double fault inside the declared band; 5 controls",
+  "D801_05": "F10 bench condition (25 C, crossing 2.5783 A) generates C-BAT-GATE-01, the ledger table + sensitivity and the handoff envelope rows; 6 controls",
+  "D801_06": "CURRENT_RELEASE_ID derived from the CHANGELOG; release_identity_problems binds MANIFEST / CTO_DECISIONS / CURRENT_STATE / handoff / review-target record; 7 controls",
+  "D801_07": "5 V UNKNOWN twin, SPI-B pin map, microSD SPI.end(), CC1101 + mic wrap: 7 claims, 5 controls",
+  "D801_08": "evidence/d801-sourcing-sweep.json: --refresh, fetched_utc + mode per row; D-800 sweep disclosed as a 2026-09-20/21 replay; TPD4E1B06DRLR now a consignment line",
+  "D801_09": "AQROOT_DEMO_FABRICATION_PACKAGE.md title fenced HISTORICAL + banner; in the F12 scan set; 3 controls",
+  "D801_10": "supervised / cure / package-vs-model / R_ins families: 12 injections caught, 12/12 missed by D-800 scanners, 8 near controls clean",
+  "found_and_fixed": [
+   "C-RADIO-QUIESCE-01 expected [ok]; the image prints [PASS]"
+  ],
+  "full_gate_injections": "evidence/d801-full-gate-injections.json (4 full F1-F14 runs, each fails only its intended check)",
+  "witnesses": "evidence/d801-round20-witnesses.json"
+ },
+ "content_commit": "recorded by the identity commit that follows the content commit",
+ "decision": "D-801",
+ "firmware_changes": [
+  "RELEASE IMAGE [env:aqroot-demo]: no behaviour change; FAP-01 hooks in src/demo/main.cpp are compiled only under AQROOT_FAP01_DIAGNOSTIC (H10 preprocesses the release main to no FAP code)",
+  "NEW NON-PRODUCTION [env:aqroot-demo-fap01] + src/fap01/ (FAP-01 first-article diagnostic image)",
+  "platformio.ini: legacy_src_filter excludes src/fap01/; default_envs stays aqroot-demo, now asserted by H9",
+  "host tests: test_fap01_image.cpp (FAP build 56 claims / 20 controls; release build 8 claims / 1 control); test_production_image.cpp +7 claims / +5 controls (D801-07); shared board model answers SPI-B parts only on the SPI-B pin binding"
+ ],
+ "gates": {
+  "battery_pack": "PASS",
+  "demo_feature": "F1-F14 PASS",
+  "fab_package": "FAB1-FAB16 PASS; Gerber/drill differences are creation timestamps only; BOM / CPL / FAB-NOTES byte-identical",
+  "firmware_hw_map": "H1-H10 PASS; H6 1068 claims, 225/225 controls caught; H9 8/8; H10 8/8",
+  "guarantee_evidence": "17/17 keys, 37/37 controls",
+  "kicad_drc_parity": "identical in count and class to d800 (199 violations, 17 unconnected, 246 parity)",
+  "mechanical_keepout": "MK1-MK12 PASS",
+  "platformio": "5/5 from clean by name (esp32-s3-aqroot, wokwi, esp32-s3-aqroot-dm, aqroot-demo, aqroot-demo-fap01); bare pio run builds aqroot-demo only",
+  "protected_copper": "identical (15 nets)",
+  "rail_ampacity": "all_ok; identical to d800",
+  "routing_ledger": {
+   "approved_unrouted_edges": 1,
+   "connected_retained_nets": 173,
+   "identical_to_d800": true,
+   "retained_multi_pad_nets": 174,
+   "unapproved_open_edges": 0
+  },
+  "sourcing": "fresh --refresh sweep 2026-09-25, 123 lines, 9 short/unknown",
+  "standing_contracts": "19/19 PASS (contract_regression vs d800: all children exit 0; substantive difference only in demo_feature, firmware_hw_map, mechanical_keepout and battery_pack -- the last is the new reported F6 mode key -- by design)"
+ },
+ "identity_commit": "the commit after the content commit -- a commit cannot contain its own SHA",
+ "manifest": "hardware/demo/fab/MANIFEST.json",
+ "no_copper_change": true,
+ "no_firmware_change": false,
+ "order_status": {
+  "FAB_CAM_ACCEPTANCE": "PENDING (B01-B14)",
+  "FIRST_ARTICLE_VALIDATION": "PENDING (FA01-FA10; FAP-01 implemented, bench execution pending hardware)",
+  "PRE_ORDER_ANALYTICAL": "CLOSED on this target",
+  "PROCUREMENT": "PENDING (AO4800 allocation, nine constrained groups, R20-P01, R20-P02, pre-order re-sweep)"
+ },
+ "parent_reviewed_by_round_20": "a252b7f11e0fff2ce30381e9f3f17e3d66bbea09",
+ "procurement_gates": {
+  "R20_P01": "L3 XFL4020-472MEC: Coilcraft Doc 745-1 rev 03/10/26 archived (Operating voltage 20 V, footnote 7); BLOCK-PURCHASE until written suitability for the TPS61169 open-LED OVP transient or a rated replacement",
+  "R20_P02": "Adafruit 328 PCM: spec says 4.2 V charge AND overcharge threshold not exceeding 3.95V; BLOCK-PURCHASE until the supplier states the lot PCM threshold",
+  "standing": "genuine AOS AO4800 allocation; exact constrained-group allocation; --refresh re-sweep immediately before the order"
+ },
+ "schema": 1,
+ "witnesses": "evidence/d801-round20-witnesses.json (every witness reproduced on a252b7f1 before it was fixed)"
+}

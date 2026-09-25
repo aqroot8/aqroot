@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-20T19:33:37Z",
+ "fetched_utc": "2026-09-25T15:20:45Z",
  "keyword": "GCM1885C2A301FA16J",
  "page_size": 25,
  "pages": 1,
@@ -33,32 +33,32 @@
    "componentPrices": [
     {
      "endNumber": 49,
-     "productPrice": 0.1545,
+     "productPrice": 0.1542,
      "startNumber": 1
     },
     {
      "endNumber": 149,
-     "productPrice": 0.1273,
+     "productPrice": 0.127,
      "startNumber": 50
     },
     {
      "endNumber": 499,
-     "productPrice": 0.1137,
+     "productPrice": 0.1134,
      "startNumber": 150
     },
     {
      "endNumber": 2499,
-     "productPrice": 0.1034,
+     "productPrice": 0.1032,
      "startNumber": 500
     },
     {
      "endNumber": 4999,
-     "productPrice": 0.0951,
+     "productPrice": 0.0949,
      "startNumber": 2500
     },
     {
      "endNumber": -1,
-     "productPrice": 0.091,
+     "productPrice": 0.0908,
      "startNumber": 5000
     }
    ],

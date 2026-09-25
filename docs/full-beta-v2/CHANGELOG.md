@@ -1,3 +1,39 @@
+## D-801 — 2026-09-25 — ROUND-20 BOUNDED PRE-ORDER CORRECTION: AN EXECUTABLE FIRST-ARTICLE IMAGE, ONE MECHANICAL AUTHORITY, A GUARDED DEFAULT, AND NUMBERS THAT ARE GENERATED
+
+Round-20 graded D-800 **Astra B** (six bounded non-PCB pre-order corrections) and
+**Fable Work A** with reproducible verifier/document residuals.  **All ten D801 items are
+closed** and every Round-20 witness was reproduced on the frozen D-800 tree first
+(`evidence/d801-round20-witnesses.json`).
+
+* **`FAP-01` exists (`D801-01`).**  `[env:aqroot-demo-fap01]`, a first-article DIAGNOSTIC
+  image — CC1101 / SX1262 carriers, the NFC field, a bounded Wi-Fi burst, IR frames, U7 / U9
+  chip-select hold-off, held audio, held backlight duty after the D-784 prime, a 10 ms VCELL
+  poll — every stimulus through the release image's own gates, bounded and stoppable, host-
+  tested positive and negative; never default, never shipped
+  (`assembly/FAP01_FIRST_ARTICLE_IMAGE.md`).
+* **Mechanical authority (`D801-02`).**  `MK1` is `B.Cu`, bottom-port, listening forward
+  through its 1.05 mm hole (PUI Rev A archived); D-162's ≥ 15 mm IR TX↔RX heuristic is
+  SUPERSEDED by the 13.73 mm formed axes + `IR_BARRIER` + ±10° cone + `C-IR-01`; new `MK12`.
+* **`default_envs` is guarded (`D801-03`)** — `H9`; FAP-01 isolation — `H10`.
+* **No BATOCP interruption is claimed (`D801-04`).**  The double-limiter fault (3.8236 A at
+  the unreachable internal peak; 3.1480 A at the admitted load) lies inside the declared
+  BATOCP band; a 3.85 A threshold does not trip.  What is guaranteed is the LTC4368 breaker
+  minimum and F1.
+* **`C-BAT-GATE-01` is generated from F10 (`D801-05`)** at a declared 25 °C bench condition:
+  crossing 2.5783 A; enclosure ceiling 2.0929 A at 80.83 °C; the "survive at 2×" claim is
+  withdrawn (2× loses the row at the enclosure condition).
+* **Release identity is derived and bound (`D801-06`)**; **H6 coverage (`D801-07`)**; a
+  **fresh `--refresh` sourcing sweep** with per-row `fetched_utc` — D-800's was a replay, and
+  `TPD4E1B06DRLR` is now a consignment line (`D801-08`); the D-616 fabrication-package
+  document is fenced HISTORICAL (`D801-09`); four more document-semantic families
+  (`D801-10`).
+* **Procurement gates recorded:** `L3` XFL4020 "operating voltage 20 V" vs the TPS61169
+  open-LED OVP (Coilcraft Doc 745 archived; written suitability required) and the Adafruit
+  328 specification's "overcharge threshold … not exceeding 3.95V" (supplier clarification
+  required).  **NO COPPER** — board sha256 unchanged.
+
+**REVIEW TARGET, NOT A FABRICATION AUTHORIZATION.  DO NOT ORDER.**
+
 ## D-800 — 2026-09-24 — ROUND-19 MAXIMUM-ASSURANCE FULL PRE-ORDER REVIEW: EIGHT KNOWN FINDINGS CLOSED, A FULL-SYSTEM RE-AUDIT, AND WHAT IT FOUND
 
 Round-19 graded D-799 **Astra B** (three non-PCB pre-order corrections) and **Opus/Fable

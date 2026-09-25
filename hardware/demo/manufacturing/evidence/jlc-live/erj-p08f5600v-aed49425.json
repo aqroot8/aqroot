@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-20T19:34:19Z",
+ "fetched_utc": "2026-09-25T15:21:20Z",
  "keyword": "ERJ-P08F5600V",
  "page_size": 25,
  "pages": 1,
@@ -41,32 +41,32 @@
    "componentPrices": [
     {
      "endNumber": 49,
-     "productPrice": 0.1246,
+     "productPrice": 0.1243,
      "startNumber": 1
     },
     {
      "endNumber": 149,
-     "productPrice": 0.0972,
+     "productPrice": 0.097,
      "startNumber": 50
     },
     {
      "endNumber": 499,
-     "productPrice": 0.0835,
+     "productPrice": 0.0834,
      "startNumber": 150
     },
     {
      "endNumber": 2499,
-     "productPrice": 0.0733,
+     "productPrice": 0.0731,
      "startNumber": 500
     },
     {
      "endNumber": 4999,
-     "productPrice": 0.0652,
+     "productPrice": 0.065,
      "startNumber": 2500
     },
     {
      "endNumber": -1,
-     "productPrice": 0.0611,
+     "productPrice": 0.0609,
      "startNumber": 5000
     }
    ],

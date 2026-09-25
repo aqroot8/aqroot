@@ -1,10 +1,10 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-21T02:31:17Z",
+ "fetched_utc": "2026-09-25T15:20:48Z",
  "keyword": "BAT54WS-7-F",
  "page_size": 25,
- "pages": 2,
+ "pages": 1,
  "records": [
   {
    "assemblyComponentFlag": false,
@@ -60,17 +60,17 @@
     },
     {
      "endNumber": 23999,
-     "productPrice": 0.0077,
+     "productPrice": 0.0076,
      "startNumber": 6000
     },
     {
      "endNumber": 50999,
-     "productPrice": 0.007,
+     "productPrice": 0.0069,
      "startNumber": 24000
     },
     {
      "endNumber": -1,
-     "productPrice": 0.0066,
+     "productPrice": 0.0065,
      "startNumber": 51000
     }
    ],
@@ -86,7 +86,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 122825
+   "stockCount": 121405
   },
   {
    "assemblyComponentFlag": false,
@@ -123,32 +123,32 @@
    "componentPrices": [
     {
      "endNumber": 99,
-     "productPrice": 0.0627,
+     "productPrice": 0.0626,
      "startNumber": 1
     },
     {
      "endNumber": 299,
-     "productPrice": 0.0521,
+     "productPrice": 0.052,
      "startNumber": 100
     },
     {
      "endNumber": 2999,
-     "productPrice": 0.0468,
+     "productPrice": 0.0467,
      "startNumber": 300
     },
     {
      "endNumber": 5999,
-     "productPrice": 0.0393,
+     "productPrice": 0.0392,
      "startNumber": 3000
     },
     {
      "endNumber": 8999,
-     "productPrice": 0.036,
+     "productPrice": 0.0359,
      "startNumber": 6000
     },
     {
      "endNumber": -1,
-     "productPrice": 0.0344,
+     "productPrice": 0.0343,
      "startNumber": 9000
     }
    ],
@@ -164,7 +164,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 82659
+   "stockCount": 75852
   },
   {
    "assemblyComponentFlag": false,

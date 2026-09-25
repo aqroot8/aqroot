@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-20T19:33:38Z",
+ "fetched_utc": "2026-09-25T15:20:46Z",
  "keyword": "GQM1875C2E270FB12D",
  "page_size": 25,
  "pages": 1,
@@ -33,32 +33,32 @@
    "componentPrices": [
     {
      "endNumber": 49,
-     "productPrice": 0.3321,
+     "productPrice": 0.3313,
      "startNumber": 1
     },
     {
      "endNumber": 149,
-     "productPrice": 0.2714,
+     "productPrice": 0.2708,
      "startNumber": 50
     },
     {
      "endNumber": 499,
-     "productPrice": 0.2453,
+     "productPrice": 0.2448,
      "startNumber": 150
     },
     {
      "endNumber": 2499,
-     "productPrice": 0.2128,
+     "productPrice": 0.2123,
      "startNumber": 500
     },
     {
      "endNumber": 3999,
-     "productPrice": 0.1983,
+     "productPrice": 0.1978,
      "startNumber": 2500
     },
     {
      "endNumber": -1,
-     "productPrice": 0.1897,
+     "productPrice": 0.1892,
      "startNumber": 4000
     }
    ],

@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-20T19:34:17Z",
+ "fetched_utc": "2026-09-25T15:21:18Z",
  "keyword": "RC0603FR-07442KL",
  "page_size": 25,
  "pages": 1,
@@ -86,7 +86,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 4393
+   "stockCount": 4293
   }
  ],
  "returned": 1,

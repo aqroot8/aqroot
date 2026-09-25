@@ -69,6 +69,10 @@ struct Recorder {
   uint64_t hang_guard_us = ~uint64_t(0);      // D-800, see advanceClockUs
   int spi_begin_ignored_other_pins = 0;
   int i2s_installs = 0;
+  // D-801 / D801-01: the other half of an I2S session, so a held audio drive
+  // is seen to END (uninstalled) and to have been FED while it ran.
+  int i2s_uninstalls = 0;
+  uint64_t i2s_bytes_written = 0;
   bool pin_low[64] = {false};
   // D-795 / R14-02: how often each pin has been driven from HIGH to LOW, so a
   // SPI peripheral model can see a chip-select FRAME begin -- which is when a
@@ -106,6 +110,10 @@ struct Recorder {
   // resting state for BOOT_N, WAKE_INT_N and the two I2C lines; the test sets
   // SPI-B MISO and SX1262 BUSY low, which is what a healthy radio presents.
   uint8_t pin_level[64];
+  // D-801 / D801-07: a pin a peripheral model holds HIGH until a moment of
+  // recorded time -- the CC1101 holds SO (SPI-B MISO) high after SRES until
+  // its reset completes -- so a wait that skips that interval is observable.
+  uint64_t pin_high_until_us[64] = {0};
   Recorder() { for (int i = 0; i < 64; ++i) pin_level[i] = 1; }
 
   void reset() { *this = Recorder(); }
@@ -292,6 +300,7 @@ inline int digitalRead(uint8_t pin) {
     exit(1);
   }
   aqroot_hal::advanceClockUs(1);
+  if (pin < 64 && r.clock_us < r.pin_high_until_us[pin]) return HIGH;
   return pin < 64 ? int(r.pin_level[pin]) : HIGH;
 }
 

@@ -177,7 +177,7 @@ change loses only the four corners — exactly the CTO's intent.
 | object | how far inside | note |
 |---|---|---|
 | **battery pouch foil** | **3.000 mm** | was 1.500 mm inside the superseded rectangle. The 1.5 mm regression is the price of the 1.5 mm downward centre shift that gives the SMA its margin. **The locked policy (N-5) is zero overlap with the CLEAR region, and that holds with 2.0 mm to spare** |
-| **`D1` `TSAL6100` leadframe** | **1.381 mm**, i.e. **3.619 mm outside the Ø48 loop perimeter** | `D1` sat inside the superseded rectangular keep-out too — **not a regression**. A T-1¾ leadframe of a few mm² supports no eddy-current loop; `D1` cannot move without breaking the ≥ 15 mm IR TX↔RX rule |
+| **`D1` `TSAL6100` leadframe** | **1.381 mm**, i.e. **3.619 mm outside the Ø48 loop perimeter** | `D1` sat inside the superseded rectangular keep-out too — **not a regression**. A T-1¾ leadframe of a few mm² supports no eddy-current loop; `D1` cannot move (P1 reason, HISTORICAL: "the ≥ 15 mm IR TX↔RX rule", SUPERSEDED D-801 — today it is the `IR_BARRIER` and ±10° cone clearance, MK9) |
 
 Everything else tested — `U6`, `J5`, `J7`, `BOSS1`, `BOSS2`, `MK1` — is **outside**.
 
@@ -246,11 +246,16 @@ bounds that residual comfortably.
 
 ## 8. IR
 
+> **D-801: this table is the P1 record (pre-rebase X, `D1` axis on its pad 1).**  The current IR
+> geometry and acceptance are `../assembly/IR_LEAD_FORMING.md` (formed axes `D1` X 53.020 /
+> `U6` X 66.750, **13.73 mm**) and `../mechanical/MECHANICAL_INTERFACE_SPEC.md` §8; the board is
+> checked by `mechanical_keepout_contract` MK9 and MK12.
+
 | item | value |
 |---|---|
 | `D1` `TSAL6100` optical axis | doc **(50.750, 141.400)** — **moved 2.200 mm south at P1-002** |
 | `U6` `TSOP38238` optical axis | doc **(65.750, 143.400)** — unchanged |
-| **IR TX ↔ IR RX** | **15.000 mm** — rule ≥ 15.0 **PASS** |
+| **IR TX ↔ IR RX** | *(HISTORICAL P1 figure: 15.000 mm footprint origins against D-162's ≥ 15.0 — SUPERSEDED D-800/D-801.)* **Current: formed optical axes 13.73 mm; acceptance = `IR_BARRIER` between both courtyards + receiver outside the ±10° cone + first-article `C-IR-01`** (`MECHANICAL_INTERFACE_SPEC.md` §8, MK9/MK12) |
 | IR TX window | X 48.000 … 56.500 |
 | **IR barrier** | **X 56.500 … 61.500**, full height, bonded to BOTH shells, and **carries `BOSS2`** |
 | IR RX window | X 61.500 … 70.000 |
@@ -269,8 +274,8 @@ to **y = 141.400**, the northernmost position at which the dome lands on y = 153
 
 **Consequence, recorded:** at y = 141.400 the `D1` leadframe is **2.854 mm inside the Ø58 metal
 exclusion**, i.e. **2.146 mm outside the Ø48 loop perimeter** against a 5 mm target. `D1` cannot
-move east — it is already at the exact X the ≥ 15 mm IR TX↔RX rule allows given `U6` is hard
-against the right board edge — and it cannot move north without breaking the enclosure. **The
+move east — at P1 it sat at the exact X the ≥ 15 mm IR TX↔RX rule allowed given `U6` is hard
+against the right board edge (HISTORICAL: that D-162 rule is SUPERSEDED D-801; today east is closed by the `IR_BARRIER` face and the ±10° cone, MK9) — and it cannot move north without breaking the enclosure. **The
 intruding metal is two 0.5 mm leads and a reflector cup of a few mm², perpendicular to the antenna
 plane, in the FRONT cavity while the antenna is bonded to the REAR shell**, so the true 3-D
 separation is considerably larger than this plan-view figure. Recorded, not hidden.

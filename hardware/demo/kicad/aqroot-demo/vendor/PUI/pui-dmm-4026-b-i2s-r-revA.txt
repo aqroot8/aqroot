@@ -1,0 +1,237 @@
+This document contains data proprietary to PUI Audio Inc. Any use or reproduction, in any form, without prior written permission
+                                                of PUI Audio Inc. is prohibited.
+                                                    ©2019, PUI Audio Inc.
+
+
+
+
+ Data Sheet                                                                                  DMM-4026-B-I2S-R
+
+Specifications
+
+ Parameters                                                  Condition                 Values            Units
+ Directivity                                                            Omnidirectional
+ Data Format (Single Channel)                     I S 24-bit data size with 18-bit precision, 32-bit word size
+                                                   2
+
+                                              1 kHz @ 50cm with 94 dB source
+ Sensitivity                                              0 dB=1V/Pa                    -26±1              dB
+ Rated Voltage                                                  -                         1.8             VDC
+ Operating Voltage Range                                        -                     1.5 to 3.6          VDC
+                                                         Normal Mode                 820 ~ 1000            µA
+ Supply Current
+                                                     Sleep Mode (clock off)                5               µA
+ Signal-to-Noise Ratio                         1kHz, 94 dB input, A-weighted              64               dB
+ Frequency Range                                                   20~20,000                               Hz
+ Total Harmonic Distortion                     110 dB @ 50cm, 1 kHz acoustic
+ (typical)                                                   source                      1%                 -
+                                                 Sensitivity reaching 90% of
+                                               listed value from initial power-
+                                                               up                         20               mS
+ Startup Time
+                                                       From Sleep Mode                    20               mS
+                                                 From Normal Mode to Sleep
+                                                              Mode                        20               mS
+                                                         Normal Mode                2.048 ~ 4.096         MHz
+ Input Clock Frequency
+                                                          Sleep Mode                     320              kHz
+ Clock Jitter                                           Long Term RMS                    500               pS
+ Load Capacitance                                               -                        140               pF
+ Pass Band                                                 Fs=48 kHz                      18              kHz
+ Pass Band Attenuation                                          -                         0.5              dB
+                                                                                                       See page 4
+ Acceptable Soldering Methods                                     Reflow Solder                      for soldering
+                                                                                                      information
+ Environmental Compliances                                            RoHS/Halogen Free
+                                                    100 mVpp Square Wave
+ Power Supply Rejection
+                                                     @ 217 Hz, A-weighted                -86              dBFS
+ Weight                                                                <0.3                              Grams
+ Operating Temperature                                             -40 ~ +100                              °C
+ Storage Temperature                                               -40 ~ +125                              °C
+ MSL (Moisture Sensitivity Level)*                                      1                                   -
+*MSL level dependent on product remaining in sealed packaging until use
+
+
+
+
+                                   PUI Audio, Inc., 3541 Stop Eight Road, Dayton, OH 45414
+                                           Tel: (937) 415-5901 Fax: (937) 415-5925
+This document contains data proprietary to PUI Audio Inc. Any use or reproduction, in any form, without prior written permission
+                                                of PUI Audio Inc. is prohibited.
+                                                    ©2019, PUI Audio Inc.
+
+Measurement Method
+
+
+
+
+Measurement Interface Circuit
+
+
+
+
+                                   PUI Audio, Inc., 3541 Stop Eight Road, Dayton, OH 45414
+                                           Tel: (937) 415-5901 Fax: (937) 415-5925
+This document contains data proprietary to PUI Audio Inc. Any use or reproduction, in any form, without prior written permission
+                                                of PUI Audio Inc. is prohibited.
+                                                    ©2019, PUI Audio Inc.
+
+Digital Interface Specifications
+In order to properly use this microphone, the I2S converter must support a 32-bit word size
+for mono operation and 64-bit word size for stereo operation with two microphones. Each
+microphone outputs 24-bit data with 18-bit precision. Six bits are null (0) value.
+
+ Parameters                   Symbol              Condition                           Value                          Units
+                                -                                       MIN           Typical         MAX              -
+ BCLK Frequency                BCLK                     -                 -            3.072         12.288          MHz
+ BCLK Duty Cycle                  -                     -                45               -            55             %
+ Data Valid                    TDV                      -                 -               -            18             nS
+                                                                         32
+                                               Two mic mode                                -            -
+ WCLK Hold Time              THWCLK                                   (1/BCLK)                                         nS
+                                               Array mic mode            20                -            -              nS
+ WCLK Setup Time              TSWCLK                  -                  20                -            -              nS
+
+
+
+
+Typical Frequency Response (Microphone spaced 50cm from 94 dB acoustic source)
+
+
+
+
+                                   PUI Audio, Inc., 3541 Stop Eight Road, Dayton, OH 45414
+                                           Tel: (937) 415-5901 Fax: (937) 415-5925
+This document contains data proprietary to PUI Audio Inc. Any use or reproduction, in any form, without prior written permission
+                                                of PUI Audio Inc. is prohibited.
+                                                    ©2019, PUI Audio Inc.
+
+
+
+
+Recommended Soldering Procedure
+
+
+
+
+                                   PUI Audio, Inc., 3541 Stop Eight Road, Dayton, OH 45414
+                                           Tel: (937) 415-5901 Fax: (937) 415-5925
+This document contains data proprietary to PUI Audio Inc. Any use or reproduction, in any form, without prior written permission
+                                                of PUI Audio Inc. is prohibited.
+                                                    ©2019, PUI Audio Inc.
+
+Reliability Testing
+ Type of Test                 Test Specifications
+                              Samples for qualification testing require 3 passes 260±5 ℃ reflow
+ Simulated Reflow             solder profiles. 2 hours of setting time is required between each
+ (Without Solder)             reflow profile test.
+                              Precondition at +25℃ for 1 hour. Expose to +85℃ with 85%
+                              relative humidity for 1000 hours. Dry at room ambient for 3±1
+ Static Humidity              hour before taking final measurement.
+                              Each cycle shall consist of 30 minutes at -40℃, 30 minutes at
+                              +125℃ with 5 minutes transition time. Test duration is for 30
+ Temperature Shock            cycles, starting from cold to hot temperature.
+                              Perform ESD sensitivity threshold measurements for each contact
+                              according to MIL-STD-883G, Method 3015.7 for Human Body
+                              Model. Identify the ESD threshold levels indicating passage of
+ ESD Sensitivity              8000V Human Body Model.
+                              Vibrate randomly along three perpendicular directions for 30
+                              minutes in each direction, 4 cycles from 20~2000 Hz with a peak
+ Vibration Test               acceleration of 20 Gs.
+                              Subject samples to half-sine shock pulses (3000±15% Gs for
+ Shock Test                   0.3ms) in each direction, for a total of 18 shocks.
+                              Drop samples from 1.5m height onto a steel surface, total 18
+ Drop Test                    times and inspected for mechanical damage.
+                              Subject samples to +125℃ for 168 hours under full maximum
+ Operation Life               rated voltage.
+Microphone frequency response and sensitivity shall not deviate more than ±3 dB.
+
+
+
+
+                                   PUI Audio, Inc., 3541 Stop Eight Road, Dayton, OH 45414
+                                           Tel: (937) 415-5901 Fax: (937) 415-5925
+This document contains data proprietary to PUI Audio Inc. Any use or reproduction, in any form, without prior written permission
+                                                of PUI Audio Inc. is prohibited.
+                                                    ©2019, PUI Audio Inc.
+
+Dimensions
+
+
+
+
+                                   PUI Audio, Inc., 3541 Stop Eight Road, Dayton, OH 45414
+                                           Tel: (937) 415-5901 Fax: (937) 415-5925
+    This document contains data proprietary to PUI Audio Inc. Any use or reproduction, in any form, without prior written permission
+                                                    of PUI Audio Inc. is prohibited.
+                                                        ©2019, PUI Audio Inc.
+
+   Suggested Pickup Tool Location and Land Pattern*
+
+
+
+
+*This land pattern is advisory only and its use or adaptation is entirely voluntary.
+PUI Audio disclaims all liability of any kind associated with the use, application, or
+                           adaptation of this land pattern.
+
+
+
+
+                                       PUI Audio, Inc., 3541 Stop Eight Road, Dayton, OH 45414
+                                               Tel: (937) 415-5901 Fax: (937) 415-5925
+This document contains data proprietary to PUI Audio Inc. Any use or reproduction, in any form, without prior written permission
+                                                of PUI Audio Inc. is prohibited.
+                                                    ©2019, PUI Audio Inc.
+
+Packaging
+
+
+
+
+                                   PUI Audio, Inc., 3541 Stop Eight Road, Dayton, OH 45414
+                                           Tel: (937) 415-5901 Fax: (937) 415-5925
+This document contains data proprietary to PUI Audio Inc. Any use or reproduction, in any form, without prior written permission
+                                                of PUI Audio Inc. is prohibited.
+                                                    ©2019, PUI Audio Inc.
+
+Packaging (continued)
+
+
+
+
+                                   PUI Audio, Inc., 3541 Stop Eight Road, Dayton, OH 45414
+                                           Tel: (937) 415-5901 Fax: (937) 415-5925
+This document contains data proprietary to PUI Audio Inc. Any use or reproduction, in any form, without prior written permission
+                                                of PUI Audio Inc. is prohibited.
+                                                    ©2019, PUI Audio Inc.
+
+Packaging (continued)
+
+
+
+
+                                   PUI Audio, Inc., 3541 Stop Eight Road, Dayton, OH 45414
+                                           Tel: (937) 415-5901 Fax: (937) 415-5925
+This document contains data proprietary to PUI Audio Inc. Any use or reproduction, in any form, without prior written permission
+                                                of PUI Audio Inc. is prohibited.
+                                                    ©2019, PUI Audio Inc.
+
+                                                  Specifications Revisions
+           Revision                                          Description                                  Date
+                             -                        Released from Engineering                                   10/31/2019
+                             A                       Added I2S data information                                    5/26/2021
+
+
+
+
+          Note:
+          1. Unless otherwise specified:
+              A. All dimensions are in millimeters.
+              B. Default tolerances are ±0.5mm and angles are ±3°.
+          2. Specifications subject to change or withdrawal without notice.
+
+                                   PUI Audio, Inc., 3541 Stop Eight Road, Dayton, OH 45414
+                                           Tel: (937) 415-5901 Fax: (937) 415-5925
+

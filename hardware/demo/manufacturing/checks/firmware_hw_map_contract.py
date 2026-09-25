@@ -49,6 +49,17 @@ WHAT IS PROVED
           rules over it -- one chip select at a time, one transmitter at a time
           -- were comments until D-748.  A comment cannot refuse.
 
+      D-801 / D801-01 adds the FAP-01 first-article image to H6: its host test
+      runs against the FAP-01 build (every stimulus reachable, gated, bounded,
+      quiesced) AND against the release build (every FAP-01 key inert), and
+      the whole release-image host test is re-run on the FAP-01 build.
+  H9  D-801 / D801-03: `Firmware/platformio.ini`'s `default_envs` is exactly
+      and solely `aqroot-demo`, and every named environment still exists.
+  H10 D-801 / D801-01: FAP-01 is ISOLATED -- `src/fap01/` and
+      `AQROOT_FAP01_DIAGNOSTIC` reach `[env:aqroot-demo-fap01]` alone, the
+      release `main.cpp` preprocesses to no FAP-01 token, and `src/fap01/`
+      refuses to compile without its define.
+
 AND IT PROVES IT IS NOT VACUOUS.  Eleven controls mutate the policy table --
 including the exact `P05`/`P06` swap D-732 found -- and each must be REFUSED.
 
@@ -56,7 +67,9 @@ including the exact `P05`/`P06` swap D-732 found -- and each must be REFUSED.
 """
 
 import argparse
+import configparser
 import copy
+import fnmatch
 import hashlib
 import json
 import re
@@ -129,7 +142,18 @@ HOST_TESTS = [
 ]
 # The tests that need the whole IMAGE -- `src/demo/` and the host Arduino core
 # under `test/image/` -- rather than the headers alone.
-IMAGE_TESTS = {"test_production_image.cpp"}
+IMAGE_TESTS = {"test_production_image.cpp", "test_fap01_image.cpp"}
+# D-801 / D801-01.  The FAP-01 first-article diagnostic image.
+FAP01_DIR = ROOT / "Firmware/src/fap01"
+FAP01_TEST = ROOT / "Firmware/test/test_fap01_image.cpp"
+FAP01_DEFINE = "AQROOT_FAP01_DIAGNOSTIC"
+PLATFORMIO_INI = ROOT / "Firmware/platformio.ini"
+RELEASE_ENV = "aqroot-demo"
+FAP01_ENV = "aqroot-demo-fap01"
+# Every environment that must still build BY NAME (D801-03).
+NAMED_ENVS = ("esp32-s3-aqroot", "wokwi", "esp32-s3-aqroot-dm", RELEASE_ENV,
+              FAP01_ENV)
+PIO = Path("/home/aqroot8/.piovenv/bin/pio")
 IMAGE_HARNESS = ROOT / "Firmware/test/image"
 DEMO_DIR = ROOT / "Firmware/src/demo"
 # The recording Arduino core the production-entry-point test compiles against.
@@ -828,6 +852,39 @@ PRODUCTION_IMAGE_CONTROLS = [
      "demo/main.cpp",
      "  SPI.end();\n  return q.ok();",
      "  return q.ok();"),
+    # ---- D-801 / D801-07 (Fable R20-02).  THE D-800 FIXES THAT HAD NO
+    # CONTROL.  Each reverts ONE retained D-800 production fix and must fail
+    # on the claim that states the behaviour the fix buys.
+    ("D801-07 (a): ACC_5V may be granted while U2's output state is UNKNOWN "
+     "(the 5 V twin of the ACC_3V3 control above)",
+     "aqroot_demo_expanders.h",
+     "  bool setAccessory5v(I2cBus &bus, bool on) {\n    if (on) {\n      // D-800: never grant a rail while EITHER expander's output state is\n      // UNKNOWN -- a NACKed U2 write in the same loop iteration left U2's\n      // shadow invalid and D-799 still energised ACC_3V3 for 1300 ms.\n      if (!ready_ || fault_observability_lost_ || safe_shutdown_pending_ || accessoryFault()\n          || !u2_.outputShadowValid() || !u3_.outputShadowValid()) return false;",
+     "  bool setAccessory5v(I2cBus &bus, bool on) {\n    if (on) {\n      // D-800: never grant a rail while EITHER expander's output state is\n      // UNKNOWN -- a NACKed U2 write in the same loop iteration left U2's\n      // shadow invalid and D-799 still energised ACC_3V3 for 1300 ms.\n      if (!ready_ || fault_observability_lost_ || safe_shutdown_pending_ || accessoryFault()) return false;",
+     "D801-07 (a)"),
+    ("D801-07 (b): the radio quiesce binds the SPI peripheral to the SPI-A "
+     "pins while it selects U7/U8/U9",
+     "demo/main.cpp",
+     "  g_selects.begin();\n  SPI.begin(AQROOT_PIN_SPI_B_SCK, AQROOT_PIN_SPI_B_MISO, AQROOT_PIN_SPI_B_MOSI,\n            -1);\n  const RadioQuiesce q = quiesceRadios(g_spi_b);",
+     "  g_selects.begin();\n  SPI.begin(AQROOT_PIN_SPI_A_SCK, AQROOT_PIN_SPI_A_MISO, AQROOT_PIN_SPI_A_MOSI,\n            -1);\n  const RadioQuiesce q = quiesceRadios(g_spi_b);",
+     "D801-07 (b)"),
+    ("D801-07 (c): the microSD probe never releases SPI, so the next SPI-B "
+     "begin is ignored and U9's liveness frames leave on the SPI-A pins",
+     "aqroot_demo_peripherals.h",
+     "  SPI.endTransaction();\n  SPI.end();\n  return result;",
+     "  SPI.endTransaction();\n  return result;",
+     "D801-07 (c)"),
+    ("D801-07 (d1): the CC1101 quiesce's SO wait after SRES is put back on "
+     "the D-799 wrapping deadline",
+     "aqroot_demo_radios.h",
+     "  so_start = millis();\n  while (digitalRead(AQROOT_PIN_SPI_B_MISO) == HIGH && millis() - so_start < 10) {\n  }",
+     "  const uint32_t deadline = millis() + 10;\n  while (digitalRead(AQROOT_PIN_SPI_B_MISO) == HIGH && millis() < deadline) {\n  }",
+     "D801-07 (d1)"),
+    ("D801-07 (d2): the microphone capture is put back on the D-799 "
+     "wrapping deadline",
+     "aqroot_demo_peripherals.h",
+     "  const uint32_t mic_start = millis();    // D-800: wrap-safe\n  while (result.frames < want && millis() - mic_start < ms + 200) {",
+     "  const uint32_t deadline = millis() + ms + 200;\n  while (result.frames < want && millis() < deadline) {",
+     "D801-07 (d2)"),
     # ---- D-793 / R12-03, AT THE IMAGE LEVEL.  These are the mutations the
     # RETAINED-CC1101 scenarios in `test_production_image.cpp` exist to catch:
     # each one compiles, and each one puts the image back to believing a
@@ -1319,6 +1376,129 @@ PRODUCTION_IMAGE_CONTROLS = [
 ]
 
 
+# ===========================================================================
+# D-801 / D801-01 (Astra R20-01).  THE FAP-01 FIRST-ARTICLE IMAGE.
+#
+# `test_fap01_image.cpp` runs against the FAP-01 BUILD, and every control
+# below is a plausible edit that would make a bench stimulus reachable where
+# the release authority refuses it, unbounded, or unquiesced.  Each must fail
+# on the claim that states that property (the fifth element).
+FAP01_CONTROLS = [
+    ("FAP-01: the CC1101 is keyed around SpiBusB::beginTransmit",
+     "fap01/aqroot_fap01.cpp",
+     "  if (!g_ctx.spi_b->beginTransmit(SpiBDevice::Cc1101)) {",
+     "  if (false) {",
+     "C: with an accessory rail live the key is REFUSED"),
+    ("FAP-01: an unattended CC1101 carrier is unbounded",
+     "fap01/aqroot_fap01.cpp",
+     '  if (expired(g_cc_tx, kSubGhzTxMaxMs)) stopCc1101("30000 ms bound");\n',
+     "",
+     "C: an unattended carrier is STOPPED"),
+    ("FAP-01: stopping the CC1101 releases the slot without quiescing the part",
+     "fap01/aqroot_fap01.cpp",
+     "  const bool idle = cc1101Quiesce(*g_ctx.spi_b, &marc);",
+     "  const bool idle = true;",
+     "C: the same key STOPS it"),
+    ("FAP-01: an unattended SX1262 CW is unbounded",
+     "fap01/aqroot_fap01.cpp",
+     '  if (expired(g_sx_cw, kSubGhzTxMaxMs)) stopSx1262("30000 ms bound");\n',
+     "",
+     "L: an unattended CW is STOPPED"),
+    ("FAP-01: the NFC field is turned on around beginNfcFieldSession",
+     "fap01/aqroot_fap01.cpp",
+     "  if (!g_ctx.app->beginNfcFieldSession(*g_ctx.spi_b)) return;",
+     "  (void)0;",
+     "N: with an accessory rail live the release session gate REFUSES"),
+    ("FAP-01: an unattended NFC field is unbounded",
+     "fap01/aqroot_fap01.cpp",
+     '  if (expired(g_nfc_field, kNfcFieldMaxMs)) stopNfcField("60000 ms bound");\n',
+     "",
+     "N: an unattended field is turned OFF"),
+    ("FAP-01: the Wi-Fi waiver loses its rail-off precondition",
+     "fap01/aqroot_fap01.cpp",
+     "        g_ctx.app->accessoryRailsOn() == 0 &&\n",
+     "",
+     "W: with an accessory rail live the burst is REFUSED"),
+    ("FAP-01: the Wi-Fi burst never asks the release permission table",
+     "fap01/aqroot_fap01.cpp",
+     "  if (!g_ctx.app->wifiActivationPermitted()) {",
+     "  if (true) {",
+     "W: ...having ASKED the release permission table"),
+    ("FAP-01: the Wi-Fi mode is never told to the permission table",
+     "fap01/aqroot_fap01.cpp",
+     "  g_ctx.app->noteWifiRadioActive(true);\n",
+     "",
+     "W: ...and the Wi-Fi mode is TOLD"),
+    ("FAP-01: the Wi-Fi burst ignores the bench-source declaration",
+     "fap01/aqroot_fap01.cpp",
+     "  if (!benchDeclared()) {",
+     "  if (false) {",
+     "W: without the bench-source declaration"),
+    ("FAP-01: an unattended Wi-Fi burst is unbounded",
+     "fap01/aqroot_fap01.cpp",
+     '  if (expired(g_wifi, kWifiBurstMaxMs)) stopWifi("10000 ms bound");\n',
+     "",
+     "W: an unattended burst is STOPPED"),
+    ("FAP-01: the IR burst takes no burst slot",
+     "fap01/aqroot_fap01.cpp",
+     '  if (!g_ctx.app->burstAllowed(BurstLoad::IrTransmit, "FAP-01 IR NEC burst")) {\n'
+     "    return;\n  }\n"
+     "  BurstArbiter::Hold burst(g_ctx.app->burstArbiter(), BurstLoad::IrTransmit);\n"
+     "  if (!burst.ok()) return;\n",
+     "",
+     "I: with U9's field UNKNOWN"),
+    ("FAP-01: the chip-select hold-off never holds the pin",
+     "fap01/aqroot_fap01.h",
+     "    if (asserted && holdOffActive(device)) {",
+     "    if (false && asserted && holdOffActive(device)) {",
+     "H: ...the driver selected U7"),
+    ("FAP-01: a hold-off armed before a warm reset is not restored at boot",
+     "fap01/aqroot_fap01.cpp",
+     "    if (mask & kHoldOffU7) g_ctx.selects->setHoldOff(SpiBDevice::Cc1101, true);\n",
+     "",
+     "H: ...the driver selected U7"),
+    ("FAP-01: a chip-select hold-off is unbounded",
+     "fap01/aqroot_fap01.cpp",
+     '      releaseHoldOff(d, "60000 ms bound");\n',
+     "      (void)d;\n",
+     "H: the hold-off ends at its 60 s bound"),
+    ("FAP-01: the held audio energises the amplifier around the mode edge",
+     "fap01/aqroot_fap01.cpp",
+     "  if (!g_ctx.app->setAmplifierIntent(true)) {",
+     "  if (!g_ctx.expanders->setAmplifier(*g_ctx.bus, true)) {",
+     "A: with a rail live the release mode edge REFUSES"),
+    ("FAP-01: held audio is unbounded",
+     "fap01/aqroot_fap01.cpp",
+     '  if (expired(g_audio, kThermalHoldMaxMs)) stopAudio("30 min bound");\n',
+     "",
+     "A/B: unattended, both held states end"),
+    ("FAP-01: the held backlight duty skips the D-784 full-duty prime",
+     "fap01/aqroot_fap01.h",
+     "  write_duty(255);\n  wait_us(kBacklightStartupPrimeUs);\n  write_duty(duty);",
+     "  (void)wait_us;\n  write_duty(duty);",
+     "B: the held backlight starts at FULL duty"),
+    ("FAP-01: the VCELL poll's 10 ms pacing wait is cut to one tick",
+     "fap01/aqroot_fap01.cpp",
+     "         attempt < 2 * kVcellPollPeriodMs &&",
+     "         attempt < 1 &&",
+     "G: 200 raw VCELL samples"),
+    ("FAP-01: main.cpp stops servicing the FAP-01 bounds from loop()",
+     "demo/main.cpp",
+     "  fap01::service();\n",
+     "",
+     "C: an unattended carrier is STOPPED"),
+]
+
+# The NEGATIVE half: the same test compiled into the RELEASE build.  Its one
+# control is the build-configuration leak -- the FAP-01 define and sources
+# reaching the release image -- and it must fail on the claim that the
+# release image does not recognise a FAP-01 key.
+FAP01_RELEASE_CONTROLS = [
+    ("RELEASE: the FAP-01 define and src/fap01/ leak into the release build",
+     "__build__", "", "",
+     "RELEASE: no FAP-01 key is recognised"),
+]
+
 BUS_CONTROLS = [
     # ---- D-793 / R12-03.  `transmitting_` is a C++ member and an MCU reset
     # zeroes it; U7 and U8 stay powered.  Until the boot path has proven the
@@ -1510,7 +1690,221 @@ ORDER_CONTROLS = [
 
 
 
-def run_host_test(test, mutation=None):
+# ===========================================================================
+# D-801 / D801-03 + D801-01.  platformio.ini, READ THE WAY PLATFORMIO READS IT.
+#
+# Round-20 (Astra R20-03, Fable R20-02 overlap): changing `default_envs` to the
+# legacy `esp32-s3-aqroot` left H1-H8 green.  A bare `pio run -t upload` then
+# flashes a placeholder-pin image onto a Demo board (D-800), and with FAP-01
+# in the tree a default could just as easily be the diagnostic image.  H9
+# asserts the default; H10 asserts where FAP-01 can and cannot reach.  Both
+# parse the file -- comments, multi-line values, `${section.option}`
+# interpolation and `extends` -- rather than grep it, and both are exercised by
+# destructive controls on the TEXT, so a future edit that the parser misreads
+# is a control that fails, not a gate that passes.
+def _pio_parse(text):
+    cp = configparser.RawConfigParser(comment_prefixes=(";", "#"),
+                                      inline_comment_prefixes=(";",),
+                                      strict=False, delimiters=("=",))
+    cp.optionxform = str
+    cp.read_string(text)
+    return cp
+
+
+def _pio_get(cp, section, option, depth=0):
+    """An option with PlatformIO's `${section.option}` interpolation and
+    `extends` inheritance applied; None when absent."""
+    if depth > 16 or not cp.has_section(section):
+        return None
+    if not cp.has_option(section, option):
+        if cp.has_option(section, "extends"):
+            for parent in re.split(r"[,\s]+", cp.get(section, "extends").strip()):
+                if parent:
+                    value = _pio_get(cp, parent, option, depth + 1)
+                    if value is not None:
+                        return value
+        return None
+
+    def _sub(match):
+        sec, _, opt = match.group(1).rpartition(".")
+        value = _pio_get(cp, sec, opt, depth + 1)
+        return value if value is not None else ""
+    return re.sub(r"\$\{([^}]+)\}", _sub, cp.get(section, option))
+
+
+def _pio_default_envs(cp):
+    raw = cp.get("platformio", "default_envs", fallback=None) \
+        if cp.has_section("platformio") else None
+    if raw is None:
+        return None
+    return [e for e in re.split(r"[,\s]+", raw.strip()) if e]
+
+
+def _default_env_problems(text):
+    problems = []
+    try:
+        cp = _pio_parse(text)
+    except configparser.Error as exc:
+        return ["platformio.ini does not parse: %s" % exc]
+    if not cp.has_section("platformio"):
+        problems.append("no [platformio] section: a bare `pio run` builds and "
+                        "uploads EVERY environment in file order")
+        return problems
+    if cp.has_option("platformio", "extra_configs"):
+        problems.append("[platformio] names extra_configs, which can re-define "
+                        "default_envs outside this file")
+    envs = _pio_default_envs(cp)
+    if envs is None:
+        problems.append("default_envs is missing: a bare `pio run -t upload` "
+                        "flashes every environment, legacy placeholder images "
+                        "included")
+    elif envs != [RELEASE_ENV]:
+        problems.append("default_envs is %r; it must be exactly and solely "
+                        "[%r]" % (envs, RELEASE_ENV))
+    for name in NAMED_ENVS:
+        if not cp.has_section("env:%s" % name):
+            problems.append("[env:%s] is gone, so it no longer builds by name"
+                            % name)
+    return problems
+
+
+def _src_files():
+    base = ROOT / "Firmware/src"
+    return sorted(p.relative_to(base).as_posix() for p in base.rglob("*")
+                  if p.suffix in (".c", ".cc", ".cpp", ".S"))
+
+
+def _src_filter_selects(filter_text, files):
+    """PlatformIO's `build_src_filter`, applied in order: `+<p>` adds and
+    `-<p>` removes; `dir/` means everything under it and `*` everything."""
+    selected = set()
+    for sign, pat in re.findall(r"([+-])<([^>]*)>", filter_text):
+        if pat in ("*", "**", "*/", "**/"):
+            hit = set(files)
+        elif pat.endswith("/"):
+            hit = {f for f in files if f.startswith(pat)}
+        else:
+            hit = {f for f in files
+                   if fnmatch.fnmatch(f, pat) or f.startswith(pat + "/")}
+        selected = selected | hit if sign == "+" else selected - hit
+    return selected
+
+
+def _preprocess_main(main_text, define):
+    """`demo/main.cpp` through the host image core's preprocessor, with or
+    without the FAP-01 define.  Returns (ok, text)."""
+    with tempfile.TemporaryDirectory(prefix="aqroot-pp-") as temporary:
+        work = Path(temporary)
+        shutil.copytree(HW_DIR, work / "hw")
+        shutil.copytree(IMAGE_HARNESS, work / "image")
+        if HOST_HARNESS.exists():
+            shutil.copytree(HOST_HARNESS, work / "harness")
+        if FAP01_DIR.exists():
+            shutil.copytree(FAP01_DIR, work / "fap01")
+        (work / "demo").mkdir()
+        (work / "demo" / "main.cpp").write_text(main_text, encoding="utf-8")
+        cmd = ["g++", "-std=c++17", "-E", "-P", "-DARDUINO=200",
+               "-I", str(work / "image"), "-I", str(work / "hw"),
+               "-I", str(work)]
+        if define:
+            cmd.append("-D" + FAP01_DEFINE)
+        run = subprocess.run(cmd + [str(work / "demo" / "main.cpp")],
+                             capture_output=True, text=True)
+        return run.returncode == 0, run.stdout if run.returncode == 0 \
+            else run.stderr[-600:]
+
+
+def _fap01_isolation_problems(ini_text, main_text, header_text, cpp_text):
+    problems = []
+    try:
+        cp = _pio_parse(ini_text)
+    except configparser.Error as exc:
+        return ["platformio.ini does not parse: %s" % exc]
+    files = _src_files()
+    envs = [sec[4:] for sec in cp.sections() if sec.startswith("env:")]
+    if FAP01_ENV not in envs:
+        problems.append("[env:%s] is missing: FAP-01 has no build" % FAP01_ENV)
+    for env in envs:
+        section = "env:%s" % env
+        flt = _pio_get(cp, section, "build_src_filter")
+        if flt is None:
+            flt = "+<*> -<.git/> -<.svn/>"       # PlatformIO's default
+        flags = _pio_get(cp, section, "build_flags") or ""
+        selected = _src_filter_selects(flt, files)
+        fap_sources = sorted(f for f in selected if f.startswith("fap01/"))
+        defined = re.search(r"-D\s*%s\b" % FAP01_DEFINE, flags) is not None
+        if env == FAP01_ENV:
+            if not fap_sources:
+                problems.append("[env:%s] does not compile src/fap01/" % env)
+            if not defined:
+                problems.append("[env:%s] does not define %s" % (env, FAP01_DEFINE))
+            if "demo/main.cpp" not in selected:
+                problems.append("[env:%s] does not compile the release "
+                                "demo/main.cpp" % env)
+        else:
+            if fap_sources:
+                problems.append("[env:%s] compiles FAP-01 sources %s"
+                                % (env, fap_sources))
+            if defined:
+                problems.append("[env:%s] defines %s" % (env, FAP01_DEFINE))
+    if RELEASE_ENV in envs:
+        rel = _src_filter_selects(
+            _pio_get(cp, "env:%s" % RELEASE_ENV, "build_src_filter") or "",
+            files)
+        if "demo/main.cpp" not in rel:
+            problems.append("[env:%s] no longer compiles demo/main.cpp"
+                            % RELEASE_ENV)
+    guard = re.compile(r"#if\s+!\s*defined\s*\(\s*%s\s*\)\s*\n\s*#error"
+                       % FAP01_DEFINE)
+    if not guard.search(header_text):
+        problems.append("src/fap01/aqroot_fap01.h no longer refuses to compile "
+                        "without %s" % FAP01_DEFINE)
+    if not guard.search(cpp_text):
+        problems.append("src/fap01/aqroot_fap01.cpp no longer refuses to "
+                        "compile without %s" % FAP01_DEFINE)
+    ok, text = _preprocess_main(main_text, define=False)
+    if not ok:
+        problems.append("the RELEASE demo/main.cpp does not preprocess without "
+                        "%s: %s" % (FAP01_DEFINE, text.strip().splitlines()[-1]
+                                    if text.strip() else "?"))
+    else:
+        leaked = sorted(set(re.findall(r"\bfap01::\w+|\bHoldOffChipSelects\b"
+                                       r"|\bAQROOT_FAP01\w*", text)))
+        if leaked:
+            problems.append("the RELEASE demo/main.cpp preprocesses to FAP-01 "
+                            "code: %s" % leaked)
+    ok, text = _preprocess_main(main_text, define=True)
+    hooks = ("fap01::begin", "fap01::announce", "fap01::service",
+             "fap01::handleKey", "fap01::HoldOffChipSelects")
+    missing = [h for h in hooks if not ok or h not in text]
+    if missing:
+        problems.append("the FAP-01 demo/main.cpp is missing its hooks %s"
+                        % missing)
+    return problems
+
+
+def _pio_project_config():
+    """What PlatformIO ITSELF resolves as the default, when it is installed."""
+    if not PIO.exists():
+        return {"available": False}
+    run = subprocess.run([str(PIO), "project", "config", "--json-output",
+                          "-d", str(ROOT / "Firmware")],
+                         capture_output=True, text=True, timeout=300)
+    if run.returncode != 0:
+        return {"available": True, "error": run.stderr[-400:]}
+    try:
+        sections = json.loads(run.stdout)
+    except ValueError:
+        return {"available": True, "error": "unparseable JSON"}
+    table = {name: dict(opts) for name, opts in sections}
+    return {
+        "available": True,
+        "default_envs": table.get("platformio", {}).get("default_envs"),
+        "environments": sorted(n[4:] for n in table if n.startswith("env:")),
+    }
+
+
+def run_host_test(test, mutation=None, variant=None):
     """Compile and run one host test, optionally against a mutated copy of the
     layer.  Returns (compiled, exit_code, stdout).
 
@@ -1518,8 +1912,19 @@ def run_host_test(test, mutation=None):
     Arduino core under `test/image/`, and its mutations may name
     `demo/main.cpp` -- which is the point, because that is the file Round-9's
     five counterexamples live in.
+
+    D-801 / D801-01: `variant` selects the BUILD an image test is linked into.
+      None       the release image, as every earlier release;
+      "fap01"    the FAP-01 diagnostic build: `-DAQROOT_FAP01_DIAGNOSTIC` and
+                 `src/fap01/*.cpp` (with `-DAQROOT_TEST_EXPECT_FAP01` for the
+                 FAP-01 test itself);
+      "release"  the release build with `-DAQROOT_TEST_EXPECT_PRODUCTION`, for
+                 the FAP-01 test's NEGATIVE half.  The one `__build__`
+                 mutation leaks the FAP-01 define and sources into it -- the
+                 build-configuration mistake the negative half exists to catch.
     """
     is_image = test.name in IMAGE_TESTS
+    leak = mutation is not None and mutation[1] == "__build__"
     with tempfile.TemporaryDirectory(prefix="aqroot-host-") as temporary:
         work = Path(temporary)
         shutil.copytree(HW_DIR, work / "hw")
@@ -1528,8 +1933,10 @@ def run_host_test(test, mutation=None):
         if is_image:
             shutil.copytree(DEMO_DIR, work / "demo")
             shutil.copytree(IMAGE_HARNESS, work / "image")
+            if FAP01_DIR.exists():
+                shutil.copytree(FAP01_DIR, work / "fap01")
         shutil.copy(test, work / test.name)
-        if mutation is not None:
+        if mutation is not None and not leak:
             _, filename, before, after = mutation[:4]
             target = (work / filename) if "/" in filename \
                 else (work / "hw" / filename)
@@ -1546,6 +1953,13 @@ def run_host_test(test, mutation=None):
             sources += [str(work / "demo" / "main.cpp"),
                         str(work / "image" / "image_main.cpp")]
             flags = ["-DARDUINO=200", "-I", str(work / "image")]
+            fap_build = variant == "fap01" or leak
+            if fap_build:
+                flags.append("-D" + FAP01_DEFINE)
+                sources += sorted(str(x) for x in (work / "fap01").glob("*.cpp"))
+            if test.name == FAP01_TEST.name:
+                flags.append("-DAQROOT_TEST_EXPECT_FAP01" if variant == "fap01"
+                             else "-DAQROOT_TEST_EXPECT_PRODUCTION")
         build = subprocess.run(
             ["g++", "-std=c++17", "-Wall", "-Wextra", "-Werror"] + flags +
             ["-I", str(work / "hw"), "-I", str(work),
@@ -1768,16 +2182,31 @@ def main():
 
     # ---- H6 -------------------------------------------------------------
     h6 = {"tests": [], "verdict": "PASS"}
-    for test, controls in zip(
+    # D-801 / D801-01: the three FAP-01 runs -- the FAP-01 test on the FAP-01
+    # build (positive), the same test on the release build (negative), and
+    # the whole release-image test on the FAP-01 build (FAP-01 weakens none
+    # of the release rules it shares).
+    runs = [(test, controls, None, None) for test, controls in zip(
             HOST_TESTS,
             (ORDER_CONTROLS, BUS_CONTROLS, POWER_POLICY_CONTROLS,
              FUEL_GAUGE_CONTROLS, TIMING_CONTROLS,
              PRODUCTION_TIMING_CONTROLS, PRODUCTION_CALLER_CONTROLS,
-             PRODUCTION_IMAGE_CONTROLS)):
-        compiled, code, output = run_host_test(test)
+             PRODUCTION_IMAGE_CONTROLS))]
+    runs += [
+        (FAP01_TEST, FAP01_CONTROLS, "fap01", "FAP-01 build: every stimulus "
+         "reachable, gated, bounded, quiesced"),
+        (FAP01_TEST, FAP01_RELEASE_CONTROLS, "release", "RELEASE build: every "
+         "FAP-01 key inert"),
+        (ROOT / "Firmware/test/test_production_image.cpp", [], "fap01",
+         "FAP-01 build: the whole release-image test"),
+    ]
+    for test, controls, variant, label in runs:
+        compiled, code, output = run_host_test(test, variant=variant)
         claims = [line for line in output.splitlines() if line.startswith("[")]
         entry = {
-            "test": test.relative_to(ROOT).as_posix(),
+            "test": test.relative_to(ROOT).as_posix()
+                    + ("" if label is None else " [%s]" % label),
+            "variant": variant or "release",
             "compiled": compiled,
             "exit_code": code,
             "claims": len(claims),
@@ -1785,7 +2214,8 @@ def main():
             "controls": [],
         }
         for control in controls:
-            c_compiled, c_code, c_output = run_host_test(test, control)
+            c_compiled, c_code, c_output = run_host_test(test, control,
+                                                         variant=variant)
             c_claims = [line for line in c_output.splitlines()
                         if line.startswith("[FAIL")]
             # D-797 / D797-10: a mutant is CAUGHT only by a claim the test
@@ -2212,6 +2642,147 @@ def main():
         "controls": h7_controls,
         "controls_verdict": "PASS" if h7_controls_ok else "FAIL",
         "verdict": ("PASS" if not source_problems and h7_controls_ok else "FAIL"),
+    }
+
+    # ---- H9: THE SOLE DEFAULT ENVIRONMENT IS THE RELEASE IMAGE -----------
+    # D-801 / D801-03.  Parsed, cross-checked against PlatformIO's own
+    # resolution where it is installed, and exercised by controls that
+    # rewrite the file the ways a maintainer actually would.
+    ini_text = _read(PLATFORMIO_INI)
+    h9_problems = _default_env_problems(ini_text)
+    pio_view = _pio_project_config()
+    if pio_view.get("available") and "error" not in pio_view:
+        if pio_view.get("default_envs") != [RELEASE_ENV]:
+            h9_problems.append("PlatformIO itself resolves default_envs to %r"
+                               % pio_view.get("default_envs"))
+        for name in NAMED_ENVS:
+            if name not in pio_view.get("environments", []):
+                h9_problems.append("PlatformIO does not see [env:%s]" % name)
+    elif pio_view.get("available"):
+        h9_problems.append("`pio project config` failed: %s"
+                           % pio_view.get("error"))
+    default_line = "default_envs = aqroot-demo\n"
+    h9_controls = []
+    for name, mutated in (
+            ("default_envs is removed", ini_text.replace(default_line, "", 1)),
+            ("the legacy placeholder image is the default",
+             ini_text.replace(default_line,
+                              "default_envs = esp32-s3-aqroot\n", 1)),
+            ("a second, legacy default is added beside the release one",
+             ini_text.replace(default_line,
+                              "default_envs = aqroot-demo, wokwi\n", 1)),
+            ("a multi-line default list adds the DM image",
+             ini_text.replace(default_line, "default_envs =\n    aqroot-demo\n"
+                              "    esp32-s3-aqroot-dm\n", 1)),
+            ("the FAP-01 diagnostic image is the default",
+             ini_text.replace(default_line,
+                              "default_envs = aqroot-demo-fap01\n", 1)),
+            ("the FAP-01 diagnostic image is a second default",
+             ini_text.replace(default_line,
+                              "default_envs = aqroot-demo, aqroot-demo-fap01\n",
+                              1)),
+            ("extra_configs is added, which can re-define the default elsewhere",
+             ini_text.replace(default_line, default_line
+                              + "extra_configs = local_override.ini\n", 1)),
+            ("a named environment disappears (wokwi renamed)",
+             ini_text.replace("[env:wokwi]\n", "[env:wokwi-sim]\n", 1))):
+        if mutated == ini_text:
+            h9_controls.append(dict(control=name, refused=False,
+                                    first_reason="control text not found"))
+            continue
+        p_list = _default_env_problems(mutated)
+        h9_controls.append(dict(control=name, refused=bool(p_list),
+                                first_reason=p_list[0] if p_list else None))
+    try:
+        parsed_default = _pio_default_envs(_pio_parse(ini_text))
+    except configparser.Error:
+        parsed_default = None
+    report["H9_platformio_default_is_the_release_image"] = {
+        "file": PLATFORMIO_INI.relative_to(ROOT).as_posix(),
+        "default_envs_parsed": parsed_default,
+        "required_default": [RELEASE_ENV],
+        "environments_that_build_by_name": list(NAMED_ENVS),
+        "pio_project_config": pio_view,
+        "problems": h9_problems,
+        "controls": h9_controls,
+        "verdict": ("PASS" if not h9_problems
+                    and all(c["refused"] for c in h9_controls) else "FAIL"),
+    }
+
+    # ---- H10: FAP-01 REACHES ITS OWN ENVIRONMENT AND NOTHING ELSE ----------
+    # D-801 / D801-01.  The behavioural half is H6 (the FAP-01 test compiled
+    # into the RELEASE build, every key inert); this is the configuration
+    # half: which environment compiles `src/fap01/`, which defines the
+    # diagnostic macro, whether the release `main.cpp` preprocesses to any
+    # FAP-01 token, and whether `src/fap01/` still refuses to compile alone.
+    fap_header = _read(FAP01_DIR / "aqroot_fap01.h")
+    fap_cpp = _read(FAP01_DIR / "aqroot_fap01.cpp")
+    h10_problems = _fap01_isolation_problems(ini_text, main_src, fap_header,
+                                             fap_cpp)
+    release_filter = "build_src_filter = -<*> +<demo/> +<hw/>\nlib_deps ="
+    release_flags_end = ("    -DARDUINO_USB_CDC_ON_BOOT=1\n"
+                         "build_src_filter = -<*> +<demo/> +<hw/>\nlib_deps =")
+    h10_controls = []
+    for name, i_text, m_text, h_text in (
+            ("the release build_src_filter admits src/fap01/",
+             ini_text.replace(release_filter, "build_src_filter = -<*> +<demo/>"
+                              " +<hw/> +<fap01/>\nlib_deps =", 1),
+             main_src, fap_header),
+            ("the release build_src_filter becomes +<*>",
+             ini_text.replace(release_filter,
+                              "build_src_filter = +<*>\nlib_deps =", 1),
+             main_src, fap_header),
+            ("the release build_flags gain the FAP-01 define",
+             ini_text.replace(release_flags_end,
+                              "    -DARDUINO_USB_CDC_ON_BOOT=1\n"
+                              "    -DAQROOT_FAP01_DIAGNOSTIC\n"
+                              "build_src_filter = -<*> +<demo/> +<hw/>\n"
+                              "lib_deps =", 1),
+             main_src, fap_header),
+            ("the legacy filter stops excluding src/fap01/",
+             ini_text.replace("legacy_src_filter = +<*> -<demo/> -<hw/> "
+                              "-<fap01/>", "legacy_src_filter = +<*> -<demo/> "
+                              "-<hw/>", 1),
+             main_src, fap_header),
+            ("the FAP-01 environment loses its define",
+             ini_text.replace("    -DAQROOT_FAP01_DIAGNOSTIC\nbuild_src_filter"
+                              " = -<*> +<demo/> +<hw/> +<fap01/>",
+                              "build_src_filter = -<*> +<demo/> +<hw/> "
+                              "+<fap01/>", 1),
+             main_src, fap_header),
+            ("demo/main.cpp's console hook is compiled unguarded",
+             ini_text,
+             main_src.replace("#if defined(AQROOT_FAP01_DIAGNOSTIC)\n    // "
+                              "D-801: FAP-01's upper-case keys",
+                              "#if 1\n    // D-801: FAP-01's upper-case keys",
+                              1), fap_header),
+            ("demo/main.cpp includes the FAP-01 header unguarded",
+             ini_text,
+             main_src.replace("#if defined(AQROOT_FAP01_DIAGNOSTIC)\n#include "
+                              "\"../fap01/aqroot_fap01.h\"",
+                              "#if 1\n#include \"../fap01/aqroot_fap01.h\"", 1),
+             fap_header),
+            ("src/fap01/aqroot_fap01.h loses its compile guard",
+             ini_text, main_src,
+             fap_header.replace("#if !defined(AQROOT_FAP01_DIAGNOSTIC)\n"
+                                "#error", "#if 0\n#error", 1))):
+        if (i_text, m_text, h_text) == (ini_text, main_src, fap_header):
+            h10_controls.append(dict(control=name, refused=False,
+                                     first_reason="control text not found"))
+            continue
+        p_list = _fap01_isolation_problems(i_text, m_text, h_text, fap_cpp)
+        h10_controls.append(dict(control=name, refused=bool(p_list),
+                                 first_reason=p_list[0] if p_list else None))
+    report["H10_fap01_diagnostic_image_is_isolated"] = {
+        "environment": FAP01_ENV,
+        "define": FAP01_DEFINE,
+        "sources": sorted(p.relative_to(ROOT).as_posix()
+                          for p in FAP01_DIR.glob("*")) if FAP01_DIR.exists()
+                   else [],
+        "problems": h10_problems,
+        "controls": h10_controls,
+        "verdict": ("PASS" if not h10_problems
+                    and all(c["refused"] for c in h10_controls) else "FAIL"),
     }
 
     # ---- controls -------------------------------------------------------

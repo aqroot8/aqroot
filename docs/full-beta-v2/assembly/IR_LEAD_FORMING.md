@@ -21,6 +21,17 @@
 > and the receiver is outside the TSAL6100's ±10° cone (Vishay 81009 rev 1.8, archived) for
 > 47 mm beyond the dome — and the coupling itself is MEASURED at first article, `C-IR-01`.
 
+> **D-801 (Round-20, D801-02): D-162's ≥ 15 mm TX↔RX figure is SUPERSEDED for this frozen design.**
+> It is not a current requirement of this traveler, of `MECHANICAL_INTERFACE_SPEC.md` §8, or of
+> any governing mechanical document.  **The CURRENT acceptance is:** (1) the opaque `IR_BARRIER`
+> (§5) standing between both parts' whole courtyards (D1-14, U6-10); (2) the receiver outside the
+> TSAL6100's ±10° half-intensity cone inside the enclosure; and (3) first-article **`C-IR-01`**
+> (`FIRST_FIVE_ASSEMBLY_PLAN.md`, FA07), the reflected-light / self-blinding test on the closed
+> enclosure — with A-6 below as its per-unit repeat.  The formed-axis spacing this file fixes is
+> **13.73 mm** and `mechanical_keepout_contract` MK12 binds the spec's figure to MK9's
+> measurement.  The **antenna ↔ IR** spacing rules (15 mm centre-to-centre, 8 mm edge-to-edge,
+> spec §8.1) are a different requirement and are unchanged.
+
 ---
 
 ## 1. Why forming is required at all
@@ -142,5 +153,5 @@ so the barrier matters more after forming than before.
 | A-3 | Axis height within tolerance | gauge block or the enclosure's own window as the go/no-go |
 | A-4 | `D1` dome reaches the window bore and does **not** protrude past the outer face | dry-fit in the shell before soldering |
 | A-5 | Barrier fitted and bonded to both shells before any IR range test | visual |
-| A-6 | **Self-blinding test:** transmit at full current into an absorbing target; the receiver must not decode its own carrier | bench, all five units |
+| A-6 | **Self-blinding test:** transmit at full current into an absorbing target; the receiver must not decode its own carrier. This is the per-unit repeat of first-article **`C-IR-01`** (which adds the 50 mm matte-white reflector and the 1 m remote), and with the barrier (A-5) it is the IR isolation acceptance — there is no separate spacing criterion (D-801) | bench, all five units |
 | A-7 | No mechanical load on either part from the shell once closed | the parts must still be nudgeable by hand after closing (Vishay 84892 items 8 and 9) |

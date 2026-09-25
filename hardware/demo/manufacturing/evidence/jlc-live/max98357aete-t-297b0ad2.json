@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-20T19:34:31Z",
+ "fetched_utc": "2026-09-25T15:21:32Z",
  "keyword": "MAX98357AETE+T",
  "page_size": 25,
  "pages": 1,
@@ -57,32 +57,32 @@
    "componentPrices": [
     {
      "endNumber": 9,
-     "productPrice": 1.3168,
+     "productPrice": 1.3138,
      "startNumber": 1
     },
     {
      "endNumber": 29,
-     "productPrice": 1.1524,
+     "productPrice": 1.1498,
      "startNumber": 10
     },
     {
      "endNumber": 99,
-     "productPrice": 0.9978,
+     "productPrice": 0.9955,
      "startNumber": 30
     },
     {
      "endNumber": 499,
-     "productPrice": 0.8822,
+     "productPrice": 0.8802,
      "startNumber": 100
     },
     {
      "endNumber": 999,
-     "productPrice": 0.835,
+     "productPrice": 0.8331,
      "startNumber": 500
     },
     {
      "endNumber": -1,
-     "productPrice": 0.8122,
+     "productPrice": 0.8104,
      "startNumber": 1000
     }
    ],
@@ -98,7 +98,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 28909
+   "stockCount": 27914
   }
  ],
  "returned": 1,

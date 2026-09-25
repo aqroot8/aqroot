@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-20T19:33:28Z",
+ "fetched_utc": "2026-09-25T15:20:37Z",
  "keyword": "CC0603KRX7R8BB105",
  "page_size": 25,
  "pages": 1,
@@ -33,32 +33,32 @@
    "componentPrices": [
     {
      "endNumber": 199,
-     "productPrice": 0.0376,
+     "productPrice": 0.0294,
      "startNumber": 1
     },
     {
      "endNumber": 599,
-     "productPrice": 0.0318,
+     "productPrice": 0.0249,
      "startNumber": 200
     },
     {
      "endNumber": 3999,
-     "productPrice": 0.0292,
+     "productPrice": 0.0228,
      "startNumber": 600
     },
     {
      "endNumber": 7999,
-     "productPrice": 0.0266,
+     "productPrice": 0.0208,
      "startNumber": 4000
     },
     {
      "endNumber": 19999,
-     "productPrice": 0.0259,
+     "productPrice": 0.0203,
      "startNumber": 8000
     },
     {
      "endNumber": -1,
-     "productPrice": 0.0253,
+     "productPrice": 0.0199,
      "startNumber": 20000
     }
    ],
@@ -74,7 +74,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 103548
+   "stockCount": 323343
   }
  ],
  "returned": 1,

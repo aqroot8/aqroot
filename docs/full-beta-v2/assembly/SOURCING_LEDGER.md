@@ -83,20 +83,30 @@ exact MPN — 0 missing** (six were added at FBV2-S2-001, see §4).
 > `F12` closes the cell side around it — so what remains on that line is **purchasing,
 > not engineering**.
 
-**AUTHORITATIVE SWEEP (D-800):** `evidence/d800-sourcing-sweep.json`, re-run live against the
-released assembly BOM on 2026-09-24 (123 lines, 9 short/unknown — the same nine groups as D-799;
-`AO4800` reads an Alpha & Omega record with 5,347 in catalogue stock, which is still NOT an allocation).
-*(D-791's `evidence/d791-sourcing-sweep.json` is the HISTORICAL sweep this plan was first written from.)*  Archived counts are **not
-purchasing authority**; re-check immediately before the order.
+**AUTHORITATIVE SWEEP (D-801):** `evidence/d801-sourcing-sweep.json`, produced by
+`evidence/d801-sweep-sourcing.py --refresh` against the released assembly BOM: **every one of the
+123 rows was fetched from the JLCPCB parts API in that run, 2026-09-25T15:20:32Z..15:21:35Z**, and
+each row carries its own `fetched_utc` and `mode` (`refresh`).  9 lines are short/unknown, and
+the set MOVED: `TPD4E1B06DRLR` (`D2`,`D4`,`D5`) is now short (2 against 15) and `SQ2364EES-T1_BE3`
+(`Q11`) is not (40 against 5); `LTC4368IMS-1#TRPBF` fell from 2 to 0.  `AO4800` reads an Alpha &
+Omega record with 5,212 in catalogue stock, which is still NOT an allocation.
+**D-801 / Round-20 `D801-08` — D-800's sweep was NOT live.**  `evidence/d800-sourcing-sweep.json`
+called itself a live re-sweep, but `jlc_live.fetch` replayed archived records because `refresh`
+defaulted to False: its 123 rows rest on fetches from **2026-09-20T19:33Z..2026-09-21T15:57Z**.
+It is kept as a dated REPLAY.  Catalogue stock is volatile over days, as this sweep shows, so
+**a fresh re-sweep immediately before the order remains a PROCUREMENT GATE**, and archived counts
+are **not purchasing authority**.
+*(D-791's `evidence/d791-sourcing-sweep.json` is the HISTORICAL sweep this plan was first written from.)*
 
 | MPN | LCSC | refs | need (5 boards) | live stock | action |
 |---|---|---|---:|---:|---|
 | `74438357010` | `C5542269` | L4 | 5 | 0 | **consign: buy the exact MPN from a franchised distributor and ship to the assembler** |
 | `DMM-4026-B-I2S-R` | `C3171792` | MK1 | 5 | 0 | **consign from a franchised distributor.** JLC flags it "no longer manufactured"; D-800 checked the franchised source and DigiKey lists PUI `DMM-4026-B-I2S-R` **Active, 4,792 in stock** (2026-09-24).  The JLC flag is not the manufacturer's lifecycle |
 | `LQW18AN39NG80D` | `C2042966` | L5,L6 | 10 | 3 | **consign: buy the exact MPN from a franchised distributor and ship to the assembler** |
-| `LTC4368IMS-1#TRPBF` | `C688401` | U18 | 5 | 2 | **consign: buy the exact MPN from a franchised distributor and ship to the assembler** |
+| `LTC4368IMS-1#TRPBF` | `C688401` | U18 | 5 | 0 | **consign: buy the exact MPN from a franchised distributor and ship to the assembler** |
 | `PCAL9535APW,118` | `C2669683` | U2,U3 | 10 | 1 | **consign: buy the exact MPN from a franchised distributor and ship to the assembler** |
-| `SQ2364EES-T1_BE3` | `C5758702` | Q11 | 5 | 0 | **consign: buy the exact MPN from a franchised distributor and ship to the assembler** |
+| `SQ2364EES-T1_BE3` | `C5758702` | Q11 | 5 | 40 (D-801; 0 at D-800) | **consign: buy the exact MPN from a franchised distributor and ship to the assembler** |
+| `TPD4E1B06DRLR` | `C1972953` | D2,D4,D5 | 15 | 2 | **consign: buy the exact MPN from a franchised distributor and ship to the assembler** (short for the first time on the D-801 fresh sweep) |
 | `SSQ-124-02-G-S-RA` | `C3323671` | J5 | 5 | 0 | **order from Samtec direct and consign.** JLC flags it "no longer manufactured"; D-800 checked Samtec's own product page: **active, 484 pieces "Ships Tomorrow"**, distributor stock 0, and marked **"only available to existing customers"** (2026-09-24) — so the order must go through a Samtec account or a Samtec sample/quote request; that account is the procurement action |
 | `ST25R3916-AQET` | `C5267441` | U9 | 5 | 0 | **consign: buy the exact MPN from a franchised distributor and ship to the assembler** |
 | `TLV7032DDFR` | `C2871498` | U19 | 5 | 0 | **consign: buy the exact MPN from a franchised distributor and ship to the assembler** |
@@ -139,6 +149,22 @@ reach an allocation system.  Confirming genuine traceable stock against a franch
 distributor is a purchasing action performed by a person, and it is the remaining gate
 before any order.  **DO NOT ORDER** on the strength of the table above.
 
+
+## 4b. **D-801 PROCUREMENT GATES — BLOCK-PURCHASE until closed in writing** (Round-20 `R20-P01`, `R20-P02`)
+
+These are not design defects established by evidence and they do not force a respin.  They
+are questions only the supplier can answer, so each is a gate on BUYING that line, recorded
+with what the primary source actually says.
+
+| gate | line | what the primary source says | what closes it |
+|---|---|---|---|
+| **`R20-P01`** | `L3` Coilcraft `XFL4020-472MEC` (the TPS61169 backlight boost inductor) | Coilcraft Document 745-1, Revised 03/10/26 (archived `vendor/COILCRAFT/coilcraft-xfl4020-doc745-rev2026-03-10.pdf`, sha256 `6dca915ac1daa47210f7708a7540221ffef4f34a88a8621c94bd50cdf48647e6`) lists **"Operating voltage 20 V"** with footnote 7: *"Voltage capability varies by part number and in many cases may be higher than the listed voltage."*  A bounded TPS61169 open-LED OVP event can place a transient across `L3` above 20 V.  **No pass or fail is declared from the 20 V figure alone.** | Coilcraft's written part-specific voltage capability / suitability for the TPS61169 open-LED OVP transient, archived; OR a replacement inductor with a published rating above the OVP transient, which is a BOM change and re-runs F6/F8. |
+| **`R20-P02`** | the pack, Adafruit 328 (`SELECTED_BATTERY.json`) | the archived specification (`vendor/BATTERY/adafruit-328-785060-specification.txt`) states a 4.2 V charge cut-off and CC/CV to 4.2 V, and ALSO *"The overcharge threshold voltage should not be exceeding 3.95V"* — internally inconsistent: a PCM that tripped at 3.95 V could not be charged to 4.2 V.  **The real PCM overcharge threshold is not invented here.** | the supplier's written PCM overcharge-detection threshold (and hysteresis) for the allocated lot, archived, before pack allocation; then re-run `battery_pack_contract` and F12. |
+
+**Standing procurement gates, unchanged:** genuine Alpha & Omega `AO4800` ALLOCATION (a
+catalogue record with stock is not an allocated, traceable lot); every constrained group
+allocated EXACTLY, with no silent substitution; a `--refresh` re-sweep immediately before
+the order (§4a).
 
 ## 3. CARRIED — exact MPN present, live listing NOT re-confirmed in this task
 
@@ -318,9 +344,10 @@ envelopes:
 
 | envelope | `I` | hot channel `RDS(on)` | `VGS(Q2)` | meets the 2.5 V row? |
 |---|---|---|---|---|
-| **GUARANTEED-CONDUCTION CEILING** (D-791 / `D790-A01`, DERIVED) | **2.2845 A** | — | **2.5000 V** | **the boundary itself** |
-| **PEAK electrical** | 2.60 A | ≈ 72.0 mΩ | **2.4124 V** | **NO — 87.6 mV short** |
-| **SUSTAINED thermal** | 1.9328 A | ≈ 67.5 mΩ | **2.5894 V** | **YES — 89.4 mV** |
+| **GUARANTEED-CONDUCTION CEILING** (DERIVED, 80.83 °C internal air) | **2.0929 A** | — | **2.5000 V** | **the boundary itself** |
+| **PEAK electrical** | 2.7000 A | ≈ 82.7 mΩ | **2.3027 V** | **NO — 197.3 mV short** |
+| **SUSTAINED thermal** | 1.7745 A | ≈ 73.8 mΩ | **2.5891 V** | **YES — 89.1 mV** |
+| **BENCH crossing** (`C-BAT-GATE-01`, 25.0 °C air) | **2.5783 A** | — | **2.5000 V** | **the boundary itself** |
 
 Astra was right that the peak does not close, and F10 says so in its own
 report.  **The clause rules at the SUSTAINED envelope** because a conduction
@@ -338,9 +365,8 @@ consequence of an unpublished higher resistance is more drop and more heat,
 how well the pair conducts**.  That region is a PROTECTION-DOMAIN excursion and
 this contract does not rule there; a bounded-duration treatment is available
 from the only transient thermal number AOS states numerically, **62.5 °C/W MAX
-for `t ≤ 10 s`** against 90 °C/W steady state.  The DECLARED 25 → 125 °C ratio
-now carries a **sensitivity the ruling case must survive at 2×**, and the
-LTC4368 gate drive is swept across the whole attainable `BAT_RAW` range.
+for `t ≤ 10 s`** against 90 °C/W steady state.  The DECLARED 25 → 125 °C ratio is **1.60** (AOS measures 1.4815 on this die); the ruling case loses the 2.5 V row at a ratio of **1.9698**.  At a pessimistic **2×** ratio the sustained envelope does NOT hold the row at the enclosure condition (`VGS(Q2)` **2.4923 V** at 1.7745 A, 80.83 °C internal air): the 2× case is REPORTED, not ruled on, and `C-BAT-GATE-01` measures the real coefficient.  The LTC4368 gate drive is
+swept across the whole attainable `BAT_RAW` range.
 
 **AND `AO4806` IS RE-EXAMINED.**  D-790 rejected it partly because *"its own
 manufacturer describes it as common-drain, which this common-SOURCE circuit
@@ -358,11 +384,14 @@ path.  The rejection stands; the reason is now recorded correctly.
 
 ### 5. First article — **`C-BAT-GATE-01`**
 
-On the first assembled board **measure `ΔVGATE` (GATE − `BAT_PROTECTED_P`) and
-the pass-pair drop (`BAT_RAW` − `BAT_SENSE`) at 2.60 A, at `BAT_RAW` = 4.15 V,
-3.60 V and 3.05 V**, and record all six numbers.  This is the measurement that
-converts the unpublished hot `RDS(on)` at `VGS = 2.5 V` — which **no** candidate
-publishes — from an extrapolation into a measured bound.
+The step, its declared bench condition and every figure it compares a measurement
+against are GENERATED from F10 (D-801 / `R20-05`) into
+[`FIRST_FIVE_ASSEMBLY_PLAN.md`](FIRST_FIVE_ASSEMBLY_PLAN.md) §7d.  In short: on the
+first assembled board, out of the enclosure at 25 °C, load `TP15` and record
+`ΔVGATE`, `VGS(Q2)` and the pass-pair drop at `BAT_RAW` = 4.15 V, 3.60 V and 3.05 V,
+stepping to the peak envelope and recording where `VGS(Q2)` reaches the 2.5 V row.
+This is the measurement that converts the unpublished hot `RDS(on)` at `VGS = 2.5 V`
+— which **no** candidate publishes — from an extrapolation into a measured bound.
 
 ### 6. REV-B
 

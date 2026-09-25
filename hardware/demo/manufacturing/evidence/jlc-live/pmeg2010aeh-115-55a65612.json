@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-20T19:33:44Z",
+ "fetched_utc": "2026-09-25T15:20:50Z",
  "keyword": "PMEG2010AEH,115",
  "page_size": 25,
  "pages": 1,
@@ -41,32 +41,32 @@
    "componentPrices": [
     {
      "endNumber": 49,
-     "productPrice": 0.1073,
+     "productPrice": 0.1071,
      "startNumber": 1
     },
     {
      "endNumber": 149,
-     "productPrice": 0.0844,
+     "productPrice": 0.0842,
      "startNumber": 50
     },
     {
      "endNumber": 499,
-     "productPrice": 0.073,
+     "productPrice": 0.0728,
      "startNumber": 150
     },
     {
      "endNumber": 2999,
-     "productPrice": 0.0643,
+     "productPrice": 0.0642,
      "startNumber": 500
     },
     {
      "endNumber": 5999,
-     "productPrice": 0.0569,
+     "productPrice": 0.0567,
      "startNumber": 3000
     },
     {
      "endNumber": -1,
-     "productPrice": 0.0534,
+     "productPrice": 0.0533,
      "startNumber": 6000
     }
    ],
@@ -82,7 +82,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 28417
+   "stockCount": 26164
   },
   {
    "assemblyComponentFlag": false,
@@ -123,32 +123,32 @@
    "componentPrices": [
     {
      "endNumber": 49,
-     "productPrice": 0.0834,
+     "productPrice": 0.0832,
      "startNumber": 1
     },
     {
      "endNumber": 149,
-     "productPrice": 0.0665,
+     "productPrice": 0.0663,
      "startNumber": 50
     },
     {
      "endNumber": 499,
-     "productPrice": 0.058,
+     "productPrice": 0.0579,
      "startNumber": 150
     },
     {
      "endNumber": 2999,
-     "productPrice": 0.0516,
+     "productPrice": 0.0515,
      "startNumber": 500
     },
     {
      "endNumber": 5999,
-     "productPrice": 0.0466,
+     "productPrice": 0.0465,
      "startNumber": 3000
     },
     {
      "endNumber": -1,
-     "productPrice": 0.044,
+     "productPrice": 0.0439,
      "startNumber": 6000
     }
    ],

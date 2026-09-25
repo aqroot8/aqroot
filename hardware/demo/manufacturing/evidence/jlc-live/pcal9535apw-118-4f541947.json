@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-20T19:34:30Z",
+ "fetched_utc": "2026-09-25T15:21:30Z",
  "keyword": "PCAL9535APW,118",
  "page_size": 25,
  "pages": 1,
@@ -61,32 +61,32 @@
    "componentPrices": [
     {
      "endNumber": 9,
-     "productPrice": 1.9287,
+     "productPrice": 1.9244,
      "startNumber": 1
     },
     {
      "endNumber": 29,
-     "productPrice": 1.8832,
+     "productPrice": 1.8789,
      "startNumber": 10
     },
     {
      "endNumber": 99,
-     "productPrice": 1.8523,
+     "productPrice": 1.8481,
      "startNumber": 30
     },
     {
      "endNumber": 101,
-     "productPrice": 1.8213,
+     "productPrice": 1.8172,
      "startNumber": 100
     },
     {
      "endNumber": 103,
-     "productPrice": 1.8213,
+     "productPrice": 1.8172,
      "startNumber": 102
     },
     {
      "endNumber": -1,
-     "productPrice": 1.8213,
+     "productPrice": 1.8172,
      "startNumber": 104
     }
    ],

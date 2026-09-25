@@ -22,6 +22,32 @@ Date: 2026-08-22 (updated **2026-08-24 by FBV2-P1-002 — circular NFC geometry 
 > figure is retained below it is marked ~~struck~~ or explicitly labelled **SUPERSEDED**, and the current
 > value is stated next to it. Historical rationale is preserved; only current authority was changed.
 
+> **D-801 (Round-20, D801-02) — IR AND MICROPHONE AUTHORITY, BOUND TO THE FROZEN BOARD.**
+> Two current requirements in this document disagreed with the board, and nothing read them.
+>
+> * **IR.** D-162's emitter ↔ receiver "≥ 15 mm" figure is **SUPERSEDED for this frozen design**
+>   (it was written against a ±17° TSAL6200 and has no primary source).  The lead-formed optical
+>   axes of `D1` (TSAL6100, doc X 53.020) and `U6` (TSOP38238, doc X 66.750) are **13.73 mm**
+>   apart (`../assembly/IR_LEAD_FORMING.md`; `mechanical_keepout_contract` MK9) and neither part
+>   can move.  **The CURRENT acceptance is:** (a) the opaque `IR_BARRIER`, doc X 57.500 … 62.500,
+>   full height, bonded to both shells, standing between the two parts' WHOLE courtyards;
+>   (b) the receiver outside the TSAL6100's **±10°** half-intensity cone (Vishay 81009 rev 1.8)
+>   everywhere inside the enclosure; and (c) the first-article reflected-light / self-blinding
+>   test **`C-IR-01`** (`../assembly/FIRST_FIVE_ASSEMBLY_PLAN.md`, FA07) on the closed enclosure.
+>   **The antenna ↔ IR rules are a different requirement and are unchanged** (§8.1: 15 mm
+>   centre-to-centre bulkhead hole ↔ IR window AND 8 mm edge-to-edge SMA body ↔ IR aperture).
+> * **Microphone.** `MK1` is on **`B.Cu` = REAR** (D-214; the board, `(layer "B.Cu")`).  It is a
+>   **bottom-port** part: PUI's `DMM-4026-B-I2S-R` Rev A drawing (archived
+>   `hardware/demo/kicad/aqroot-demo/vendor/PUI/`, p.6) puts the Ø0.25 mm port on the
+>   **solder-pad face**, inside the pad-4 GND ring.  So the port faces the PCB, and sound reaches
+>   it from the **`F.Cu` = FRONT** face through the board's Ø1.05 mm NPTH concentric with pad 4.
+>   **The enclosure aperture and gasket are on the FRONT shell, on the `F.Cu` side of the
+>   board.**  M-14's first text, written in the footprint library's own frame before the part had
+>   a board side, said the reverse; it is SUPERSEDED below.
+>
+> `mechanical_keepout_contract` **MK12** reads this document's machine-readable block and the
+> board, and refuses any disagreement on either point; its destructive controls run in MK7.
+
 > **NFC antenna reservation — FBV2-S1-004B (2026-08-23, D-127 / D-128).**
 > **CORRECTED 2026-08-23 (FBV2-S1-004C, D-131): the locked part is the `.B.dg` REVERSE
 > FERRITE variant.** The NFC antenna is **off-board and locked**: Taoglas
@@ -107,7 +133,7 @@ value is TARGET, however confident the arithmetic.
 | 12 | **ANTENNA_CONNECTOR_LOCATION** | top edge, **left half**; **Ø6.5 mm bulkhead clearance hole**; locked **RF Solutions `CBA-UFLSMA20IP` 200 mm** pigtail has a measured **138.48 mm** routed run plus ≥15 mm service loop, leaving **46.52 mm spare**; **≥15 mm centre-to-centre from either IR window** *and* **≥8 mm edge-to-edge between the SMA body and either IR aperture** | **LOCKED** | D-223; FBV2-P1-002; §8.1 / M-13 |
 | 13 | **USB_LOCATION** | bottom edge, centred ±5 mm | **TARGET** | CTO layout |
 | 14 | **MICROSD_LOCATION** | bottom edge, left of USB-C, ≥8 mm centre-to-centre clearance | **TARGET** | CTO layout |
-| 15 | **IR_ZONE** | top edge, **right half**; emitter and receiver ≥**15 mm** apart with an opaque barrier | **TARGET** | §8 |
+| 15 | **IR_ZONE** | top edge, **right half**; formed optical axes **13.73 mm** apart (MEASURED, MK9); opaque `IR_BARRIER` between both courtyards; receiver outside the ±10° emitter cone; first-article **`C-IR-01`**.  *~~emitter and receiver ≥15 mm apart~~ — D-162 figure SUPERSEDED D-801* | **LOCKED** (frozen board geometry; `C-IR-01` at first article) | §8; D-800 / D-801 |
 | 16 | **MOUNTING_BOSSES** | **2 × M2**, Ø2.2 mm NPTH with Ø4.5 mm keepout, plus moulded edge-capture rails / non-metallic support ribs / J5 backing load path | **LOCKED** | D-226/D-232; current PCB/mechanical keepout contract |
 | 17 | **REQUIRED_CLEARANCES** | PCB edge→cavity wall **≥1.5 mm**; component→shell **≥0.5 mm**; connector→wall **≥0.3 mm** | **TARGET** | §3, §4 |
 | 18 | Device orientation | **portrait** — **85** wide × 160 tall (***~~80~~ SUPERSEDED D-738 with item 1***) | **LOCKED** | Implied by the CTO face assignment and confirmed by the Beta-DM 74 × 155 outline mapping |
@@ -132,7 +158,7 @@ for interface freeze and must be replaced by vendor drawings at CAD time.
 | **Power** | SW9 JS102011SAQN | SPDT slide, ~4.7 × 2.9 × 2.0 mm body + actuator (typical) | Right wall, lower third |
 | **USB-C** | GCT USB4105-GF-A-120 | ~9.2 × 7.35 × **3.26 mm** (typical), top-mount horizontal | Bottom edge; shell aperture must clear the receptacle mouth |
 | **microSD** | Molex 5025700893 | ~14.0 × 14.5 × **1.85 mm** (typical), **PUSH-PUSH** (spring-loaded latch + eject stroke, with the detect switch this board reads on `SD_CARD_DETECT_N`) | Bottom edge. **CORRECTED D-788 / R7-D787-12: this row and `P1_FLOORPLAN_INPUTS` B-4/B-7 read "push-pull", which is the WRONG MECHANISM and sets the wrong enclosure requirement.** A push-push socket latches the card **flush** — nothing protrudes in the latched state, so the old "+18 mm of card outside the shell" requirement does not apply. What the enclosure must provide instead is (a) an aperture the card passes cleanly through, (b) **finger/nail access at the aperture** to push the card past the latch and to push it again to release, and (c) clearance for the socket's own **eject stroke** so the card presents far enough to be gripped. **First-article `C-SD-01`:** insert, latch, eject and withdraw a card **through the closed enclosure**, and confirm `SD_CARD_DETECT_N` follows both transitions |
-| **Microphone** | **MK1 PUI `DMM-4026-B-I2S-R`** | **4.00 × 3.00 × 1.00 mm** ±0.10 | **BOTTOM PORT** — the acoustic hole is in the PCB beneath the part, so **the microphone is soldered to the face OPPOSITE the shell aperture**. Path is shell aperture → gasket → **Ø1.05 mm PCB hole** → Ø0.25 mm port. **LOCKED D-145 / D-151** |
+| **Microphone** | **MK1 PUI `DMM-4026-B-I2S-R`** | **4.00 × 3.00 × 1.00 mm** ±0.10 | **BOTTOM PORT** — the acoustic hole is in the PCB beneath the part, so **the microphone is soldered to the face OPPOSITE the shell aperture**: `MK1` is on **`B.Cu` (REAR)** and the shell aperture is on the **FRONT**, at the board's `F.Cu` side (D-214; checked against the board by MK12). Path is front shell aperture → gasket → **Ø1.05 mm PCB hole** → Ø0.25 mm port. **LOCKED D-145 / D-151 / D-214** |
 | **Speaker** | **LS1 PUI `AS02008MR-LW152-R`**, off-board | **Ø20 ± 0.2 × 3 ± 0.2 mm**, 8 Ω ±15 %, 0.5 W rated / 0.8 W max | §7. **LOCKED D-148.** 152 mm AWG #32 leads to `J6`; Nd-Fe-B magnet |
 | **IR emitter** | **Vishay `TSAL6100`** | T-1¾, **Ø5 mm** leaded, 2.54 mm lead pitch, **±10° half-angle** | Top edge. **LOCKED D-154.** Beam is **narrower** than the ±17° the layout was first written against and **2.4× brighter on axis** — see §8. Fallback **TSAL6200** (±17°) is a drop-in in the same footprint (**B-66**). Consider a side-view SMD emitter to reduce Z |
 | **IR receiver** | **Vishay `TSOP38238`** (AGC2; `TSOP38438` is a documented same-package fallback, D-163) | ~6.0 × 5.6 × **4.7 mm** (typical), minicast, ±45° FOV | Top edge. **Tallest top-side component overall.** **LOCKED D-160**; same package and pinning as the TSOP38238 it replaces |
@@ -614,21 +640,15 @@ the pads measured programmatically, and the result closes against the printed di
 |---|---|
 | Part | **PUI Audio `DMM-4026-B-I2S-R`**, 4.00 × 3.00 × 1.00 mm, **bottom-port** |
 | Port in the can | **Ø0.25 ± 0.05 mm**, on the package **width centreline**, **1.00 mm** from the short edge |
-| Mounting face | **the face OPPOSITE the shell aperture** — sound enters through the PCB, not past the part |
-| Path | shell aperture → compressible gasket → **PCB acoustic hole** → microphone port |
+| Mounting face | **`B.Cu` (REAR)** — the copper face OPPOSITE the FRONT shell aperture (D-214). Sound enters through the PCB from the `F.Cu` (FRONT) side, not past the part |
+| Path | FRONT shell aperture → compressible gasket on the board's `F.Cu` face → **PCB acoustic hole** → microphone port on `B.Cu` |
 | **PCB hole** | **Ø1.05 mm NPTH, concentric with pad 4** — the manufacturer's number, superseding the earlier Ø0.8–1.0 mm estimate |
 | PCB keepout | no copper, no solder mask and no component inside **Ø1.65 mm** (the pad-4 GND ring); **Ø2.5 mm** component keepout on the microphone side |
 | Gasket | closed-cell silicone or poron, **compressed 20–30%**, **ID ≥ 1.5 mm, OD 4–5 mm**, forming a sealed tunnel |
 | Shell aperture | **Ø0.8–1.0 mm**, or 3–5 holes of Ø0.5 mm, with acoustic mesh behind |
 | Tunnel length | **≤2.5 mm** — longer tunnels roll off the high frequencies that carry speech intelligibility |
 | Location | **front face of the ENCLOSURE, bottom third, opposite corner from the speaker** |
-| **Face datum — CLARIFIED FBV2-MECH-002** | **The ENCLOSURE aperture is on the FRONT face.** M-14 says
-the acoustic path leaves on *the PCB's BOTTOM face* — that is a statement about the **board**, not the
-**enclosure**. The two are only consistent if **`MK1` is placed on the PCB copper face that points AWAY
-from the front shell**, listening forward through the Ø1.05 mm hole. **No floorplan exists, so which
-copper layer that is has not been fixed** — it is an **FBV2-P1 side-assignment constraint** and it is
-**raised for CTO ruling** in the FBV2-MECH-002 audit (§7, item O-1). Nothing here changes the part, the
-hole, the gasket or the tunnel length |
+| **Face datum — RESOLVED D-214, restated D-801** | **The ENCLOSURE aperture is on the FRONT face.** **`MK1` is on `B.Cu`**, the PCB copper face that points AWAY from the front shell, listening forward through the Ø1.05 mm hole; the gasket seals to the board's **`F.Cu`** face around that hole. *(HISTORICAL, FBV2-MECH-002: before the floorplan the copper layer was open and raised as O-1; M-14's original "BOTTOM face" wording was the footprint library's own frame and is SUPERSEDED.)* Nothing here changes the part, the hole, the gasket or the tunnel length |
 | Solder | keep the stencil aperture back from the hole edge so solder cannot wick into the port (**B-63**, PCB stage) |
 
 ### 7.2 Speaker
@@ -666,16 +686,16 @@ echo cancellation is a firmware matter and is not a mechanical requirement.**
    │   connector       │         │                │
    └──────────────────────────────────────────────┘
      ← left half →                → right half →
-        ≥15 mm c-c to IR window     ≥15 mm apart
-        AND ≥8 mm edge-to-edge      (emitter ↔ receiver)
-        (SMA body ↔ IR aperture)
+        ≥15 mm c-c to IR window     axes 13.73 mm (D-801):
+        AND ≥8 mm edge-to-edge      barrier + ±10° cone
+        (SMA body ↔ IR aperture)    + first-article C-IR-01
 ```
 
 | requirement | value | reason |
 |---|---|---|
 | IR emitter location | top edge, right of centre | Natural remote-pointing posture |
 | IR receiver location | top edge, right end | |
-| **Emitter ↔ receiver separation** | **≥15 mm**, plus an **OPAQUE OPTICAL BARRIER** between them, receiver **outside the LED emission cone** | The TSOP38238 (and its TSOP38438 fallback) is extremely sensitive. **REVISED 2026-08-23 (D-162): the ≥15 mm figure was written against a ±17° TSAL6200. The locked TSAL6100 is 2.4× brighter on axis, so stray and internally-reflected energy reaching the receiver goes UP even though the direct cone is narrower — the narrower beam tightens this requirement rather than relaxing it.** Keep the TX current loop away from the receiver supply and return. The electrical half of self-blinding is already solved by the 41 dB `R21`/`C11` filter |
+| **Emitter ↔ receiver isolation — CURRENT (D-800 / D-801)** | Formed optical axes **13.73 mm** apart (MEASURED, frozen; MK9). Acceptance: the **OPAQUE `IR_BARRIER`** stands between both parts' whole courtyards, the receiver is **outside the TSAL6100's ±10° half-intensity cone** everywhere inside the enclosure, and first-article **`C-IR-01`** measures reflected-light self-blinding on the closed enclosure (RECORD + ESCALATE, and gate IR receive during local transmit, on any self-decode) | The TSOP38238 (and its TSOP38438 fallback) is extremely sensitive. *~~≥15 mm~~ — D-162's separation figure is SUPERSEDED for this frozen design: it was written against a ±17° TSAL6200, carries no primary source, and is not met by the frozen board (1.27 mm short).* The D-162 observation that the brighter TSAL6100 raises stray and internally-reflected energy is why the barrier and `C-IR-01` are mandatory. Keep the TX current loop away from the receiver supply and return. The electrical half of self-blinding is already solved by the 41 dB `R21`/`C11` filter |
 | **Opaque barrier** | **mandatory**, full height between the two windows, bonded to both shells | Blocks the internal reflection path, which is the one that actually causes self-blinding |
 | Emitter axis | **normal to the top face**, ±0° | |
 | Receiver FOV | ±45° about the top-face normal | |
@@ -747,7 +767,7 @@ one**. **The current RF Solutions `CBA-UFLSMA20IP` SMA(F) bulkhead envelope must
 | **M-10** | **Insertion load path** | **~33 N average** (24 contacts × 1.39 N avg), **peak higher** — Samtec publishes averages, and its own note states the peak occurs during the spreading stage. The enclosure must carry it on a boss or rib (D-097) |
 | **M-11** | **Front RGB status-light aperture — NEW 2026-08-23 (FBV2-S1-008)** | **The requirement is FRONT-FACING and visible; the exact front position is deliberately NOT locked.** Upper bezel, lower bezel, beside the display or near the controls are all acceptable. **It is NOT a top-edge part** — the top crown is the IR and antenna region. `D13` is a **surface-mount PLCC-4, 3.50 × 2.80 × 1.85 mm, 120° emission, water-clear lens** on the **front-facing PCB surface**, so the enclosure must provide a **diffuser or light pipe: no protruding bare LED, and no direct line of sight to the die.** A water-clear 120° source behind a bare hole is a point glare source; the diffuser is what makes it read as a status light. **Delivered output is roughly 80 / 87 / 42 mcd (R/G/B)** at 1.0–1.7 mA per channel, so the optical path must not be lossy — budget for a short pipe or a thin diffuser, not a deep light guide. **Placement and CAD own the final position.** Does not block FBV2-A2 |
 | **M-12** | **Current Community connector land / enclosure interface** | **CLOSED ON THE PCB.** Current `J5` is the 1×24 `SSQ-124-02-G-S-RA`: **24 × Ø1.02 mm PTH**, 1.60 mm pads, 2.54 mm pitch, **58.420 mm** pin span. The enclosure still owns the 62.5 mm closed-end recess and M-10 load path. The old 24 × Ø0.71 mm / 27.94 × 7.87 mm field was the superseded 2×12 BCS footprint and is historical only. |
-| **M-14** | **Microphone acoustic port — NEW 2026-08-23 (FBV2-S2-002, D-203/B-63)** | `MK1` is a **BOTTOM-PORT** MEMS microphone. It sits on the **TOP** of the PCB and listens **THROUGH** the board, so **the acoustic path leaves on the BOTTOM face**. The board now carries a **Ø1.05 mm non-plated hole** concentric with pad 4 — the diameter is the PUI drawing's own pad-4 GND-ring inner diameter, i.e. the part's port aperture. **The enclosure aperture and any acoustic gasket belong on the BOTTOM face, not the component face.** The region marked by the dashed `B.Fab` circle in the footprint must stay free of copper pours, traces, vias, silkscreen and mask steps **on both faces** so the port can be sealed. Does not block FBV2-A2; **input to FBV2-P1 and to the enclosure CAD** |
+| **M-14** | **Microphone acoustic port — NEW 2026-08-23 (FBV2-S2-002, D-203/B-63); CORRECTED D-801** | `MK1` is a **BOTTOM-PORT** MEMS microphone (PUI Rev A p.6: the Ø0.25 mm port is on the pad face). **On this board it is mounted on `B.Cu` (REAR)** and listens **THROUGH** the board: the port faces the PCB and sound arrives from the **`F.Cu` (FRONT)** face. The board carries a **Ø1.05 mm non-plated hole** concentric with pad 4 — the diameter is the PUI drawing's own pad-4 GND-ring inner diameter, i.e. the part's port aperture. **The enclosure aperture and the acoustic gasket are on the FRONT shell, sealing to the board's `F.Cu` face — NOT on the component (`B.Cu`) face.** *(SUPERSEDED D-801: the first text of this item said the part sits on the TOP of the PCB with aperture and gasket on the BOTTOM face; that was the footprint library's own frame, written before the part had a board side.)* The region marked by the dashed `B.Fab` circle in the footprint must stay free of copper pours, traces, vias, silkscreen and mask steps **on both faces** so the port can be sealed. Does not block FBV2-A2; **input to FBV2-P1 and to the enclosure CAD** |
 | **M-13** | **Manual-assembly and panel-hardware consequences — current Demo** | **D-781/D-782 CURRENT TRUTH:** `J4` is **not a fitted connector**; it is the manual 26-AWG battery-pigtail solder interface. `J5` remains a manual/secondary Samtec operation, `J6` is the speaker THT header, and `D1`/`U6` are formed/trimmed THT operations after reflow. For `J4`, insert the pigtail conductors from the rear (`B.Cu`), apply solder and inspect barrel fill from the front (`F.Cu`), keep the **front conductive profile ≤0.50 mm**, then apply the **≤0.10 mm polyimide** patch before fitting the display; strain-relieve the rear pigtail with the frozen DOWSIL 3145 process in `BATTERY_HARNESS.json`, preserve the service loop, and disconnect the Micro-Lock pair by the housings only. `J1` remains machine-placed. The 915 MHz interface is the locked **RF Solutions `CBA-UFLSMA20IP` 200 mm** U.FL/MHF1-to-SMA(F) bulkhead pigtail with Ø6.5 mm top-edge panel hole, ≥15 mm centre-to-centre from either IR window and ≥8 mm edge-to-edge from either IR aperture. |
 | ~~M-04~~ | **Battery SKU CLOSED CTO-BAT-01** | **First five: Adafruit Product 328, protected 2500 mAh LiPo.** Max linked-spec pack 7.9 × 50.5 × 60.5 mm is inside the 57 × 75 × 8.0 mm reservation; electrical qualification is machine-checked by `battery_pack_contract.py`. |
 | M-05 | Cosmetic surfacing, radii, texture, branding | **Does not block FBV2-A2** |
@@ -834,6 +854,17 @@ FBV2_PCB_WALL_GAP_MM:    1.500 at the east bump (y 70.500..104.005), 4.000
 FBV2_PCB_DATUM:          lower-left, X right, Y up     LOCKED (D-220)
 FBV2_SIDE_CONVENTION:    F.Cu = FRONT, B.Cu = REAR     LOCKED (D-214)
 FBV2_MIC_SIDE:           MK1 on B.Cu, listens forward  LOCKED (D-214)
+FBV2_MIC_PORT:           BOTTOM-PORT (PUI Rev A p.6: port on the pad face,
+                         inside the pad-4 ring; Ø1.05 NPTH concentric with pad 4)
+                         LOCKED (D-203/D-801)
+FBV2_MIC_ACOUSTIC_FACE:  F.Cu = FRONT (aperture + gasket on the front shell)
+                         LOCKED (D-214/D-801; board-checked MK12)
+FBV2_IR_TX_RX_AXIS_MM:   13.73 MEASURED (formed optical axes D1 X 53.020 /
+                         U6 X 66.750; MK9).  D-162's 15 mm figure is
+                         SUPERSEDED for this frozen design (D-801)
+FBV2_IR_ISOLATION:       IR_BARRIER between both courtyards + receiver outside
+                         the TSAL6100 +/-10 deg cone + first-article C-IR-01
+                         LOCKED (D-800/D-801)
 FBV2_REAR_STACK_MM:      NFC 48 + BAT 75 + SPK 20 = 143 of 155   LOCKED (D-215)
 FBV2_USB_SD_RULE:        >= 8.0 mm BODY edge-to-edge   LOCKED (D-217)
 FBV2_USB_SD_ACTUAL_MM:   16.40                         MEASURED (FBV2-P1)

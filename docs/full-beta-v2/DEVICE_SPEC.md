@@ -1975,8 +1975,10 @@ dimension source and supersedes older Enclosure Field Slate v3/v4/v5 dimensions.
   Ø0.5 mm, mesh behind); **recessed Ø2 mm BOOT/recovery tool hole** at the D-242
   front-wall location for `SW1`.
 - **TOP edge:** **915 MHz SMA bulkhead** (Ø6.5 mm hole, left half); **IR TX window**
-  and **IR RX window** with a **mandatory opaque IR barrier** between them (emitter↔
-  receiver ≥15 mm).
+  and **IR RX window** with a **mandatory opaque IR barrier** between them; the formed
+  emitter/receiver optical axes are 13.73 mm apart, and IR isolation is accepted on the
+  barrier, the receiver lying outside the TSAL6100 ±10° cone, and first-article `C-IR-01`
+  (D-800/D-801; D-162's earlier 15 mm emitter↔receiver figure is SUPERSEDED).
 - **RIGHT wall:** **community expansion port** **62.5 mm closed-end recess** following the
   stepped board profile over the full `J5` body span (labelled "COMMUNITY PORT — 3V3 LOGIC
   ONLY / 5V PIN IS POWER OUTPUT ONLY"); **power slide switch** at `SW9`; **Qwiic / STEMMA

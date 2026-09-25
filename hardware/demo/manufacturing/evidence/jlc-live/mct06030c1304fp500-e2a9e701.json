@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-20T19:34:18Z",
+ "fetched_utc": "2026-09-25T15:21:19Z",
  "keyword": "MCT06030C1304FP500",
  "page_size": 25,
  "pages": 1,
@@ -45,32 +45,32 @@
    "componentPrices": [
     {
      "endNumber": 49,
-     "productPrice": 0.0471,
+     "productPrice": 0.047,
      "startNumber": 1
     },
     {
      "endNumber": 149,
-     "productPrice": 0.0459,
+     "productPrice": 0.0458,
      "startNumber": 50
     },
     {
      "endNumber": 499,
-     "productPrice": 0.0451,
+     "productPrice": 0.045,
      "startNumber": 150
     },
     {
      "endNumber": 509,
-     "productPrice": 0.0443,
+     "productPrice": 0.0442,
      "startNumber": 500
     },
     {
      "endNumber": 519,
-     "productPrice": 0.0443,
+     "productPrice": 0.0442,
      "startNumber": 510
     },
     {
      "endNumber": -1,
-     "productPrice": 0.0443,
+     "productPrice": 0.0442,
      "startNumber": 520
     }
    ],
@@ -86,7 +86,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 1296
+   "stockCount": 1287
   }
  ],
  "returned": 1,

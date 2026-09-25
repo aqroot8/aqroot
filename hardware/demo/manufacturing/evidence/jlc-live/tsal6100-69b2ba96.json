@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-20T19:33:40Z",
+ "fetched_utc": "2026-09-25T15:20:47Z",
  "keyword": "TSAL6100",
  "page_size": 25,
  "pages": 1,
@@ -53,32 +53,32 @@
    "componentPrices": [
     {
      "endNumber": 49,
-     "productPrice": 0.1968,
+     "productPrice": 0.1964,
      "startNumber": 1
     },
     {
      "endNumber": 149,
-     "productPrice": 0.1613,
+     "productPrice": 0.161,
      "startNumber": 50
     },
     {
      "endNumber": 999,
-     "productPrice": 0.1462,
+     "productPrice": 0.1459,
      "startNumber": 150
     },
     {
      "endNumber": 1999,
-     "productPrice": 0.119,
+     "productPrice": 0.1188,
      "startNumber": 1000
     },
     {
      "endNumber": 4999,
-     "productPrice": 0.1106,
+     "productPrice": 0.1103,
      "startNumber": 2000
     },
     {
      "endNumber": -1,
-     "productPrice": 0.1055,
+     "productPrice": 0.1053,
      "startNumber": 5000
     }
    ],
@@ -94,7 +94,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 11041
+   "stockCount": 10981
   },
   {
    "assemblyComponentFlag": false,
@@ -143,32 +143,32 @@
    "componentPrices": [
     {
      "endNumber": 9,
-     "productPrice": 0.3907,
+     "productPrice": 0.3898,
      "startNumber": 1
     },
     {
      "endNumber": 11,
-     "productPrice": 0.3907,
+     "productPrice": 0.3898,
      "startNumber": 10
     },
     {
      "endNumber": 199,
-     "productPrice": 0.3907,
+     "productPrice": 0.3898,
      "startNumber": 12
     },
     {
      "endNumber": 499,
-     "productPrice": 0.156,
+     "productPrice": 0.1556,
      "startNumber": 200
     },
     {
      "endNumber": 999,
-     "productPrice": 0.1508,
+     "productPrice": 0.1504,
      "startNumber": 500
     },
     {
      "endNumber": -1,
-     "productPrice": 0.1482,
+     "productPrice": 0.1478,
      "startNumber": 1000
     }
    ],

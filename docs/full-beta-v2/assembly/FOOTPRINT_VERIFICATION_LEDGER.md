@@ -126,10 +126,21 @@ A port that exists only as a sentence in a description is a port that gets forgo
   dimension**, and it is labelled as such in the footprint. Coverage ≈ **72 %** of the ring land.
 - **Keepout:** a dashed `B.Fab` circle at Ø2.0 plus a `User.Comments` legend mark the region that
   must stay free of copper pours, traces, vias, silkscreen and mask steps **on both faces**.
-- **Orientation:** this is a **bottom-port** microphone. It sits on the **top** of the PCB and
-  listens **through** the board, so **the acoustic path leaves on the bottom face** — the
-  enclosure aperture and any gasket belong on that face, not the component face. Recorded as a
-  mechanical-interface constraint (**M-14**).
+- **Orientation — CORRECTED D-801 (Round-20, D801-02):** this is a **bottom-port** microphone —
+  PUI `DMM-4026-B-I2S-R` Rev A 5/26/2021, p.6 (archived
+  `hardware/demo/kicad/aqroot-demo/vendor/PUI/pui-dmm-4026-b-i2s-r-revA.pdf`, sha256
+  `ce42c9bf…5f1a19`) dimensions the **Ø0.25 ± 0.05 mm acoustic port on the solder-pad face,
+  inside the pad-4 GND ring**; the lid face carries only the date code.  **On the Demo board
+  `MK1` is mounted on `B.Cu` (REAR)** — the board file reads `(layer "B.Cu")` at doc
+  (4.000, 50.000), D-214 — so the port faces the board and **sound arrives from the `F.Cu`
+  (FRONT) face through the Ø1.05 mm NPTH**.  **The enclosure aperture and gasket are on the
+  FRONT shell, sealing to the board's `F.Cu` face, NOT on the component (`B.Cu`) face.**
+  Recorded as mechanical-interface constraint **M-14** and checked against the board by
+  `mechanical_keepout_contract` MK12.
+  *(SUPERSEDED D-801: this bullet first said the part "sits on the top of the PCB" with the
+  acoustic path, aperture and gasket on the "bottom face".  That is true only in the footprint
+  LIBRARY's own frame — the master is drawn on `F.Cu` — and was written before the part had a
+  board side; on the flipped board it is the reverse.)*
 
 The edited footprint was re-loaded through KiCad's own `pcbnew` parser to confirm it is valid:
 seven signal pads, one paste-only aperture, one Ø1.05 NPTH.

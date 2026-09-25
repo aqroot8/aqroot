@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-20T19:33:30Z",
+ "fetched_utc": "2026-09-25T15:20:39Z",
  "keyword": "GRM21BR61H106KE43L",
  "page_size": 25,
  "pages": 1,
@@ -33,32 +33,32 @@
    "componentPrices": [
     {
      "endNumber": 49,
-     "productPrice": 0.2497,
+     "productPrice": 0.2065,
      "startNumber": 1
     },
     {
      "endNumber": 149,
-     "productPrice": 0.2154,
+     "productPrice": 0.1721,
      "startNumber": 50
     },
     {
      "endNumber": 499,
-     "productPrice": 0.1988,
+     "productPrice": 0.1555,
      "startNumber": 150
     },
     {
      "endNumber": 2999,
-     "productPrice": 0.1838,
+     "productPrice": 0.1405,
      "startNumber": 500
     },
     {
      "endNumber": 5999,
-     "productPrice": 0.1757,
+     "productPrice": 0.1324,
      "startNumber": 3000
     },
     {
      "endNumber": -1,
-     "productPrice": 0.1732,
+     "productPrice": 0.13,
      "startNumber": 6000
     }
    ],
@@ -74,7 +74,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 1122386
+   "stockCount": 1189706
   },
   {
    "assemblyComponentFlag": false,
@@ -86,12 +86,12 @@
    "componentPrices": [
     {
      "endNumber": 99,
-     "productPrice": 0.0396,
+     "productPrice": 0.0395,
      "startNumber": 1
     },
     {
      "endNumber": -1,
-     "productPrice": 0.0204,
+     "productPrice": 0.0203,
      "startNumber": 100
     }
    ],
@@ -104,7 +104,7 @@
    "lcscGoodsUrl": null,
    "leastPatchNumber": 5,
    "lossNumber": 4,
-   "minPurchaseNum": 443,
+   "minPurchaseNum": 445,
    "noBuyReason": "This product is no longer manufactured.",
    "rohsFlag": 1,
    "stockCount": 0
@@ -119,12 +119,12 @@
    "componentPrices": [
     {
      "endNumber": 99,
-     "productPrice": 0.0396,
+     "productPrice": 0.0395,
      "startNumber": 1
     },
     {
      "endNumber": -1,
-     "productPrice": 0.0204,
+     "productPrice": 0.0203,
      "startNumber": 100
     }
    ],
@@ -137,7 +137,7 @@
    "lcscGoodsUrl": null,
    "leastPatchNumber": 5,
    "lossNumber": 4,
-   "minPurchaseNum": 443,
+   "minPurchaseNum": 445,
    "noBuyReason": "This product is no longer manufactured.",
    "rohsFlag": 1,
    "stockCount": 0

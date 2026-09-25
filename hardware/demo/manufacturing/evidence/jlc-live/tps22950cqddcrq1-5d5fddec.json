@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-20T19:34:30Z",
+ "fetched_utc": "2026-09-25T15:21:30Z",
  "keyword": "TPS22950CQDDCRQ1",
  "page_size": 25,
  "pages": 1,
@@ -49,32 +49,32 @@
    "componentPrices": [
     {
      "endNumber": 9,
-     "productPrice": 0.6576,
+     "productPrice": 0.6561,
      "startNumber": 1
     },
     {
      "endNumber": 29,
-     "productPrice": 0.5567,
+     "productPrice": 0.5554,
      "startNumber": 10
     },
     {
      "endNumber": 99,
-     "productPrice": 0.4851,
+     "productPrice": 0.484,
      "startNumber": 30
     },
     {
      "endNumber": 499,
-     "productPrice": 0.4265,
+     "productPrice": 0.4255,
      "startNumber": 100
     },
     {
      "endNumber": 999,
-     "productPrice": 0.4069,
+     "productPrice": 0.406,
      "startNumber": 500
     },
     {
      "endNumber": -1,
-     "productPrice": 0.3956,
+     "productPrice": 0.3947,
      "startNumber": 1000
     }
    ],
@@ -90,7 +90,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 4047
+   "stockCount": 4015
   }
  ],
  "returned": 1,

@@ -91,7 +91,7 @@ Authority: [`MECHANICAL_INTERFACE_SPEC.md`](MECHANICAL_INTERFACE_SPEC.md) and
 | F-18 | Acoustic gasket | closed-cell silicone or poron, **compressed 20–30 %**, **ID ≥ 1.5 mm, OD 4–5 mm**, sealed tunnel | **TARGET** |
 | F-19 | Acoustic tunnel length | **≤ 2.5 mm** | **TARGET** |
 | F-20 | `MK1` body | PUI **`DMM-4026-B-I2S-R`**, **4.00 × 3.00 × 1.00 mm**, **BOTTOM PORT**, port Ø0.25 ± 0.05 mm on the width centreline 1.00 mm from the short edge | **LOCKED** |
-| F-21 | **`MK1` board face** | must be the PCB copper face **pointing AWAY from the front shell**, listening forward through F-16 | **OPEN — see §9 O-1** |
+| F-21 | **`MK1` board face** | the PCB copper face **pointing AWAY from the front shell** = **`B.Cu`**, listening forward through F-16 from the `F.Cu` (FRONT) face | **LOCKED — O-1 closed D-214** (board-checked MK12, D-801) |
 
 ---
 
@@ -148,7 +148,7 @@ Authority: [`MECHANICAL_INTERFACE_SPEC.md`](MECHANICAL_INTERFACE_SPEC.md) and
 | T-7 | **IR TX** | `D1` Vishay **`TSAL6100`**, T-1¾ **Ø5 mm leaded**, **2.54 mm lead pitch**, **±10° half-angle**, 2.4× brighter on axis than the TSAL6200 the layout was first written against. Top edge, **right of centre** | **LOCKED** |
 | T-8 | IR TX axis | **normal to the top face, ±0°** | **LOCKED** |
 | T-9 | **IR RX** | `U6` Vishay **`TSOP38238`** (`TSOP38438` same-package fallback), ~**6.0 × 5.6 × 4.7 mm** minicast, **±45° FOV**. Top edge, **right end**. **Tallest top-side component on the board** | **LOCKED** |
-| T-10 | **IR TX ↔ IR RX separation** | **≥ 15 mm**, receiver **outside the LED emission cone** | **LOCKED** |
+| T-10 | **IR TX ↔ IR RX isolation** | *~~≥ 15 mm~~ — D-162's separation figure is SUPERSEDED D-801 for the frozen design.* Formed optical axes **13.73 mm** apart (MK9); acceptance is the opaque `IR_BARRIER` between both courtyards (T-11), receiver **outside the TSAL6100's ±10° emission cone**, and first-article **`C-IR-01`** — see `MECHANICAL_INTERFACE_SPEC.md` §8 | **LOCKED** (D-800 / D-801) |
 | T-11 | **Opaque IR barrier** | **MANDATORY. Full height between the two windows, bonded to BOTH shells.** It blocks the internal reflection path, which is the path that actually causes self-blinding | **LOCKED** |
 | T-12 | IR windows | IR-transmissive (visibly opaque acceptable), **recessed 0.5 mm** | **TARGET** |
 | T-13 | Top-side height | IR receiver at 4.7 mm **must sit outside the display shadow** — top edge only | **LOCKED** |

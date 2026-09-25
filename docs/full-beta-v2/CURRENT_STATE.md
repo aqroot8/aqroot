@@ -14,7 +14,30 @@
 
 ## 1. Authoritative HEAD
 
-> ### **D-800 REVIEW TARGET — THE EXACT FROZEN IDENTITY**
+> ### **D-801 REVIEW TARGET — THE EXACT FROZEN IDENTITY**
+>
+> | what | value |
+> |---|---|
+> | branch | `origin/aqroot-demo` |
+> | content commit | *recorded by the identity commit that follows it — a commit cannot contain its own SHA, so the reviewable target is the PAIR* |
+> | identity / post-commit verification commit | *the commit after the content commit* |
+> | board `aqroot-Beta-v2.kicad_pcb` sha256 | `c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907` |
+> | `hardware/demo/fab/MANIFEST.json` sha256 | *recorded by the identity commit* |
+> | parent, reviewed by Round-20 | `a252b7f11e0fff2ce30381e9f3f17e3d66bbea09` (D-800 identity) |
+>
+> The board sha256 is IDENTICAL to the reviewed D-800 target: **no copper moved**, and no
+> BOM or CPL line changes.  D-801 closes Round-20's ten bounded items: an executable
+> first-article DIAGNOSTIC image `FAP-01` (`[env:aqroot-demo-fap01]`, never default, never
+> shipped), one mechanical authority (`MK1` rear-mounted bottom-port; IR accepted on the
+> 13.73 mm formed axes + barrier + cone + `C-IR-01`, D-162's 15 mm heuristic SUPERSEDED), a
+> guarded `default_envs` (`H9`), no claimed BATOCP interruption of the double-limiter fault,
+> `C-BAT-GATE-01` generated from F10 at a declared bench condition, a release identity
+> derived and bound, the missing D-800 firmware controls, a fresh dated sourcing sweep, the
+> D-616 fabrication-package document fenced, and four document-semantic families.  The full
+> record is `evidence/d801-review-target.json`.
+> **REVIEW TARGET, NOT A FABRICATION AUTHORIZATION.  DO NOT ORDER.**
+
+> ### **D-800 REVIEW TARGET — THE EXACT FROZEN IDENTITY**  *(**HISTORICAL** — graded by Round-20, superseded by D-801)*
 >
 > | what | value |
 > |---|---|
@@ -227,14 +250,24 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
-> # **D-800 ROUND-19 MAXIMUM-ASSURANCE FULL PRE-ORDER REVIEW — CURRENT EXTERNAL-REVIEW TARGET**
+> # **D-801 ROUND-20 BOUNDED PRE-ORDER CORRECTION — CURRENT EXTERNAL-REVIEW TARGET**
+>
+> *(The parent release's Round-19 content below this D-801 summary still stands unless a D-801 line says otherwise.)*
+>
+> **D-801 (Round-20: Astra B, six bounded non-PCB corrections; Fable Work A with residuals).**  NO COPPER, no BOM / CPL change, no release-image behaviour change.  What changed for a fabricator, assembler, buyer and technician:
+>
+> * **D-801: the first-article test image `FAP-01` EXISTS** — `pio run -e aqroot-demo-fap01` (never default, never shipped; re-flash `aqroot-demo` by name before a unit leaves the bench).  Every keyed stimulus is bounded and runs through the release image's own gates; `assembly/FAP01_FIRST_ARTICLE_IMAGE.md` lists every console key against its first-article step.  Bench execution is pending hardware.
+> * **D-801: `MK1` is rear-mounted and bottom-port** — the acoustic path is through the board from the FRONT; aperture and gasket belong on the front shell.  **IR isolation is the barrier, the ±10° cone and `C-IR-01`** on 13.73 mm formed axes; D-162's 15 mm heuristic is SUPERSEDED.
+> * **D-801: `C-BAT-GATE-01` is a bench step with a declared condition** (25 °C, board out of the enclosure, `VGS(Q2)` at Q2's leads) and its expected crossing (2.5783 A) and drops are generated from F10.
+> * **D-801: no BATOCP interruption is claimed for any accessory fault**; the double-limiter fault lies inside the declared BATOCP band and below the LTC4368 breaker minimum and F1.
+> * **D-801: procurement** — a FRESH `--refresh` sweep (every row dated 2026-09-25) adds `TPD4E1B06DRLR` (`D2`,`D4`,`D5`) as a consignment line; `L3`'s 20 V operating-voltage question (Coilcraft) and the pack's 3.95 V PCM statement (Adafruit) are BLOCK-PURCHASE gates until answered in writing.
 >
 > **THIS IS A REVIEW TARGET, NOT A FABRICATION AUTHORIZATION.  DO NOT ORDER.**  Round-19 graded D-799 **Astra B — three non-PCB pre-order corrections** and **Opus/Fable A with seven residuals**, and the owner required a FULL maximum-assurance re-audit.  **No copper, net, footprint, placement, part value or protected-copper object moves at D-800**; the release FIRMWARE image changes (six fail-closed / bus / wrap defects, each host-tested with a permanent mutation control).  Connectivity is unchanged at **174 retained / 173 connected / one owner-approved `U11.3` open / zero unapproved**.  D800-KNOWN-01…08 are closed, `R19-06` is dispositioned, and the re-audit's findings are fixed or dispositioned with evidence; the full record is `CTO_DECISIONS.md` D-800.  *(D-799 — Round-18's corrections — is the reviewed parent and is superseded; everything it established below still stands.)*
 >
 > ### THE PRODUCT-FACING CONSEQUENCES, IN ONE PLACE
 >
 > * **D-800: the full parts list marks every fitted part fitted** (D-799's `BOM-full.csv` called the fitted `L4`/`U21` DNP); FAB-NOTES carries a generated PIN-1 / POLARITY table.
-> * **D-800: first-article steps that need a transmitter, a field, an IR burst or a held audio / backlight state run on the FIRST-ARTICLE TEST IMAGE `FAP-01`**, a prerequisite PENDING; the release image keys none of them.  New step `C-IR-01`: the formed IR axes are 13.73 mm apart, under D-162's 15 mm heuristic.
+> * **D-800: first-article steps that need a transmitter, a field, an IR burst or a held audio / backlight state run on the FIRST-ARTICLE TEST IMAGE `FAP-01`**, a prerequisite (IMPLEMENTED at D-801; bench execution pending hardware); the release image keys none of them.  New step `C-IR-01`: the formed IR axes are 13.73 mm apart, under D-162's 15 mm heuristic.
 > * **D-800: one J4 adhesive hold** — nothing load-bearing before the full ≥ 72 h; `IIN` is positive INTO the device; `R_ins` for `OCV_lb` is MEASURED (a series meter is never 0); every junction criterion is the interval.
 > * **`OCV_lb` is now a PROVED lower bound (`R18-01`).**  D-798's correction could sit ABOVE the pack's true open-circuit voltage five ways — a charge current read low, a current that has FALLEN while the pack's stored polarization has not, a bench shunt between J4 and the pack, a residual rounded down, a current recorded with the other sign.  The method now carries the DMM and current-meter uncertainty, uses the current's MAGNITUDE, adds the meter's insertion resistance, and bounds the pack's drop and stored polarization together at max(I_up, ICHG_max) × the declared pack DC resistance — no relaxation time is assumed.  The matrix, the one rule and its **4.10 V** threshold are UNCHANGED; only the measured quantity is corrected, so a SUPERVISED combination now in practice needs a nearly full pack (a detached reading of at least 4.182 V).
 > * **A charge-end record must be physically possible (`R18-02`).**  `SYS` boosted above both `VIN` and the pack, input current against `VIN` below `VSYS`, `SYS` above VSYS_REG max, current flowing uphill, or a transition summary contradicted by its own samples is **FAULT / UNCLASSIFIED** before any classification.
@@ -289,8 +322,8 @@
 > |---|---|
 > | **PRE-ORDER ANALYTICAL** | **CLOSED on this target** |
 > | **FAB / CAM ACCEPTANCE** | **PENDING** — B01–B14 in `assembly/RELEASE_ACCEPTANCE_REGISTER.json` and the fab notes |
-> | **FIRST-ARTICLE VALIDATION** | **PENDING** — FA01–FA10, enumerated in the same register and in `FIRST_FIVE_ASSEMBLY_PLAN` §7d, and their prerequisite `FAP-01` (the first-article test image) |
-> | **PROCUREMENT** | **PENDING** — nine constrained fitted groups plus the AOS pass-pair allocation |
+> | **FIRST-ARTICLE VALIDATION** | **PENDING** — FA01–FA10, enumerated in the same register and in `FIRST_FIVE_ASSEMBLY_PLAN` §7d; their prerequisite `FAP-01` (the first-article test image) is IMPLEMENTED at D-801 and host-tested, bench execution pending hardware |
+> | **PROCUREMENT** | **PENDING** — nine constrained fitted groups (D-801 fresh sweep), the AOS pass-pair allocation, `R20-P01` (`L3` voltage, Coilcraft) and `R20-P02` (pack PCM threshold, Adafruit), and a `--refresh` re-sweep immediately before the order |
 
 > # **D-798 ROUND-17 TARGETED-CONVERGENCE CORRECTION — HISTORICAL, SUPERSEDED BY D-799 (REJECTED by Round-18; its `OCV_lb` formula is RETIRED)**
 >

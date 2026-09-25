@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-20T19:34:32Z",
+ "fetched_utc": "2026-09-25T15:21:35Z",
  "keyword": "ST25R3916-AQET",
  "page_size": 25,
  "pages": 1,
@@ -45,32 +45,32 @@
    "componentPrices": [
     {
      "endNumber": 9,
-     "productPrice": 3.6035,
+     "productPrice": 3.5954,
      "startNumber": 1
     },
     {
      "endNumber": 29,
-     "productPrice": 3.5205,
+     "productPrice": 3.5126,
      "startNumber": 10
     },
     {
      "endNumber": 99,
-     "productPrice": 3.4636,
+     "productPrice": 3.4558,
      "startNumber": 30
     },
     {
      "endNumber": 101,
-     "productPrice": 3.4082,
+     "productPrice": 3.4006,
      "startNumber": 100
     },
     {
      "endNumber": 103,
-     "productPrice": 3.4082,
+     "productPrice": 3.4006,
      "startNumber": 102
     },
     {
      "endNumber": -1,
-     "productPrice": 3.4082,
+     "productPrice": 3.4006,
      "startNumber": 104
     }
    ],

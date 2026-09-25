@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""AQROOT Demo -- the MECHANICAL KEEP-OUT contract (MK1-MK11).
+"""AQROOT Demo -- the MECHANICAL KEEP-OUT contract (MK1-MK12).
 
 WHY THIS FILE EXISTS.  `FBV2_P1_KEEPOUTS.md` is marked **NORMATIVE for FBV2-P2
 and for the enclosure CAD**, and until D-759 not one of its statements was
@@ -74,6 +74,17 @@ PRE-REBASE positions -- correcting a real defect into a different one.
          1x24 J5 identity/position/drill/pitch/mating-face geometry plus the
          conservative M-09 Z bound.
 
+    MK12 THE GOVERNING TEXT SAYS WHAT THE BOARD IS (D-801 / D801-02).  The
+         spec's machine-readable MK1 side, port type and acoustic face must
+         equal the board's (MK1 on B.Cu, Ø1.05 mm NPTH concentric with pad 4,
+         bottom port per the archived PUI Rev A drawing -> sound arrives from
+         F.Cu = FRONT); the spec's IR axis figure must equal MK9's formed-axis
+         measurement (13.73 mm) with barrier + ±10° cone + C-IR-01 stated as
+         the acceptance; the antenna<->IR 15 mm c-c / 8 mm edge rules must
+         still be stated; and no governing mechanical / assembly document may
+         state a wrong mic direction or the D-162 15 mm TX<->RX figure as
+         CURRENT.  Its destructive controls run inside MK7.
+
     python3 hardware/demo/manufacturing/checks/mechanical_keepout_contract.py \
         [--board B.kicad_pcb] [-o REPORT.json]
 """
@@ -81,6 +92,7 @@ import argparse
 import hashlib
 import json
 import math
+import re
 import sys
 from pathlib import Path
 
@@ -699,6 +711,11 @@ def mk8(board, reg=None):
 # 15.1327 mm centre to centre -- the rule is MET, and by 0.133 mm, which is
 # exactly the kind of margin that a 0.2 mm placement nudge spends without
 # anybody noticing.
+#
+# SUPERSEDED D-800 / D-801.  That 15.1327 mm was footprint ORIGINS; the formed
+# optical axes are 13.73 mm apart (MK9).  The figure survives only so MK9 can
+# REPORT the historical heuristic as unmet; MK12 refuses any governing document
+# that states it as a current TX<->RX requirement.
 IR_TX_RX_MIN_MM = 15.000
 
 
@@ -969,6 +986,387 @@ def mk11(board):
                 datum="doc origin lower-left; Y_kicad = 148 - Y_doc")
 
 
+# ---------------------------------------------------------------------------
+# D-801 (Round-20, D801-02).  THE GOVERNING MECHANICAL TEXT MUST SAY WHAT THE
+# BOARD IS.
+#
+# Two current requirements in the enclosure authority disagreed with the frozen
+# board and no clause read them.  (1) MECHANICAL_INTERFACE_SPEC §8 still stated
+# D-162's ">= 15 mm" emitter<->receiver separation as CURRENT while MK9 had
+# measured the formed axes at 13.73 mm and moved the acceptance to barrier +
+# cone + first-article C-IR-01.  (2) M-14 and FOOTPRINT_VERIFICATION_LEDGER
+# B-63 said MK1 "sits on the TOP of the PCB" and that the acoustic path, the
+# enclosure aperture and the gasket are on the BOTTOM face -- the footprint
+# LIBRARY's own frame, never re-stated for the board.  D-214 put MK1 on B.Cu
+# (REAR); PUI's drawing puts the Ø0.25 mm port on the PAD face inside the pad-4
+# ring (bottom port); the board carries the Ø1.05 mm NPTH concentric with pad
+# 4.  So the port faces the board and sound arrives from F.Cu (FRONT).
+#
+# MK12 reads the BOARD for the mic's side and port, reads the spec's
+# machine-readable block for what the spec says they are, binds the spec's IR
+# axis figure to MK9's measurement, requires the current IR acceptance and the
+# (separate, unchanged) antenna<->IR rules to be stated, and scans every
+# governing mechanical / assembly document for a wrong mic direction or the
+# 15 mm TX<->RX figure stated as current.  A sentence is FENCED -- historical,
+# not current -- only when it is struck (~~..~~) or says so in words.
+MIC_REF = "MK1"
+MIC_PORT_DRILL_MM = 1.050
+MIC_DATASHEET = ("hardware/demo/kicad/aqroot-demo/vendor/PUI/"
+                 "pui-dmm-4026-b-i2s-r-revA.pdf")
+MIC_DATASHEET_SHA256 = ("ce42c9bf03b671cd6e7e95a4bfc414a9"
+                        "ffbd61747dbe4c76220ce650535f1a19")
+SPEC_DOC = "docs/full-beta-v2/mechanical/MECHANICAL_INTERFACE_SPEC.md"
+GOVERNING_MECH_DOCS = (
+    SPEC_DOC,
+    "docs/full-beta-v2/mechanical/P1_FLOORPLAN_INPUTS.md",
+    "docs/full-beta-v2/pcb/FBV2_P1_KEEPOUTS.md",
+    "docs/full-beta-v2/pcb/FBV2_P1_FLOORPLAN.md",
+    "docs/full-beta-v2/assembly/IR_LEAD_FORMING.md",
+    "docs/full-beta-v2/assembly/FOOTPRINT_VERIFICATION_LEDGER.md",
+    "docs/full-beta-v2/assembly/FIRST_FIVE_ASSEMBLY_PLAN.md",
+    "docs/full-beta-v2/DEVICE_SPEC.md",
+)
+# words that make a sentence historical rather than current
+_FENCE = re.compile(r"SUPERSEDED|SUPERSEDES|HISTORICAL|\bnot met\b|"
+                    r"under D-162's|no longer current", re.I)
+_IR_PAIR = re.compile(r"\b(IR|TX|RX|emitter|receiver|TSAL6100|TSOP\d+|D1|U6)"
+                      r"\b|IR[_ ]?TX|TX[_ ]?RX", re.I)
+_IR_15 = re.compile(r"(≥|>=|at least|no less than|minimum(?: of)?|min\.?)\s*"
+                    r"15(?:\.0+)?\s*mm|\b15(?:\.0+)?\s*(?:mm)?\s*"
+                    r"(?:min\b|minimum|apart)|rule\s*(?:≥|>=)\s*15", re.I)
+_ANTENNA = re.compile(r"SMA|bulkhead|antenna|whip|pigtail|service loop|coax|"
+                      r"(c-c|centre-to-centre|edge-to-edge)\s+(to|from)\s+"
+                      r"(either\s+)?IR\s+(window|aperture)", re.I)
+_MIC_CTX = re.compile(r"\bMK1\b|microphone|\bmic\b|DMM-4026|acoustic", re.I)
+_MIC_WRONG = (
+    ("mic_mounted_on_top_or_front_copper",
+     re.compile(r"\b(MK1|microphone|mic|part|it)\b[^.;|]{0,30}\b(sits|placed|"
+                r"mounted|soldered|fitted|is)\s+on\s+(the\s+)?(top|F\.Cu|"
+                r"front\s+(copper|of\s+the\s+(PCB|board)))\b(?!\s*(edge|"
+                r"panel|shell|enclosure|aperture|wall|crown))", re.I)),
+    ("acoustic_path_leaves_bottom_or_rear",
+     re.compile(r"acoustic\s+(path|port|opening|hole)[^.;:|]{0,40}\b(leaves"
+                r"|exits|opens|faces|points)\b[^.;:|]{0,25}\b(bottom|rear|back"
+                r"|B\.Cu)\b", re.I)),
+    ("aperture_or_gasket_on_bottom_or_rear",
+     re.compile(r"\b(aperture|opening|gasket)s?\b(?:(?!MK1|microphone)"
+                r"[^.;:|]){0,60}\b(belong|belongs|sit|sits|is|are|go|goes)\b"
+                r"[^.;:|]{0,20}\bon\s+(the\s+)?(bottom|rear|back|B\.Cu)\b",
+                re.I)),
+    ("mic_called_top_port", re.compile(r"\btop[- ]port(ed)?\b", re.I)),
+)
+
+
+def _current_units(text):
+    """Sentence-sized units of CURRENT text: struck spans removed, markdown
+    emphasis dropped, table cells and code lines kept as their own units."""
+    text = re.sub(r"~~.*?~~", " ", text, flags=re.S)
+    # inline code ticks go; ``` fences stay, they delimit code units
+    text = re.sub(r"(?<!`)`(?!`)", "", text.replace("**", ""))
+    units, para, in_code = [], [], False
+
+    def flush():
+        if para:
+            units.extend(re.split(r"(?<=[.!?])\s+", " ".join(para)))
+            para.clear()
+    # a unit is (sentence, row); a table cell's row is its whole table ROW,
+    # so the antenna<->IR rule's cells stay attributed to the antenna row.
+    # The FENCE is never taken from context: one struck cell does not fence
+    # its neighbours.
+    for raw in text.splitlines():
+        line = re.sub(r"^\s*>\s?", "", raw)
+        if line.strip().startswith("```"):
+            flush()
+            in_code = not in_code
+            continue
+        if in_code:
+            units.append(line)
+        elif line.strip().startswith("|"):
+            flush()
+            for cell in line.split("|"):
+                units.extend((u, line) for u in
+                             re.split(r"(?<=[.!?])\s+", cell))
+        elif not line.strip() or line.lstrip().startswith("#"):
+            flush()
+            if line.strip():
+                units.append(line)
+        else:
+            para.append(line.strip())
+    flush()
+    out = []
+    for u in units:
+        u, ctx = u if isinstance(u, tuple) else (u, None)
+        if u.strip():
+            out.append((u.strip(), ctx))
+    return out
+
+
+def _scan_governing(texts):
+    ir, mic = [], []
+    for rel, t in texts.items():
+        prev = ""
+        for u, ctx in _current_units(t):
+            # "It sits on ..." names the part one sentence back
+            subject_ctx, prev = prev + " " + u, u
+            if _FENCE.search(u):
+                continue
+            # the antenna<->IR rule is told apart LOCALLY: a table cell by
+            # its row, prose by the 80 characters before the figure and 40
+            # after, so one sentence naming both the SMA and the IR pair
+            # still answers for the pair
+            for m in _IR_15.finditer(u):
+                near = u[max(0, m.start() - 80):m.end() + 40]
+                if not (_IR_PAIR.search(near) or
+                        (ctx and _IR_PAIR.search(ctx))):
+                    continue
+                if _ANTENNA.search(near) or (ctx and _ANTENNA.search(ctx)):
+                    continue
+                ir.append(dict(doc=rel, text=u[:240]))
+                break
+            if _MIC_CTX.search(subject_ctx):
+                for name, rx in _MIC_WRONG:
+                    if rx.search(u):
+                        mic.append(dict(doc=rel, form=name, text=u[:240]))
+    return ir, mic
+
+
+def _spec_field(spec, key):
+    """A machine-readable block field, WITH its indented continuation lines."""
+    m = re.search(r"^%s:\s+(.*(?:\n[ \t]+\S.*)*)" % re.escape(key), spec,
+                  re.M)
+    return " ".join(m.group(1).split()) if m else None
+
+
+def _mic_on_board(board):
+    f = board.FindFootprintByReference(MIC_REF)
+    if f is None:
+        return dict(present=False)
+    side = "B" if f.IsFlipped() else "F"
+    pads = list(f.Pads())
+    p4 = next((p for p in pads if p.GetNumber() == "4"), None)
+    port = [p for p in pads if p.GetAttribute() == pcbnew.PAD_ATTRIB_NPTH]
+    concentric = bool(p4 is not None and any(
+        abs(p.GetPosition().x - p4.GetPosition().x) <= 1000
+        and abs(p.GetPosition().y - p4.GetPosition().y) <= 1000
+        and abs(p.GetDrillSize().x / 1e6 - MIC_PORT_DRILL_MM) <= 1e-6
+        for p in port))
+    words = (f.GetLibDescription() + " " + f.GetKeywords()).lower()
+    bottom_port = bool(re.search(r"bottom[- ]port", words)) and concentric
+    return dict(present=True, side=side, layer=f.GetLayerName(),
+                port_npth_concentric_with_pad4=concentric,
+                port_drill_mm=MIC_PORT_DRILL_MM if concentric else None,
+                footprint_declares_bottom_port=bool(
+                    re.search(r"bottom[- ]port", words)),
+                bottom_port=bottom_port,
+                # a bottom port faces the board, so sound arrives from the
+                # OTHER copper face, through the NPTH
+                acoustic_face=(("F" if side == "B" else "B")
+                               if bottom_port else side))
+
+
+def mk12(board, reg=None, doc_paths=None, mk9_result=None):
+    reg = reg or regions()
+    paths = {r: ROOT / r for r in GOVERNING_MECH_DOCS}
+    paths.update(doc_paths or {})
+    texts = {r: (paths[r].read_text(encoding="utf-8")
+                 if paths[r].exists() else "") for r in GOVERNING_MECH_DOCS}
+    missing_docs = [r for r in GOVERNING_MECH_DOCS if not texts[r]]
+    spec = texts[SPEC_DOC]
+
+    # -- the board ---------------------------------------------------------
+    mic = _mic_on_board(board)
+    ds = ROOT / MIC_DATASHEET
+    ds_ok = ds.exists() and sha256(ds) == MIC_DATASHEET_SHA256
+
+    # -- what the spec's machine-readable block says -----------------------
+    conv = _spec_field(spec, "FBV2_SIDE_CONVENTION") or ""
+    m = re.search(r"F\.Cu\s*=\s*(FRONT|REAR)", conv)
+    front = ("F" if m.group(1) == "FRONT" else "B") if m else None
+    fs = _spec_field(spec, "FBV2_MIC_SIDE") or ""
+    m = re.search(r"MK1 on ([FB])\.Cu", fs)
+    spec_side = m.group(1) if m else None
+    fp = _spec_field(spec, "FBV2_MIC_PORT") or ""
+    m = re.search(r"\b(BOTTOM|TOP)-PORT\b", fp)
+    spec_port = m.group(1) if m else None
+    fa = _spec_field(spec, "FBV2_MIC_ACOUSTIC_FACE") or ""
+    m = re.search(r"\b([FB])\.Cu\b", fa)
+    spec_face = m.group(1) if m else None
+
+    mic_ok = bool(mic.get("present") and ds_ok and mic["bottom_port"]
+                  and spec_side == mic["side"] and spec_port == "BOTTOM"
+                  and spec_face == mic["acoustic_face"]
+                  and front is not None and mic["acoustic_face"] == front)
+
+    # -- IR: the spec's axis figure is MK9's measurement --------------------
+    r9 = mk9_result or mk9(board, reg)
+    fx = _spec_field(spec, "FBV2_IR_TX_RX_AXIS_MM") or ""
+    m = re.match(r"([\d.]+)", fx)
+    spec_axis = float(m.group(1)) if m else None
+    iso = _spec_field(spec, "FBV2_IR_ISOLATION") or ""
+    iso_terms = {t: (t in iso) for t in ("IR_BARRIER", "10 deg", "C-IR-01")}
+    axis_ok = bool(spec_axis is not None and abs(
+        spec_axis - r9["formed_axis_separation_mm"]) <= 0.005)
+    ir_ok = bool(axis_ok and all(iso_terms.values()) and r9["ok"])
+
+    # -- the antenna<->IR rules are a DIFFERENT requirement and stay -------
+    c = _spec_field(spec, "FBV2_SMA_IR_CENTRE_MM") or ""
+    e = _spec_field(spec, "FBV2_SMA_IR_EDGE_MM") or ""
+    ant_ok = bool(re.match(r"15\.0 min c-c", c) and re.match(r"8\.0 min", e))
+
+    # -- every governing document, current text only ------------------------
+    ir_hits, mic_hits = _scan_governing(texts)
+
+    ok = bool(mic_ok and ir_ok and ant_ok and not ir_hits and not mic_hits
+              and not missing_docs)
+    return dict(
+        ok=ok,
+        microphone=dict(ok=mic_ok, board=mic,
+                        datasheet=MIC_DATASHEET, datasheet_sha256_ok=ds_ok,
+                        datasheet_fact="PUI DMM-4026-B-I2S-R Rev A 5/26/2021 "
+                                       "p.6: Ø0.25 mm acoustic port on the "
+                                       "PAD face inside the pad-4 GND ring",
+                        spec_front_copper=front, spec_side=spec_side,
+                        spec_port=spec_port, spec_acoustic_face=spec_face),
+        ir=dict(ok=ir_ok, spec_axis_mm=spec_axis,
+                measured_axis_mm=r9["formed_axis_separation_mm"],
+                spec_axis_matches_mk9=axis_ok, spec_isolation_terms=iso_terms,
+                mk9_ok=r9["ok"]),
+        antenna_ir_rules_retained=dict(ok=ant_ok, centre=c, edge=e),
+        ir_15mm_stated_as_current=ir_hits,
+        wrong_microphone_direction=mic_hits,
+        governing_documents=list(GOVERNING_MECH_DOCS),
+        missing_documents=missing_docs)
+
+
+def mk12_controls(board, reg):
+    """D-801 destructive controls, on TEMPORARY COPIES of the documents and
+    on in-memory board edits that are restored."""
+    import tempfile
+    ctl = {}
+    base = mk12(board, reg)
+    tmp = Path(tempfile.mkdtemp(prefix="mk12-"))
+
+    # A control is CAUGHT when the injection adds a finding the untouched
+    # documents do not have -- measured against the baseline, so a control
+    # stays meaningful (and MK12, not MK7, reports) if a live document is
+    # wrong today.
+    def more(r, key):
+        return len(r[key]) > len(base[key])
+
+    def with_doc(rel, mutate):
+        src = (ROOT / rel).read_text(encoding="utf-8")
+        out = mutate(src)
+        if out == src:
+            # the mutation found nothing to change: the control CANNOT be
+            # said to have been caught, so it reads as a clean document
+            return dict(ok=True, microphone=dict(ok=True),
+                        ir=dict(ok=True, spec_axis_matches_mk9=True),
+                        antenna_ir_rules_retained=dict(ok=True),
+                        ir_15mm_stated_as_current=[],
+                        wrong_microphone_direction=[])
+        p = tmp / Path(rel).name
+        p.write_text(out, encoding="utf-8")
+        return mk12(board, reg, doc_paths={rel: p})
+
+    def append(s, extra):
+        return s + "\n\n" + extra + "\n"
+
+    # wrong microphone direction, each written form, into the spec copy
+    for key, sentence in (
+            ("the_old_M14_top_mount_sentence",
+             "MK1 is a BOTTOM-PORT MEMS microphone. It sits on the TOP of the "
+             "PCB and listens THROUGH the board."),
+            ("an_aperture_on_the_bottom_face",
+             "The microphone enclosure aperture and any acoustic gasket "
+             "belong on the BOTTOM face, not the component face."),
+            ("an_acoustic_path_to_the_rear",
+             "The microphone acoustic path leaves on the rear (B.Cu) face."),
+            ("a_top_port_microphone",
+             "MK1 is a top-port microphone.")):
+        r = with_doc(SPEC_DOC, lambda s, x=sentence: append(s, x))
+        ctl["d801_mic_" + key + "_is_refused"] = more(
+            r, "wrong_microphone_direction")
+    # ...and into the footprint ledger copy (a second governing document)
+    r = with_doc("docs/full-beta-v2/assembly/FOOTPRINT_VERIFICATION_LEDGER.md",
+                 lambda s: append(s, "Orientation: MK1 sits on the top of the "
+                                     "PCB; the acoustic path leaves on the "
+                                     "bottom face."))
+    ctl["d801_mic_wrong_direction_in_the_ledger_is_refused"] = more(
+        r, "wrong_microphone_direction")
+    # the structured fields
+    r = with_doc(SPEC_DOC, lambda s: s.replace(
+        "FBV2_MIC_SIDE:           MK1 on B.Cu", "FBV2_MIC_SIDE:           MK1 on F.Cu"))
+    ctl["d801_spec_mic_side_F_is_refused"] = not r["microphone"]["ok"]
+    r = with_doc(SPEC_DOC, lambda s: re.sub(
+        r"^(FBV2_MIC_ACOUSTIC_FACE:\s+)F\.Cu", r"\1B.Cu", s, flags=re.M))
+    ctl["d801_spec_acoustic_face_B_is_refused"] = not r["microphone"]["ok"]
+
+    # 15 mm TX<->RX stated as CURRENT
+    r = with_doc(SPEC_DOC, lambda s: append(
+        s, "| **Emitter ↔ receiver separation** | **≥ 15 mm**, plus an opaque "
+           "barrier | current |"))
+    ctl["d801_ir_15mm_row_in_the_spec_is_refused"] = more(
+        r, "ir_15mm_stated_as_current")
+    r = with_doc("docs/full-beta-v2/assembly/IR_LEAD_FORMING.md", lambda s: append(
+        s, "The IR emitter and receiver must be at least 15 mm apart."))
+    ctl["d801_ir_15mm_in_the_forming_traveler_is_refused"] = more(
+        r, "ir_15mm_stated_as_current")
+    # the D-800 DEVICE_SPEC §13 form: the SMA and the IR pair in ONE sentence
+    r = with_doc(SPEC_DOC, lambda s: append(
+        s, "- **TOP edge:** **915 MHz SMA bulkhead** (Ø6.5 mm hole, left half); "
+           "**IR TX window**\n  and **IR RX window** with a **mandatory opaque "
+           "IR barrier** between them (emitter↔\n  receiver ≥15 mm)."))
+    ctl["d801_ir_15mm_beside_the_sma_in_one_sentence_is_refused"] = more(
+        r, "ir_15mm_stated_as_current")
+    r = with_doc(SPEC_DOC, lambda s: append(
+        s, "FBV2_IR_TX_RX_MIN_MM:    15.0 min   LOCKED (D-162)"))
+    ctl["d801_ir_15mm_block_field_is_refused"] = more(
+        r, "ir_15mm_stated_as_current")
+    # POSITIVE: the fence is a word, not a blanket keyword ban
+    r = with_doc(SPEC_DOC, lambda s: append(
+        s, "D-162's emitter ↔ receiver ≥ 15 mm figure is SUPERSEDED for this "
+           "frozen design."))
+    ctl["d801_a_fenced_15mm_sentence_is_accepted"] = not more(
+        r, "ir_15mm_stated_as_current")
+    # the spec's axis figure must be the measurement, and the acceptance stated
+    r = with_doc(SPEC_DOC, lambda s: re.sub(
+        r"^(FBV2_IR_TX_RX_AXIS_MM:\s+)13\.73", r"\g<1>15.13", s, flags=re.M))
+    ctl["d801_spec_axis_15_13_origin_figure_is_refused"] = not r["ir"]["ok"]
+    r = with_doc(SPEC_DOC, lambda s: re.sub(
+        r"^(FBV2_IR_ISOLATION:.*?)C-IR-01", r"\1first article", s,
+        count=1, flags=re.M | re.S))
+    ctl["d801_dropping_C_IR_01_is_refused"] = not r["ir"]["ok"]
+    # the antenna rules are not collateral
+    r = with_doc(SPEC_DOC, lambda s: re.sub(
+        r"^FBV2_SMA_IR_CENTRE_MM:.*\n", "", s, flags=re.M))
+    ctl["d801_deleting_the_antenna_ir_15mm_rule_is_refused"] = not r[
+        "antenna_ir_rules_retained"]["ok"]
+
+    # the board: MK1 flipped to F.Cu, its port removed, D1 moved
+    f = board.FindFootprintByReference(MIC_REF)
+    f.Flip(f.GetPosition(), pcbnew.FLIP_DIRECTION_LEFT_RIGHT)
+    ctl["d801_mk1_flipped_to_F_Cu_is_refused"] = not mk12(
+        board, reg)["microphone"]["ok"]
+    f.Flip(f.GetPosition(), pcbnew.FLIP_DIRECTION_LEFT_RIGHT)
+    port = next(p for p in f.Pads()
+                if p.GetAttribute() == pcbnew.PAD_ATTRIB_NPTH)
+    ds0 = port.GetDrillSize()
+    was = pcbnew.VECTOR2I(int(ds0.x), int(ds0.y))   # a COPY, not a view
+    port.SetDrillSize(pcbnew.VECTOR2I(800000, 800000))
+    ctl["d801_mk1_port_not_the_1_05_mm_npth_is_refused"] = not mk12(
+        board, reg)["microphone"]["ok"]
+    port.SetDrillSize(was)
+    d1 = board.FindFootprintByReference("D1")
+    p0 = d1.GetPosition()
+    was = pcbnew.VECTOR2I(int(p0.x), int(p0.y))
+    d1.SetPosition(pcbnew.VECTOR2I(was.x - 500000, was.y))
+    ctl["d801_board_axis_moved_off_the_spec_figure_is_refused"] = not mk12(
+        board, reg)["ir"]["spec_axis_matches_mk9"]
+    d1.SetPosition(was)
+    ctl["d801_board_restored"] = mk12(board, reg)["ok"] == base["ok"]
+    return ctl
+
+
 def mk7(board):
     """Live negative controls: each puts a specific defect back."""
     reg = regions()
@@ -1114,6 +1512,10 @@ def mk7(board):
     ctl["a_0_100_mm_J5_nudge_is_refused"] = not mk11(board)["ok"]
     j5c.SetPosition(was_j5)
 
+    # D-801.  MK12's controls: wrong mic direction, 15 mm TX<->RX as current,
+    # the antenna rules deleted, and MK1 / D1 moved on the board.
+    ctl.update(mk12_controls(board, reg))
+
     return dict(ok=all(ctl.values()), controls=ctl)
 
 
@@ -1137,6 +1539,7 @@ def main():
         "MK10_through_hole_lead_on_the_opposite_face":
             mk10(board, reg, a.board),
         "MK11_external_interface_authority": mk11(board),
+        "MK12_governing_text_matches_the_board_mic_and_ir": mk12(board, reg),
     }
     doc = dict(schema=1, board=str(a.board), board_sha256=sha256(a.board),
                datum="FBV2-EXP-002 RE-BASED: section-1 X + %.3f mm; "

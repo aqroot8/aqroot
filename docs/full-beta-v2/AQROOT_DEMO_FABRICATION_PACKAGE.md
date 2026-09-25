@@ -1,4 +1,16 @@
-# AQROOT Demo — Fabrication Package
+# AQROOT Demo — Fabrication Package  *(HISTORICAL — the D-616 record, SUPERSEDED; NOT a current purchasing or fabrication authority)*
+
+> **D-801 / Round-20 `D801-09`.  THIS WHOLE DOCUMENT IS HISTORICAL.**  It records the
+> package as it stood at D-616 (FAB1–FAB8, a 247-line BOM, the antenna keep-out finding
+> of that date) and every count and status in it is superseded.  The CURRENT
+> fabrication authority is the generated package itself —
+> `hardware/demo/fab/aqroot-Demo-FAB-NOTES.md`, `hardware/demo/fab/MANIFEST.json`
+> and the BOM / CPL / Gerber / drill files it hashes — with
+> [`AQROOT_DEMO_FAB_HANDOFF.md`](AQROOT_DEMO_FAB_HANDOFF.md) for status and
+> [`CURRENT_STATE.md`](CURRENT_STATE.md) for the review target.  Do not buy, fabricate or
+> assemble from anything below.  It is kept, not deleted, because D-616-era decisions
+> and the README link to it; `demo_feature_contract` F12 scans it and refuses its
+> D-616 status if this title ever stops fencing it.
 
 Status: **GENERATED AND REVIEWED — FAB1–FAB8 AND LAND1–LAND6 ALL PASS (D-616).**
 `FAB7` closed at D-615 (BOM **100.0 % orderable, 247 of 247**).  The land

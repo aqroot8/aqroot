@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-20T19:34:10Z",
+ "fetched_utc": "2026-09-25T15:21:12Z",
  "keyword": "ARG03BTC1004",
  "page_size": 25,
  "pages": 1,
@@ -45,17 +45,17 @@
    "componentPrices": [
     {
      "endNumber": 99,
-     "productPrice": 0.0464,
+     "productPrice": 0.0463,
      "startNumber": 1
     },
     {
      "endNumber": 299,
-     "productPrice": 0.0378,
+     "productPrice": 0.0377,
      "startNumber": 100
     },
     {
      "endNumber": 999,
-     "productPrice": 0.0336,
+     "productPrice": 0.0335,
      "startNumber": 300
     },
     {
@@ -83,7 +83,7 @@
    "lcscGoodsUrl": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_uni-royal-uniroyal-elec-tc0325b1004t5e_C185077.html",
    "leastPatchNumber": 5,
    "lossNumber": 4,
-   "minPurchaseNum": 239,
+   "minPurchaseNum": 240,
    "noBuyReason": "This product is no longer manufactured.",
    "rohsFlag": 1,
    "stockCount": 0
@@ -127,12 +127,12 @@
    "componentPrices": [
     {
      "endNumber": 199,
-     "productPrice": 0.0245,
+     "productPrice": 0.0244,
      "startNumber": 1
     },
     {
      "endNumber": 599,
-     "productPrice": 0.0196,
+     "productPrice": 0.0195,
      "startNumber": 200
     },
     {
@@ -142,7 +142,7 @@
     },
     {
      "endNumber": 9999,
-     "productPrice": 0.0152,
+     "productPrice": 0.0151,
      "startNumber": 5000
     },
     {
@@ -152,7 +152,7 @@
     },
     {
      "endNumber": -1,
-     "productPrice": 0.013,
+     "productPrice": 0.0129,
      "startNumber": 20000
     }
    ],
@@ -168,7 +168,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 54774
+   "stockCount": 52262
   }
  ],
  "returned": 2,

@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-20T19:33:29Z",
+ "fetched_utc": "2026-09-25T15:20:37Z",
  "keyword": "GRM31CR71E106KA12L",
  "page_size": 25,
  "pages": 1,
@@ -33,32 +33,32 @@
    "componentPrices": [
     {
      "endNumber": 49,
-     "productPrice": 0.2912,
+     "productPrice": 0.2841,
      "startNumber": 1
     },
     {
      "endNumber": 149,
-     "productPrice": 0.226,
+     "productPrice": 0.219,
      "startNumber": 50
     },
     {
      "endNumber": 499,
-     "productPrice": 0.1941,
+     "productPrice": 0.1871,
      "startNumber": 150
     },
     {
      "endNumber": 1999,
-     "productPrice": 0.1656,
+     "productPrice": 0.1587,
      "startNumber": 500
     },
     {
      "endNumber": 3999,
-     "productPrice": 0.1578,
+     "productPrice": 0.1509,
      "startNumber": 2000
     },
     {
      "endNumber": -1,
-     "productPrice": 0.153,
+     "productPrice": 0.1462,
      "startNumber": 4000
     }
    ],
@@ -74,7 +74,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 211062
+   "stockCount": 205335
   }
  ],
  "returned": 1,

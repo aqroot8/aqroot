@@ -42,13 +42,30 @@
 #include "../hw/aqroot_i2c_arduino.h"
 #include "../hw/aqroot_spi_bus_b.h"
 
+// D-801 / D801-01.  THE FIRST-ARTICLE DIAGNOSTIC IMAGE, FAP-01, HOOKS IN HERE
+// AND NOWHERE ELSE -- and ONLY when `[env:aqroot-demo-fap01]` defines
+// `AQROOT_FAP01_DIAGNOSTIC`.  The release image (`[env:aqroot-demo]`, the
+// sole `default_envs`) never defines it and never compiles `src/fap01/`;
+// every block below guarded by it is absent from the shipped binary, which
+// `test_fap01_image.cpp` proves by driving every FAP-01 key into the release
+// build and watching nothing happen.  FAP-01 is NEVER shipped.
+#if defined(AQROOT_FAP01_DIAGNOSTIC)
+#include "../fap01/aqroot_fap01.h"
+#endif
+
 using namespace aqroot;
 
 static ArduinoI2cBus g_bus;
 static DemoExpanders g_expanders;
 static uint16_t g_last_u2 = 0xFFFF;
 static uint16_t g_last_u3 = 0xFFFF;
+#if defined(AQROOT_FAP01_DIAGNOSTIC)
+// D-801: the release selects with the FAP-01 chip-select hold-off injection
+// (`H`/`J`/`K`/`Y`).  Inactive until a key arms it.
+static fap01::HoldOffChipSelects g_selects;
+#else
 static BoardChipSelects g_selects;
+#endif
 static SpiBusB g_spi_b(g_selects);
 static Ili9488 g_display;
 static bool g_ok = true;
@@ -332,6 +349,12 @@ void setup() {
   // safe latches first.  No Serial call precedes these transactions.
   const bool i2c_open = g_bus.begin(AQROOT_I2C_BRINGUP_HZ);
   const bool expanders_safe = i2c_open && g_expanders.begin(g_bus);
+#if defined(AQROOT_FAP01_DIAGNOSTIC)
+  // D-801: after the safe latches and BEFORE either boot quiesce, so a
+  // chip-select hold-off armed before a warm reset is in force when the boot
+  // quiesce runs (C-RADIO-QUIESCE-01 / C-NFC-QUIESCE-01).
+  fap01::begin({&g_app, &g_spi_b, &g_selects, &g_expanders, &g_bus});
+#endif
 
   Serial.begin(115200);
   const uint32_t deadline = millis() + 3000;
@@ -340,6 +363,9 @@ void setup() {
   Serial.println();
   Serial.println("AQROOT Demo -- as-built bring-up");
   Serial.printf("board_sha256 %s\n", AQROOT_DEMO_BOARD_SHA256);
+#if defined(AQROOT_FAP01_DIAGNOSTIC)
+  fap01::announce();
+#endif
   Serial.println("---------------------------------------------------------------");
   report("pins parked", true);
   // D-792 / R11-04.  The SPI-B transmit gate is only a gate if it is WIRED, and
@@ -521,6 +547,11 @@ static void serviceRadioQuiesceRetry() {
 }
 
 void loop() {
+#if defined(AQROOT_FAP01_DIAGNOSTIC)
+  // D-801: every FAP-01 bound, enforced FIRST in every loop() and before any
+  // early return, so a keyed diagnostic state cannot outlive its bound.
+  fap01::service();
+#endif
   // D-795 / R14-02 + D-796 / C-NFC-QUIESCE-01: liveness of a confirmed-quiet
   // NFC front end, FIRST -- before the expander recovery branch, because the
   // probe needs SPI-B and not I2C, and a board recovering its expanders is
@@ -607,6 +638,11 @@ void loop() {
 
   if (Serial.available()) {
     const char key = char(Serial.read());
+#if defined(AQROOT_FAP01_DIAGNOSTIC)
+    // D-801: FAP-01's upper-case keys, and the release keys whose peripheral
+    // a HELD FAP-01 state owns.  Anything else falls through unchanged.
+    if (fap01::handleKey(key)) return;
+#endif
     switch (key) {
       case 'r': g_expanders.setRgb(g_bus, true, false, false); break;
       case 'g': g_expanders.setRgb(g_bus, false, true, false); break;

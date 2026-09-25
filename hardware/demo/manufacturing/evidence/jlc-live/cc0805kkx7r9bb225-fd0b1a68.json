@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-20T19:33:33Z",
+ "fetched_utc": "2026-09-25T15:20:41Z",
  "keyword": "CC0805KKX7R9BB225",
  "page_size": 25,
  "pages": 1,
@@ -33,32 +33,32 @@
    "componentPrices": [
     {
      "endNumber": 49,
-     "productPrice": 0.1389,
+     "productPrice": 0.1386,
      "startNumber": 1
     },
     {
      "endNumber": 149,
-     "productPrice": 0.1218,
+     "productPrice": 0.1215,
      "startNumber": 50
     },
     {
      "endNumber": 499,
-     "productPrice": 0.113,
+     "productPrice": 0.1128,
      "startNumber": 150
     },
     {
      "endNumber": 2999,
-     "productPrice": 0.1058,
+     "productPrice": 0.1056,
      "startNumber": 500
     },
     {
      "endNumber": 5999,
-     "productPrice": 0.1032,
+     "productPrice": 0.103,
      "startNumber": 3000
     },
     {
      "endNumber": -1,
-     "productPrice": 0.1016,
+     "productPrice": 0.1014,
      "startNumber": 6000
     }
    ],
@@ -74,7 +74,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 34437
+   "stockCount": 114567
   }
  ],
  "returned": 1,

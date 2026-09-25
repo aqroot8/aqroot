@@ -1,0 +1,41 @@
+{
+ "all_fail_the_full_gate": true,
+ "decision": "D-801",
+ "injections": {
+  "d801_04_d800_batocp_sentence": {
+   "all_pass": false,
+   "failing_checks": [
+    "F6_accessory_envelope_is_bounded_by_hardware"
+   ],
+   "injected_into": "docs/full-beta-v2/assembly/BATTERY_HARNESS.json (the D-801 generated text present, the D-800 sentence appended)",
+   "sentence": "BOTH limiters in fault reach 3.8236 A, ABOVE the BQ25185 BATOCP maximum (3.6875 A), so the recoverable BATOCP hiccup interrupts it and it is never a sustained harness current."
+  },
+  "d801_05_2x_survival_claim": {
+   "all_pass": false,
+   "failing_checks": [
+    "F10_battery_pass_pair_gate_drive_is_proven_for_the_fitted_part"
+   ],
+   "injected_into": "docs/full-beta-v2/assembly/SOURCING_LEDGER.md (the F10-generated sensitivity sentence present)",
+   "sentence": "The DECLARED ratio now carries a sensitivity the ruling case must survive at 2×."
+  },
+  "d801_06_previous_release_as_current_heading": {
+   "all_pass": false,
+   "failing_checks": [
+    "F12_cell_to_load_network_closes_at_an_attainable_cell"
+   ],
+   "injected_into": "docs/full-beta-v2/CURRENT_STATE.md (first review-target heading D-801 -> D-800, unfenced)",
+   "sentence": "> ### **D-800 REVIEW TARGET — THE EXACT FROZEN IDENTITY**"
+  },
+  "d801_10_supervised_requires_no_less_than": {
+   "all_pass": false,
+   "failing_checks": [
+    "F12_cell_to_load_network_closes_at_an_attainable_cell"
+   ],
+   "injected_into": "docs/full-beta-v2/DEVICE_SPEC.md (the correct 4.10 V rule present)",
+   "sentence": "Running an accessory rail while charging requires a pack voltage of no less than 3.90 V."
+  }
+ },
+ "permanent_controls": "the same shapes run on every release inside F6 (d801_batocp_controls), F10 (publication controls) and F12 (round20_operative_semantics, release_identity_binding)",
+ "schema": 1,
+ "what": "full F1-F14 runs of checks/demo_feature_contract.py on disposable worktrees of the D-801 candidate with ONE Round-20 defect injected; the correct current text remains present.  Each must FAIL the full gate on the intended check and only there."
+}

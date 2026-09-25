@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-20T19:33:39Z",
+ "fetched_utc": "2026-09-25T15:20:46Z",
  "keyword": "CC0603JRNPO9BN621",
  "page_size": 25,
  "pages": 1,
@@ -48,7 +48,7 @@
     },
     {
      "endNumber": 47999,
-     "productPrice": 0.0047,
+     "productPrice": 0.0046,
      "startNumber": 8000
     },
     {
@@ -74,7 +74,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 31555
+   "stockCount": 30915
   }
  ],
  "returned": 1,

@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-20T19:33:29Z",
+ "fetched_utc": "2026-09-25T15:20:38Z",
  "keyword": "CC0603KRX7R9BB104",
  "page_size": 25,
  "pages": 1,
@@ -33,32 +33,32 @@
    "componentPrices": [
     {
      "endNumber": 499,
-     "productPrice": 0.0124,
+     "productPrice": 0.0122,
      "startNumber": 1
     },
     {
      "endNumber": 1499,
-     "productPrice": 0.0089,
+     "productPrice": 0.0088,
      "startNumber": 500
     },
     {
      "endNumber": 3999,
-     "productPrice": 0.0074,
+     "productPrice": 0.0073,
      "startNumber": 1500
     },
     {
      "endNumber": 23999,
-     "productPrice": 0.0059,
+     "productPrice": 0.0058,
      "startNumber": 4000
     },
     {
      "endNumber": 47999,
-     "productPrice": 0.0055,
+     "productPrice": 0.0054,
      "startNumber": 24000
     },
     {
      "endNumber": -1,
-     "productPrice": 0.0052,
+     "productPrice": 0.0051,
      "startNumber": 48000
     }
    ],
@@ -74,7 +74,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 55160422
+   "stockCount": 51398464
   },
   {
    "assemblyComponentFlag": false,
@@ -86,12 +86,12 @@
    "componentPrices": [
     {
      "endNumber": 99,
-     "productPrice": 0.0396,
+     "productPrice": 0.0395,
      "startNumber": 1
     },
     {
      "endNumber": -1,
-     "productPrice": 0.0204,
+     "productPrice": 0.0203,
      "startNumber": 100
     }
    ],
@@ -119,12 +119,12 @@
    "componentPrices": [
     {
      "endNumber": 99,
-     "productPrice": 0.0396,
+     "productPrice": 0.0395,
      "startNumber": 1
     },
     {
      "endNumber": -1,
-     "productPrice": 0.0204,
+     "productPrice": 0.0203,
      "startNumber": 100
     }
    ],
@@ -137,7 +137,7 @@
    "lcscGoodsUrl": null,
    "leastPatchNumber": 5,
    "lossNumber": 4,
-   "minPurchaseNum": 443,
+   "minPurchaseNum": 445,
    "noBuyReason": "This product is no longer manufactured.",
    "rohsFlag": 1,
    "stockCount": 0
@@ -152,12 +152,12 @@
    "componentPrices": [
     {
      "endNumber": 99,
-     "productPrice": 0.0396,
+     "productPrice": 0.0395,
      "startNumber": 1
     },
     {
      "endNumber": -1,
-     "productPrice": 0.0204,
+     "productPrice": 0.0203,
      "startNumber": 100
     }
    ],
@@ -170,7 +170,7 @@
    "lcscGoodsUrl": null,
    "leastPatchNumber": 5,
    "lossNumber": 4,
-   "minPurchaseNum": 443,
+   "minPurchaseNum": 445,
    "noBuyReason": "This product is no longer manufactured.",
    "rohsFlag": 1,
    "stockCount": 0

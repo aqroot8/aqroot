@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-20T19:33:48Z",
+ "fetched_utc": "2026-09-25T15:20:54Z",
  "keyword": "BM02B-ACHSS-GAN-ETF(LF)(SN)",
  "page_size": 25,
  "pages": 1,
@@ -93,32 +93,32 @@
    "componentPrices": [
     {
      "endNumber": 49,
-     "productPrice": 0.3078,
+     "productPrice": 0.3071,
      "startNumber": 1
     },
     {
      "endNumber": 149,
-     "productPrice": 0.2787,
+     "productPrice": 0.2781,
      "startNumber": 50
     },
     {
      "endNumber": 499,
-     "productPrice": 0.2662,
+     "productPrice": 0.2656,
      "startNumber": 150
     },
     {
      "endNumber": 2499,
-     "productPrice": 0.2505,
+     "productPrice": 0.25,
      "startNumber": 500
     },
     {
      "endNumber": 4499,
-     "productPrice": 0.2437,
+     "productPrice": 0.2432,
      "startNumber": 2500
     },
     {
      "endNumber": -1,
-     "productPrice": 0.2395,
+     "productPrice": 0.2389,
      "startNumber": 4500
     }
    ],
@@ -134,7 +134,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 13355
+   "stockCount": 13268
   }
  ],
  "returned": 1,

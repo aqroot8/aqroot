@@ -129,7 +129,7 @@ recorded so no later reader has to rediscover them.
 | object | inside by | note |
 |---|---|---|
 | battery pouch foil | **3.000 mm** | 1.500 mm inside the superseded rectangle. Zero overlap with the **clear** region (2.000 mm gap) — the locked policy N-5 holds |
-| `D1` `TSAL6100` leadframe | **1.381 mm** | 3.619 mm outside the Ø48 loop perimeter. Was inside the superseded rectangle too. Cannot move without breaking the ≥ 15 mm IR TX↔RX rule |
+| `D1` `TSAL6100` leadframe | **1.381 mm** | 3.619 mm outside the Ø48 loop perimeter. Was inside the superseded rectangle too. Cannot move: east spends the `IR_BARRIER` clearance and the receiver's position outside the ±10° cone (MK9), west goes deeper into the NFC exclusion. *(HISTORICAL: this row first cited "the ≥ 15 mm IR TX↔RX rule"; that D-162 figure is SUPERSEDED D-801 — the formed axes are 13.73 mm apart and the acceptance is barrier + cone + first-article `C-IR-01`.)* |
 | `J7` JST `BM02B-ACHSS-GAN-ETF` — **RECORDED at D-760** | **5.870 mm** inside the Ø58; **0.870 mm inside the Ø48 CLEAR region** | The NFC antenna's own connector, at doc (54.000, 118.000), **23.130 mm from the Ø48 centre — 0.130 mm OUTSIDE the Ø46 coil itself**, so the coil does not sit on it; only the Ø48 margin ring does. It is not a screw, a boss or a shielding can, so it does not breach the Ø58 rule as written. It IS where the antenna's twisted pair lands, and at **1.4 mm** it stands 0.4 mm above the Ø48 rear-air-gap figure — see §3. Recorded so no later reader has to rediscover it |
 
 ## 5. What is deliberately NOT here

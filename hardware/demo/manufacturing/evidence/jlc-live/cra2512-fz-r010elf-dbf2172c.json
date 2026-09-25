@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-20T19:34:15Z",
+ "fetched_utc": "2026-09-25T15:21:16Z",
  "keyword": "CRA2512-FZ-R010ELF",
  "page_size": 25,
  "pages": 1,
@@ -41,32 +41,32 @@
    "componentPrices": [
     {
      "endNumber": 49,
-     "productPrice": 0.2958,
+     "productPrice": 0.2951,
      "startNumber": 1
     },
     {
      "endNumber": 149,
-     "productPrice": 0.2344,
+     "productPrice": 0.2339,
      "startNumber": 50
     },
     {
      "endNumber": 499,
-     "productPrice": 0.2082,
+     "productPrice": 0.2078,
      "startNumber": 150
     },
     {
      "endNumber": 2499,
-     "productPrice": 0.1754,
+     "productPrice": 0.175,
      "startNumber": 500
     },
     {
      "endNumber": 3999,
-     "productPrice": 0.1609,
+     "productPrice": 0.1605,
      "startNumber": 2500
     },
     {
      "endNumber": -1,
-     "productPrice": 0.1521,
+     "productPrice": 0.1517,
      "startNumber": 4000
     }
    ],
@@ -82,7 +82,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 10483
+   "stockCount": 10543
   }
  ],
  "returned": 1,

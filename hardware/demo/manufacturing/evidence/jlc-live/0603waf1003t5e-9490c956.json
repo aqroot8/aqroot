@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-20T19:34:05Z",
+ "fetched_utc": "2026-09-25T15:21:08Z",
  "keyword": "0603WAF1003T5E",
  "page_size": 25,
  "pages": 1,
@@ -86,7 +86,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 23689167
+   "stockCount": 22877829
   },
   {
    "assemblyComponentFlag": false,
@@ -98,12 +98,12 @@
    "componentPrices": [
     {
      "endNumber": 99,
-     "productPrice": 0.0396,
+     "productPrice": 0.0395,
      "startNumber": 1
     },
     {
      "endNumber": -1,
-     "productPrice": 0.0204,
+     "productPrice": 0.0203,
      "startNumber": 100
     }
    ],
@@ -116,7 +116,7 @@
    "lcscGoodsUrl": null,
    "leastPatchNumber": 5,
    "lossNumber": 4,
-   "minPurchaseNum": 443,
+   "minPurchaseNum": 445,
    "noBuyReason": "This product is no longer manufactured.",
    "rohsFlag": 1,
    "stockCount": 0
@@ -131,12 +131,12 @@
    "componentPrices": [
     {
      "endNumber": 99,
-     "productPrice": 0.0396,
+     "productPrice": 0.0395,
      "startNumber": 1
     },
     {
      "endNumber": -1,
-     "productPrice": 0.0204,
+     "productPrice": 0.0203,
      "startNumber": 100
     }
    ],
@@ -149,7 +149,7 @@
    "lcscGoodsUrl": null,
    "leastPatchNumber": 5,
    "lossNumber": 4,
-   "minPurchaseNum": 443,
+   "minPurchaseNum": 445,
    "noBuyReason": null,
    "rohsFlag": 1,
    "stockCount": 0
@@ -164,12 +164,12 @@
    "componentPrices": [
     {
      "endNumber": 99,
-     "productPrice": 0.0396,
+     "productPrice": 0.0395,
      "startNumber": 1
     },
     {
      "endNumber": -1,
-     "productPrice": 0.0204,
+     "productPrice": 0.0203,
      "startNumber": 100
     }
    ],
@@ -182,7 +182,7 @@
    "lcscGoodsUrl": null,
    "leastPatchNumber": 5,
    "lossNumber": 4,
-   "minPurchaseNum": 443,
+   "minPurchaseNum": 445,
    "noBuyReason": "This product is no longer manufactured.",
    "rohsFlag": 1,
    "stockCount": 0

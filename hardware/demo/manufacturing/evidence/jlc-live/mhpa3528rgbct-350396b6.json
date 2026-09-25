@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-20T19:33:41Z",
+ "fetched_utc": "2026-09-25T15:20:48Z",
  "keyword": "MHPA3528RGBCT",
  "page_size": 25,
  "pages": 1,
@@ -133,32 +133,32 @@
    "componentPrices": [
     {
      "endNumber": 49,
-     "productPrice": 0.1652,
+     "productPrice": 0.1615,
      "startNumber": 1
     },
     {
      "endNumber": 149,
-     "productPrice": 0.1316,
+     "productPrice": 0.128,
      "startNumber": 50
     },
     {
      "endNumber": 499,
-     "productPrice": 0.1171,
+     "productPrice": 0.1136,
      "startNumber": 150
     },
     {
      "endNumber": 1999,
-     "productPrice": 0.0992,
+     "productPrice": 0.0955,
      "startNumber": 500
     },
     {
      "endNumber": 3999,
-     "productPrice": 0.0796,
+     "productPrice": 0.0761,
      "startNumber": 2000
     },
     {
      "endNumber": -1,
-     "productPrice": 0.0748,
+     "productPrice": 0.0713,
      "startNumber": 4000
     }
    ],
@@ -174,7 +174,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 66559
+   "stockCount": 65989
   }
  ],
  "returned": 1,

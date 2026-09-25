@@ -1,10 +1,10 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-21T02:59:12Z",
+ "fetched_utc": "2026-09-25T15:20:34Z",
  "keyword": "CL32B226KAJNNNE",
  "page_size": 25,
- "pages": 2,
+ "pages": 1,
  "records": [
   {
    "assemblyComponentFlag": false,
@@ -33,32 +33,32 @@
    "componentPrices": [
     {
      "endNumber": 9,
-     "productPrice": 0.3534,
+     "productPrice": 0.3526,
      "startNumber": 1
     },
     {
      "endNumber": 29,
-     "productPrice": 0.2787,
+     "productPrice": 0.2781,
      "startNumber": 10
     },
     {
      "endNumber": 99,
-     "productPrice": 0.2422,
+     "productPrice": 0.2417,
      "startNumber": 30
     },
     {
      "endNumber": 499,
-     "productPrice": 0.2097,
+     "productPrice": 0.2092,
      "startNumber": 100
     },
     {
      "endNumber": 999,
-     "productPrice": 0.2007,
+     "productPrice": 0.2003,
      "startNumber": 500
     },
     {
      "endNumber": -1,
-     "productPrice": 0.1596,
+     "productPrice": 0.1592,
      "startNumber": 1000
     }
    ],
@@ -74,7 +74,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 178931
+   "stockCount": 156412
   }
  ],
  "returned": 1,

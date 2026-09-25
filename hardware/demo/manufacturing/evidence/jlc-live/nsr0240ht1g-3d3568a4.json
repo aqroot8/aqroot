@@ -1,10 +1,10 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-21T07:07:35Z",
+ "fetched_utc": "2026-09-25T15:20:49Z",
  "keyword": "NSR0240HT1G",
  "page_size": 25,
- "pages": 2,
+ "pages": 1,
  "records": [
   {
    "assemblyComponentFlag": false,
@@ -82,7 +82,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 1456
+   "stockCount": 906
   },
   {
    "assemblyComponentFlag": false,
@@ -123,32 +123,32 @@
    "componentPrices": [
     {
      "endNumber": 49,
-     "productPrice": 0.1272,
+     "productPrice": 0.1269,
      "startNumber": 1
     },
     {
      "endNumber": 149,
-     "productPrice": 0.1055,
+     "productPrice": 0.1053,
      "startNumber": 50
     },
     {
      "endNumber": 499,
-     "productPrice": 0.0946,
+     "productPrice": 0.0944,
      "startNumber": 150
     },
     {
      "endNumber": 2999,
-     "productPrice": 0.0866,
+     "productPrice": 0.0864,
      "startNumber": 500
     },
     {
      "endNumber": 5999,
-     "productPrice": 0.0772,
+     "productPrice": 0.077,
      "startNumber": 3000
     },
     {
      "endNumber": -1,
-     "productPrice": 0.0739,
+     "productPrice": 0.0738,
      "startNumber": 6000
     }
    ],
@@ -164,7 +164,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 5210
+   "stockCount": 5135
   }
  ],
  "returned": 2,

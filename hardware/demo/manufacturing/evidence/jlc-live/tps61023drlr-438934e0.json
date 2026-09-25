@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-20T19:34:30Z",
+ "fetched_utc": "2026-09-25T15:21:31Z",
  "keyword": "TPS61023DRLR",
  "page_size": 25,
  "pages": 1,
@@ -69,32 +69,32 @@
    "componentPrices": [
     {
      "endNumber": 49,
-     "productPrice": 0.2662,
+     "productPrice": 0.2358,
      "startNumber": 1
     },
     {
      "endNumber": 149,
-     "productPrice": 0.2157,
+     "productPrice": 0.1853,
      "startNumber": 50
     },
     {
      "endNumber": 499,
-     "productPrice": 0.191,
+     "productPrice": 0.1608,
      "startNumber": 150
     },
     {
      "endNumber": 2499,
-     "productPrice": 0.1689,
+     "productPrice": 0.1389,
      "startNumber": 500
     },
     {
      "endNumber": 3999,
-     "productPrice": 0.1506,
+     "productPrice": 0.1205,
      "startNumber": 2500
     },
     {
      "endNumber": -1,
-     "productPrice": 0.147,
+     "productPrice": 0.117,
      "startNumber": 4000
     }
    ],
@@ -110,7 +110,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 15118
+   "stockCount": 13592
   }
  ],
  "returned": 1,

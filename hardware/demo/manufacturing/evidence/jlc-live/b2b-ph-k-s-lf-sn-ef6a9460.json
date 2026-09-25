@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-20T19:33:47Z",
+ "fetched_utc": "2026-09-25T15:20:53Z",
  "keyword": "B2B-PH-K-S(LF)(SN)",
  "page_size": 25,
  "pages": 1,
@@ -77,7 +77,7 @@
    "componentPrices": [
     {
      "endNumber": 499,
-     "productPrice": 0.0129,
+     "productPrice": 0.0128,
      "startNumber": 1
     },
     {
@@ -102,7 +102,7 @@
     },
     {
      "endNumber": -1,
-     "productPrice": 0.0062,
+     "productPrice": 0.0061,
      "startNumber": 50000
     }
    ],
@@ -118,7 +118,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 128117
+   "stockCount": 126129
   },
   {
    "assemblyComponentFlag": false,
@@ -195,7 +195,7 @@
    "componentPrices": [
     {
      "endNumber": 499,
-     "productPrice": 0.0098,
+     "productPrice": 0.0097,
      "startNumber": 1
     },
     {
@@ -210,7 +210,7 @@
     },
     {
      "endNumber": 23999,
-     "productPrice": 0.0056,
+     "productPrice": 0.0055,
      "startNumber": 4000
     },
     {
@@ -220,7 +220,7 @@
     },
     {
      "endNumber": -1,
-     "productPrice": 0.0047,
+     "productPrice": 0.0046,
      "startNumber": 50000
     }
    ],
@@ -236,7 +236,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 48286
+   "stockCount": 43516
   },
   {
    "assemblyComponentFlag": false,
@@ -313,12 +313,12 @@
    "componentPrices": [
     {
      "endNumber": 499,
-     "productPrice": 0.0163,
+     "productPrice": 0.0162,
      "startNumber": 1
     },
     {
      "endNumber": 1999,
-     "productPrice": 0.0128,
+     "productPrice": 0.0127,
      "startNumber": 500
     },
     {
@@ -441,12 +441,12 @@
     },
     {
      "endNumber": 4999,
-     "productPrice": 0.0122,
+     "productPrice": 0.0121,
      "startNumber": 2000
     },
     {
      "endNumber": 24999,
-     "productPrice": 0.0109,
+     "productPrice": 0.0108,
      "startNumber": 5000
     },
     {
@@ -565,7 +565,7 @@
    "componentPrices": [
     {
      "endNumber": 199,
-     "productPrice": 0.0354,
+     "productPrice": 0.0353,
      "startNumber": 1
     },
     {
@@ -575,7 +575,7 @@
     },
     {
      "endNumber": 1999,
-     "productPrice": 0.0245,
+     "productPrice": 0.0244,
      "startNumber": 1000
     },
     {
@@ -590,7 +590,7 @@
     },
     {
      "endNumber": -1,
-     "productPrice": 0.0204,
+     "productPrice": 0.0203,
      "startNumber": 20000
     }
    ],
@@ -606,7 +606,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 228683
+   "stockCount": 193792
   }
  ],
  "returned": 5,

@@ -1,0 +1,148 @@
+{
+ "decision": "D-801",
+ "reproduced_on": "a252b7f11e0fff2ce30381e9f3f17e3d66bbea09 (D-800 identity; content 6f28e39f)",
+ "schema": 1,
+ "witnesses": {
+  "D801_01": {
+   "astra": "R20-01",
+   "finding": "no first-article environment, no FAP-01 source, no console for any stimulus the plan names",
+   "platformio_environments_at_d800": [
+    "esp32-s3-aqroot",
+    "wokwi",
+    "esp32-s3-aqroot-dm",
+    "aqroot-demo"
+   ],
+   "reproduced": true
+  },
+  "D801_02": {
+   "astra": "R20-02",
+   "finding": "MK1-MK11 PASS while MECHANICAL_INTERFACE_SPEC stated the >= 15 mm IR TX-RX spacing as current in nine places (spec rows 15 and section 8, P1 T-10, keep-outs section 4, three in the floorplan, DEVICE_SPEC section 13) and six sentences put MK1 on the TOP with its acoustic path on the BOTTOM face (spec 7.1 and M-14, ledger B-63)",
+   "primary_evidence": "board: MK1 (layer \"B.Cu\"), 1.05 mm NPTH centred on pad 4, footprint description bottom-port; PUI DMM-4026-B-I2S-R Rev A 5/26/2021 page 6: acoustic port on the solder-pad face (archived vendor/PUI/)",
+   "reproduced": true
+  },
+  "D801_03": {
+   "astra": "R20-03",
+   "fable": "R20-02",
+   "firmware_hw_map_contract_verdict": "PASS",
+   "h_checks": {
+    "H1_generated_tree_is_fresh": "PASS",
+    "H2_board_digest": "PASS",
+    "H3_policy_corroborated": "PASS",
+    "H4_owner_decisions_are_machine_checked": "PASS",
+    "H5_firmware_layer_uses_the_map": "PASS",
+    "H6_host_tests_prove_the_orderings": "PASS",
+    "H7_MAX17048_primary_source_is_pinned": "PASS",
+    "H8_released_firmware_runs_the_tested_timing_seam": "PASS"
+   },
+   "mutation": "[platformio] default_envs = esp32-s3-aqroot on the frozen D-800 tree",
+   "reproduced": true
+  },
+  "D801_04": {
+   "astra": "R20-04",
+   "counterexample": "a BATOCP threshold of 3.85 A lies inside the declared 25 % band (2.3438..3.9063 A) and above the 3.8236 A double fault: no trip",
+   "harness_sentence": "BOTH limiters in fault reach 3.8236 A, ABOVE the BQ25185 BATOCP maximum (3.6875 A), so the recoverable BATOCP hiccup interrupts it and it is never a sustained harness current.",
+   "reproduced": true
+  },
+  "D801_05": {
+   "astra": "R20-05",
+   "d800_documents": {
+    "ledger_tokens": [
+     "2.2845",
+     "2.4124",
+     "1.9328",
+     "survive at 2×"
+    ],
+    "plan_ceiling": "2.2845 A"
+   },
+   "f10_on_the_same_board": {
+    "enclosure_ceiling_A": 2.092925,
+    "internal_air_C": 80.83,
+    "peak_A": 2.7,
+    "sustained_A": 1.7745,
+    "x2_meets_the_2p5V_row": false,
+    "x2_vgs_at_sustained_V": 2.492299
+   },
+   "fable": "R20-01",
+   "reproduced": true
+  },
+  "D801_06": {
+   "astra": "R20-06",
+   "constant_at_d800": "CURRENT_RELEASE_ID = \"D-799\"",
+   "fable": "R20-05",
+   "full_gate": {
+    "all_pass": true,
+    "checks": {
+     "F10_battery_pass_pair_gate_drive_is_proven_for_the_fitted_part": true,
+     "F11_transient_uncertainty_is_charged_against_the_margin": true,
+     "F12_cell_to_load_network_closes_at_an_attainable_cell": true,
+     "F13_every_purchased_part_agrees_with_its_own_source": true,
+     "F14_an_independent_oracle_re_derives_what_the_model_claims": true,
+     "F1_every_scope_part_fitted": true,
+     "F2_every_scope_net_whole": true,
+     "F3_approved_nc_exactly_as_scoped": true,
+     "F4_every_exposed_signal_contact_has_esd": true,
+     "F5_backlight_disconnect_control_is_independent": true,
+     "F6_accessory_envelope_is_bounded_by_hardware": true,
+     "F7_no_retired_part_name_survives_on_the_part_that_replaced_it": true,
+     "F8_the_derating_rule_is_applied_to_the_parts_this_board_fits": true,
+     "F9_manual_battery_harness_metadata_matches_the_frozen_build": true
+    }
+   },
+   "mutation": "CURRENT_STATE first review-target heading changed from D-800 to D-799 on the frozen D-800 tree",
+   "reproduced": true
+  },
+  "D801_07": {
+   "fable": "R20-02",
+   "finding": "the SPI-A-bound quiesce mutant and the microSD SPI.end() removal mutant each passed the whole H-suite at the D-800 tree (the host board model answered SPI-B parts on any pin binding)",
+   "reproduced": true
+  },
+  "D801_08": {
+   "d800_rows_rest_on_fetches": "2026-09-20T19:33:21Z .. 2026-09-21T15:57:46Z",
+   "d800_sweep_rows": 123,
+   "fable": "R20-03",
+   "mode": "replay (jlc_live.fetch refresh=False)",
+   "reproduced": true
+  },
+  "D801_09": {
+   "d800_title_lines": [
+    "# AQROOT Demo — Fabrication Package",
+    "",
+    "Status: **GENERATED AND REVIEWED — FAB1–FAB8 AND LAND1–LAND6 ALL PASS (D-616).**"
+   ],
+   "fable": "R20-04",
+   "reproduced": true
+  },
+  "D801_10": {
+   "caught_by_d801": {
+    "r20_cure_24_hour": true,
+    "r20_cure_one_day": true,
+    "r20_cure_twenty_four_hours": true,
+    "r20_package_at_or_below_the_modelled_figures": true,
+    "r20_package_within_the_modelled_values": true,
+    "r20_rins_assume_the_shunt_zero": true,
+    "r20_rins_negligible": true,
+    "r20_rins_series_ammeter_assumed_zero": true,
+    "r20_rins_shunt_taken_as_0": true,
+    "r20_supervised_once_or_more": true,
+    "r20_supervised_requires_no_less_than": true,
+    "r20_supervised_when_reads": true
+   },
+   "fable": "document campaign",
+   "injections_missed_by_the_d800_scanners": {
+    "r20_cure_24_hour": true,
+    "r20_cure_one_day": true,
+    "r20_cure_twenty_four_hours": true,
+    "r20_package_at_or_below_the_modelled_figures": true,
+    "r20_package_within_the_modelled_values": true,
+    "r20_rins_assume_the_shunt_zero": true,
+    "r20_rins_negligible": true,
+    "r20_rins_series_ammeter_assumed_zero": true,
+    "r20_rins_shunt_taken_as_0": true,
+    "r20_supervised_once_or_more": true,
+    "r20_supervised_requires_no_less_than": true,
+    "r20_supervised_when_reads": true
+   },
+   "reproduced": true
+  }
+ }
+}

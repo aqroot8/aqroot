@@ -49,7 +49,10 @@ inline esp_err_t i2s_driver_install(i2s_port_t, const i2s_config_t *, int,
   ++aqroot_hal::recorder().i2s_installs;
   return ESP_OK;
 }
-inline esp_err_t i2s_driver_uninstall(i2s_port_t) { return ESP_OK; }
+inline esp_err_t i2s_driver_uninstall(i2s_port_t) {
+  ++aqroot_hal::recorder().i2s_uninstalls;
+  return ESP_OK;
+}
 inline esp_err_t i2s_set_pin(i2s_port_t, const i2s_pin_config_t *) {
   return ESP_OK;
 }
@@ -57,6 +60,7 @@ inline esp_err_t i2s_zero_dma_buffer(i2s_port_t) { return ESP_OK; }
 inline esp_err_t i2s_write(i2s_port_t, const void *, size_t bytes,
                            size_t *written, uint32_t) {
   if (written) *written = bytes;
+  aqroot_hal::recorder().i2s_bytes_written += bytes;
   return ESP_OK;
 }
 inline esp_err_t i2s_read(i2s_port_t, void *dest, size_t bytes, size_t *read,

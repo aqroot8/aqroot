@@ -2,7 +2,68 @@
 
 
 
-> # **STATUS: D-800 ROUND-19 MAXIMUM-ASSURANCE FULL PRE-ORDER REVIEW — EXTERNAL-REVIEW TARGET, BOARD AUTHORITY `c8eabd43` (2026-09-24).**
+> # **STATUS: D-801 ROUND-20 BOUNDED PRE-ORDER CORRECTION — EXTERNAL-REVIEW TARGET, BOARD AUTHORITY `c8eabd43` (2026-09-25).**
+>
+> **D-801 supersedes D-800, which Round-20 graded Astra **B** (six bounded non-PCB
+> pre-order corrections, no respin) and Fable Work **A** with reproducible verifier and
+> document residuals.  THIS IS A REVIEW TARGET, NOT A FABRICATION AUTHORIZATION — DO NOT
+> ORDER.**  **No copper, net, footprint, placement, part value, BOM line, CPL line or
+> protected-copper object moves at D-801** — the board sha256 is unchanged at
+> `c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907`.  The release firmware
+> image's behaviour does not change; a separate, NON-PRODUCTION first-article image is added.
+> Connectivity is **174 retained / 173 connected / one owner-approved `U11.3` open / zero
+> unapproved**.  The D-801 content commit, the MANIFEST sha256 and the post-commit
+> verification are recorded in `hardware/demo/manufacturing/evidence/d801-review-target.json`
+> by the identity commit that follows the content commit.  The reviewed parent is the D-800
+> identity commit `a252b7f11e0fff2ce30381e9f3f17e3d66bbea09`.
+>
+> **PRE-ORDER ANALYTICAL: CLOSED on this target.  FAB/CAM ACCEPTANCE (B01–B14), FIRST-ARTICLE
+> VALIDATION (FA01–FA10; prerequisite `FAP-01` IMPLEMENTED, bench execution pending
+> hardware) and PROCUREMENT: PENDING.**
+>
+> ### What changed at D-801, for a fabricator, an assembler, a buyer and a technician
+>
+> * **THE FIRST-ARTICLE TEST IMAGE EXISTS (`D801-01`).**  `pio run -e aqroot-demo-fap01`
+>   builds `FAP-01`; `assembly/FAP01_FIRST_ARTICLE_IMAGE.md` gives the build / flash
+>   procedure, how to record its source SHA and `firmware.bin` sha256, every console key and
+>   the first-article step it serves.  It is never the default environment (`H9`), its code
+>   reaches no other environment (`H10`), and every stimulus is bounded and runs through the
+>   release image's own permission, quiesce and liveness gates.  **Re-flash the release image
+>   by name (`pio run -e aqroot-demo -t upload`) before a unit leaves the bench.**
+> * **MECHANICAL (`D801-02`).**  `MK1` is on `B.Cu`, bottom-port: sound reaches it from the
+>   FRONT through the board's 1.05 mm hole, so its aperture and gasket belong on the front
+>   shell.  IR isolation rests on the opaque `IR_BARRIER`, the receiver outside the TSAL6100
+>   ±10° cone and first-article `C-IR-01`, on formed optical axes 13.73 mm apart; D-162's
+>   15 mm TX↔RX heuristic is SUPERSEDED for this design.  `MECHANICAL_INTERFACE_SPEC` is
+>   corrected and `MK12` binds it to the board.
+> * **`C-BAT-GATE-01` (`D801-05`)** is a bench step at a declared condition — board out of
+>   the enclosure, 25 °C still air, steady state — with `VGS(Q2)` read at Q2's own leads; its
+>   expected figures are generated from F10.  The enclosure figures, from the same model:
+>
+> | envelope | `IBAT` | internal air | BQ25185 `TJ` |
+> |---|---|---|---|
+> | **SUSTAINED THERMAL ENVELOPE** — the most the enclosure supports at 40 °C, bounded by the pouch's own 60 °C discharge window | **1.7745 A** | 60.00 °C | 102.16 °C |
+> | **GUARANTEED-CONDUCTION CEILING** — the current at which `Q2`'s `VGS` leaves the `AO4800`'s lowest published `RDS(on)` row, at 80.83 °C internal air (the bench figure `C-BAT-GATE-01` measures is 2.5783 A at 25.0 °C air) | **2.0929 A** | 80.83 °C | — |
+> | **PEAK ELECTRICAL ENVELOPE** — every subsystem at its published maximum, concurrently (not a thermal operating point) | 2.7000 A | 80.83 °C | **178.42 °C** |
+>
+> * **FAULT CURRENTS (`D801-04`).**  The battery harness record no longer claims that BATOCP
+>   interrupts the double-limiter fault: 3.8236 A (internal peak, a sizing coincidence the
+>   image refuses) and 3.1480 A (the admitted internal load) both lie inside the declared
+>   BATOCP band.  What is guaranteed is that they are below the LTC4368 breaker minimum
+>   (3.9604 A) and the F1 fuse.
+> * **PROCUREMENT (`D801-08`, `R20-P01`, `R20-P02`).**  A FRESH `--refresh` sweep (all 123
+>   lines, dated per row, 2026-09-25): `TPD4E1B06DRLR` (`D2`,`D4`,`D5`) is now a consignment
+>   line.  D-800's sweep was a replay of 2026-09-20/21 records.  **BLOCK-PURCHASE:** `L3`
+>   until Coilcraft states its voltage capability for the TPS61169 open-LED OVP transient in
+>   writing; the pack until Adafruit states its PCM overcharge threshold (its specification
+>   says both 4.2 V charge and "not exceeding 3.95V").  Genuine AOS `AO4800` ALLOCATION and
+>   exact constrained-group allocation remain gates; re-sweep with `--refresh` before the order.
+> * **CORRECTED STEP.**  `C-RADIO-QUIESCE-01` expects `[PASS] radios quiesced after MCU reset`.
+> * **HISTORICAL DOCUMENT FENCED.**  `AQROOT_DEMO_FABRICATION_PACKAGE.md` is the D-616 record;
+>   the current authority is this handoff, `hardware/demo/fab/aqroot-Demo-FAB-NOTES.md` and
+>   `MANIFEST.json`.
+
+> # **STATUS: D-800 ROUND-19 MAXIMUM-ASSURANCE FULL PRE-ORDER REVIEW — EXTERNAL-REVIEW TARGET, BOARD AUTHORITY `c8eabd43` (2026-09-24).**  *(HISTORICAL — superseded by D-801 above.  Its closures STAND; its `C-BAT-GATE-01` ceiling figure and its "live" sweep wording DO NOT.)*
 >
 > **D-800 supersedes D-799, which Round-19 graded Astra **B** (three non-PCB pre-order
 > corrections) and Opus/Fable **A** with seven residuals, and for which the owner required a
@@ -1781,7 +1842,9 @@ great many claims that nothing had ever checked.
 * **`D-761`** — a board-to-cavity clearance stale by two revisions (**1.500 mm,
   not 2.500 mm — the rule met exactly**), a milestone coordinate snapshot that
   read like a live source, and the **≥ 15 mm IR TX↔RX rule met by 0.133 mm** with
-  nothing watching it.  `MK9` watches it now.
+  nothing watching it.  `MK9` watches it now.  *(Historical: D-800 found that figure
+  measured footprint origins; the formed axes are 13.73 mm and D-162's 15 mm rule is
+  SUPERSEDED at D-801 by the barrier / cone / `C-IR-01` acceptance.)*
 * **`D-762`** — the last `2_OPEN` land-pattern identity (`J8`, the Qwiic /
   STEMMA QT side-entry JST SH) was closed against JST's own drawing, the two
   Ebyte radio-module lands were re-proved independently from their vendor manuals,

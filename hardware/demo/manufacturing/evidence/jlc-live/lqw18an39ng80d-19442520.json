@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-20T19:33:51Z",
+ "fetched_utc": "2026-09-25T15:20:56Z",
  "keyword": "LQW18AN39NG80D",
  "page_size": 25,
  "pages": 1,
@@ -41,32 +41,32 @@
    "componentPrices": [
     {
      "endNumber": 49,
-     "productPrice": 0.0995,
+     "productPrice": 0.0993,
      "startNumber": 1
     },
     {
      "endNumber": 149,
-     "productPrice": 0.0822,
+     "productPrice": 0.0821,
      "startNumber": 50
     },
     {
      "endNumber": 499,
-     "productPrice": 0.0736,
+     "productPrice": 0.0735,
      "startNumber": 150
     },
     {
      "endNumber": 2499,
-     "productPrice": 0.0673,
+     "productPrice": 0.0671,
      "startNumber": 500
     },
     {
      "endNumber": 3999,
-     "productPrice": 0.0599,
+     "productPrice": 0.0598,
      "startNumber": 2500
     },
     {
      "endNumber": -1,
-     "productPrice": 0.0573,
+     "productPrice": 0.0572,
      "startNumber": 4000
     }
    ],

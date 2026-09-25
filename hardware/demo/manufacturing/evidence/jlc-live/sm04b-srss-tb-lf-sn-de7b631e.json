@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-20T19:33:48Z",
+ "fetched_utc": "2026-09-25T15:20:54Z",
  "keyword": "SM04B-SRSS-TB(LF)(SN)",
  "page_size": 25,
  "pages": 1,
@@ -81,32 +81,32 @@
    "componentPrices": [
     {
      "endNumber": 49,
-     "productPrice": 0.212,
+     "productPrice": 0.2115,
      "startNumber": 1
     },
     {
      "endNumber": 149,
-     "productPrice": 0.1643,
+     "productPrice": 0.164,
      "startNumber": 50
     },
     {
      "endNumber": 1499,
-     "productPrice": 0.1439,
+     "productPrice": 0.1436,
      "startNumber": 150
     },
     {
      "endNumber": 2999,
-     "productPrice": 0.1223,
+     "productPrice": 0.122,
      "startNumber": 1500
     },
     {
      "endNumber": 4499,
-     "productPrice": 0.1109,
+     "productPrice": 0.1106,
      "startNumber": 3000
     },
     {
      "endNumber": -1,
-     "productPrice": 0.1041,
+     "productPrice": 0.1038,
      "startNumber": 4500
     }
    ],
@@ -122,7 +122,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 74394
+   "stockCount": 74132
   },
   {
    "assemblyComponentFlag": false,
@@ -195,17 +195,17 @@
    "componentPrices": [
     {
      "endNumber": 49,
-     "productPrice": 0.0573,
+     "productPrice": 0.0572,
      "startNumber": 1
     },
     {
      "endNumber": 149,
-     "productPrice": 0.0455,
+     "productPrice": 0.0454,
      "startNumber": 50
     },
     {
      "endNumber": 1499,
-     "productPrice": 0.0396,
+     "productPrice": 0.0395,
      "startNumber": 150
     },
     {
@@ -215,12 +215,12 @@
     },
     {
      "endNumber": 4499,
-     "productPrice": 0.0302,
+     "productPrice": 0.0301,
      "startNumber": 3000
     },
     {
      "endNumber": -1,
-     "productPrice": 0.0284,
+     "productPrice": 0.0283,
      "startNumber": 4500
     }
    ],
@@ -236,7 +236,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 8283
+   "stockCount": 8273
   },
   {
    "assemblyComponentFlag": false,
@@ -329,32 +329,32 @@
    "componentPrices": [
     {
      "endNumber": 49,
-     "productPrice": 0.0931,
+     "productPrice": 0.0929,
      "startNumber": 1
     },
     {
      "endNumber": 149,
-     "productPrice": 0.0738,
+     "productPrice": 0.0736,
      "startNumber": 50
     },
     {
      "endNumber": 1499,
-     "productPrice": 0.064,
+     "productPrice": 0.0639,
      "startNumber": 150
     },
     {
      "endNumber": 2999,
-     "productPrice": 0.0556,
+     "productPrice": 0.0554,
      "startNumber": 1500
     },
     {
      "endNumber": 4499,
-     "productPrice": 0.0497,
+     "productPrice": 0.0496,
      "startNumber": 3000
     },
     {
      "endNumber": -1,
-     "productPrice": 0.0469,
+     "productPrice": 0.0468,
      "startNumber": 4500
     }
    ],
@@ -370,7 +370,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 109821
+   "stockCount": 109760
   },
   {
    "assemblyComponentFlag": false,
@@ -451,32 +451,32 @@
    "componentPrices": [
     {
      "endNumber": 49,
-     "productPrice": 0.0801,
+     "productPrice": 0.0799,
      "startNumber": 1
     },
     {
      "endNumber": 149,
-     "productPrice": 0.0639,
+     "productPrice": 0.0637,
      "startNumber": 50
     },
     {
      "endNumber": 499,
-     "productPrice": 0.0556,
+     "productPrice": 0.0554,
      "startNumber": 150
     },
     {
      "endNumber": 1999,
-     "productPrice": 0.0495,
+     "productPrice": 0.0494,
      "startNumber": 500
     },
     {
      "endNumber": 3999,
-     "productPrice": 0.0425,
+     "productPrice": 0.0424,
      "startNumber": 2000
     },
     {
      "endNumber": -1,
-     "productPrice": 0.0401,
+     "productPrice": 0.04,
      "startNumber": 4000
     }
    ],
@@ -585,12 +585,12 @@
    "componentPrices": [
     {
      "endNumber": 199,
-     "productPrice": 0.0341,
+     "productPrice": 0.034,
      "startNumber": 1
     },
     {
      "endNumber": 599,
-     "productPrice": 0.0276,
+     "productPrice": 0.0275,
      "startNumber": 200
     },
     {
@@ -600,7 +600,7 @@
     },
     {
      "endNumber": 9999,
-     "productPrice": 0.0214,
+     "productPrice": 0.0213,
      "startNumber": 2000
     },
     {
@@ -626,7 +626,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 11331
+   "stockCount": 10459
   },
   {
    "assemblyComponentFlag": false,
@@ -719,32 +719,32 @@
    "componentPrices": [
     {
      "endNumber": 49,
-     "productPrice": 0.2136,
+     "productPrice": 0.2131,
      "startNumber": 1
     },
     {
      "endNumber": 149,
-     "productPrice": 0.1728,
+     "productPrice": 0.1724,
      "startNumber": 50
     },
     {
      "endNumber": 499,
-     "productPrice": 0.1529,
+     "productPrice": 0.1525,
      "startNumber": 150
     },
     {
      "endNumber": 2999,
-     "productPrice": 0.1351,
+     "productPrice": 0.1348,
      "startNumber": 500
     },
     {
      "endNumber": 5999,
-     "productPrice": 0.1267,
+     "productPrice": 0.1264,
      "startNumber": 3000
     },
     {
      "endNumber": -1,
-     "productPrice": 0.1237,
+     "productPrice": 0.1235,
      "startNumber": 6000
     }
    ],
@@ -760,7 +760,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 48000
+   "stockCount": 31344
   },
   {
    "assemblyComponentFlag": false,
@@ -772,32 +772,32 @@
    "componentPrices": [
     {
      "endNumber": 9,
-     "productPrice": 1.4519,
+     "productPrice": 1.4486,
      "startNumber": 1
     },
     {
      "endNumber": 29,
-     "productPrice": 1.4519,
+     "productPrice": 1.4486,
      "startNumber": 10
     },
     {
      "endNumber": 199,
-     "productPrice": 1.4519,
+     "productPrice": 1.4486,
      "startNumber": 30
     },
     {
      "endNumber": 499,
-     "productPrice": 0.5795,
+     "productPrice": 0.5782,
      "startNumber": 200
     },
     {
      "endNumber": 999,
-     "productPrice": 0.5599,
+     "productPrice": 0.5587,
      "startNumber": 500
     },
     {
      "endNumber": -1,
-     "productPrice": 0.5502,
+     "productPrice": 0.5489,
      "startNumber": 1000
     }
    ],

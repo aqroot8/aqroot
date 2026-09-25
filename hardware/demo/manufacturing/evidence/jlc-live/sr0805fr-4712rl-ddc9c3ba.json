@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-20T19:34:06Z",
+ "fetched_utc": "2026-09-25T15:21:08Z",
  "keyword": "SR0805FR-4712RL",
  "page_size": 25,
  "pages": 1,
@@ -86,7 +86,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 1518
+   "stockCount": 18
   }
  ],
  "returned": 1,

@@ -1,3 +1,158 @@
+## D-801 — **ROUND-20 BOUNDED PRE-ORDER CORRECTION: AN EXECUTABLE FIRST-ARTICLE IMAGE, ONE MECHANICAL AUTHORITY, A GUARDED DEFAULT, AND NUMBERS THAT ARE GENERATED RATHER THAN COPIED**
+
+    authority  board c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907
+    content    this commit
+    identity   the post-commit verification record commit that follows it
+    parent     a252b7f11e0fff2ce30381e9f3f17e3d66bbea09 (D-800 identity, reviewed by Round-20)
+    scope      D801-01..D801-10 (Astra R20-01..R20-06, Fable R20-01..R20-05 and the Fable
+               document campaign), procurement notes R20-P01 / R20-P02, and the COMPLETE
+               final release suite
+    copper     NONE.  No copper, net, footprint, placement, part value or protected-copper
+               object moves; the board sha256 is the D-800 one.  No BOM / CPL line changes.
+    firmware   RELEASE IMAGE [env:aqroot-demo]: NO behaviour change.  NEW, NON-PRODUCTION
+               [env:aqroot-demo-fap01] (FAP-01).  Host tests and controls added (H6, H9, H10).
+    order      HOLD.  B01-B14 (CAM), FA01-FA10 (first article; FAP-01 now implemented,
+               bench execution pending hardware) and PROCUREMENT (genuine AO4800 allocation,
+               exact constrained-group allocation, R20-P01, R20-P02, a --refresh re-sweep
+               before the order) remain.  REVIEW TARGET, NOT A FABRICATION AUTHORIZATION.
+    owner      NO OWNER DECISION IS REQUIRED.  No published capability, budget, table or
+               threshold moves.
+
+Round-20 graded D-800 **Astra B** (six bounded non-PCB pre-order corrections, no respin, no
+production-firmware safety correction) and **Fable Work A** with reproducible verifier and
+document residuals.  Every witness was reproduced on the frozen D-800 tree before it was
+fixed — `evidence/d801-round20-witnesses.json`.
+
+### 1 — THE TEN ITEMS
+
+* **D801-01 (Astra R20-01) — FAP-01 is an image, not a name.**  REPRODUCED: `platformio.ini`
+  at `a252b7f1` has no first-article environment and no source for any stimulus the plan
+  names.  **`[env:aqroot-demo-fap01]`** compiles the release `demo/` + `hw/` tree plus
+  `src/fap01/` with `-DAQROOT_FAP01_DIAGNOSTIC`, which only that environment defines;
+  `src/fap01/` refuses to compile without it and the legacy filter excludes it.  Console
+  keys (upper case, each self-bounded and stoppable, `Q` stops all): `C` CC1101 carrier and
+  `L` SX1262 CW +22 dBm through `SpiBusB::beginTransmit` (30 s); `N` the NFC field through
+  `beginNfcFieldSession` (60 s) and `T` one REQA; `W` a Wi-Fi burst (10 s, 30 s cool-down);
+  `I` ten 38 kHz NEC frames through the release burst slot; `H`/`J`/`K`/`Y` U7 / U9
+  chip-select hold-off (immediate, +700 ms, +2000 ms; survives one reset; 60 s); `A` held
+  audio at the release tone level and `B` a held 50 % backlight duty after the ≥ 3000 µs
+  D-784 full-duty prime (30 min); `G` VCELL every 10 ms for 2 s.  **THE WI-FI CONFLICT:**
+  the release image refuses Wi-Fi (the no-rail CHARGING row, because the firmware cannot
+  see the adapter).  FAP-01 still ASKS `wifiActivationPermitted()` and waives only that
+  row, only after `V` (the operator declares a bench source with no charger), only with
+  both rails off, nothing else keyed and the amplifier off; a rail-live refusal is never
+  waived.  Host tests: 56 FAP-01 claims + 20 mutation controls; the release build of the
+  same test proves every FAP key is inert (8 claims + a leak control); the whole release-
+  image test also passes on the FAP build (shared rules not weakened).  `H10` proves only
+  that environment compiles `src/fap01/` or sets the define, with 8 controls.  Procedure:
+  `assembly/FAP01_FIRST_ARTICLE_IMAGE.md`; register `first_article_prerequisites` FAP-01
+  now IMPLEMENTED — build and bench execution pending hardware.  "Capped level" for audio
+  is the release tone's amplitude (the only audio the release image produces); `C-THERM-01`
+  measures the resulting current.
+* **D801-02 (Astra R20-02) — one mechanical authority.**  REPRODUCED: MK1–MK11 passed while
+  `MECHANICAL_INTERFACE_SPEC` stated D-162's ≥ 15 mm IR TX↔RX spacing as current (nine
+  places across the spec, P1 inputs, keep-outs, floorplan and `DEVICE_SPEC`) and the spec /
+  footprint ledger put `MK1` on the TOP with its aperture on the BOTTOM face (six sentences).
+  Primary evidence: `MK1` is `(layer "B.Cu")` with a 1.05 mm NPTH centred on pad 4 and the
+  footprint says bottom-port; PUI `DMM-4026-B-I2S-R` Rev A (downloaded from PUI, archived
+  under `vendor/PUI/`) puts the acoustic port on the solder-pad face.  So the port faces the
+  board and sound arrives from `F.Cu` through the hole; aperture and gasket belong on the
+  FRONT shell (as D-214 said).  The 15 mm heuristic is SUPERSEDED for this frozen design by
+  13.73 mm formed axes + `IR_BARRIER` between both courtyards + the receiver outside the
+  TSAL6100 ±10° cone + first-article `C-IR-01`; the antenna↔IR rules are unchanged and
+  distinct.  **`MK12`** binds the spec's machine-readable mic side / port / acoustic face to
+  the board and the IR axis field to MK9's measurement, and scans eight governing documents;
+  19 controls (wrong-direction sentences, a current 15 mm figure, a flipped board side, a
+  moved port drill, a moved D1, …) are all caught.
+* **D801-03 (Astra R20-03 + Fable R20-02) — the default is a gate.**  REPRODUCED: on
+  `a252b7f1` with `default_envs = esp32-s3-aqroot`, H1–H8 PASS.  **`H9`** requires exactly and
+  solely `aqroot-demo`, agrees with `pio project config --json-output`, and refuses 8
+  mutations (missing, legacy, mixed, multi-line, FAP as default, FAP beside it,
+  `extra_configs`, a removed environment).  A bare `pio run` builds only `aqroot-demo`.
+* **D801-04 (Astra R20-04) — no BATOCP interruption is claimed.**  REPRODUCED: the harness
+  record said the 3.8236 A double-limiter fault exceeds the 3.6875 A BATOCP maximum "so the
+  recoverable BATOCP hiccup interrupts it".  3.6875 A is the maximum of TI's STATED band
+  (18 % at one condition); this release rules on a DECLARED 25 % band whose maximum is
+  3.9063 A, and a unit at 3.85 A does not trip.  F6 now separates the production-admitted
+  load (2.2689 A conforming), the single fault (2.8628 A), the double fault at the internal
+  PEAK (3.8236 A — a sizing coincidence the image refuses: no rail beside a transmitter) and
+  at the ADMITTED internal load (**3.1480 A**, the real double fault), states the BATOCP
+  typical / stated / declared bands, claims NO interruption, and keeps only what board
+  values guarantee (below the LTC4368 breaker minimum 3.9604 A and F1).  The SYS absolute
+  maximum is never an acceptance target.  The text is generated into both harness records;
+  five controls, including the D-800 sentence, refuse the old claim.
+* **D801-05 (Astra R20-05 + Fable R20-01) — the gate-drive numbers are F10's.**  REPRODUCED:
+  the step, ledger and handoff carried D-791's 2.2845 A / 2.60 A / 1.9328 A / 72.44 °C /
+  116.38 °C / 2.4124 V while F10 derived 2.0929 A at 80.83 °C internal air, 1.7745 A and
+  2.7 A, and the ledger said the ruling case "must survive at 2×" — at the enclosure
+  condition the 2× case gives 2.4923 V and does not.  F10 now solves the same model at a
+  DECLARED BENCH CONDITION (board out of the enclosure, 25 °C still air, steady state < 0.5
+  K/min, declared ratio 1.60, VGS(Q2) read at Q2's own leads) and emits the bench crossing
+  (**2.5783 A**) and the worst-case VGS / drop at 1.7745, 2.0929, 2.5783 and 2.7000 A;
+  `C-BAT-GATE-01`, the `SOURCING_LEDGER` §4 table and sensitivity sentence and the handoff
+  envelope rows are GENERATED from it and checked verbatim; stale figures in any current
+  sentence are refused.  Six controls: stale ceiling, wrong bench temperature, wrong ratio,
+  the 2× survival sentence, the 2× case losing the row, bench crossing above the enclosure
+  ceiling.
+* **D801-06 (Astra R20-06 + Fable R20-05) — release identity.**  REPRODUCED:
+  `CURRENT_RELEASE_ID = "D-799"` on the frozen D-800 target, and a current D-799 review-
+  target heading passes F1–F14 there.  The id is now DERIVED from the release CHANGELOG
+  (the MANIFEST's own authority for `assembly_drawings.release`) and
+  `release_identity_problems` binds the MANIFEST, CTO_DECISIONS, CURRENT_STATE's first
+  review-target heading, the handoff STATUS and `evidence/dNNN-review-target.json` to it;
+  every earlier heading must be fenced.  Seven controls (previous release as the current
+  heading, a stale STATUS, a stale constant, a mismatched MANIFEST, a CHANGELOG ahead of the
+  decision record, …).
+* **D801-07 (Fable R20-02) — the D-800 fixes have controls.**  REPRODUCED: the SPI-A-bound
+  quiesce and the microSD `SPI.end()` removal passed the whole H-suite at `a252b7f1`.  The
+  host board model now answers an SPI-B part only when SPI is bound to the SPI-B pins;
+  seven claims and five caught controls cover the 5 V UNKNOWN-shadow refusal (twin of the
+  3.3 V one), the SPI-B pin map, `SPI.end()`, and the CC1101 / microphone `millis()` wrap.
+  `probeCc1101` runs only in `setup()` and gets no wrap control (it cannot wrap).
+* **D801-08 (Fable R20-03) — freshness is stated.**  REPRODUCED: `d800-sourcing-sweep.json`
+  called itself live while replaying records fetched 2026-09-20T19:33Z..09-21T15:57Z.
+  `evidence/d801-sweep-sourcing.py --refresh` queried all 123 lines on 2026-09-25 with a
+  `fetched_utc` and `mode` per row.  The constrained set MOVED: `TPD4E1B06DRLR`
+  (`D2`,`D4`,`D5`) is now short (2 / 15) and a consignment line; `SQ2364EES-T1_BE3` reads 40
+  (kept a consignment line); `LTC4368IMS-1#TRPBF` reads 0.  A `--refresh` re-sweep
+  immediately before the order stays a procurement gate.
+* **D801-09 (Fable R20-04) — the D-616 fabrication-package document.**  Kept (the README
+  and decisions link it), its title FENCED HISTORICAL / SUPERSEDED with a banner naming the
+  current authority, added to the F12 scan set; unfencing it exposes its D-616 status
+  (control).
+* **D801-10 (Fable document campaign) — four finite families.**  The supervised condition
+  written "once … has reached … or more" / "requires a pack voltage of no less than"; the
+  cure written "one day" / "24-hour" / "twenty-four hours"; a package temperature judged
+  "at or below the modelled figures"; an inserted meter's resistance "assumed zero" /
+  "negligible" (subject-first and verb-first).  12 injections, each MISSED by the D-800
+  scanners (the witness) and caught by D-801 in every operative document; 8 near controls
+  (the correct 4.10 V forms, a qualified 72 h hold in days, the junction interval derived
+  from the package, a clamp's R_ins = 0, "never assumed zero") stay clean.
+
+### 2 — FOUND WHILE CLOSING, AND FIXED
+
+* `C-RADIO-QUIESCE-01` told the technician to expect `[ok] radios quiesced after MCU reset`;
+  the image prints `[PASS] …`.  Corrected.
+
+### 3 — PROCUREMENT (R20-P01, R20-P02) — BLOCK-PURCHASE GATES, NOT DESIGN VERDICTS
+
+* **`L3` `XFL4020-472MEC`.**  Coilcraft Document 745-1 (Revised 03/10/26, archived) lists
+  "Operating voltage 20 V" with footnote 7, "Voltage capability varies by part number and in
+  many cases may be higher than the listed voltage".  A TPS61169 open-LED OVP transient can
+  exceed 20 V across `L3`.  No verdict from the 20 V figure alone: Coilcraft's written
+  suitability, or a rated replacement, before `L3` is bought.
+* **Adafruit 328 PCM.**  The archived specification states a 4.2 V charge cut-off AND "The
+  overcharge threshold voltage should not be exceeding 3.95V" — internally inconsistent.  The
+  supplier's written PCM overcharge threshold for the allocated lot, before pack allocation.
+* Genuine AOS `AO4800` allocation and exact constrained-group allocation remain gates
+  (`SOURCING_LEDGER` §4b).
+
+### WHAT IS NOT CLAIMED
+
+No literal certainty before manufacture.  FAP-01 is host-tested and builds; it has not run on
+hardware.  CAM acceptance (B01–B14), first article (FA01–FA10), procurement and enclosure
+closure remain downstream.
+
 ## D-800 — **ROUND-19 MAXIMUM-ASSURANCE FULL PRE-ORDER REVIEW AND CORRECTION: EIGHT KNOWN FINDINGS CLOSED, A FULL-SYSTEM RE-AUDIT, AND WHAT IT FOUND**
 
     authority  board c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907

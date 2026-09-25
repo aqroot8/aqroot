@@ -2088,6 +2088,19 @@ BL_STRING_CURRENT_BASIS = apm.BL_STRING_CURRENT_BASIS
 P3V3_INTERNAL_BUDGET = apm.peak_budget()
 I_INTERNAL = apm.peak_A()
 I_INTERNAL_PUBLISHED_WAS = 1.0          # the constant D-772 replaced
+# D-801 / Round-20 D801-04.  THE INTERNAL LOAD THE PRODUCTION IMAGE ADMITS
+# BESIDE A LIVE ACCESSORY RAIL.  `I_INTERNAL` is every ledger line at its peak
+# AT ONCE, the Wi-Fi/BLE and sub-GHz transmitters included -- but the shipped
+# rail-edge table (`aqroot_accessory_power_policy.h`, every row with bit 0
+# Wi-Fi / BLE TX or bit 2 sub-GHz TX set) is `kAccessoryNotPermittedV`: no rail
+# is live while either radio transmits.  A fault quoted at `I_INTERNAL` with a
+# rail live is therefore a SIZING COINCIDENCE, not a state a user can reach.
+# The admitted figure keeps every other line at its PEAK (audio, the bursty
+# microSD / NFC / IR peaks), so it is still an upper bound on what is admitted.
+RAIL_EXCLUDED_INTERNAL_KEYS = ("wifi_ble_tx", "subghz_tx")
+I_INTERNAL_ADMITTED_WITH_A_RAIL = round(
+    sum(x["mA"] for x in apm.LOAD_LEDGER
+        if x["key"] not in RAIL_EXCLUDED_INTERNAL_KEYS) / 1000.0, 6)
 
 # --------------------------------------------------------------------------
 # D-777 -- THE BATTERY CONNECTION WAS THE ONE ELEMENT OF THE BATTERY PATH THIS
@@ -4000,8 +4013,9 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
                "4.95 constant and ARCHITECTURE's published 4.99 V were derived "
                "from")
 
-    def ibat(i3, i5):
-        return ((I_INTERNAL + i3) * V_3V3 / ETA_U12
+    def ibat(i3, i5, internal=None):
+        return (((I_INTERNAL if internal is None else internal) + i3)
+                * V_3V3 / ETA_U12
                 + i5 * V_ACC5V / ETA_U21) / VBAT_CORNER
 
     a3, a5 = rails["ACC_3V3"], rails["ACC_5V"]
@@ -4015,7 +4029,12 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
         both_at_their_guaranteed_currents=ibat(a3["ilim_min"], a5["ilim_min"]),
         both_at_their_published_budgets=ibat(a3["published_budget_A"],
                                              a5["published_budget_A"]),
-        both_limiters_in_fault=ibat(a3["ilim_max"], a5["ilim_max"]))
+        both_limiters_in_fault=ibat(a3["ilim_max"], a5["ilim_max"]),
+        # D-801 / D801-04: the same double fault at the internal load the
+        # production image ADMITS beside a live rail -- the real fault case.
+        both_limiters_in_fault_at_the_admitted_internal_load=ibat(
+            a3["ilim_max"], a5["ilim_max"],
+            internal=I_INTERNAL_ADMITTED_WITH_A_RAIL))
     # ---- D-791 / `R10-N02`, FOUND WHILE CLOSING D790-A04 -----------------
     #
     # THE SET WAS CALLED "REACHABLE" AND WHAT IT ACTUALLY MIXED WAS CONFORMING
@@ -4083,7 +4102,9 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
                              "acc5v_alone_at_its_limiter",
                              "both_at_their_guaranteed_currents",
                              "both_at_their_published_budgets",
-                             "both_limiters_in_fault")
+                             "both_limiters_in_fault",
+                             "both_limiters_in_fault_at_the_admitted_"
+                             "internal_load")
     REACHABLE = CONFORMING
     # D-771.  The floor a reachable state must stay under is the LOWEST trip
     # ANY protection in the chain can have on ANY unit -- not the charger's
@@ -5118,11 +5139,14 @@ PASS_PAIR_REFUSED_SOURCES = ("VBsemi", "HXY", "UMW", "JSMSEMI", "MSKSEMI",
                              "TECH PUBLIC")
 ltc4368_gate_drive_min_V = apm.ltc4368_gate_drive_min_V
 ltc4368_gate_drive_max_V = apm.ltc4368_gate_drive_max_V
+# D-801 / D801-05: the DECLARED bench condition of C-BAT-GATE-01.
+PASS_PAIR_BENCH_AIR_C = 25.0
 
 
 def judge_pass_pair_gate(design_amps, vin_min_V, spec=None, rows=None,
                          ambient_C=None, internal_air_C=None,
-                         sustained_amps=None, ruling_ratio=None):
+                         sustained_amps=None, ruling_ratio=None,
+                         bench_air_C=None):
     """D-792 / R11-01.  The four-channel model, solved self-consistently, with
     the TEMPERATURE LAW AS AN EXPLICIT SOLVER INPUT.
 
@@ -5324,6 +5348,64 @@ def judge_pass_pair_gate(design_amps, vin_min_V, spec=None, rows=None,
             "arithmetic.  The law is a solver argument now and the controls "
             "above fail if it ever stops being one.")
 
+    # ---- D-801 / Round-20 D801-05 (Astra R20-05 + Fable R20-01).  THE
+    # BENCH CONDITION C-BAT-GATE-01 IS RUN AT, DERIVED -- NOT COPIED.
+    #
+    # D-800's step, ledger and handoff carried D-791's 2.2845 A ceiling, a
+    # 2.60 A peak, 1.9328 A sustained, 72.44 / 116.38 C and a 2.4124 V
+    # prediction while F10 itself derived 2.0929 A at 80.83 C internal air,
+    # 1.7745 A and 2.7 A -- and the ledger said the ruling case "must survive
+    # at 2x", which at the enclosure condition it does not.  And none of
+    # those figures is what a technician on a bench MEASURES: the enclosure
+    # ceiling is solved in 80.83 C internal air, and the bench is an open
+    # board in room air.  So F10 now solves the SAME four-channel model at
+    # the DECLARED BENCH CONDITION and publishes, for each test current, the
+    # worst-case VGS(Q2), pass-pair drop and junction the step compares a
+    # measurement against, and the current at which VGS(Q2) reaches the
+    # AO4800's 2.5 V row.  Every document figure is generated from here.
+    _bench_air = PASS_PAIR_BENCH_AIR_C if bench_air_C is None else bench_air_C
+    _bench_currents = []
+    for _nm, _a in (("sustained thermal envelope", sustained_amps),
+                    ("enclosure conduction ceiling", ceiling),
+                    ("peak electrical envelope", design_amps)):
+        if _a is not None:
+            _bench_currents.append((_nm, round(_a, 4)))
+    _bench_ceiling = apm.conduction_ceiling_A(_bench_air, drive, ruling_ratio,
+                                              spec)
+    _bench_currents.append(("bench crossing", round(_bench_ceiling, 4)))
+    _bench_currents.sort(key=lambda x: x[1])
+    out["bench_condition"] = dict(
+        air_C=_bench_air,
+        board="the assembled board OUT of the enclosure, horizontal, in "
+              "still room air",
+        board_above_air_K=spec["board_above_air_K"],
+        hot_ratio=round(ruling_ratio, 6),
+        gate_drive_V=drive,
+        hold="each current held until the Q2 package-top temperature "
+             "changes by less than 0.5 K per minute (at least 5 min)",
+        vgs_criterion_V=spec["rds_on_lowest_published_vgs_V"],
+        crossing_A=round(_bench_ceiling, 4),
+        points=[dict(what=_nm, amps=_a, **{
+            k_: v_ for k_, v_ in (
+                ("worst_case_vgs_q2_V", _sv["per_device"]["Q2"][
+                    "worst_case_vgs_V"]),
+                ("pass_pair_drop_V", _sv["pass_pair_drop_V"]),
+                ("channel_ohm_hot", _sv["channel_ohm_hot"]),
+                ("junction_C", _sv["junction_C"]))})
+            for _nm, _a in _bench_currents
+            for _sv in (solve(_a, _bench_air),)],
+        why="D-801 / R20-05: the enclosure ceiling is a model output at "
+            "80.83 C internal air and is not what a bench measures; the "
+            "bench validates the model's INPUTS (gate drive, RDS(on), hot "
+            "ratio) at a stated condition, and F10 re-derives the enclosure "
+            "ceiling from what it measures.")
+    out["enclosure_2x_case"] = dict(
+        ratio=2.0, amps=round(_rule_amps, 4), internal_air_C=round(air_peak, 3),
+        worst_case_vgs_q2_V=cases["at_a_pessimistic_2x_ratio"]["per_device"][
+            "Q2"]["worst_case_vgs_V"],
+        meets_the_row=bool(cases["at_a_pessimistic_2x_ratio"][
+            "every_device_meets_a_published_conduction_row"]))
+
     # ---- THE GATE DRIVE OVER THE WHOLE CELL RANGE -------------------------
     out["bat_raw_sweep"] = [
         dict(bat_raw_V=round(v, 3),
@@ -5383,6 +5465,120 @@ def judge_pass_pair_gate(design_amps, vin_min_V, spec=None, rows=None,
         and out["hot_ratio_sensitivity"][
             "a_ratio_below_the_crossing_is_accepted"])
     return out["ok"], out
+
+
+def pass_pair_publication(pp, pkg):
+    """D-801 / D801-05.  Every published gate-drive / pass-pair figure, as
+    TEXT, generated from F10's own output (`pp`, from `judge_pass_pair_gate`)
+    and the enclosure model (`pkg`, `audit_rail_ampacity.package_junction`).
+    The documents must carry these strings verbatim; nothing is copied."""
+    b = pp["bench_condition"]
+    pts = b["points"]
+    peak = pp["peak_case"]
+    sus = pp.get("sustained_case") or pp["ruling"]
+    ceil = pp["guaranteed_conduction_ceiling"]
+    se = pkg["sustained_thermal_envelope"]
+
+    def _vgs(c):
+        return c["per_device"]["Q2"]["worst_case_vgs_V"]
+
+    def _meets(c):
+        m_ = (_vgs(c) - pp["rds_on_lowest_published_vgs_V"]) * 1000.0
+        return ("**YES — %.1f mV**" % m_ if m_ >= 0
+                else "**NO — %.1f mV short**" % -m_)
+    pred = "; ".join(
+        "at **%.4f A** (%s) `VGS(Q2)` ≥ **%.4f V**, drop ≤ **%.1f mV**"
+        % (x["amps"], x["what"], x["worst_case_vgs_q2_V"],
+           x["pass_pair_drop_V"] * 1000.0) for x in pts)
+    step = (
+        "`ΔVGATE` (GATE − `BAT_PROTECTED_P`), `VGS(Q2)` and the pass-pair "
+        "drop (`BAT_RAW` − `BAT_SENSE`) on the fitted **`AO4800`**, every "
+        "figure GENERATED FROM `demo_feature_contract` F10 (D-801 / "
+        "`R20-05`).  **BENCH CONDITION (declared):** %s, at **%.1f °C** "
+        "air; %s; `BAT_RAW` = 4.15 / 3.60 / 3.05 V from a bench supply in "
+        "place of the pack (the LTC4368's guaranteed gate drive is the same "
+        "**%.1f V** row across that range).  Draw the test current with an "
+        "electronic load from `BAT_PROTECTED_P` (`TP15`) to `GND`, NOT "
+        "through the system: the load then never passes `U11`'s BATFET, "
+        "whose BATOCP could otherwise trip, and `U11`'s own battery cut-off "
+        "near 3.05 V is irrelevant to the pass pair.  The pass-pair current "
+        "is also the drop across `R75` (10 mΩ, `TP20` to `TP15`).  Read "
+        "`VGS(Q2)` directly at `Q2`'s own leads (gate pin 2 or 4 to source "
+        "pin 1 or 3).  At each current below record `ΔVGATE`, `VGS(Q2)`, "
+        "the drop and the `Q2` package-top temperature, then step on in "
+        "0.05 A increments to **%.4f A** and record the current at which "
+        "`VGS(Q2)` reaches the AO4800's **%.1f V** row, if it does.  This "
+        "is what converts the one thing NO candidate publishes — hot "
+        "`RDS(on)` at `VGS` = 2.5 V — from an extrapolation into a measured "
+        "bound.  The model's WORST-CASE prediction at this condition "
+        "(minimum gate drive, the AO4800's MAX `RDS(on)` at its 2.5 V row, "
+        "the DECLARED 25 → 125 °C ratio **%.2f**): %s; the bench crossing "
+        "is **%.4f A**.  Also record the TURN-ON TIME from `SHDN` release to "
+        "full enhancement: ADI specifies `IGATE(UP)` and `tD(ON)` only at "
+        "`VIN` = 12 V.  The enclosure conduction ceiling (**%.4f A** at "
+        "**%.2f °C** internal air) is NOT a bench quantity: F10 re-derives "
+        "it from the measured drive and resistance  **OUTCOME:** PASS if at "
+        "every point the measured `VGS(Q2)` is at or above, and the measured "
+        "drop at or below, the model's worst-case prediction for that "
+        "point, and `VGS(Q2)` does not reach %.1f V below the bench crossing "
+        "of **%.4f A**; otherwise RECORD + ESCALATE and re-run F10, F12 and "
+        "F14 with the measured gate drive and drop before acceptance." % (
+            b["board"], b["air_C"], b["hold"], b["gate_drive_V"],
+            pp["design_amps"], b["vgs_criterion_V"], b["hot_ratio"], pred,
+            b["crossing_A"], ceil["ceiling_A"], ceil["internal_air_C"],
+            b["vgs_criterion_V"], b["crossing_A"]))
+    table = "\n".join((
+        "| envelope | `I` | hot channel `RDS(on)` | `VGS(Q2)` | meets the "
+        "2.5 V row? |",
+        "|---|---|---|---|---|",
+        "| **GUARANTEED-CONDUCTION CEILING** (DERIVED, %.2f °C internal air) "
+        "| **%.4f A** | — | **%.4f V** | **the boundary itself** |" % (
+            ceil["internal_air_C"], ceil["ceiling_A"],
+            pp["rds_on_lowest_published_vgs_V"]),
+        "| **PEAK electrical** | %.4f A | ≈ %.1f mΩ | **%.4f V** | %s |" % (
+            peak["amps"], peak["channel_ohm_hot"] * 1000.0, _vgs(peak),
+            _meets(peak)),
+        "| **SUSTAINED thermal** | %.4f A | ≈ %.1f mΩ | **%.4f V** | %s |" % (
+            sus["amps"], sus["channel_ohm_hot"] * 1000.0, _vgs(sus),
+            _meets(sus)),
+        "| **BENCH crossing** (`C-BAT-GATE-01`, %.1f °C air) | **%.4f A** | "
+        "— | **%.4f V** | **the boundary itself** |" % (
+            b["air_C"], b["crossing_A"], b["vgs_criterion_V"])))
+    hs = pp["hot_ratio_sensitivity"]
+    x2 = pp["enclosure_2x_case"]
+    sensitivity = (
+        "The DECLARED 25 → 125 °C ratio is **%.2f** (AOS measures %.4f on "
+        "this die); the ruling case loses the 2.5 V row at a ratio of "
+        "**%.4f**.  At a pessimistic **2×** ratio the sustained envelope "
+        "does %s hold the row at the enclosure condition (`VGS(Q2)` **%.4f "
+        "V** at %.4f A, %.2f °C internal air): the 2× case is REPORTED, not "
+        "ruled on, and `C-BAT-GATE-01` measures the real coefficient." % (
+            hs["declared_ruling_ratio"], hs["published_ratio"],
+            hs["ratio_at_which_the_conduction_row_is_lost"] or float("nan"),
+            "" if x2["meets_the_row"] else "NOT", x2["worst_case_vgs_q2_V"],
+            x2["amps"], x2["internal_air_C"]))
+    handoff = "\n".join((
+        "> | **SUSTAINED THERMAL ENVELOPE** — the most the enclosure supports "
+        "at 40 °C, bounded by the pouch's own 60 °C discharge window | "
+        "**%.4f A** | %.2f °C | %.2f °C |" % (
+            pkg["sustained_thermal_envelope_A"], se["internal_air_C"],
+            se["tj_C"]),
+        "> | **GUARANTEED-CONDUCTION CEILING** — the current at which `Q2`'s "
+        "`VGS` leaves the `AO4800`'s lowest published `RDS(on)` row, at "
+        "%.2f °C internal air (the bench figure `C-BAT-GATE-01` measures is "
+        "%.4f A at %.1f °C air) | **%.4f A** | %.2f °C | — |" % (
+            ceil["internal_air_C"], b["crossing_A"], b["air_C"],
+            ceil["ceiling_A"], ceil["internal_air_C"]),
+        "> | **PEAK ELECTRICAL ENVELOPE** — every subsystem at its published "
+        "maximum, concurrently (not a thermal operating point) | %.4f A | "
+        "%.2f °C | **%.2f °C** |" % (
+            pp["design_amps"], pkg["internal_air_C"], pkg["predicted_tj_C"])))
+    return dict(step=step, ledger_table=table, ledger_sensitivity=sensitivity,
+                handoff_rows=handoff)
+
+
+PASS_PAIR_STALE_FIGURES = ("2.2845", "2.4124", "1.9328", "72.44", "116.38",
+                           "survive at 2×", "must survive at 2x")
 
 
 # ==========================================================================
@@ -5594,7 +5790,75 @@ def _d796_sentences(text):
 # release as the review target / status / content commit is then a stale
 # claim, and a fenced/historical one is history.
 # ==========================================================================
-CURRENT_RELEASE_ID = "D-799"
+# D-801 / Round-20 D801-06 (Astra R20-06 + Fable R20-05).  IT WAS TYPED,
+# AND IT WENT STALE.  This constant read "D-799" on the frozen D-800 target,
+# and a CURRENT D-799 heading passed F1-F14 there.  It is now DERIVED from the
+# same authority the MANIFEST's `assembly_drawings.release` is derived from --
+# the newest `## D-NNN` heading of the release CHANGELOG -- and
+# `release_identity_problems` below binds every current identity surface
+# (MANIFEST, CTO_DECISIONS, CURRENT_STATE's review-target heading, the fab
+# handoff STATUS, the review-target evidence record) to it.
+RELEASE_CHANGELOG = ROOT / "docs/full-beta-v2/CHANGELOG.md"
+
+
+def derive_current_release(changelog_text=None):
+    text = (RELEASE_CHANGELOG.read_text(encoding="utf-8", errors="replace")
+            if changelog_text is None else changelog_text)
+    for line in text.splitlines():
+        if line.startswith("## "):
+            m = re.search(r"\bD-(\d{3})\b", line)
+            if m:
+                return "D-%s" % m.group(1)
+    raise SystemExit("cannot derive the current release: no '## D-NNN' "
+                     "heading in the CHANGELOG")
+
+
+CURRENT_RELEASE_ID = derive_current_release()
+_RT_HEADING = re.compile(r"^\s*>*\s*#{1,6}\s+\**(D-\d{3}) REVIEW TARGET\b"
+                         r"(.*)$")
+_STATUS_HEADING = re.compile(r"^\s*>*\s*#{1,6}\s+\**STATUS:\s*(D-\d{3})\b"
+                             r"(.*)$")
+_IDENTITY_FENCE = re.compile(r"HISTORICAL|SUPERSEDED|superseded|REJECTED")
+
+
+def release_identity_problems(current, manifest_release, cto_text,
+                              state_text, handoff_text, evidence_dir):
+    """D-801 / D801-06.  Pure: every CURRENT identity surface must name
+    `current`; every earlier one must be fenced HISTORICAL."""
+    bad = []
+    if manifest_release != current:
+        bad.append("MANIFEST assembly_drawings.release is %r, the checker's "
+                   "current release is %r" % (manifest_release, current))
+    first_cto = next((m_.group(1) for m_ in (
+        re.match(r"^## (D-\d{3})\b", l_) for l_ in cto_text.splitlines())
+        if m_), None)
+    if first_cto != current:
+        bad.append("CTO_DECISIONS' newest decision is %r, not %r"
+                   % (first_cto, current))
+    for name, text, rx in (("CURRENT_STATE review target", state_text,
+                            _RT_HEADING),
+                           ("fab handoff STATUS", handoff_text,
+                            _STATUS_HEADING)):
+        heads = [(m_.group(1), bool(_IDENTITY_FENCE.search(m_.group(2))))
+                 for m_ in (rx.match(l_) for l_ in text.splitlines()) if m_]
+        if not heads:
+            bad.append("%s: no heading found" % name)
+            continue
+        cur_heads = [h for h, fenced in heads if not fenced]
+        if cur_heads != [current]:
+            bad.append("%s: the unfenced (current) heading(s) are %r, "
+                       "expected exactly [%r]" % (name, cur_heads, current))
+        if heads[0] != (current, False):
+            bad.append("%s: the FIRST heading is %r, not the current "
+                       "release unfenced" % (name, heads[0]))
+    rec = Path(evidence_dir) / ("d%s-review-target.json" % current[2:])
+    try:
+        dec = json.loads(rec.read_text(encoding="utf-8")).get("decision")
+    except (OSError, ValueError):
+        dec = None
+    if dec != current:
+        bad.append("%s: decision is %r, not %r" % (rec.name, dec, current))
+    return bad
 # D-797 / D797-02: the supervised-charging restriction for the accessory
 # rails, in the exact words every operative document must print (the cell is
 # generated from the model).
@@ -7217,7 +7481,20 @@ def judge_fa_outcomes(plan_text, semantics=None, obs_decl=None):
 
 
 def harness_current_text(env):
-    """D-796 / D796-05: the harness record's operative currents, from F6."""
+    """D-796 / D796-05: the harness record's operative currents, from F6.
+
+    D-801 / Round-20 D801-04 (Astra R20-04).  D-796..D-800 printed "BOTH
+    limiters in fault reach 3.8236 A, ABOVE the BQ25185 BATOCP maximum
+    (3.6875 A), so the recoverable BATOCP hiccup interrupts it".  3.6875 A is
+    the maximum of TI's STATED band (3.13 A typical, 18 % at ONE condition);
+    this release itself rules the sustained envelope on a DECLARED 25 % band
+    whose maximum is 3.9063 A, and a unit whose threshold sits at 3.85 A --
+    inside that band -- does not trip at 3.8236 A.  The interruption was never
+    guaranteed.  The text now separates the production-admitted loads, the
+    sizing coincidence the image refuses, the real fault case, what BATOCP is
+    (typical / stated accuracy / declared sensitivity) and what the LTC4368 and
+    F1 guarantee, and it claims no interruption it cannot prove.
+    """
     m = env["modes_I_bat_A"]
     sets = env["conforming_and_overcurrent_sets"]
     rated = 2.6
@@ -7226,27 +7503,46 @@ def harness_current_text(env):
     sf = max(("acc3v3_alone_at_its_limiter", "acc5v_alone_at_its_limiter"),
              key=lambda k: m[k])
     df_ = "both_limiters_in_fault"
-    ocp_max = env["ibat_ocp_A"][2]
+    dfa = "both_limiters_in_fault_at_the_admitted_internal_load"
+    ocp_lo, ocp_typ, ocp_max = env["ibat_ocp_A"]
+    ocp_decl_lo = IBAT_OCP_TYP_A * (1.0 - IBAT_OCP_ASSUMED_ACCURACY)
+    ocp_decl_hi = IBAT_OCP_TYP_A * (1.0 + IBAT_OCP_ASSUMED_ACCURACY)
     brk = env["breaker"]["trip_min_A"]
     fuse = env["fuse_A"]
     rating = (
-        "D-796 / Round-15 D796-05.  GENERATED FROM demo_feature_contract F6 "
-        "-- do not hand-edit.  The worst CONFORMING battery current (%s, "
-        "with the internal +3V3 peak envelope) is %.4f A, INSIDE the %.1f A "
-        "rated current by %.1f %%.  A SINGLE accessory limiter in fault (%s) "
-        "reaches %.4f A, %.1f %% ABOVE the rated current and %.1f %% %s the "
-        "section 4.3 two-circuit reference derating value of %.1f A; it is a "
-        "NAMED BOUNDED EXCEPTION -- a fault, not an operating state -- below "
-        "the latching LTC4368 breaker minimum (%.4f A) and the F1 one-shot "
-        "fuse (%.0f A).  BOTH limiters in fault reach %.4f A, ABOVE the "
-        "BQ25185 BATOCP maximum (%.4f A), so the recoverable BATOCP hiccup "
-        "interrupts it and it is never a sustained harness current.  MEASURED "
-        "at C-BAT-PATH-01 and C-THERM-01." % (
+        "D-801 / Round-20 D801-04.  GENERATED FROM demo_feature_contract F6 "
+        "-- do not hand-edit.  PRODUCTION-ADMITTED LOAD: the worst CONFORMING "
+        "battery current (%s, with the internal +3V3 peak envelope) is %.4f "
+        "A, INSIDE the %.1f A rated current by %.1f %%.  SINGLE FAULT: one "
+        "accessory limiter in fault (%s) reaches %.4f A, %.1f %% ABOVE the "
+        "rated current and %.1f %% %s the section 4.3 two-circuit reference "
+        "derating value of %.1f A; it is a NAMED BOUNDED EXCEPTION -- a "
+        "fault, not an operating state.  DOUBLE FAULT: both limiters in "
+        "fault reach %.4f A with the internal +3V3 PEAK envelope, which is a "
+        "SIZING COINCIDENCE the production image refuses (no accessory rail "
+        "is live while the Wi-Fi/BLE or a sub-GHz radio transmits), and %.4f "
+        "A at the internal load the production image ADMITS beside a live "
+        "rail, which is the real double-fault case.  BATOCP: the BQ25185 "
+        "threshold is %.4f A TYPICAL; TI's stated accuracy (18 %% at one "
+        "condition, VBAT = 4 V, TJ = 27 C) gives %.4f..%.4f A and this "
+        "release's DECLARED sensitivity (25 %%) gives %.4f..%.4f A.  Every "
+        "fault current above lies inside the declared band, so BATOCP MAY "
+        "OR MAY NOT trip on a given unit -- for example, a threshold of "
+        "3.85 A lies inside the declared band and above %.4f A -- and NO "
+        "BATOCP INTERRUPTION IS CLAIMED for any fault case.  What IS "
+        "guaranteed from board values is that every fault current above is "
+        "below the latching LTC4368 breaker minimum (%.4f A) and the F1 "
+        "one-shot fuse (%.0f A), so neither latches nor opens; a hard short "
+        "is bounded by each TPS22950's own current limit, thermal shutdown "
+        "and auto-retry.  The BQ25185 SYS absolute maximum is a survival "
+        "rating and is never an acceptance target.  MEASURED at "
+        "C-BAT-PATH-01 and C-THERM-01." % (
             wc, m[wc], rated, 100.0 * (rated - m[wc]) / rated, sf, m[sf],
             100.0 * (m[sf] - rated) / rated,
             100.0 * abs(ref - m[sf]) / ref,
-            "BELOW" if m[sf] < ref else "ABOVE", ref, brk, fuse, m[df_],
-            ocp_max))
+            "BELOW" if m[sf] < ref else "ABOVE", ref, m[df_], m[dfa],
+            ocp_typ, ocp_lo, ocp_max, ocp_decl_lo, ocp_decl_hi, m[df_],
+            brk, fuse))
     acceptance = (
         "first article: with an accessory drawing the %s limiter's maximum, "
         "record the connector and lead temperature rise at the %.4f A "
@@ -7257,7 +7553,10 @@ def harness_current_text(env):
     return dict(rating=rating, acceptance=acceptance,
                 worst_conforming=dict(state=wc, battery_A=m[wc]),
                 single_limiter_fault=dict(state=sf, battery_A=m[sf]),
-                both_limiters_in_fault_A=m[df_])
+                both_limiters_in_fault_A=m[df_],
+                both_limiters_in_fault_admitted_A=m[dfa],
+                ibat_ocp_declared_band_A=[round(ocp_decl_lo, 5),
+                                          round(ocp_decl_hi, 5)])
 
 
 def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
@@ -11173,11 +11472,67 @@ def main():
             _harness_bad.append("%s: the fault-test acceptance line is not "
                                 "the F6-generated one" % _hf.name)
         _flat_h = json.dumps(_hj)
-        for _stale in ("2.7536", "2.1597", "d792_conforming_vs_fault"):
+        for _stale in ("2.7536", "2.1597", "d792_conforming_vs_fault",
+                       # D-801 / D801-04: the unconditional interruption.
+                       "BATOCP hiccup interrupts it",
+                       "never a sustained harness current"):
             if _stale in _flat_h:
                 _harness_bad.append("%s still carries %r" % (_hf.name, _stale))
+    # D-801 / D801-04.  THE TEXT'S OWN PREMISES ARE CLAUSES.  "No BATOCP
+    # interruption is claimed" is only honest if (a) every fault current lies
+    # inside the declared BATOCP band -- a current above the band's maximum
+    # WOULD be guaranteed to trip, and the text would then under-claim a real
+    # protection -- and (b) the 3.85 A counterexample it prints really is a
+    # threshold inside the band that does not trip at the double fault.  And
+    # the claim D-796..D-800 made must be REFUSED by the rule that replaced it:
+    # "interrupted" is only a guarantee for a current ABOVE THE WHOLE band.
+    _decl = _harness_txt["ibat_ocp_declared_band_A"]
+    _faults = (env["modes_I_bat_A"][_harness_txt["single_limiter_fault"][
+        "state"]], _harness_txt["both_limiters_in_fault_admitted_A"],
+        _harness_txt["both_limiters_in_fault_A"])
+
+    def _batocp_interrupt_guaranteed(i_A, band):
+        return i_A > band[1]
+
+    if not all(_decl[0] <= f_ <= _decl[1] for f_ in _faults):
+        _harness_bad.append("a fault current lies outside the declared "
+                            "BATOCP band %r: re-derive the harness text"
+                            % (_decl,))
+    if not (_harness_txt["both_limiters_in_fault_A"] < 3.85 < _decl[1]):
+        _harness_bad.append("the printed 3.85 A counterexample is not "
+                            "between the double fault and the declared "
+                            "band maximum")
+    _batocp_controls = dict(
+        # the D-800 reasoning: 3.8236 A > 3.6875 A (stated max) -> "trips"
+        d801_04a_the_stated_band_alone_would_claim_the_trip=
+            _batocp_interrupt_guaranteed(
+                _harness_txt["both_limiters_in_fault_A"],
+                (env["ibat_ocp_A"][0], env["ibat_ocp_A"][2])),
+        # ...and the declared band refuses it
+        d801_04b_the_declared_band_refuses_the_trip_claim=not
+            _batocp_interrupt_guaranteed(
+                _harness_txt["both_limiters_in_fault_A"], _decl),
+        # ...with a concrete unit: a 3.85 A threshold does not trip
+        d801_04c_a_3p85_A_threshold_does_not_trip_at_the_double_fault=(
+            _harness_txt["both_limiters_in_fault_A"] < 3.85),
+        # ...and the admitted double fault is the smaller of the two
+        d801_04d_the_admitted_double_fault_is_below_the_sizing_one=(
+            _harness_txt["both_limiters_in_fault_admitted_A"]
+            < _harness_txt["both_limiters_in_fault_A"]),
+        # ...and the D-800 sentence, injected, is caught by the stale scan
+        d801_04e_the_d800_sentence_is_refused=any(
+            t_ in "BOTH limiters in fault reach 3.8236 A, ABOVE the BQ25185 "
+                  "BATOCP maximum (3.6875 A), so the recoverable BATOCP "
+                  "hiccup interrupts it and it is never a sustained harness "
+                  "current."
+            for t_ in ("BATOCP hiccup interrupts it",
+                       "never a sustained harness current")))
+    if not all(_batocp_controls.values()):
+        _harness_bad.append("D801-04 controls failed: %r" % {
+            k: v for k, v in _batocp_controls.items() if not v})
     env["harness_currents_are_generated_from_f6"] = dict(
-        generated=_harness_txt, problems=_harness_bad, ok=not _harness_bad)
+        generated=_harness_txt, problems=_harness_bad,
+        d801_batocp_controls=_batocp_controls, ok=not _harness_bad)
     env_ok = env_ok and not _harness_bad
 
     # ---- F12: THE COMPLETE CELL-TO-LOAD NETWORK (D-791 / D790-A03) --------
@@ -13135,6 +13490,9 @@ def main():
         "docs/full-beta-v2/assembly/THT_LEAD_TRIM.md",
         "docs/full-beta-v2/assembly/IR_LEAD_FORMING.md",
         "docs/full-beta-v2/assembly/FIRST_FIVE_POPULATION_MATRIX.md",
+        # D-801 / D801-01: the first-article test image's own procedure is
+        # an operative document the technician reads at the bench.
+        "docs/full-beta-v2/assembly/FAP01_FIRST_ARTICLE_IMAGE.md",
     )
 
     # A FENCE IS A BLOCK PROPERTY AS WELL AS A SENTENCE PROPERTY.
@@ -13987,6 +14345,368 @@ def main():
             "condition written 'reads at least' (Opus R19-07) are refused "
             "in every operative document, the manual travelers included.")
     cell_net_ok = cell_net_ok and cell_net["round19_operative_semantics"]["ok"]
+
+    # ---- D-801 / Round-20 D801-09 + D801-10 (Fable document campaign). ----
+    #
+    # The documents were CORRECT on D-800, but realistic contradiction forms
+    # escaped every scan.  Not arbitrary NLP: each is a finite family bound to
+    # a known normative role, quantity and context.
+    #
+    #   supervised  "once the pack has reached 3.90 V or more" (a bare
+    #               `once` / `when` / `after` conditional) and "requires a
+    #               pack voltage of no less than 3.90 V" (a requirement verb
+    #               with the voltage as its object) -- any value other than
+    #               the generated supervised threshold, in a charging context;
+    #   cure        "one day", "24-hour", "twenty-four hours" -- the qualified
+    #               J4 hold written in words or as a compound adjective is the
+    #               same claim as "24 h";
+    #   thermal     a PACKAGE temperature "at or below the modelled figures /
+    #               values / limits" -- a package reading used as the junction
+    #               or TREG acceptance surrogate -- unless it is the junction
+    #               interval derived FROM the package;
+    #   R_ins       a series ammeter / shunt / inline meter / insertion
+    #               resistance "assumed" or "taken as" zero or negligible --
+    #               only a clamp breaks no conductor.
+    #   D801-09     `AQROOT_DEMO_FABRICATION_PACKAGE.md` carried D-616 status
+    #               (FAB1-FAB8, 247 of 247) under an unfenced heading: it is
+    #               now in the scan set and its D-616 authority must be fenced.
+    _D801_SUP_THRESH = "%.2f" % _cc["supervised_charging_threshold_V"]
+    _D801_SUP_COND = re.compile(
+        r"(?:\b(?:once|when|whenever|after|if|while)\s+"
+        + _D800_SUP_SUBJECT + r"\s+" + _D800_SUP_VERB + r"\s*"
+        + _D800_SUP_CMP + r"|\b(?:requires?|needs?|demands?|calls? for|"
+        r"is permitted (?:only )?(?:at|with)|is allowed (?:only )?(?:at|"
+        r"with))\s+(?:an? |the )?(?:pack|cell|battery)(?: terminal)?"
+        r"(?: voltage| OCV| open-circuit voltage)?\s+(?:of\s+)?"
+        + _D800_SUP_CMP + r")\s*\**\s*(\d\.\d{1,2})\s*\**\s*V", re.I)
+    _D801_ACCESSORY = re.compile(r"accessor\w*|Community[- ]Port|\brails?\b|"
+                                 r"ACC_3V3|ACC_5V", re.I)
+    _D801_CURE_WORDS = (
+        (re.compile(r"\b(\d+(?:\.\d+)?)[- ]hours?\b", re.I),
+         lambda m_: "%s h" % m_.group(1)),
+        (re.compile(r"\btwenty[- ]four[- ]hours?\b", re.I), lambda m_: "24 h"),
+        (re.compile(r"\bforty[- ]eight[- ]hours?\b", re.I), lambda m_: "48 h"),
+        (re.compile(r"\b(?:one|a|1)[- ](?:full[- ])?days?\b", re.I),
+         lambda m_: "24 h"),
+        (re.compile(r"\b(?:two|2)[- ]days?\b", re.I), lambda m_: "48 h"),
+        (re.compile(r"\bovernight\b", re.I), lambda m_: "12 h"),
+        (re.compile(r"\b(\d+(?:\.\d+)?)\s*days?\b", re.I),
+         lambda m_: "%g h" % (24.0 * float(m_.group(1)))),
+    )
+    _D801_CURE_EXTRA = (
+        # "a 24 h cure", "a one-day hold" (after normalisation)
+        re.compile(r"(\d+(?:\.\d+)?)\s*h\s+(?:cure|hold|curing)\b", re.I),
+        re.compile(r"cur(?:e|ed|ing)\b[^.;|]{0,40}?(?:of|for|takes|is)\s+"
+                   r"(?:only |about |at least )?(\d+(?:\.\d+)?)\s*h\b", re.I),
+    )
+    _D801_PKG_MODEL = re.compile(
+        r"package(?:[- ]top)?(?: temperature| reading| thermogram)?[^.;|]"
+        r"{0,40}?(?:at or below|below|under|within|not above|no hotter "
+        r"than)\s+(?:the\s+)?modell?ed\s+(?:figures?|values?|numbers?|"
+        r"limits?|results?|predictions?)", re.I)
+    _D801_RINS = re.compile(
+        r"(?:\bR_ins\b|insertion resistance|(?:series|inline|in-line)\s+"
+        r"(?:DMM|ammeter|meter|shunt)|\bshunt\b|\bammeter\b|meter'?s? "
+        r"(?:burden|resistance))[^.;|]{0,80}?(?:assumed|taken|treated|"
+        r"regarded|considered|set|recorded|counted|entered)\s+(?:to be\s+|"
+        r"as\s+)?(?:zero|nil|negligible|0(?:\.0+)?\s*(?:m?Ω|m?ohm|"
+        r"m?Ohm)?(?![.\d]))", re.I)
+    # ...and the same claim VERB-FIRST: "treat / take / assume the insertion
+    # resistance as negligible".
+    _D801_RINS_VF = re.compile(
+        r"\b(?:treat|take|assume|consider|regard|set|count|enter|record)s?"
+        r"\s+(?:the\s+|an?\s+|its\s+)?(?:R_ins|insertion resistance|"
+        r"(?:series|inline|in-line)\s+(?:DMM|ammeter|meter|shunt)(?:'s)?"
+        r"(?:\s+resistance)?|shunt(?:'s)?\s+resistance|ammeter(?:'s)?\s+"
+        r"resistance|meter'?s? (?:burden|resistance))\s+(?:as|to be|=)\s+"
+        r"(?:zero|nil|negligible|0(?:\.0+)?\s*(?:m?\u03a9|m?ohm|m?Ohm)?"
+        r"(?![.\d]))", re.I)
+    _D801_CLAMP = re.compile(r"\bclamp\b", re.I)
+    _D801_FABPKG_STALE = re.compile(
+        r"FAB1\s*[–-]\s*FAB8|247 of 247|LAND1\s*[–-]\s*LAND6|"
+        r"GENERATED AND REVIEWED", re.I)
+
+    def _d801_cure_norm(flat):
+        for rx, fn in _D801_CURE_WORDS:
+            flat = rx.sub(fn, flat)
+        return flat
+
+    def _d801_semantic_scan(text, doc=""):
+        found = []
+        for fenced, block in _norm_blocks(text or ""):
+            if fenced:
+                continue
+            for sent in _d797_units(block):
+                if any(f in sent for f in _NORM_FENCE):
+                    continue
+                flat = re.sub(r"[*`]", "", sent)
+                # supervised: the value must be the generated threshold
+                if re.search(_D800_SUP_CHARGING, flat, re.I) and \
+                        _D801_ACCESSORY.search(flat):
+                    for m_ in _D801_SUP_COND.finditer(flat):
+                        if _D800_NEG.search(flat[max(0, m_.start() - 40):
+                                                 m_.start()]):
+                            continue
+                        if "%.2f" % float(m_.group(1)) != _D801_SUP_THRESH:
+                            found.append(("supervised_condition_other_value",
+                                          flat[:200]))
+                # cure: word / compound forms of a hold under 72 h
+                if _D800_CURE_CTX.search(flat):
+                    nflat = _d801_cure_norm(flat)
+                    for rx in tuple(_D800_CURE) + _D801_CURE_EXTRA:
+                        for m_ in rx.finditer(nflat):
+                            h_ = float(m_.group(1))
+                            if h_ >= _D800_QUALIFIED_H:
+                                continue
+                            near = nflat[max(0, m_.start() - 60):
+                                         m_.end() + 20]
+                            if _D800_CURE_OK.search(near):
+                                continue
+                            found.append(("cure_hold_below_the_qualified_72h",
+                                          flat[:200]))
+                # thermal: a package reading against the modelled figures
+                for m_ in _D801_PKG_MODEL.finditer(flat):
+                    pre = flat[max(0, m_.start() - 80):m_.start()]
+                    if _D800_NEG.search(pre[-40:]) or _D800_FROM.search(pre) \
+                            or re.search(r"junction interval (?:derived |"
+                                         r"read |taken )?from\s*(?:the\s*)?$",
+                                         pre, re.I):
+                        continue
+                    found.append(("package_against_the_modelled_figures",
+                                  flat[:200]))
+                # R_ins: an inserted meter path may never be assumed zero
+                for m_ in tuple(_D801_RINS.finditer(flat)) + tuple(
+                        _D801_RINS_VF.finditer(flat)):
+                    seg = flat[max(0, m_.start() - 30):m_.end()]
+                    if _D801_CLAMP.search(seg) or re.search(
+                            r"\b(?:never|not|no)\b[^.;|]{0,40}$",
+                            flat[max(0, m_.start() - 50):m_.end() - 8],
+                            re.I):
+                        continue
+                    found.append(("series_meter_resistance_assumed_zero",
+                                  flat[:200]))
+                if doc.endswith("AQROOT_DEMO_FABRICATION_PACKAGE.md") and \
+                        _D801_FABPKG_STALE.search(flat):
+                    found.append(("d616_fabrication_package_status_unfenced",
+                                  flat[:200]))
+        return sorted(set(found))
+
+    _D801_FABPKG = "docs/full-beta-v2/AQROOT_DEMO_FABRICATION_PACKAGE.md"
+    _d801_docs = tuple(dict.fromkeys(tuple(_d800_docs) + (_D801_FABPKG,)))
+    _d801_rows, _d801_bad = [], []
+    for _rel in _d801_docs:
+        _f = ROOT / _rel
+        _t = _f.read_text(encoding="utf-8", errors="replace") \
+            if _f.exists() else ""
+        _h = _d801_semantic_scan(_t, _rel)
+        _d801_rows.append(dict(document=_rel, exists=bool(_t), findings=_h))
+        if not _t:
+            _d801_bad.append("%s is missing" % _rel)
+        _d801_bad.extend("%s: %s: %s" % (_rel, k_, x_) for k_, x_ in _h)
+    # D801-09: the whole document is fenced by its own title
+    _fp_txt = (ROOT / _D801_FABPKG).read_text(encoding="utf-8",
+                                              errors="replace") \
+        if (ROOT / _D801_FABPKG).exists() else ""
+    _fp_title = next((l_ for l_ in _fp_txt.splitlines()
+                      if l_.startswith("# ")), "")
+    _fp_fenced = bool(_fp_title and any(f in _fp_title for f in _NORM_FENCE))
+    if not _fp_fenced:
+        _d801_bad.append("%s: its title does not fence the D-616 document "
+                         "as HISTORICAL / SUPERSEDED" % _D801_FABPKG)
+    _fp_unfenced = "\n".join(
+        [re.sub(r"^# .*$", "# AQROOT Demo — Fabrication Package",
+                _fp_txt.splitlines()[0])] + _fp_txt.splitlines()[1:]) \
+        if _fp_txt else ""
+
+    def _d801_hit(nm, w):
+        """An injection is caught if ANY operative scan grows on EVERY doc."""
+        missed = []
+        for r_ in _d801_docs:
+            f_ = ROOT / r_
+            t_ = f_.read_text(encoding="utf-8", errors="replace") \
+                if f_.exists() else ""
+            head, _, rest = t_.partition("\n")
+            if r_ == _D801_FABPKG:
+                # the fenced document shelters everything under its title;
+                # inject under a fresh, unfenced top-level heading instead
+                _inj = t_ + "\n\n# Current procedure\n\n" + w + "\n"
+            else:
+                _inj = head + "\n\n" + w + "\n\n" + rest
+            grew = bool(len(_d801_semantic_scan(_inj, r_))
+                        > len(_d801_semantic_scan(t_, r_))) or bool(
+                len(_d800_semantic_scan(_inj))
+                > len(_d800_semantic_scan(t_))) or bool(
+                len(_norm_scan(_inj, _norm_fams))
+                > len(_norm_scan(t_, _norm_fams)))
+            if not grew:
+                missed.append("%s in %s" % (nm, r_))
+        return missed
+
+    _r20_injections = dict(
+        r20_supervised_once_or_more=(
+            "With the adapter attached, run an accessory rail once the pack "
+            "has reached 3.90 V or more."),
+        r20_supervised_requires_no_less_than=(
+            "Running an accessory rail while charging requires a pack voltage "
+            "of no less than 3.90 V."),
+        r20_supervised_when_reads=(
+            "While charging, enable an accessory rail when the pack reads "
+            "3.95 V."),
+        r20_cure_one_day=(
+            "Allow the J4 strain-relief bead one day to cure before the pull "
+            "test."),
+        r20_cure_24_hour=(
+            "After a 24-hour cure the enclosure retention check may begin."),
+        r20_cure_twenty_four_hours=(
+            "Let the DOWSIL bead cure for twenty-four hours before closing "
+            "the enclosure."),
+        r20_package_at_or_below_the_modelled_figures=(
+            "PASS if the BQ25185 package temperature is at or below the "
+            "modelled figures."),
+        r20_package_within_the_modelled_values=(
+            "The package-top reading must stay within the modelled values "
+            "for TREG acceptance."),
+        r20_rins_series_ammeter_assumed_zero=(
+            "The series ammeter's resistance may be assumed zero when "
+            "computing OCV_lb."),
+        r20_rins_shunt_taken_as_0=(
+            "R_ins for an inline shunt is taken as 0 mOhm."),
+        r20_rins_negligible=(
+            "Treat the insertion resistance as negligible for OCV_lb."),
+        r20_rins_assume_the_shunt_zero=(
+            "Assume the shunt resistance to be zero when the pack is on "
+            "charge."),
+    )
+    _r20_caught, _r20_missed = {}, []
+    for _nm, _w in _r20_injections.items():
+        _m = _d801_hit(_nm, _w)
+        _r20_caught[_nm] = not _m
+        _r20_missed.extend(_m[:3])
+    # WITNESS REPRODUCTION: the same injections against the D-800 scanners
+    # alone.  Each Round-20 escape must have been MISSED there (the witness)
+    # and caught by the D-801 family (the fix).
+    _r20_witness = {}
+    for _nm, _w in _r20_injections.items():
+        _wt = "# t\n\n" + _w + "\n"
+        _r20_witness[_nm] = dict(
+            missed_by_the_d800_scanners=bool(
+                not _d800_semantic_scan(_wt) and not _norm_scan(
+                    _wt, _norm_fams)),
+            caught_by_d801=bool(_d801_semantic_scan(_wt)))
+    _r20_clean = dict(
+        correct_supervised_once=(
+            "With the adapter attached, run an accessory rail only once the "
+            "pack has reached %s V or more." % _D801_SUP_THRESH),
+        correct_supervised_requires=(
+            "Running an accessory rail while charging requires a pack "
+            "voltage of no less than %s V." % _D801_SUP_THRESH),
+        accessory_floor_not_charging=(
+            "The firmware refuses an accessory rail when the pack reads "
+            "3.50 V."),
+        qualified_hold_three_days=(
+            "The J4 bead is released for pull tests after three days, the "
+            "qualified 72 h hold."),
+        handling_after_a_day=(
+            "The board may be moved (handling only) after one day; nothing is "
+            "loaded before the 72 h hold."),
+        junction_interval_from_the_package=(
+            "PASS if the junction interval derived from the package "
+            "temperature is at or below the modelled figures."),
+        clamp_rins_zero=(
+            "With a DC clamp meter around one pack lead R_ins is taken as 0."),
+        series_never_zero=(
+            "A series meter's insertion resistance is never assumed zero."),
+    )
+    _r20_clean_res = {
+        _nm: not _d801_semantic_scan("# t\n\n" + _w + "\n")
+        for _nm, _w in _r20_clean.items()}
+    # D801-09 controls: an unfenced title must be refused, a fenced one not
+    _fp_controls = dict(
+        d801_09a_the_document_title_is_fenced=_fp_fenced,
+        d801_09b_unfencing_the_title_exposes_the_d616_status=bool(
+            _fp_unfenced and _d801_semantic_scan(_fp_unfenced, _D801_FABPKG)),
+        d801_09c_the_document_is_in_the_scan_set=_D801_FABPKG in _d801_docs)
+    cell_net["round20_operative_semantics"] = dict(
+        documents=_d801_rows, problems=_d801_bad,
+        injections=_r20_injections, caught=_r20_caught, missed=_r20_missed,
+        witnesses=_r20_witness, clean_controls_pass=_r20_clean_res,
+        fabrication_package_document=_fp_controls,
+        supervised_threshold_V=_D801_SUP_THRESH,
+        ok=bool(not _d801_bad and all(_r20_caught.values())
+                and all(v_["caught_by_d801"] for v_ in _r20_witness.values())
+                and all(_r20_clean_res.values())
+                and all(_fp_controls.values())),
+        why="D-801 / Round-20 (Fable document campaign + R20-04): the "
+            "supervised condition written 'once ... has reached ... or more' "
+            "and 'requires a pack voltage of no less than', the qualified "
+            "cure written 'one day' / '24-hour', a package temperature "
+            "judged against the modelled figures, and an inserted meter's "
+            "resistance assumed zero are refused in every operative "
+            "document; the D-616 fabrication-package document is fenced and "
+            "scanned.")
+    cell_net_ok = cell_net_ok and cell_net["round20_operative_semantics"]["ok"]
+
+    # ---- D-801 / D801-06: THE RELEASE IDENTITY IS BOUND, NOT TYPED. -------
+    _ri_paths = dict(
+        cto=ROOT / "docs/full-beta-v2/CTO_DECISIONS.md",
+        state=ROOT / "docs/full-beta-v2/CURRENT_STATE.md",
+        handoff=ROOT / "docs/full-beta-v2/AQROOT_DEMO_FAB_HANDOFF.md",
+        manifest=ROOT / "hardware/demo/fab/MANIFEST.json")
+    _ri_txt = {k_: (v_.read_text(encoding="utf-8", errors="replace")
+                    if v_.exists() else "") for k_, v_ in _ri_paths.items()}
+    try:
+        _ri_manifest = json.loads(_ri_txt["manifest"])["assembly_drawings"][
+            "release"]
+    except (ValueError, KeyError, TypeError):
+        _ri_manifest = None
+    _ri_ev = ROOT / "hardware/demo/manufacturing/evidence"
+
+    def _ri(current=CURRENT_RELEASE_ID, manifest=_ri_manifest, **over):
+        t_ = dict(_ri_txt)
+        t_.update(over)
+        return release_identity_problems(current, manifest, t_["cto"],
+                                         t_["state"], t_["handoff"], _ri_ev)
+
+    _ri_bad = _ri()
+    _prev = "D-%03d" % (_d797_release_number(CURRENT_RELEASE_ID) - 1)
+    _cur_rt = re.compile(r"(#{1,6}\s+\**)%s( REVIEW TARGET)"
+                         % re.escape(CURRENT_RELEASE_ID))
+    _cur_st = re.compile(r"(#{1,6}\s+\**STATUS:\s*)%s\b"
+                         % re.escape(CURRENT_RELEASE_ID))
+    _ri_controls = dict(
+        # the previous release written as the CURRENT review-target heading
+        d801_06a_previous_release_as_current_heading=bool(_ri(
+            state=_cur_rt.sub(r"\g<1>%s\g<2>" % _prev, _ri_txt["state"],
+                              count=1))),
+        # a stale STATUS header on the fab handoff
+        d801_06b_stale_status_header=bool(_ri(
+            handoff=_cur_st.sub(r"\g<1>%s" % _prev, _ri_txt["handoff"],
+                                count=1))),
+        # the hand-typed authority constant left at the previous release
+        d801_06c_stale_authority_constant=bool(_ri(current=_prev)),
+        # a MANIFEST whose release disagrees with the checker
+        d801_06d_manifest_mismatched_with_the_checker=bool(
+            _ri(manifest=_prev)),
+        # a CHANGELOG-derived id that disagrees with CTO_DECISIONS
+        d801_06e_changelog_ahead_of_the_decision_record=bool(_ri(
+            cto="## %s — injected\n\n" % _prev + re.sub(
+                r"^## %s\b.*$" % re.escape(CURRENT_RELEASE_ID), "",
+                _ri_txt["cto"], count=1, flags=re.M))),
+        # ...and the derivation itself reads the newest heading
+        d801_06f_the_constant_is_derived_from_the_changelog=bool(
+            derive_current_release("# x\n\n## D-123 — a\n\n## D-122 — b\n")
+            == "D-123"),
+        # a fenced (historical) previous heading stays legal
+        d801_06g_a_fenced_previous_heading_is_history=not _ri())
+    cell_net["release_identity_binding"] = dict(
+        current_release=CURRENT_RELEASE_ID, manifest_release=_ri_manifest,
+        problems=_ri_bad, controls=_ri_controls,
+        ok=bool(not _ri_bad and all(_ri_controls.values())),
+        why="D-801 / R20-06: CURRENT_RELEASE_ID read D-799 on the frozen "
+            "D-800 target and a current D-799 heading passed F1-F14.  The id "
+            "is derived from the CHANGELOG (the MANIFEST's own authority) and "
+            "every current identity surface is bound to it.")
+    cell_net_ok = cell_net_ok and cell_net["release_identity_binding"]["ok"]
 
     # ---- F12's own controls.  Every one of them has to REFUSE. -----------
     def _cell(**over):
@@ -15636,8 +16356,80 @@ def main():
         # ...and the ampacity audit's heating constant may not be optimistic.
         f10i_the_ampacity_channel_constant_is_not_optimistic=bool(
             pass_pair["ampacity_channel_constant_is_not_optimistic"]))
+    # ---- D-801 / Round-20 D801-05: the published figures ARE F10's. ------
+    _pp_docs = dict(
+        plan=ROOT / "docs/full-beta-v2/assembly/FIRST_FIVE_ASSEMBLY_PLAN.md",
+        ledger=ledger_path,
+        handoff=ROOT / "docs/full-beta-v2/AQROOT_DEMO_FAB_HANDOFF.md")
+    _pp_txt = {k_: (v_.read_text(encoding="utf-8", errors="replace")
+                    if v_.exists() else "") for k_, v_ in _pp_docs.items()}
+
+    def _pp_problems(pub, txt):
+        bad = []
+        _row = fa_step_rows(txt["plan"]).get("C-BAT-GATE-01", "")
+        if pub["step"] not in _row:
+            bad.append("C-BAT-GATE-01 is not the F10-generated step")
+        for k_ in ("ledger_table", "ledger_sensitivity"):
+            if pub[k_] not in txt["ledger"]:
+                bad.append("SOURCING_LEDGER does not carry the F10-generated "
+                           "%s" % k_)
+        if pub["handoff_rows"] not in txt["handoff"]:
+            bad.append("the fab handoff does not carry the F10-generated "
+                       "envelope rows")
+        for k_, t_ in txt.items():
+            for fenced, block in _norm_blocks(t_):
+                if fenced:
+                    continue
+                for sent in _d797_units(block):
+                    if any(f in sent for f in _NORM_FENCE):
+                        continue
+                    for tok in PASS_PAIR_STALE_FIGURES:
+                        if tok in sent:
+                            bad.append("%s: stale %r in a current sentence: "
+                                       "%s" % (k_, tok, sent.strip()[:120]))
+        return bad
+
+    _pp_pub = pass_pair_publication(pass_pair, _pkg or {})
+    _pp_bad = _pp_problems(_pp_pub, _pp_txt)
+
+    def _pp_regen(**kw):
+        return pass_pair_publication(judge_pass_pair_gate(
+            _bat_rail["amps"] if _bat_rail else 2.35, VBAT_CORNER,
+            internal_air_C=(_pkg or {}).get("internal_air_C"),
+            sustained_amps=(_pkg or {}).get("sustained_thermal_envelope_A"),
+            **kw)[1], _pkg or {})
+    _pp_stale_step = dict(_pp_txt, plan=_pp_txt["plan"].replace(
+        "**%.4f A** at" % pass_pair["guaranteed_conduction_ceiling"][
+            "ceiling_A"], "**2.2845 A** at"))
+    pass_pair_publication_controls = dict(
+        # D-800's stale ceiling, written into the current step
+        d801_05a_stale_ceiling_is_refused=bool(_pp_problems(
+            _pp_pub, _pp_stale_step)),
+        # documents generated at the WRONG bench temperature (40 C) differ
+        d801_05b_wrong_bench_temperature_is_refused=bool(_pp_problems(
+            _pp_regen(bench_air_C=40.0), _pp_txt)),
+        # ...and at the WRONG hot ratio (the 2x case as the ruling one)
+        d801_05c_wrong_hot_ratio_is_refused=bool(_pp_problems(
+            _pp_regen(ruling_ratio=2.0), _pp_txt)),
+        # the D-800 "must survive at 2x" sentence, injected, is refused
+        d801_05d_the_2x_survival_claim_is_refused=bool(_pp_problems(
+            _pp_pub, dict(_pp_txt, ledger=_pp_txt["ledger"] + "\n\nThe "
+                          "declared ratio now carries a sensitivity the "
+                          "ruling case must survive at 2x.\n"))),
+        # and the 2x case really does lose the row at the enclosure condition
+        d801_05e_the_2x_case_loses_the_row=not pass_pair[
+            "enclosure_2x_case"]["meets_the_row"],
+        # the bench crossing is above the enclosure ceiling (cooler air)
+        d801_05f_bench_crossing_exceeds_the_enclosure_ceiling=bool(
+            pass_pair["bench_condition"]["crossing_A"]
+            > pass_pair["guaranteed_conduction_ceiling"]["ceiling_A"]))
+    pass_pair["publication"] = dict(
+        generated=_pp_pub, problems=_pp_bad,
+        controls=pass_pair_publication_controls,
+        ok=bool(not _pp_bad and all(pass_pair_publication_controls.values())))
     pass_pair_ok = bool(pp_ok and pass_pair_block["ok"]
-                        and all(pass_pair_controls.values()))
+                        and all(pass_pair_controls.values())
+                        and pass_pair["publication"]["ok"])
 
     # ---- D-790 / D789-A06: the transient acceptance, from the document ---
     fa_plan_text = (FIRST_FIVE_ASSEMBLY.read_text(encoding="utf-8",

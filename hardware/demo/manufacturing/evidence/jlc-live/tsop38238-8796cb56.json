@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-20T19:34:31Z",
+ "fetched_utc": "2026-09-25T15:21:32Z",
  "keyword": "TSOP38238",
  "page_size": 25,
  "pages": 1,
@@ -45,32 +45,32 @@
    "componentPrices": [
     {
      "endNumber": 9,
-     "productPrice": 0.7276,
+     "productPrice": 0.6886,
      "startNumber": 1
     },
     {
      "endNumber": 29,
-     "productPrice": 0.6169,
+     "productPrice": 0.5684,
      "startNumber": 10
     },
     {
      "endNumber": 249,
-     "productPrice": 0.5616,
+     "productPrice": 0.5067,
      "startNumber": 30
     },
     {
      "endNumber": 499,
-     "productPrice": 0.5062,
+     "productPrice": 0.4483,
      "startNumber": 250
     },
     {
      "endNumber": 999,
-     "productPrice": 0.4737,
+     "productPrice": 0.4109,
      "startNumber": 500
     },
     {
      "endNumber": -1,
-     "productPrice": 0.4558,
+     "productPrice": 0.393,
      "startNumber": 1000
     }
    ],
@@ -86,7 +86,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 14742
+   "stockCount": 17662
   }
  ],
  "returned": 1,

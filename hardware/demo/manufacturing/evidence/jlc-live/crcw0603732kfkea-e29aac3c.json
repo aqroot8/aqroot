@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-20T19:34:20Z",
+ "fetched_utc": "2026-09-25T15:21:21Z",
  "keyword": "CRCW0603732KFKEA",
  "page_size": 25,
  "pages": 1,
@@ -50,7 +50,7 @@
     },
     {
      "endNumber": 4999,
-     "productPrice": 0.0047,
+     "productPrice": 0.0046,
      "startNumber": 1000
     },
     {
@@ -221,7 +221,7 @@
     },
     {
      "endNumber": 999,
-     "productPrice": 0.0083,
+     "productPrice": 0.0082,
      "startNumber": 500
     },
     {
