@@ -194,6 +194,13 @@ static bool bringUpSpiBAndQuiesceRadios() {
                            : "FIELD STATE UNKNOWN");
   report("radios quiesced after MCU reset (U7 SRES/SIDLE, U8 SetStandby, "
          "U9 Set default)", q.ok(), detail);
+  // D-800 (Round-19 full review): RELEASE the peripheral.  In the pinned
+  // Arduino core `SPIClass::begin` returns at once while the bus is running,
+  // so leaving SPI bound to the SPI-B pins here made the next SPI-A user --
+  // the display init, `p`, the microSD probe -- clock its bytes out on
+  // GPIO4/5/6 into U7/U8/U9 while its own chip select sat on the other bus.
+  // Every bus user begins and ends; this one did not.
+  SPI.end();
   return q.ok();
 }
 
@@ -346,6 +353,12 @@ void setup() {
   report("PCAL9535A safe latches before console wait", expanders_safe);
   if (!expanders_safe) {
     Serial.println("FATAL: accessory/reset safety state could not be established.");
+    // D-800 (Round-19 full review): a wedged I2C bus is no reason to leave a
+    // transmitter the previous image keyed still transmitting.  U7's SRES /
+    // SIDLE and U9's Set default need SPI-B only, never the expanders, so the
+    // quiesce runs here too -- and `loop()` keeps retrying it while the
+    // expanders recover.  Its verdict stays pessimistic until confirmed.
+    (void)bringUpSpiBAndQuiesceRadios();
     return;
   }
 
@@ -490,12 +503,34 @@ static void printStatus() {
   }
 }
 
+// D-793 / R12-03 + D-794 / R13-03: the periodic radio / NFC-field quiesce
+// retry, every `kRadioQuiescePeriodMs` while either is unconfirmed.  D-800:
+// one function, called first in `loop()`, so no early return can skip it.
+static void serviceRadioQuiesceRetry() {
+  if (!g_app.radiosQuiesced() ||
+      (!g_app.nfcFieldConfirmedOff() && !g_app.nfcFieldSessionActive())) {
+    static uint32_t last_quiesce = 0;
+    static bool quiesce_retry_started = false;
+    const uint32_t now = millis();
+    if (!quiesce_retry_started || now - last_quiesce >= kRadioQuiescePeriodMs) {
+      quiesce_retry_started = true;
+      last_quiesce = now;
+      (void)bringUpSpiBAndQuiesceRadios();
+    }
+  }
+}
+
 void loop() {
   // D-795 / R14-02 + D-796 / C-NFC-QUIESCE-01: liveness of a confirmed-quiet
   // NFC front end, FIRST -- before the expander recovery branch, because the
   // probe needs SPI-B and not I2C, and a board recovering its expanders is
   // still a board whose U9 may have gone.
   (void)g_app.serviceNfcLiveness();
+  // D-800: the radio quiesce retry needs SPI-B and not I2C, exactly like the
+  // liveness probe above, so it runs BEFORE the expander recovery branch.
+  // D-799 ran it only after that branch returned, so a wedged I2C bus kept a
+  // retained CC1101 transmission and U9 field up for as long as it lasted.
+  serviceRadioQuiesceRetry();
   if (!g_expanders.ready()) {
     // Round-4 R4-03: an MCU reset must not turn one failed safe-latch write
     // into an indefinite energized rail.  D-789 / D788-06: the retry itself --
@@ -555,17 +590,7 @@ void loop() {
   // board that gave up on it would refuse both forever.
   // D-796 / D796-10: a field-owning NFC session holds U9 and its field is its
   // own; the quiesce retry leaves it alone until the session ends.
-  if (!g_app.radiosQuiesced() ||
-      (!g_app.nfcFieldConfirmedOff() && !g_app.nfcFieldSessionActive())) {
-    static uint32_t last_quiesce = 0;
-    static bool quiesce_retry_started = false;
-    const uint32_t now = millis();
-    if (!quiesce_retry_started || now - last_quiesce >= kRadioQuiescePeriodMs) {
-      quiesce_retry_started = true;
-      last_quiesce = now;
-      (void)bringUpSpiBAndQuiesceRadios();
-    }
-  }
+  // (the quiesce retry itself now runs at the top of `loop()`, D-800)
   g_app.periodicBatteryGuard();
   // D-790 / D789-A09: any non-accessory command whose write did not land is
   // retried here until the physical latch confirms it.

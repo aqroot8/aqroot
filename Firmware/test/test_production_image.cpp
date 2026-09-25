@@ -2740,6 +2740,150 @@ int main() {
     }
   }
 
+  // =========================================================================
+  // D-800 (Round-19 full review).  EVERY SPI USER RELEASES THE PERIPHERAL.
+  //
+  // The pinned core ignores `SPI.begin(pins)` while the bus is running
+  // (`test/image/SPI.h` now models that).  D-799's boot quiesce began SPI-B
+  // and never ended it, and `loop()` re-runs that quiesce every 250 ms while
+  // a radio is unconfirmed -- so the display init, `p` and the microSD probe
+  // then clocked SPI-A traffic out on the SPI-B pins.  Healthy radios and a
+  // board whose radios never confirm quiesce, both.
+  // =========================================================================
+  for (int unconfirmed = 0; unconfirmed < 2; ++unconfirmed) {
+    rig();
+    if (unconfirmed) aqroot_hal::spiModel() = nullptr;   // MISO reads 0xFF
+    setup();
+    pump(8);
+    delay(1200);
+    pump(8);
+    const char *which = unconfirmed ? " (radios never confirm quiesce)"
+                                    : " (healthy radios)";
+    char name[200];
+    snprintf(name, sizeof(name),
+             "D-800: after boot and the periodic re-quiesce the SPI "
+             "peripheral is RELEASED%s", which);
+    claim(name, rec().spi_bound_sck == -1);
+    press("d");
+    pump(3);
+    press("p");
+    pump(3);
+    snprintf(name, sizeof(name),
+             "D-800: no SPI begin was silently ignored while bound to the "
+             "other bus -- the microSD and display use SPI-A pins%s", which);
+    claim(name, rec().spi_begin_ignored_other_pins == 0);
+  }
+
+  // =========================================================================
+  // D-800 (Round-19 full review, firmware fail-closed audit).
+  // =========================================================================
+  // 1. A WEDGED I2C BUS AT BOOT IS NO REASON TO LEAVE A RETAINED TRANSMITTER
+  //    KEYED.  U7/U9 quiesce over SPI-B alone.
+  {
+    static Cc1101Stub radio;
+    radio = Cc1101Stub();
+    rigWithRetainedRadio(radio);
+    g_board.bus_down = true;
+    setup();
+    claim("D-800: with I2C wedged at boot, setup() still quiesces the "
+          "retained CC1101 (SRES/SIDLE) and U9's field",
+          !radio.transmitting && radio.sres_strobes > 0
+          && !radio.nfcFieldIsUp());
+  }
+  {
+    // ...and loop() keeps retrying while the expanders recover: the radios
+    // do not answer at boot, then do.
+    static Cc1101Stub radio;
+    radio = Cc1101Stub();
+    rig();
+    g_board.bus_down = true;
+    aqroot_hal::spiModel() = nullptr;
+    setup();
+    g_radio = &radio;
+    aqroot_hal::spiModel() = &radio;
+    for (int i = 0; i < 40; ++i) { delay(50); loop(); }
+    claim("D-800: with I2C still wedged, loop() retries the radio quiesce "
+          "before the expander recovery branch returns",
+          !radio.transmitting && radio.sres_strobes > 0
+          && !radio.nfcFieldIsUp());
+  }
+  // 2. THE millis() WRAP.  Every wait is wrap-safe elapsed time.
+  {
+    rig();
+    setup();
+    pump(3);
+    aqroot_hal::recorder().clock_us = uint64_t(0xFFFFFFFDu) * 1000u;
+    aqroot_hal::recorder().hang_guard_us =
+        aqroot_hal::recorder().clock_us + 5000000u;
+    press("x");
+    loop();
+    aqroot_hal::recorder().hang_guard_us = ~uint64_t(0);
+    claim("D-800: the IR self-test pressed 3 ms before the millis() wrap "
+          "returns, emitter off", true);
+  }
+  {
+    rig();
+    aqroot_hal::recorder().pin_level[AQROOT_PIN_SX1262_BUSY] = HIGH;
+    setup();
+    pump(2);
+    aqroot_hal::recorder().clock_us = uint64_t(0xFFFFFFEBu) * 1000u;
+    aqroot_hal::recorder().hang_guard_us =
+        aqroot_hal::recorder().clock_us + 5000000u;
+    for (int i = 0; i < 4; ++i) { loop(); delay(300); }
+    aqroot_hal::recorder().hang_guard_us = ~uint64_t(0);
+    claim("D-800: an SX1262 with BUSY stuck high 21 ms before the millis() "
+          "wrap does not hang the quiesce retry", true);
+    // ...and the wait itself, entered at EXACTLY the instant whose D-799
+    // deadline was 0xFFFFFFFF.
+    aqroot_hal::recorder().clock_us = uint64_t(0xFFFFFFEBu) * 1000u;
+    aqroot_hal::recorder().hang_guard_us =
+        aqroot_hal::recorder().clock_us + 5000000u;
+    const bool waited = aqroot::sx1262WaitBusy();
+    aqroot_hal::recorder().hang_guard_us = ~uint64_t(0);
+    claim("D-800: sx1262WaitBusy entered 20 ms before the wrap times out "
+          "and returns false", !waited);
+  }
+  // 3. NO RAIL WHILE AN EXPANDER'S OUTPUT STATE IS UNKNOWN.
+  {
+    // The auditor's sequence: `p`, whose DISP_RST_N release NACKs; the next
+    // iteration re-syncs, the deferred retry NACKs again and invalidates U2's
+    // shadow; `3` in that same iteration.  D-799 energised ACC_3V3 for
+    // 1300 ms with U2's output state UNKNOWN.
+    class RelNack : public aqroot_hal::I2cModel {
+     public:
+      Board *b = nullptr;
+      bool write(uint8_t a, const uint8_t *d, size_t n) override {
+        if (a == AQROOT_EXP_U2_ADDR && d[0] == Pcal9535a::kRegOutput0) {
+          const uint16_t v = uint16_t(d[1]) | uint16_t(uint16_t(d[2]) << 8);
+          if (Pcal9535a::bitOf(v, AQROOT_U2_DISP_RST_N)
+              && !Pcal9535a::bitOf(b->u2_output, AQROOT_U2_DISP_RST_N))
+            return false;
+        }
+        return b->write(a, d, n);
+      }
+      bool readRegister(uint8_t a, uint8_t r, uint8_t *d, size_t n) override {
+        return b->readRegister(a, r, d, n);
+      }
+      bool probe(uint8_t a) override { return b->probe(a); }
+    };
+    rig();
+    setup();
+    pump(2);
+    static RelNack m;
+    m.b = &g_board;
+    aqroot_hal::model() = &m;
+    press("p");
+    pump(1);
+    press("3");
+    pump(1);
+    bool ever = false;
+    for (const auto &e : g_board.latch_events) {
+      if (Pcal9535a::bitOf(e.u3_output, AQROOT_U3_ACC_3V3_EN)) ever = true;
+    }
+    claim("D-800: ACC_3V3 is never energised while U2's output state is "
+          "UNKNOWN after a NACKed reset release", !ever);
+  }
+
   std::printf("\n%s -- %d failure(s)\n", failures ? "FAIL" : "PASS", failures);
   return failures ? 1 : 0;
 }

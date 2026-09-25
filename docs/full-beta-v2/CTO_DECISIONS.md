@@ -1,3 +1,187 @@
+## D-800 — **ROUND-19 MAXIMUM-ASSURANCE FULL PRE-ORDER REVIEW AND CORRECTION: EIGHT KNOWN FINDINGS CLOSED, A FULL-SYSTEM RE-AUDIT, AND WHAT IT FOUND**
+
+    authority  board c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907
+    manifest   recorded in evidence/d800-review-target.json (a MANIFEST cannot hash the
+               decision that names it)
+    content    recorded by the identity / post-commit verification commit that follows it
+    parent     4aa286e2d517f6acc64290e3c427f045dd109654 (D-799 identity, reviewed by Round-19)
+    scope      D800-KNOWN-01..08 (Astra R19-01..R19-03, Opus R19-01..R19-05, R19-07),
+               Opus R19-06 dispositioned, the AO4800 / exact-part procurement gate re-run,
+               and the REQUIRED full maximum-assurance re-audit of the first-five system
+    copper     NONE.  No copper, net, footprint, placement, part value or protected-copper
+               object moves; the board sha256 is the D-799 one.
+    firmware   CHANGED (release image [env:aqroot-demo]): six defects, each host-tested with
+               a permanent mutation control in firmware_hw_map_contract H6.
+    order      HOLD.  B01-B14 (CAM), FA01-FA10 (first article, now with prerequisite
+               FAP-01) and PROCUREMENT (genuine AO4800 allocation, nine constrained lines)
+               remain.  REVIEW TARGET, NOT A FABRICATION AUTHORIZATION.  DO NOT ORDER.
+    owner      NO OWNER DECISION IS REQUIRED.  No published capability, budget, table or
+               threshold moves.
+
+Round-19 graded D-799 **Astra B** and **Opus/Fable A with seven residuals** and required a
+full maximum-assurance re-audit.  Every known witness was REPRODUCED on the frozen D-799
+tree (`4aa286e2`) before it was fixed — `evidence/d800-round19-witnesses.json`.
+
+### 1 — THE EIGHT KNOWN FINDINGS
+
+* **KNOWN-01 (Astra R19-01) — a negative input current is not a completion.**  REPRODUCED:
+  VIN 5.00 V, VSYS 4.41 V, pack 4.18 V, IBAT 0, STAT1 HIGH, a valid sustained transition
+  and `IIN` −40 / −50 mA classified TERMINATED.  The only adapter path is into `U11` IN
+  through its blocking FETs (SLUSF65B 6.3.1), which draw IQ_IN into IN; the `Q5` recovery
+  branch on `USB_VBUS_CHG` is blocked from `BAT_RAW` by `D12`, so nothing on the board
+  sources VBUS.  `charge_end_consistency_problems` now refuses an `IIN` whose WHOLE ±(5 mA
+  + 2 %) interval is below zero (FAULT / UNCLASSIFIED); an interval that includes zero is
+  instrument offset.  Seven permanent cases (−50, −40, −10 refused; −5, 0, +3, +120 mA
+  terminate).  `C-PWR-CHARGE-01/02` now define `IIN` as positive from the adapter INTO the
+  device on an inline USB-C meter, whose drop `VIN` at `U11.10` already records.
+* **KNOWN-02 (Astra R19-02) — one qualified cure hold.**  REPRODUCED: `THT_LEAD_TRIM.md`
+  J4-T2 "Cure at least 24 h before enclosure retention/closure checks" against the
+  harness record's ≥ 72 h process hold.  ROOT CAUSE: the manual travelers were in no
+  operative-document scan.  J4-T2 now cites the ONE hold (tack-free, then handling — move
+  never load — after ≥ 4 h, and the qualified ≥ 72 h release before any pull, thermal,
+  retention/closure test or shipment); `THT_LEAD_TRIM`, `IR_LEAD_FORMING` and the
+  population matrix join every scan; a cure family refuses a shorter hold before a
+  load-bearing step, with four permanent injections (the exact D-799 sentence included).
+* **KNOWN-03 (Astra R19-03 + Opus R19-02) — the comparator-cycle waveform.**  Step 7 said
+  "`IBAT` alternating sign on a scope".  It now states the model's DISCHARGE / supplement
+  interval then NON-SUPPLYING interval, no charging pulse, RECORD the actual waveform and
+  RECORD + ESCALATE any other shape; F12 binds the step to the model's words and refuses
+  "alternating sign", "charging pulse" and "alternates between charge and supplement".
+* **KNOWN-04 (Opus R19-01) — package is not junction.**  Six residual sentences found and
+  replaced (C-THERM-01 OUTCOME's "measured … junction", its (r1), step 7's "package below
+  the modelled junction", "a package hotter than modelled", the 110 °C package stop —
+  now the junction interval's UPPER end — and step 6's "package reaches thermal
+  regulation"; plus the OUTCOME's re-run clause).  Every junction criterion now uses the
+  D-799 interval: wholly at/below PASS, wholly above RECORD + ESCALATE, overlap
+  INDETERMINATE / RECORD.  A package-as-junction family refuses the six shapes.
+* **KNOWN-05 (Opus R19-03) — guarantee multiplicity.**  REPRODUCED: the registry was
+  collapsed with `setdefault` (a good copy first and a bad one last passed; an identical
+  duplicate passed) and the evidence JSON by `json.loads` (a bad row stated before the
+  good one passed).  The verifier now validates the registry, every evidence object and
+  the schema literal as MULTISETS before any projection; `audit_tags` refuses a duplicated
+  key too.  Nine new destructive controls (bad-first, good-first, identical, missing,
+  extra, three evidence orders, a duplicated schema key): **37/37 caught**.
+* **KNOWN-06 (Opus R19-04) — the full parts list.**  REPRODUCED: `BOM-full.csv` printed
+  `L2,L4` and `U13,U21` as DNP — the fitted 5 V boost converter and its inductor.  ROOT
+  CAUSE: `BOM_GROUP` named the bare field `DNP`, which does not exist; kicad-cli grouped on
+  `${DNP}` only when asked by that name.  Every one of the 314 schematic references was
+  cross-checked against the per-reference views: only `L4`/`U21` were contaminated.
+  `FAB6` now proves every BOM-full line is PURE in population and identity, with the
+  D-799 merge and a stripped DNP cell as permanent controls.
+* **KNOWN-07 (Opus R19-05) — how `R_ins` is established.**  REPRODUCED: an 80 mΩ series
+  meter path recorded as 0 at 0.8 A gave `OCV_lb` 4.095 V over a true 4.050 V.  A record
+  now names the current-meter TOPOLOGY: a clamp may record 0; a series meter or shunt
+  records a MEASURED upper bound (four-wire on the recording range, or published burden
+  plus four-wire leads) and never 0; above 100 mΩ it is inadmissible.  The generated
+  method paragraph prints the procedure; eight controls, and the proof still finds 0
+  violations.
+* **KNOWN-08 (Opus R19-07) — the supervised condition's other written forms.**
+  REPRODUCED: "only if the pack READS at least 3.90 V" escaped.  The condition is a finite
+  family (conditional × pack-voltage subject × reading/state verb × comparator) bound to
+  a charging/adapter context; seven permanent injections; the correct 4.10 V form and the
+  accessory-floor sentences stay clean.
+
+### 2 — R19-06 SUB-GHz LOCAL DECOUPLING: (a) + (b), NOT A PRE-ORDER DEFECT
+
+Both Ebyte manuals recommend "an external ceramic filter capacitor" at pin 9 and give no
+value.  `U7.9`/`U8.9` each reach the `F.Cu` and `In3.Cu` `+3V3` planes through a 1.4 mm ×
+0.4 mm stub and one via, against `In1`/`In4`/`B.Cu` ground; the nearest ceramics (`C29`/
+`C30` 22 µF) are about 20 mm away across planes — well under 1 nH of spreading inductance
+for a PA whose current ramps over tens of microseconds.  Analytically acceptable;
+`C-PWR-TRANSIENT-01`'s radio step now scopes both `VCC` lands against the 3.000 V floor
+(E22: full power at ≥ 3 V); a local 100 nF + 1 µF per module is Rev-B.
+
+### 3 — THE FULL RE-AUDIT, AND WHAT IT FOUND AND FIXED
+
+Six independent audit passes (firmware ↔ schematic pin map; operative documents ↔ BOM /
+CPL / netlist; first-article executability; independent power / charger recalculation;
+PCB-level PI / USB / RF / fab outputs; firmware fail-closed paths) plus the release
+suite.  Everything REPRODUCIBLE and inside the charter is fixed:
+
+* **Firmware (release image).**  (1) the boot / periodic radio quiesce left SPI bound to
+  the SPI-B pins; the pinned core IGNORES a second `SPI.begin`, so the display init and
+  the microSD probe clocked SPI-A traffic into `U7`/`U8`/`U9` — `SPI.end()`, and the host
+  `SPI` stub now models the core; (2) a wedged I2C bus at boot returned before the radio
+  quiesce, and `loop()` returned before the retry, so a retained CC1101 carrier and `U9`
+  field persisted — the quiesce runs in the FATAL branch and first in `loop()`; (3) the
+  IR self-test and (4) `sx1262WaitBusy` hung at the `millis()` wrap (the IR emitter left
+  driving) — wrap-safe elapsed time everywhere, the mic wait included; (5) a rail could be
+  granted while `U2`'s output state was UNKNOWN after a NACKed reset release — both rail
+  setters now require BOTH expanders' shadows valid; (6) `platformio.ini` had no
+  `default_envs`, so a bare upload flashed legacy images whose pins fight Demo nets —
+  `default_envs = aqroot-demo`.  Host image test: nine new D-800 claims; H6 carries six
+  new mutation controls, all caught.
+* **Purchasing.**  KNOWN-06 above; the plan's `C24`/`C26` line (a 1206 part on the 0603
+  line, `C27` missing) and the `BAT54WS-7-F` quantity (15 → 20, `D14` omitted) corrected.
+  The live re-sweep reads the same nine constrained groups; JLC's "no longer
+  manufactured" on `J5` and `MK1` is CONTRADICTED by the manufacturer / franchised source
+  (Samtec: active, 484 "Ships Tomorrow", existing-customer account required; DigiKey:
+  PUI `DMM-4026-B-I2S-R` Active, 4,792) — `evidence/d800-broadline-check.json`.
+* **First article.**  The release image keys no transmitter, field, IR burst, held audio
+  or held backlight duty, and a resistor cannot hold a push-pull chip select high: the
+  steps that need those states name the new prerequisite **`FAP-01`, the first-article
+  test image** (register `first_article_prerequisites`), a firmware deliverable that
+  changes nothing ordered.  Wrong probe pin (`U2.P05` → `U2.P03`), the console string
+  (`[PASS]`), a `C-BAT-GATE-01` PASS rule that demanded VGS ≥ 2.5 V at 2.60 A where the
+  model predicts 2.4124 V (now the derived 2.2845 A ceiling, the load at `TP15` so
+  BATOCP cannot trip), the 3.05 V points inside the BUVLO band, where each meter goes on a
+  board with no break in `+3V3` (`R75` / `R69` / an FPC extension), and `Q11-TEMP-01`'s
+  OUTCOME made equal to §7a.
+* **IR.**  `IR_LEAD_FORMING.md` carried pre-rebase X coordinates and put `D1`'s axis on
+  its PAD 1.  MK9 measured footprint origins (15.13 mm).  The formed optical axes are
+  **13.73 mm** apart, so D-162's unsourced ≥ 15 mm heuristic is NOT met by 1.27 mm and no
+  part can move.  MK9 now gates the physical isolation — the barrier between both whole
+  courtyards and the receiver outside the TSAL6100's ±10° cone (Vishay 81009 rev 1.8,
+  archived) for 47 mm — with two new controls, and new step **`C-IR-01`** (FA07) measures
+  self-blinding on the closed enclosure.
+* **Documents.**  `FIRST_FIVE_POPULATION_MATRIX` (claimed NORMATIVE; beta-v2 counts,
+  `R97` 1.5 kΩ / `R101` 1.65 kΩ, `J5` BCS-112, a manual `J1`, `U23`, an "R_ILIM raise the
+  published limits" tune item), `OFF_BOARD_BOM` (2.81 V under a RETIRED heading fence),
+  `SOURCING_LEDGER` §5/§6, the footprint ledger counts, a FAB-NOTES pointer to a pin-1 list
+  that never existed — FAB-NOTES now carries a GENERATED pin-1 / polarity table — the
+  board-thickness statement, and DEVICE_SPEC's "guaranteed 2 A" (a front-page feature) and
+  "input limit 1100 mA" (the 1050 mA setting).
+* **Verifier.**  The STAT1 false-claim family matched "INDETERMINATE" as "terminated";
+  word-bounded.
+
+### 4 — FOUND AND DISPOSITIONED, NOT CHANGED (evidence, not preference)
+
+* **`U9` ST25R3916 decoupling order.**  ST (DS12484 Rev 3) specifies 2.2 µF ∥ 10 nF per
+  regulator (2.2 µF + 1 nF on `VDD_AM`) and no placement distance; every value is fitted,
+  but the HF halves sit 14–43 mm ROUTED from their pins, farther than the bulk ones (the earlier
+  "4.6–7.4 mm" was straight-line to the nearest cap only).  Moving them is a re-layout of
+  the most congested pocket on the board for a performance, not a function, risk against
+  a 0–30 mm tag read.  **First-article PI priority**: `C-NFC-TUNE-01` now probes at the
+  pins' own vias and names the rework (an F.Cu 0402 across the `VDD_RF` via and a `GND`
+  via; 1 nF stacked on `C51`); **Rev-B**: HF caps at the pins.
+* **`U17` backlight boost hot loop** (SW 14.6 mm routed, `C44` 11.8 mm, `R69` FB 14.4 mm),
+  **`U14` MAX17048** with 1 µF at 12.6 mm and no local 0.1 µF, **`U2`** plane-coupled only —
+  first-article observations (`C-DISP-01`, `C-GAUGE-EPOCH-01`) and Rev-B.
+* **The double-limiter fault (3.8236 A) against the BQ25185's 3.125 A SYS DC absolute
+  maximum.**  Not a reachable DC state: it needs internal concurrency the production image
+  refuses (no rail beside a transmitter) AND a BATOCP outside TI's stated ±18 % band (3.6875
+  A maximum trips it); a hard short takes each TPS22950 to TSD and auto-retry.  Recorded.
+* **TCR on the 5 V divider, `R97`/`R101` and the LTC4368 OV divider** narrows margins
+  (e.g. the 3.3 V limiter's low end ≈ 0.403 A) without crossing any published figure;
+  `+3V3`'s 0.5 % line/load terms are TI TYP, now labelled DECLARED allowances; the IR
+  emitter held on by a firmware fault would overstress `D1`/`R24` (contained; Rev-B
+  current limit); `L1`'s datasheet is not archived; a PCAL9535A that resets while the MCU
+  runs is not detected (no reproduction).  All recorded for Rev-B / first article.
+* **Cosmetic.**  `C26`/`C27`'s value text says "10V" for a 25 V MPN (the MPN is the
+  purchase); `J5`'s reference and two `5V` labels print past the stepped outline (FAB-NOTES
+  tells CAM to clip).
+
+### 5 — PROCUREMENT (separate from design)
+
+`evidence/d800-sourcing-sweep.json`: 123 lines, the same nine short groups.  **Genuine
+Alpha & Omega `AO4800` allocation remains an explicit gate** — a catalogue record with
+stock is not an allocated, traceable lot.
+
+### WHAT IS NOT CLAIMED
+
+No literal certainty before manufacture.  CAM acceptance (B01–B14), first article
+(FA01–FA10 and FAP-01), procurement and enclosure closure remain downstream.
+
 ## D-799 — **ROUND-18 FINAL-TARGETED CORRECTION: AN OPEN-CIRCUIT BOUND THAT IS A BOUND, A CHARGE RECORD THAT MUST BE POSSIBLE, A JUNCTION THAT IS AN INTERVAL, AND THREE VERIFIERS SCOPED TO WHAT THEY NAME**
 
     authority  board c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907

@@ -125,7 +125,13 @@ NON_COPPER = ["F.Paste", "B.Paste", "F.SilkS", "B.SilkS",
 BOM_FIELDS = ("Reference,Value,Footprint,Manufacturer,MPN,LCSC,"
               "Description,${QUANTITY},${DNP}")
 BOM_LABELS = "Refs,Value,Footprint,Manufacturer,MPN,LCSC,Description,Qty,DNP"
-BOM_GROUP = "Value,Footprint,MPN,LCSC,DNP"
+# D-800.  Group on `${DNP}`, the population VARIABLE -- not on `DNP`, which
+# names no field at all.  With the bare name kicad-cli silently grouped a
+# fitted part with its unfitted twin and printed the pair "DNP": the D-799
+# full parts list marked the fitted L4 and U21 not fitted beside L2 and U13.
+# `checks/fab_package_contract.py` FAB6 now refuses any BOM-full line whose
+# references are not all of one population and one purchased identity.
+BOM_GROUP = "Value,Footprint,MPN,LCSC,${DNP}"
 
 # D-755. Two intentionally exposed, copper-capped GND vias are the solder-side
 # terminals for optional first-article ST25R3916 parallel-match capacitors.
@@ -460,6 +466,7 @@ def stackup_process_notes(board):
     if not order:
         raise RuntimeError("the board file declares no stackup thicknesses -- "
                            "the process section cannot be derived")
+    board_nominal_mm = board.GetDesignSettings().GetBoardThickness() / 1e6
     cu = [(n, th) for n, k, th, _ in order if n.endswith(".Cu")]
     if not cu:
         raise RuntimeError("the board declares no copper layers in its stackup")
@@ -499,6 +506,14 @@ def stackup_process_notes(board):
         "soldering, not inferred from board thickness.  Finished thickness "
         "still affects enclosure stack and PTH process capability."
         % (total, total),
+        # D-800 (Round-19 full review): the job file and the board's general
+        # section carry KiCad's NOMINAL 1.6 mm, the stack sums to the figure
+        # above.  Say which one is the requirement so no reader picks one.
+        "- **Board thickness on the order: %.1f mm nominal** (the value the "
+        "board file's general section and `aqroot-Beta-v2-job.gbrjob` carry, "
+        "and the nominal of the declared stack); the ACCEPTANCE figure is the "
+        "stack's own **%.4f mm +/- 0.10 mm** above -- the two are the same "
+        "board, not a conflict." % (board_nominal_mm, total),
         "- **Surface finish: %s -- not substitutable.**  HASL coplanarity is "
         "incompatible with the fine-pitch lands on this board and with the "
         "0.000 mm solder-mask expansion it is drawn with."
@@ -638,9 +653,10 @@ def placement_convention_notes(out, board):
         "%d placements here.**" % (sides.get("bottom", 0), len(rows)),
         "- **`Side` is the authority on which face a part goes to**; do not "
         "infer it from the sign of any coordinate.",
-        "- Polarised and pin-1 references are called out individually in "
-        "`docs/full-beta-v2/assembly/FIRST_FIVE_ASSEMBLY_PLAN.md`, which is "
-        "normative for the first five units.",
+        "- **Polarised and pin-1 references are called out individually in "
+        "the PIN-1 / POLARITY table below**, generated from the board's own "
+        "pads (D-800: this line used to point at the first-five plan, which "
+        "never carried such a list).",
         "",
         "> **A placement preview is REQUIRED before the first unit is built.**  "
         "Render the loaded CPL against the assembly drawings "
@@ -651,7 +667,74 @@ def placement_convention_notes(out, board):
         "placed component; verify J4 polarity, rear-wire entry, joint height "
         "and strain relief against the battery-harness work instruction instead.**",
         "",
-    ]
+    ] + [
+        "- **Silkscreen beyond the stepped outline (D-800).**  At `J5`'s "
+        "right-angle overhang the reference `J5` and two `5V` labels print "
+        "partly beyond the board edge, where the outline steps in.  They carry "
+        "no information a builder needs; clip silkscreen at the outline.  This "
+        "is expected, not a data error.",
+        ""] + pin1_polarity_notes(rows, board)
+
+
+# D-800 (Round-19 full review).  THE PIN-1 / POLARITY TABLE, FROM THE PADS.
+POLARISED_PREFIXES = ("U", "Q", "D", "J", "Y", "MK")
+
+
+def pin1_polarity_notes(rows, board):
+    """One row per fitted, placed part whose orientation matters: its side,
+    its CPL rotation, and where its pin 1 (a diode's pad 1, the cathode in
+    this library) lands in the CPL frame -- so the placer and the AOI step
+    can check orientation against the board rather than against a drawing."""
+    import re as _re
+    import tempfile as _tf
+    import xml.etree.ElementTree as _ET
+    by_ref = {r["Ref"]: r for r in rows}
+    # the pin FUNCTION is a schematic property; read it from kicad-cli's own
+    # netlist export of the same schematic
+    funcs = {}
+    with _tf.TemporaryDirectory() as td:
+        nl = Path(td) / "net.xml"
+        run(["kicad-cli", "sch", "export", "netlist", "--format", "kicadxml",
+             "-o", str(nl), str(SCHEMATIC)])
+        for n in _ET.parse(str(nl)).getroot().iter("net"):
+            for x in n.iter("node"):
+                f_ = (x.get("pinfunction") or "").strip()
+                funcs[(x.get("ref"), x.get("pin"))] = _re.sub(r"_\d+$", "", f_)
+    out_rows = []
+    for fp in board.GetFootprints():
+        ref = fp.GetReference()
+        m = _re.match(r"([A-Z]+)\d", ref)
+        if not m or m.group(1) not in POLARISED_PREFIXES or ref not in by_ref:
+            continue
+        pads = [p for p in fp.Pads() if p.GetNumber() in ("1", "A1")]
+        if not pads:
+            continue
+        p1 = pads[0]
+        pos = p1.GetPosition()
+        fn = funcs.get((ref, p1.GetNumber()), "")
+        r = by_ref[ref]
+        out_rows.append((ref, r["Val"], r["Side"], r["Rot"],
+                         "%.3f" % (pos.x / 1e6), "%.3f" % (-pos.y / 1e6),
+                         p1.GetNumber() + (" (%s)" % fn if fn else ""),
+                         "`%s`" % (p1.GetNetname() or "no net")))
+
+    def _key(t):
+        m = _re.match(r"([A-Z]+)(\d+)", t[0])
+        return (m.group(1), int(m.group(2)))
+    out_rows.sort(key=_key)
+    lines = ["## PIN-1 / POLARITY TABLE (generated from the board, D-800)", "",
+             "Every fitted, placed `U`, `Q`, `D`, `J`, `Y` and `MK` reference. "
+             "`pin 1 X/Y` is that pad's centre in the CPL frame above (Y up, "
+             "negative).  For a diode the pad named here is the one this "
+             "library numbers 1 -- its function column says which terminal it "
+             "is.  Check orientation against this table at the placement "
+             "preview and at AOI.", "",
+             "| ref | value | side | CPL rot | pin 1 X | pin 1 Y | pad (function) | pin 1 net |",
+             "|---|---|---|---|---|---|---|---|"]
+    for t in out_rows:
+        lines.append("| `%s` | %s | %s | %s | %s | %s | %s | %s |" % t)
+    lines.append("")
+    return lines
 
 
 def battery_harness_notes():

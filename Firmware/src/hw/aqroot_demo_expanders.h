@@ -421,7 +421,11 @@ class DemoExpanders {
   // verdict.
   bool setAccessory5v(I2cBus &bus, bool on) {
     if (on) {
-      if (!ready_ || fault_observability_lost_ || safe_shutdown_pending_ || accessoryFault()) return false;
+      // D-800: never grant a rail while EITHER expander's output state is
+      // UNKNOWN -- a NACKed U2 write in the same loop iteration left U2's
+      // shadow invalid and D-799 still energised ACC_3V3 for 1300 ms.
+      if (!ready_ || fault_observability_lost_ || safe_shutdown_pending_ || accessoryFault()
+          || !u2_.outputShadowValid() || !u3_.outputShadowValid()) return false;
       if (!u3_.writeBit(bus, AQROOT_U3_ACC_5V_BOOST_EN, true)) {
         (void)applyAccessorySafeState(bus);
         return false;
@@ -454,7 +458,11 @@ class DemoExpanders {
   // goes away.
   bool setAccessory3v3(I2cBus &bus, bool on) {
     if (on) {
-      if (!ready_ || fault_observability_lost_ || safe_shutdown_pending_ || accessoryFault()) return false;
+      // D-800: never grant a rail while EITHER expander's output state is
+      // UNKNOWN -- a NACKed U2 write in the same loop iteration left U2's
+      // shadow invalid and D-799 still energised ACC_3V3 for 1300 ms.
+      if (!ready_ || fault_observability_lost_ || safe_shutdown_pending_ || accessoryFault()
+          || !u2_.outputShadowValid() || !u3_.outputShadowValid()) return false;
       if (!u3_.writeBit(bus, AQROOT_U3_ACC_3V3_EN, true)) {
         (void)applyAccessorySafeState(bus);
         return false;

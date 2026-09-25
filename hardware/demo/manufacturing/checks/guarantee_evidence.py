@@ -79,6 +79,7 @@ not vacuous -- and then that the schema refuses it for its named reason.
 
 import ast
 import copy
+from collections import Counter
 import hashlib
 import json
 import re
@@ -562,8 +563,16 @@ def _literal(node, env):
             raise ValueError("unbound name %r" % node.id)
         return copy.deepcopy(env[node.id])
     if isinstance(node, ast.Dict):
-        return {_literal(k, env): _literal(v, env)
-                for k, v in zip(node.keys, node.values)}
+        # D-800 / D800-KNOWN-05: a dict literal silently keeps the LAST of
+        # two equal keys; the schema's multiplicity is part of its meaning.
+        out = {}
+        for k, v in zip(node.keys, node.values):
+            kk = _literal(k, env)
+            if kk in out:
+                raise ValueError("duplicate key %r at line %d" % (
+                    kk, getattr(k, "lineno", 0)))
+            out[kk] = _literal(v, env)
+        return out
     if isinstance(node, (ast.List, ast.Tuple)):
         vals = [_literal(x, env) for x in node.elts]
         return vals if isinstance(node, ast.List) else tuple(vals)
@@ -789,7 +798,20 @@ def audit(registry, pinned_sha256, evidence_path=None, evidence=None,
             problems.append("the guarantee evidence file's sha256 %s is not "
                             "the pinned %s: it was edited without re-pinning"
                             % (actual, pinned_sha256))
-        evidence = json.loads(raw.decode("utf-8"))
+        # D-800 / D800-KNOWN-05 (Opus R19-03): json.loads keeps the LAST of
+        # two equal object keys, so a bad row followed by a good one read as
+        # one good row.  Multiplicity is validated BEFORE the projection.
+        dup = []
+
+        def _pairs(pairs):
+            seen = Counter(k for k, _ in pairs)
+            dup.extend((k, n) for k, n in seen.items() if n > 1)
+            return dict(pairs)
+        evidence = json.loads(raw.decode("utf-8"), object_pairs_hook=_pairs)
+        for k, n in dup:
+            problems.append("MULTIPLICITY: the evidence file states object "
+                            "key %r %d times; each key is stated exactly "
+                            "once" % (k, n))
     if evidence.get("schema") != SCHEMA:
         problems.append("the evidence schema is %r, not %r"
                         % (evidence.get("schema"), SCHEMA))
@@ -802,6 +824,19 @@ def audit(registry, pinned_sha256, evidence_path=None, evidence=None,
             problems.append("document %s's sha256 does not match its pin"
                             % dk)
     rows = evidence.get("rows") or {}
+    # D-800 / D800-KNOWN-05 (Opus R19-03): the registry is a MULTISET until
+    # proved otherwise.  D-799 collapsed it with setdefault (first wins), so
+    # a guarantee duplicated with a bad value SECOND passed -- and an
+    # identical duplicate passed too.  Every key is stated exactly once,
+    # validated before any projection, whatever the copies say.
+    _mult = Counter(r.get("key") for r in registry)
+    for key, n in sorted(_mult.items(), key=lambda t: str(t[0])):
+        if n > 1:
+            problems.append("MULTIPLICITY: registry key %s is stated %d times "
+                            "(tags %s); each key is stated exactly once"
+                            % (key, n, sorted({str(r.get("tag")) for r in
+                                               registry
+                                               if r.get("key") == key})))
     reg = {}
     for r in registry:
         reg.setdefault(r["key"], r)
@@ -904,6 +939,10 @@ def _find_line(doc_path, first_cell, contains=""):
             return i
     raise LookupError("%s: no line starting %r containing %r"
                       % (doc_path, first_cell, contains))
+
+
+class _Raw(str):
+    """Already-serialised JSON text (for `_obj`)."""
 
 
 def destructive_controls(registry, evidence_text=None):
@@ -1175,6 +1214,71 @@ def destructive_controls(registry, evidence_text=None):
     c["r16_k_schema_with_code_is_refused"] = caught(
         run(semantics_text=sem_text + "\nKEYS.clear()\n"),
         "not a literal-only module")
+
+    # ---- D-800 / D800-KNOWN-05 (Opus R19-03): MULTIPLICITY ------------------
+    gkeys = [r["key"] for r in registry
+             if str(r.get("tag", "")).startswith("GUARANTEED")]
+    gk = gkeys[0]
+    g_entry = next(r for r in registry if r["key"] == gk)
+    g_bad = dict(g_entry, value=(g_entry["value"] * 1.5
+                                 if isinstance(g_entry["value"], (int, float))
+                                 and not isinstance(g_entry["value"], bool)
+                                 else "tampered"))
+    gi = registry.index(g_entry)
+    c["r19_03_registry_good_first_bad_last_is_refused"] = caught(
+        run(reg=list(registry) + [g_bad]), "MULTIPLICITY: registry key %s" % gk)
+    c["r19_03_registry_bad_first_good_last_is_refused"] = caught(
+        run(reg=list(registry[:gi]) + [g_bad] + list(registry[gi:])),
+        "MULTIPLICITY: registry key %s" % gk)
+    c["r19_03_registry_identical_duplicate_is_refused"] = caught(
+        run(reg=list(registry) + [dict(g_entry)]),
+        "MULTIPLICITY: registry key %s" % gk)
+    c["r19_03_registry_missing_guarantee_is_refused"] = caught(
+        run(reg=[r for r in registry if r["key"] != gk]),
+        "SCHEMA: %s is pinned in the schema" % gk)
+    c["r19_03_registry_extra_guarantee_is_refused"] = caught(
+        run(reg=list(registry) + [dict(g_entry, key="r19.extra_guarantee")]),
+        "SCHEMA: r19.extra_guarantee is tagged")
+
+    def _obj(pairs):
+        """A JSON object from (key, value) PAIRS -- the only way to write
+        a document that states one key twice."""
+        return "{" + ", ".join("%s: %s" % (json.dumps(k), v if isinstance(
+            v, _Raw) else json.dumps(v, ensure_ascii=False, sort_keys=True))
+            for k, v in pairs) + "}"
+
+    def dup_row(order):
+        """The evidence text with the row for `gk` stated TWICE."""
+        row = base["rows"][gk]
+        bad = dict(row, line=int(row.get("line") or 0) + 7)
+        a_, b_ = {"bad_first": (bad, row), "good_first": (row, bad),
+                  "identical": (row, row)}[order]
+        rows = []
+        for k, v in sorted(base["rows"].items()):
+            rows += [(k, a_), (k, b_)] if k == gk else [(k, v)]
+        top = [(k, _Raw(_obj(rows)) if k == "rows" else v)
+               for k, v in sorted(base.items())]
+        return _obj(top)
+    for order in ("bad_first", "good_first", "identical"):
+        t_ = dup_row(order)
+        try:
+            json.loads(t_)
+            res = audit(registry, _sha_bytes(t_.encode("utf-8")),
+                        evidence_text=t_)
+        except ValueError:
+            res = (True, dict(problems=[]))
+        c["r19_03_evidence_row_duplicated_%s_is_refused" % order] = caught(
+            res, "MULTIPLICITY: the evidence file states object key %r"
+            % gk)
+    m_ = re.search(r'(KEYS\s*=\s*\{\s*\n)', sem_text)
+    if m_:
+        pinned = load_semantics()[0]["keys"][gk]
+        dup_sem = (sem_text[:m_.end()] + "    %r: %r,\n" % (gk, pinned)
+                   + sem_text[m_.end():])
+        c["r19_03_schema_key_duplicated_is_refused"] = caught(
+            run(semantics_text=dup_sem), "duplicate key %r" % gk)
+    else:
+        c["r19_03_schema_key_duplicated_is_refused"] = False
     return c
 
 

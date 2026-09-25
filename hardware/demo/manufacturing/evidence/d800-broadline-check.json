@@ -1,0 +1,35 @@
+{
+ "schema": 1,
+ "decision": "D-800",
+ "checked": "2026-09-24",
+ "why": "JLC's live record flags two fitted lines 'This product is no longer manufactured'; the manufacturer / franchised distributor was checked before accepting that as a lifecycle fact",
+ "lines": [
+  {
+   "refs": "MK1",
+   "mpn": "DMM-4026-B-I2S-R",
+   "manufacturer": "PUI Audio",
+   "jlc": "C3171792, stock 0, 'no longer manufactured'",
+   "source": "https://www.digikey.com/en/products/detail/pui-audio-inc/DMM-4026-B-I2S-R/11587483",
+   "read": "Product Status: Active; 4,792 in stock",
+   "action": "consign from DigiKey (franchised)"
+  },
+  {
+   "refs": "J5",
+   "mpn": "SSQ-124-02-G-S-RA",
+   "manufacturer": "Samtec",
+   "jlc": "C3323671, stock 0, 'no longer manufactured'",
+   "source": "https://www.samtec.com/products/ssq-124-02-g-s-ra",
+   "read": "orderable; 'Ships Tomorrow: 484 pieces'; distributor stock 0; 'This product is only available to existing customers'",
+   "action": "order through a Samtec account (or Samtec quote/sample) and consign"
+  },
+  {
+   "refs": "Q2,Q3",
+   "mpn": "AO4800",
+   "manufacturer": "Alpha & Omega Semiconductor",
+   "jlc": "C17098, 5,347 in catalogue stock, brand Alpha & Omega Semicon",
+   "read": "catalogue stock is NOT an allocated, traceable genuine lot",
+   "action": "ALLOCATE a genuine AOS lot (reel label + packing list) before the order -- procurement gate remains PENDING"
+  }
+ ],
+ "note": "Archived counts are NOT purchasing authority; re-check immediately before the order."
+}

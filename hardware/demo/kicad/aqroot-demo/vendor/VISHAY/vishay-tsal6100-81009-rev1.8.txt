@@ -1,0 +1,371 @@
+                                                                                                                                 TSAL6100
+                   www.vishay.com
+                                                                                                                Vishay Semiconductors
+       High Power Infrared Emitting Diode, 940 nm, GaAlAs, MQW
+                                                                                   FEATURES
+                                                                                   • Package type: leaded
+                                                                                   • Package form: T-1¾
+                                                                                   • Dimensions (in mm): Ø 5
+                                                                                   • Peak wavelength: λp = 940 nm
+                                                                                   • High reliability
+                                                                                   • High radiant power
+                                                                                   • High radiant intensity
+                                                                                   • Angle of half intensity: ϕ = ± 10°
+                                                 94 8389                           • Low forward voltage
+                                                                                   • Suitable for high pulse current operation
+                                                                                   • Good spectral matching with Si photodetectors
+                                                                                   • Material categorization: For definitions of compliance
+DESCRIPTION                                                                          please see www.vishay.com/doc?99912
+TSAL6100 is an infrared, 940 nm emitting diode in GaAlAs
+multi quantum well (MQW) technology with high radiant                              APPLICATIONS
+power and high speed molded in a blue-gray plastic                                 • Infrared remote control units with high power reqirements
+package.                                                                           • Free air transmission systems
+                                                                                   • Infrared source for optical counters and card readers
+                                                                                   • IR source for smoke detectors
+
+ PRODUCT SUMMARY
+ COMPONENT                          Ie (mW/sr)                           ϕ (deg)                          λp (nm)                   tr (ns)
+ TSAL6100                              170                                ± 10                                940                     15
+Note
+• Test conditions see table “Basic Characteristics”
+
+ ORDERING INFORMATION
+ ORDERING CODE                               PACKAGING                                     REMARKS                        PACKAGE FORM
+ TSAL6100                                           Bulk                       MOQ: 4000 pcs, 4000 pcs/bulk                       T-1¾
+Note
+• MOQ: minimum order quantity
+
+ ABSOLUTE MAXIMUM RATINGS (Tamb = 25 °C, unless otherwise specified)
+ PARAMETER                                                  TEST CONDITION                        SYMBOL              VALUE                   UNIT
+ Reverse voltage                                                                                         VR               5                    V
+ Forward current                                                                                         IF            100                    mA
+ Peak forward current                                      tp/T = 0.5, tp = 100 μs                      IFM            200                    mA
+ Surge forward current                                          tp = 100 μs                             IFSM            1.5                    A
+ Power dissipation                                                                                       PV            160                    mW
+ Junction temperature                                                                                    Tj            100                     °C
+ Operating temperature range                                                                            Tamb        -40 to +85                 °C
+ Storage temperature range                                                                              Tstg        -40 to +100                °C
+ Soldering temperature                                 t ≤ 5 s, 2 mm from case                          Tsd            260                     °C
+ Thermal resistance junction/ambient      J-STD-051, leads 7 mm soldered on PCB                         RthJA          230                    K/W
+
+
+
+
+Rev. 1.8, 13-Mar-14                                           1                               Document Number: 81009
+                              For technical questions, contact: emittertechsupport@vishay.com
+     THIS DOCUMENT IS SUBJECT TO CHANGE WITHOUT NOTICE. THE PRODUCTS DESCRIBED HEREIN AND THIS DOCUMENT
+                    ARE SUBJECT TO SPECIFIC DISCLAIMERS, SET FORTH AT www.vishay.com/doc?91000
+                                                                                                                                                                                      TSAL6100
+                                                 www.vishay.com
+                                                                                                                                                                 Vishay Semiconductors
+
+
+                                       180                                                                                                     120
+
+                                       160
+         PV - Power Dissipation (mW)
+
+
+
+                                                                                                                                               100
+
+
+
+
+                                                                                                                   IF - Forward Current (mA)
+                                       140
+
+                                       120                                                                                                      80
+
+                                       100
+                                                                                                                                                                RthJA = 230 K/W
+                                                                                                                                                60
+                                       80         RthJA = 230 K/W
+                                       60                                                                                                       40
+
+                                       40
+                                                                                                                                                20
+                                       20
+
+                                         0                                                                                                       0
+                                             0    10   20 30   40   50   60   70 80   90    100                                                      0    10    20 30 40      50 60 70 80   90 100
+                                                    Tamb - Ambient Temperature (°C)                                                   21212
+                        21211                                                                                                                              Tamb - Ambient Temperature (°C)
+
+
+    Fig. 1 - Power Dissipation Limit vs. Ambient Temperature                                                 Fig. 2 - Forward Current Limit vs. Ambient Temperature
+
+
+ BASIC CHARACTERISTICS (Tamb = 25 °C, unless otherwise specified)
+ PARAMETER                                                                        TEST CONDITION            SYMBOL                                       MIN.          TYP.          MAX.            UNIT
+                                                                                IF = 100 mA, tp = 20 ms       VF                                                       1.35           1.6             V
+ Forward voltage
+                                                                                  IF = 1 A, tp = 100 μs       VF                                                        2.2            3              V
+ Temperature coefficient of VF                                                             IF = 1 mA         TKVF                                                      -1.8                          mV/K
+ Reverse current                                                                            VR = 5 V          IR                                                                      10              μA
+ Junction capacitance                                                          VR = 0 V, f = 1 MHz, E = 0     Cj                                                        40                            pF
+                                                                                IF = 100 mA, tp = 20 ms       Ie                                         80             170           400        mW/sr
+ Radiant intensity
+                                                                                  IF = 1 A, tp = 100 μs       Ie                                         650           1450                      mW/sr
+ Radiant power                                                                  IF = 100 mA, tp = 20 ms       φe                                                        40                           mW
+ Temperature coefficient of φe                                                             IF = 20 mA        TKφe                                                      -0.6                          %/K
+ Angle of half intensity                                                                                      ϕ                                                        ± 10                          deg
+ Peak wavelength                                                                       IF = 100 mA            λp                                                        940                          nm
+ Spectral bandwidth                                                                    IF = 100 mA            Δλ                                                        30                           nm
+ Temperature coefficient of λp                                                         IF = 100 mA           TKλp                                                       0.2                          nm/K
+ Rise time                                                                             IF = 100 mA            tr                                                        15                            ns
+ Fall time                                                                             IF = 100 mA            tf                                                        15                            ns
+
+
+
+
+Rev. 1.8, 13-Mar-14                                           2                               Document Number: 81009
+                              For technical questions, contact: emittertechsupport@vishay.com
+     THIS DOCUMENT IS SUBJECT TO CHANGE WITHOUT NOTICE. THE PRODUCTS DESCRIBED HEREIN AND THIS DOCUMENT
+                    ARE SUBJECT TO SPECIFIC DISCLAIMERS, SET FORTH AT www.vishay.com/doc?91000
+                                                                                                                                                                                                                         TSAL6100
+                                                                   www.vishay.com
+                                                                                                                                                                                            Vishay Semiconductors
+BASIC CHARACTERISTICS (Tamb = 25 °C, unless otherwise specified)
+
+
+                                                        10 1                                                                                                               1000
+                                                                                                                                                                                      tp = 100 μs
+
+
+
+
+                                                                                                                             Phie - Radiant Power (mW)
+                        I F - Forward Current (A)
+
+
+
+
+                                                                                     IFSM = 1 A (Single Pulse)                                                              100
+
+
+                                                                                t p/T = 0.01
+                                                        10 0             0.05                                                                                                10
+
+                                                                   0.1
+                                                                                                                                                                              1
+                                                                       0.5
+
+
+                                                                1.0                                                                                                         0.1
+                                                        10 -1
+                                                               -2                                                                                                                 1                 10             100            1000
+                                                            10                10 -1        10 0      10 1        10 2
+                    96 11987                                                    t p - Pulse Duration (ms)                                                                                  IF - Forward Current (mA)
+
+                     Fig. 3 - Pulse Forward Current vs. Pulse Duration                                                                                                     Fig. 6 - Radiant Power vs. Forward Current
+
+
+
+
+                                                        1000                                                                                                                1.6
+                           IF - Forward Current (mA)
+
+
+
+
+                                                                                                                                                                            1.2
+                                                         100                                                                                                                                                  IF = 20 mA
+                                                                                                                                    Ie rel; Φe rel
+
+
+
+                                                                                                                                                                            0.8
+
+
+                                                           10
+                                                                                                 tp = 100 µs                                                                0.4
+                                                                                                 tp/T= 0.001
+
+
+                                                               1                                                                                                             0
+                                                                   0                  1            2               3                                                          -10 0 10                   50           100         140
+                                21534                                           VF - Forward Voltage (V)                                                                               T amb - Ambient Temperature (°C)
+                                                                                                                                                            94 7993
+
+
+
+                                             Fig. 4 - Forward Current vs. Forward Voltage                               Fig. 7 - Rel. Radiant Intensity/Power vs. Ambient Temperature
+
+
+
+                                         10000                                                                                                                              100
+                                                                                                                                     Φe rel - Relative Radiant Power (%)
+
+
+
+
+                                                                       tp = 100 μs
+       Ie - Radiant Intensity (mW/sr)
+
+
+
+
+                                                                                                                                                                             90
+                                                       1000                                                                                                                  80        IF = 30 mA
+
+                                                                                                                                                                             70
+                                                        100                                                                                                                  60
+                                                                                                                                                                             50
+                                                         10                                                                                                                  40
+                                                                                                                                                                             30
+                                                          1                                                                                                                  20
+                                                                                                                                                                             10
+                                                        0.1                                                                                                                   0
+                                                               1                     10          100             1000                                                          840         880       920        960        1000   1040
+
+                                                                             IF - Forward Current (mA)                                               21445                                       λ - Wavelength (nm)
+
+
+                                           Fig. 5 - Radiant Intensity vs. Forward Current                                                              Fig. 8 - Relative Radiant Power vs. Wavelength
+
+
+
+
+Rev. 1.8, 13-Mar-14                                           3                               Document Number: 81009
+                              For technical questions, contact: emittertechsupport@vishay.com
+     THIS DOCUMENT IS SUBJECT TO CHANGE WITHOUT NOTICE. THE PRODUCTS DESCRIBED HEREIN AND THIS DOCUMENT
+                    ARE SUBJECT TO SPECIFIC DISCLAIMERS, SET FORTH AT www.vishay.com/doc?91000
+                                                                                                                                                                                      TSAL6100
+                                                            www.vishay.com
+                                                                                                                                                                           Vishay Semiconductors
+
+                                                                                 0°   10°         20°
+                                                                                                            30°
+        Ie rel - Relative Radiant Intensity
+
+
+
+
+                                                                                                                                   ϕ - Angular Displacement
+                                                                                                            40°
+                                              1.0
+
+                                              0.9                                                           50°
+
+                                              0.8                                                           60°
+
+                                                                                                            70°
+                                              0.7
+                                                                                                            80°
+
+                                                       0.6      0.4        0.2   0
+             15989
+
+
+   Fig. 9 - Relative Radiant Intensity vs. Angular Displacement
+
+
+
+PACKAGE DIMENSIONS in millimeters
+
+
+                                                                            A               C
+                                                                                                                    Ø 5.8 ± 0.15
+                                                              7.7 ± 0.15
+
+
+
+
+                                                                                                                                                                R2.49 (sphere)
+                                                                                                (4.4)
+                                                8.7 ± 0.3
+
+
+
+
+                                                                                                            < 0.7
+        35.2 ± 0.55
+
+
+
+
+                                                                                                                                                                Area not plane
+
+
+                                                                                                    + 0.2                                                      Ø 5 ± 0.15
+                                                                                                0.6 - 0.1
+                                                                                                                                   1 min.
+
+
+
+
+                                                                                                                                                                                  technical drawings
+                                                                                                                                                                                  according to DIN
+                                                                                                                                                                  + 0.15
+                                                                                                                                                              0.5 - 0.05          specifications
+                                                                 + 0.15
+                                                             0.5 - 0.05
+
+
+                                                                                            2.54 nom.
+
+
+
+            6.544-5259.08-4
+            Issue: 3; 19.05.09
+            14436
+
+
+
+
+Rev. 1.8, 13-Mar-14                                           4                               Document Number: 81009
+                              For technical questions, contact: emittertechsupport@vishay.com
+     THIS DOCUMENT IS SUBJECT TO CHANGE WITHOUT NOTICE. THE PRODUCTS DESCRIBED HEREIN AND THIS DOCUMENT
+                    ARE SUBJECT TO SPECIFIC DISCLAIMERS, SET FORTH AT www.vishay.com/doc?91000
+                                                                                       Legal Disclaimer Notice
+                 www.vishay.com
+                                                                                                                             Vishay
+                                                         Disclaimer
+
+ALL PRODUCT, PRODUCT SPECIFICATIONS AND DATA ARE SUBJECT TO CHANGE WITHOUT NOTICE TO IMPROVE
+RELIABILITY, FUNCTION OR DESIGN OR OTHERWISE.
+
+Vishay Intertechnology, Inc., its affiliates, agents, and employees, and all persons acting on its or their behalf (collectively,
+“Vishay”), disclaim any and all liability for any errors, inaccuracies or incompleteness contained in any datasheet or in any other
+disclosure relating to any product.
+
+Vishay makes no warranty, representation or guarantee regarding the suitability of the products for any particular purpose or
+the continuing production of any product. To the maximum extent permitted by applicable law, Vishay disclaims (i) any and all
+liability arising out of the application or use of any product, (ii) any and all liability, including without limitation special,
+consequential or incidental damages, and (iii) any and all implied warranties, including warranties of fitness for particular
+purpose, non-infringement and merchantability.
+
+Statements regarding the suitability of products for certain types of applications are based on Vishay's knowledge of typical
+requirements that are often placed on Vishay products in generic applications. Such statements are not binding statements
+about the suitability of products for a particular application. It is the customer's responsibility to validate that a particular product
+with the properties described in the product specification is suitable for use in a particular application. Parameters provided in
+datasheets and / or specifications may vary in different applications and performance may vary over time. All operating
+parameters, including typical parameters, must be validated for each customer application by the customer's technical experts.
+Product specifications do not expand or otherwise modify Vishay's terms and conditions of purchase, including but not limited
+to the warranty expressed therein.
+
+Hyperlinks included in this datasheet may direct users to third-party websites. These links are provided as a convenience and
+for informational purposes only. Inclusion of these hyperlinks does not constitute an endorsement or an approval by Vishay of
+any of the products, services or opinions of the corporation, organization or individual associated with the third-party website.
+Vishay disclaims any and all liability and bears no responsibility for the accuracy, legality or content of the third-party website
+or for that of subsequent links.
+
+Vishay products are not designed for use in life-saving or life-sustaining applications or any application in which the failure of
+the Vishay product could result in personal injury or death unless specifically qualified in writing by Vishay. Customers using or
+selling Vishay products not expressly indicated for use in such applications do so at their own risk. Please contact authorized
+Vishay personnel to obtain written terms and conditions regarding products designed for such applications.
+
+No license, express or implied, by estoppel or otherwise, to any intellectual property rights is granted by this document or by
+any conduct of Vishay. Product names and markings noted herein may be trademarks of their respective owners.
+
+
+
+
+© 2026 VISHAY INTERTECHNOLOGY, INC. ALL RIGHTS RESERVED
+
+Revision: 01-Jan-2026                                              1                                           Document Number: 91000
+
+     THIS DOCUMENT IS SUBJECT TO CHANGE WITHOUT NOTICE. THE PRODUCTS DESCRIBED HEREIN AND THIS DOCUMENT
+                    ARE SUBJECT TO SPECIFIC DISCLAIMERS, SET FORTH AT www.vishay.com/doc?91000
+

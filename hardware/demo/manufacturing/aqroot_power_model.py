@@ -254,6 +254,17 @@ def audit_tags(entries=None):
     """
     reg = _REGISTRY if entries is None else list(entries)
     bad = []
+    # D-800 / D800-KNOWN-05: the registry is validated as a MULTISET -- a key
+    # stated twice is refused whatever the copies say, before any later
+    # consumer projects it to one entry per key.
+    _n = {}
+    for r in reg:
+        _n[r["key"]] = _n.get(r["key"], 0) + 1
+    for r in reg:
+        if _n[r["key"]] > 1:
+            bad.append(dict(r, why="%s is stated %d times in the registry; "
+                                   "each key is stated exactly once"
+                                   % (r["key"], _n[r["key"]])))
     for r in reg:
         role = _role_of(r)
         if role not in ROLES:

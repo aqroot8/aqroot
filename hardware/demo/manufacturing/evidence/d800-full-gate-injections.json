@@ -1,0 +1,31 @@
+{
+ "both_fail_the_full_gate": true,
+ "decision": "D-800",
+ "injections": {
+  "r19_02_exact_d799_cure_sentence": {
+   "all_pass": false,
+   "failing_f12_clauses": [
+    "round19_operative_semantics"
+   ],
+   "findings": [
+    "docs/full-beta-v2/assembly/THT_LEAD_TRIM.md: cure_hold_below_the_qualified_72h: Cure at least 24 h before enclosure retention/closure checks."
+   ],
+   "injected_into": "docs/full-beta-v2/assembly/THT_LEAD_TRIM.md (the D-800 72 h hold present)",
+   "sentence": "Cure at least 24 h before enclosure retention/closure checks."
+  },
+  "r19_07_reads_at_least": {
+   "all_pass": false,
+   "failing_f12_clauses": [
+    "no_normative_document_states_a_retired_operating_value"
+   ],
+   "findings": [
+    "docs/full-beta-v2/DEVICE_SPEC.md: supervised_threshold claims '3.90'"
+   ],
+   "injected_into": "docs/full-beta-v2/DEVICE_SPEC.md (the correct 4.10 V rule present)",
+   "sentence": "With the adapter attached, run an accessory rail only if the pack reads at least 3.90 V."
+  }
+ },
+ "permanent_controls": "the same shapes run on every release inside F12: round19_operative_semantics (cure / waveform / package-as-junction / supervised variants)",
+ "schema": 1,
+ "what": "full F1-F14 runs of checks/demo_feature_contract.py on disposable worktrees of the D-800 candidate with ONE Round-19 sentence injected; the correct current text remains present.  Each must FAIL the full gate on the intended clause and only there."
+}

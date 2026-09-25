@@ -64,8 +64,8 @@ inline DeviceIdentity probeCc1101(SpiBusB &bus) {
   }
   // The CC1101 holds SO high until its crystal is stable; the datasheet's own
   // access sequence is to wait for it to fall before the first header byte.
-  const uint32_t deadline = millis() + 10;
-  while (digitalRead(AQROOT_PIN_SPI_B_MISO) == HIGH && millis() < deadline) {
+  const uint32_t so_start = millis();     // D-800: wrap-safe
+  while (digitalRead(AQROOT_PIN_SPI_B_MISO) == HIGH && millis() - so_start < 10) {
   }
   SPI.transfer(uint8_t(kReadBurst | kPartnum));
   const uint8_t partnum = SPI.transfer(0x00);
@@ -93,9 +93,12 @@ inline DeviceIdentity probeCc1101(SpiBusB &bus) {
 // to 0x1424 -- a two-byte constant is a far stronger pin-map proof than a
 // status byte whose every bit pattern looks plausible.
 inline bool sx1262WaitBusy(uint32_t timeout_ms = 20) {
-  const uint32_t deadline = millis() + timeout_ms;
+  // D-800: wrap-safe elapsed time.  `millis() > deadline` could never be true
+  // once `deadline` wrapped to 0xFFFFFFFF, so a BUSY stuck high inside 20 ms
+  // of the millis() wrap hung the quiesce retry, and loop(), for good.
+  const uint32_t start = millis();
   while (digitalRead(AQROOT_PIN_SX1262_BUSY) == HIGH) {
-    if (millis() > deadline) return false;
+    if (millis() - start > timeout_ms) return false;
   }
   return true;
 }
@@ -594,14 +597,14 @@ inline bool cc1101Quiesce(SpiBusB &bus, uint8_t *marcstate_out) {
   }
   // The part holds SO high until its crystal is stable; its own access
   // sequence is to wait for the fall before the first header byte.
-  uint32_t deadline = millis() + 10;
-  while (digitalRead(AQROOT_PIN_SPI_B_MISO) == HIGH && millis() < deadline) {
+  uint32_t so_start = millis();           // D-800: wrap-safe
+  while (digitalRead(AQROOT_PIN_SPI_B_MISO) == HIGH && millis() - so_start < 10) {
   }
   SPI.transfer(kSidle);                // leave TX/RX
   SPI.transfer(kSres);                 // and reset the part outright
   // SRES holds SO high again until the reset completes.
-  deadline = millis() + 10;
-  while (digitalRead(AQROOT_PIN_SPI_B_MISO) == HIGH && millis() < deadline) {
+  so_start = millis();
+  while (digitalRead(AQROOT_PIN_SPI_B_MISO) == HIGH && millis() - so_start < 10) {
   }
   SPI.transfer(uint8_t(kReadBurst | kMarcstate));
   const uint8_t marc = SPI.transfer(0x00);

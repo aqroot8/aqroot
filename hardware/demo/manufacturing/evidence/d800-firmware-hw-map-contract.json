@@ -1,0 +1,2253 @@
+{
+  "contract": "firmware_hw_map",
+  "board": "aqroot-Beta-v2.kicad_pcb",
+  "board_sha256": "c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907",
+  "H3_policy_corroborated": {
+    "problems": [],
+    "mcu_pins_mapped": 30,
+    "expander_bits_mapped": 32,
+    "verdict": "PASS"
+  },
+  "H1_generated_tree_is_fresh": {
+    "files": [
+      "Firmware/src/hw/aqroot_demo_board.h",
+      "Firmware/src/hw/aqroot_demo_board.json"
+    ],
+    "stale": [],
+    "verdict": "PASS"
+  },
+  "H2_board_digest": {
+    "board_sha256": "c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907",
+    "published_in_header": "c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907",
+    "verdict": "PASS"
+  },
+  "H4_owner_decisions_are_machine_checked": {
+    "approved_unrouted": [
+      {
+        "contact": "U11.3",
+        "net": "/BQ25185_STAT2",
+        "expander_bits": [
+          "U2.P16"
+        ],
+        "masked": true
+      }
+    ],
+    "approved_nc_absent": true,
+    "problems": [],
+    "approved_nc_contacts": [
+      "J5.10",
+      "J5.11",
+      "J5.12",
+      "J5.15",
+      "J5.16",
+      "J5.17",
+      "J5.18",
+      "J5.9"
+    ],
+    "approved_nc_nets_on_board": [
+      "unconnected-(J5-Pin_10-Pad10)",
+      "unconnected-(J5-Pin_11-Pad11)",
+      "unconnected-(J5-Pin_12-Pad12)",
+      "unconnected-(J5-Pin_15-Pad15)",
+      "unconnected-(J5-Pin_16-Pad16)",
+      "unconnected-(J5-Pin_17-Pad17)",
+      "unconnected-(J5-Pin_18-Pad18)",
+      "unconnected-(J5-Pin_9-Pad9)"
+    ],
+    "leaked_into_firmware_map": [],
+    "verdict": "PASS"
+  },
+  "H5_firmware_layer_uses_the_map": {
+    "sources": [
+      "Firmware/src/hw/aqroot_accessory_power_policy.h",
+      "Firmware/src/hw/aqroot_demo_backlight.h",
+      "Firmware/src/hw/aqroot_demo_bringup_app.h",
+      "Firmware/src/hw/aqroot_demo_display.h",
+      "Firmware/src/hw/aqroot_demo_expanders.h",
+      "Firmware/src/hw/aqroot_demo_gauge_bringup.h",
+      "Firmware/src/hw/aqroot_demo_peripherals.h",
+      "Firmware/src/hw/aqroot_demo_pins.h",
+      "Firmware/src/hw/aqroot_demo_radios.h",
+      "Firmware/src/hw/aqroot_demo_timing_policy.h",
+      "Firmware/src/hw/aqroot_i2c.h",
+      "Firmware/src/hw/aqroot_i2c_arduino.h",
+      "Firmware/src/hw/aqroot_spi_bus_b.h",
+      "Firmware/src/hw/max17048_guard.h",
+      "Firmware/src/hw/pcal9535a.h"
+    ],
+    "symbols_emitted": 91,
+    "roles_unreferenced_by_the_layer": [],
+    "symbols_the_generator_never_emitted": [],
+    "verdict": "PASS"
+  },
+  "H6_host_tests_prove_the_orderings": {
+    "tests": [
+      {
+        "test": "Firmware/test/test_expander_order.cpp",
+        "compiled": true,
+        "exit_code": 0,
+        "claims": 123,
+        "failed_claims": [],
+        "controls": [
+          {
+            "control": "UNKNOWN accessory latch state is falsely reported OFF to the caller",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] UNKNOWN caller state is pessimistically ACTIVE, never falsely OFF"
+          },
+          {
+            "control": "runtime accessory fail-safe blanket-writes U2's full boot-safe latch",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] runtime accessory fail-safe preserves released reset lines"
+          },
+          {
+            "control": "direction is written before the output latch",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] 0x20: output configuration is PUSH-PULL before direction"
+          },
+          {
+            "control": "a fresh MCU invents a valid zero output shadow after warm reset",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] fresh PCAL software shadow is explicitly INVALID"
+          },
+          {
+            "control": "Output Port Configuration is changed to open-drain before outputs",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] 0x20: output configuration is PUSH-PULL before direction"
+          },
+          {
+            "control": "warm reset skips the immediate U3 complete safe-latch write",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] warm reset: second bus write forces U3 safe latch before policy traffic"
+          },
+          {
+            "control": "the RGB cathodes boot at 0, lighting the LED at power-on",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the RGB cathodes are HIGH (dark) at boot -- D13's anode is +3V3"
+          },
+          {
+            "control": "the 5 V load switch is closed before the boost is enabled",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] 5 V up: the BOOST enable leads the LOAD SWITCH (D-186)"
+          },
+          {
+            "control": "a U2 configuration failure short-circuits the independent U3 configuration",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] begin(): U3's direction is written ANYWAY after U2 fails"
+          },
+          {
+            "control": "a U2 read error stops U3 being serviced (service short-circuits)",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] service(): U3's input port is read ANYWAY after U2 fails"
+          },
+          {
+            "control": "a failed output write leaves the shadow trusted",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] a single-bit write is REFUSED after a NACK invalidated the shadow"
+          },
+          {
+            "control": "partial 5 V enable failure no longer enters safety recovery",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] partial 5 V enable is physically repaired to a known safe state"
+          },
+          {
+            "control": "lost-ACK 3.3 V enable failure no longer enters safety recovery",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] lost-ACK 3.3 V enable is repaired before state is trusted"
+          },
+          {
+            "control": "failed boot-safe latch write is forgotten instead of staying pending",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] warm-reset failed safe write remains pending"
+          },
+          {
+            "control": "uncertain I2C-buffer OFF write is allowed to poison U2 state without safety recovery",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] uncertain I2C-buffer OFF converges immediately to known accessory-safe state"
+          },
+          {
+            "control": "generic invalid output shadow is never scheduled for accessory-safe reconciliation",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] generic shadow repair leaves accessory state known and safe"
+          }
+        ],
+        "verdict": "PASS"
+      },
+      {
+        "test": "Firmware/test/test_spi_bus_b.cpp",
+        "compiled": true,
+        "exit_code": 0,
+        "claims": 43,
+        "failed_claims": [],
+        "controls": [
+          {
+            "control": "the bus stops asking whether the physical radio state is known before keying a transmitter",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] no transmitter may be keyed while the physical radio state is UNKNOWN"
+          },
+          {
+            "control": "the bus accepts a second concurrent chip select",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] re-selecting the SAME device while held is REFUSED"
+          },
+          {
+            "control": "a second radio may key while the first is transmitting",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] re-keying the SAME transmitter is REFUSED -- same re-entrancy rule"
+          },
+          {
+            "control": "Hold stops releasing the bus when it leaves scope",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the outer Hold still owned the bus when the inner scopes ended"
+          },
+          {
+            "control": "a sub-GHz transmitter may be keyed without asking the accessory load authority at all",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] a sub-GHz transmit is REFUSED when the authority refuses"
+          },
+          {
+            "control": "the authority is asked but its refusal is ignored",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] a sub-GHz transmit is REFUSED when the authority refuses"
+          },
+          {
+            "control": "the authority is never told a transmission started, so its mode set goes stale",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and the authority was told it started"
+          },
+          {
+            "control": "the authority is never told a transmission ENDED, so the mode set sticks on and refuses everything afterwards",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and told it ended"
+          },
+          {
+            "control": "the NFC field is gated too, which charges its bounded-duty allowance twice",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the NFC field is EXEMPT: its field is already a bounded-duty always-on allowance in the ledger, so gating it here would charge it twice"
+          }
+        ],
+        "verdict": "PASS"
+      },
+      {
+        "test": "Firmware/test/test_accessory_power_policy.cpp",
+        "compiled": true,
+        "exit_code": 0,
+        "claims": 85,
+        "failed_claims": [],
+        "controls": [
+          {
+            "control": "the published dual-rail envelope drops below the single-rail one",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the published dual-rail envelope is the derived 3.85 V"
+          },
+          {
+            "control": "the first-rail floor is put back to D-791's reproduced 3.55 V",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] R11-04 REGRESSION: D-791's own 3.55 V no longer enables a rail"
+          },
+          {
+            "control": "a REFUSED mode combination is encoded as a high floor instead of a refusal, so a full pack authorises it",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] Wi-Fi + sub-GHz is NOT PERMITTED with any accessory rail"
+          },
+          {
+            "control": "the amplifier's own load stops raising the floor",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] rail edge, amplifier on: 3.85 V"
+          },
+          {
+            "control": "the MODE edge's own refusal predicate stops refusing",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and both edges agree about which combinations are refused"
+          },
+          {
+            "control": "the two edges are collapsed into one table, so the mode edge is granted on a floor derived from a heavier pre-state",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] mode edge, entering the amplifier: NOT PERMITTED"
+          },
+          {
+            "control": "a refused combination is turned into a default floor it can pass",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] entering the amplifier with one rail live is REFUSED at D-793, while enabling a rail with the amplifier already on is permitted -- the two edges have not been collapsed"
+          },
+          {
+            "control": "the mode edge is transparent while a rail is live (the no-rail charging branch taken with a rail live too)",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] entering the amplifier with one rail live is REFUSED at D-793, while enabling a rail with the amplifier already on is permitted -- the two edges have not been collapsed"
+          },
+          {
+            "control": "the mode edge ignores an unreadable gauge",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] an unreadable gauge refuses a mode entry while a rail is live"
+          },
+          {
+            "control": "the mode bits are transposed, so the table is indexed by the wrong mode set",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the bit order is Wi-Fi, amplifier, sub-GHz"
+          },
+          {
+            "control": "the refusal sentinel stops refusing and becomes a comparison a caller can pass",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] sub-GHz TX alone is NOT PERMITTED with any accessory rail -- new at D-793, and it is the cost of the corrected source path"
+          },
+          {
+            "control": "unreadable VCELL fails open instead of shedding active rails",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] unreadable VCELL sheds a single active rail"
+          },
+          {
+            "control": "a dual-rail load below the retention floor sheds everything instead of the 5 V rail alone",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] dual rails just below the retention floor shed the 5 V rail first"
+          },
+          {
+            "control": "retention is judged at the ENABLE envelope instead of the retention floor",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] a pair authorised at the dual enable envelope survives the load step it causes"
+          },
+          {
+            "control": "the retention floor is pushed under the BQ25185's own VBUVLO bound",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the retention floor is the derived 3.20 V"
+          },
+          {
+            "control": "the VCELL plausibility band stops excluding the all-ones code",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] D797-02: with NO rail on, audio + sub-GHz needs a valid, plausible reading at or above its 3.60 V charging floor"
+          },
+          {
+            "control": "D797-02: the charging floor is ignored with no rail live -- the pre-D-797 transparent guard",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] D797-02: with NO rail on, every set carrying the Wi-Fi/BLE radio is REFUSED, on a full pack"
+          },
+          {
+            "control": "D797-02: a NotPermitted charging row is treated as allowed",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] D797-02: with NO rail on, every set carrying the Wi-Fi/BLE radio is REFUSED, on a full pack"
+          },
+          {
+            "control": "D797-02: the generated audio + sub-GHz charging floor is edited 3.60 -> 3.50 V",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] D797-02: with NO rail on, audio + sub-GHz needs a valid, plausible reading at or above its 3.60 V charging floor"
+          }
+        ],
+        "verdict": "PASS"
+      },
+      {
+        "test": "Firmware/test/test_fuel_gauge_safety.cpp",
+        "compiled": true,
+        "exit_code": 0,
+        "claims": 37,
+        "failed_claims": [],
+        "controls": [
+          {
+            "control": "HIBRT=0 readback is trusted while MODE.HibStat still reports hibernate",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] HIBRT=0 is not sufficient while MODE.HibStat still reports hibernate"
+          },
+          {
+            "control": "later MODE.HibStat assertion is ignored before a safety VCELL read",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] later MODE.HibStat assertion invalidates readiness before VCELL is trusted"
+          },
+          {
+            "control": "VCELL bus failure leaves gauge readiness trusted",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] VCELL read failure invalidates readiness"
+          },
+          {
+            "control": "implausible VCELL does not invalidate gauge readiness",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] all-ones VCELL fails closed and invalidates readiness"
+          }
+        ],
+        "verdict": "PASS"
+      },
+      {
+        "test": "Firmware/test/test_timing_policy.cpp",
+        "compiled": true,
+        "exit_code": 0,
+        "claims": 10,
+        "failed_claims": [],
+        "controls": [
+          {
+            "control": "gauge settle is shortened to 5 ms",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] executed post-qualification settle is at least 300 ms"
+          },
+          {
+            "control": "gauge settle is moved before qualification",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] gauge is qualified before the settle wait starts"
+          },
+          {
+            "control": "gauge settle is hidden in dead code",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] executed post-qualification settle is at least 300 ms"
+          },
+          {
+            "control": "backlight full-duty prime is dead code",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] first backlight command is full duty"
+          },
+          {
+            "control": "backlight emits dim PWM before the prime",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] first backlight command is full duty"
+          },
+          {
+            "control": "backlight prime is shortened below 2 ms",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] no dim PWM command occurs before 3000 us"
+          }
+        ],
+        "verdict": "PASS"
+      },
+      {
+        "test": "Firmware/test/test_production_timing.cpp",
+        "compiled": true,
+        "exit_code": 0,
+        "claims": 17,
+        "failed_claims": [],
+        "controls": [
+          {
+            "control": "the production gauge settle callback is halved",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the production settle wait is at least 300 ms of real delay"
+          },
+          {
+            "control": "the production gauge settle callback is a no-op",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the production settle wait is at least 300 ms of real delay"
+          },
+          {
+            "control": "the production gauge caller waits before qualification",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] production qualification happens before any settle wait"
+          },
+          {
+            "control": "the production backlight microsecond hold is halved",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] no production dim PWM command before the full prime interval"
+          },
+          {
+            "control": "the production backlight microsecond hold is a no-op",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] no production dim PWM command before the full prime interval"
+          },
+          {
+            "control": "the production PWM duty writer is halved",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] first production PWM command is full duty at t=0"
+          },
+          {
+            "control": "the production backlight emits dim PWM before the seam",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] first production PWM command is full duty at t=0"
+          },
+          {
+            "control": "the production backlight bypasses the seam entirely",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the production duty writer passes the policy's duties unmodified"
+          }
+        ],
+        "verdict": "PASS"
+      },
+      {
+        "test": "Firmware/test/test_production_callers.cpp",
+        "compiled": true,
+        "exit_code": 0,
+        "claims": 201,
+        "failed_claims": [],
+        "controls": [
+          {
+            "control": "the radio state is assumed KNOWN at construction, which is exactly what an MCU reset makes it",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] a FRESHLY CONSTRUCTED app has NOT quiesced the radios"
+          },
+          {
+            "control": "the mode set stops reading an unquiesced radio as KEYED",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and therefore reports sub-GHz TX as KEYED"
+          },
+          {
+            "control": "the accessory permission stops refusing while the physical radio state is unknown",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...by name, not by a floor comparison"
+          },
+          {
+            "control": "a warm-reset recovery stops invalidating the radio state it can no longer vouch for",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and the radio state is INVALIDATED by the recovery, because U2.P01 is the SX1262's reset and it was just re-asserted"
+          },
+          {
+            "control": "the burst arbiter admits a second concurrent bursty load",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] a nested hold on the SAME load is refused, so an inner scope cannot release the outer one's slot"
+          },
+          {
+            "control": "the arbiter's RAII hold stops releasing, so one burst wedges every later one",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the RAII scope released the arbiter"
+          },
+          {
+            "control": "the outer gauge caller early-returns and leaves the tested helper dead",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the production permission path spends the full gauge settle BEFORE the admission request is stamped"
+          },
+          {
+            "control": "the outer gauge caller reports success without qualifying at all",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the production permission path spends the full gauge settle BEFORE the admission request is stamped"
+          },
+          {
+            "control": "the accessory permission skips the qualification when the gauge is cold",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] a first accessory request on a 4.000 V pack is permitted"
+          },
+          {
+            "control": "a rail already being on stops being fail-closed on lost readiness",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] with a rail already on, lost gauge readiness is fail-closed"
+          },
+          {
+            "control": "the accessory permission is evaluated against an EMPTY mode set, so the state the board is actually in stops mattering",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...so a 3.82 V pack that would permit a quiet FIRST rail refuses it while the amplifier state is unknown, because the amplifier's own rail-edge floor is 3.85 V"
+          },
+          {
+            "control": "the amplifier reading is optimistic, so an UNKNOWN U2 output latch counts as OFF and the permission is granted on a mode set the board is not in",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and an UNKNOWN amplifier latch counts as ON, not as OFF"
+          },
+          {
+            "control": "energising the amplifier stops consulting the mode edge",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the amplifier is REFUSED at 3.82 V with a rail live"
+          },
+          {
+            "control": "the mode edge is consulted and its refusal is ignored",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the amplifier is REFUSED at 3.82 V with a rail live"
+          },
+          {
+            "control": "the mode edge passes the mode set BEFORE the change instead of after",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the amplifier is REFUSED at 3.82 V with a rail live"
+          },
+          {
+            "control": "the sub-GHz authority answers yes without asking the table",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] a sub-GHz transmit is REFUSED at 3.82 V with a rail live"
+          },
+          {
+            "control": "the mode edge stops being fail-closed when no rail is on... and also when one is",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the amplifier is REFUSED at 3.82 V with a rail live"
+          },
+          {
+            "control": "recovery stops reconciling an outstanding amplifier intent",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] recovery RE-APPLIED the outstanding amplifier intent"
+          },
+          {
+            "control": "recovery reconciles the intent but never re-applies it",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] recovery RE-APPLIED the outstanding amplifier intent"
+          },
+          {
+            "control": "recovery marks the intent satisfied instead of testing the latch",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] recovery RE-APPLIED the outstanding amplifier intent"
+          },
+          {
+            "control": "the serial dispatch carries a duplicate backlight ramp with a no-op hold",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the dispatch's first PWM command is full duty at t=0"
+          },
+          {
+            "control": "the serial dispatch emits a dim PWM command before the tested ramp",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the dispatch's first PWM command is full duty at t=0"
+          },
+          {
+            "control": "the backlight key stops being gated on a confirmed safe accessory state",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...but issues no PWM at all"
+          },
+          {
+            "control": "the warm-reset retry drops the complete expander initialisation",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the retry actually wrote the complete U3 safe latch"
+          },
+          {
+            "control": "the warm-reset retry gives up after its first attempt",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the retry recovers once the bus returns"
+          },
+          {
+            "control": "the reset-release diagnostic forces a CONFIRMED verdict",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] a NACKed reset release is NOT reported as confirmed"
+          },
+          {
+            "control": "the reset-release diagnostic trusts a shadow it has not proved valid",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and is reported as UNKNOWN rather than as a pass"
+          },
+          {
+            "control": "the accessory command line reports the WANTED state, not the reconciled one",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and its state is never printed as ON"
+          },
+          {
+            "control": "the fail-closed shutdown claims the rails are off while the state is unknown",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] a fail-closed shutdown whose writes NACKed does not claim success"
+          },
+          {
+            "control": "R14-01: the ACC_3V3_SW rail step is no longer stamped",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] R14-01 stamp: the ACC_3V3_SW rail step (on)"
+          },
+          {
+            "control": "R14-01: the ACC_5V_SW rail step is no longer stamped",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] R14-01 stamp: the ACC_5V_SW rail step (on)"
+          },
+          {
+            "control": "R14-01: the accessory I2C buffer step is no longer stamped",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] R14-01 stamp: the accessory I2C buffer step"
+          },
+          {
+            "control": "R14-01: the backlight ramp is no longer stamped",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] R14-01 stamp: the backlight ramp"
+          },
+          {
+            "control": "R14-01: the amplifier edge (both directions) is no longer stamped",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] R14-01 stamp: the amplifier being energised"
+          },
+          {
+            "control": "R14-01: the display initialisation is no longer stamped",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] R14-01 stamp: the display initialisation"
+          },
+          {
+            "control": "R14-01: the display reset assertion is no longer stamped",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] R14-01 stamp: the display reset being asserted"
+          },
+          {
+            "control": "R14-01: the full accessory shed is no longer stamped",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] R14-01 stamp: the accessory shed"
+          },
+          {
+            "control": "R14-01: the ACC_5V_SW retention shed is no longer stamped",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] R14-01 stamp: the ACC_5V_SW shed"
+          },
+          {
+            "control": "R14-01: the sub-GHz quiesce is no longer stamped",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] R14-01 stamp: the sub-GHz radio quiesce"
+          },
+          {
+            "control": "R14-01: the NFC quiesce is no longer stamped",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] R14-01 stamp: the NFC field quiesce"
+          },
+          {
+            "control": "R14-01: sub-GHz keying is no longer stamped",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] R14-01 stamp: sub-GHz TX keying"
+          },
+          {
+            "control": "R14-01: the Wi-Fi/BLE radio is no longer stamped",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] R14-01 stamp: the Wi-Fi/BLE radio starting"
+          },
+          {
+            "control": "R14-01: the expander recovery is no longer stamped",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] R14-01 stamp: the expander recovery"
+          },
+          {
+            "control": "R14-01: an admission no longer stamps its own request",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the production permission path spends the full gauge settle BEFORE the admission request is stamped"
+          },
+          {
+            "control": "R14-01: the window is D-794's nominal 1000 ms again",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and the admission read waited the full window after it"
+          },
+          {
+            "control": "R14-02: a lost NFC liveness no longer revokes the OFF confirmation",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] R14-02: a lost identity REVOKES the OFF confirmation"
+          },
+          {
+            "control": "R14-02: a revocation no longer sheds the rails granted under it",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and sheds the rail granted under it"
+          },
+          {
+            "control": "R14-02: an UNKNOWN field no longer blocks a burst once the arbiter is clear",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and even with the arbiter cleared a microSD burst is refused while the field is UNKNOWN"
+          },
+          {
+            "control": "D796-10: a field session keeps the OFF confirmation, so the liveness probe keeps challenging 11h under the session's field",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and the session WITHDRAWS the OFF confirmation, because the field is now on by design"
+          },
+          {
+            "control": "D796-10: a quiesce verdict restores the confirmation while a session still holds U9",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and no quiesce verdict can restore a confirmation while the session holds the part"
+          },
+          {
+            "control": "D796-10: a session is begun beside a live accessory rail",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] D796-10: a session is refused while an accessory rail is live"
+          },
+          {
+            "control": "D-796: the settled recheck's electrical settle stops polling liveness (equivalent at image level -- see PRODUCTION_IMAGE_CONTROLS)",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] C-NFC-QUIESCE-01: a U9 lost during the settled recheck is revoked INSIDE the recheck, within one period plus one 100 ms slice of the last proof (600 ms), not after the whole 400 ms settle"
+          },
+          {
+            "control": "D796-10: a session is begun without re-proving liveness at the request",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and the session request itself re-proved liveness first"
+          },
+          {
+            "control": "D797-08: the admission reader treats a Deferred forced probe as no news (rail enable AND mode entry with a rail live)",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] D797-08: an accessory rail grant whose forced liveness probe is Deferred is REFUSED -- Deferred is not 'no news'"
+          },
+          {
+            "control": "D797-08: a non-NFC burst treats a Deferred forced probe as no news",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] D797-08: a microSD burst grant on a Deferred probe is REFUSED"
+          },
+          {
+            "control": "D797-08: a Deferred grant revokes the confirmation instead of keeping it",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and the prior OFF confirmation is PRESERVED: not revoked, no revocation counted, the burst slot not taken"
+          },
+          {
+            "control": "D797-08: a Deferred forced probe at a grant is counted as a proof and consumes the schedule",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and the Deferred probe is not counted as a proof: the liveness schedule is still DUE"
+          },
+          {
+            "control": "D797-02: the charging floor is ignored with no rail live -- the pre-D-797 `return true`",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] D797-02: with sub-GHz keyed and no rail live, the amplifier is REFUSED at 3.55 V -- audio + sub-GHz needs 3.60 V while charging"
+          },
+          {
+            "control": "D797-02: a NotPermitted charging row is treated as allowed at the caller (the Wi-Fi/BLE guard grants with no rail live)",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] D797-02: with no rail live, Wi-Fi/BLE activation is REFUSED on a 4.20 V pack without a gauge read, and says why"
+          },
+          {
+            "control": "D797-02: a positive charging floor is granted without any reading",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] D797-02: with sub-GHz keyed and no rail live, the amplifier is REFUSED at 3.55 V -- audio + sub-GHz needs 3.60 V while charging"
+          },
+          {
+            "control": "D797-02: the positive charging floor is compared against a stale, unwaited reading that bypasses the admission reader (no epoch, no post-request window, no liveness proof at the grant)",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and the reading it was granted on came through the ADMISSION reader: its own admission epoch, the whole post-load window spent after the request, and a VCELL read"
+          },
+          {
+            "control": "D797-02: an unqualified gauge is not qualified before the charging-floor reading, so a healthy 3.65 V pack is refused (availability, fail-closed)",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] D797-02: with sub-GHz keyed and no rail live, the amplifier is REFUSED at 3.55 V -- audio + sub-GHz needs 3.60 V while charging"
+          },
+          {
+            "control": "D797-02: the generated audio + sub-GHz charging floor is edited 3.60 -> 3.50 V",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] D797-02: with sub-GHz keyed and no rail live, the amplifier is REFUSED at 3.55 V -- audio + sub-GHz needs 3.60 V while charging"
+          }
+        ],
+        "verdict": "PASS"
+      },
+      {
+        "test": "Firmware/test/test_production_image.cpp",
+        "compiled": true,
+        "exit_code": 0,
+        "claims": 237,
+        "failed_claims": [],
+        "controls": [
+          {
+            "control": "D-800 image: a wedged I2C bus at boot returns before the radio quiesce",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] D-800: with I2C wedged at boot, setup() still quiesces the retained CC1101 (SRES/SIDLE) and U9's field"
+          },
+          {
+            "control": "D-800 image: the quiesce retry is skipped while the expanders recover",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] D-800: with I2C still wedged, loop() retries the radio quiesce before the expander recovery branch returns"
+          },
+          {
+            "control": "D-800 image: the IR self-test deadline is not wrap-safe",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] host: a shipped wait ran past its own bound across the millis() wrap"
+          },
+          {
+            "control": "D-800 image: the SX1262 BUSY wait is not wrap-safe",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] host: a shipped wait ran past its own bound across the millis() wrap"
+          },
+          {
+            "control": "D-800 image: ACC_3V3 may be granted while U2's output state is UNKNOWN",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] D-800: ACC_3V3 is never energised while U2's output state is UNKNOWN after a NACKed reset release"
+          },
+          {
+            "control": "D-800 image: the radio quiesce never releases SPI, so SPI-A traffic goes out on the SPI-B pins",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] D-800: after boot and the periodic re-quiesce the SPI peripheral is RELEASED (radios never confirm quiesce)"
+          },
+          {
+            "control": "the image never quiesces the radios at boot",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the console '3' enables the 3.3 V accessory rail"
+          },
+          {
+            "control": "the image quiesces but reports the result as CONFIRMED regardless",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and says the physical transmit state is UNKNOWN"
+          },
+          {
+            "control": "the image quiesces the NFC front end but reports the field as CONFIRMED OFF regardless",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and a Set default that did not land is detected by the 11h register it should have reset, not inferred from 02h"
+          },
+          {
+            "control": "the ST25R3916 quiesce trusts the power-down write instead of reading the Operation control register back",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] R14-02: an Operation control register that will not clear leaves the NFC field UNKNOWN, never confirmed OFF"
+          },
+          {
+            "control": "the NFC quiesce sends Stop all activities instead of Set default, which leaves the Operation control register -- and the carrier -- alone",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the rail is live before the gauge is put to sleep"
+          },
+          {
+            "control": "the CC1101 quiesce accepts ANY MARCSTATE at or above IDLE, which is every state including TX",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and says the physical transmit state is UNKNOWN"
+          },
+          {
+            "control": "the CC1101 quiesce issues the RESET STROBE as a PARTNUM read -- the burst-bit trap probeCc1101 documents, which identifies instead of resetting",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and resets it (SRES, BURST CLEAR -- not a PARTNUM read)"
+          },
+          {
+            "control": "the loop stops retrying a failed quiesce, so a board that missed it once refuses accessory power forever",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] loop() retries the quiesce rather than sitting with an unknown radio state forever"
+          },
+          {
+            "control": "main never wires the SPI-B sub-GHz transmit gate to the app",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] setup() wires the SPI-B sub-GHz transmit gate to the app"
+          },
+          {
+            "control": "main wires the gate to nothing",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] setup() wires the SPI-B sub-GHz transmit gate to the app"
+          },
+          {
+            "control": "main's periodic battery guard is made unreachable",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] forced sleep asserted at runtime sheds the accessory rail"
+          },
+          {
+            "control": "main's cold boot bypasses the qualified settle with a direct configureActiveMode",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] cold boot spends the full qualified gauge settle"
+          },
+          {
+            "control": "main enables an accessory rail directly and leaves the dispatch dead",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and no accessory rail may be enabled on its reading"
+          },
+          {
+            "control": "the settled post-enable retention recheck is removed",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] R13-01: post-enable retention shedding is PRESERVED"
+          },
+          {
+            "control": "settledAccessoryRecheck early-returns before its wait",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] R13-01: post-enable retention shedding is PRESERVED"
+          },
+          {
+            "control": "the gauge reader stops waiting for a post-load conversion, which is D-793's behaviour exactly",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and the image says it is waiting for a post-load conversion"
+          },
+          {
+            "control": "the post-load window is shortened to D-779's one update, which leaves three quarters of the VCELL average describing the pre-load board",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the rail is live before the gauge is put to sleep"
+          },
+          {
+            "control": "the load epoch never reports anything outstanding, so an armed edge costs nothing and the reader is D-793's again",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and the image says it is waiting for a post-load conversion"
+          },
+          {
+            "control": "main's reset-release diagnostic is forced to report success",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] a NACKed reset release is never reported CONFIRMED"
+          },
+          {
+            "control": "main's background gauge requalification is disabled",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the loop requalifies the gauge with no console input at all"
+          },
+          {
+            "control": "backgroundGaugeRequalification is made a no-op",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the loop requalifies the gauge with no console input at all"
+          },
+          {
+            "control": "main discards the amplifier shutdown result again",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and reports the reconciled state, not the request"
+          },
+          {
+            "control": "the amplifier intent stops being retried from the loop",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the loop retries the amplifier-off intent until it lands"
+          },
+          {
+            "control": "main claims the display is up without a confirmed reset release",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] a NACKed DISP_RST_N release aborts the display test"
+          },
+          {
+            "control": "main sets the display up without re-running the initialisation",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the first display test initialises the panel"
+          },
+          {
+            "control": "the gauge qualification stops clearing forced sleep",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] a retained forced sleep is cleared, not accepted"
+          },
+          {
+            "control": "clearForcedSleep stops verifying that CONFIG.SLEEP really cleared",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] a CONFIG.SLEEP that will not clear is refused at boot"
+          },
+          {
+            "control": "the qualification stops re-checking MODE.EnSleep after the HIBRT write",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] a gauge that sleeps mid-qualification is refused"
+          },
+          {
+            "control": "forced sleep asserted at runtime stops invalidating the reading",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] forced sleep asserted at runtime sheds the accessory rail"
+          },
+          {
+            "control": "clearForcedSleep stops preserving the rest of CONFIG",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and the gauge is reported ready afterwards"
+          },
+          {
+            "control": "an unreadable CONFIG is assumed awake instead of failing closed",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] an unreadable CONFIG fails the qualification closed"
+          },
+          {
+            "control": "main's warm-reset expander recovery is never called",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the loop alone recovers the expanders once the bus returns"
+          },
+          {
+            "control": "main's warm-reset expander recovery is made unreachable",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the loop alone recovers the expanders once the bus returns"
+          },
+          {
+            "control": "the warm-reset recovery gives up before the bus returns",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the loop alone recovers the expanders once the bus returns"
+          },
+          {
+            "control": "an aborted amplifier enable stops cancelling its ON intent",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and the ON intent is CANCELLED rather than left pending"
+          },
+          {
+            "control": "the amplifier cancellation keeps wanting the amplifier ON",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] no later deferred retry ever turns the amplifier on"
+          },
+          {
+            "control": "a new display reset stops invalidating the previous initialisation",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] a deferred release re-runs the display initialisation"
+          },
+          {
+            "control": "a confirmed reset release is treated as a confirmed initialisation",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] a deferred release re-runs the display initialisation"
+          },
+          {
+            "control": "main never completes the initialisation a deferred release owes",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] a deferred release re-runs the display initialisation"
+          },
+          {
+            "control": "R14-01 image: an admission no longer stamps its own request, so an unannounced charger unplug is admitted on the charging-era average",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] R14-01: a charger unplugged 0, 10 or 120 ms before the request -- an edge the firmware CANNOT see -- does not grant the rail on the charging-era average, under any timing model"
+          },
+          {
+            "control": "R14-01 image: the window is D-794's nominal 1000 ms again",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and the wait is long enough to flush the whole four-conversion average, not one update of it"
+          },
+          {
+            "control": "R14-01 image: the wait delays ONCE and assumes the time has passed",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and the wait is long enough to flush the whole four-conversion average, not one update of it"
+          },
+          {
+            "control": "R14-01 image: the ACC_3V3_SW rail step is no longer stamped, so the settled recheck reads an average that is still mostly pre-step",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] R13-01: post-enable retention shedding is PRESERVED"
+          },
+          {
+            "control": "R14-01 image: the ACC_5V_SW retention shed is no longer stamped, so the 3.3 V rail is judged on the pre-shed average and lost",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and the 3.3 V rail is KEPT, because the next retention read waited out the window from the 5 V shed instead of reading the pre-shed average"
+          },
+          {
+            "control": "R14-02 image: the quiesce no longer proves identity BEFORE it trusts the bus -- Astra's zero-filled read then confirms FIELD OFF",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] R14-02: a part with the wrong identity is never sent a challenge, a Set default or a power-down write"
+          },
+          {
+            "control": "R14-02 image: the register challenge is dropped",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] R14-02: register writes that do not land leaves the NFC field UNKNOWN, never confirmed OFF"
+          },
+          {
+            "control": "R14-02 image: an ignored Set default is no longer detected",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] R13-03 control: a part that ignores Set default is NOT reported quiesced"
+          },
+          {
+            "control": "R14-02 image: the identity is not re-proved after the quiesce",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] R14-02: a part that dies after Set default (every later read is zero) leaves the NFC field UNKNOWN, never confirmed OFF"
+          },
+          {
+            "control": "R14-02 image: quiesceRadios is put back on D-794's Set-default-then-02h-equals-zero verdict, with no liveness proof at all",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and section 4.1's overheat-protection frame is re-sent, which Set default has just undone"
+          },
+          {
+            "control": "R14-02 image: main never checks the liveness of a confirmed-quiet U9",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] C-NFC-QUIESCE-01: with both rails off and the loop idle -- where only the top-of-loop probe runs -- a lost U9 is REVOKED within the 820 ms deadline at every 20 ms phase (50 runs)"
+          },
+          {
+            "control": "R14-02 image: the liveness probe trusts the identity alone",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] R14-02: a part whose writes stop landing is REVOKED by the liveness challenge even though its identity still reads"
+          },
+          {
+            "control": "D-796: the gauge window stops giving the liveness probe an opportunity per slice -- the 1300 ms window is unpolled again",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] C-NFC-QUIESCE-01: a U9 lost at any 20 ms instant of a SECOND-rail admission with ACC_3V3_SW live (admission window, settled recheck and the rest of the window from the rail step), from five probe phases (730 runs), is REVOKED within the 820 ms deadline"
+          },
+          {
+            "control": "D-796: an admission is granted on the last SCHEDULED liveness proof instead of one taken at the grant",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and no rail is ever enabled at or after the loss: every grant is decided on a liveness proof taken AT the grant"
+          },
+          {
+            "control": "D-796: a burst is granted on the last SCHEDULED liveness proof",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] C-NFC-QUIESCE-01: a microSD burst requested just after U9 was lost is refused AT the grant -- the grant re-proves liveness rather than trusting the last scheduled proof"
+          },
+          {
+            "control": "D-796: the liveness schedule is D-795's 1000 ms period again, which alone consumes the 1 s promise",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] C-NFC-QUIESCE-01: a U9 lost at any 20 ms instant of a SECOND-rail admission with ACC_3V3_SW live (admission window, settled recheck and the rest of the window from the rail step), from five probe phases (730 runs), is REVOKED within the 820 ms deadline"
+          },
+          {
+            "control": "D-796: setup never attaches the NFC liveness probe to the app",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] the rail is live before the gauge is put to sleep"
+          },
+          {
+            "control": "D796-10: the raw liveness challenge writes 11h under a field session",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and neither the probe, the raw liveness challenge nor the quiesce writes register 11h under the session"
+          },
+          {
+            "control": "D796-10: the scheduled probe reports a session-owned U9 as LOST, which would revoke on a scheduling fact and challenge the session's 11h",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] D796-10: while a field session owns U9 the liveness probe is SUSPENDED -- it reports Deferred, never Lost"
+          },
+          {
+            "control": "D796-10: the quiesce Set-defaults a field a session owns",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and neither the probe, the raw liveness challenge nor the quiesce writes register 11h under the session"
+          },
+          {
+            "control": "G10: a window the stalled clock never let pass is treated as spent, so a VCELL reading is taken with no post-load conversion behind it",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and the rail is REFUSED and never energised"
+          },
+          {
+            "control": "G10: a clock that has not moved since the edge is read as a spent window",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and the accessory rail is REFUSED on the honest reading"
+          },
+          {
+            "control": "D797-08 image: a rail admission treats a Deferred forced probe as no news and grants on the last scheduled proof",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] D797-08 image: with SPI-B busy at the grant, a FIRST-rail admission is REFUSED because the forced liveness probe was Deferred -- not granted on the last scheduled proof"
+          },
+          {
+            "control": "D797-08 image: a non-NFC burst treats a Deferred forced probe as no news and runs on the last scheduled proof",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] D797-08 image: with SPI-B busy at the grant, a microSD burst is REFUSED on the Deferred probe and never runs"
+          },
+          {
+            "control": "D797-08 image: a Deferred grant REVOKES the confirmation instead of keeping it -- a scheduling accident treated as a lost part",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] ...and the Deferred probe revoked NOTHING: no revocation line, no quiesce retry, the confirmation is kept"
+          },
+          {
+            "control": "D797-10: the gauge window loses its own attempt bound, so a stalled clock spins it for ever",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": "host guard (D797-10): a shipped wait loop kept waiting on a clock",
+            "caught": true,
+            "first_failed_claim": "[FAIL] host guard (D797-10): a shipped wait loop kept waiting on a clock that does not advance -- its own attempt bound is missing"
+          },
+          {
+            "control": "D797-10: the liveness-servicing wait (the settled recheck) loses its own attempt bound, so a stalled clock spins it for ever",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": "host guard (D797-10): a shipped wait loop kept waiting on a clock",
+            "caught": true,
+            "first_failed_claim": "[FAIL] host guard (D797-10): a shipped wait loop kept waiting on a clock that does not advance -- its own attempt bound is missing"
+          },
+          {
+            "control": "D797-02 image: the charging floor is ignored with no rail live -- the pre-D-797 `return true`",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] D797-02 image: with sub-GHz keyed and no rail live, the tone key is REFUSED at 3.55 V -- audio + sub-GHz needs 3.60 V while charging -- and the amplifier never leaves shutdown"
+          },
+          {
+            "control": "D797-02 image: the generated audio + sub-GHz charging floor is edited 3.60 -> 3.50 V",
+            "compiled": true,
+            "exit_code": 1,
+            "terminated_by_signal": false,
+            "expected_failure": null,
+            "caught": true,
+            "first_failed_claim": "[FAIL] D797-02 image: with sub-GHz keyed and no rail live, the tone key is REFUSED at 3.55 V -- audio + sub-GHz needs 3.60 V while charging -- and the amplifier never leaves shutdown"
+          }
+        ],
+        "verdict": "PASS"
+      }
+    ],
+    "verdict": "PASS"
+  },
+  "H8_released_firmware_runs_the_tested_timing_seam": {
+    "call_sites": {
+      "gauge": "Firmware/src/demo/main.cpp",
+      "gauge_production_entry": "Firmware/src/hw/aqroot_demo_gauge_bringup.h",
+      "backlight": "Firmware/src/hw/aqroot_demo_backlight.h",
+      "seam": "Firmware/src/hw/aqroot_demo_timing_policy.h"
+    },
+    "executable_production_proof": {
+      "test": "Firmware/test/test_production_timing.cpp",
+      "ran_in_H6": true,
+      "claims": 17,
+      "controls": [
+        "the production gauge settle callback is halved",
+        "the production gauge settle callback is a no-op",
+        "the production gauge caller waits before qualification",
+        "the production backlight microsecond hold is halved",
+        "the production backlight microsecond hold is a no-op",
+        "the production PWM duty writer is halved",
+        "the production backlight emits dim PWM before the seam",
+        "the production backlight bypasses the seam entirely"
+      ],
+      "every_production_mutation_caught": true
+    },
+    "executable_call_site_proof": {
+      "test": "Firmware/test/test_production_callers.cpp",
+      "app": "Firmware/src/hw/aqroot_demo_bringup_app.h",
+      "ran_in_H6": true,
+      "claims": 201,
+      "controls": [
+        "the radio state is assumed KNOWN at construction, which is exactly what an MCU reset makes it",
+        "the mode set stops reading an unquiesced radio as KEYED",
+        "the accessory permission stops refusing while the physical radio state is unknown",
+        "a warm-reset recovery stops invalidating the radio state it can no longer vouch for",
+        "the burst arbiter admits a second concurrent bursty load",
+        "the arbiter's RAII hold stops releasing, so one burst wedges every later one",
+        "the outer gauge caller early-returns and leaves the tested helper dead",
+        "the outer gauge caller reports success without qualifying at all",
+        "the accessory permission skips the qualification when the gauge is cold",
+        "a rail already being on stops being fail-closed on lost readiness",
+        "the accessory permission is evaluated against an EMPTY mode set, so the state the board is actually in stops mattering",
+        "the amplifier reading is optimistic, so an UNKNOWN U2 output latch counts as OFF and the permission is granted on a mode set the board is not in",
+        "energising the amplifier stops consulting the mode edge",
+        "the mode edge is consulted and its refusal is ignored",
+        "the mode edge passes the mode set BEFORE the change instead of after",
+        "the sub-GHz authority answers yes without asking the table",
+        "the mode edge stops being fail-closed when no rail is on... and also when one is",
+        "recovery stops reconciling an outstanding amplifier intent",
+        "recovery reconciles the intent but never re-applies it",
+        "recovery marks the intent satisfied instead of testing the latch",
+        "the serial dispatch carries a duplicate backlight ramp with a no-op hold",
+        "the serial dispatch emits a dim PWM command before the tested ramp",
+        "the backlight key stops being gated on a confirmed safe accessory state",
+        "the warm-reset retry drops the complete expander initialisation",
+        "the warm-reset retry gives up after its first attempt",
+        "the reset-release diagnostic forces a CONFIRMED verdict",
+        "the reset-release diagnostic trusts a shadow it has not proved valid",
+        "the accessory command line reports the WANTED state, not the reconciled one",
+        "the fail-closed shutdown claims the rails are off while the state is unknown",
+        "R14-01: the ACC_3V3_SW rail step is no longer stamped",
+        "R14-01: the ACC_5V_SW rail step is no longer stamped",
+        "R14-01: the accessory I2C buffer step is no longer stamped",
+        "R14-01: the backlight ramp is no longer stamped",
+        "R14-01: the amplifier edge (both directions) is no longer stamped",
+        "R14-01: the display initialisation is no longer stamped",
+        "R14-01: the display reset assertion is no longer stamped",
+        "R14-01: the full accessory shed is no longer stamped",
+        "R14-01: the ACC_5V_SW retention shed is no longer stamped",
+        "R14-01: the sub-GHz quiesce is no longer stamped",
+        "R14-01: the NFC quiesce is no longer stamped",
+        "R14-01: sub-GHz keying is no longer stamped",
+        "R14-01: the Wi-Fi/BLE radio is no longer stamped",
+        "R14-01: the expander recovery is no longer stamped",
+        "R14-01: an admission no longer stamps its own request",
+        "R14-01: the window is D-794's nominal 1000 ms again",
+        "R14-02: a lost NFC liveness no longer revokes the OFF confirmation",
+        "R14-02: a revocation no longer sheds the rails granted under it",
+        "R14-02: an UNKNOWN field no longer blocks a burst once the arbiter is clear",
+        "D796-10: a field session keeps the OFF confirmation, so the liveness probe keeps challenging 11h under the session's field",
+        "D796-10: a quiesce verdict restores the confirmation while a session still holds U9",
+        "D796-10: a session is begun beside a live accessory rail",
+        "D-796: the settled recheck's electrical settle stops polling liveness (equivalent at image level -- see PRODUCTION_IMAGE_CONTROLS)",
+        "D796-10: a session is begun without re-proving liveness at the request",
+        "D797-08: the admission reader treats a Deferred forced probe as no news (rail enable AND mode entry with a rail live)",
+        "D797-08: a non-NFC burst treats a Deferred forced probe as no news",
+        "D797-08: a Deferred grant revokes the confirmation instead of keeping it",
+        "D797-08: a Deferred forced probe at a grant is counted as a proof and consumes the schedule",
+        "D797-02: the charging floor is ignored with no rail live -- the pre-D-797 `return true`",
+        "D797-02: a NotPermitted charging row is treated as allowed at the caller (the Wi-Fi/BLE guard grants with no rail live)",
+        "D797-02: a positive charging floor is granted without any reading",
+        "D797-02: the positive charging floor is compared against a stale, unwaited reading that bypasses the admission reader (no epoch, no post-request window, no liveness proof at the grant)",
+        "D797-02: an unqualified gauge is not qualified before the charging-floor reading, so a healthy 3.65 V pack is refused (availability, fail-closed)",
+        "D797-02: the generated audio + sub-GHz charging floor is edited 3.60 -> 3.50 V"
+      ],
+      "every_call_site_mutation_caught": true,
+      "why": "D788-04/05/06: making the leaf entry points executable left their CALLERS in demo/main.cpp, which no host test compiles.  The call sites now live in DemoBringupApp and are driven over a physical-latch expander model."
+    },
+    "problems": [],
+    "controls": [
+      {
+        "control": "the gauge call site drops back to a local delay",
+        "refused": true,
+        "first_reason": "aqroot_demo_bringup_app.h does not call the production gauge entry point"
+      },
+      {
+        "control": "the gauge call site is commented out",
+        "refused": true,
+        "first_reason": "aqroot_demo_bringup_app.h does not call the production gauge entry point"
+      },
+      {
+        "control": "the gauge bring-up header stops calling the seam",
+        "refused": true,
+        "first_reason": "aqroot_demo_gauge_bringup.h does not call qualifyFuelGaugeActiveMode()"
+      },
+      {
+        "control": "the backlight call site re-implements the prime",
+        "refused": true,
+        "first_reason": "aqroot_demo_backlight.h drives the full-duty prime itself instead of through the tested seam"
+      },
+      {
+        "control": "the backlight call site is commented out",
+        "refused": true,
+        "first_reason": "aqroot_demo_backlight.h does not call runBacklightRampPolicy()"
+      },
+      {
+        "control": "a second backlight ordering reappears in peripherals.h",
+        "refused": true,
+        "first_reason": "aqroot_demo_peripherals.h carries a second copy of the backlight ordering"
+      },
+      {
+        "control": "the console dispatch moves back into demo/main.cpp",
+        "refused": true,
+        "first_reason": "demo/main.cpp does not reach the accessory/backlight console dispatch through the host-tested production app"
+      },
+      {
+        "control": "the warm-reset retry moves back into demo/main.cpp",
+        "refused": true,
+        "first_reason": "demo/main.cpp does not reach the warm-reset expander recovery retry through the host-tested production app"
+      },
+      {
+        "control": "the reset-release diagnostic moves back into demo/main.cpp",
+        "refused": true,
+        "first_reason": "demo/main.cpp does not reach the reset-release diagnostic through the host-tested production app"
+      },
+      {
+        "control": "demo/main.cpp regains a private accessory permission rule",
+        "refused": true,
+        "first_reason": "demo/main.cpp carries the accessory enable rule outside the host-tested production app"
+      },
+      {
+        "control": "the app is not instantiated at all",
+        "refused": true,
+        "first_reason": "demo/main.cpp does not instantiate DemoBringupApp, so its call sites are compiled by no host test"
+      }
+    ],
+    "verdict": "PASS"
+  },
+  "H7_MAX17048_primary_source_is_pinned": {
+    "pdf": "hardware/demo/kicad/aqroot-demo/vendor/ADI/max17048-max17049-rev7.pdf",
+    "expected_pdf_sha256": "70dc8eef0e012276dcdc58b6dce64af08258304bcf865ceace64e856b8029330",
+    "actual_pdf_sha256": "70dc8eef0e012276dcdc58b6dce64af08258304bcf865ceace64e856b8029330",
+    "source_record": "hardware/demo/kicad/aqroot-demo/vendor/ADI/max17048-max17049-rev7-source.json",
+    "expected_facts": {
+      "vendor": "Analog Devices / Maxim Integrated",
+      "device": "MAX17048/MAX17049",
+      "document_number": "19-6171",
+      "revision": "7",
+      "official_url": "https://www.analog.com/media/en/technical-documentation/data-sheets/MAX17048-MAX17049.pdf",
+      "MODE_address": "0x06",
+      "HibStat_mask": "0x1000",
+      "HibStat_semantics": "read-only; set while the IC is in hibernate mode",
+      "HIBRT_address": "0x0A",
+      "HIBRT_zero_semantics": "disables hibernate mode",
+      "VCELL_active_update_ms_typ": 250,
+      "VCELL_hibernate_update_s_typ": 45,
+      "time_base_accuracy_pct_min": -3.5,
+      "time_base_accuracy_pct_max": 3.5
+    },
+    "active_settle_ms": 300,
+    "derived_active_sample_period_max_ms": 258.75,
+    "problems": [],
+    "controls": [
+      {
+        "control": "HibStat mask moves to the wrong MODE bit",
+        "refused": true,
+        "first_reason": "HibStat_mask expected '0x1000', got '0x0800'"
+      },
+      {
+        "control": "HIBRT=0 is misdescribed as forcing hibernate",
+        "refused": true,
+        "first_reason": "HIBRT_zero_semantics expected 'disables hibernate mode', got 'forces hibernate mode'"
+      },
+      {
+        "control": "active ADC period drifts to 450 ms",
+        "refused": true,
+        "first_reason": "VCELL_active_update_ms_typ expected 250, got 450"
+      },
+      {
+        "control": "time-base maximum is silently removed",
+        "refused": true,
+        "first_reason": "time_base_accuracy_pct_max expected 3.5, got None"
+      },
+      {
+        "control": "archived primary PDF bytes change",
+        "refused": true,
+        "first_reason": "primary PDF SHA256 expected 70dc8eef0e012276dcdc58b6dce64af08258304bcf865ceace64e856b8029330, got 0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      {
+        "control": "active-mode settle is shortened below the source-derived bound",
+        "refused": true,
+        "first_reason": "active settle 250 ms is below derived 258.750 ms timing bound"
+      }
+    ],
+    "controls_verdict": "PASS",
+    "verdict": "PASS"
+  },
+  "controls": [
+    {
+      "control": "D-732 swap: U2 P05 <-> P06",
+      "refused": true,
+      "first_reason": "U2 P05 (pad 9): policy says '/TOUCH_INT_N', board says '/SX1262_DIO1'"
+    },
+    {
+      "control": "D-733 swap: U2 P17 <-> U3 P17",
+      "refused": true,
+      "first_reason": "U2 P17 (pad 20): policy says '/BQ25185_STAT1', board says '/ACC_PWR_EN'"
+    },
+    {
+      "control": "ACC_5V_SW_EN safe latch flipped to 1 against R131",
+      "refused": true,
+      "first_reason": "U3 P03 ACC_5V_SW_EN safe latch is 1 but R131 ties the net to GND"
+    },
+    {
+      "control": "FRONT_RGB_R_N claims an external pull it does not have",
+      "refused": true,
+      "first_reason": "U3 P00 FRONT_RGB_R_N claims safe_basis=external_pull with no fitted external pull"
+    },
+    {
+      "control": "TOUCH_INT_N claims an external pull it does not have",
+      "refused": true,
+      "first_reason": "U2 P06 TOUCH_INT_N claims an external pull it does not have"
+    },
+    {
+      "control": "SX1262_DIO1 pulls against the module's push-pull driver",
+      "refused": true,
+      "first_reason": "U2 P05 SX1262_DIO1 must not pull against a push-pull driver"
+    },
+    {
+      "control": "an expander bit is dropped from the map",
+      "refused": true,
+      "first_reason": "U3 P11 (pad 14) has no policy row"
+    },
+    {
+      "control": "a U1 pad is re-pointed at the wrong net",
+      "refused": true,
+      "first_reason": "U1.9: policy says '/IR_RX_GPIO44', board says '/IR_TX_GPIO16'"
+    },
+    {
+      "control": "two firmware roles share one C identifier",
+      "refused": true,
+      "first_reason": "role NATIVE_B claimed by both U1.24 and U1.31"
+    },
+    {
+      "control": "an UNMASKED input is left with an undefined idle level",
+      "refused": true,
+      "first_reason": "U3 P14 is UNMASKED with an undefined idle level"
+    },
+    {
+      "control": "a strap loses the resistor that holds it",
+      "refused": true,
+      "first_reason": "U1.26 strap part is R111, policy names R999"
+    },
+    {
+      "control": "the VBUS_PRESENT declaration is dropped",
+      "refused": true,
+      "first_reason": "/01_POWER_TREE/VBUS_PRESENT is bench-probed (TP31.1) and reaches no U1/U2/U3 pad, and no BENCH_ONLY entry declares it"
+    },
+    {
+      "control": "the breaker-fault declaration is dropped",
+      "refused": true,
+      "first_reason": "/01_POWER_TREE/LTC4368_FAULT_N is bench-probed (TP18.1) and reaches no U1/U2/U3 pad, and no BENCH_ONLY entry declares it"
+    },
+    {
+      "control": "a net that IS readable is declared unreadable",
+      "refused": true,
+      "first_reason": "BENCH_ONLY declares /WAKE_INT_N unreadable, but the board does not put it in the probed-and-unreachable set -- a stale declaration"
+    },
+    {
+      "control": "a net that is not on the board at all is declared",
+      "refused": true,
+      "first_reason": "BENCH_ONLY declares /01_POWER_TREE/NO_SUCH_NET unreadable, but the board does not put it in the probed-and-unreachable set -- a stale declaration"
+    }
+  ],
+  "controls_verdict": "PASS",
+  "verdict": "PASS"
+}

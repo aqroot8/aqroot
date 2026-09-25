@@ -2,33 +2,58 @@
 
 
 
-> # **STATUS: D-799 ROUND-18 FINAL-TARGETED CORRECTION — EXTERNAL-REVIEW TARGET, BOARD AUTHORITY `c8eabd43` (2026-09-24).**
+> # **STATUS: D-800 ROUND-19 MAXIMUM-ASSURANCE FULL PRE-ORDER REVIEW — EXTERNAL-REVIEW TARGET, BOARD AUTHORITY `c8eabd43` (2026-09-24).**
 >
-> **D-799 supersedes D-798, which Round-18 external review reopened (Astra **B** — three
-> bounded analytical/procedure/verifier corrections; Fable Work **A** — three Low
-> residuals).  THIS IS A REVIEW TARGET, NOT A FABRICATION AUTHORIZATION — DO NOT ORDER.**
-> Neither reviewer established a respin.  **No copper, net, footprint, placement, part
-> value, firmware or protected-copper object moves at D-799** — the board sha256 is
-> unchanged at `c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907`.
-> Connectivity is **174 retained / 173 connected / one owner-approved `U11.3` open / zero
-> unapproved**.  The D-799 content commit is `ef5be983786c9e16bbb3b26d21261140c4ccd4eb`; the current MANIFEST sha256 is
-> `d2682e43833372524613d51f28dfdd5d70d57aed46d78d5bfd9e7f45015bb432`; the identity commit and the post-commit
-> verification are recorded in `hardware/demo/manufacturing/evidence/d799-review-target.json`.  The reviewed parent is
-> the D-798 identity commit `db2dfbf7ffd8de307b94799e0f144a6c316a307a`.
+> **D-800 supersedes D-799, which Round-19 graded Astra **B** (three non-PCB pre-order
+> corrections) and Opus/Fable **A** with seven residuals, and for which the owner required a
+> FULL maximum-assurance re-audit.  THIS IS A REVIEW TARGET, NOT A FABRICATION
+> AUTHORIZATION — DO NOT ORDER.**  No respin is established.  **No copper, net, footprint,
+> placement, part value or protected-copper object moves at D-800** — the board sha256 is
+> unchanged at `c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907`.  The
+> release FIRMWARE image changes (six fail-closed / bus / wrap defects, each host-tested
+> with a permanent mutation control).  Connectivity is **174 retained / 173 connected / one
+> owner-approved `U11.3` open / zero unapproved**.  The D-800 content commit, its MANIFEST
+> sha256 and the post-commit verification are recorded by the identity commit that follows
+> it, in `hardware/demo/manufacturing/evidence/d800-review-target.json`.  The reviewed parent
+> is the D-799 identity commit `4aa286e2d517f6acc64290e3c427f045dd109654`.
 >
-> **GATES ON THIS TARGET.**  19/19 standing contracts, `F1`–`F14` (F12 now PROVES the
-> supervised `OCV_lb` a lower bound against a corner adversary, a time-domain pack
-> simulation and the five Round-18 witnesses, refuses a physically impossible
-> charge-end record, and judges first-article thermal triggers on a junction interval;
-> F14 judges a supplementing charger on the actual VBSUP2 exit comparator and
-> validates the publication as an exact key multiset), `H1`–`H8` with every
-> host-test mutation caught, 4/4 PlatformIO environments, the fab-package contract, the
-> guarantee-provenance verifier against its independently pinned semantic schema, KiCad
-> DRC and schematic parity identical in count and class to the reviewed baseline.
+> **GATES ON THIS TARGET.**  19/19 standing contracts, `F1`–`F14` (F12 adds the Round-19
+> operative-semantics families — cure hold, comparator waveform, package-as-junction,
+> the supervised condition's written forms — over every operative document, the manual
+> travelers included, and the meter-topology proof of `OCV_lb`), `H1`–`H8` with every
+> host-test mutation caught, 4/4 PlatformIO environments, the fab-package contract (FAB6
+> now proves every BOM-full line pure in population and identity), the guarantee-provenance
+> verifier with multiset validation (37/37 controls), KiCad DRC and schematic parity.
 > **PRE-ORDER ANALYTICAL: CLOSED on this target.  FAB/CAM ACCEPTANCE, FIRST-ARTICLE
-> VALIDATION and PROCUREMENT: PENDING.**
+> VALIDATION (now with prerequisite `FAP-01`) and PROCUREMENT: PENDING.**
 >
-> ### What changed, for a fabricator, an assembler and a technician
+> ### What changed at D-800, for a fabricator, an assembler, a buyer and a technician
+>
+> * **THE FULL PARTS LIST WAS WRONG (Round-19 `R19-04`).**  D-799's `BOM-full.csv` marked the
+>   FITTED `L4` and `U21` (the 5 V accessory boost and its inductor) DNP by grouping them
+>   with their unfitted twins.  Every line is now pure; buy from `BOM-assembly.csv`.
+> * **FAB-NOTES now carries a generated PIN-1 / POLARITY table** (every fitted `U`, `Q`,
+>   `D`, `J`, `Y`, `MK` with side, rotation, pin-1 position, function and net), a stated
+>   board thickness (1.6 mm nominal; 1.5744 mm ± 0.10 acceptance) and a note on the
+>   silkscreen past `J5`'s stepped edge.
+> * **ONE CURE HOLD (`R19-02`).**  The J4 DOWSIL bead: handling only after tack-free and
+>   ≥ 4 h, and NOTHING load-bearing — pull, thermal, retention / closure, shipment —
+>   before the full ≥ 72 h hold.  `THT_LEAD_TRIM` said 24 h; it no longer does.
+> * **FIRST ARTICLE NEEDS A TEST IMAGE (`FAP-01`).**  The release image keys no
+>   transmitter, field or IR burst; those steps run on a first-article test image under
+>   the same permission table.  New step **`C-IR-01`** measures IR self-blinding: the
+>   formed optical axes are 13.73 mm apart, under D-162's 15 mm heuristic.
+>   `IR_LEAD_FORMING.md` coordinates are re-based to the board (D1 axis X 53.020).
+> * **CORRECTED OPERATIVE STEPS.**  `C-FW-ABORT-01` watches `U2.P03`; charge records take
+>   `IIN` positive INTO the device on an inline USB-C meter; `R_ins` for `OCV_lb` is
+>   MEASURED (a series meter is never 0); every junction criterion uses the interval;
+>   `C-BAT-GATE-01` loads `TP15` and passes on the derived 2.2845 A ceiling; each
+>   `+3V3` / NFC measurement names where the meter goes.
+> * **PROCUREMENT.**  Same nine constrained groups (live re-sweep); `J5` from Samtec direct
+>   (existing-customer account) and `MK1` from DigiKey — both ACTIVE at source despite
+>   JLC's flag; genuine AOS `AO4800` ALLOCATION remains a gate.
+>
+> ### What changed at D-799 and earlier, and still stands, for a fabricator, an assembler and a technician
 >
 > * **CHARGE ONLY FROM THE NAMED ADAPTER.**  The Raspberry Pi 15W USB-C Power Supply,
 >   part `KSA-15E-051300HU` (or its regional variant), on its own captive 1.5 m 18 AWG
@@ -174,7 +199,7 @@
 > | Wi-Fi / BLE TX + audio at the capped level + sub-GHz TX | acc 5v only | 6.173 W | **REFUSED BY FIRMWARE** (on battery too) |
 > | Wi-Fi / BLE TX + audio at the capped level + sub-GHz TX | no accessory | 4.412 W | **REFUSED BY FIRMWARE** (on battery too) |
 >
-> **How `OCV_lb` is measured (D-799, Round-18 `R18-01`: a PROVED lower bound).**  `OCV_lb` is a LOWER BOUND on the pack's open-circuit voltage, rounded DOWN to the millivolt (D-799).  With the adapter ATTACHED: `OCV_lb` = V(J4) − **0.010 V** − I_up × (**177.5 mΩ** + R_ins) − max(I_up, **0.816 A**) × **87.5 mΩ**, where I_up = |I_BAT| + **0.010 A** + **2 %** of |I_BAT| — the MAGNITUDE of the reading, whatever its sign convention — and R_ins is the current meter's series burden plus its added leads between J4 and the pack (0 for a clamp meter; at most **100 mΩ**).  With the adapter DETACHED (no charge source): `OCV_lb` = V(J4) − **0.010 V** − **0.072 V**.  Every subtracted term is rounded UP to the millivolt.  V(J4) is a DMM reading (±0.010 V or better at 4.2 V) from J4.1 (`BAT_CONNECTOR_P`, red) to J4.2 (`GND`, black) on the board, and I_BAT is the pack current on a bench meter (±(10 mA + 2 %) or better) at the same instant.  Take both immediately before the change the rule admits — enabling a rail with the adapter attached, or attaching the adapter with a rail live — once the DMM has held within 2 mV for 10 s.  No cell-relaxation time is assumed anywhere: 177.5 mΩ is the hot-aged harness; 87.5 mΩ is the model's DECLARED pack DC resistance, ohmic part and every polarization branch together, and max(I_up, 0.816 A) × 87.5 mΩ — **0.072 V** whenever I_up is at or below 0.816 A — bounds both the pack's own drop and every polarization its charge history can have stored, whatever the current is doing now, because this board's charger never charges above ICHG_max = 0.816 A; a pack charged from any other source is outside the method.  The console `VCELL` is NOT admissible for this rule: while charging it reads `BAT_PROTECTED_P`, up to **0.647 V** above the cell.
+> **How `OCV_lb` is measured (D-799, Round-18 `R18-01`: a PROVED lower bound).**  `OCV_lb` is a LOWER BOUND on the pack's open-circuit voltage, rounded DOWN to the millivolt (D-799).  With the adapter ATTACHED: `OCV_lb` = V(J4) − **0.010 V** − I_up × (**177.5 mΩ** + R_ins) − max(I_up, **0.816 A**) × **87.5 mΩ**, where I_up = |I_BAT| + **0.010 A** + **2 %** of |I_BAT| — the MAGNITUDE of the reading, whatever its sign convention — and R_ins is an UPPER BOUND on the current meter's series path between J4 and the pack, its burden plus its added leads, ESTABLISHED before the record and never assumed (D-800): with a DC clamp meter around one pack lead (no conductor broken) R_ins = 0; with a series DMM or shunt, fix its range (no auto-ranging) and, with the pack disconnected, measure the whole inserted path four-wire on that range, fuse and leads included — or take the meter's published full-scale burden voltage ÷ full-scale current on that range plus the added leads measured four-wire — and record that figure plus its own measurement uncertainty, rounded UP to the milliohm, with the topology and the method.  A series path is never recorded as 0; one above **100 mΩ** (a milliamp range, typically) is not admissible — use a clamp or the high-current range.  With the adapter DETACHED (no charge source): `OCV_lb` = V(J4) − **0.010 V** − **0.072 V**.  Every subtracted term is rounded UP to the millivolt.  V(J4) is a DMM reading (±0.010 V or better at 4.2 V) from J4.1 (`BAT_CONNECTOR_P`, red) to J4.2 (`GND`, black) on the board, and I_BAT is the pack current on a bench meter (±(10 mA + 2 %) or better) at the same instant.  Take both immediately before the change the rule admits — enabling a rail with the adapter attached, or attaching the adapter with a rail live — once the DMM has held within 2 mV for 10 s.  No cell-relaxation time is assumed anywhere: 177.5 mΩ is the hot-aged harness; 87.5 mΩ is the model's DECLARED pack DC resistance, ohmic part and every polarization branch together, and max(I_up, 0.816 A) × 87.5 mΩ — **0.072 V** whenever I_up is at or below 0.816 A — bounds both the pack's own drop and every polarization its charge history can have stored, whatever the current is doing now, because this board's charger never charges above ICHG_max = 0.816 A; a pack charged from any other source is outside the method.  The console `VCELL` is NOT admissible for this rule: while charging it reads `BAT_PROTECTED_P`, up to **0.647 V** above the cell.
 >
 > **Why a separate open-circuit bound.**  The charging-safe envelope is solved on the CELL: the supplement onset is a zero-charge state, where the charger's `BAT` pin is the cell.  While charging, every terminal reading sits ABOVE the cell by the charge current times whatever resistance lies between, AND by whatever polarization an earlier, higher charge current left stored in the pack — which does not follow the present current down (D-799, Round-18 `R18-01`) — so the console `VCELL` and a bare DMM reading are both charging-elevated, and neither is used as the cell voltage.  **REFUSED BY FIRMWARE** rows are refused by the production image on EVERY source, battery included: with no rail live the charging mode-entry table (which the firmware applies whenever no rail is live, because it cannot tell charging from discharging) refuses every Wi-Fi/BLE row, and with a rail live the D-792 rail edge refuses every radio.  Wi-Fi/BLE is therefore refused in every state on this revision, and this image has no Wi-Fi caller.  On battery, every published rail budget is unchanged.
 >
@@ -227,7 +252,7 @@
 > | **FA04** | Community Port delivery and limits | `C-ACC-01`, `C-ACC-02`, `C-ACC-ILIM-01` |
 > | **FA05** | thermal | `C-THERM-01`, `Q11-TEMP-01` |
 > | **FA06** | gauge load epoch and timing | `C-GAUGE-EPOCH-01` |
-> | **FA07** | radio and NFC retained state | `C-RADIO-QUIESCE-01`, `C-NFC-QUIESCE-01` |
+> | **FA07** | radio, NFC and IR retained state, and IR self-blinding | `C-RADIO-QUIESCE-01`, `C-NFC-QUIESCE-01`, `C-IR-01` |
 > | **FA08** | NFC tuning and driver-rail PI | `C-NFC-TUNE-01` |
 > | **FA09** | firmware abort and warm-image recovery | `C-FW-ABORT-01`, `C-WARM-IMAGE-01` |
 > | **FA10** | harness, adhesive and speaker leads | `C-SPK-01`, `C-ADH-01` |
@@ -251,15 +276,15 @@
 >
 > ### **THE FOUR GATES, KEPT APART ON PURPOSE**
 >
-> | gate | D-799 status |
+> | gate | D-800 status |
 > |---|---|
 > | **PRE-ORDER ANALYTICAL** | **CLOSED on this target** |
 > | **FAB / CAM ACCEPTANCE** | **PENDING** — B01–B14 above |
-> | **FIRST-ARTICLE VALIDATION** | **PENDING** — FA01–FA10 above |
+> | **FIRST-ARTICLE VALIDATION** | **PENDING** — FA01–FA10 above, and their prerequisite `FAP-01` (the first-article test image) |
 > | **PROCUREMENT** | **PENDING** — nine constrained fitted groups plus the AOS pass-pair allocation, `SOURCING_LEDGER.md` §4a |
 
 
-> # **D-796 ROUND-15 FULL-CONVERGENCE CORRECTION — HISTORICAL, SUPERSEDED BY THE D-799 BLOCK ABOVE (REJECTED by Round-16)**
+> # **D-796 ROUND-15 FULL-CONVERGENCE CORRECTION — HISTORICAL, SUPERSEDED BY THE D-800 BLOCK ABOVE (REJECTED by Round-16)**
 >
 > **D-796 supersedes D-795, which Round-15 external review REJECTED.  THIS IS A REVIEW
 > TARGET, NOT A FABRICATION AUTHORIZATION — DO NOT ORDER.**  Astra and Fable Work both
@@ -355,7 +380,7 @@
 > | **FA04** | Community Port delivery and limits | `C-ACC-01`, `C-ACC-02`, `C-ACC-ILIM-01` |
 > | **FA05** | thermal | `C-THERM-01`, `Q11-TEMP-01` |
 > | **FA06** | gauge load epoch and timing | `C-GAUGE-EPOCH-01` |
-> | **FA07** | radio and NFC retained state | `C-RADIO-QUIESCE-01`, `C-NFC-QUIESCE-01` |
+> | **FA07** | radio, NFC and IR retained state, and IR self-blinding | `C-RADIO-QUIESCE-01`, `C-NFC-QUIESCE-01`, `C-IR-01` |
 > | **FA08** | NFC tuning and driver-rail PI | `C-NFC-TUNE-01` |
 > | **FA09** | firmware abort and warm-image recovery | `C-FW-ABORT-01`, `C-WARM-IMAGE-01` |
 > | **FA10** | harness, adhesive and speaker leads | `C-SPK-01`, `C-ADH-01` |

@@ -21,8 +21,9 @@
 //                          in shutdown, and TI guarantees OFF only when the
 //                          array's minimum Vf exceeds the maximum VIN -- this
 //                          panel is 2.9-3.2 V on a 3.3 V rail, so it did not.
-//                          Q11 (AO3400A) now sits in the panel cathode return
-//                          with its gate on this same line and R108 holding it
+//                          Q11 (Vishay SQ2364EES) now sits in the panel
+//                          cathode return, its gate driven from this line
+//                          through D14 / C85 / R132, and R108 holds the line
 //                          low, so a firmware crash, a GPIO left in
 //                          high-impedance and a reset all leave the screen
 //                          dark.  PWM on this pin gates the LED current

@@ -128,10 +128,11 @@
   },
   {
    "id": "FA07",
-   "title": "radio and NFC retained state",
+   "title": "radio, NFC and IR retained state, and IR self-blinding",
    "steps": [
     "C-RADIO-QUIESCE-01",
-    "C-NFC-QUIESCE-01"
+    "C-NFC-QUIESCE-01",
+    "C-IR-01"
    ]
   },
   {
@@ -156,6 +157,22 @@
     "C-SPK-01",
     "C-ADH-01"
    ]
+  }
+ ],
+ "first_article_prerequisites": [
+  {
+   "id": "FAP-01",
+   "status": "PENDING",
+   "item": "the FIRST-ARTICLE TEST IMAGE: CC1101 continuous transmit and SX1262 CW at 22 dBm keyed only through SpiBusB::beginTransmit, an NFC field keyed only through DemoBringupApp::beginNfcFieldSession, a Wi-Fi/BLE TX burst, a 38 kHz IR transmit burst from D1, a chip-select hold-off injection for U7 and U9, a held audio drive at the capped level, a held backlight PWM duty after the D-784 prime and a 10 ms VCELL poll -- all under the release image's accessory permission table and quiesce/liveness rules; host-tested, recorded by git SHA, never shipped",
+   "needed_by": [
+    "FA01",
+    "FA05",
+    "FA06",
+    "FA07",
+    "FA08"
+   ],
+   "raised_by": "D-800 (Round-19 full review): the release bring-up image keys none of these states, so the steps that need them were not executable with it",
+   "order_impact": "none -- a firmware deliverable before first article; no board, BOM or CPL change"
   }
  ]
 }

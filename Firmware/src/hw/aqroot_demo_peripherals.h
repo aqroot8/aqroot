@@ -117,8 +117,11 @@ inline IrSelfTest irSelfTest(uint8_t channel = 1) {
   ledcSetup(channel, 38000, 8);
   ledcAttachPin(AQROOT_PIN_IR_TX, channel);
   ledcWrite(channel, 128);            // 50 % duty at 38 kHz
-  const uint32_t deadline = millis() + 2;
-  while (millis() <= deadline) {
+  // D-800: wrap-safe.  `deadline = millis() + 2; while (millis() <= deadline)`
+  // never ended when pressed within 2 ms of the 49.7-day millis() wrap, with
+  // the emitter left driving at 38 kHz and loop() never returning.
+  const uint32_t start = millis();
+  while (millis() - start <= 2) {
     ++result.total_samples;
     if (digitalRead(AQROOT_PIN_IR_RX) == LOW) ++result.low_samples;
   }
@@ -253,8 +256,8 @@ inline MicCapture captureMicrophone(uint32_t ms = 200) {
 
   const uint32_t want = (rate * ms) / 1000;
   int32_t block[128 * 2];
-  const uint32_t deadline = millis() + ms + 200;
-  while (result.frames < want && millis() < deadline) {
+  const uint32_t mic_start = millis();    // D-800: wrap-safe
+  while (result.frames < want && millis() - mic_start < ms + 200) {
     size_t bytes = 0;
     if (i2s_read(I2S_NUM_0, block, sizeof(block), &bytes, 100) != ESP_OK) break;
     const size_t frames = bytes / (sizeof(int32_t) * 2);

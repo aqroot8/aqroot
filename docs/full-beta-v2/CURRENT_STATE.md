@@ -14,7 +14,30 @@
 
 ## 1. Authoritative HEAD
 
-> ### **D-799 REVIEW TARGET — THE EXACT FROZEN IDENTITY**
+> ### **D-800 REVIEW TARGET — THE EXACT FROZEN IDENTITY**
+>
+> | what | value |
+> |---|---|
+> | branch | `origin/aqroot-demo` |
+> | content commit | *recorded by the identity / post-commit verification commit that follows it* |
+> | identity / post-commit verification commit | *that commit — a commit cannot contain its own SHA, so the reviewable target is the PAIR* |
+> | board `aqroot-Beta-v2.kicad_pcb` sha256 | `c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907` |
+> | `hardware/demo/fab/MANIFEST.json` sha256 | *recorded in `evidence/d800-review-target.json`* |
+> | parent, reviewed by Round-19 | `4aa286e2d517f6acc64290e3c427f045dd109654` (D-799 identity) |
+>
+> The board sha256 is IDENTICAL to the reviewed D-799 target: **no copper moved**.  D-800
+> closes Round-19's eight known findings and the full maximum-assurance re-audit's
+> reproducible defects: a full parts list that marked fitted parts DNP, six release-image
+> firmware defects (SPI left bound to the wrong pins, a wedged-I2C boot that skipped the
+> radio quiesce, two `millis()`-wrap hangs, a rail granted with an expander state UNKNOWN,
+> no default PlatformIO environment), a cure hold, a waveform, six package-as-junction
+> sentences, guarantee multiplicity, the `R_ins` procedure, the supervised condition's
+> written forms, and a set of operative-document and first-article executability
+> defects (prerequisite `FAP-01`, step `C-IR-01`).  The full record is
+> `evidence/d800-review-target.json`.
+> **REVIEW TARGET, NOT A FABRICATION AUTHORIZATION.  DO NOT ORDER.**
+
+> ### **D-799 REVIEW TARGET — THE EXACT FROZEN IDENTITY**  *(**HISTORICAL** — graded by Round-19, superseded by D-800)*
 >
 > | what | value |
 > |---|---|
@@ -204,12 +227,15 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
-> # **D-799 ROUND-18 FINAL-TARGETED CORRECTION — CURRENT EXTERNAL-REVIEW TARGET**
+> # **D-800 ROUND-19 MAXIMUM-ASSURANCE FULL PRE-ORDER REVIEW — CURRENT EXTERNAL-REVIEW TARGET**
 >
-> **THIS IS A REVIEW TARGET, NOT A FABRICATION AUTHORIZATION.  DO NOT ORDER.**  Round-18 external review graded D-798 **Astra B — three bounded pre-order analytical/procedure/verifier corrections** and **Fable Work A — three Low procedure/verifier residuals**; neither established a respin.  **No copper, net, footprint, placement, part value, firmware or protected-copper object moves at D-799.**  Connectivity is unchanged at **174 retained / 173 connected / one owner-approved `U11.3` open / zero unapproved**.  `D799-01`…`D799-04` are closed; the full record is `CTO_DECISIONS.md` D-799.
+> **THIS IS A REVIEW TARGET, NOT A FABRICATION AUTHORIZATION.  DO NOT ORDER.**  Round-19 graded D-799 **Astra B — three non-PCB pre-order corrections** and **Opus/Fable A with seven residuals**, and the owner required a FULL maximum-assurance re-audit.  **No copper, net, footprint, placement, part value or protected-copper object moves at D-800**; the release FIRMWARE image changes (six fail-closed / bus / wrap defects, each host-tested with a permanent mutation control).  Connectivity is unchanged at **174 retained / 173 connected / one owner-approved `U11.3` open / zero unapproved**.  D800-KNOWN-01…08 are closed, `R19-06` is dispositioned, and the re-audit's findings are fixed or dispositioned with evidence; the full record is `CTO_DECISIONS.md` D-800.  *(D-799 — Round-18's corrections — is the reviewed parent and is superseded; everything it established below still stands.)*
 >
 > ### THE PRODUCT-FACING CONSEQUENCES, IN ONE PLACE
 >
+> * **D-800: the full parts list marks every fitted part fitted** (D-799's `BOM-full.csv` called the fitted `L4`/`U21` DNP); FAB-NOTES carries a generated PIN-1 / POLARITY table.
+> * **D-800: first-article steps that need a transmitter, a field, an IR burst or a held audio / backlight state run on the FIRST-ARTICLE TEST IMAGE `FAP-01`**, a prerequisite PENDING; the release image keys none of them.  New step `C-IR-01`: the formed IR axes are 13.73 mm apart, under D-162's 15 mm heuristic.
+> * **D-800: one J4 adhesive hold** — nothing load-bearing before the full ≥ 72 h; `IIN` is positive INTO the device; `R_ins` for `OCV_lb` is MEASURED (a series meter is never 0); every junction criterion is the interval.
 > * **`OCV_lb` is now a PROVED lower bound (`R18-01`).**  D-798's correction could sit ABOVE the pack's true open-circuit voltage five ways — a charge current read low, a current that has FALLEN while the pack's stored polarization has not, a bench shunt between J4 and the pack, a residual rounded down, a current recorded with the other sign.  The method now carries the DMM and current-meter uncertainty, uses the current's MAGNITUDE, adds the meter's insertion resistance, and bounds the pack's drop and stored polarization together at max(I_up, ICHG_max) × the declared pack DC resistance — no relaxation time is assumed.  The matrix, the one rule and its **4.10 V** threshold are UNCHANGED; only the measured quantity is corrected, so a SUPERVISED combination now in practice needs a nearly full pack (a detached reading of at least 4.182 V).
 > * **A charge-end record must be physically possible (`R18-02`).**  `SYS` boosted above both `VIN` and the pack, input current against `VIN` below `VSYS`, `SYS` above VSYS_REG max, current flowing uphill, or a transition summary contradicted by its own samples is **FAULT / UNCLASSIFIED** before any classification.
 > * **Thermal first-article triggers judge the JUNCTION INTERVAL (`R18-03`).**  The package-top reading and the junction are separate quantities; the junction is package − 2 K … package + 5 × ΨJT × loss + 2 K.  89 °C at 1 W is 87–101 °C, which overlaps TREG's 90–110 °C band: **INDETERMINATE / RECORD**, never a contradiction of the controller.  The comparator cycle is DISCHARGE intervals and NON-SUPPLYING intervals only — no charging pulse.
@@ -255,7 +281,7 @@
 | Wi-Fi / BLE TX + audio at the capped level + sub-GHz TX | acc 5v only | 6.173 W | **REFUSED BY FIRMWARE** (on battery too) |
 | Wi-Fi / BLE TX + audio at the capped level + sub-GHz TX | no accessory | 4.412 W | **REFUSED BY FIRMWARE** (on battery too) |
 >
-> **How `OCV_lb` is measured (D-799, Round-18 `R18-01`: a PROVED lower bound).**  `OCV_lb` is a LOWER BOUND on the pack's open-circuit voltage, rounded DOWN to the millivolt (D-799).  With the adapter ATTACHED: `OCV_lb` = V(J4) − **0.010 V** − I_up × (**177.5 mΩ** + R_ins) − max(I_up, **0.816 A**) × **87.5 mΩ**, where I_up = |I_BAT| + **0.010 A** + **2 %** of |I_BAT| — the MAGNITUDE of the reading, whatever its sign convention — and R_ins is the current meter's series burden plus its added leads between J4 and the pack (0 for a clamp meter; at most **100 mΩ**).  With the adapter DETACHED (no charge source): `OCV_lb` = V(J4) − **0.010 V** − **0.072 V**.  Every subtracted term is rounded UP to the millivolt.  V(J4) is a DMM reading (±0.010 V or better at 4.2 V) from J4.1 (`BAT_CONNECTOR_P`, red) to J4.2 (`GND`, black) on the board, and I_BAT is the pack current on a bench meter (±(10 mA + 2 %) or better) at the same instant.  Take both immediately before the change the rule admits — enabling a rail with the adapter attached, or attaching the adapter with a rail live — once the DMM has held within 2 mV for 10 s.  No cell-relaxation time is assumed anywhere: 177.5 mΩ is the hot-aged harness; 87.5 mΩ is the model's DECLARED pack DC resistance, ohmic part and every polarization branch together, and max(I_up, 0.816 A) × 87.5 mΩ — **0.072 V** whenever I_up is at or below 0.816 A — bounds both the pack's own drop and every polarization its charge history can have stored, whatever the current is doing now, because this board's charger never charges above ICHG_max = 0.816 A; a pack charged from any other source is outside the method.  The console `VCELL` is NOT admissible for this rule: while charging it reads `BAT_PROTECTED_P`, up to **0.647 V** above the cell.
+> **How `OCV_lb` is measured (D-799, Round-18 `R18-01`: a PROVED lower bound).**  `OCV_lb` is a LOWER BOUND on the pack's open-circuit voltage, rounded DOWN to the millivolt (D-799).  With the adapter ATTACHED: `OCV_lb` = V(J4) − **0.010 V** − I_up × (**177.5 mΩ** + R_ins) − max(I_up, **0.816 A**) × **87.5 mΩ**, where I_up = |I_BAT| + **0.010 A** + **2 %** of |I_BAT| — the MAGNITUDE of the reading, whatever its sign convention — and R_ins is an UPPER BOUND on the current meter's series path between J4 and the pack, its burden plus its added leads, ESTABLISHED before the record and never assumed (D-800): with a DC clamp meter around one pack lead (no conductor broken) R_ins = 0; with a series DMM or shunt, fix its range (no auto-ranging) and, with the pack disconnected, measure the whole inserted path four-wire on that range, fuse and leads included — or take the meter's published full-scale burden voltage ÷ full-scale current on that range plus the added leads measured four-wire — and record that figure plus its own measurement uncertainty, rounded UP to the milliohm, with the topology and the method.  A series path is never recorded as 0; one above **100 mΩ** (a milliamp range, typically) is not admissible — use a clamp or the high-current range.  With the adapter DETACHED (no charge source): `OCV_lb` = V(J4) − **0.010 V** − **0.072 V**.  Every subtracted term is rounded UP to the millivolt.  V(J4) is a DMM reading (±0.010 V or better at 4.2 V) from J4.1 (`BAT_CONNECTOR_P`, red) to J4.2 (`GND`, black) on the board, and I_BAT is the pack current on a bench meter (±(10 mA + 2 %) or better) at the same instant.  Take both immediately before the change the rule admits — enabling a rail with the adapter attached, or attaching the adapter with a rail live — once the DMM has held within 2 mV for 10 s.  No cell-relaxation time is assumed anywhere: 177.5 mΩ is the hot-aged harness; 87.5 mΩ is the model's DECLARED pack DC resistance, ohmic part and every polarization branch together, and max(I_up, 0.816 A) × 87.5 mΩ — **0.072 V** whenever I_up is at or below 0.816 A — bounds both the pack's own drop and every polarization its charge history can have stored, whatever the current is doing now, because this board's charger never charges above ICHG_max = 0.816 A; a pack charged from any other source is outside the method.  The console `VCELL` is NOT admissible for this rule: while charging it reads `BAT_PROTECTED_P`, up to **0.647 V** above the cell.
 >
 > ### THE FOUR GATES
 >
@@ -263,7 +289,7 @@
 > |---|---|
 > | **PRE-ORDER ANALYTICAL** | **CLOSED on this target** |
 > | **FAB / CAM ACCEPTANCE** | **PENDING** — B01–B14 in `assembly/RELEASE_ACCEPTANCE_REGISTER.json` and the fab notes |
-> | **FIRST-ARTICLE VALIDATION** | **PENDING** — FA01–FA10, enumerated in the same register and in `FIRST_FIVE_ASSEMBLY_PLAN` §7d |
+> | **FIRST-ARTICLE VALIDATION** | **PENDING** — FA01–FA10, enumerated in the same register and in `FIRST_FIVE_ASSEMBLY_PLAN` §7d, and their prerequisite `FAP-01` (the first-article test image) |
 > | **PROCUREMENT** | **PENDING** — nine constrained fitted groups plus the AOS pass-pair allocation |
 
 > # **D-798 ROUND-17 TARGETED-CONVERGENCE CORRECTION — HISTORICAL, SUPERSEDED BY D-799 (REJECTED by Round-18; its `OCV_lb` formula is RETIRED)**

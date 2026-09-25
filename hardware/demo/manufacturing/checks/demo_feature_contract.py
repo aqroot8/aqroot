@@ -1463,6 +1463,11 @@ ETA_U21 = 0.88                         # TPS61023 boost, conservative
 # F6 REFUSES rather than defaulting.
 P3V3_FB = dict(
     top="R39", bottom="R40", vfb_V=(0.495, 0.500, 0.505),
+    # D-800 (Round-19 power audit): SLVS916 prints line and load regulation
+    # in its TYP column only.  They are applied here as DECLARED allowances,
+    # always in the WIDENING direction (lower minimum, higher maximum), never
+    # as a guarantee; the guaranteed rail is the feedback band, the resistor
+    # tolerance and TCR, and C-PWR-TRANSIENT-01 measures the rest.
     max_line_reg=0.005, max_load_reg=0.005, ps_high_relative_to_pwm=0.05,
     reference_temp_C=25.0, temp_min_C=-40.0, temp_max_C=85.0,
     # D-788 / R7-D787-01.  PS/SYNC NO LONGER SITS ON GND.  TI SLVS916I 7.4.4:
@@ -4298,6 +4303,21 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
         used_as_a_ruling_bound=True)]
     d["the_provenance_rule_refuses_a_typical_bound"] = bool(
         apm.audit_tags(_poisoned)["invalid_ruling_use"])
+    # D-800 / D800-KNOWN-05 (Opus R19-03): a GUARANTEED key stated twice --
+    # a bad copy after a good one, a bad one before, or identical -- is
+    # refused before any projection.
+    _g0 = next(r for r in apm.registry()
+               if str(r["tag"]).startswith("GUARANTEED"))
+    _g0_bad = dict(_g0, value=(_g0["value"] * 1.5 if isinstance(
+        _g0["value"], (int, float)) else "tampered"))
+    d["the_provenance_rule_refuses_a_duplicated_guarantee"] = bool(
+        not [r for r in apm.audit_tags()["invalid_ruling_use"]
+             if "stated" in r.get("why", "")]
+        and all(any("stated 2 times" in r.get("why", "")
+                    for r in apm.audit_tags(m_)["invalid_ruling_use"])
+                for m_ in (apm.registry() + [_g0_bad],
+                           [_g0_bad] + apm.registry(),
+                           apm.registry() + [dict(_g0)])))
 
     # ======================================================================
     # D-794 / R13-05.  THE ROLE-MISCLASSIFICATION CONTROLS, INCLUDING THE ONE
@@ -4988,6 +5008,7 @@ def judge_accessory_envelope(values, single_floor=None, dual_floor=None,
           and d["no_typical_is_used_as_a_ruling_bound"]
           and d["every_ruling_input_carries_a_provenance_tag"]
           and d["the_provenance_rule_refuses_a_typical_bound"]
+          and d["the_provenance_rule_refuses_a_duplicated_guarantee"]
           and d["every_role_misclassification_control_is_refused"]
           and d["guarantees_are_bound_to_primary_rows_ok"]
           and d["p3v3_divider_parts_have_a_published_temperature_coefficient"]
@@ -5633,6 +5654,24 @@ SUPERVISED_CURRENT_UNCERTAINTY = (0.010, 0.02)   # DECLARED: +/-(10 mA + 2 %
                                                  # of |reading|)
 SUPERVISED_INSERTION_OHM_MAX = 0.100   # DECLARED admission cap on the meter's
                                        # series burden plus its added leads
+# D-800 / D800-KNOWN-07 (Opus R19-05).  R_ins is ESTABLISHED, never assumed.
+# D-799 admitted any R_ins from 0 to the cap and said "0 for a clamp meter";
+# nothing stopped a technician with a SERIES meter from entering 0, and a
+# 80 mOhm series path entered as 0 at 0.8 A puts OCV_lb 45 mV ABOVE the true
+# OCV.  A record now names its current-meter TOPOLOGY: a clamp (no conductor
+# broken) may record 0; a series meter or shunt records an UPPER BOUND on its
+# inserted path, measured by one of the named methods -- never 0.
+SUPERVISED_METER_TOPOLOGIES = ("clamp", "series")
+SUPERVISED_INSERTION_METHODS = (
+    "four_wire_measured",        # 4-wire milliohm meter across the whole
+                                 # inserted path (meter on its RECORDING
+                                 # range, fuse and leads included), pack
+                                 # disconnected, plus that meter's uncertainty
+    "burden_plus_leads_measured",  # the meter's published burden on the
+                                   # FIXED recording range (full-scale burden
+                                   # voltage / full-scale current) plus the
+                                   # added leads measured 4-wire
+)
 
 
 def _ceil_mV(x):
@@ -5649,8 +5688,10 @@ def supervised_ocv_lower_bound(rec, method):
 
     rec: adapter "attached" | "detached"; v_j4_V (DMM, J4.1 to J4.2);
     attached only: i_bat_A (the pack current at the same instant, either
-    sign convention) and insertion_ohm (the current meter's series burden
-    plus its added leads between J4 and the pack; 0 for a clamp meter)."""
+    sign convention), current_meter ("clamp" or "series"), insertion_ohm
+    (an UPPER bound on the current meter's series burden plus its added
+    leads between J4 and the pack; 0 only for a clamp meter) and, for a
+    series meter, insertion_method (one of SUPERVISED_INSERTION_METHODS)."""
     m = method
     why = []
     if not isinstance(rec, dict):
@@ -5678,6 +5719,23 @@ def supervised_ocv_lower_bound(rec, method):
             why.append("the current meter's insertion %.3f ohm is above the "
                        "declared %.3f ohm admission cap"
                        % (ins, m["insertion_ohm_max"]))
+        # D-800 / D800-KNOWN-07: the topology decides what R_ins may be.
+        topo = rec.get("current_meter")
+        if topo not in SUPERVISED_METER_TOPOLOGIES:
+            why.append("with the adapter attached the record must name the "
+                       "current meter's topology, clamp or series (%r)"
+                       % (topo,))
+        elif topo == "series" and _finite(ins):
+            if ins <= 0.0:
+                why.append("a SERIES meter or shunt breaks the pack lead and "
+                           "has a burden: its insertion resistance is never "
+                           "0 -- measure it (%r)" % (ins,))
+            if rec.get("insertion_method") not in \
+                    SUPERVISED_INSERTION_METHODS:
+                why.append("a series meter's insertion resistance must be "
+                           "MEASURED by a named method %r, not assumed (%r)"
+                           % (SUPERVISED_INSERTION_METHODS,
+                              rec.get("insertion_method")))
         if not why:
             a0, ag = m["current_uncertainty"]["offset_A"], \
                 m["current_uncertainty"]["gain"]
@@ -5738,6 +5796,13 @@ def supervised_ocv_truth_min(rec, method, r0_steps=8):
     return worst
 
 
+def _d800_meter(ins):
+    """The topology a physical insertion implies: none is a clamp, any is
+    a series path measured four-wire."""
+    return (dict(current_meter="clamp") if ins <= 0.0 else
+            dict(current_meter="series", insertion_method="four_wire_measured"))
+
+
 def supervised_ocv_bound_proof(method, formula=None):
     """D-799 / D799-01.  Is `formula` a TRUE lower bound over the declared
     domain?  Three independent attacks: the corner adversary over a record
@@ -5764,7 +5829,7 @@ def supervised_ocv_bound_proof(method, formula=None):
                 for ins in ((0.0, 0.05, m["insertion_ohm_max"])
                             if att == "attached" else (0.0,)):
                     rec = dict(adapter=att, v_j4_V=v, i_bat_A=i,
-                               insertion_ohm=ins)
+                               insertion_ohm=ins, **_d800_meter(ins))
                     judge("corner", rec, supervised_ocv_truth_min(rec, m))
     # 2. time-domain simulation
     rnd = random.Random(799)
@@ -5804,7 +5869,7 @@ def supervised_ocv_bound_proof(method, formula=None):
             im = -im
         rec = (dict(adapter="detached", v_j4_V=vm) if detach else
                dict(adapter="attached", v_j4_V=vm, i_bat_A=im,
-                    insertion_ohm=ins))
+                    insertion_ohm=ins, **_d800_meter(ins)))
         judge("simulation", rec, ocv)
     # 3. the Round-18 witnesses, each a physical scenario with a KNOWN OCV
     for tag, rec, truth in supervised_ocv_witnesses(m):
@@ -5827,15 +5892,16 @@ def supervised_ocv_witnesses(m):
     im = (it - a0) / (1.0 + ag)
     out.append(("witness_a_current_error", dict(
         adapter="attached", v_j4_V=ocv + it * (rdc + rh) + uv,
-        i_bat_A=im, insertion_ohm=0.0), ocv))
+        i_bat_A=im, insertion_ohm=0.0, current_meter="clamp"), ocv))
     # (b) current fell from ICHG_max to 50 mA, polarization still stored
     out.append(("witness_b_current_fall", dict(
         adapter="attached", v_j4_V=ocv + 0.05 * (r0 + rh) + rp * ih,
-        i_bat_A=0.05, insertion_ohm=0.0), ocv))
+        i_bat_A=0.05, insertion_ohm=0.0, current_meter="clamp"), ocv))
     # (c) a 50 mOhm bench shunt with clip leads between J4 and the pack
     out.append(("witness_c_shunt_path", dict(
         adapter="attached", v_j4_V=ocv + it * (rdc + rh + 0.050),
-        i_bat_A=it, insertion_ohm=0.050), ocv))
+        i_bat_A=it, insertion_ohm=0.050, current_meter="series",
+        insertion_method="four_wire_measured"), ocv))
     # (d) the detached residual printed rounded down, DMM at its limit;
     # swept across sub-millivolt OCVs so the final floor cannot hide it
     for k in range(10):
@@ -5848,7 +5914,7 @@ def supervised_ocv_witnesses(m):
     # (e) the current recorded discharge-positive
     out.append(("witness_e_sign_convention", dict(
         adapter="attached", v_j4_V=ocv + it * (rdc + rh),
-        i_bat_A=-it, insertion_ohm=0.0), ocv))
+        i_bat_A=-it, insertion_ohm=0.0, current_meter="clamp"), ocv))
     return out
 
 
@@ -5884,9 +5950,20 @@ def supervised_charging_markdown(cc):
         "ATTACHED: `OCV_lb` = V(J4) − **%.3f V** − I_up × (**%.1f mΩ** + "
         "R_ins) − max(I_up, **%.3f A**) × **%.1f mΩ**, where I_up = |I_BAT| "
         "+ **%.3f A** + **%.0f %%** of |I_BAT| — the MAGNITUDE of the "
-        "reading, whatever its sign convention — and R_ins is the current "
-        "meter's series burden plus its added leads between J4 and the "
-        "pack (0 for a clamp meter; at most **%.0f mΩ**).  With the adapter "
+        "reading, whatever its sign convention — and R_ins is an UPPER "
+        "BOUND on the current meter's series path between J4 and the pack, "
+        "its burden plus its added leads, ESTABLISHED before the record and "
+        "never assumed (D-800): with a DC clamp meter around one pack lead "
+        "(no conductor broken) R_ins = 0; with a series DMM or shunt, fix "
+        "its range (no auto-ranging) and, with the pack disconnected, "
+        "measure the whole inserted path four-wire on that range, fuse and "
+        "leads included — or take the meter's published full-scale burden "
+        "voltage ÷ full-scale current on that range plus the added leads "
+        "measured four-wire — and record that figure plus its own "
+        "measurement uncertainty, rounded UP to the milliohm, with the "
+        "topology and the method.  A series path is never recorded as 0; "
+        "one above **%.0f mΩ** (a milliamp range, typically) is not "
+        "admissible — use a clamp or the high-current range.  With the adapter "
         "DETACHED (no charge source): `OCV_lb` = V(J4) − **%.3f V** − "
         "**%.3f V**.  Every subtracted term is rounded UP to the "
         "millivolt.  V(J4) is a DMM reading (±%.3f V or better at 4.2 V) "
@@ -6296,6 +6373,20 @@ def charge_end_consistency_problems(obs, spec=None):
         why.append("VSYS %.3f V is above both VIN %.3f V and the pack %.3f V:"
                    " U11 is a linear path and cannot boost SYS"
                    % (v["vsys_V"], v["vin_V"], v["vbat_V"]))
+    # D-800 / D800-KNOWN-01 (Astra R19-01).  IIN is SIGNED, positive from
+    # the adapter INTO the device.  The only path from the adapter is into
+    # U11's IN through its blocking FETs (SLUSF65B 6.3.1), which always draw
+    # IQ_IN (0.75 mA TYP) into IN, and no part of this board sources VBUS.
+    # A reading whose WHOLE meter interval is below zero -- current flowing
+    # OUT of the device into the adapter -- is not a state this board can
+    # reach: a reversed meter, a mis-wired shunt or a different node.  An
+    # interval that includes zero is an instrument offset and is accepted.
+    if v["iin_A"] + iu(v["iin_A"]) < 0.0:
+        why.append("IIN %.3f A is negative beyond the meter's +/-%.3f A: "
+                   "current OUT of the device into the adapter, which the "
+                   "blocking input path cannot carry -- check the meter's "
+                   "polarity (positive is adapter INTO the device) and its "
+                   "node" % (v["iin_A"], iu(v["iin_A"])))
     if v["iin_A"] > iu(v["iin_A"]) and v["vin_V"] < v["vsys_V"] - 2 * u:
         why.append("IIN %.3f A flows into IN while VIN %.3f V is below VSYS "
                    "%.3f V: no passive path carries it"
@@ -6650,6 +6741,8 @@ FA_OUTCOME_SEMANTICS = {
     "C-GAUGE-EPOCH-01": (("gate", "record"), ()),
     "C-NFC-QUIESCE-01": (("gate", "record"), ()),
     "C-NFC-TUNE-01": (("gate", "record"), ("F6",)),
+    # D-800 (Round-19 full review): the IR pair's isolation, measured.
+    "C-IR-01": (("gate",), ()),
 }
 FA_OUTCOME_MARKER = "OUTCOME:"
 
@@ -6768,7 +6861,8 @@ _D797_SYMMETRIC_CLAIMS = (
                 _SYM_I)),
     ("STAT1 alone read as charge completion",
      (re.compile(r"\bSTAT1\b"),
-      re.compile(r"complet\w*|terminat\w*|fully charged|full charge|"
+      # D-800: word-bounded -- "INDETERMINATE" is not "terminated".
+      re.compile(r"\bcomplet\w*|\bterminat\w*|fully charged|full charge|"
                  r"charge done", _SYM_I)),
      re.compile(r"cannot|\bnot\b|ambiguous|STAT2|inference|infer\w*|"
                 r"never|\balone\b|insufficient|fault|UNCLASSIFIED",
@@ -6852,6 +6946,26 @@ _D797_UNIVERSAL_QUANTIFIER = re.compile(
     r"\b(?:every|all|any)\s+(?:\w+\s+)?cells?\b|whole (?:cell |charging )?"
     r"(?:range|domain)|over the whole|\buniversal(?:ly)?\b|regardless of "
     r"(?:the )?cell|at any cell", re.I)
+
+
+# D-800 / D800-KNOWN-08 (Opus R19-07).  The supervised rule's CONDITION is a
+# finite normative family, not free English: a conditional, a subject that
+# is the pack's voltage, a verb of state or reading, an optional comparator.
+# D-799 knew only "is at least"; "the pack READS at least 3.90 V" escaped.
+_D800_SUP_SUBJECT = (r"(?:the )?(?:pack|cell|battery|OCV_lb|V\(J4\)|VBAT|"
+                     r"open-circuit (?:voltage|lower bound))(?:'s)?"
+                     r"(?: (?:voltage|open-circuit voltage|OCV|terminal "
+                     r"voltage))?")
+_D800_SUP_VERB = (r"(?:is|reads|measures|sits|stays|remains|reaches|"
+                  r"has (?:reached|risen to|been)|shows|registers|was)")
+_D800_SUP_CMP = (r"(?:at or above|above|over|at least|no (?:less|lower) than|"
+                 r"not (?:below|under|less than)|higher than|greater than|"
+                 r">=|\u2265|>)?")
+_D800_SUP_CONDITION = (r"(?:unless|only (?:if|while|when|once|after)|"
+                       r"provided(?: that)?|as long as|so long as|"
+                       r"if and only if)\s+" + _D800_SUP_SUBJECT + r"\s+"
+                       + _D800_SUP_VERB + r"\s*" + _D800_SUP_CMP)
+_D800_SUP_CHARGING = r"(?:charg\w*|adapter|\bUSB\b|\bVBUS\b)"
 
 
 def _d797_bound_families(quiet, audio, retention, floors, gauge, junction,
@@ -6947,7 +7061,16 @@ def _d797_bound_families(quiet, audio, retention, floors, gauge, junction,
                         r"(?:attached|connected|plugged)|"
                         r"(?:unless|only (?:if|while|when)) the (?:pack|cell|"
                         r"battery)(?: voltage)? is (?:at or above|above|at "
-                        r"least)",
+                        r"least)|"
+                        # D-800 / D800-KNOWN-08 (Opus R19-07): the SAME
+                        # condition in its other finite written forms --
+                        # "reads at least", "measures", "has reached", "no
+                        # less than", "3.90 V or more" -- when the sentence
+                        # is about charging or the adapter, on either side.
+                        + _D800_SUP_CHARGING + r"[^.;|]{0,100}?"
+                        + _D800_SUP_CONDITION + r"|"
+                        + _D800_SUP_CONDITION + r"(?=\s*\**\s*\d\.\d{2}\s*V"
+                        r"[^.;|]{0,100}?" + _D800_SUP_CHARGING + r")",
                         re.I), (set(supervised) if supervised else set())),
                     (None, re.compile(
                         r"reported|FIRMWARE FLOOR|firmware floor|VCELL|"
@@ -8538,6 +8661,8 @@ def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
                         "leads is inside the V(J4) reading; recorded per "
                         "measurement (0 for a clamp meter), admitted up to "
                         "the declared cap",
+        meter_topologies=list(SUPERVISED_METER_TOPOLOGIES),
+        insertion_methods=list(SUPERVISED_INSERTION_METHODS),
         # published figures ARE the computed ones, rounded OUTWARD
         harness_max_ohm=math.ceil(round(apm.harness_ohm("max") * 1e4, 6))
         / 1e4,
@@ -8603,7 +8728,8 @@ def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
             no_current_uncertainty=_ocv_mut(current_uncertainty=dict(
                 offset_A=0.0, gain=0.0)),
             no_insertion_term=_ocv_mut(
-                rec_fn=lambda r_: dict(r_, insertion_ohm=0.0)
+                rec_fn=lambda r_: dict(r_, insertion_ohm=0.0,
+                                       current_meter="clamp")
                 if r_.get("adapter") == "attached" else r_),
             pack_at_the_present_current_only=_ocv_mut(
                 history_current_max_A=0.0),
@@ -8613,7 +8739,54 @@ def judge_cell_to_load(paths_ohm, v_3v3_V, v_acc5v_V, ron_a3_ohm, ron_a5_ohm,
                 rec_fn=lambda r_: dict(r_, i_bat_A=max(r_["i_bat_A"], 0.0))
                 if r_.get("adapter") == "attached" else r_)),
         ok=None)
+    # D-800 / D800-KNOWN-07 (Opus R19-05): how R_ins is ESTABLISHED.  The
+    # Round-19 witness -- an 80 mOhm series path recorded as 0 at 0.8 A,
+    # which D-799 accepted at 45 mV above the true OCV -- is refused before
+    # any bound is computed; a clamp at 0 and a measured series path are
+    # admitted; an unmeasured, a zero, an over-cap or an unnamed topology is
+    # refused.
+    _o, _rdc, _rh = 4.050, supervised_method["pack_dc_ohm"], \
+        supervised_method["harness_max_ohm"]
+
+    def _ins_rec(i_, path_, **f_):
+        return dict(dict(adapter="attached", v_j4_V=_o + i_ * (_rdc + _rh
+                                                              + path_),
+                         i_bat_A=i_), **f_)
+
+    def _refused(rec_):
+        return supervised_ocv_lower_bound(rec_, supervised_method)[0] is None
+    _ins_ctrl = dict(
+        r19_05_series_path_entered_as_zero_is_refused=_refused(_ins_rec(
+            0.8, 0.080, current_meter="series", insertion_ohm=0.0,
+            insertion_method="four_wire_measured")),
+        series_path_without_a_measurement_method_is_refused=_refused(
+            _ins_rec(0.4, 0.050, current_meter="series",
+                     insertion_ohm=0.050)),
+        series_path_by_an_unnamed_method_is_refused=_refused(_ins_rec(
+            0.4, 0.050, current_meter="series", insertion_ohm=0.050,
+            insertion_method="assumed")),
+        no_topology_is_refused=_refused(_ins_rec(0.4, 0.0,
+                                                 insertion_ohm=0.0)),
+        over_the_cap_is_refused=_refused(_ins_rec(
+            0.4, 0.150, current_meter="series", insertion_ohm=0.150,
+            insertion_method="four_wire_measured")),
+        a_clamp_at_zero_is_admitted=not _refused(_ins_rec(
+            0.4, 0.0, current_meter="clamp", insertion_ohm=0.0)),
+        a_measured_series_path_is_admitted_and_bounded=bool(
+            not _refused(_ins_rec(0.8, 0.080, current_meter="series",
+                                  insertion_ohm=0.080,
+                                  insertion_method="four_wire_measured"))
+            and supervised_ocv_lower_bound(_ins_rec(
+                0.8, 0.080, current_meter="series", insertion_ohm=0.080,
+                insertion_method="four_wire_measured"),
+                supervised_method)[0] <= _o),
+        the_d799_record_shape_would_have_exceeded_the_true_ocv=bool(
+            supervised_ocv_lower_bound(_ins_rec(
+                0.8, 0.080, current_meter="clamp", insertion_ohm=0.0),
+                supervised_method)[0] > _o))
+    supervised_ocv_proof["insertion_establishment_controls"] = _ins_ctrl
     supervised_ocv_proof["ok"] = bool(
+        all(_ins_ctrl.values()) and
         not _ocv_viol
         and set(_ocv_d798_classes) == {
             "witness_a_current_error", "witness_b_current_fall",
@@ -11875,7 +12048,14 @@ def main():
                 # acceptance register are operative documents too.
                 "hardware/demo/fab/aqroot-Demo-ACC-3V3-REINFORCEMENT.json",
                 "docs/full-beta-v2/assembly/RELEASE_ACCEPTANCE_REGISTER.json",
-                "hardware/demo/fab/aqroot-Demo-FAB-NOTES.md")
+                "hardware/demo/fab/aqroot-Demo-FAB-NOTES.md",
+                # D-800 / D800-KNOWN-02 (Astra R19-02): the manual travelers
+                # are operative documents.  THT_LEAD_TRIM carried a 24 h
+                # cure beside the harness record's 72 h hold for two
+                # releases because no scan read it.
+                "docs/full-beta-v2/assembly/THT_LEAD_TRIM.md",
+                "docs/full-beta-v2/assembly/IR_LEAD_FORMING.md",
+                "docs/full-beta-v2/assembly/FIRST_FIVE_POPULATION_MATRIX.md")
     _fc_found = []
     _fc_texts = {}
     for r_ in _fc_docs:
@@ -12366,6 +12546,35 @@ def main():
             "TERMINATED"),
         d799_near_zero_current_within_the_offset_still_terminates=(
             _ce_with(_term, "ibat_A", value=-0.002), "TERMINATED"),
+        # ---- D-800 / D800-KNOWN-01 (Astra R19-01): a signed IIN ---------
+        # The Round-19 witness: VIN 5.00 V, VSYS 4.41 V, pack 4.18 V, IBAT
+        # 0, STAT1 HIGH, a valid sustained transition -- and current OUT
+        # of the device.  Wholly negative beyond +/-(5 mA + 2 %).
+        d800_r19_01_iin_minus_40mA_is_not_a_completion=(
+            _ce_with(_ce_with(_ce_with(dict(_term, batfet_off_transition=dict(
+                _trans, vsys_min_V=4.41)), "vsys_V", value=4.41),
+                "vin_V", value=5.00), "iin_A", value=-0.040),
+            "FAULT / UNCLASSIFIED"),
+        d800_r19_01_iin_minus_50mA_is_not_a_completion=(
+            _ce_with(_ce_with(_ce_with(dict(_term, batfet_off_transition=dict(
+                _trans, vsys_min_V=4.41)), "vsys_V", value=4.41),
+                "vin_V", value=5.00), "iin_A", value=-0.050),
+            "FAULT / UNCLASSIFIED"),
+        d800_iin_minus_10mA_is_still_wholly_negative=(
+            _ce_with(_term, "iin_A", value=-0.010), "FAULT / UNCLASSIFIED"),
+        # nearby controls: an interval that INCLUDES zero is instrument
+        # offset, and an ordinary positive input current still terminates.
+        d800_near_iin_minus_5mA_within_the_offset_still_terminates=(
+            _ce_with(_term, "iin_A", value=-0.005), "TERMINATED"),
+        d800_near_iin_zero_still_terminates=(
+            _ce_with(_term, "iin_A", value=0.0), "TERMINATED"),
+        d800_near_iin_plus_3mA_still_terminates=(
+            _ce_with(_term, "iin_A", value=0.003), "TERMINATED"),
+        d800_near_iin_ordinary_positive_still_terminates=(
+            _ce_with(_ce_with(_ce_with(dict(_term, batfet_off_transition=dict(
+                _trans, vsys_min_V=4.41)), "vsys_V", value=4.41),
+                "vin_V", value=5.00), "iin_A", value=0.120),
+            "TERMINATED"),
         d798_a_non_finite_transition_field=(
             dict(_term, batfet_off_transition=dict(_trans,
                                                    ibat_max_A=_nan)),
@@ -12922,6 +13131,10 @@ def main():
         "docs/full-beta-v2/assembly/OFF_BOARD_BOM.md",
         "hardware/demo/fab/aqroot-Demo-ACC-3V3-REINFORCEMENT.json",
         "docs/full-beta-v2/assembly/RELEASE_ACCEPTANCE_REGISTER.json",
+        # D-800 / D800-KNOWN-02: the manual travelers (see `_fc_docs`).
+        "docs/full-beta-v2/assembly/THT_LEAD_TRIM.md",
+        "docs/full-beta-v2/assembly/IR_LEAD_FORMING.md",
+        "docs/full-beta-v2/assembly/FIRST_FIVE_POPULATION_MATRIX.md",
     )
 
     # A FENCE IS A BLOCK PROPERTY AS WELL AS A SENTENCE PROPERTY.
@@ -13523,6 +13736,257 @@ def main():
         ok=bool(all(_r17_caught.values())))
     cell_net_ok = cell_net_ok and cell_net[
         "round17_document_escapes_are_caught"]["ok"]
+
+    # ---- D-800 / Round-19.  THREE FINITE OPERATIVE FAMILIES, AND THE
+    # ROUND-19 SHAPES, PERMANENT.
+    #
+    #   KNOWN-02 (Astra R19-02)  the J4 / DOWSIL 3145 bead has ONE qualified
+    #            process release, the >= 72 h hold; a shorter hold stated
+    #            before a pull, thermal, retention/closure or shipment step
+    #            contradicts it.  Tack-free and handling (move, never load)
+    #            are separate states and are not refused.
+    #   KNOWN-03 (Astra R19-03, Opus R19-02)  the comparator cycle is a
+    #            DISCHARGE interval then a NON-SUPPLYING interval; "IBAT
+    #            alternating sign" or a charging pulse is the retired model.
+    #   KNOWN-04 (Opus R19-01)  a package-top reading is not the junction:
+    #            a rule comparing the package directly to the modelled
+    #            junction, TREG, TSHUT or a junction-valued threshold, or
+    #            reading a "measured junction", is refused; the junction is
+    #            the interval derived FROM the package.
+    #   KNOWN-08 (Opus R19-07)  the supervised condition in its other
+    #            written forms (the bound family above) -- injected here.
+    _D800_NEG = re.compile(r"\b(?:no|not|never|without|nor|nothing|none)\b"
+                           r"[^.;|]{0,30}$",
+                           re.I)
+    _D800_FROM = re.compile(r"(?:derived |read |taken )?from (?:the |that "
+                            r"step's |its |each |this |a )?(?:`?U11`? )?$",
+                            re.I)
+    _D800_WAVE = (
+        re.compile(r"alternat\w*\s+(?:in\s+)?(?:sign|polarity)", re.I),
+        re.compile(r"(?:IBAT|battery current|BAT current)[^.;|]{0,40}?"
+                   r"alternat\w*", re.I),
+        re.compile(r"(?:positive |sustained )?charg(?:e|ing)[- ]pulses?",
+                   re.I),
+        re.compile(r"(?:alternates?|swings?|toggles?) between (?:a )?"
+                   r"(?:charge|charging)[^.;|]{0,30}?(?:and|,) (?:a )?"
+                   r"(?:discharge|supplement)", re.I),
+    )
+    _D800_PKG = (
+        re.compile(r"package(?:[- ]top)?(?: temperature| reading)?\s+(?:is\s+"
+                   r")?(?:below|under|above|over|hotter than|cooler than|at "
+                   r"or below|at or above|exceeds?|reaches|within)\s+(?:the\s+"
+                   r")?(?:modell?ed\s+)?(?:junction|TREG|TSHUT|thermal "
+                   r"regulation)", re.I),
+        re.compile(r"package(?:[- ]top)?(?: temperature)?\s+(?:is\s+)?"
+                   r"(?:hotter|cooler) than (?:the )?modell?ed", re.I),
+        re.compile(r"package(?:[- ]top)? temperature\s+(?:is\s+)?(?:above|"
+                   r"over|below|under|reaches|exceeds)\s+(?:90|110|125|150)"
+                   r"\s*°C", re.I),
+        re.compile(r"\bmeasured\s+(?:[\w`]+,?\s+){0,4}(?:and\s+)?junction"
+                   r"\b", re.I),
+        re.compile(r"package\s*/\s*TJ\b", re.I),
+    )
+    _D800_CURE_CTX = re.compile(r"cur(?:e|ed|ing)\b|\bhold\b|DOWSIL|\bRTV\b|"
+                                r"adhesive|\bbead\b|strain relief", re.I)
+    _D800_CURE = (
+        re.compile(r"cur(?:e|ed|ing)\s+(?:for\s+)?(?:at least|≥|>=|a "
+                   r"minimum of|min(?:imum)?\.?)?\s*\**\s*(\d+(?:\.\d+)?)"
+                   r"\s*\**\s*(?:h|hours?|hrs?)\b", re.I),
+        re.compile(r"(\d+(?:\.\d+)?)\s*\**\s*(?:h|hours?|hrs?)\b\s*\**"
+                   r"(?:\s+(?:cure|hold))?[^.;|]{0,80}?\b(?:before|prior "
+                   r"to)\b[^.;|]{0,60}?(?:enclosure|closure|retention|"
+                   r"pull|thermal|shipment|\bship|load)", re.I),
+        re.compile(r"(?:enclosure|closure|retention|pull[- ]test\w*|"
+                   r"thermal test|shipment)[^.;|]{0,60}?(?:after|following|"
+                   r"once)\s+(?:an? |the |at least |≥ )?\**\s*(\d+(?:\.\d+)?)"
+                   r"\s*\**\s*(?:h|hours?|hrs?)\b", re.I),
+        re.compile(r"(?:enclosure|closure|retention|pull|thermal test|"
+                   r"shipment)[^.;|]{0,60}?(\d+(?:\.\d+)?)\s*\**\s*(?:h|"
+                   r"hours?|hrs?)\b\s+after", re.I),
+    )
+    _D800_CURE_OK = re.compile(r"tack-free|handling|\bmoved?\b|window|"
+                               r"Dow's|published|\btyp", re.I)
+    _D800_QUALIFIED_H = 72.0
+
+    def _d800_semantic_scan(text):
+        found = []
+        for fenced, block in _norm_blocks(text or ""):
+            if fenced:
+                continue
+            for sent in _d797_units(block):
+                if any(f in sent for f in _NORM_FENCE):
+                    continue
+                flat = re.sub(r"[*`]", "", sent)
+                for rx in _D800_WAVE:
+                    for m_ in rx.finditer(flat):
+                        if _D800_NEG.search(flat[max(0, m_.start() - 40):
+                                                 m_.start()]):
+                            continue
+                        found.append(("stale_comparator_waveform",
+                                      flat[:200]))
+                for rx in _D800_PKG:
+                    for m_ in rx.finditer(flat):
+                        pre = flat[max(0, m_.start() - 60):m_.start()]
+                        if _D800_NEG.search(pre[-40:]) or \
+                                _D800_FROM.search(pre):
+                            continue
+                        found.append(("package_read_as_junction",
+                                      flat[:200]))
+                if _D800_CURE_CTX.search(flat):
+                    for rx in _D800_CURE:
+                        for m_ in rx.finditer(flat):
+                            h_ = float(m_.group(1))
+                            if h_ >= _D800_QUALIFIED_H:
+                                continue
+                            near = flat[max(0, m_.start() - 60):
+                                        m_.end() + 20]
+                            if _D800_CURE_OK.search(near):
+                                continue
+                            found.append(("cure_hold_below_the_qualified_72h",
+                                          flat[:200]))
+        return sorted(set(found))
+
+    _d800_rows, _d800_bad = [], []
+    _d800_docs = tuple(dict.fromkeys(tuple(NORMATIVE_DOCS) + tuple(_fc_docs)))
+    for _rel in _d800_docs:
+        _f = ROOT / _rel
+        _t = _f.read_text(encoding="utf-8", errors="replace") \
+            if _f.exists() else ""
+        _h = _d800_semantic_scan(_t)
+        _d800_rows.append(dict(document=_rel, exists=bool(_t), findings=_h))
+        if not _t:
+            _d800_bad.append("%s is missing" % _rel)
+        _d800_bad.extend("%s: %s: %s" % (_rel, k_, x_) for k_, x_ in _h)
+    # the comparator-cycle wording is BOUND to the model: step 7 must carry
+    # the model's two interval names.
+    _cyc = apm.CHARGER_MODEL_ASSUMPTIONS["comparator_cycle"]["text"] \
+        if hasattr(apm, "CHARGER_MODEL_ASSUMPTIONS") else ""
+    _s7 = fa_step_rows(_fa_txt).get("C-PWR-CHARGE-01", "")
+    _cyc_bound = dict(
+        model_says_discharge_then_non_supplying=bool(
+            re.search(r"DISCHARGE interval", _cyc)
+            and re.search(r"NON-\s*SUPPLYING interval", _cyc)
+            and re.search(r"no charging\s+pulse", _cyc)),
+        step7_says_discharge_then_non_supplying=bool(
+            re.search(r"DISCHARGE / supplement interval", _s7)
+            and re.search(r"NON-SUPPLYING interval", _s7)
+            and re.search(r"no charging pulse", _s7)),
+        step7_escalates_an_unexpected_waveform=bool(
+            re.search(r"RECORD the actual sign and waveform", _s7)
+            and re.search(r"any other shape, is RECORD \+ ESCALATE", _s7)))
+    # the IIN direction is defined in both charge steps
+    _iin_def = dict(
+        (k_, bool(re.search(r"`?IIN`? \(?(?:A, )?positive from the adapter "
+                            r"INTO the device", fa_step_rows(_fa_txt).get(
+                                k_, ""))))
+        for k_ in ("C-PWR-CHARGE-01", "C-PWR-CHARGE-02"))
+    _r19_injections = dict(
+        r19_02_exact_d799_cure_sentence=(
+            "Cure at least 24 h before enclosure retention/closure checks."),
+        r19_02_cure_for_24_hours_before_closing=(
+            "Allow the DOWSIL bead to cure for 24 hours before closing the "
+            "enclosure."),
+        r19_02_pull_test_after_48_h=(
+            "The J4 strain relief may be pull-tested after a 48 h cure."),
+        r19_02_retention_24_h_after=(
+            "Enclosure retention checks may begin 24 h after the RTV bead is "
+            "applied."),
+        r19_03_exact_d799_waveform=(
+            "At the onset the part CYCLES between the VBSUP1 entry and the "
+            "VBSUP2 exit (`IBAT` alternating sign on a scope)."),
+        r19_03_charging_pulse=(
+            "Each comparator cycle ends in a short charging pulse into the "
+            "cell."),
+        r19_03_alternates_between_charge_and_supplement=(
+            "On a scope IBAT alternates between charge and supplement."),
+        r19_01_package_below_the_modelled_junction=(
+            "PASS if every step holds a charge IBAT and the package below "
+            "the modelled junction."),
+        r19_01_package_hotter_than_modelled=(
+            "A package hotter than modelled is RECORD + ESCALATE."),
+        r19_01_measured_junction_list=(
+            "PASS if the measured battery current, junction, internal air "
+            "and R_SYS are at or below the modelled figures."),
+        r19_01_package_reaches_treg=(
+            "Raise the load until the package reaches thermal regulation."),
+        r19_01_package_temperature_above_110=(
+            "Stop the ascent at a package temperature above 110 °C."),
+        r19_07_reads_at_least=(
+            "With the adapter attached, run an accessory rail only if the "
+            "pack reads at least 3.90 V."),
+        r19_07_measures_at_least=(
+            "Keep the accessory rails off while charging unless the cell "
+            "measures at least 3.90 V."),
+        r19_07_has_reached=(
+            "With the adapter attached, enable an accessory only when the "
+            "pack has reached 3.90 V."),
+        r19_07_no_less_than=(
+            "While charging, an accessory may run only if the pack reads no "
+            "less than 3.90 V."),
+        r19_07_or_more=(
+            "With the adapter attached, run an accessory rail unless the "
+            "battery voltage reads 3.90 V or more."),
+        r19_07_symbol=(
+            "While charging, run an accessory only if VBAT reads ≥ 3.90 V."),
+        r19_07_provided=(
+            "An accessory may stay on while charging provided the pack reads "
+            "at least 3.90 V."),
+    )
+    _r19_caught, _r19_missed = {}, []
+    for _nm, _w in _r19_injections.items():
+        _all = True
+        for r_ in _d800_docs:
+            f_ = ROOT / r_
+            t_ = f_.read_text(encoding="utf-8", errors="replace") \
+                if f_.exists() else ""
+            head, _, rest = t_.partition("\n")
+            _inj = head + "\n\n" + _w + "\n\n" + rest
+            _hit = bool(len(_d800_semantic_scan(_inj))
+                        > len(_d800_semantic_scan(t_))) or bool(
+                len(_norm_scan(_inj, _norm_fams))
+                > len(_norm_scan(t_, _norm_fams))) or bool(
+                len(_false_claim_scan(_inj, r_ + "+r19"))
+                > len(_false_claim_scan(t_, r_ + "+r19")))
+            if not _hit:
+                _all = False
+                if len(_r19_missed) < 12:
+                    _r19_missed.append("%s in %s" % (_nm, r_))
+        _r19_caught[_nm] = _all
+    # near controls that must NOT be refused
+    _r19_clean = dict(
+        tack_free_then_handling=(
+            "The board may be moved after a passed tack-free check and no "
+            "earlier than 4 h; it is never loaded before the 72 h hold."),
+        dow_window_quote=(
+            "72 h is the top of Dow's own 24-72 h window."),
+        junction_from_the_package=(
+            "The junction interval derived from the package-top reading is "
+            "at or below the modelled junction."),
+        no_charging_pulse=("The model establishes no charging pulse."),
+        correct_supervised=(
+            "With the adapter attached, run an accessory rail only if the "
+            "pack reads at least 4.10 V."))
+    _r19_clean_res = {}
+    for _nm, _w in _r19_clean.items():
+        _r19_clean_res[_nm] = not _d800_semantic_scan(_w) and not \
+            _norm_scan(_w, _norm_fams)
+    cell_net["round19_operative_semantics"] = dict(
+        documents=_d800_rows, problems=_d800_bad,
+        comparator_cycle_bound_to_the_model=_cyc_bound,
+        iin_direction_defined=_iin_def,
+        injections=_r19_injections, caught=_r19_caught, missed=_r19_missed,
+        clean_controls_pass=_r19_clean_res,
+        qualified_cure_hold_h=_D800_QUALIFIED_H,
+        ok=bool(not _d800_bad and all(_cyc_bound.values())
+                and all(_iin_def.values()) and all(_r19_caught.values())
+                and all(_r19_clean_res.values())),
+        why="D-800 / Round-19: a 24 h cure beside the qualified 72 h hold "
+            "(R19-02), IBAT 'alternating sign' beside a model with no "
+            "charging pulse (R19-03), a package reading compared directly "
+            "to the modelled junction (Opus R19-01) and the supervised "
+            "condition written 'reads at least' (Opus R19-07) are refused "
+            "in every operative document, the manual travelers included.")
+    cell_net_ok = cell_net_ok and cell_net["round19_operative_semantics"]["ok"]
 
     # ---- F12's own controls.  Every one of them has to REFUSE. -----------
     def _cell(**over):

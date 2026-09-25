@@ -22,7 +22,7 @@ so the evidence travels with the library rather than living only here.
 |---|---|---|
 | `AQROOT_Beta:Hirose_FH69-50S-0.5SH` | `J1` | Hirose FH69 catalogue **Jun. 2025, en_FH69_CAT** "Recommended PCB Layout", cross-checked against spec sheet **ELC-399242-00-00**. Signal land 0.30 × 1.23, pitch 0.5, span C = 24.5; hold-down 0.36 × 4.25, E = 28.73 c/c; depth 7.38 |
 | `AQROOT_Beta:Molex_5025700893` | `J2` | Molex sales drawing **SD-502570-001 Rev A** (archived locally). Pitch 1.1, contact land 0.8, 8-contact span 7.7, shell lands 1.4 × 1.7 |
-| `AQROOT_Beta:Samtec_BCS-112-S-D-HE` | `J5` | Samtec **RECOMMENDED PCB LAYOUT, REVISION B, FIG 3** (`BCS-1XX-XXX-D-HE-XXX`). 2.54 in row, **7.87 ± 0.05 row-to-row**, 0.71 PTH, 27.94 pin field |
+| ~~`AQROOT_Beta:Samtec_BCS-112-S-D-HE`~~ *(SUPERSEDED — `J5` is `AQROOT_Beta:Samtec_SSQ-124-02-G-S-RA` since D-237/D-750, ruled in §6.1)* | `J5` | Samtec **RECOMMENDED PCB LAYOUT, REVISION B, FIG 3** (`BCS-1XX-XXX-D-HE-XXX`). 2.54 in row, **7.87 ± 0.05 row-to-row**, 0.71 PTH, 27.94 pin field |
 | `AQROOT_Beta:ST25R3916_AQET` | `U9` | ST **UFQFPN32 5×5×0.55 RECOMMENDED PCB LAND PATTERN**. Land 0.30 × 0.75, span 5.30, EP land 3.45 × 3.45 |
 | `AQROOT_Beta:Bosch_LGA-14_2.5x3.0mm_P0.5mm_BMI270` | `U4` | **BST-BMI270-DS000-08 rev 1.6 §8.3** landing pattern, body from §8.1 |
 | `AQROOT_Beta:MAX17048_T822` | `U14` | Maxim **RECOMMENDED PACKAGE LAND PATTERN, DOC 90-0065 REV. E**, mapped to package code T822+3 via the datasheet package table |
@@ -224,6 +224,10 @@ corrected to get there, none of them copper:
 
 ### 6.1 Every footprint identity on the Demo board, and where its land is ruled
 
+> **D-800: the counts in this table were RE-COUNTED from the board** (315 footprints).  Five rows
+> were stale — `C_0603` 53→54, `C_0805` 17→19, `D_SOD-323` 4→5, `SOT-23` 8→9, test pads 46→45.  No
+> land identity changed; every footprint on the board has a row.
+
 `land_citations.json` is the machine-readable index; this table is its normative text.
 **LAND5 refuses an identity that is on the board and not here, and a row here that is
 not on the board.  LAND6 refuses a row whose identity string is missing from this
@@ -257,12 +261,12 @@ file** — so deleting a row below breaks the gate.
 | `RF_Module:ESP32-S3-WROOM-1` | 1 | 2A | Espressif ESP32-S3-WROOM-1 datasheet v1.8 Figure 11-1 |
 | `Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal` | 1 | **1** | **CLOSED at D-762.** JST `eSH.pdf` (4 pp, 2024-10-04), p.1 *PC board layout and Assembly layout*, **SIDE ENTRY** figure + p.3 header table for `A`; archived `vendor/JST/jst-sh-connector-eSH-2024-10.pdf`, sha256 in the index. **Eight figures asked for, eight exact:** land 0.6±0.05 wide, 1.0±0.05 pitch, `A`=3.00 span, 0.7±0.1 from the outer land centre to the mount inner edge → ±2.80, mount 1.2±0.1 × 1.8±0.1, and 5.55−4.0 = **1.55** land length with 5.55−0.775−0.9 = **3.875** row separation |
 | `Capacitor_SMD:C_0402_1005Metric` | 2 | 3 | IPC-7351 nominal, body IPC-SM-782 p.76; lands 0.56 x 0.62 at +/-0.48 mm |
-| `Capacitor_SMD:C_0603_1608Metric` | 53 | 3 | IPC-7351 nominal, body IPC-SM-782 p.76 |
-| `Capacitor_SMD:C_0805_2012Metric` | 17 | 3 | IPC-7351 nominal, body IPC-SM-782 p.76 |
+| `Capacitor_SMD:C_0603_1608Metric` | 54 | 3 | IPC-7351 nominal, body IPC-SM-782 p.76 |
+| `Capacitor_SMD:C_0805_2012Metric` | 19 | 3 | IPC-7351 nominal, body IPC-SM-782 p.76 |
 | `Capacitor_SMD:C_1206_3216Metric` | 6 | 3 | IPC-7351 nominal, body IPC-SM-782 p.76; lands 1.15 x 1.80 at +/-1.475 mm |
 | `Capacitor_SMD:C_1210_3225Metric` | 1 | 3 | IPC-7351 nominal, body IPC-SM-782 p.76; lands 1.15 x 2.70 at +/-1.475 mm |
 | `Diode_SMD:D_SOD-123` | 1 | 3 | JEDEC SOD-123 |
-| `Diode_SMD:D_SOD-323` | 4 | 3 | JEDEC SOD-323 |
+| `Diode_SMD:D_SOD-323` | 5 | 3 | JEDEC SOD-323 |
 | `Fuse:Fuse_1206_3216Metric` | 1 | 3 | IPC-7351 nominal 1206 chip land |
 | `Inductor_SMD:L_0603_1608Metric` | 2 | 3 | IPC-7351 nominal 0603 chip land; part Murata LQW18AN39NG80D (B-70) |
 | `LED_THT:LED_D5.0mm` | 1 | 3 | generic 5 mm THT LED, 2.54 mm lead pitch |
@@ -270,7 +274,7 @@ file** — so deleting a row below breaks the gate.
 | `Package_SO:SOIC-8_3.9x4.9mm_P1.27mm` | 2 | 3 | JEDEC MS-012 SOIC-8 |
 | `Package_SO:TSSOP-24_4.4x7.8mm_P0.65mm` | 2 | 3 | JEDEC MO-153 / NXP SOT355-1 |
 | `Package_SO:VSSOP-8_3x3mm_P0.65mm` | 1 | 3 | JEDEC MO-187 VSSOP-8 |
-| `Package_TO_SOT_SMD:SOT-23` | 8 | 3 | JEDEC TO-236 SOT-23 |
+| `Package_TO_SOT_SMD:SOT-23` | 9 | 3 | JEDEC TO-236 SOT-23 |
 | `Package_TO_SOT_SMD:SOT-23-6` | 3 | 3 | JEDEC SOT-23-6 / TI DDC SOT-23-THIN |
 | `Package_TO_SOT_SMD:SOT-23-8` | 1 | 3 | JEDEC SOT-23-8 |
 | `Package_TO_SOT_SMD:SOT-353_SC-70-5` | 1 | 3 | JEDEC SC-70-5 / SOT-353 |
@@ -279,7 +283,7 @@ file** — so deleting a row below breaks the gate.
 | `Resistor_SMD:R_0805_2012Metric` | 2 | 3 | IPC-7351 nominal, body IPC-SM-782 p.72; lands 1.025 x 1.40 at +/-0.9125 mm |
 | `Resistor_SMD:R_1206_3216Metric` | 1 | 3 | IPC-7351 nominal, body IPC-SM-782 p.72; lands 1.125 x 1.75 at +/-1.4625 mm |
 | `Resistor_SMD:R_2512_6332Metric` | 1 | 3 | IPC-7351 nominal, body IPC-SM-782 p.72; lands 1.225 x 3.35 at +/-2.9625 mm |
-| `TestPoint:TestPoint_Pad_D1.0mm` | 46 | 3 | 1.0 mm round test pad, not a purchased part |
+| `TestPoint:TestPoint_Pad_D1.0mm` | 45 | 3 | 1.0 mm round test pad, not a purchased part |
 
 Census by tier over all **315** board footprints (D-762): **tier 1 = 25, tier 2A = 15, tier 2 OPEN = 0, tier 3 = 275.**  `LAND7` holds the middle figure at ZERO.
 

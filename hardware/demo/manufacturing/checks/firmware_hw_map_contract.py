@@ -797,13 +797,48 @@ PRODUCTION_CALLER_CONTROLS = [
 # and the console dispatch over a host Arduino core and a physical-latch board
 # model.
 PRODUCTION_IMAGE_CONTROLS = [
+    # ---- D-800 (Round-19 full review, firmware fail-closed audit) ----------
+    ("D-800 image: a wedged I2C bus at boot returns before the radio quiesce",
+     "demo/main.cpp",
+     "    // expanders recover.  Its verdict stays pessimistic until confirmed.\n"
+     "    (void)bringUpSpiBAndQuiesceRadios();\n",
+     "    // expanders recover.  Its verdict stays pessimistic until confirmed.\n"),
+    ("D-800 image: the quiesce retry is skipped while the expanders recover",
+     "demo/main.cpp",
+     "  serviceRadioQuiesceRetry();\n  if (!g_expanders.ready()) {",
+     "  if (g_expanders.ready()) serviceRadioQuiesceRetry();\n"
+     "  if (!g_expanders.ready()) {"),
+    ("D-800 image: the IR self-test deadline is not wrap-safe",
+     "aqroot_demo_peripherals.h",
+     "  while (millis() - start <= 2) {",
+     "  const uint32_t deadline = start + 2;\n  while (millis() <= deadline) {"),
+    ("D-800 image: the SX1262 BUSY wait is not wrap-safe",
+     "aqroot_demo_radios.h",
+     "    if (millis() - start > timeout_ms) return false;",
+     "    if (millis() > start + timeout_ms) return false;"),
+    ("D-800 image: ACC_3V3 may be granted while U2's output state is UNKNOWN",
+     "aqroot_demo_expanders.h",
+     "  bool setAccessory3v3(I2cBus &bus, bool on) {\n    if (on) {\n      // D-800: never grant a rail while EITHER expander's output state is\n      // UNKNOWN -- a NACKed U2 write in the same loop iteration left U2's\n      // shadow invalid and D-799 still energised ACC_3V3 for 1300 ms.\n      if (!ready_ || fault_observability_lost_ || safe_shutdown_pending_ || accessoryFault()\n          || !u2_.outputShadowValid() || !u3_.outputShadowValid()) return false;",
+     "  bool setAccessory3v3(I2cBus &bus, bool on) {\n    if (on) {\n      // D-800: never grant a rail while EITHER expander's output state is\n      // UNKNOWN -- a NACKed U2 write in the same loop iteration left U2's\n      // shadow invalid and D-799 still energised ACC_3V3 for 1300 ms.\n      if (!ready_ || fault_observability_lost_ || safe_shutdown_pending_ || accessoryFault()) return false;"),
+    # ---- D-800 (Round-19 full review).  The boot / periodic radio quiesce
+    # left the SPI peripheral bound to the SPI-B pins; the pinned core then
+    # IGNORED the SPI-A begin of the display and the microSD probe.
+    ("D-800 image: the radio quiesce never releases SPI, so SPI-A traffic "
+     "goes out on the SPI-B pins",
+     "demo/main.cpp",
+     "  SPI.end();\n  return q.ok();",
+     "  return q.ok();"),
     # ---- D-793 / R12-03, AT THE IMAGE LEVEL.  These are the mutations the
     # RETAINED-CC1101 scenarios in `test_production_image.cpp` exist to catch:
     # each one compiles, and each one puts the image back to believing a
     # powered transceiver is idle because a C++ member says so.
+    # D-800: anchored on the NORMAL boot path -- the FATAL branch now carries
+    # its own quiesce, and an unanchored replace would mutate that one.
     ("the image never quiesces the radios at boot",
      "demo/main.cpp",
+     "  // and every accessory permission is refused.\n"
      "  (void)bringUpSpiBAndQuiesceRadios();",
+     "  // and every accessory permission is refused.\n"
      "  (void)0;"),
     ("the image quiesces but reports the result as CONFIRMED regardless",
      "demo/main.cpp",
@@ -1141,9 +1176,12 @@ PRODUCTION_IMAGE_CONTROLS = [
      "  r.nfc.failed_at = NfcQuiesceStep::Confirmed;"),
     ("R14-02 image: main never checks the liveness of a confirmed-quiet U9",
      "demo/main.cpp",
-     "  (void)g_app.serviceNfcLiveness();\n  if (!g_expanders.ready()) {",
+     # D-800: the quiesce retry now sits between these two lines, so the
+     # anchor is the liveness call and the comment that follows it.
+     "  (void)g_app.serviceNfcLiveness();\n"
+     "  // D-800: the radio quiesce retry needs SPI-B and not I2C",
      "  if (false) (void)g_app.serviceNfcLiveness();\n"
-     "  if (!g_expanders.ready()) {"),
+     "  // D-800: the radio quiesce retry needs SPI-B and not I2C"),
     ("R14-02 image: the liveness probe trusts the identity alone",
      "aqroot_demo_radios.h",
      "  if (!writeRegister(bus, kRegNoResponseTimer2, kChallenge[1]) ||\n"

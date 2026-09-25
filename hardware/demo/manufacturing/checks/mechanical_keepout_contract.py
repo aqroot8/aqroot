@@ -815,6 +815,37 @@ def mk10(board, reg=None, board_path=None):
                      "OTHER face")
 
 
+# D-800 (Round-19 full review).  MK9 MEASURED THE WRONG POINTS.
+#
+# D-759's MK9 took the distance between the two footprint ORIGINS -- D1's
+# origin is its PAD 1, not its optical axis -- and included their 2 mm Y
+# offset, which vanishes once both parts are lead-formed 90 degrees to look
+# out of the same top panel (IR_LEAD_FORMING.md).  The formed optical axes are
+# D1's lead midpoint (a T-1 3/4 dome is centred between its leads) and U6's
+# centre lead, both pointing +Y: they are 13.73 mm apart, not 15.13 mm.  The
+# ">= 15 mm" figure (D-162) is a heuristic carried from a +/-17 degree
+# TSAL6200 and has no primary source; what it stands for is PHYSICAL and is
+# what this clause now gates: (1) the opaque IR_BARRIER stands between the
+# two parts' whole courtyards, and (2) the receiver is outside the emitter's
+# half-intensity cone (TSAL6100 doc 81009 rev 1.8: phi = +/-10 deg) anywhere
+# inside the enclosure.  The heuristic is REPORTED, unmet, and the coupling
+# itself is measured at first article (C-IR-01).
+IR_TX_HALF_ANGLE_DEG = 10.0        # Vishay 81009 rev 1.8, archived
+IR_TX_DOME_RADIUS_MM = 2.9         # 5.8 mm flange / 2 (81009)
+IR_RX_HALF_WIDTH_MM = 2.5          # TSOP382 minicast 5.0 mm wide (82491)
+IR_INSIDE_ENCLOSURE_MM = 2.5       # top wall: cavity to external face
+
+
+def _formed_axis_x(fp):
+    xs = [q.GetPosition().x / 1e6 for q in fp.Pads()]
+    return sum(xs) / len(xs)
+
+
+def _courtyard_x(fp):
+    bb = fp.GetCourtyard(fp.GetLayer()).BBox()
+    return bb.GetLeft() / 1e6, bb.GetRight() / 1e6
+
+
 def mk9(board, reg=None):
     reg = reg or regions()
     d1 = board.FindFootprintByReference("D1")
@@ -822,18 +853,39 @@ def mk9(board, reg=None):
     if d1 is None or u6 is None:
         return dict(ok=False, why="D1 or U6 missing")
     a, b2 = d1.GetPosition(), u6.GetPosition()
-    sep = math.hypot(a.x - b2.x, a.y - b2.y) / 1e6
+    origin_sep = math.hypot(a.x - b2.x, a.y - b2.y) / 1e6
+    ax_d1, ax_u6 = _formed_axis_x(d1), _formed_axis_x(u6)
+    sep = abs(ax_u6 - ax_d1)
     bar = reg["IR_BARRIER"]
-    d1_east = max(q.GetPosition().x / 1e6 for q in d1.Pads())
-    u6_west = min(q.GetPosition().x / 1e6 for q in u6.Pads())
-    between = d1_east <= bar[0] + 1e-6 and u6_west >= bar[1] - 1e-6
-    return dict(ok=sep >= IR_TX_RX_MIN_MM - 1e-6 and between,
-                separation_mm=round(sep, 4), rule_min_mm=IR_TX_RX_MIN_MM,
-                margin_mm=round(sep - IR_TX_RX_MIN_MM, 4),
+    d1_cy, u6_cy = _courtyard_x(d1), _courtyard_x(u6)
+    west, east = (d1_cy, u6_cy) if ax_d1 < ax_u6 else (u6_cy, d1_cy)
+    between = west[1] <= bar[0] + 1e-6 and east[0] >= bar[1] - 1e-6
+    lateral_gap = sep - IR_TX_DOME_RADIUS_MM - IR_RX_HALF_WIDTH_MM
+    cone_reach = (lateral_gap / math.tan(math.radians(IR_TX_HALF_ANGLE_DEG))
+                  if lateral_gap > 0 else 0.0)
+    outside_cone = cone_reach > IR_INSIDE_ENCLOSURE_MM
+    return dict(ok=bool(between and outside_cone),
+                formed_optical_axis_x_mm=dict(D1=round(ax_d1, 3),
+                                              U6=round(ax_u6, 3)),
+                formed_axis_separation_mm=round(sep, 4),
+                heuristic_min_mm=IR_TX_RX_MIN_MM,
+                heuristic_met=bool(sep >= IR_TX_RX_MIN_MM - 1e-6),
+                heuristic_shortfall_mm=round(max(0.0, IR_TX_RX_MIN_MM - sep), 4),
+                footprint_origin_separation_mm_d759=round(origin_sep, 4),
                 ir_barrier_x_mm=[bar[0], bar[1]],
-                d1_easternmost_pad_x_mm=round(d1_east, 3),
-                u6_westernmost_pad_x_mm=round(u6_west, 3),
-                barrier_stands_between_them=between)
+                courtyards_x_mm=dict(D1=[round(v, 3) for v in d1_cy],
+                                     U6=[round(v, 3) for v in u6_cy]),
+                barrier_stands_between_the_courtyards=between,
+                emitter_half_angle_deg=IR_TX_HALF_ANGLE_DEG,
+                forward_distance_before_the_cone_reaches_the_receiver_mm=round(
+                    cone_reach, 2),
+                receiver_outside_the_emission_cone_inside_the_enclosure=
+                outside_cone,
+                measurement_of_record="C-IR-01 (first article, fitted "
+                                      "enclosure)",
+                why="D-800: the formed axes, not the footprint origins; the "
+                    "15 mm heuristic is reported and the physical isolation "
+                    "is gated")
 
 
 
@@ -971,11 +1023,21 @@ def mk7(board):
 
     # the IR pair nudged 0.200 mm together must be refused -- the rule has
     # 0.133 mm of margin, so 0.200 mm spends it
+    # D-800: MK9 gates the barrier and the cone.  D1 moved east until its
+    # courtyard crosses the barrier face (+1.300 mm) must be refused, and so
+    # must U6 moved west into the barrier.
     d1 = board.FindFootprintByReference("D1")
     was = d1.GetPosition()
-    d1.SetPosition(pcbnew.VECTOR2I(was.x + 200000, was.y))
-    ctl["the_ir_pair_nudged_0_200_mm_together_is_refused"] = not mk9(board, reg)["ok"]
+    d1.SetPosition(pcbnew.VECTOR2I(was.x + 1300000, was.y))
+    ctl["d800_d1_courtyard_pushed_into_the_ir_barrier_is_refused"] = \
+        not mk9(board, reg)["ok"]
     d1.SetPosition(was)
+    u6 = board.FindFootprintByReference("U6")
+    was = u6.GetPosition()
+    u6.SetPosition(pcbnew.VECTOR2I(was.x - 600000, was.y))
+    ctl["d800_u6_courtyard_pushed_into_the_ir_barrier_is_refused"] = \
+        not mk9(board, reg)["ok"]
+    u6.SetPosition(was)
 
     # D-763.  Four controls on MK10, the clause that owns the lead rather than
     # the body.  Each puts back a different way J4 could have gone unnoticed.

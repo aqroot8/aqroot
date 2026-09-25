@@ -1,0 +1,99 @@
+{
+ "decision": "D-800",
+ "reproduced_on": "4aa286e2d517f6acc64290e3c427f045dd109654 (D-799 identity; content ef5be983)",
+ "schema": 1,
+ "witnesses": {
+  "D800_KNOWN_01": {
+   "astra": "R19-01",
+   "d799_class": {
+    "-0.005": "TERMINATED",
+    "-0.010": "TERMINATED",
+    "-0.040": "TERMINATED",
+    "-0.050": "TERMINATED",
+    "0.000": "TERMINATED",
+    "0.003": "TERMINATED",
+    "0.200": "TERMINATED"
+   },
+   "d800_class": {
+    "-0.005": "TERMINATED",
+    "-0.010": "FAULT / UNCLASSIFIED",
+    "-0.040": "FAULT / UNCLASSIFIED",
+    "-0.050": "FAULT / UNCLASSIFIED",
+    "0.000": "TERMINATED",
+    "0.003": "TERMINATED",
+    "0.120": "TERMINATED"
+   },
+   "physics": "the only adapter path is into U11 IN through its blocking FETs (SLUSF65B 6.3.1), IQ_IN 0.75 mA TYP into IN; VBUS_CHG's other branches (Q5 recovery path) are blocked from BAT_RAW by D12, so nothing on the board sources VBUS",
+   "record": "VIN 5.00 V, VSYS 4.41 V, pack 4.18 V, IBAT 0, STAT1 HIGH, valid sustained transition",
+   "reproduced": true
+  },
+  "D800_KNOWN_02": {
+   "astra": "R19-02",
+   "contradicts": "BATTERY_HARNESS.json strain_relief.cure: FULL PROCESS HOLD >= 72 h before ANY pull test, thermal test, enclosure retention test or shipment",
+   "reproduced": true,
+   "root_cause": "THT_LEAD_TRIM.md, IR_LEAD_FORMING.md and FIRST_FIVE_POPULATION_MATRIX.md were in no normative-document scan",
+   "sentence": "Cure at least 24 h before enclosure retention/closure checks."
+  },
+  "D800_KNOWN_03": {
+   "astra": "R19-03",
+   "opus": "R19-02",
+   "reproduced": true,
+   "sentence": "(`IBAT` alternating sign on a scope)"
+  },
+  "D800_KNOWN_04": {
+   "opus": "R19-01",
+   "reproduced": true,
+   "sentences": [
+    "the package below the modelled junction",
+    "a package hotter than modelled",
+    "PASS if the measured battery current, junction, internal air and `R_SYS` are at or below the modelled figures",
+    "until the package reaches thermal regulation",
+    "a package temperature above 110 °C",
+    "on the measured source, junction and supplement onset"
+   ]
+  },
+  "D800_KNOWN_05": {
+   "d799_accepts": [
+    "registry: good copy first, bad copy last (setdefault keeps the first)",
+    "registry: identical duplicate",
+    "evidence JSON: bad row stated before the good row (json.loads keeps the last)"
+   ],
+   "d799_refuses": [
+    "registry: bad copy first, good last"
+   ],
+   "opus": "R19-03",
+   "reproduced": true
+  },
+  "D800_KNOWN_06": {
+   "bom_full_lines": [
+    "\"L2,L4\",\"1uH\",\"AQROOT_Beta:Wurth_WE-MAPI_4030_74438357010\",\"Wurth Elektronik\",\"74438357010\",\"C5542269\",\"Inductor\",\"2\",\"DNP\"",
+    "\"U13,U21\",\"TPS61023\",\"Package_TO_SOT_SMD:SOT-563\",\"Texas Instruments\",\"TPS61023DRLR\",\"C919459\",\"3.7-A synchronous boost converter with 0.5-V ultra-low input voltage; 0.5-5.5 V input, adjustable 2.2-5.5 V output, 1-MHz switching, auto-PFM light-load mode, pass-through when VIN > VOUT and true input-to-output disconnect in shutdown; 6-pin SOT563 (DRL)\",\"2\",\"DNP\""
+   ],
+   "every_ref_cross_checked": "314 schematic references against the per-reference views: only L4 and U21 were contaminated",
+   "opus": "R19-04",
+   "reproduced": true,
+   "root_cause": "export_fab_package BOM_GROUP grouped on the bare name DNP, which names no field; kicad-cli ignored it and grouped fitted and unfitted twins"
+  },
+  "D800_KNOWN_07": {
+   "d799_ocv_lb_V": 4.095,
+   "note": "D-799 accepted R_ins = 0 for any meter; OCV_lb 45 mV above the true OCV",
+   "opus": "R19-05",
+   "record": "series path 80 mOhm entered as insertion 0, I_BAT 0.8 A, true OCV 4.050 V",
+   "reproduced": true
+  },
+  "D800_KNOWN_08": {
+   "escaped": [
+    "Charge with an accessory load only if the pack reads at least 3.90 V.",
+    "Keep the accessory rails off while charging unless the cell reads at least 3.90 V.",
+    "... measures at least / has reached / no less than / 3.90 V or more / >= / provided that"
+   ],
+   "opus": "R19-07",
+   "reproduced": true
+  },
+  "D800_R19_06": {
+   "disposition": "(a) analytically acceptable + (b) first-article PI priority + Rev-B improvement; NOT a pre-order defect",
+   "evidence": "U7.9/U8.9 each reach the F.Cu and In3.Cu +3V3 planes through a 1.4 mm x 0.4 mm stub and one via; nearest ceramics C29/C30 22 uF ~20 mm across planes; Ebyte manuals recommend an unspecified external ceramic; C-PWR-TRANSIENT-01 radio step now probes both VCC lands",
+   "opus": "R19-06"
+  }
+ }
+}

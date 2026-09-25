@@ -187,6 +187,7 @@ Everything below is read out of the board file's own stackup block and is also c
 - **6 copper layers.**  Finished outer copper **0.0350 mm**; **inner copper 0.0152 mm on all 4 inner layers.**
 - **THE INNER COPPER THICKNESS IS LOAD-BEARING, NOT INCIDENTAL.**  `audit_rail_ampacity` sizes every power rail on this board against **0.0152 mm** of inner foil.  A build substituted to a heavier or lighter inner foil INVALIDATES that model and the ampacity audit must be re-run before the order is placed.
 - **Total declared stack 1.5744 mm; required finished thickness 1.5744 +/- 0.10 mm.**  Do not substitute a house-default thickness without written engineering approval.  `J4` is now a manual pigtail land: its front conductive profile is MEASURED <=0.50 mm after soldering, not inferred from board thickness.  Finished thickness still affects enclosure stack and PTH process capability.
+- **Board thickness on the order: 1.6 mm nominal** (the value the board file's general section and `aqroot-Beta-v2-job.gbrjob` carry, and the nominal of the declared stack); the ACCEPTANCE figure is the stack's own **1.5744 mm +/- 0.10 mm** above -- the two are the same board, not a conflict.
 - **Surface finish: ENIG -- not substitutable.**  HASL coplanarity is incompatible with the fine-pitch lands on this board and with the 0.000 mm solder-mask expansion it is drawn with.
 - **Solder-mask expansion is 0.000 mm board-wide** -- a pad's mask aperture IS its copper.  Do not apply a house expansion.
 - **LAMINATE: FR4 with Tg >= 150 C -- D-788 / R7-D787-04, restated at D-789 / D788-03 and RE-JUSTIFIED at D-790 / D789-A02.**  The board file declares FR4 and nothing more, and a house TG130 default is not an acceptable substitution.  TWO SENTENCES THIS NOTE USED TO CARRY ARE WITHDRAWN.  D-788 called 105 C "the laminate's maximum continuous operating temperature"; nothing in this repository publishes an MOT for a Tg-150 FR4, so that claimed a specification it did not have.  105 C is a DECLARED CONDUCTOR-SIZING limit in `audit_rail_ampacity` for copper heated by its own current, and the named narrow-run exceptions meet it with more than 50 K to spare (the `U11.2` package-land neck reaches a 52.3 C predicted peak).  D-789 D-789's own Tg justification -- a BQ25185 junction computed with TI's JEDEC RthetaJA referenced to the EXTERNAL ambient -- is RETIRED: a JEDEC thermal resistance is measured in OPEN STILL AIR, which this sealed 85 x 160 x 23 mm enclosure is not.  D-790 replaced it with TJ = TA + R_SYS x P_internal + thetaJA x P_U11, where R_SYS is the enclosure's own declared 3.25 K/W and P_internal also carries the UPSTREAM losses -- the four pass-pair channels, R75, F1 and the pack's own PCM and harness, all of which are under the same lid.  WHAT THE Tg REQUIREMENT ACTUALLY PROTECTS is the hottest point on this board, which is that junction.
@@ -218,9 +219,69 @@ The drill files carry **4 routed slots** as Excellon `G85` moves.  Each is a SLO
 - **`Rot` is degrees COUNTER-CLOCKWISE**, 0 to 360 normalised to (-180, 180].  Values present on this board: -90 deg, 0 deg, 90 deg, 180 deg.
 - **`Rot` for a BOTTOM-side part is given as seen from the TOP of the board, through it** -- the KiCad convention.  An assembler whose process expects bottom-side angles as seen from BELOW must mirror them (negate, or equivalently subtract from 360).  **This is the single most common way this file is misread and it affects 168 of the 251 placements here.**
 - **`Side` is the authority on which face a part goes to**; do not infer it from the sign of any coordinate.
-- Polarised and pin-1 references are called out individually in `docs/full-beta-v2/assembly/FIRST_FIVE_ASSEMBLY_PLAN.md`, which is normative for the first five units.
+- **Polarised and pin-1 references are called out individually in the PIN-1 / POLARITY table below**, generated from the board's own pads (D-800: this line used to point at the first-five plan, which never carried such a list).
 
 > **A placement preview is REQUIRED before the first unit is built.**  Render the loaded CPL against the assembly drawings (`aqroot-Demo-assembly-top.pdf`, `aqroot-Demo-assembly-bottom.pdf`) and confirm side and rotation for at least `U1`, `J1`, `J5`, `U11`, `U12` and `U21` before release to the line. **`J4` is intentionally absent from the CPL at D-781 because it is a manual wire land, not a placed component; verify J4 polarity, rear-wire entry, joint height and strain relief against the battery-harness work instruction instead.**
+
+- **Silkscreen beyond the stepped outline (D-800).**  At `J5`'s right-angle overhang the reference `J5` and two `5V` labels print partly beyond the board edge, where the outline steps in.  They carry no information a builder needs; clip silkscreen at the outline.  This is expected, not a data error.
+
+## PIN-1 / POLARITY TABLE (generated from the board, D-800)
+
+Every fitted, placed `U`, `Q`, `D`, `J`, `Y` and `MK` reference. `pin 1 X/Y` is that pad's centre in the CPL frame above (Y up, negative).  For a diode the pad named here is the one this library numbers 1 -- its function column says which terminal it is.  Check orientation against this table at the placement preview and at AOI.
+
+| ref | value | side | CPL rot | pin 1 X | pin 1 Y | pad (function) | pin 1 net |
+|---|---|---|---|---|---|---|---|
+| `D1` | TSAL6100 | top | 0.000000 | 51.750 | -6.600 | 1 (K) | `/07_IR/IR_LED_K` |
+| `D2` | TPD4E1B06DRLR | top | 0.000000 | 58.990 | -24.432 | 1 (IO1) | `/09_COMMUNITY_HEADER/NATIVE_A_HDR` |
+| `D4` | TPD4E1B06DRLR | top | 0.000000 | 58.563 | -29.150 | 1 (IO1) | `/09_COMMUNITY_HEADER/XGPIO4_HDR` |
+| `D5` | TPD4E1B06DRLR | top | 0.000000 | 58.758 | -21.178 | 1 (IO1) | `unconnected-(D5-IO1-Pad1)` |
+| `D8` | NSR0240 | bottom | 0.000000 | 4.700 | -122.750 | 1 (K) | `/03_SPI_A_DISPLAY_SD/LED_BOOST` |
+| `D9` | PMEG2010AEH | bottom | 0.000000 | 11.350 | -72.500 | 1 (K) | `/01_POWER_TREE/BAT_PROTECTED_P` |
+| `D10` | BAT54WS | bottom | 0.000000 | 10.950 | -30.000 | 1 (K) | `/01_POWER_TREE/VBRIDGE_TOP` |
+| `D11` | BAT54WS | bottom | 0.000000 | 14.450 | -30.000 | 1 (K) | `/01_POWER_TREE/VREF_TOP` |
+| `D12` | BAT54WS | bottom | 0.000000 | 10.950 | -17.000 | 1 (K) | `/01_POWER_TREE/BAT_RAW` |
+| `D13` | MHPA3528RGBCT | top | 0.000000 | 31.060 | -107.675 | 1 (A) | `+3V3` |
+| `D14` | BAT54WS | bottom | -90.000000 | 6.800 | -116.850 | 1 (K) | `/03_SPI_A_DISPLAY_SD/BL_DISC_G` |
+| `J1` | FH69-50S-0.5SH | top | 0.000000 | 44.910 | -96.000 | 1 (LEDA) | `/03_SPI_A_DISPLAY_SD/LED_A` |
+| `J2` | Molex_5025700893 | top | 0.000000 | 12.194 | -132.462 | 1 (DAT2) | `no net` |
+| `J3` | USB_C_Receptacle_USB2.0_16P | top | 180.000000 | 46.200 | -146.380 | A1 (GND_A1) | `GND` |
+| `J5` | COMMUNITY_PORT_1x24 | top | -90.000000 | 65.900 | -10.000 | 1 (Pin_1) | `/ACC_5V_SW` |
+| `J6` | JST-PH-2 SPEAKER | top | 0.000000 | 38.000 | -128.000 | 1 (Pin_1) | `/06_AUDIO/SPK_P_CONN` |
+| `J7` | BM02B-ACHSS-GAN-ETF | bottom | 0.000000 | 53.400 | -31.875 | 1 (Pin_1) | `/04_SPI_B_RADIOS_NFC/NFC_ANT_A` |
+| `J8` | QWIIC_STEMMA_QT | top | 90.000000 | 71.400 | -77.900 | 1 (Pin_1) | `GND` |
+| `MK1` | DMM-4026-B-I2S | bottom | 0.000000 | 2.925 | -99.580 | 1 (LR) | `GND` |
+| `Q1` | AO3400A | top | 0.000000 | 46.350 | -1.683 | 1 (G) | `/07_IR/IR_GATE` |
+| `Q2` | AO4800 | bottom | 90.000000 | 5.705 | -51.475 | 1 (S1) | `/01_POWER_TREE/Q2_CS` |
+| `Q3` | AO4800 | bottom | 90.000000 | 5.705 | -59.275 | 1 (S1) | `/01_POWER_TREE/Q3_CS` |
+| `Q4` | BSS138 | bottom | 0.000000 | 1.637 | -94.205 | 1 (G) | `/01_POWER_TREE/BAT_PROT_SHDN_CTL` |
+| `Q5` | AO3401A | bottom | 0.000000 | 1.637 | -25.415 | 1 (G) | `/01_POWER_TREE/REC_GATE_N` |
+| `Q6` | BSS138 | bottom | 0.000000 | 1.637 | -21.625 | 1 (G) | `/01_POWER_TREE/REC_POL_OK` |
+| `Q7` | BSS138 | bottom | 0.000000 | 1.637 | -17.835 | 1 (G) | `/01_POWER_TREE/REC_BAT_LOW` |
+| `Q8` | BSS138 | bottom | 0.000000 | 1.637 | -14.045 | 1 (G) | `/01_POWER_TREE/REC_FAULT_B` |
+| `Q9` | BSS138 | bottom | 0.000000 | 1.637 | -10.255 | 1 (G) | `/01_POWER_TREE/LTC4368_FAULT_N` |
+| `Q10` | 2N7002 | top | 0.000000 | 59.658 | -114.776 | 1 (G) | `/ACC_3V3_SW` |
+| `Q11` | SQ2364EES-T1_BE3 | bottom | 0.000000 | 9.363 | -113.450 | 1 (G) | `/03_SPI_A_DISPLAY_SD/BL_DISC_G` |
+| `U1` | ESP32-S3-WROOM-1 | top | -90.000000 | 63.010 | -119.250 | 1 (GND) | `GND` |
+| `U2` | PCAL9535APW | bottom | 0.000000 | 54.138 | -91.575 | 1 (~{INT}) | `/WAKE_INT_N` |
+| `U3` | PCAL9535APW | bottom | 0.000000 | 54.138 | -81.575 | 1 (~{INT}) | `/WAKE_INT_N` |
+| `U4` | BMI270 | bottom | -90.000000 | 56.750 | -68.838 | 1 (SDO) | `/05_I2C_DEVICES/BMI270_SDO_ADDR` |
+| `U5` | MAX98357A | top | 0.000000 | 29.562 | -115.250 | 1 (DIN) | `/I2S_SPK_DOUT` |
+| `U6` | TSOP38238 | top | 0.000000 | 64.210 | -4.600 | 1 (OUT) | `/IR_RX_GPIO44` |
+| `U7` | E07-400M10S | bottom | 0.000000 | 34.000 | -127.000 | 1 (GND) | `GND` |
+| `U8` | E22-900M22S | bottom | 0.000000 | 17.000 | -127.000 | 1 (GND) | `GND` |
+| `U9` | ST25R3916-AQET | bottom | 0.000000 | 31.725 | -31.750 | 1 (VDD_IO) | `+3V3` |
+| `U10` | USBLC6-2SC6 | top | 0.000000 | 50.263 | -141.750 | 1 (I/O1) | `/01_POWER_TREE/USB_D_CONN_N` |
+| `U11` | BQ25185 | bottom | 0.000000 | 66.400 | -78.600 | 1 (SYS) | `/01_POWER_TREE/BQ25185_SYS` |
+| `U12` | TPS63020 | bottom | 0.000000 | 68.100 | -96.200 | 1 (VINA) | `/01_POWER_TREE/BQ25185_SYS` |
+| `U14` | MAX17048 | bottom | 0.000000 | 1.245 | -83.265 | 1 (CTG) | `GND` |
+| `U16` | TCA4307DGKR | bottom | 0.000000 | 57.138 | -55.725 | 1 (EN) | `/ACC_PWR_EN` |
+| `U17` | TPS61169DCKR | bottom | 0.000000 | 1.363 | -123.250 | 1 (SW) | `/03_SPI_A_DISPLAY_SD/BL_SW` |
+| `U18` | LTC4368-1 | bottom | 180.000000 | 10.100 | -65.500 | 1 (VIN) | `/01_POWER_TREE/BAT_RAW` |
+| `U19` | TLV7032 | bottom | 0.000000 | 1.558 | -29.230 | 1 (OUTA) | `/01_POWER_TREE/REC_POL_OK` |
+| `U20` | TPS22950-Q1 | bottom | 180.000000 | 53.388 | -63.800 | 1 (ON) | `/ACC_3V3_EN` |
+| `U21` | TPS61023 | bottom | 0.000000 | 57.087 | -40.400 | 1 (FB) | `/01_POWER_TREE/ACC_5V_FB` |
+| `U22` | TPS22950-Q1 | bottom | 0.000000 | 53.862 | -43.950 | 1 (ON) | `/ACC_5V_SW_EN` |
+| `Y1` | 27.12MHz 10pF 3225-4P | bottom | 180.000000 | 29.400 | -30.850 | 1 (1) | `/04_SPI_B_RADIOS_NFC/NFC_XOUT` |
 
 ## Manufacturer / CAM written acceptance -- B01-B14
 

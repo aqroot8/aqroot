@@ -69,7 +69,7 @@ exact MPN — 0 missing** (six were added at FBV2-S2-001, see §4).
 | **CAB.01034** | off-board | **E** | **FALLBACK ONLY — NOT ORDERED.** Taoglas Cable Assembly Catalog **SPE-24-8-198-C**, verified live 2026-08-24: Hirose **U.FL** → **SMA(F) bulkhead straight**, **1.32 mm micro-coax**, **250 mm**, normal polarity, 50 Ω. Selected only if the measured route exceeds 180 mm; it measures 138.48 mm. **Its drawing is the dimensional source for the SMA(F)BKST envelope** used to close B-52's floorplan half: 8.00 mm hex across flats = **Ø9.238 across corners**, hex body 3.40 ± 0.2 mm, thread 1/4-36 UNS-2A × 11.40 ± 0.2 mm, **star lock washer Ø10.2 REF**, nut HEX 8 × 1.80 ± 0.3 mm, centre pin Ø0.90 ± 0.05. |
 | **FXP450.07.0100C** | off-board | **E** | Taoglas SPE-23-8-180-A; **410–470 MHz**, **I-PEX MHF1 (U.FL)**, 100 mm; stocked at DigiKey 21704215, Arrow, TTI |
 | **0466005.NRHF** | `F1` | **B** | LCSC **C57525** 2026-08-23 via the JLCPCB parts API: **29,328 in stock**, JLC **Extended**, 1206, **5 A, 32 VAC / 32 VDC, 50 A interrupting**, fast acting. **Halogen-free ordering option of the same Littelfuse 466 / Nano2 family as the `0466005.NR` it replaces — identical LCSC parametric string, identical footprint. ADOPTED, D-210** |
-| **BAT54WS-7-F** | `D10`–`D12` | **B** | LCSC **C124205** 2026-08-23 via the JLCPCB parts API: **46,819 in stock**, JLC **Extended**, **SOD-323**, **1 Independent**, **30 V**, **100 mA** continuous, **600 mA** surge, **V_F 1 V max @ 100 mA**, **I_R 2 µA @ 25 V**. **ADOPTED, D-211** — and see the correction below |
+| **BAT54WS-7-F** | `D10`–`D12`, **`D14`** (D-789; four per board) | **B** | LCSC **C124205** 2026-08-23 via the JLCPCB parts API: **46,819 in stock**, JLC **Extended**, **SOD-323**, **1 Independent**, **30 V**, **100 mA** continuous, **600 mA** surge, **V_F 1 V max @ 100 mA**, **I_R 2 µA @ 25 V**. **ADOPTED, D-211** — and see the correction below |
 | **FXC.46.52.0075X.B.dg** | off-board | **E** | Taoglas SPE-24-8-104-B; **B variant locked** — adhesive / flex / ferrite, for bonding **inside** the shell (D-131) |
 
 ---
@@ -83,19 +83,21 @@ exact MPN — 0 missing** (six were added at FBV2-S2-001, see §4).
 > `F12` closes the cell side around it — so what remains on that line is **purchasing,
 > not engineering**.
 
-**AUTHORITATIVE SWEEP:** `evidence/d791-sourcing-sweep.json`, re-run against the
-REGENERATED assembly BOM (123 lines, 9 short/unknown).  Archived counts are **not
+**AUTHORITATIVE SWEEP (D-800):** `evidence/d800-sourcing-sweep.json`, re-run live against the
+released assembly BOM on 2026-09-24 (123 lines, 9 short/unknown — the same nine groups as D-799;
+`AO4800` reads an Alpha & Omega record with 5,347 in catalogue stock, which is still NOT an allocation).
+*(D-791's `evidence/d791-sourcing-sweep.json` is the HISTORICAL sweep this plan was first written from.)*  Archived counts are **not
 purchasing authority**; re-check immediately before the order.
 
 | MPN | LCSC | refs | need (5 boards) | live stock | action |
 |---|---|---|---:|---:|---|
 | `74438357010` | `C5542269` | L4 | 5 | 0 | **consign: buy the exact MPN from a franchised distributor and ship to the assembler** |
-| `DMM-4026-B-I2S-R` | `C3171792` | MK1 | 5 | 0 | **no longer manufactured — buy broadline and consign** |
+| `DMM-4026-B-I2S-R` | `C3171792` | MK1 | 5 | 0 | **consign from a franchised distributor.** JLC flags it "no longer manufactured"; D-800 checked the franchised source and DigiKey lists PUI `DMM-4026-B-I2S-R` **Active, 4,792 in stock** (2026-09-24).  The JLC flag is not the manufacturer's lifecycle |
 | `LQW18AN39NG80D` | `C2042966` | L5,L6 | 10 | 3 | **consign: buy the exact MPN from a franchised distributor and ship to the assembler** |
 | `LTC4368IMS-1#TRPBF` | `C688401` | U18 | 5 | 2 | **consign: buy the exact MPN from a franchised distributor and ship to the assembler** |
 | `PCAL9535APW,118` | `C2669683` | U2,U3 | 10 | 1 | **consign: buy the exact MPN from a franchised distributor and ship to the assembler** |
 | `SQ2364EES-T1_BE3` | `C5758702` | Q11 | 5 | 0 | **consign: buy the exact MPN from a franchised distributor and ship to the assembler** |
-| `SSQ-124-02-G-S-RA` | `C3323671` | J5 | 5 | 0 | **no longer manufactured — buy broadline and consign** |
+| `SSQ-124-02-G-S-RA` | `C3323671` | J5 | 5 | 0 | **order from Samtec direct and consign.** JLC flags it "no longer manufactured"; D-800 checked Samtec's own product page: **active, 484 pieces "Ships Tomorrow"**, distributor stock 0, and marked **"only available to existing customers"** (2026-09-24) — so the order must go through a Samtec account or a Samtec sample/quote request; that account is the procurement action |
 | `ST25R3916-AQET` | `C5267441` | U9 | 5 | 0 | **consign: buy the exact MPN from a franchised distributor and ship to the assembler** |
 | `TLV7032DDFR` | `C2871498` | U19 | 5 | 0 | **consign: buy the exact MPN from a franchised distributor and ship to the assembler** |
 | `AO4800` | `C17098` | `Q2`, `Q3` | 10 | covered by catalogue stock | **ALLOCATE.** Catalogue availability is not an allocated traceable lot and this is the battery path's pass pair |
@@ -147,7 +149,7 @@ before any order.  **DO NOT ORDER** on the strength of the table above.
 > lines, unchanged from the D-792 and D-791 sweeps: `J5`, `L4`, `L5`/`L6`, `MK1`, `Q11`,
 > `U18`, `U19`, `U2`/`U3`, `U9` — and `Q2`/`Q3` a tenth exact identity needing an
 > authorised allocation without being short), §4a above, and the consignment table in
-> [`FIRST_FIVE_ASSEMBLY_PLAN.md`](FIRST_FIVE_ASSEMBLY_PLAN.md) §18.  Two rows below were
+> [`FIRST_FIVE_ASSEMBLY_PLAN.md`](FIRST_FIVE_ASSEMBLY_PLAN.md) §7c (D-800: this pointer read §18, a section that does not exist).  Two rows below were
 > carried here after they had already been retired elsewhere, which is exactly the defect
 > class `R7-D787-19`/`R7-D787-20` named: **`U18` is `LTC4368IMS-1#TRPBF` / `C688401`,
 > MSOP-10 — the `LTC4368IDD-1#PBF` / `C688397` DFN code is RETIRED (D-615)** — and the
@@ -204,7 +206,9 @@ is a purchasing decision rather than a design change.
 
 ---
 
-## 5. OPEN SOURCING ITEMS
+## 5. OPEN SOURCING ITEMS *(HISTORICAL — the FBV2-S2-001 list, superseded)*
+
+> **D-800:** S-1 and S-2 are RESOLVED — every fitted, purchased line on the released BOM carries an exact MPN and LCSC code (`fab_package_contract` FAB7), and `L5`/`L6` are Murata `LQW18AN39NG80D` (`C2042966`).  S-5 is carried by the live sweep in §4a.  S-3/S-4 remain first-article magnetics observations, not order blockers.
 
 | # | item | severity |
 |---|---|---|
@@ -216,7 +220,7 @@ is a purchasing decision rather than a design change.
 
 ---
 
-## 6. Magnetics — B-68
+## 6. Magnetics — B-68 *(HISTORICAL table — `L5`/`L6` now carry an MPN, see §5)*
 
 | ref | MPN | L | Isat | Irms | peak in circuit | margin | verdict |
 |---|---|---|---|---|---|---|---|

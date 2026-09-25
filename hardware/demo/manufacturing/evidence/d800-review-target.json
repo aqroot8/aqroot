@@ -1,0 +1,84 @@
+{
+ "beta_v2_untouched": true,
+ "board": "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_changes": [],
+ "board_sha256": "c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907",
+ "branch": "aqroot-demo",
+ "closed_here": {
+  "dispositioned": {
+   "Opus R19-06": "(a) analytically acceptable + (b) first-article PI priority (C-PWR-TRANSIENT-01 radio step at U7.9/U8.9) + Rev-B local ceramics; not a pre-order defect"
+  },
+  "full_gate_injections": "evidence/d800-full-gate-injections.json",
+  "known": {
+   "D800-KNOWN-01": "Astra R19-01",
+   "D800-KNOWN-02": "Astra R19-02",
+   "D800-KNOWN-03": "Astra R19-03 + Opus R19-02",
+   "D800-KNOWN-04": "Opus R19-01",
+   "D800-KNOWN-05": "Opus R19-03",
+   "D800-KNOWN-06": "Opus R19-04",
+   "D800-KNOWN-07": "Opus R19-05",
+   "D800-KNOWN-08": "Opus R19-07"
+  },
+  "witnesses": "evidence/d800-round19-witnesses.json (every witness reproduced on 4aa286e2 before it was fixed)"
+ },
+ "content_commit": "recorded by the identity commit that follows it",
+ "decision": "D-800",
+ "firmware_changes": [
+  "SPI released after the boot/periodic radio quiesce (the pinned core ignores a second SPI.begin while running)",
+  "radio quiesce runs in the FATAL expander branch and first in loop(), so a wedged I2C bus cannot keep a retained transmitter keyed",
+  "wrap-safe elapsed time in the IR self-test, sx1262WaitBusy, the CC1101 SO waits and the mic capture",
+  "accessory rail enable requires BOTH expanders' output shadows valid",
+  "platformio.ini default_envs = aqroot-demo",
+  "comment: Q11 is SQ2364EES driven through D14/C85/R132"
+ ],
+ "found_and_dispositioned_not_changed": [
+  "U9 ST25R3916 HF blocking caps 14-43 mm routed from their pins: first-article PI priority (C-NFC-TUNE-01 at the pins, named rework) + Rev-B",
+  "U17 backlight hot loop, U14 without a local 0.1 uF, U2 plane-only bypass: first article + Rev-B",
+  "double-limiter fault 3.8236 A vs BQ25185 SYS DC abs max 3.125 A: not a reachable DC state",
+  "TCR margin narrowing on the 5 V divider, R97/R101, LTC4368 OV (no published figure crossed); IR stuck-on overstress (contained); L1 datasheet not archived; PCAL POR while MCU runs undetected (unreproduced)",
+  "C26/C27 value text says 10V for a 25 V MPN; J5 silkscreen past the stepped outline"
+ ],
+ "full_review_found_and_fixed": [
+  "firmware: six defects above, each with a host-image claim and an H6 mutation control",
+  "BOM-full grouped fitted L4/U21 with unfitted twins as DNP (FAB6 purity + controls)",
+  "first-five plan: U2.P05 -> U2.P03; [ok] -> [PASS]; C-BAT-GATE-01 criterion and load point; BUVLO note at 3.05 V; meter placement on a board with no break in +3V3; Q11-TEMP-01 OUTCOME = section 7a; C24/C26/C27 purchase lines; BAT54WS quantity 20",
+  "first-article prerequisite FAP-01 (test image) and new step C-IR-01 (FA07)",
+  "IR_LEAD_FORMING re-based to the board and the true optical axes; MK9 gated on formed axes / barrier / emission cone (13.73 mm vs D-162's 15 mm heuristic)",
+  "stale documents: FIRST_FIVE_POPULATION_MATRIX, OFF_BOARD_BOM (heading-fenced 2.81 V), SOURCING_LEDGER sections 5/6 and procurement plan, FOOTPRINT_VERIFICATION_LEDGER counts, DEVICE_SPEC input-limit / 2 A / TYP wording",
+  "FAB-NOTES: generated PIN-1 / POLARITY table, board thickness statement, J5 silkscreen note",
+  "verifier: STAT1 family matched INDETERMINATE as terminated"
+ ],
+ "gates": {
+  "battery_pack": "PASS",
+  "demo_feature": "F1-F14 PASS (round19_operative_semantics: cure / waveform / package-as-junction / supervised variants over every operative document incl. the manual travelers; KNOWN-01 7 classifier cases; KNOWN-07 insertion controls; duplicated-guarantee control)",
+  "fab_package": "FAB1-FAB16 PASS (FAB6 BOM-full purity, 3/3 mixed-population controls); Gerber/drill differences are creation timestamps only",
+  "firmware_hw_map": "H1-H8 PASS; every host-test mutation caught including six D-800 image controls",
+  "guarantee_evidence": "17/17 keys, 37/37 destructive controls (9 new multiplicity controls)",
+  "kicad_drc_parity": "identical in count and class to d799 (199 violations, 17 unconnected, 246 parity)",
+  "platformio": "4/4 from clean (esp32-s3-aqroot, wokwi, esp32-s3-aqroot-dm, aqroot-demo)",
+  "protected_copper": "identical (15 nets)",
+  "rail_ampacity": "all_ok; identical to d799",
+  "routing_ledger": {
+   "approved_unrouted_edges": 1,
+   "connected_retained_nets": 173,
+   "identical_to_d799": true,
+   "retained_multi_pad_nets": 174,
+   "unapproved_open_edges": 0
+  },
+  "sourcing": "live re-sweep: nine constrained groups unchanged (evidence/d800-sourcing-sweep.json); J5/MK1 active at source (evidence/d800-broadline-check.json); genuine AO4800 allocation remains a gate",
+  "standing_contracts": "19/19 PASS (contract_regression vs d799: substantive difference only in demo_feature, firmware_hw_map, mechanical_keepout, by design; all children exit 0)"
+ },
+ "identity_commit": "the commit that follows the content commit; it records the content SHA",
+ "manifest": "hardware/demo/fab/MANIFEST.json",
+ "manifest_sha256": "recorded by the identity commit (this file is written before the content commit)",
+ "no_copper_change": true,
+ "no_firmware_change": false,
+ "order_status": {
+  "FAB_CAM_ACCEPTANCE": "PENDING (B01-B14)",
+  "FIRST_ARTICLE_VALIDATION": "PENDING (FA01-FA10, prerequisite FAP-01)",
+  "PRE_ORDER_ANALYTICAL": "CLOSED on this target",
+  "PROCUREMENT": "PENDING (genuine AO4800 allocation + nine constrained groups)"
+ },
+ "parent_reviewed_by_round_19": "4aa286e2d517f6acc64290e3c427f045dd109654",
+ "schema": 1
+}

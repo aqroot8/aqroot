@@ -8,6 +8,19 @@
 > no net, no land pattern.** Both parts stay exactly as locked — `D1` = Vishay **`TSAL6100`**,
 > `U6` = Vishay **`TSOP38238`** (`TSOP38438` same-package fallback).
 
+> **D-800 (Round-19 full review) RE-BASED EVERY X IN THIS FILE.**  It was written at
+> FBV2-P1-002, before the FBV2-EXP-002 **+1.000 mm** X re-base (D-759), and it placed `D1`'s
+> optical axis on its PAD 1.  Every X below is now the post-rebase doc datum the board and
+> `DEVICE_SPEC` §12 use (`BOSS2` at 60.000; doc Y = 148 − KiCad Y), and each formed axis is
+> the part's real one: `D1`'s dome is centred BETWEEN its two leads (**X 53.020**), `U6`'s lens
+> on its centre lead (**X 66.750**).  Measured that way the two axes are **13.73 mm** apart, so
+> D-162's "≥ 15 mm TX↔RX" heuristic is **NOT met, by 1.27 mm** — `mechanical_keepout_contract`
+> MK9 had measured footprint origins (15.13 mm).  Neither part can move (`U6` is against the
+> board edge; `D1` west goes deeper into the NFC exclusion).  The physical isolation the
+> heuristic stands for is what MK9 now gates — the barrier stands between both whole courtyards
+> and the receiver is outside the TSAL6100's ±10° cone (Vishay 81009 rev 1.8, archived) for
+> 47 mm beyond the dome — and the coupling itself is MEASURED at first article, `C-IR-01`.
+
 ---
 
 ## 1. Why forming is required at all
@@ -18,8 +31,8 @@ optical axis normal to the PCB.** The AQROOT IR windows are in the **TOP PANEL**
 the CTO has ruled that the MPNs do not change for the first five boards. **Therefore both parts are
 lead-formed 90° at assembly so their axes point out of the top panel.**
 
-Both are already **hand-soldered after reflow** (D-206/D-207: `J5` and `D1` are the two manual
-parts per board; `U6` joins them as a formed THT part). Forming adds a step to work that is
+Both are already **hand-soldered after reflow** (D-206/D-207 named `J5` and `D1` as the two manual
+parts; the board now has five through-hole parts, `FIRST_FIVE_ASSEMBLY_PLAN.md` §6, and `U6` is one of them). Forming adds a step to work that is
 already manual.
 
 ---
@@ -51,10 +64,10 @@ says so.
 | D1-8 | **Sequence** | **form → insert → solder.** Forming after soldering is forbidden; it transfers the bending moment into the joint and the case | **LOCKED** — Vishay 84892 |
 | D1-9 | **Solder point clearance** | lower epoxy rim to nearest solder point **> 2 mm** — satisfied by construction, the case is ≥ 2 mm along +Y from the pads | **LOCKED** — Vishay 84892 |
 | D1-10 | **Final optical-axis height above the F.Cu surface** | **2.90 mm** nominal (half of Ø5.8), **± 0.50 mm** | **TARGET**, must equal the window centreline — **CAD-TO-VERIFY** |
-| D1-11 | **Positional tolerance of the axis, in X** | **± 0.50 mm** about doc X 50.750 | **TARGET** |
+| D1-11 | **Positional tolerance of the axis, in X** | **± 0.50 mm** about doc X **53.020**, the midpoint of the two leads (D-800: this read 50.750, pad 1 on the pre-rebase datum) | **TARGET** |
 | D1-12 | **Positional tolerance of the axis, in Y (reach)** | the dome tip must land between doc **Y 151.5 and 153.0** | **TARGET** |
 | D1-13 | **Angular tolerance of the axis** | **± 3°** in both planes. The TSAL6100's half-angle is ±10°, so 3° of forming error costs little on-axis intensity but is visible at range | **TARGET** |
-| D1-14 | **Barrier relationship** | the whole formed part must stay **west of X 56.500**, the IR barrier's face. Its courtyard does (X 47.495 … 54.005) | **LOCKED** |
+| D1-14 | **Barrier relationship** | the whole formed part must stay **west of X 57.500**, the IR barrier's face. Its courtyard does (X 49.765 … 56.285) | **LOCKED** |
 | D1-15 | **Enclosure support** | a moulded cradle or half-clip in the top-front cavity **may** carry the formed body. It must leave clearance to the epoxy case and must not apply spring force (Vishay 84892 item 8) | **TARGET**, **CAD-TO-VERIFY** |
 
 ### 3.1 The reach arithmetic, and why `D1` moved
@@ -75,9 +88,9 @@ occupying the outer 1.0 mm and recessed 0.5 mm from the outer face (T-12). That 
 **pad Y ≤ 153.0 − 11.6 = 141.4**.
 
 **At FBV2-P1-001's Y = 143.600 the dome would have finished at Y ≈ 155.2 — 1.2 mm outside the
-enclosure.** `D1` is therefore placed at **doc (50.750, 141.400)**, the northernmost position that
+enclosure.** `D1` is therefore placed at **doc (51.750, 141.400)** (pad 1; the axis is at X 53.020), the northernmost position that
 works. It cannot go further north (the shell) and it cannot go east (`U6` is already hard against
-the right board edge and the ≥ 15 mm TX↔RX rule pins `D1`'s X exactly).
+the right board edge, and the formed axes are already 13.73 mm apart — see the D-800 note above).
 
 **Recorded consequence:** at Y = 141.400 the `D1` leadframe sits **2.854 mm inside the Ø58 NFC
 metal exclusion**, i.e. **2.146 mm outside the Ø48 loop perimeter** against a 5 mm target. See
@@ -97,8 +110,8 @@ metal exclusion**, i.e. **2.146 mm outside the Ø48 loop perimeter** against a 5
 | U6-6 | **No stress at the package body** | the tool grips the leads only; no force into the moulding; **form before soldering** | **LOCKED** by analogy with 84892 and standard THT practice |
 | U6-7 | **Final optical-axis height above the F.Cu surface** | **2.40 mm** nominal (half of the 4.8 mm depth), **± 0.50 mm** | **TARGET**, must equal the window centreline — **CAD-TO-VERIFY** |
 | U6-8 | **Reach** | formed extent from the pad in +Y ≈ 0.5 + 1.5 + 6.95 = **≈ 9.0 mm**; from doc Y 143.400 the lens lands at **Y ≈ 152.4**, inside the 153.0 bore. **`U6` fits where it is and was NOT moved** | measured |
-| U6-9 | **Positional tolerance of the axis** | **± 0.50 mm** in X about doc X 65.750; **± 3°** angular | **TARGET** |
-| U6-10 | **Barrier relationship** | the whole formed part must stay **east of X 61.500**, the IR barrier's face. Its courtyard does (X 61.955 … 69.545) | **LOCKED** |
+| U6-9 | **Positional tolerance of the axis** | **± 0.50 mm** in X about doc X **66.750** (the centre lead); **± 3°** angular | **TARGET** |
+| U6-10 | **Barrier relationship** | the whole formed part must stay **east of X 62.500**, the IR barrier's face. Its courtyard does (X 62.955 … 70.545) | **LOCKED** |
 | U6-11 | **Enclosure support** | as D1-15 | **TARGET**, **CAD-TO-VERIFY** |
 
 > **The two axes are 0.50 mm apart in height** (2.90 mm for `D1`, 2.40 mm for `U6`). The two
@@ -109,10 +122,10 @@ metal exclusion**, i.e. **2.146 mm outside the Ø48 loop perimeter** against a 5
 
 ## 5. The barrier is not optional
 
-`IR_BARRIER`, doc **X 56.500 … 61.500**, full height, **bonded to BOTH shells**, opaque. It was
+`IR_BARRIER`, doc **X 57.500 … 62.500**, full height, **bonded to BOTH shells**, opaque. It was
 widened from 3.0 to 5.0 mm at FBV2-P1-002 so that it fills the entire gap between the two optical
 windows while touching neither, and it **also carries `BOSS2`**, the M2 retention screw at doc
-(59.000, 145.000).
+(60.000, 145.000).
 
 **It blocks the internal reflection path, which is the path that actually causes self-blinding**
 (T-11). Forming the two parts to look out of the same panel makes that path shorter, not longer,

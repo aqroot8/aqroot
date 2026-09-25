@@ -1,3 +1,22 @@
+## D-800 — 2026-09-24 — ROUND-19 MAXIMUM-ASSURANCE FULL PRE-ORDER REVIEW: EIGHT KNOWN FINDINGS CLOSED, A FULL-SYSTEM RE-AUDIT, AND WHAT IT FOUND
+
+Round-19 graded D-799 **Astra B** (three non-PCB pre-order corrections) and **Opus/Fable
+A** with seven residuals, and required a FULL maximum-assurance re-audit, not a patch.
+**All eight known findings (D800-KNOWN-01…08) are reproduced on `4aa286e2` and closed**
+(`evidence/d800-round19-witnesses.json`); `R19-06` is dispositioned with evidence.  The
+full re-audit (six independent audit passes plus the release suite) found and fixed
+**firmware** defects (SPI left bound to SPI-B pins; a wedged I2C bus that skipped the
+radio quiesce; two `millis()`-wrap hangs; a rail grant with an expander state UNKNOWN; no
+`default_envs`), a **purchasing** list defect (BOM-full marked fitted `L4`/`U21` DNP), and
+**operative-document** defects (wrong probe pin, a pass criterion stricter than the
+design guarantee, pre-rebase IR coordinates and an IR spacing gate that measured the
+wrong points, stale population/sourcing/footprint tables, a missing pin-1 table, and
+first-article steps the release image cannot execute — now the named prerequisite
+`FAP-01`).  **NO COPPER** — board sha256 unchanged.  Firmware changes are host-tested,
+each with a permanent mutation control.
+
+**REVIEW TARGET, NOT A FABRICATION AUTHORIZATION.  DO NOT ORDER.**
+
 ## D-799 — 2026-09-24 — ROUND-18 FINAL-TARGETED CORRECTION: AN OPEN-CIRCUIT BOUND THAT IS A BOUND, A CHARGE RECORD THAT MUST BE POSSIBLE, A JUNCTION THAT IS AN INTERVAL, AND THREE VERIFIERS SCOPED TO WHAT THEY NAME
 
 Round-18 external review graded D-798 **Astra B** (three bounded corrections) and **Fable

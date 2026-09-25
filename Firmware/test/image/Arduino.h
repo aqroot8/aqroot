@@ -62,6 +62,12 @@ struct Recorder {
   std::string serial_in;                      // characters loop() will read
   size_t serial_in_pos = 0;
   int spi_begin_calls = 0;
+  // D-800: the SCK the SPI peripheral is bound to (-1 = released), and how
+  // many `begin`s asked for OTHER pins while it was bound -- which the real
+  // core silently ignores.
+  int spi_bound_sck = -1;
+  uint64_t hang_guard_us = ~uint64_t(0);      // D-800, see advanceClockUs
+  int spi_begin_ignored_other_pins = 0;
   int i2s_installs = 0;
   bool pin_low[64] = {false};
   // D-795 / R14-02: how often each pin has been driven from HIGH to LOW, so a
@@ -168,6 +174,15 @@ inline void advanceClockUs(uint64_t us) {
   auto &r = recorder();
   if (r.clock_frozen) return;
   r.clock_us += us;
+  // D-800: a HANG GUARD for the millis()-wrap scenarios.  A wait that ignores
+  // its own bound near the wrap spins for ever; past `hang_guard_us` any
+  // clock advance ends the run as a NAMED failed claim instead.
+  if (r.clock_us > r.hang_guard_us) {
+    printf("[FAIL] host: a shipped wait ran past its own bound across the "
+           "millis() wrap\n");
+    fflush(stdout);
+    exit(1);
+  }
   if (r.clock_us >= r.freeze_at_us) {
     r.clock_us = r.freeze_at_us;
     r.clock_frozen = true;

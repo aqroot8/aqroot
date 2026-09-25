@@ -35,10 +35,23 @@ inline SpiModel *&spiModel() {
 
 class HostSPI {
  public:
-  void begin(int8_t = -1, int8_t = -1, int8_t = -1, int8_t = -1) {
-    ++aqroot_hal::recorder().spi_begin_calls;
+  // D-800: the PINNED CORE'S behaviour, not an idealisation of it.
+  // framework-arduinoespressif32 `SPIClass::begin` returns at once when the
+  // bus is already running -- the new pins are IGNORED.  The model records
+  // which SCK the peripheral is really bound to and every ignored begin, so
+  // a caller that leaves the bus bound to the other pins is visible.
+  void begin(int8_t sck = -1, int8_t miso = -1, int8_t mosi = -1,
+             int8_t = -1) {
+    auto &r = aqroot_hal::recorder();
+    ++r.spi_begin_calls;
+    if (r.spi_bound_sck != -1) {
+      if (r.spi_bound_sck != sck) ++r.spi_begin_ignored_other_pins;
+      return;
+    }
+    r.spi_bound_sck = sck;
+    (void)miso; (void)mosi;
   }
-  void end() {}
+  void end() { aqroot_hal::recorder().spi_bound_sck = -1; }
   void beginTransaction(SPISettings) {}
   void endTransaction() {}
   // With no model installed the host image has no silicon on the bus and

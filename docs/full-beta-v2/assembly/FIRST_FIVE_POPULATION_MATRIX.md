@@ -5,7 +5,15 @@
 spreadsheet. **Regenerate it the same way before quoting it.**
 Authority: [`../CTO_DECISIONS.md`](../CTO_DECISIONS.md) outranks this file.
 
-**322 schematic components · 306 FITTED · 16 DNP · 1 off-board (`LS1`) · 47 test points.**
+~~322 schematic components · 306 FITTED · 16 DNP · 1 off-board (`LS1`) · 47 test points~~ *(the FBV2-S2-001 beta-v2 count — HISTORICAL, superseded)*.
+
+> **D-800 RE-DERIVED FROM THE DEMO SCHEMATIC (`hardware/demo/kicad/aqroot-demo/`), Round-19 full review:**
+> **314 schematic symbols · 298 not DNP · 16 DNP**; of the 298, `LS1` is off-board, `J4` is the manual battery-harness
+> connector (`BATTERY_HARNESS.json`), and 45 are non-purchased test points.
+> The DNP set below is unchanged and exact.  **This matrix is a SUMMARY: the purchasing and placement
+> authority is the generated fab package** (`aqroot-Demo-BOM-assembly.csv`, `-DO-NOT-POPULATE.csv`,
+> `-pos-fitted.csv`), and F12 now scans this file for stale values.  D-800 corrected two resistor values
+> here that had been carried since beta-v2: `R97` is **1.87 kΩ** and `R101` is **2.43 kΩ**.
 
 > **RE-CHECKED 2026-08-23 (FBV2-S2-002). The counts are unchanged — but eight of the sixteen DNP parts still carried NO RECORDED REASON, and all eight now do (D-208).**
 >
@@ -88,18 +96,18 @@ decoupling in DS12484; none is optional.
 | Radios `U7`, `U8` | **FIT**; antennas **OFF-BOARD** |
 | Dead-cell recovery | **FIT** — `U19`, `Q5`, `D8`, **`D10`–`D12` = Diodes Inc `BAT54WS-7-F` (`C124205`), each ONE independent SOD-323 Schottky (D-211)**, dividers; `R93` **DNP** hysteresis |
 | Reverse-polarity path | **FIT** — `U18` LTC4368-1, `Q2`, `Q3`, `R75`, **`F1` = Littelfuse `0466005.NRHF` (`C57525`), 5 A 32 V 1206 fast-acting (D-210)** |
-| Accessory 3.3 V rail | **FIT** — `U20` + `R97` 1.5 kΩ + `R98` 100 kΩ down |
-| Accessory 5 V rail | **FIT** — `U21` + `L4` + `C64`–`C66` + `U22` + `R101` 1.65 kΩ + `R102`/`R131` 100 kΩ down |
+| Accessory 3.3 V rail | **FIT** — `U20` + `R97` 1.87 kΩ (`0603WAF1871T5E`) + `R98` 100 kΩ down |
+| Accessory 5 V rail | **FIT** — `U21` + `L4` + `C64`–`C66` + `U22` + `R101` 2.43 kΩ (`0603WAF2431T5E`) + `R102`/`R131` 100 kΩ down |
 | `U16` TCA4307 | **FIT** — corrected at FBV2-S1-009 (was DNP as a TCA9517A) |
 | External I²C pull-ups `R49`/`R50` | **FIT at 1.5 kΩ** — corrected at FBV2-S1-009 (were 4.7 kΩ **DNP**) |
 | ESD arrays `D2`–`D5` | **FIT** — corrected at FBV2-S1-009 (all were DNP) |
 | Front RGB `D13` + `R124`–`R126` | **FIT** |
-| Expanders `U2`, `U3`, `U23` | **FIT** |
+| Expanders `U2`, `U3` | **FIT** (there is no `U23` on the Demo schematic — D-800) |
 | Buttons `SW1`–`SW7`, `SW9` | **FIT** |
-| Community connector `J5` | **FIT — MANUAL / SECONDARY ASSEMBLY** (through-hole) |
-| Display connector `J1` | **FIT — MANUAL ASSEMBLY** (B-47; no proven second source) |
+| Community connector `J5` | **FIT — MANUAL / SECONDARY ASSEMBLY** (through-hole, Samtec `SSQ-124-02-G-S-RA`) |
+| Display connector `J1` | **FIT — MACHINE-PLACED** (Hirose `FH69-50S-0.5SH`, in the CPL, top side; JLC carries the genuine part — see `FIRST_FIVE_ASSEMBLY_PLAN.md` §3) |
 | Battery | **OFF-BOARD** via `J4` |
-| Test points `TP1`–`TP47` | **FIT** (bare pads) |
+| Test points (45: `TP1`–`TP47` less `TP14` and `TP41`) | **FIT** (bare pads) |
 
 ---
 
@@ -107,12 +115,12 @@ decoupling in DS12484; none is optional.
 
 | strategy | parts |
 |---|---|
-| **SMT, automated** | everything except the two rows below |
-| **MANUAL / SECONDARY** | **`J5`** Samtec BCS-112-S-D-HE — 24 × Ø0.71 mm through-hole; **`D1`** Vishay TSAL6100 — 5 mm THT LED; **`J1`** Hirose FH69-50S-0.5SH — see B-47 |
+| **SMT, automated** | everything except the two rows below — including `J1` |
+| **MANUAL / SECONDARY** | the five through-hole parts of `FIRST_FIVE_ASSEMBLY_PLAN.md` §6, which is the authority: **`J5`** Samtec `SSQ-124-02-G-S-RA` — 24 × Ø1.02 mm; **`D1`** Vishay TSAL6100 and **`U6`** TSOP38238 — lead-formed per `IR_LEAD_FORMING.md`; **`J6`** speaker header; **`J4`** the manual battery pigtail per `THT_LEAD_TRIM.md` / `BATTERY_HARNESS.json` *(D-800 corrected this row: it named the superseded BCS-112 and a manual `J1`, and omitted `U6`, `J6` and `J4`)* |
 | **OFF-BOARD** | `LS1` speaker, display + touch panel, both antennas, the 915 MHz pigtail assembly, the NFC flex antenna, the battery |
 
-> **`J5` and `J1` are deliberate manual-assembly choices, not oversights.** The CTO ruling stands:
-> for five prototypes, hand-soldering a proven connector beats a speculative footprint migration.
+> **`J5` is a deliberate manual-assembly choice, not an oversight.** *(`J1` was manual at FBV2-S2-001 and is
+> machine-placed since; that half of this note is HISTORICAL.)*
 
 **ESD warning for assembly:** `D13` (MEIHUA RGB) has **green and blue dice rated only 150 V HBM**
 against 2000 V for red. Handle as an ESD-sensitive part.
@@ -124,7 +132,7 @@ against 2000 V for red. Handle as an ESD-sensitive part.
 | item | what is measured |
 |---|---|
 | NFC matching `C69`–`C80`, `L5`, `L6`, `R114`–`R117` | antenna Q and tuning against the fitted flex antenna |
-| `R97` / `R101` accessory `R_ILIM` | real internal worst-case rail current, then raise the published limits |
+| ~~`R97` / `R101` accessory `R_ILIM`~~ | **NOT a tune item (D-800).** `R97` 1.87 kΩ and `R101` 2.43 kΩ are FIXED by the owner-approved 400 mA / 300 mA budgets and the D-790 protection proof; `C-ACC-ILIM-01` QUALIFIES them and no published limit is raised at bring-up |
 | `R93` | dead-cell handoff chatter |
 | `R123` | IR range against the real optical stack |
 | `C81`/`C82` | speaker EMI, only if a scan fails |

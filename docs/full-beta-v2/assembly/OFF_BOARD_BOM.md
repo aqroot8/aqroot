@@ -157,16 +157,10 @@ only for it is removed from this BOM, and so is its adhesive cure from the
 critical path of every board.  `TP12` and `TP25` remain on the board as test
 points for bring-up and for a future rework; **nothing is soldered to them.**
 
-**What is published instead**, derived by `demo_feature_contract` F6 from the
-live board and frozen in `DEVICE_SPEC`: the Community Port delivers
-**≥ 2.81 V unconditionally** at the full published 400 mA — either duplicated
-3.3 V contact used alone, one mated ground contact, and the 5 V rail also at
-its 300 mA budget — and **2.917924 V with the header fully mated**, which is
-better than the 2.95 V D-788 published with a hand-soldered conductor fitted.
-*(D-791 / `D790-A08`: this paragraph read **2.84 V** and **2.982890 V**, which
-were D-789's figures.  D-790 corrected them to 2.81 V / 2.918599 V and D-791's
-corrected backlight budget moves the second to 2.917924 V.  The published
-minimum on the 10 mV grid is UNCHANGED at 2.81 V.)*
+## 7b. What the Community Port publishes instead — CURRENT (D-800)
+
+Derived by `demo_feature_contract` F6 from the live board and frozen in `DEVICE_SPEC` §6.3a: at the full published 400 mA, with either duplicated 3.3 V contact used alone, one mated ground contact and the 5 V rail also at its 300 mA budget, the Community Port delivers **2.805637 V**, published as a **2.80 V** minimum on the 10 mV grid; with the header **fully mated** (both 3.3 V contacts, all four grounds) it delivers **2.910494 V**.  *(D-800: this paragraph sat under the RETIRED heading above and formerly printed the superseded D-790/D-791's **2.81 V** and **2.917924 V**; a heading fence hid it from the stale-value scan.  It now has its own current heading.)*
+
 The full record, including what it cost and what it bought back, is
 [`ACC_3V3_REINFORCEMENT.json`](ACC_3V3_REINFORCEMENT.json).
 

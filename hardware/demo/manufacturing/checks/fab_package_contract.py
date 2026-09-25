@@ -827,6 +827,54 @@ def fab12(pkg, board):
                        "(D-781); live controls restore the J5 defect and make "
                        "manual J4 re-enter the purchased BOM path")
 
+def _fab6_full_survey(full_rows, dnp, every, per_ref):
+    """D-800.  BOM-full must state EACH reference's population and identity.
+
+    A grouped line is one claim about every reference on it.  D-799's full
+    parts list grouped the fitted L4 with the unfitted L2 and the fitted U21
+    with the unfitted U13 and printed both lines "DNP": a buyer reading the
+    full list would not order the 5 V boost converter or its inductor.  Every
+    line must therefore be PURE -- all its references DNP, or none -- and its
+    DNP cell, quantity, MPN, manufacturer and LCSC must be those of every
+    reference it names, as the per-reference views state them.  Every
+    schematic reference must appear on exactly one line.
+    """
+    problems, seen = [], Counter()
+    for row in full_rows:
+        refs = expand(row["Refs"])
+        seen.update(refs)
+        row_dnp = bool(row.get("DNP", "").strip())
+        pop = {r: (r in dnp) for r in refs}
+        if len(set(pop.values())) > 1:
+            problems.append(("MIXED_POPULATION_LINE", row["Refs"],
+                             sorted(r for r, d in pop.items() if not d)))
+        wrong = sorted(r for r, d in pop.items() if d != row_dnp)
+        if wrong:
+            problems.append(("DNP_CELL_WRONG_FOR", row["Refs"], wrong))
+        try:
+            qty = int(row.get("Qty", "").strip())
+        except ValueError:
+            qty = None
+        if qty != len(refs):
+            problems.append(("QTY_NOT_REF_COUNT", row["Refs"], row.get("Qty")))
+        for r in sorted(refs):
+            want = per_ref.get(r)
+            if want is None:
+                continue
+            for key in ("MPN", "Manufacturer", "LCSC", "Value", "Footprint"):
+                if row.get(key, "").strip() != want.get(key, "").strip():
+                    problems.append(("IDENTITY_DIFFERS", r, key,
+                                     row.get(key, "").strip(),
+                                     want.get(key, "").strip()))
+    twice = sorted(r for r, n in seen.items() if n > 1)
+    if twice:
+        problems.append(("REF_ON_TWO_LINES", twice))
+    absent = sorted(every - set(seen))
+    if absent:
+        problems.append(("REF_ON_NO_LINE", absent))
+    return problems
+
+
 def fab6(pkg, board, fitted, dnp):
     """The four BOM views must PARTITION the schematic, exactly once each."""
     views = {name: read_csv(pkg / ("aqroot-Demo-%s.csv" % name))
@@ -876,9 +924,48 @@ def fab6(pkg, board, fitted, dnp):
     collisions = sorted(("%s=%s" % (k, v), sorted(fps))
                         for (k, v), fps in identity.items() if len(fps) > 1)
 
+    # D-800.  The FULL parts list is a purchasing document too.
+    per_ref = {}
+    for rows in views.values():
+        for row in rows:
+            for r in expand(row["Refs"]):
+                per_ref[r] = row
+    full_rows = read_csv(pkg / "aqroot-Demo-BOM-full.csv")
+    full_problems = _fab6_full_survey(full_rows, dnp, every - manual_fitted, per_ref)
+    # NON-VACUITY.  Re-create the D-799 line on a copy -- each fitted twin
+    # merged into its unfitted twin's DNP line -- and a DNP cell stripped from
+    # a pure DNP line; the survey must refuse every one.
+    controls = {}
+    by_ref = {r: i for i, row in enumerate(full_rows) for r in expand(row["Refs"])}
+    for fitted_ref, dnp_ref in (("L4", "L2"), ("U21", "U13")):
+        if fitted_ref not in by_ref or dnp_ref not in by_ref:
+            controls["merge_%s_into_%s" % (fitted_ref, dnp_ref)] = "UNAVAILABLE"
+            continue
+        mut = [dict(r) for r in full_rows]
+        keep = mut[by_ref[dnp_ref]]
+        keep["Refs"] = ",".join(sorted(expand(keep["Refs"]) | {fitted_ref}))
+        keep["Qty"] = str(len(expand(keep["Refs"])))
+        keep["DNP"] = "DNP"
+        del mut[by_ref[fitted_ref]]
+        controls["merge_%s_into_%s" % (fitted_ref, dnp_ref)] = (
+            "CAUGHT" if _fab6_full_survey(mut, dnp, every - manual_fitted, per_ref)
+            else "MISSED")
+    mut = [dict(r) for r in full_rows]
+    for r in mut:
+        if r.get("DNP", "").strip():
+            r["DNP"] = ""
+            break
+    controls["dnp_cell_stripped"] = (
+        "CAUGHT" if _fab6_full_survey(mut, dnp, every - manual_fitted, per_ref) else "MISSED")
+    controls_ok = all(v == "CAUGHT" for v in controls.values())
+
     return dict(ok=(not duplicated and not unpartitioned and not manual_in_bom_view
                     and not invented and not not_built and not missing and not wrong_dnp
-                    and not mismatched_non_purchased and not collisions),
+                    and not mismatched_non_purchased and not collisions
+                    and not full_problems and controls_ok),
+                bom_full_lines=len(full_rows),
+                bom_full_problems=full_problems,
+                bom_full_mixed_population_controls=controls,
                 view_lines={k: len(v) for k, v in views.items()},
                 view_refs={k: len(v) for k, v in refs.items()},
                 schematic_symbols=len(every),
