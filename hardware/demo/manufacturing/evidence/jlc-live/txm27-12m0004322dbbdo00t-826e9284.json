@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-25T15:21:35Z",
+ "fetched_utc": "2026-09-26T04:13:21Z",
  "keyword": "TXM27.12M0004322DBBDO00T",
  "page_size": 25,
  "pages": 1,

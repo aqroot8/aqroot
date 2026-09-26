@@ -279,6 +279,10 @@ static NfcLivenessResult probeNfcLivenessOnBusB(uint8_t *identity) {
 // core never defines `AQROOT_HOST_IMAGE_HARNESS`, so the shipped image has
 // no such function.
 SpiBusB &aqrootHostImageSpiB() { return g_spi_b; }
+// D-802 / D802-02: whether the permission table has been TOLD a Wi-Fi radio
+// is up.  Read-only; the FAP-01 test asks it while the exclusive Wi-Fi
+// session refuses the rail key that used to be its only witness.
+bool aqrootHostImageWifiTold() { return g_app.accessoryLoadState().wifi_tx; }
 #endif
 
 static const char *chargerText(ChargerState state) {

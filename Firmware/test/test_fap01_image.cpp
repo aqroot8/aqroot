@@ -61,6 +61,7 @@ using namespace aqroot;
 void setup();
 void loop();
 aqroot::SpiBusB &aqrootHostImageSpiB();
+bool aqrootHostImageWifiTold();
 
 static int failures = 0;
 static void claim(const char *name, bool ok) {
@@ -288,6 +289,165 @@ int main() {
   }
 
   // =========================================================================
+  // D-802 / D802-01 (Round-21 R21-01) -- THE SUPPLY MODE BEFORE THE
+  // REGULATORS.  The model judges every `en` write and every Adjust
+  // regulators command against the supply the BOM population gives U9
+  // (R106 FIT / R107 DNP -> +3V3 -> sup3V = 1), passed in by H6 from the fab
+  // BOM, not from the image's own constant.
+  // =========================================================================
+  {
+    coldBoot();
+    Cc1101Stub &radio = *g_radio;
+    const int adjust0 = radio.nfc_adjust_regulators;
+    const int en0 = radio.nfc_en_writes;
+    keys("N");
+    claim("N/sup3V: the field start writes and reads back sup3V BEFORE `en` "
+          "and Adjust regulators -- the supply mode the R106 FIT / R107 DNP "
+          "population gives U9 (DS12484 Table 20); no regulator is enabled or "
+          "adjusted in the wrong mode",
+          radio.nfcFieldIsUp() && radio.nfc_en_writes > en0
+          && radio.nfc_adjust_regulators == adjust0 + 1
+          && radio.nfc_en_in_wrong_supply_mode == 0
+          && radio.nfc_adjust_in_wrong_supply_mode == 0
+          && rec().consoleHas("IO configuration 2 0x80: sup3V"));
+    keys("N");
+    runFor(1500, 50);
+    claim("N/sup3V: (setup) the release quiesce retry's Set default between "
+          "sessions returned U9 to its default 5 V mode (sup3V = 0)",
+          !radio.nfcFieldIsUp() && (radio.nfc_regs[0x01] & 0x80) == 0
+          && radio.nfc_set_default_commands > 0);
+    keys("N");
+    claim("N/sup3V: ...and the NEXT field start after that Set default writes "
+          "sup3V again before `en` and Adjust regulators",
+          radio.nfcFieldIsUp() && radio.nfc_adjust_regulators == adjust0 + 2
+          && radio.nfc_en_in_wrong_supply_mode == 0
+          && radio.nfc_adjust_in_wrong_supply_mode == 0);
+    keys("N");
+  }
+  {
+    coldBoot();
+    Cc1101Stub &radio = *g_radio;
+    radio.nfc_io2_stuck = true;
+    const int en0 = radio.nfc_en_writes;
+    const int adjust0 = radio.nfc_adjust_regulators;
+    keys("N");
+    runFor(600, 50);
+    claim("N/sup3V: if sup3V does not read back the field is REFUSED and the "
+          "regulators are never enabled or adjusted",
+          !radio.nfcFieldIsUp() && radio.nfc_en_writes == en0
+          && radio.nfc_adjust_regulators == adjust0
+          && rec().consoleHas("NFC field REFUSED -- IO configuration 2 reads "
+                              "0x00, want 0x80"));
+    radio.nfc_io2_stuck = false;
+  }
+
+  // =========================================================================
+  // D-802 / D802-03 (Round-21 R21-03) -- A REQA ANSWER ONLY FROM FRESH,
+  // VALIDATED EVIDENCE.  One valid answer; then every fault Round-21 used
+  // and the ones next to it.  None may print "a tag answered", and a fault
+  // may not print "no tag answered" either -- that is also a finding.
+  // =========================================================================
+  {
+    coldBoot();
+    Cc1101Stub &radio = *g_radio;
+    radio.nfc_tag_present = true;
+    keys("N");
+    size_t mark = rec().console.size();
+    keys("T");
+    claim("T/valid: with a tag in the field the REQA reports a VALID ANSWER -- "
+          "ATQA 04 00 from a FIFO cleared first, I_txe + I_rxe, exactly two "
+          "bytes, drained",
+          hasFrom("REQA -- VALID ANSWER: a tag answered, ATQA 04 00", mark)
+          && radio.nfc_clear_fifo_commands >= 1 && radio.nfc_reqa_commands == 1
+          && radio.nfc_fifo.empty());
+    radio.nfc_tag_present = false;
+    mark = rec().console.size();
+    keys("T");
+    claim("T/valid: the tag removed, the next REQA reports no tag -- the "
+          "previous ATQA is not re-read",
+          hasFrom("REQA -- no tag answered", mark)
+          && !hasFrom("a tag answered", mark));
+    radio.nfcSetFifo({0x04, 0x00});
+    mark = rec().console.size();
+    keys("T");
+    claim("T/stale: an ATQA left in the FIFO from before the REQA is CLEARED "
+          "first and never reported as an answer",
+          hasFrom("REQA -- no tag answered", mark)
+          && !hasFrom("a tag answered", mark));
+    radio.nfc_ignores_commands = true;
+    radio.nfcSetFifo({0x04, 0x00});
+    mark = rec().console.size();
+    keys("T");
+    claim("T/ignored: a part that ignores direct commands with a stale FIFO "
+          "count of 2 gives NO VALID EVIDENCE (Clear FIFO not confirmed)",
+          hasFrom("NO VALID EVIDENCE: Clear FIFO NOT CONFIRMED", mark)
+          && !hasFrom("a tag answered", mark)
+          && !hasFrom("no tag answered", mark));
+    radio.nfcSetFifo({});
+    mark = rec().console.size();
+    keys("T");
+    claim("T/ignored: a part that ignores the REQA itself (FIFO already empty) "
+          "gives NO VALID EVIDENCE -- not 'no tag answered'",
+          hasFrom("NO VALID EVIDENCE: no end-of-transmission IRQ", mark)
+          && !hasFrom("no tag answered", mark));
+    radio.nfc_ignores_commands = false;
+    radio.nfc_ff_fill = true;
+    mark = rec().console.size();
+    keys("T");
+    claim("T/all-ones: an all-FF bus (FIFO 255, ATQA FF FF) gives NO VALID "
+          "EVIDENCE",
+          hasFrom("REQA -- NO VALID EVIDENCE", mark)
+          && !hasFrom("a tag answered", mark)
+          && !hasFrom("no tag answered", mark));
+    radio.nfc_ff_fill = false;
+    radio.nfc_zero_fill = true;
+    mark = rec().console.size();
+    keys("T");
+    claim("T/all-zero: an all-zero bus gives NO VALID EVIDENCE -- not 'no tag "
+          "answered'",
+          hasFrom("REQA -- NO VALID EVIDENCE", mark)
+          && !hasFrom("no tag answered", mark));
+    radio.nfc_zero_fill = false;
+    radio.nfc_tag_present = true;
+    radio.nfc_tag_atqa[0] = 0xFF;
+    radio.nfc_tag_atqa[1] = 0xFF;
+    mark = rec().console.size();
+    keys("T");
+    claim("T/implausible: a two-byte receive of FF FF (ISO/IEC 14443-3 RFU "
+          "bits set) gives NO VALID EVIDENCE",
+          hasFrom("NO VALID EVIDENCE: the ATQA fails ISO/IEC 14443-3", mark)
+          && !hasFrom("a tag answered", mark));
+    radio.nfc_tag_atqa[0] = 0x04;
+    radio.nfc_tag_atqa[1] = 0x00;
+    aqrootHostImageSpiB().select(SpiBDevice::Sx1262);
+    mark = rec().console.size();
+    keys("T");
+    aqrootHostImageSpiB().release();
+    claim("T/transfer: a U9 transfer that cannot take the bus gives NO VALID "
+          "EVIDENCE",
+          hasFrom("NO VALID EVIDENCE: an SPI-B transfer on U9 did not complete",
+                  mark)
+          && !hasFrom("a tag answered", mark));
+    keys("J");
+    mark = rec().console.size();
+    const int reqa0 = radio.nfc_reqa_commands;
+    keys("T");
+    claim("T/chip-select: with a U9 hold-off armed the REQA is REFUSED -- no "
+          "transaction whose select may be held high is evidence",
+          hasFrom("REQA REFUSED: a U9 NFC_CS_N hold-off is armed", mark)
+          && radio.nfc_reqa_commands == reqa0
+          && !hasFrom("a tag answered", mark));
+    keys("J");
+    keys("K");
+    mark = rec().console.size();
+    keys("T");
+    claim("T/chip-select: ...and so while a DELAYED hold-off is pending",
+          hasFrom("REQA REFUSED: a U9 NFC_CS_N hold-off is armed", mark)
+          && !hasFrom("a tag answered", mark));
+    keys("Q");
+  }
+
+  // =========================================================================
   // V / W -- THE Wi-Fi BURST (C-MCU-01).
   // =========================================================================
   {
@@ -309,9 +469,11 @@ int main() {
           && rec().consoleHas("DIAGNOSTIC WAIVER of the no-rail CHARGING row "
                               "only"));
     keys("3");
-    claim("W: ...and the Wi-Fi mode is TOLD to the permission table, so a rail "
+    claim("W: ...and the Wi-Fi mode is TOLD to the permission table, and a rail "
           "enable during the burst is REFUSED",
-          rec().consoleHas("ACC_3V3_SW REFUSED") && !rail3());
+          aqrootHostImageWifiTold() && !rail3()
+          && rec().consoleHas("'3' REFUSED -- the Wi-Fi burst session is "
+                              "EXCLUSIVE"));
     runFor(11000, 250);
     const auto &w = aqroot_hal::wifi();
     claim("W: an unattended burst is STOPPED at its 10 s bound and the radio "
@@ -341,6 +503,121 @@ int main() {
           "transmitter at a time)",
           aqroot_hal::wifi().sta_starts == 0
           && rec().consoleHas("Wi-Fi burst REFUSED: a sub-GHz transmitter"));
+  }
+
+  // =========================================================================
+  // D-802 / D802-02 (Round-21 R21-02) -- THE Wi-Fi SESSION IS EXCLUSIVE FOR
+  // ITS WHOLE LIFE.  Round-21 reproduced V-W-I and V-W-x: the IR burst ran
+  // beside the waived radio.  Every key is refused while it runs except W,
+  // Q, ? and s; stopping it (W, Q, the bound) ends the exclusion at once.
+  // =========================================================================
+  {
+    coldBoot();
+    keys("VW");
+    runFor(300, 50);
+    size_t mark = rec().console.size();
+    size_t pwm0 = rec().pwm.size();
+    keys("I");
+    claim("W+I: with the Wi-Fi session running, I (the FAP-01 IR burst) is "
+          "REFUSED and no carrier is driven",
+          rec().pwm.size() == pwm0 && !hasFrom("IR 10 NEC frames", mark)
+          && hasFrom("'I' REFUSED -- the Wi-Fi burst session is EXCLUSIVE",
+                     mark));
+    mark = rec().console.size();
+    keys("x");
+    claim("W+x: ...and so is the release IR self-test x",
+          rec().pwm.size() == pwm0 && !hasFrom("IR  ", mark)
+          && hasFrom("'x' REFUSED -- the Wi-Fi burst session is EXCLUSIVE",
+                     mark));
+    mark = rec().console.size();
+    const int installs = rec().i2s_installs;
+    keys("dpmtl35iACLNGBHJKYrgbwoVT");
+    runFor(300, 50);
+    claim("W+*: ...and EVERY other key -- microSD, display, microphone, tone, "
+          "backlight ramp, both rails, the accessory buffer, held audio, both "
+          "sub-GHz transmitters, the NFC field, the VCELL poll, the held "
+          "backlight, every hold-off, the RGB LED, V and T -- is refused and "
+          "changes nothing while the radio stays up",
+          rec().consoleCount("REFUSED -- the Wi-Fi burst session is EXCLUSIVE")
+              >= 25
+          && rec().pwm.size() == pwm0 && rec().i2s_installs == installs
+          && !rail3() && !rail5() && !ampOn() && !g_radio->transmitting
+          && !g_radio->tx_cw && !g_radio->nfcFieldIsUp()
+          && !hasFrom("hold-off ARMED", mark) && !hasFrom("vcell t_ms=", mark)
+          && !hasFrom("microSD  CMD0", mark) && !hasFrom("display: pulsing", mark)
+          && aqroot_hal::wifi().current_mode == WIFI_MODE_STA);
+    mark = rec().console.size();
+    keys("s?");
+    claim("W+s/?: status and the key list stay available during the session",
+          !hasFrom("REFUSED -- the Wi-Fi burst session", mark)
+          && hasFrom("FAP-01 keys", mark) && hasFrom("charger", mark));
+    keys("W");
+    mark = rec().console.size();
+    pwm0 = rec().pwm.size();
+    keys("I");
+    claim("W stop: the exclusion ends the moment the session stops -- I runs "
+          "at once, inside the 30 s cool-down",
+          hasFrom("IR 10 NEC frames", mark) && rec().pwm.size() > pwm0);
+    mark = rec().console.size();
+    keys("VW");
+    claim("W stop: ...while the cool-down still refuses another W",
+          hasFrom("cool-down", mark) && aqroot_hal::wifi().sta_starts == 1);
+  }
+  {
+    coldBoot();
+    keys("VW");
+    keys("Q");
+    const size_t mark = rec().console.size();
+    keys("x");
+    claim("W then Q: Q stops the session and ends the exclusion -- the release "
+          "x runs",
+          aqroot_hal::wifi().current_mode == WIFI_MODE_NULL
+          && hasFrom("IR  ", mark)
+          && !hasFrom("REFUSED -- the Wi-Fi burst session", mark));
+  }
+  {
+    coldBoot();
+    keys("VW");
+    runFor(11000, 250);
+    const size_t mark = rec().console.size();
+    keys("I");
+    claim("W then bound: the 10 s bound ends the session and the exclusion",
+          hasFrom("IR 10 NEC frames", mark));
+  }
+  {
+    coldBoot();
+    keys("VW");
+    mcuReset();
+    setup();
+    pump(2);
+    const size_t mark = rec().console.size();
+    keys("I");
+    claim("W then reset: a warm reset ends the FAP-01 session -- nothing is "
+          "refused as 'session running' afterwards",
+          hasFrom("IR 10 NEC frames", mark)
+          && !hasFrom("REFUSED -- the Wi-Fi burst session", mark));
+  }
+  {
+    // The other order: a FAP-01 state first, then W.
+    coldBoot();
+    keys("B");
+    keys("VW");
+    claim("B then W: a held backlight refuses the session -- it starts only "
+          "from a quiet board",
+          aqroot_hal::wifi().sta_starts == 0
+          && rec().consoleHas("a FAP-01 stimulus is held or armed"));
+    keys("B");
+    keys("J");
+    keys("VW");
+    claim("J then W: ...and so does an armed chip-select hold-off",
+          aqroot_hal::wifi().sta_starts == 0
+          && rec().consoleCount("a FAP-01 stimulus is held or armed") == 2);
+    keys("J");
+    keys("N");
+    keys("VW");
+    claim("N then W: ...and a live NFC field",
+          aqroot_hal::wifi().sta_starts == 0 && g_radio->nfcFieldIsUp());
+    keys("Q");
   }
 
   // =========================================================================
@@ -584,6 +861,19 @@ int main() {
           "timestamp and value",
           cadence && !t.empty() && t.back() >= 1980 && t.back() <= 2020
           && rec().consoleHas("V=4.00000"));
+  }
+  {
+    // D-802 (hygiene beside R21-03): an all-ones register is a bus fault,
+    // not a sample.
+    coldBoot();
+    g_board.vcell_counts = 0xFFFF;
+    const size_t mark = rec().console.size();
+    keys("G");
+    claim("G: an all-ones VCELL register is marked IMPLAUSIBLE, never printed "
+          "as a plain sample, and counted in the END line",
+          hasFrom("raw=0xFFFF V=5.11992 IMPLAUSIBLE", mark)
+          && hasFrom("200 failed or implausible read(s)", mark));
+    g_board.vcell_counts = 51200;
   }
   {
     coldBoot();

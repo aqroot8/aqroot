@@ -83,13 +83,18 @@ exact MPN — 0 missing** (six were added at FBV2-S2-001, see §4).
 > `F12` closes the cell side around it — so what remains on that line is **purchasing,
 > not engineering**.
 
-**AUTHORITATIVE SWEEP (D-801):** `evidence/d801-sourcing-sweep.json`, produced by
-`evidence/d801-sweep-sourcing.py --refresh` against the released assembly BOM: **every one of the
-123 rows was fetched from the JLCPCB parts API in that run, 2026-09-25T15:20:32Z..15:21:35Z**, and
-each row carries its own `fetched_utc` and `mode` (`refresh`).  9 lines are short/unknown, and
-the set MOVED: `TPD4E1B06DRLR` (`D2`,`D4`,`D5`) is now short (2 against 15) and `SQ2364EES-T1_BE3`
-(`Q11`) is not (40 against 5); `LTC4368IMS-1#TRPBF` fell from 2 to 0.  `AO4800` reads an Alpha &
-Omega record with 5,212 in catalogue stock, which is still NOT an allocation.
+**AUTHORITATIVE SWEEP (D-802):** `evidence/d802-sourcing-sweep.json`, produced by
+`evidence/d801-sweep-sourcing.py --refresh --decision D-802` against the released assembly BOM
+(unchanged since D-801): **every one of the 123 rows was fetched from the JLCPCB parts API in that
+run, 2026-09-26T04:12:20Z..04:13:21Z**, and each row carries its own `fetched_utc` and `mode`
+(`refresh`).  The same 9 lines are short/unknown as at D-801 — `74438357010`,
+`DMM-4026-B-I2S-R`, `LQW18AN39NG80D`, `LTC4368IMS-1#TRPBF`, `PCAL9535APW,118`,
+`SSQ-124-02-G-S-RA`, `ST25R3916-AQET`, `TLV7032DDFR`, `TPD4E1B06DRLR` — and `SQ2364EES-T1_BE3`
+(`Q11`) still reads 40 against 5.  `AO4800` reads an Alpha & Omega record with 8,212 in catalogue
+stock, which is still NOT an allocation.
+*(D-801's sweep, `evidence/d801-sourcing-sweep.json`, 2026-09-25T15:20:32Z..15:21:35Z, is
+HISTORICAL: it found the set MOVED from D-800 — `TPD4E1B06DRLR` newly short (2 against 15),
+`SQ2364EES-T1_BE3` no longer short, `LTC4368IMS-1#TRPBF` 2 → 0 — and read `AO4800` at 5,212.)*
 **D-801 / Round-20 `D801-08` — D-800's sweep was NOT live.**  `evidence/d800-sourcing-sweep.json`
 called itself a live re-sweep, but `jlc_live.fetch` replayed archived records because `refresh`
 defaulted to False: its 123 rows rest on fetches from **2026-09-20T19:33Z..2026-09-21T15:57Z**.
@@ -105,7 +110,7 @@ are **not purchasing authority**.
 | `LQW18AN39NG80D` | `C2042966` | L5,L6 | 10 | 3 | **consign: buy the exact MPN from a franchised distributor and ship to the assembler** |
 | `LTC4368IMS-1#TRPBF` | `C688401` | U18 | 5 | 0 | **consign: buy the exact MPN from a franchised distributor and ship to the assembler** |
 | `PCAL9535APW,118` | `C2669683` | U2,U3 | 10 | 1 | **consign: buy the exact MPN from a franchised distributor and ship to the assembler** |
-| `SQ2364EES-T1_BE3` | `C5758702` | Q11 | 5 | 40 (D-801; 0 at D-800) | **consign: buy the exact MPN from a franchised distributor and ship to the assembler** |
+| `SQ2364EES-T1_BE3` | `C5758702` | Q11 | 5 | 40 (D-801 and D-802; 0 at D-800) | **consign: buy the exact MPN from a franchised distributor and ship to the assembler** |
 | `TPD4E1B06DRLR` | `C1972953` | D2,D4,D5 | 15 | 2 | **consign: buy the exact MPN from a franchised distributor and ship to the assembler** (short for the first time on the D-801 fresh sweep) |
 | `SSQ-124-02-G-S-RA` | `C3323671` | J5 | 5 | 0 | **order from Samtec direct and consign.** JLC flags it "no longer manufactured"; D-800 checked Samtec's own product page: **active, 484 pieces "Ships Tomorrow"**, distributor stock 0, and marked **"only available to existing customers"** (2026-09-24) — so the order must go through a Samtec account or a Samtec sample/quote request; that account is the procurement action |
 | `ST25R3916-AQET` | `C5267441` | U9 | 5 | 0 | **consign: buy the exact MPN from a franchised distributor and ship to the assembler** |

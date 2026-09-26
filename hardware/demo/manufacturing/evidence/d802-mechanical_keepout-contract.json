@@ -1,0 +1,2050 @@
+{
+ "all_pass": true,
+ "board": "/home/aqroot8/aqroot-demo/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907",
+ "checks": {
+  "MK10_through_hole_lead_on_the_opposite_face": {
+   "board_thickness_mm": 1.5744,
+   "declared_but_the_trim_does_not_meet_the_allowance": [],
+   "leads_in_a_limited_region": [
+    {
+     "allowance_mm": 0.8,
+     "board_thickness_mm": 1.5744,
+     "body_face": "B",
+     "declared": {
+      "doc": "docs/full-beta-v2/assembly/THT_LEAD_TRIM.md",
+      "insulation": "polyimide",
+      "insulation_max_mm": 0.1,
+      "insulation_requirement": "J4-T3",
+      "requirement": "J4-T1",
+      "trim_to_mm": 0.5
+     },
+     "footprint": "JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical",
+     "lead_basis": "D-781 manual 26-AWG battery-pigtail conductor; J4-T1 requires the post-solder conductive profile <=0.50 mm above F.Cu",
+     "lead_mm": null,
+     "lead_source": "assembly",
+     "manual_protrusion_mm": 0.5,
+     "over_mm": 0.0,
+     "pads": [
+      "1",
+      "2"
+     ],
+     "protrusion_mm": 0.5,
+     "ref": "J4",
+     "region": "DISPLAY_SHADOW",
+     "region_face": "F"
+    }
+   ],
+   "note": "a body ON the region's face is a COMPONENT and MK8 owns it; this clause owns the LEAD, which emerges on the OTHER face",
+   "ok": true,
+   "over_the_allowance_and_undeclared": [],
+   "through_hole_without_a_lead_figure": [],
+   "trim_doc_present": true
+  },
+  "MK11_external_interface_authority": {
+   "datum": "doc origin lower-left; Y_kicad = 148 - Y_doc",
+   "interfaces": {
+    "J5": {
+     "doc_mm": [
+      65.9,
+      108.79
+     ],
+     "expected_doc_mm": [
+      65.9,
+      108.79
+     ],
+     "expected_rotation_deg": -90.0,
+     "expected_side": "F",
+     "ok": true,
+     "present": true,
+     "rotation_deg": -90.0,
+     "side": "F"
+    },
+    "SW1": {
+     "doc_mm": [
+      28.3,
+      6.0
+     ],
+     "expected_doc_mm": [
+      28.3,
+      6.0
+     ],
+     "expected_rotation_deg": 0.0,
+     "expected_side": "F",
+     "ok": true,
+     "present": true,
+     "rotation_deg": 0.0,
+     "side": "F"
+    },
+    "SW9": {
+     "doc_mm": [
+      66.7,
+      61.5
+     ],
+     "expected_doc_mm": [
+      66.7,
+      61.5
+     ],
+     "expected_rotation_deg": 90.0,
+     "expected_side": "F",
+     "ok": true,
+     "present": true,
+     "rotation_deg": 90.0,
+     "side": "F"
+    }
+   },
+   "j5": {
+    "body_y_mm": [
+     8.475,
+     69.945
+    ],
+    "closed_end_recess_mm": 62.5,
+    "conservative_largest_body_mm": 8.51,
+    "contacts": 24,
+    "drill_mm": [
+     1.02
+    ],
+    "footprint": "AQROOT_Beta:Samtec_SSQ-124-02-G-S-RA",
+    "mating_face_x_mm": 72.43,
+    "note": "62.5 mm is an enclosure requirement; the board-side geometry that drives it is measured here",
+    "ok": true,
+    "pin_row_x_mm": 65.9,
+    "pin_span_mm": 58.42,
+    "pitch_mm": [
+     2.54
+    ],
+    "z_bound_mm": 22.71,
+    "z_spare_mm": 0.29
+   },
+   "ok": true
+  },
+  "MK12_governing_text_matches_the_board_mic_and_ir": {
+   "antenna_ir_rules_retained": {
+    "centre": "15.0 min c-c LOCKED (FBV2-MECH-001, restated M-13)",
+    "edge": "8.0 min edge LOCKED (D-120, restated M-13)",
+    "ok": true
+   },
+   "governing_documents": [
+    "docs/full-beta-v2/mechanical/MECHANICAL_INTERFACE_SPEC.md",
+    "docs/full-beta-v2/mechanical/P1_FLOORPLAN_INPUTS.md",
+    "docs/full-beta-v2/pcb/FBV2_P1_KEEPOUTS.md",
+    "docs/full-beta-v2/pcb/FBV2_P1_FLOORPLAN.md",
+    "docs/full-beta-v2/assembly/IR_LEAD_FORMING.md",
+    "docs/full-beta-v2/assembly/FOOTPRINT_VERIFICATION_LEDGER.md",
+    "docs/full-beta-v2/assembly/FIRST_FIVE_ASSEMBLY_PLAN.md",
+    "docs/full-beta-v2/DEVICE_SPEC.md"
+   ],
+   "ir": {
+    "measured_axis_mm": 13.73,
+    "mk9_ok": true,
+    "ok": true,
+    "spec_axis_matches_mk9": true,
+    "spec_axis_mm": 13.73,
+    "spec_isolation_terms": {
+     "10 deg": true,
+     "C-IR-01": true,
+     "IR_BARRIER": true
+    }
+   },
+   "ir_15mm_stated_as_current": [],
+   "microphone": {
+    "board": {
+     "acoustic_face": "F",
+     "bottom_port": true,
+     "footprint_declares_bottom_port": true,
+     "layer": "B.Cu",
+     "port_drill_mm": 1.05,
+     "port_npth_concentric_with_pad4": true,
+     "present": true,
+     "side": "B"
+    },
+    "datasheet": "hardware/demo/kicad/aqroot-demo/vendor/PUI/pui-dmm-4026-b-i2s-r-revA.pdf",
+    "datasheet_fact": "PUI DMM-4026-B-I2S-R Rev A 5/26/2021 p.6: \u00d80.25 mm acoustic port on the PAD face inside the pad-4 GND ring",
+    "datasheet_sha256_ok": true,
+    "ok": true,
+    "spec_acoustic_face": "F",
+    "spec_front_copper": "F",
+    "spec_port": "BOTTOM",
+    "spec_side": "B"
+   },
+   "missing_documents": [],
+   "ok": true,
+   "wrong_microphone_direction": []
+  },
+  "MK1_datum_proved_by_the_board": {
+   "at_least_one_does_not_fit_section_1": true,
+   "every_datum_part_fits_the_rebased_window": true,
+   "ok": true,
+   "parts": [
+    {
+     "fits_rebased": true,
+     "fits_section1": false,
+     "part": "U6",
+     "part_x_mm": [
+      62.955,
+      70.545
+     ],
+     "present": true,
+     "rebased_window_x_mm": [
+      62.5,
+      71.0
+     ],
+     "region": "IR_RX_OPTICAL",
+     "section1_window_x_mm": [
+      61.5,
+      70.0
+     ]
+    },
+    {
+     "fits_rebased": true,
+     "fits_section1": true,
+     "part": "D1",
+     "part_x_mm": [
+      49.765,
+      56.285
+     ],
+     "present": true,
+     "rebased_window_x_mm": [
+      49.0,
+      57.5
+     ],
+     "region": "IR_TX_OPTICAL",
+     "section1_window_x_mm": [
+      48.0,
+      56.5
+     ]
+    },
+    {
+     "fits_rebased": true,
+     "fits_section1": false,
+     "part": "J3",
+     "part_x_mm": [
+      37.635,
+      48.365
+     ],
+     "present": true,
+     "rebased_window_x_mm": [
+      37.0,
+      49.0
+     ],
+     "region": "USB_APERTURE",
+     "section1_window_x_mm": [
+      36.0,
+      48.0
+     ]
+    },
+    {
+     "fits_rebased": true,
+     "fits_section1": false,
+     "part": "MK1",
+     "part_x_mm": [
+      2.205,
+      5.795
+     ],
+     "present": true,
+     "rebased_window_x_mm": [
+      1.5,
+      6.5
+     ],
+     "region": "MIC_ACOUSTIC",
+     "section1_window_x_mm": [
+      0.5,
+      5.5
+     ]
+    }
+   ],
+   "rebase_mm": 1.0
+  },
+  "MK2_boss_retention": {
+   "bosses": [
+    {
+     "components_inside_the_circle": [],
+     "copper_inside_the_circle": [],
+     "covers_the_required_diameter": true,
+     "hole_as_registered": true,
+     "hole_doc_mm": [
+      41.0,
+      12.0
+     ],
+     "keepout_as_registered": true,
+     "keepout_doc_y_mm": [
+      9.75,
+      14.25
+     ],
+     "keepout_inradius_about_the_hole_mm": 2.25,
+     "keepout_present": true,
+     "keepout_x_mm": [
+      38.75,
+      43.25
+     ],
+     "ok": true,
+     "pour_inside_the_circle": [],
+     "present": true,
+     "ref": "BOSS1",
+     "register_hole_doc_mm": [
+      41.0,
+      12.0
+     ]
+    },
+    {
+     "components_inside_the_circle": [],
+     "copper_inside_the_circle": [],
+     "covers_the_required_diameter": true,
+     "hole_as_registered": true,
+     "hole_doc_mm": [
+      60.0,
+      145.0
+     ],
+     "keepout_as_registered": true,
+     "keepout_doc_y_mm": [
+      142.75,
+      147.25
+     ],
+     "keepout_inradius_about_the_hole_mm": 2.25,
+     "keepout_present": true,
+     "keepout_x_mm": [
+      57.75,
+      62.25
+     ],
+     "ok": true,
+     "pour_inside_the_circle": [],
+     "present": true,
+     "ref": "BOSS2",
+     "register_hole_doc_mm": [
+      60.0,
+      145.0
+     ]
+    }
+   ],
+   "ok": true,
+   "required_keepout_diameter_mm": 4.5
+  },
+  "MK3_rear_support_ribs_component_free": {
+   "ok": true,
+   "retired": {
+    "RIB_R2": "D-759: the D-719 TPS63020 re-floorplan occupies it; replaced by RIB_R2A"
+   },
+   "ribs": {
+    "RIB_B1": [],
+    "RIB_R1": [],
+    "RIB_R2A": [],
+    "RIB_R3": []
+   }
+  },
+  "MK4_speaker_cavity_has_no_rear_part": {
+   "back_side_occupants": [],
+   "ok": true
+  },
+  "MK5_no_through_hole_lead_in_the_battery_volume": {
+   "ok": true,
+   "region_mm": [
+    7.0,
+    64.0,
+    49.5,
+    124.5
+   ],
+   "through_hole_leads_inside": []
+  },
+  "MK6_boss2_is_inside_the_ir_barrier": {
+   "boss2_keepout_x_mm": [
+    57.75,
+    62.25
+   ],
+   "into_ir_rx_optical_mm": 0.0,
+   "into_ir_tx_optical_mm": 0.0,
+   "ir_barrier_x_mm": [
+    57.5,
+    62.5
+   ],
+   "ok": true
+  },
+  "MK7_not_vacuous": {
+   "controls": {
+    "a_0_100_mm_BOOT_nudge_is_refused": true,
+    "a_0_100_mm_J5_nudge_is_refused": true,
+    "a_0_100_mm_POWER_nudge_is_refused": true,
+    "a_boss_nudged_0_100_mm_is_refused": true,
+    "a_footprint_with_no_height_figure_is_refused": true,
+    "a_lead_in_the_battery_volume_is_refused": true,
+    "a_manual_J4_with_no_profile_is_refused": true,
+    "a_part_over_its_region_allowance_is_refused": true,
+    "a_trim_that_does_not_meet_the_allowance_is_refused": true,
+    "an_undeclared_lead_over_the_allowance_is_refused": true,
+    "d800_d1_courtyard_pushed_into_the_ir_barrier_is_refused": true,
+    "d800_u6_courtyard_pushed_into_the_ir_barrier_is_refused": true,
+    "d801_a_fenced_15mm_sentence_is_accepted": true,
+    "d801_board_axis_moved_off_the_spec_figure_is_refused": true,
+    "d801_board_restored": true,
+    "d801_deleting_the_antenna_ir_15mm_rule_is_refused": true,
+    "d801_dropping_C_IR_01_is_refused": true,
+    "d801_ir_15mm_beside_the_sma_in_one_sentence_is_refused": true,
+    "d801_ir_15mm_block_field_is_refused": true,
+    "d801_ir_15mm_in_the_forming_traveler_is_refused": true,
+    "d801_ir_15mm_row_in_the_spec_is_refused": true,
+    "d801_mic_a_top_port_microphone_is_refused": true,
+    "d801_mic_an_acoustic_path_to_the_rear_is_refused": true,
+    "d801_mic_an_aperture_on_the_bottom_face_is_refused": true,
+    "d801_mic_the_old_M14_top_mount_sentence_is_refused": true,
+    "d801_mic_wrong_direction_in_the_ledger_is_refused": true,
+    "d801_mk1_flipped_to_F_Cu_is_refused": true,
+    "d801_mk1_port_not_the_1_05_mm_npth_is_refused": true,
+    "d801_spec_acoustic_face_B_is_refused": true,
+    "d801_spec_axis_15_13_origin_figure_is_refused": true,
+    "d801_spec_mic_side_F_is_refused": true,
+    "missing_J4_polyimide_insulation_is_refused": true,
+    "moving_J4_clear_of_the_region_removes_the_finding": true,
+    "reading_the_pre_rebase_datum_is_visible": true,
+    "the_old_zero_margin_0_80_mm_trim_is_refused": true,
+    "the_retired_RIB_R2_footprint_is_refused": true
+   },
+   "ok": true
+  },
+  "MK8_component_height_in_the_limited_regions": {
+   "footprints_with_no_height_figure": [],
+   "note": "allowance_mm is a no-regression ceiling at the board's own measured profile; register_limit_mm is the inherited rule and the gap between them is an OPEN CAD ITEM (D-760).  D-789 / D788-19: every part's figure is taken from its PURCHASED MPN where this repository has read one, and `priced_by_footprint_family` names every part still priced by its package rather than by its part.",
+   "ok": true,
+   "priced_by_purchased_mpn": [
+    "CL32B226KAJNNNE",
+    "GRM31CR71E106KA12L",
+    "TCC1206X7R226K160HT"
+   ],
+   "regions": {
+    "BATTERY_SHADOW": {
+     "allowance_basis": "measured profile, D-789 / D788-19: C29/C30 CCTC TCC1206X7R226K160HT at 1.90 mm max (T = 1.60 +/- 0.30, the *1 '1uF and above' 1206 row of CCTC DRAAW108N/0)",
+     "allowance_mm": 1.9,
+     "measured_tallest_mm": 1.9,
+     "ok": true,
+     "open_cad_gap_mm": 0.7,
+     "parts": [
+      {
+       "basis": "CCTC DRAAW108N/0 section 5 Dimensions, the 1206 row marked *1 ('1uF and above'): T = 1.60 +/- 0.30 mm.  Thickness code H = 1.60 mm from the same document's ordering table.  Archived at vendor/CCTC/cctc-mlcc-DRAAW108N-0.pdf with its source record.",
+       "footprint": "C_1206_3216Metric",
+       "keyed_by": "mpn",
+       "max_height_mm": 1.9,
+       "mpn": "TCC1206X7R226K160HT",
+       "ref": "C29",
+       "source": "vendor"
+      },
+      {
+       "basis": "CCTC DRAAW108N/0 section 5 Dimensions, the 1206 row marked *1 ('1uF and above'): T = 1.60 +/- 0.30 mm.  Thickness code H = 1.60 mm from the same document's ordering table.  Archived at vendor/CCTC/cctc-mlcc-DRAAW108N-0.pdf with its source record.",
+       "footprint": "C_1206_3216Metric",
+       "keyed_by": "mpn",
+       "max_height_mm": 1.9,
+       "mpn": "TCC1206X7R226K160HT",
+       "ref": "C30",
+       "source": "vendor"
+      },
+      {
+       "basis": "Murata GRM31C 1206: T = 1.6 +/- 0.2 mm",
+       "footprint": "C_1206_3216Metric",
+       "keyed_by": "mpn",
+       "max_height_mm": 1.8,
+       "mpn": "GRM31CR71E106KA12L",
+       "ref": "C26",
+       "source": "vendor"
+      },
+      {
+       "basis": "SOD-123 maximum",
+       "footprint": "D_SOD-123",
+       "keyed_by": "footprint",
+       "max_height_mm": 1.35,
+       "mpn": "PMEG2010AEH,115",
+       "ref": "D9",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0805, high-capacitance build",
+       "footprint": "C_0805_2012Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 1.25,
+       "mpn": "CC0805KKX7R7BB106",
+       "ref": "C33",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0805, high-capacitance build",
+       "footprint": "C_0805_2012Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 1.25,
+       "mpn": "CC0805KKX7R7BB106",
+       "ref": "C64",
+       "source": "eia"
+      },
+      {
+       "basis": "JEDEC MO-153 TSSOP maximum",
+       "footprint": "TSSOP-24_4.4x7.8mm_P0.65mm",
+       "keyed_by": "footprint",
+       "max_height_mm": 1.2,
+       "mpn": "PCAL9535APW,118",
+       "ref": "U2",
+       "source": "eia"
+      },
+      {
+       "basis": "JEDEC MO-153 TSSOP maximum",
+       "footprint": "TSSOP-24_4.4x7.8mm_P0.65mm",
+       "keyed_by": "footprint",
+       "max_height_mm": 1.2,
+       "mpn": "PCAL9535APW,118",
+       "ref": "U3",
+       "source": "eia"
+      },
+      {
+       "basis": "Alpha & Omega AO3400A SOT-23: A max 1.12 mm",
+       "footprint": "SOT-23",
+       "keyed_by": "footprint",
+       "max_height_mm": 1.12,
+       "mpn": "SQ2364EES-T1_BE3",
+       "ref": "Q11",
+       "source": "vendor"
+      },
+      {
+       "basis": "TI DGK / JEDEC MO-187 maximum",
+       "footprint": "VSSOP-8_3x3mm_P0.65mm",
+       "keyed_by": "footprint",
+       "max_height_mm": 1.1,
+       "mpn": "TCA4307DGKR",
+       "ref": "U16",
+       "source": "eia"
+      },
+      {
+       "basis": "JEDEC MO-187 MSOP maximum",
+       "footprint": "MSOP-10_3x3mm_P0.5mm",
+       "keyed_by": "footprint",
+       "max_height_mm": 1.1,
+       "mpn": "LTC4368IMS-1#TRPBF",
+       "ref": "U18",
+       "source": "eia"
+      },
+      {
+       "basis": "TI DDC0006A package outline: SOT-23 - 1.1 max height",
+       "footprint": "SOT-23-6",
+       "keyed_by": "footprint",
+       "max_height_mm": 1.1,
+       "mpn": "TPS22950CQDDCRQ1",
+       "ref": "U20",
+       "source": "vendor"
+      },
+      {
+       "basis": "MLCC, 0603, high-capacitance build",
+       "footprint": "C_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.9,
+       "mpn": "GRM188R61E106KA73D",
+       "ref": "C24",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0603, high-capacitance build",
+       "footprint": "C_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.9,
+       "mpn": "CC0603KRX7R8BB105",
+       "ref": "C25",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0603, high-capacitance build",
+       "footprint": "C_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.9,
+       "mpn": "CC0603KRX7R9BB104",
+       "ref": "C36",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0603, high-capacitance build",
+       "footprint": "C_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.9,
+       "mpn": "CC0603KRX7R8BB105",
+       "ref": "C37",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0603, high-capacitance build",
+       "footprint": "C_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.9,
+       "mpn": "CC0603KRX7R9BB104",
+       "ref": "C39",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0603, high-capacitance build",
+       "footprint": "C_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.9,
+       "mpn": "CC0603KRX7R9BB104",
+       "ref": "C4",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0603, high-capacitance build",
+       "footprint": "C_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.9,
+       "mpn": "CC0603KRX7R9BB104",
+       "ref": "C5",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0603, high-capacitance build",
+       "footprint": "C_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.9,
+       "mpn": "0603B472K500NT",
+       "ref": "C57",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0603, high-capacitance build",
+       "footprint": "C_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.9,
+       "mpn": "CC0603KRX7R8BB105",
+       "ref": "C58",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0603, high-capacitance build",
+       "footprint": "C_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.9,
+       "mpn": "CC0603KRX7R9BB104",
+       "ref": "C6",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0603, high-capacitance build",
+       "footprint": "C_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.9,
+       "mpn": "CC0603KRX7R8BB105",
+       "ref": "C62",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0603, high-capacitance build",
+       "footprint": "C_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.9,
+       "mpn": "CC0603KRX7R8BB105",
+       "ref": "C63",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0603, high-capacitance build",
+       "footprint": "C_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.9,
+       "mpn": "CC0603KRX7R9BB104",
+       "ref": "C7",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0603, high-capacitance build",
+       "footprint": "C_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.9,
+       "mpn": "CC0603KRX7R8BB105",
+       "ref": "C85",
+       "source": "eia"
+      },
+      {
+       "basis": "Bosch BMI270 LGA-14: 0.83 mm max",
+       "footprint": "Bosch_LGA-14_2.5x3.0mm_P0.5mm_BMI270",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.83,
+       "mpn": "BMI270",
+       "ref": "U4",
+       "source": "vendor"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF2431T5E",
+       "ref": "R101",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF1003T5E",
+       "ref": "R102",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF1003T5E",
+       "ref": "R103",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF0000T5E",
+       "ref": "R106",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF0000T5E",
+       "ref": "R118",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF1001T5E",
+       "ref": "R124",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF6800T5E",
+       "ref": "R125",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF3900T5E",
+       "ref": "R126",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF1002T5E",
+       "ref": "R127",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF1002T5E",
+       "ref": "R128",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF1003T5E",
+       "ref": "R129",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF1003T5E",
+       "ref": "R131",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF2203T5E",
+       "ref": "R132",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF1003T5E",
+       "ref": "R17",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF3900T5E",
+       "ref": "R37",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF1002T5E",
+       "ref": "R38",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF1002T5E",
+       "ref": "R4",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF1002T5E",
+       "ref": "R46",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF1501T5E",
+       "ref": "R49",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF1002T5E",
+       "ref": "R5",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF1501T5E",
+       "ref": "R50",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF1002T5E",
+       "ref": "R6",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF1002T5E",
+       "ref": "R63",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF1002T5E",
+       "ref": "R7",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF2202T5E",
+       "ref": "R76",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "RC0603FR-073M65L",
+       "ref": "R77",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "RC0603FR-07442KL",
+       "ref": "R78",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF5103T5E",
+       "ref": "R79",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF1002T5E",
+       "ref": "R8",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF1004T5E",
+       "ref": "R82",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF1002T5E",
+       "ref": "R9",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF1871T5E",
+       "ref": "R97",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF1003T5E",
+       "ref": "R98",
+       "source": "eia"
+      },
+      {
+       "basis": "a bare copper pad has no body",
+       "footprint": "TestPoint_Pad_D1.0mm",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.0,
+       "mpn": null,
+       "ref": "TP12",
+       "source": "geometry"
+      },
+      {
+       "basis": "a bare copper pad has no body",
+       "footprint": "TestPoint_Pad_D1.0mm",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.0,
+       "mpn": null,
+       "ref": "TP17",
+       "source": "geometry"
+      },
+      {
+       "basis": "a bare copper pad has no body",
+       "footprint": "TestPoint_Pad_D1.0mm",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.0,
+       "mpn": null,
+       "ref": "TP25",
+       "source": "geometry"
+      },
+      {
+       "basis": "a bare copper pad has no body",
+       "footprint": "TestPoint_Pad_D1.0mm",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.0,
+       "mpn": null,
+       "ref": "TP26",
+       "source": "geometry"
+      },
+      {
+       "basis": "a bare copper pad has no body",
+       "footprint": "TestPoint_Pad_D1.0mm",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.0,
+       "mpn": null,
+       "ref": "TP27",
+       "source": "geometry"
+      },
+      {
+       "basis": "a bare copper pad has no body",
+       "footprint": "TestPoint_Pad_D1.0mm",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.0,
+       "mpn": null,
+       "ref": "TP30",
+       "source": "geometry"
+      },
+      {
+       "basis": "a bare copper pad has no body",
+       "footprint": "TestPoint_Pad_D1.0mm",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.0,
+       "mpn": null,
+       "ref": "TP33",
+       "source": "geometry"
+      },
+      {
+       "basis": "a bare copper pad has no body",
+       "footprint": "TestPoint_Pad_D1.0mm",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.0,
+       "mpn": null,
+       "ref": "TP44",
+       "source": "geometry"
+      },
+      {
+       "basis": "a bare copper pad has no body",
+       "footprint": "TestPoint_Pad_D1.0mm",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.0,
+       "mpn": null,
+       "ref": "TP47",
+       "source": "geometry"
+      },
+      {
+       "basis": "a bare copper pad has no body",
+       "footprint": "TestPoint_Pad_D1.0mm",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.0,
+       "mpn": null,
+       "ref": "TP7",
+       "source": "geometry"
+      }
+     ],
+     "parts_over_the_allowance": [],
+     "parts_over_the_register_limit": [
+      "C26",
+      "C29",
+      "C30",
+      "C33",
+      "C64",
+      "D9"
+     ],
+     "priced_by_footprint_family": [
+      "C24",
+      "C25",
+      "C33",
+      "C36",
+      "C37",
+      "C39",
+      "C4",
+      "C5",
+      "C57",
+      "C58",
+      "C6",
+      "C62",
+      "C63",
+      "C64",
+      "C7",
+      "C85",
+      "D9",
+      "Q11",
+      "R101",
+      "R102",
+      "R103",
+      "R106",
+      "R118",
+      "R124",
+      "R125",
+      "R126",
+      "R127",
+      "R128",
+      "R129",
+      "R131",
+      "R132",
+      "R17",
+      "R37",
+      "R38",
+      "R4",
+      "R46",
+      "R49",
+      "R5",
+      "R50",
+      "R6",
+      "R63",
+      "R7",
+      "R76",
+      "R77",
+      "R78",
+      "R79",
+      "R8",
+      "R82",
+      "R9",
+      "R97",
+      "R98",
+      "TP12",
+      "TP17",
+      "TP25",
+      "TP26",
+      "TP27",
+      "TP30",
+      "TP33",
+      "TP44",
+      "TP47",
+      "TP7",
+      "U16",
+      "U18",
+      "U2",
+      "U20",
+      "U3",
+      "U4"
+     ],
+     "priced_by_purchased_mpn": [
+      "C26",
+      "C29",
+      "C30"
+     ],
+     "register_limit_mm": 1.2,
+     "side": "B"
+    },
+    "DISPLAY_SHADOW": {
+     "allowance_basis": null,
+     "allowance_mm": 0.8,
+     "measured_tallest_mm": 0.6,
+     "ok": true,
+     "open_cad_gap_mm": 0.0,
+     "parts": [
+      {
+       "basis": "SOT-563 maximum",
+       "footprint": "SOT-563",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.6,
+       "mpn": "TPD4E1B06DRLR",
+       "ref": "D2",
+       "source": "eia"
+      },
+      {
+       "basis": "SOT-563 maximum",
+       "footprint": "SOT-563",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.6,
+       "mpn": "TPD4E1B06DRLR",
+       "ref": "D4",
+       "source": "eia"
+      },
+      {
+       "basis": "SOT-563 maximum",
+       "footprint": "SOT-563",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.6,
+       "mpn": "TPD4E1B06DRLR",
+       "ref": "D5",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF1003T5E",
+       "ref": "R12",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF1003T5E",
+       "ref": "R16",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF1000T5E",
+       "ref": "R21",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF1003T5E",
+       "ref": "R23",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF220JT5E",
+       "ref": "R47",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF220JT5E",
+       "ref": "R48",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF1000T5E",
+       "ref": "R55",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF1000T5E",
+       "ref": "R56",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF1000T5E",
+       "ref": "R64",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF3300T5E",
+       "ref": "R66",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF330JT5E",
+       "ref": "R70",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF330JT5E",
+       "ref": "R71",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF330JT5E",
+       "ref": "R72",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF330JT5E",
+       "ref": "R73",
+       "source": "eia"
+      },
+      {
+       "basis": "a bare copper pad has no body",
+       "footprint": "TestPoint_Pad_D1.0mm",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.0,
+       "mpn": null,
+       "ref": "TP36",
+       "source": "geometry"
+      },
+      {
+       "basis": "a bare copper pad has no body",
+       "footprint": "TestPoint_Pad_D1.0mm",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.0,
+       "mpn": null,
+       "ref": "TP39",
+       "source": "geometry"
+      },
+      {
+       "basis": "a bare copper pad has no body",
+       "footprint": "TestPoint_Pad_D1.0mm",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.0,
+       "mpn": null,
+       "ref": "TP45",
+       "source": "geometry"
+      },
+      {
+       "basis": "a bare copper pad has no body",
+       "footprint": "TestPoint_Pad_D1.0mm",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.0,
+       "mpn": null,
+       "ref": "TP46",
+       "source": "geometry"
+      }
+     ],
+     "parts_over_the_allowance": [],
+     "parts_over_the_register_limit": [],
+     "priced_by_footprint_family": [
+      "D2",
+      "D4",
+      "D5",
+      "R12",
+      "R16",
+      "R21",
+      "R23",
+      "R47",
+      "R48",
+      "R55",
+      "R56",
+      "R64",
+      "R66",
+      "R70",
+      "R71",
+      "R72",
+      "R73",
+      "TP36",
+      "TP39",
+      "TP45",
+      "TP46"
+     ],
+     "priced_by_purchased_mpn": [],
+     "register_limit_mm": 0.8,
+     "side": "F"
+    },
+    "NFC_CLEAR_D48": {
+     "allowance_basis": null,
+     "allowance_mm": 1.4,
+     "measured_tallest_mm": 1.4,
+     "ok": true,
+     "open_cad_gap_mm": 0.4,
+     "parts": [
+      {
+       "basis": "JST eACH: low-profile type, height 1.4 mm, width 4.3 mm",
+       "footprint": "JST_ACH_BM02B-ACHSS-GAN-ETF_1x02-1MP_P1.20mm_Vertical",
+       "keyed_by": "footprint",
+       "max_height_mm": 1.4,
+       "mpn": "BM02B-ACHSS-GAN-ETF(LF)(SN)",
+       "ref": "J7",
+       "source": "vendor"
+      },
+      {
+       "basis": "MLCC, 0805, high-capacitance build",
+       "footprint": "C_0805_2012Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 1.25,
+       "mpn": "CC0805KKX7R9BB225",
+       "ref": "C45",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0805, high-capacitance build",
+       "footprint": "C_0805_2012Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 1.25,
+       "mpn": "CC0805KKX7R9BB225",
+       "ref": "C47",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0805, high-capacitance build",
+       "footprint": "C_0805_2012Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 1.25,
+       "mpn": "CC0805KKX7R9BB225",
+       "ref": "C49",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0805, high-capacitance build",
+       "footprint": "C_0805_2012Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 1.25,
+       "mpn": "CC0805KKX7R9BB225",
+       "ref": "C51",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0805, high-capacitance build",
+       "footprint": "C_0805_2012Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 1.25,
+       "mpn": "CC0805KKX7R7BB106",
+       "ref": "C83",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0805, high-capacitance build",
+       "footprint": "C_0805_2012Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 1.25,
+       "mpn": "CC0805KKX7R7BB106",
+       "ref": "C84",
+       "source": "eia"
+      },
+      {
+       "basis": "SOD-323 / SC-76 maximum",
+       "footprint": "D_SOD-323",
+       "keyed_by": "footprint",
+       "max_height_mm": 1.1,
+       "mpn": "BAT54WS-7-F",
+       "ref": "D10",
+       "source": "eia"
+      },
+      {
+       "basis": "SOD-323 / SC-76 maximum",
+       "footprint": "D_SOD-323",
+       "keyed_by": "footprint",
+       "max_height_mm": 1.1,
+       "mpn": "BAT54WS-7-F",
+       "ref": "D11",
+       "source": "eia"
+      },
+      {
+       "basis": "SOD-323 / SC-76 maximum",
+       "footprint": "D_SOD-323",
+       "keyed_by": "footprint",
+       "max_height_mm": 1.1,
+       "mpn": "BAT54WS-7-F",
+       "ref": "D12",
+       "source": "eia"
+      },
+      {
+       "basis": "chip inductor / ferrite bead, 0603",
+       "footprint": "L_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.95,
+       "mpn": "LQW18AN39NG80D",
+       "ref": "L5",
+       "source": "eia"
+      },
+      {
+       "basis": "chip inductor / ferrite bead, 0603",
+       "footprint": "L_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.95,
+       "mpn": "LQW18AN39NG80D",
+       "ref": "L6",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0603, high-capacitance build",
+       "footprint": "C_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.9,
+       "mpn": "CC0603KRX7R9BB104",
+       "ref": "C16",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0603, high-capacitance build",
+       "footprint": "C_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.9,
+       "mpn": "CC0603KRX7R9BB104",
+       "ref": "C17",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0603, high-capacitance build",
+       "footprint": "C_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.9,
+       "mpn": "0603B103K500NT",
+       "ref": "C46",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0603, high-capacitance build",
+       "footprint": "C_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.9,
+       "mpn": "0603B103K500NT",
+       "ref": "C48",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0603, high-capacitance build",
+       "footprint": "C_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.9,
+       "mpn": "0603B103K500NT",
+       "ref": "C50",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0603, high-capacitance build",
+       "footprint": "C_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.9,
+       "mpn": "CL10B102KB8NNNC",
+       "ref": "C52",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0603, high-capacitance build",
+       "footprint": "C_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.9,
+       "mpn": "CL10A105KB8NNNC",
+       "ref": "C53",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0603, high-capacitance build",
+       "footprint": "C_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.9,
+       "mpn": "0603B103K500NT",
+       "ref": "C54",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0603, high-capacitance build",
+       "footprint": "C_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.9,
+       "mpn": "CL10A225KO8NNNC",
+       "ref": "C55",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0603, high-capacitance build",
+       "footprint": "C_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.9,
+       "mpn": "CC0603KRX7R9BB104",
+       "ref": "C61",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0603, high-capacitance build",
+       "footprint": "C_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.9,
+       "mpn": "CL10C101JB8NNNC",
+       "ref": "C69",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0603, high-capacitance build",
+       "footprint": "C_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.9,
+       "mpn": "CL10C101JB8NNNC",
+       "ref": "C70",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0603, high-capacitance build",
+       "footprint": "C_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.9,
+       "mpn": "GCM1885C2A301FA16J",
+       "ref": "C71",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0603, high-capacitance build",
+       "footprint": "C_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.9,
+       "mpn": "GCM1885C2A301FA16J",
+       "ref": "C72",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0603, high-capacitance build",
+       "footprint": "C_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.9,
+       "mpn": "GCM1885C2A152JA16D",
+       "ref": "C73",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0603, high-capacitance build",
+       "footprint": "C_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.9,
+       "mpn": "GCM1885C2A152JA16D",
+       "ref": "C74",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0603, high-capacitance build",
+       "footprint": "C_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.9,
+       "mpn": "GQM1875C2E270FB12D",
+       "ref": "C75",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0603, high-capacitance build",
+       "footprint": "C_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.9,
+       "mpn": "CC0603JRNPO9BN621",
+       "ref": "C76",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0603, high-capacitance build",
+       "footprint": "C_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.9,
+       "mpn": "GQM1875C2E270FB12D",
+       "ref": "C77",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0603, high-capacitance build",
+       "footprint": "C_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.9,
+       "mpn": "CC0603JRNPO9BN621",
+       "ref": "C78",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0603, high-capacitance build",
+       "footprint": "C_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.9,
+       "mpn": "CL10C100JB8NNNC",
+       "ref": "C79",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0603, high-capacitance build",
+       "footprint": "C_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.9,
+       "mpn": "CL10C100JB8NNNC",
+       "ref": "C80",
+       "source": "eia"
+      },
+      {
+       "basis": "3225 4-pad SMD crystal maximum",
+       "footprint": "Crystal_SMD_3225-4Pin_3.2x2.5mm",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.8,
+       "mpn": "TXM27.12M0004322DBBDO00T",
+       "ref": "Y1",
+       "source": "eia"
+      },
+      {
+       "basis": "UFQFPN-32 maximum",
+       "footprint": "ST25R3916_AQET",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.6,
+       "mpn": "ST25R3916-AQET",
+       "ref": "U9",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0402",
+       "footprint": "C_0402_1005Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "CC0402KRX7R8BB104",
+       "ref": "C18",
+       "source": "eia"
+      },
+      {
+       "basis": "MLCC, 0402",
+       "footprint": "C_0402_1005Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "CC0402KRX7R8BB104",
+       "ref": "C19",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "RC0603FR-071R1L",
+       "ref": "R114",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "RC0603FR-071R1L",
+       "ref": "R115",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF1001T5E",
+       "ref": "R116",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF1001T5E",
+       "ref": "R117",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "0603WAF1000T5E",
+       "ref": "R84",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "RC0603FR-072M2L",
+       "ref": "R85",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "RC0603FR-072M2L",
+       "ref": "R86",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "RC0603FR-072M2L",
+       "ref": "R87",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "RC0603FR-072M2L",
+       "ref": "R88",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "RC0603FR-072M2L",
+       "ref": "R89",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "RC0603FR-072M2L",
+       "ref": "R90",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "RC0603FR-073M65L",
+       "ref": "R91",
+       "source": "eia"
+      },
+      {
+       "basis": "thick-film chip resistor, 0603",
+       "footprint": "R_0603_1608Metric",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.55,
+       "mpn": "MCT06030C1304FP500",
+       "ref": "R92",
+       "source": "eia"
+      },
+      {
+       "basis": "a bare copper pad has no body",
+       "footprint": "TestPoint_Pad_D1.0mm",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.0,
+       "mpn": null,
+       "ref": "TP22",
+       "source": "geometry"
+      },
+      {
+       "basis": "a bare copper pad has no body",
+       "footprint": "TestPoint_Pad_D1.0mm",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.0,
+       "mpn": null,
+       "ref": "TP37",
+       "source": "geometry"
+      },
+      {
+       "basis": "a bare copper pad has no body",
+       "footprint": "TestPoint_Pad_D1.0mm",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.0,
+       "mpn": null,
+       "ref": "TP38",
+       "source": "geometry"
+      },
+      {
+       "basis": "a bare copper pad has no body",
+       "footprint": "TestPoint_Pad_D1.0mm",
+       "keyed_by": "footprint",
+       "max_height_mm": 0.0,
+       "mpn": null,
+       "ref": "TP9",
+       "source": "geometry"
+      }
+     ],
+     "parts_over_the_allowance": [],
+     "parts_over_the_register_limit": [
+      "C45",
+      "C47",
+      "C49",
+      "C51",
+      "C83",
+      "C84",
+      "D10",
+      "D11",
+      "D12",
+      "J7"
+     ],
+     "priced_by_footprint_family": [
+      "C16",
+      "C17",
+      "C18",
+      "C19",
+      "C45",
+      "C46",
+      "C47",
+      "C48",
+      "C49",
+      "C50",
+      "C51",
+      "C52",
+      "C53",
+      "C54",
+      "C55",
+      "C61",
+      "C69",
+      "C70",
+      "C71",
+      "C72",
+      "C73",
+      "C74",
+      "C75",
+      "C76",
+      "C77",
+      "C78",
+      "C79",
+      "C80",
+      "C83",
+      "C84",
+      "D10",
+      "D11",
+      "D12",
+      "J7",
+      "L5",
+      "L6",
+      "R114",
+      "R115",
+      "R116",
+      "R117",
+      "R84",
+      "R85",
+      "R86",
+      "R87",
+      "R88",
+      "R89",
+      "R90",
+      "R91",
+      "R92",
+      "TP22",
+      "TP37",
+      "TP38",
+      "TP9",
+      "U9",
+      "Y1"
+     ],
+     "priced_by_purchased_mpn": [],
+     "register_limit_mm": 1.0,
+     "side": "B"
+    }
+   }
+  },
+  "MK9_ir_pair_separation_and_barrier": {
+   "barrier_stands_between_the_courtyards": true,
+   "courtyards_x_mm": {
+    "D1": [
+     49.765,
+     56.285
+    ],
+    "U6": [
+     62.955,
+     70.545
+    ]
+   },
+   "emitter_half_angle_deg": 10.0,
+   "footprint_origin_separation_mm_d759": 15.1327,
+   "formed_axis_separation_mm": 13.73,
+   "formed_optical_axis_x_mm": {
+    "D1": 53.02,
+    "U6": 66.75
+   },
+   "forward_distance_before_the_cone_reaches_the_receiver_mm": 47.24,
+   "heuristic_met": false,
+   "heuristic_min_mm": 15.0,
+   "heuristic_shortfall_mm": 1.27,
+   "ir_barrier_x_mm": [
+    57.5,
+    62.5
+   ],
+   "measurement_of_record": "C-IR-01 (first article, fitted enclosure)",
+   "ok": true,
+   "receiver_outside_the_emission_cone_inside_the_enclosure": true,
+   "why": "D-800: the formed axes, not the footprint origins; the 15 mm heuristic is reported and the physical isolation is gated"
+  }
+ },
+ "datum": "FBV2-EXP-002 RE-BASED: section-1 X + 1.000 mm; Y_kicad = 148.000 - Y_doc",
+ "regions": {
+  "BATTERY_SHADOW": [
+   7.0,
+   64.0,
+   49.5,
+   124.5
+  ],
+  "DISPLAY_SHADOW": [
+   4.39,
+   60.93,
+   8.0,
+   92.96
+  ],
+  "IR_BARRIER": [
+   57.5,
+   62.5,
+   0.0,
+   8.0
+  ],
+  "IR_RX_OPTICAL": [
+   62.5,
+   71.0,
+   0.0,
+   8.0
+  ],
+  "IR_TX_OPTICAL": [
+   49.0,
+   57.5,
+   0.0,
+   8.0
+  ],
+  "MIC_ACOUSTIC": [
+   1.5,
+   6.5,
+   94.5,
+   101.5
+  ],
+  "RIB_B1": [
+   45.0,
+   48.6,
+   124.7,
+   126.8
+  ],
+  "RIB_R1": [
+   67.2,
+   70.7,
+   104.0,
+   124.0
+  ],
+  "RIB_R2A": [
+   65.5,
+   69.0,
+   100.0,
+   112.0
+  ],
+  "RIB_R3": [
+   67.2,
+   70.7,
+   51.0,
+   72.0
+  ],
+  "SPEAKER_ZONE": [
+   49.0,
+   69.0,
+   127.0,
+   147.0
+  ],
+  "USB_APERTURE": [
+   37.0,
+   49.0,
+   146.8,
+   151.5
+  ]
+ },
+ "schema": 1
+}

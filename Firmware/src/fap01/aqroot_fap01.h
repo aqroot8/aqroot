@@ -43,8 +43,11 @@
 // accessory rail live (a rail-live Wi-Fi row is a D-792 table refusal and is
 // never waived), ONLY after the operator has declared the bench source
 // (`V`: no charger -- VBUS blocked on the console cable, pack or bench supply
-// only), ONLY with no other transmitter, field, audio or burst live, for at
-// most `kWifiBurstMaxMs`, and never again inside `kWifiCooldownMs`.  None of
+// only), ONLY with no other transmitter, field, audio or burst live -- and,
+// since D-802 / D802-02, with no FAP-01 state held or armed at the start and
+// EVERY other key refused until the burst stops, so that premise holds for
+// the whole session and not only at the key -- for at most
+// `kWifiBurstMaxMs`, and never again inside `kWifiCooldownMs`.  None of
 // this exists in the release image: `src/fap01/` is outside its
 // `build_src_filter`, `aqroot_fap01.cpp` refuses to compile without
 // `AQROOT_FAP01_DIAGNOSTIC`, and `test_fap01_image.cpp` compiled against the
@@ -57,9 +60,13 @@
 //   C  CC1101 continuous TX, 433.92 MHz, PATABLE 0xC0 (toggle)   <= 30 s
 //   L  SX1262 CW, 915 MHz, +22 dBm (toggle)                      <= 30 s
 //   N  ST25R3916 field ON through an NFC field session (toggle)   <= 60 s
-//   T  one ISO14443A REQA while the field is on (report only)
+//      (sup3V written and read back first -- D-802 / D802-01)
+//   T  one ISO14443A REQA while the field is on (report only; an
+//      answer only from fresh, validated evidence -- D-802 / D802-03)
 //   V  declare the bench source for Wi-Fi (no charger)            valid 120 s
 //   W  Wi-Fi TX burst (raw probe requests, 19.5 dBm)              <= 10 s
+//      EXCLUSIVE from a quiet board, and for its whole life only W, Q, ?
+//      and s are accepted (D-802 / D802-02)
 //   I  38 kHz NEC IR burst from D1, ten frames                    ~1.1 s
 //   H  chip-select hold-off, U7 CC1101_CS_N (toggle)              <= 60 s
 //   J  chip-select hold-off, U9 NFC_CS_N (toggle)                 <= 60 s

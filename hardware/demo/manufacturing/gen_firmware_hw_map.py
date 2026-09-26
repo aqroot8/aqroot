@@ -800,6 +800,30 @@ def build():
                        probes=sorted(probed[n]))
                   for n in bench_only if n in BENCH_ONLY]
 
+    # D-802 / D802-01 (Round-21 R21-01).  DERIVED, NOT ASSERTED.  This line
+    # used to be `value=True` with the population typed into its evidence, and
+    # the FAP-01 image then turned the ST25R3916's regulators on in the 5 V
+    # supply mode.  The supply mode the firmware must write (sup3V) now comes
+    # from the SAME population and copper the fab package is built from: R106
+    # fitted between +3V3 and /NFC_SUPPLY, R107 and U13 (the 5 V PA branch)
+    # not fitted, and /NFC_SUPPLY reaching U9's VDD pads.
+    nfc_vdd_pads = sorted(p for p, n in pads.get("U9", {}).items()
+                          if n == "/NFC_SUPPLY")
+    nfc_on_3v3 = ("R106" in fitted and "R107" not in fitted
+                  and "U13" not in fitted
+                  and sorted(pads.get("R106", {}).values())
+                      == ["+3V3", "/NFC_SUPPLY"]
+                  and "/NFC_SUPPLY" in pads.get("R107", {}).values()
+                  and bool(nfc_vdd_pads))
+    if not nfc_on_3v3:
+        problems.append(
+            "NFC supply is not the 3.3 V path the firmware writes sup3V for: "
+            "R106 fitted=%s, R107 fitted=%s, U13 fitted=%s, R106 nets=%s, U9 "
+            "/NFC_SUPPLY pads=%s" % ("R106" in fitted, "R107" in fitted,
+                                     "U13" in fitted,
+                                     sorted(pads.get("R106", {}).values()),
+                                     nfc_vdd_pads))
+
     limits = [
         dict(key="CHARGER_STAT2_UNCONNECTED", value=True,
              evidence="U11.3 carries /BQ25185_STAT2 and is UNROUTED "
@@ -824,9 +848,13 @@ def build():
              evidence="/09_COMMUNITY_HEADER/TCA4307_READY reaches TP44 and U16.5 only",
              firmware="The accessory-bus READY flag is a bench probe, not a readable "
                       "signal.  Confirm the accessory bus by addressing it."),
-        dict(key="NFC_ON_3V3", value=True,
+        dict(key="NFC_ON_3V3", value=nfc_on_3v3,
              evidence="R106 0R FIT ties /NFC_SUPPLY to +3V3; R107 and U13 are DNP",
-             firmware="NFC runs from the 3.3 V path.  Never assert NFC_5V_EN."),
+             firmware="NFC runs from the 3.3 V path.  Never assert NFC_5V_EN.  "
+                      "DS12484 Rev 3 section 4.2.11 / Table 20: VDD is 3.3 V, so "
+                      "IO configuration register 2 (01h) bit 7 sup3V MUST be 1 "
+                      "before `en` or Adjust regulators, and again after every "
+                      "power-up or Set default (its default is 0, the 5 V mode)."),
         dict(key="SX1262_TXEN_IS_DIO2", value=True,
              evidence="U8.7/U8.8 carry /04_SPI_B_RADIOS_NFC/DIO2_TXEN, which no MCU or "
                       "expander pin touches",

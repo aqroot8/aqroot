@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": false,
- "fetched_utc": "2026-09-25T15:20:58Z",
+ "fetched_utc": "2026-09-26T04:12:46Z",
  "keyword": "2N7002",
  "page_size": 25,
  "pages": 1,
@@ -114,7 +114,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 1699291
+   "stockCount": 1693546
   },
   {
    "assemblyComponentFlag": false,
@@ -766,7 +766,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 394462
+   "stockCount": 394224
   },
   {
    "assemblyComponentFlag": false,
@@ -982,7 +982,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 98272
+   "stockCount": 98260
   },
   {
    "assemblyComponentFlag": false,
@@ -1642,7 +1642,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 185616
+   "stockCount": 185607
   },
   {
    "assemblyComponentFlag": false,
@@ -1850,7 +1850,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 29344
+   "stockCount": 29348
   },
   {
    "assemblyComponentFlag": false,
@@ -1948,7 +1948,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 82214
+   "stockCount": 82169
   },
   {
    "assemblyComponentFlag": false,
@@ -2042,7 +2042,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 344929
+   "stockCount": 344918
   },
   {
    "assemblyComponentFlag": false,
@@ -2470,7 +2470,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 7428
+   "stockCount": 7414
   },
   {
    "assemblyComponentFlag": false,
@@ -2580,7 +2580,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 52
+   "stockCount": 43
   },
   {
    "assemblyComponentFlag": false,

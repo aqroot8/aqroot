@@ -5579,6 +5579,12 @@ def pass_pair_publication(pp, pkg):
 
 PASS_PAIR_STALE_FIGURES = ("2.2845", "2.4124", "1.9328", "72.44", "116.38",
                            "survive at 2×", "must survive at 2x")
+# D-802 / D802-05 (Round-21 R21-05): the 2x survival claim in any tense or
+# spelling -- "survives at 2× hot resistance", "surviving a 2x ratio".
+PASS_PAIR_STALE_PATTERNS = (
+    re.compile(r"surviv\w*\s+(?:at\s+|a\s+|the\s+)?2\s*(?:×|x)(?![\w.])",
+               re.I),
+)
 
 
 # ==========================================================================
@@ -14421,6 +14427,41 @@ def main():
         r"resistance|meter'?s? (?:burden|resistance))\s+(?:as|to be|=)\s+"
         r"(?:zero|nil|negligible|0(?:\.0+)?\s*(?:m?\u03a9|m?ohm|m?Ohm)?"
         r"(?![.\d]))", re.I)
+    # D-802 / D802-04 (Round-21 R21-04).  Both D-801 patterns needed an
+    # assumption or treatment VERB, so the bare assertion escaped: "For the
+    # supervised charging OCV lower bound, insertion resistance is
+    # negligible." / "... series ammeter resistance is zero."  The family is
+    # now bound to the ROLE (an inserted meter path's resistance) and to ANY
+    # predicate that sets it to nothing: a copula or `=` with zero / nil /
+    # negligible / 0 mOhm / insignificant / immaterial, "can / may / should
+    # be ignored / neglected / omitted / dropped / disregarded", the
+    # imperative "ignore / neglect / omit / drop / disregard the ...", and the
+    # adjective-first "zero / negligible insertion resistance".
+    _D802_RINS_SUBJ = (
+        r"(?:\bR_ins\b|insertion[- ]resistance|(?:series|inline|in-line)\s+"
+        r"(?:DMM|ammeter|meter|shunt)(?:'s)?(?:\s+(?:insertion\s+)?"
+        r"(?:resistance|burden))?|shunt(?:'s)?\s+resistance|ammeter(?:'s)?\s+"
+        r"(?:resistance|burden)|meter'?s?\s+(?:burden|resistance)|burden "
+        r"(?:resistance|voltage))")
+    _D802_RINS_NOTHING = (
+        r"(?:zero|nil|negligible|insignificant|immaterial|ignorable|"
+        r"0(?:\.0+)?\s*(?:m?\u03a9|m?ohms?|m?Ohms?)?(?![.\d]))")
+    _D802_RINS_COPULA = re.compile(
+        _D802_RINS_SUBJ + r"(?:\s+term)?[^.;|]{0,60}?(?:\bis\b|\bare\b|"
+        r"\bwas\b|\bbe\b|\bbecomes?\b|\bremains?\b|\bequals?\b|=|\u2248|~)"
+        r"\s*(?:effectively |essentially |practically |approximately |about |"
+        r"just |only |simply |then )?" + _D802_RINS_NOTHING
+        + r"|" + _D802_RINS_SUBJ + r"(?:\s+term)?[^.;|]{0,60}?(?:\bis\b|"
+        r"\bare\b|(?:can|may|should|will|must)\s+(?:safely\s+|simply\s+)?"
+        r"be)\s+(?:ignored|neglected|omitted|dropped|disregarded|left out)",
+        re.I)
+    _D802_RINS_IMPERATIVE = re.compile(
+        r"\b(?:ignor|neglect|omit|drop|disregard|leav)(?:e|es|ing|s)?\b"
+        r"(?:\s+out)?\s+(?:the\s+|an?\s+|its\s+|any\s+)?" + _D802_RINS_SUBJ,
+        re.I)
+    _D802_RINS_ADJ = re.compile(
+        r"\b(?:zero|nil|negligible|0\s*(?:m?\u03a9|m?ohms?|m?Ohms?))[- ]"
+        r"(?:ohm\s+)?" + _D802_RINS_SUBJ, re.I)
     _D801_CLAMP = re.compile(r"\bclamp\b", re.I)
     _D801_FABPKG_STALE = re.compile(
         r"FAB1\s*[–-]\s*FAB8|247 of 247|LAND1\s*[–-]\s*LAND6|"
@@ -14475,10 +14516,21 @@ def main():
                     found.append(("package_against_the_modelled_figures",
                                   flat[:200]))
                 # R_ins: an inserted meter path may never be assumed zero
+                # (D-802 / D802-04: in ANY predicate form, not only after an
+                # assumption verb)
                 for m_ in tuple(_D801_RINS.finditer(flat)) + tuple(
-                        _D801_RINS_VF.finditer(flat)):
-                    seg = flat[max(0, m_.start() - 30):m_.end()]
-                    if _D801_CLAMP.search(seg) or re.search(
+                        _D801_RINS_VF.finditer(flat)) + tuple(
+                        _D802_RINS_COPULA.finditer(flat)) + tuple(
+                        _D802_RINS_IMPERATIVE.finditer(flat)) + tuple(
+                        _D802_RINS_ADJ.finditer(flat)):
+                    # a CLAMP breaks no conductor -- but only a clamp named
+                    # in the SAME clause, and not "unlike a clamp".
+                    _cl = max(flat.rfind(c_, 0, m_.start()) for c_ in ";:")
+                    seg = flat[_cl + 1:m_.end()]
+                    if (_D801_CLAMP.search(seg) and not re.search(
+                            r"\b(?:unlike|instead of|rather than|not|no|"
+                            r"without)\b[^;:]{0,24}\bclamp", seg, re.I)) \
+                            or re.search(
                             r"\b(?:never|not|no)\b[^.;|]{0,40}$",
                             flat[max(0, m_.start() - 50):m_.end() - 8],
                             re.I):
@@ -14645,6 +14697,84 @@ def main():
             "document; the D-616 fabrication-package document is fenced and "
             "scanned.")
     cell_net_ok = cell_net_ok and cell_net["round20_operative_semantics"]["ok"]
+
+    # ---- D-802 / Round-21 R21-04: the R_ins family in EVERY predicate form.
+    # Astra's two forms have no assumption verb; the rest are the same claim
+    # one grammatical step away.  Each is injected into EVERY operative
+    # document (`_d801_hit`) and must be caught there; the near controls --
+    # a clamp in the same clause, a negated claim, a measured non-zero value,
+    # "do not ignore" -- must stay clean.
+    _r21_injections = dict(
+        r21_rins_insertion_resistance_is_negligible=(
+            "For the supervised charging OCV lower bound, insertion "
+            "resistance is negligible."),
+        r21_rins_series_ammeter_resistance_is_zero=(
+            "For the supervised charging OCV lower bound, series ammeter "
+            "resistance is zero."),
+        r21_rins_equals_zero_milliohm=(
+            "For the inline shunt, R_ins = 0 m\u03a9 in the OCV lower bound."),
+        r21_rins_can_be_ignored=(
+            "The shunt resistance can be ignored when computing OCV_lb."),
+        r21_rins_ignore_imperative=(
+            "Ignore the insertion resistance for the supervised record."),
+        r21_rins_zero_adjective=(
+            "Use zero insertion resistance in the OCV lower bound."),
+        r21_rins_unlike_a_clamp=(
+            "Unlike a clamp, the series ammeter resistance may be assumed "
+            "zero."),
+    )
+    _r21_caught, _r21_missed = {}, []
+    for _nm, _w in _r21_injections.items():
+        _m = _d801_hit(_nm, _w)
+        _r21_caught[_nm] = not _m
+        _r21_missed.extend(_m[:3])
+    # WITNESS: Astra's two forms are verbless -- the D-801 patterns alone do
+    # not match them at all (reproduced here on the live regexes).
+    _r21_witness = {
+        _nm: dict(
+            matched_by_the_d801_patterns=bool(
+                _D801_RINS.search(_w) or _D801_RINS_VF.search(_w)),
+            caught_by_d802=bool(_d801_semantic_scan("# t\n\n" + _w + "\n")))
+        for _nm, _w in _r21_injections.items()}
+    _r21_astra_forms_were_escapes = all(
+        not _r21_witness[_k]["matched_by_the_d801_patterns"] for _k in (
+            "r21_rins_insertion_resistance_is_negligible",
+            "r21_rins_series_ammeter_resistance_is_zero"))
+    _r21_clean = dict(
+        clamp_same_clause_rins_zero=(
+            "With a DC clamp meter around one pack lead (no conductor broken) "
+            "R_ins = 0."),
+        insertion_resistance_never_negligible=(
+            "The insertion resistance is never negligible; establish it "
+            "before the record."),
+        series_ammeter_not_zero=(
+            "A series ammeter's insertion resistance is not zero: measure it."),
+        measured_nonzero=(
+            "R_ins = 0.8 m\u03a9 was established for the inline shunt."),
+        do_not_ignore=(
+            "Do not ignore the insertion resistance."),
+    )
+    _r21_clean_res = {
+        _nm: not _d801_semantic_scan("# t\n\n" + _w + "\n")
+        for _nm, _w in _r21_clean.items()}
+    cell_net["round21_rins_semantics"] = dict(
+        injections=_r21_injections, caught=_r21_caught, missed=_r21_missed,
+        witnesses=_r21_witness,
+        astra_forms_were_escapes_of_the_d801_patterns=(
+            _r21_astra_forms_were_escapes),
+        clean_controls_pass=_r21_clean_res,
+        documents=list(_d801_docs),
+        ok=bool(all(_r21_caught.values())
+                and all(v_["caught_by_d802"] for v_ in _r21_witness.values())
+                and _r21_astra_forms_were_escapes
+                and all(_r21_clean_res.values())),
+        why="D-802 / Round-21 R21-04: an inserted meter path's resistance "
+            "set to nothing in ANY predicate form -- 'is negligible', 'is "
+            "zero', '= 0 m\u03a9', 'can be ignored', 'ignore the ...', 'zero "
+            "insertion resistance', 'unlike a clamp ... assumed zero' -- is "
+            "refused in every operative document; a clamp in the same clause "
+            "and negated claims are not.")
+    cell_net_ok = cell_net_ok and cell_net["round21_rins_semantics"]["ok"]
 
     # ---- D-801 / D801-06: THE RELEASE IDENTITY IS BOUND, NOT TYPED. -------
     _ri_paths = dict(
@@ -16363,8 +16493,18 @@ def main():
         handoff=ROOT / "docs/full-beta-v2/AQROOT_DEMO_FAB_HANDOFF.md")
     _pp_txt = {k_: (v_.read_text(encoding="utf-8", errors="replace")
                     if v_.exists() else "") for k_, v_ in _pp_docs.items()}
+    # D-802 / D802-05 (Round-21 R21-05): the stale figures are refused in
+    # EVERY operative document, not only the three that carry the generated
+    # rows -- Astra put D-791's ceiling into DEVICE_SPEC and F1-F14 passed.
+    # The scan set is the same one every other F12 document family reads.
+    _pp_scan_rel = tuple(r_ for r_ in _d801_docs if (ROOT / r_).resolve()
+                         not in {v_.resolve() for v_ in _pp_docs.values()})
+    _pp_scan_txt = {r_: ((ROOT / r_).read_text(encoding="utf-8",
+                                               errors="replace")
+                         if (ROOT / r_).exists() else "")
+                    for r_ in _pp_scan_rel}
 
-    def _pp_problems(pub, txt):
+    def _pp_problems(pub, txt, scan=None):
         bad = []
         _row = fa_step_rows(txt["plan"]).get("C-BAT-GATE-01", "")
         if pub["step"] not in _row:
@@ -16376,7 +16516,8 @@ def main():
         if pub["handoff_rows"] not in txt["handoff"]:
             bad.append("the fab handoff does not carry the F10-generated "
                        "envelope rows")
-        for k_, t_ in txt.items():
+        for k_, t_ in tuple(txt.items()) + tuple(
+                (_pp_scan_txt if scan is None else scan).items()):
             for fenced, block in _norm_blocks(t_):
                 if fenced:
                     continue
@@ -16387,10 +16528,27 @@ def main():
                         if tok in sent:
                             bad.append("%s: stale %r in a current sentence: "
                                        "%s" % (k_, tok, sent.strip()[:120]))
+                    for rx in PASS_PAIR_STALE_PATTERNS:
+                        if rx.search(sent):
+                            bad.append("%s: the withdrawn 2x survival claim "
+                                       "in a current sentence: %s"
+                                       % (k_, sent.strip()[:120]))
         return bad
 
     _pp_pub = pass_pair_publication(pass_pair, _pkg or {})
     _pp_bad = _pp_problems(_pp_pub, _pp_txt)
+    _PP_R21_SENTENCE = ("The derived pass-pair current ceiling is 2.2845 A at "
+                        "72.44 \u00b0C internal air, and the path survives at "
+                        "2\u00d7 hot resistance.")
+
+    def _pp_inject(text, sentence):
+        """Under the document's first line, as Round-21 injected it -- or,
+        where that title is itself a HISTORICAL fence (the D-616 package
+        document), under a fresh unfenced heading, as `_d801_hit` does."""
+        head, _, rest = text.partition("\n")
+        if any(f in head for f in _NORM_FENCE):
+            return text + "\n\n# Current procedure\n\n" + sentence + "\n"
+        return head + "\n\n" + sentence + "\n\n" + rest
 
     def _pp_regen(**kw):
         return pass_pair_publication(judge_pass_pair_gate(
@@ -16416,6 +16574,35 @@ def main():
             _pp_pub, dict(_pp_txt, ledger=_pp_txt["ledger"] + "\n\nThe "
                           "declared ratio now carries a sensitivity the "
                           "ruling case must survive at 2x.\n"))),
+        # D-802 / D802-05: Astra's exact Round-21 sentence, in DEVICE_SPEC
+        d802_05a_the_round21_devicespec_sentence_is_refused=bool(
+            _pp_problems(_pp_pub, _pp_txt, dict(_pp_scan_txt, **{
+                "docs/full-beta-v2/DEVICE_SPEC.md": _pp_inject(
+                    _pp_scan_txt.get("docs/full-beta-v2/DEVICE_SPEC.md", ""),
+                    _PP_R21_SENTENCE)}))),
+        # ...and in EVERY other operative document the scan set names
+        d802_05b_every_operative_document_is_scanned=bool(_pp_scan_txt) and all(
+            _pp_problems(_pp_pub, _pp_txt, dict(_pp_scan_txt, **{
+                r_: _pp_inject(t_, _PP_R21_SENTENCE)}))
+            for r_, t_ in _pp_scan_txt.items()),
+        # ...with DEVICE_SPEC and CURRENT_STATE among them
+        d802_05c_devicespec_and_current_state_are_in_the_scan_set=all(
+            r_ in _pp_scan_txt for r_ in (
+                "docs/full-beta-v2/DEVICE_SPEC.md",
+                "docs/full-beta-v2/CURRENT_STATE.md")),
+        # the 2x survival claim with NO stale number in it
+        d802_05d_the_2x_survival_claim_without_a_number_is_refused=bool(
+            _pp_problems(_pp_pub, _pp_txt, dict(_pp_scan_txt, **{
+                "docs/full-beta-v2/DEVICE_SPEC.md": _pp_inject(
+                    _pp_scan_txt.get("docs/full-beta-v2/DEVICE_SPEC.md", ""),
+                    "The pass pair survives at 2\u00d7 hot resistance.")}))),
+        # a FENCED historical mention of the old ceiling stays clean
+        d802_05e_a_fenced_historical_mention_is_clean=not _pp_problems(
+            _pp_pub, _pp_txt, dict(_pp_scan_txt, **{
+                "docs/full-beta-v2/DEVICE_SPEC.md": _pp_inject(
+                    _pp_scan_txt.get("docs/full-beta-v2/DEVICE_SPEC.md", ""),
+                    "HISTORICAL: D-791 published a 2.2845 A ceiling at "
+                    "72.44 \u00b0C, SUPERSEDED by F10.")})),
         # and the 2x case really does lose the row at the enclosure condition
         d801_05e_the_2x_case_loses_the_row=not pass_pair[
             "enclosure_2x_case"]["meets_the_row"],

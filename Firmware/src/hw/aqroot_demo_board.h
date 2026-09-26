@@ -387,7 +387,10 @@
 #define AQROOT_ACC_BUS_READY_NOT_WIRED            1
 
 //   EVIDENCE: R106 0R FIT ties /NFC_SUPPLY to +3V3; R107 and U13 are DNP
-//   FIRMWARE: NFC runs from the 3.3 V path. Never assert NFC_5V_EN.
+//   FIRMWARE: NFC runs from the 3.3 V path. Never assert NFC_5V_EN. DS12484 Rev 3 section
+//   4.2.11 / Table 20: VDD is 3.3 V, so IO configuration register 2 (01h) bit 7 sup3V MUST
+//   be 1 before `en` or Adjust regulators, and again after every power-up or Set default
+//   (its default is 0, the 5 V mode).
 #define AQROOT_NFC_ON_3V3                         1
 
 //   EVIDENCE: U8.7/U8.8 carry /04_SPI_B_RADIOS_NFC/DIO2_TXEN, which no MCU or expander pin

@@ -320,6 +320,32 @@ void startSx1262() {
 // register 03h defaults to 0x08 = ISO14443A initiator, which Set default has
 // just restored.  The field is ON when 02h reads back 0xC8 -- a dead read
 // path reads 0x00 or 0xFF and is refused, never mistaken for a field.
+//
+// D-802 / D802-01 (Round-21 R21-01): THE SUPPLY MODE COMES FIRST.  Section
+// 4.2.11: "The supply mode is set by writing bit sup3V in the IO
+// configuration register 2.  Default setting is 5 V so this bit has to be set
+// to 1 after power-up in case of 3.3 V supply."  Table 20: sup3V = 1 for
+// 2.4 V <= VDD <= 3.6 V.  This board's VDD is +3V3 through R106 (FITTED) with
+// R107 and U13 DNP -- `AQROOT_NFC_ON_3V3`, which the generator now DERIVES
+// from that population and copper.  D-801 wrote 0x80 to 02h (Operation
+// control), never 01h, so FAP-01 turned the regulators on and adjusted them in
+// the 5 V mode.  Set default (the release quiesce, between every two
+// sessions) and power-up both clear sup3V, so it is written and READ BACK
+// inside EVERY field start, after the session gate and before `en`, and read
+// back again once the field is up.
+constexpr uint8_t kRegIoConfiguration2 = 0x01;
+constexpr uint8_t kSup3v = 0x80;
+constexpr uint8_t kNfcIoConfiguration2 = AQROOT_NFC_ON_3V3 ? kSup3v : 0x00;
+constexpr uint8_t kRegOperationControl = 0x02;
+constexpr uint8_t kNfcFieldOn = 0xC8;               // en | rx_en | tx_en
+
+bool nfcSupplyModeConfirmed(uint8_t *io2_out) {
+  uint8_t io2 = uint8_t(~kNfcIoConfiguration2);
+  const bool read = st25r3916_spi::readRegister(*g_ctx.spi_b,
+                                                kRegIoConfiguration2, &io2);
+  if (io2_out) *io2_out = io2;
+  return read && io2 == kNfcIoConfiguration2;
+}
 void stopNfcField(const char *why) {
   if (!g_nfc_field.on) return;
   g_nfc_field.on = false;
@@ -348,57 +374,212 @@ void startNfcField() {
   if (!g_ctx.app->beginNfcFieldSession(*g_ctx.spi_b)) return;
   g_nfc_field.on = true;
   spiBBegin();
-  bool w = st25r3916_spi::writeRegister(*g_ctx.spi_b, 0x02, 0x80);   // en
-  delay(5);                                                           // oscillator
-  w = st25r3916_spi::command(*g_ctx.spi_b, 0xD6) && w;                // Adjust regulators
-  delay(5);
-  w = st25r3916_spi::writeRegister(*g_ctx.spi_b, 0x02, 0xC8) && w;    // en|rx_en|tx_en
+  // 1  the supply mode, written and CONFIRMED before anything is enabled.
+  uint8_t io2 = 0xFF;
+  bool w = st25r3916_spi::writeRegister(*g_ctx.spi_b, kRegIoConfiguration2,
+                                        kNfcIoConfiguration2);
+  const bool supply = w && nfcSupplyModeConfirmed(&io2);
   uint8_t op = 0x00;
-  const bool read = st25r3916_spi::readRegister(*g_ctx.spi_b, 0x02, &op);
+  bool read = false;
+  if (supply) {
+    // 2  oscillator and regulators, then Adjust regulators, then the field.
+    w = st25r3916_spi::writeRegister(*g_ctx.spi_b, kRegOperationControl, 0x80) && w;
+    delay(5);                                                         // oscillator
+    w = st25r3916_spi::command(*g_ctx.spi_b, 0xD6) && w;              // Adjust regulators
+    delay(5);
+    w = st25r3916_spi::writeRegister(*g_ctx.spi_b, kRegOperationControl,
+                                     kNfcFieldOn) && w;
+    read = st25r3916_spi::readRegister(*g_ctx.spi_b, kRegOperationControl, &op);
+    // 3  and the supply mode is still the one the regulators came up in.
+    read = nfcSupplyModeConfirmed(&io2) && read;
+  }
   spiBEnd();
-  if (!w || !read || op != 0xC8) {
+  if (!supply) {
+    Serial.printf("FAP-01: NFC field REFUSED -- IO configuration 2 reads 0x%02X, "
+                  "want 0x%02X (sup3V: VDD is +3V3 through R106 FIT, R107 DNP); "
+                  "the regulators were NOT enabled\n", io2,
+                  unsigned(kNfcIoConfiguration2));
+    stopNfcField("supply mode not confirmed");
+    return;
+  }
+  if (!w || !read || op != kNfcFieldOn) {
     Serial.printf("FAP-01: NFC field NOT CONFIRMED (Operation control reads "
-                  "0x%02X, want 0xC8) -- turning it off\n", op);
+                  "0x%02X, want 0xC8; IO configuration 2 reads 0x%02X, want "
+                  "0x%02X) -- turning it off\n", op, io2,
+                  unsigned(kNfcIoConfiguration2));
     stopNfcField("field not confirmed");
     return;
   }
   g_nfc_field.start_ms = millis();
   g_ctx.app->noteMaterialLoadEdge("the FAP-01 NFC field");
-  Serial.printf("FAP-01: NFC field ON (Operation control 0x%02X: en, rx_en, "
-                "tx_en; ISO14443A default mode) -- bounded to %lu ms; N again "
-                "or Q stops it; T sends one REQA\n", op,
+  Serial.printf("FAP-01: NFC field ON (IO configuration 2 0x%02X: sup3V, 3.3 V "
+                "supply mode; Operation control 0x%02X: en, rx_en, tx_en; "
+                "ISO14443A default mode) -- bounded to %lu ms; N again or Q "
+                "stops it; T sends one REQA\n", io2, op,
                 (unsigned long)kNfcFieldMaxMs);
 }
 
 // One ISO14443A REQA (DS12484 Table 13, C6h) and whatever ATQA the part
 // collects.  REPORT ONLY: the receiver runs on its power-up defaults, not an
 // application stack's analog configuration.
+//
+// D-802 / D802-03 (Round-21 R21-03): AN ANSWER IS CLAIMED ONLY FROM FRESH,
+// CURRENT, SELF-CONSISTENT EVIDENCE.  D-801 printed "a tag answered" whenever
+// FIFO status 1 read >= 2 -- so an all-ones bus (FIFO 255, ATQA FF FF), a
+// FIFO count left over from before (an ignored command), or a stale ATQA all
+// read as a tag.  Now, in ONE bounded sequence, every step of which must
+// complete on the bus:
+//   0  refused outright while a U9 chip-select hold-off is armed or pending --
+//      a transaction whose select may never fall is not evidence -- and
+//      INVALID if the hold-off injected a single select during it;
+//   1  the field is still ours: Operation control 0xC8 and sup3V read back;
+//   2  FRESH: the main and error IRQ registers are read (which clears them,
+//      Tables 62/64 note 1) and Clear FIFO (DBh, section 4.4.3) is sent and
+//      PROVED -- FIFO status 1 and 2 must then read 0, which an ignored
+//      command, a stale FIFO or an all-ones bus cannot do;
+//   3  CURRENT: after C6h the main IRQ must show I_txe (the REQA really left)
+//      and, for an answer, I_rxe; an all-ones IRQ read is a dead bus;
+//   4  PLAUSIBLE: exactly two whole bytes (fifo_lb = 0, np_lb = 0), no FIFO
+//      overflow or underflow, no parity or framing error, and an ATQA whose
+//      ISO/IEC 14443-3 RFU bits (b6, b13..b16) are 0 and whose UID-size field
+//      is not the RFU value 11b -- FF FF fails all three;
+//   5  CONSUMED: after the two-byte FIFO read the FIFO is empty again with no
+//      underflow, so the bytes printed are the bytes that were received.
+// "No answer" is itself a finding and needs the same proof except I_rxe:
+// the REQA left (I_txe), nothing was received, and the FIFO is still empty.
+// Anything else is "NO VALID EVIDENCE" -- neither an answer nor its absence.
+// The legacy PN532/I2C driver (`src/drivers/nfc.cpp`, the wrong part) is
+// never a fallback: FAP-01 builds `src/demo/ + src/hw/ + src/fap01/` only,
+// which `firmware_hw_map_contract` H10 asserts.
+constexpr uint8_t kRegMainIrq = 0x1A;
+constexpr uint8_t kRegErrorIrq = 0x1C;
+constexpr uint8_t kRegFifoStatus1 = 0x1E;
+constexpr uint8_t kRegFifoStatus2 = 0x1F;
+constexpr uint8_t kCmdClearFifo = 0xDB;
+constexpr uint8_t kCmdTransmitReqa = 0xC6;
+constexpr uint8_t kFifoRead = 0x9F;
+constexpr uint8_t kIrqRxe = 0x10;
+constexpr uint8_t kIrqTxe = 0x08;
+constexpr uint8_t kErrorIrqReceive = 0xF0;          // I_crc | I_par | I_err2 | I_err1
+constexpr uint8_t kFifoStatus2Flags = 0x3F;         // unf, ovr, lb2..lb0, np_lb
+constexpr uint8_t kFifoStatus2Count = 0xC0;         // fifo_b9, fifo_b8
+
+bool atqaPlausible(uint8_t lsb, uint8_t msb) {
+  return (lsb & 0x20) == 0            // b6 RFU
+      && (lsb & 0xC0) != 0xC0         // b8b7 UID size 11b is RFU
+      && (msb & 0xF0) == 0;           // b16..b13 RFU
+}
+
 void sendReqa() {
   if (!g_nfc_field.on) {
     say("FAP-01: REQA REFUSED: the NFC field is off -- press N first");
     return;
   }
-  spiBBegin();
-  (void)st25r3916_spi::command(*g_ctx.spi_b, 0xC6);
-  uint8_t irq = 0x00;
-  const uint32_t start = millis();
-  for (unsigned attempt = 0; attempt < 12; ++attempt) {
-    uint8_t v = 0x00;
-    if (st25r3916_spi::readRegister(*g_ctx.spi_b, 0x1A, &v)) irq |= v;
-    if ((irq & 0x10) != 0 || millis() - start >= 10) break;   // I_rxe
-    delay(1);
+  HoldOffChipSelects &cs = *g_ctx.selects;
+  if (cs.holdOffArmed(SpiBDevice::St25r3916)) {
+    say("FAP-01: REQA REFUSED: a U9 NFC_CS_N hold-off is armed -- a "
+        "transaction whose select may be held high is not evidence; release "
+        "it (J) first");
+    return;
   }
-  uint8_t count = 0x00;
-  (void)st25r3916_spi::readRegister(*g_ctx.spi_b, 0x1E, &count);
+  SpiBusB &bus = *g_ctx.spi_b;
+  const uint32_t injected_before = cs.injected();
+  const char *invalid = nullptr;
+  bool comm = true;
+  auto rd = [&bus, &comm](uint8_t addr) {
+    uint8_t v = 0xFF;
+    if (!st25r3916_spi::readRegister(bus, addr, &v)) comm = false;
+    return v;
+  };
+  spiBBegin();
+  // 1  the field is still ours, in the supply mode it came up in.
+  const uint8_t op = rd(kRegOperationControl);
+  const uint8_t io2 = rd(kRegIoConfiguration2);
+  if (op != kNfcFieldOn || io2 != kNfcIoConfiguration2) {
+    invalid = "the field is not confirmed up (Operation control / sup3V do not "
+              "read back 0xC8 / the supply mode)";
+  }
+  // 2  fresh: clear the IRQ status and the FIFO, and PROVE the FIFO cleared.
+  uint8_t f1 = 0xFF, f2 = 0xFF;
+  if (invalid == nullptr) {
+    (void)rd(kRegMainIrq);
+    (void)rd(kRegErrorIrq);
+    if (!st25r3916_spi::command(bus, kCmdClearFifo)) comm = false;
+    f1 = rd(kRegFifoStatus1);
+    f2 = rd(kRegFifoStatus2);
+    if (f1 != 0x00 || f2 != 0x00) {
+      invalid = "Clear FIFO NOT CONFIRMED -- the FIFO status did not read "
+                "empty (an ignored command, a stale FIFO or an all-ones bus)";
+    }
+  }
+  // 3  current: the REQA, and the IRQs it raised.
+  uint8_t irq = 0x00, err = 0x00;
+  bool irq_all_ones = false;
+  if (invalid == nullptr && comm) {
+    if (!st25r3916_spi::command(bus, kCmdTransmitReqa)) comm = false;
+    const uint32_t start = millis();
+    for (unsigned attempt = 0; attempt < 12; ++attempt) {
+      const uint8_t v = rd(kRegMainIrq);
+      if (v == 0xFF) irq_all_ones = true;
+      irq |= v;
+      if ((irq & kIrqRxe) != 0 || millis() - start >= 10) break;
+      delay(1);
+    }
+    err = rd(kRegErrorIrq);
+    f1 = rd(kRegFifoStatus1);
+    f2 = rd(kRegFifoStatus2);
+  }
+  const unsigned count = unsigned(f1) | (unsigned(f2 & kFifoStatus2Count) << 2);
   uint8_t atqa[3] = {0x00, 0x00, 0x00};
-  if (count >= 2) {
-    const uint8_t out[3] = {0x9F, 0x00, 0x00};                 // FIFO read
-    (void)st25r3916_spi::frame(*g_ctx.spi_b, out, atqa, 3);
+  bool answer = false;
+  if (invalid == nullptr && comm) {
+    if (irq_all_ones || err == 0xFF || f2 == 0xFF) {
+      invalid = "an all-ones IRQ or FIFO status read -- the bus is not answering";
+    } else if ((irq & kIrqTxe) == 0) {
+      invalid = "no end-of-transmission IRQ -- the REQA was not confirmed sent";
+    } else if ((irq & kIrqRxe) == 0) {
+      if (count != 0) invalid = "FIFO bytes without an end-of-receive IRQ";
+    } else if ((err & kErrorIrqReceive) != 0) {
+      invalid = "a parity / framing / CRC error on the receive";
+    } else if (count != 2 || (f2 & kFifoStatus2Flags) != 0) {
+      invalid = "the receive is not exactly two whole bytes with no FIFO "
+                "overflow or underflow";
+    } else {
+      // 5  consumed: read exactly two bytes, and the FIFO is empty after.
+      const uint8_t out[3] = {kFifoRead, 0x00, 0x00};
+      if (!st25r3916_spi::frame(bus, out, atqa, 3)) comm = false;
+      const uint8_t a1 = rd(kRegFifoStatus1);
+      const uint8_t a2 = rd(kRegFifoStatus2);
+      if (a1 != 0x00 || (a2 & 0xF0) != 0x00) {
+        invalid = "the FIFO did not drain to empty on a two-byte read";
+      } else if (!atqaPlausible(atqa[1], atqa[2])) {
+        invalid = "the ATQA fails ISO/IEC 14443-3 (RFU bits set, or FF FF)";
+      } else {
+        answer = true;
+      }
+    }
   }
   spiBEnd();
-  Serial.printf("FAP-01: REQA sent -- main IRQ 0x%02X, FIFO %u byte(s), ATQA "
-                "%02X %02X (%s; REPORT ONLY)\n", irq, unsigned(count), atqa[1],
-                atqa[2], count >= 2 ? "a tag answered" : "no answer");
+  if (comm && invalid == nullptr && cs.injected() != injected_before) {
+    invalid = "a chip-select hold-off interrupted the transaction";
+  }
+  if (!comm) {
+    invalid = "an SPI-B transfer on U9 did not complete (bus hold refused)";
+  }
+  if (invalid != nullptr) {
+    Serial.printf("FAP-01: REQA -- NO VALID EVIDENCE: %s (main IRQ 0x%02X, "
+                  "FIFO status 0x%02X 0x%02X); neither an answer nor its "
+                  "absence is reported\n", invalid, irq, f1, f2);
+    return;
+  }
+  if (answer) {
+    Serial.printf("FAP-01: REQA -- VALID ANSWER: a tag answered, ATQA %02X %02X "
+                  "(fresh FIFO, I_txe + I_rxe, two whole bytes, no receive "
+                  "error, FIFO drained; REPORT ONLY)\n", atqa[1], atqa[2]);
+  } else {
+    Serial.printf("FAP-01: REQA -- no tag answered (REQA sent: I_txe, main IRQ "
+                  "0x%02X, no I_rxe, FIFO empty; REPORT ONLY)\n", irq);
+  }
 }
 
 // ===========================================================================
@@ -449,6 +630,15 @@ void startWifi() {
     why = "the amplifier is (or may be) energised";
   } else if (g_ctx.app->burstArbiter().active() != BurstLoad::None) {
     why = "a burst load holds the arbiter";
+  } else if (g_cc_tx.on || g_sx_cw.on || g_nfc_field.on || g_audio.on ||
+             g_backlight.on ||
+             g_ctx.selects->holdOffArmed(SpiBDevice::Cc1101) ||
+             g_ctx.selects->holdOffArmed(SpiBDevice::St25r3916)) {
+    // D-802 / D802-02: the session starts only from a QUIET board -- no
+    // FAP-01 state of any kind, held or armed.
+    why = "a FAP-01 stimulus is held or armed (transmitter, field, audio, "
+          "backlight or chip-select hold-off) -- the Wi-Fi session starts only "
+          "from a quiet board; press Q first";
   } else if (g_wifi_stopped_once &&
              millis() - g_wifi_stopped_ms < kWifiCooldownMs) {
     why = "the previous burst ended less than 30 s ago (cool-down)";
@@ -761,15 +951,24 @@ void pollVcell() {
     const uint32_t t = millis() - t0;
     if (ok) {
       const uint16_t counts = uint16_t(uint16_t(raw[0]) << 8 | raw[1]);
-      Serial.printf("vcell t_ms=%lu raw=0x%04X V=%.5f\n", (unsigned long)t,
-                    counts, double(counts) * 0.000078125);
+      // D-802 (hygiene beside R21-03): an all-ones or all-zero register is a
+      // bus fault, not a cell voltage -- the release image refuses both for
+      // safety (D-779); here they are marked so the bench does not record
+      // them as samples.
+      const bool implausible = counts == 0xFFFF || counts == 0x0000;
+      Serial.printf("vcell t_ms=%lu raw=0x%04X V=%.5f%s\n", (unsigned long)t,
+                    counts, double(counts) * 0.000078125,
+                    implausible ? " IMPLAUSIBLE (all-ones / all-zero read) -- "
+                                  "not a sample" : "");
+      if (implausible) ++failed;
     } else {
       ++failed;
       Serial.printf("vcell t_ms=%lu READ FAILED\n", (unsigned long)t);
     }
     (void)g_ctx.app->serviceNfcLiveness();
   }
-  Serial.printf("FAP-01: VCELL poll END -- %lu ms, %u read failure(s)\n",
+  Serial.printf("FAP-01: VCELL poll END -- %lu ms, %u failed or implausible "
+                "read(s)\n",
                 (unsigned long)(millis() - t0), failed);
 }
 
@@ -777,6 +976,7 @@ void help() {
   say("FAP-01 keys (upper case; the release keys still work):");
   say("  C CC1101 continuous TX   L SX1262 CW +22 dBm   N NFC field   T REQA");
   say("  V declare bench source (no charger)   W Wi-Fi TX burst (needs V)");
+  say("    -- EXCLUSIVE: while it runs only W, Q, ? and s are accepted");
   say("  I IR NEC burst   H hold-off U7 CS   J hold-off U9 CS");
   say("  K U9 hold-off in 700 ms   Y U9 hold-off in 2000 ms");
   say("  A held audio   B held backlight duty   G VCELL 10 ms poll");
@@ -802,6 +1002,9 @@ void begin(const Context &ctx) {
   g_wifi_frames = 0;
   g_restored_holdoffs = 0;
   if (!g_ready) return;
+  // D-802 / D802-02: no FAP-01 Wi-Fi session survives a reset, and the
+  // permission table is told so -- the one Wi-Fi owner states its own state.
+  g_ctx.app->noteWifiRadioActive(false);
   g_ctx.selects->clearAll();
   // ONE boot consumes an armed hold-off -- read, erase, apply.
   Preferences p;
@@ -887,6 +1090,29 @@ void service() {
 
 bool handleKey(char key) {
   if (!g_ready) return false;
+  // D-802 / D802-02 (Round-21 R21-02): THE Wi-Fi SESSION IS EXCLUSIVE FOR ITS
+  // WHOLE LIFE, NOT ONLY AT ITS START.  The waiver in `startWifi` holds only
+  // while no other transmitter, field, audio, burst, rail or held state is
+  // live -- and D-801 checked that once, at the key, then let `I` (an IR
+  // burst), the release `x`, `d`, `p` and the rest run beside the radio.  So
+  // while the burst runs EVERY key is refused except the ones that stop it
+  // (`W`, `Q`), list the keys (`?`) or print status (`s`); line endings pass
+  // through silently.  Stopping it (the key, `Q`, its 10 s bound or a reset)
+  // ends the exclusion at once; the 30 s cool-down gates only another `W`.
+  if (g_wifi.on) {
+    switch (key) {
+      case 'W': case 'Q': case '?': case 's':
+        break;
+      case '\r': case '\n': case ' ':
+        return false;
+      default:
+        Serial.printf("FAP-01: '%c' REFUSED -- the Wi-Fi burst session is "
+                      "EXCLUSIVE while it runs (nothing else may be keyed, "
+                      "burst or energised beside the waived radio); W or Q "
+                      "stops it first\n", key);
+        return true;
+    }
+  }
   switch (key) {
     case 'C': g_cc_tx.on ? stopCc1101("operator key") : startCc1101(); return true;
     case 'L': g_sx_cw.on ? stopSx1262("operator key") : startSx1262(); return true;

@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-25T15:20:54Z",
+ "fetched_utc": "2026-09-26T04:12:41Z",
  "keyword": "BM02B-ACHSS-GAN-ETF(LF)(SN)",
  "page_size": 25,
  "pages": 1,

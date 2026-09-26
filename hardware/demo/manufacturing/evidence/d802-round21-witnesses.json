@@ -1,0 +1,50 @@
+{
+ "after": {
+  "git_sha_parent": "e54adcc310505ef963acaac83924eb4a2c68622a",
+  "tree": "working tree"
+ },
+ "before": {
+  "git_sha": "e54adcc310505ef963acaac83924eb4a2c68622a",
+  "tree": "/tmp/d802b/before"
+ },
+ "decision": "D-802",
+ "probes": {
+  "R21-01_sup3v": {
+   "after": {
+    "compiled": true,
+    "exit": 0,
+    "stdout": "op=0xC8 io_conf2=0x80 sup3v=1 field=1\n"
+   },
+   "before": {
+    "compiled": true,
+    "exit": 0,
+    "stdout": "op=0xC8 io_conf2=0x00 sup3v=0 field=1\n"
+   }
+  },
+  "R21-02_wifi_session": {
+   "after": {
+    "compiled": true,
+    "exit": 0,
+    "stdout": "SEQ=VWI wifi=1 ran_beside_wifi=0 refused_by_session=1\nSEQ=VWx wifi=1 ran_beside_wifi=0 refused_by_session=1\nSEQ=VWd wifi=1 ran_beside_wifi=0 refused_by_session=1\nSEQ=VWC wifi=1 ran_beside_wifi=0 refused_by_session=1\nSEQ=VWL wifi=1 ran_beside_wifi=0 refused_by_session=1\nSEQ=VWN wifi=1 ran_beside_wifi=0 refused_by_session=1\nSEQ=VWA wifi=1 ran_beside_wifi=0 refused_by_session=1\nSEQ=VWt wifi=1 ran_beside_wifi=0 refused_by_session=1\nSEQ=VW3 wifi=1 ran_beside_wifi=0 refused_by_session=1\nSEQ=VW5 wifi=1 ran_beside_wifi=0 refused_by_session=1\nSEQ=VWp wifi=1 ran_beside_wifi=0 refused_by_session=1\nSEQ=VWB wifi=1 ran_beside_wifi=0 refused_by_session=1\n"
+   },
+   "before": {
+    "compiled": true,
+    "exit": 0,
+    "stdout": "SEQ=VWI wifi=1 ran_beside_wifi=1 refused_by_session=0\nSEQ=VWx wifi=1 ran_beside_wifi=1 refused_by_session=0\nSEQ=VWd wifi=1 ran_beside_wifi=1 refused_by_session=0\nSEQ=VWC wifi=1 ran_beside_wifi=0 refused_by_session=0\nSEQ=VWL wifi=1 ran_beside_wifi=0 refused_by_session=0\nSEQ=VWN wifi=1 ran_beside_wifi=0 refused_by_session=0\nSEQ=VWA wifi=1 ran_beside_wifi=0 refused_by_session=0\nSEQ=VWt wifi=1 ran_beside_wifi=0 refused_by_session=0\nSEQ=VW3 wifi=1 ran_beside_wifi=0 refused_by_session=0\nSEQ=VW5 wifi=1 ran_beside_wifi=0 refused_by_session=0\nSEQ=VWp wifi=1 ran_beside_wifi=1 refused_by_session=0\nSEQ=VWB wifi=1 ran_beside_wifi=1 refused_by_session=0\n"
+   }
+  },
+  "R21-03_reqa": {
+   "after": {
+    "compiled": true,
+    "exit": 0,
+    "stdout": "CASE=all_ff tag_claimed=0\n  FAP-01: REQA -- NO VALID EVIDENCE: the field is not confirmed up (Operation control / sup3V do not read back 0xC8 / the supply mode) (main IRQ 0x00, FIFO status 0xFF 0xFF); neither an answer nor its absence is reported\nCASE=all_zero tag_claimed=0\n  FAP-01: REQA -- NO VALID EVIDENCE: the field is not confirmed up (Operation control / sup3V do not read back 0xC8 / the supply mode) (main IRQ 0x00, FIFO status 0xFF 0xFF); neither an answer nor its absence is reported\nCASE=stale_count_writes_ignored tag_claimed=0\n  FAP-01: REQA -- no tag answered (REQA sent: I_txe, main IRQ 0x08, no I_rxe, FIFO empty; REPORT ONLY)\n"
+   },
+   "before": {
+    "compiled": true,
+    "exit": 0,
+    "stdout": "CASE=all_ff tag_claimed=1\n  FAP-01: REQA sent -- main IRQ 0xFF, FIFO 255 byte(s), ATQA FF FF (a tag answered; REPORT ONLY)\nCASE=all_zero tag_claimed=0\n  FAP-01: REQA sent -- main IRQ 0x00, FIFO 0 byte(s), ATQA 00 00 (no answer; REPORT ONLY)\nCASE=stale_count_writes_ignored tag_claimed=1\n  FAP-01: REQA sent -- main IRQ 0x00, FIFO 2 byte(s), ATQA 00 00 (a tag answered; REPORT ONLY)\n"
+   }
+  }
+ },
+ "schema": 1
+}

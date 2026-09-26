@@ -1,3 +1,125 @@
+## D-802 — **ROUND-21 FOCUSED PRE-ORDER CORRECTION: THE FIRST-ARTICLE IMAGE SETS THE NFC SUPPLY MODE, HOLDS AN EXCLUSIVE WI-FI SESSION AND CLAIMS A TAG ONLY FROM VALIDATED EVIDENCE; TWO DOCUMENT-SCANNER ESCAPES CLOSED**
+
+    authority  board c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907
+    manifest   recorded by the identity commit (evidence/d802-review-target.json)
+    content    recorded by the identity commit (a commit cannot contain its own SHA)
+    identity   the post-commit verification record commit that follows it
+    parent     e54adcc310505ef963acaac83924eb4a2c68622a (D-801 identity, reviewed by Round-21)
+    scope      R21-01..R21-05 (the Round-21 D-802 worklist) and the FAP-01 hygiene beside
+               them, and the COMPLETE final release suite
+    copper     NONE.  No copper, net, footprint, placement, part value or protected-copper
+               object moves; the board sha256 is the D-801 one.  No BOM / CPL line changes.
+    firmware   RELEASE IMAGE [env:aqroot-demo]: NO behaviour change (a comment in the
+               generated board header and a host-only accessor guarded by
+               AQROOT_HOST_IMAGE_HARNESS).  NON-PRODUCTION [env:aqroot-demo-fap01] (FAP-01):
+               corrected.  Host tests and controls added (H6, H10, generator controls).
+    order      HOLD.  B01-B14 (CAM), FA01-FA10 (first article; FAP-01 implemented and
+               corrected, bench execution pending hardware) and PROCUREMENT (genuine AO4800
+               allocation, exact constrained-group allocation, R20-P01, R20-P02, a --refresh
+               re-sweep before the order) remain.  REVIEW TARGET, NOT A FABRICATION
+               AUTHORIZATION.
+    owner      NO OWNER DECISION IS REQUIRED.  No published capability, budget, table or
+               threshold moves.
+
+The Round-21 independent review of D-801 found five bounded non-PCB pre-order corrections:
+three in the first-article diagnostic image and two in the document verifier.  Each FAP-01
+witness was reproduced on the frozen D-801 tree (`e54adcc3`) with Astra's own probes before
+it was fixed, and re-run on this tree after — `evidence/d802-round21-witnesses.json`
+(script `evidence/d802-round21-witnesses.py`).  The two document witnesses are reproduced
+inside `demo_feature_contract.py` itself.
+
+### 1 — THE FIVE ITEMS
+
+* **R21-01 — `FAP-01` enabled the ST25R3916 regulators in the 5 V supply mode.**
+  REPRODUCED: after `N` on `e54adcc3`, IO configuration register 2 (`01h`) reads `0x00`
+  with the field up — `sup3V` never written; D-801 wrote `0x80` to `02h` (Operation
+  control) only.  DS12484 Rev 3 §4.2.11: "Default setting is 5 V so this bit has to be set
+  to 1 after power-up in case of 3.3 V supply"; Table 20: `sup3V` = 1 for 2.4 V ≤ VDD ≤
+  3.6 V.  `U9.8`/`U9.10` VDD are `/NFC_SUPPLY`, tied to `+3V3` by `R106` (FITTED); `R107`
+  (the 5 V PA branch) and `U13` are DNP.  **FIX:** after the release session gate and
+  before `en`, `N` writes `sup3V` and READS IT BACK; a mismatch refuses the field with no
+  regulator enabled; Adjust regulators runs only after it; `sup3V` is read back again once
+  the field is up.  Because the release quiesce Set-defaults `U9` between sessions, this
+  runs on every field start.  **Tied to the population:** `gen_firmware_hw_map.py` now
+  DERIVES `AQROOT_NFC_ON_3V3` (R106 fitted between `+3V3` and `/NFC_SUPPLY`, `R107` and `U13`
+  not fitted, `/NFC_SUPPLY` on `U9`'s VDD pads) and refuses to emit otherwise — four
+  generator controls (`R106` DNP + `R107` FIT, `R106` DNP alone, `R107` FIT beside `R106`,
+  `U13` FIT).  The host board model judges every `en` write and every Adjust regulators
+  command against the supply the FAB BOM populates, passed in by H6 from
+  `aqroot-Demo-BOM-full.csv` independently of the image's constant.  Claims: `sup3V`
+  before `en` and Adjust regulators; cleared by the quiesce's Set default and written again
+  by the next `N`; a stuck `sup3V` refuses the field with no `en` and no Adjust regulators.
+  Controls: D-801's shape (no write, no read-back), the 5 V mode written on this board, the
+  read-back dropped, the BOM population flipped under the same image.
+* **R21-02 — the Wi-Fi waiver's premise held only at the key.**  REPRODUCED on `e54adcc3`:
+  after `V` `W`, `I` (ten NEC frames), `x`, `d`, `p` and `B` all ran beside the waived
+  radio.  **FIX:** while the session runs, FAP-01's key handler refuses EVERY key except
+  `W` and `Q` (which stop it), `?` and `s`; and `W` now starts only from a quiet board — no
+  FAP-01 state held or armed (held audio, held backlight, either chip-select hold-off, a
+  transmitter or the field).  Stopping it by `W`, `Q`, the 10 s bound or a reset ends the
+  exclusion at once; the 30 s cool-down gates only another `W`.  FAP-01's `begin()` tells
+  the permission table the radio is off after any reset (a no-op on silicon, where the app
+  is re-constructed).  Claims: `V W I`, `V W x`, and 25 further keys refused with nothing
+  changed and the radio still up; `s` / `?` available; `W`, `Q`, the bound and a reset each
+  end the exclusion; `B`, `J`, `N` before `W` each refuse the session.  Controls: exclusion
+  only at the start (D-801's shape), the quiet-board precondition removed.  The release
+  image is untouched: the FAP-01 test on the release build still proves every FAP-01 key
+  inert.
+* **R21-03 — "a tag answered" from any two FIFO bytes.**  REPRODUCED on `e54adcc3`: an
+  all-FF bus printed `FIFO 255 byte(s), ATQA FF FF (a tag answered)`, and a stale FIFO
+  count of 2 with writes ignored printed `a tag answered` with ATQA `00 00`.  **FIX:** `T`
+  is refused while a `U9` hold-off is armed or pending; then, in one bounded sequence whose
+  every transfer must complete: the field and `sup3V` read back; the main and error IRQ
+  registers are read (clearing them) and Clear FIFO (`DBh`) is sent and PROVED (both FIFO
+  status registers read `0`); the REQA must raise `I_txe`; an answer needs `I_rxe`, no
+  parity / framing / CRC error, exactly two whole bytes, no overflow / underflow, a FIFO
+  that drains to empty on the two-byte read and an ATQA whose ISO/IEC 14443-3 RFU bits are
+  clear.  Three verdicts: `VALID ANSWER`, `no tag answered` (same proof, no `I_rxe`, FIFO
+  empty), `NO VALID EVIDENCE: <reason>`.  A hold-off that injects a select during the
+  transaction makes it invalid.  The host model now implements IRQ read-to-clear, Clear
+  FIFO, Transmit REQA with a tag, the FIFO read and underflow.  Claims: a valid answer
+  (ATQA `04 00`); the tag removed; a stale ATQA; ignored commands with a stale count;
+  an ignored REQA; all-FF; all-zero; an implausible `FF FF` receive; a refused transfer;
+  an armed and a pending hold-off.  Six controls.  **PN532:** the legacy PN532/I2C
+  driver (`src/drivers/nfc.cpp`, the wrong part) is not compiled into, linked into, or a
+  dependency of FAP-01, and `src/fap01/` never calls it — now an `H10` clause with three
+  controls.
+* **R21-04 — `R_ins` "is negligible".**  REPRODUCED by Astra with a full F1–F14 run on
+  `e54adcc3` (all pass with the sentence in `DEVICE_SPEC`); reproduced here on the live
+  D-801 regexes, which do not match either verbless form.  **FIX:** the family binds the
+  role (an inserted meter path's resistance: `R_ins`, insertion resistance, a series /
+  inline DMM, ammeter, meter or shunt, its burden) to ANY predicate that sets it to
+  nothing — a copula or `=` with zero / nil / negligible / 0 mΩ / insignificant /
+  immaterial; "can / may / should be ignored / neglected / omitted / dropped /
+  disregarded"; the imperative "ignore / neglect / omit … the …"; the adjective "zero
+  insertion resistance".  A clamp exempts only in the SAME clause, and not "unlike a
+  clamp".  Seven injections caught in every operative document; five near controls (a
+  clamp's `R_ins = 0`, "never negligible", "not zero", a measured 0.8 mΩ, "do not
+  ignore") clean.
+* **R21-05 — D-791's pass-pair ceiling in `DEVICE_SPEC`.**  REPRODUCED by Astra (full F1–F14
+  PASS with "The derived pass-pair current ceiling is 2.2845 A at 72.44 °C internal air,
+  and the path survives at 2× hot resistance." in `DEVICE_SPEC`): the stale-figure scan
+  read only the plan, the ledger and the handoff.  **FIX:** it reads every operative
+  document the F12 families read (`DEVICE_SPEC` and `CURRENT_STATE` included), and the 2×
+  survival claim in any tense ("survives at 2×").  Controls: Astra's exact sentence in
+  `DEVICE_SPEC`; the same sentence in EVERY scanned document; both documents in the set;
+  the 2× claim with no number; a fenced HISTORICAL mention stays clean.
+
+### 2 — FOUND WHILE CLOSING, AND FIXED
+
+* `G` printed an all-ones `VCELL` register (`0xFFFF` = 5.11992 V) as an ordinary sample —
+  the same "a read is not a measurement" class the release image closed at D-779.  It is
+  now marked `IMPLAUSIBLE … not a sample` and counted; one claim, one control.
+* The FAP-01 procedure, the register's FAP-01 console rows, the plan's `C-NFC-TUNE-01`
+  (a tag READS only on `VALID ANSWER`) and the handoff are corrected to the new behaviour.
+
+### WHAT IS NOT CLAIMED
+
+No literal certainty before manufacture.  FAP-01 is host-tested and builds; it has not run on
+hardware, and the ST25R3916 receiver on power-up defaults may not read a tag at 30 mm (report
+only).  CAM acceptance (B01–B14), first article (FA01–FA10), procurement and enclosure
+closure remain downstream.
+
 ## D-801 — **ROUND-20 BOUNDED PRE-ORDER CORRECTION: AN EXECUTABLE FIRST-ARTICLE IMAGE, ONE MECHANICAL AUTHORITY, A GUARDED DEFAULT, AND NUMBERS THAT ARE GENERATED RATHER THAN COPIED**
 
     authority  board c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907

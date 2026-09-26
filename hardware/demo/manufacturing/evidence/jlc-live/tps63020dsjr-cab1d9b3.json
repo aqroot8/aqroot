@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-25T15:21:27Z",
+ "fetched_utc": "2026-09-26T04:13:14Z",
  "keyword": "TPS63020DSJR",
  "page_size": 25,
  "pages": 1,
@@ -110,7 +110,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 38605
+   "stockCount": 38597
   }
  ],
  "returned": 1,

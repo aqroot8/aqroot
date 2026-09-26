@@ -1,0 +1,67 @@
+{
+ "beta_v2_untouched": true,
+ "board": "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_changes": [],
+ "board_sha256": "c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907",
+ "branch": "aqroot-demo",
+ "closed_here": {
+  "R21_01": "FAP-01 N writes and reads back ST25R3916 IO configuration 2 sup3V before en / Adjust regulators on every field start (VDD +3V3 via R106 FIT, R107/U13 DNP; DS12484 Rev 3 4.2.11 / Table 20); AQROOT_NFC_ON_3V3 derived from population + copper (4 generator controls); host model judges en / D6 against the FAB BOM population passed by H6; 4 claims, 4 controls (incl. a flipped BOM population under the same image)",
+  "R21_02": "FAP-01 W is EXCLUSIVE for its whole session (every key but W, Q, ?, s refused) and starts only from a quiet board; V-W-I, V-W-x and 25 further keys refused with nothing changed; W / Q / bound / reset end it; B / J / N before W refuse it; 12 claims, 2 controls",
+  "R21_03": "FAP-01 T: VALID ANSWER only from a proved Clear FIFO, I_txe + I_rxe, exactly two whole bytes with no FIFO or receive error, a drained FIFO and an ISO/IEC 14443-3 plausible ATQA; 'no tag answered' on the same proof; otherwise NO VALID EVIDENCE; refused with a U9 hold-off armed or pending; valid-answer positive test + all-FF / all-zero / stale FIFO / ignored commands / ignored REQA / implausible ATQA / failed transfer / hold-off; 11 claims, 6 controls; PN532 never a fallback (H10 clause, 3 controls)",
+  "R21_04": "F12 R_ins family bound to the role and ANY zero / negligible predicate (copula, '=', 'can be ignored', imperative, adjective; clamp only in the same clause): 7 injections caught in every operative document, 5 near controls clean; Astra's two forms reproduced as escapes of the live D-801 patterns",
+  "R21_05": "F10 stale pass-pair figures and the 2x survival claim refused in EVERY operative document (DEVICE_SPEC and CURRENT_STATE included): 5 controls incl. Astra's exact sentence in DEVICE_SPEC and in every scanned document",
+  "found_and_fixed": [
+   "FAP-01 G printed an all-ones VCELL (0xFFFF) as a sample: now marked IMPLAUSIBLE and counted; 1 claim, 1 control",
+   "firmware_hw_map_contract crashed (FileNotFoundError) instead of failing when the FAB BOM was absent mid-run: now a clean refusal"
+  ]
+ },
+ "content_commit": "recorded by the identity commit that follows the content commit",
+ "decision": "D-802",
+ "firmware_changes": [
+  "RELEASE IMAGE [env:aqroot-demo]: no behaviour change -- generated board header comment, and a host-only accessor inside #if defined(AQROOT_HOST_IMAGE_HARNESS); a clean release build is byte-identical in size to D-801's and differs only in the embedded ELF sha256 (offset 0xB0, 32 bytes) and the trailing checksum / image hash (33 bytes)",
+  "NON-PRODUCTION [env:aqroot-demo-fap01]: sup3V, exclusive Wi-Fi session, validated REQA, implausible-VCELL marking; begin() tells the permission table the Wi-Fi radio is off after a reset",
+  "host tests: test_fap01_image.cpp FAP build 84 claims / 33 controls (D-801: 56 / 20); release build 8 / 1; board model: ST25R3916 supply mode, IRQ read-to-clear, Clear FIFO, Transmit REQA with a tag, FIFO read / underflow"
+ ],
+ "gates": {
+  "battery_pack": "PASS",
+  "demo_feature": "F1-F14 PASS (14/14); release identity bound to D-802",
+  "fab_package": "FAB1-FAB16 PASS; the 24 deterministic files are content-identical to D-801 (creation timestamps only); BOM / CPL / FAB-NOTES byte-identical; the drawing PDFs carry the D-802 release label",
+  "firmware_hw_map": "H1-H10 PASS; H6 1096 claims, 238/238 controls caught; H10 11/11; 4 D-802 population controls refused",
+  "guarantee_evidence": "17/17 keys, 37/37 controls",
+  "kicad_drc_parity": "identical item-for-item to d801 (199 violations, 17 unconnected, 246 parity)",
+  "mechanical_keepout": "MK1-MK12 PASS",
+  "platformio": "5/5 from clean by name (esp32-s3-aqroot, wokwi, esp32-s3-aqroot-dm, aqroot-demo, aqroot-demo-fap01); bare pio run builds aqroot-demo only",
+  "protected_copper": "identical (15 nets)",
+  "rail_ampacity": "all_ok; identical to d801",
+  "routing_ledger": {
+   "approved_unrouted_edges": 1,
+   "connected_retained_nets": 173,
+   "identical_to_d801": true,
+   "retained_multi_pad_nets": 174,
+   "unapproved_open_edges": 0
+  },
+  "sourcing": "fresh --refresh sweep 2026-09-26T04:12:20Z..04:13:21Z, 123 lines, the same 9 short/unknown at the same counts as D-801 (evidence/d802-sourcing-sweep.json)",
+  "standing_contracts": "19/19 PASS (contract_regression vs d801: all children exit 0; substantive difference only in demo_feature and firmware_hw_map, by design -- the D-802 controls)"
+ },
+ "identity_commit": "the commit after the content commit -- it records the content commit's SHA; a commit cannot contain its own",
+ "manifest": "hardware/demo/fab/MANIFEST.json",
+ "no_copper_change": true,
+ "no_firmware_change": false,
+ "order_status": {
+  "FAB_CAM_ACCEPTANCE": "PENDING (B01-B14)",
+  "FIRST_ARTICLE_VALIDATION": "PENDING (FA01-FA10; FAP-01 implemented and corrected, bench execution pending hardware)",
+  "PRE_ORDER_ANALYTICAL": "CLOSED on this target",
+  "PROCUREMENT": "PENDING (AO4800 allocation, nine constrained groups, R20-P01, R20-P02, pre-order re-sweep)"
+ },
+ "parent_reviewed_by_round_21": "e54adcc310505ef963acaac83924eb4a2c68622a",
+ "procurement_gates": {
+  "R20_P01": "L3 XFL4020-472MEC: BLOCK-PURCHASE until Coilcraft's written suitability for the TPS61169 open-LED OVP transient or a rated replacement",
+  "R20_P02": "Adafruit 328 PCM: BLOCK-PURCHASE until the supplier states the lot PCM overcharge threshold",
+  "standing": "genuine AOS AO4800 allocation; exact constrained-group allocation; --refresh re-sweep immediately before the order"
+ },
+ "schema": 1,
+ "witnesses": {
+  "fap01": "evidence/d802-round21-witnesses.json (script evidence/d802-round21-witnesses.py; Astra's probes on e54adcc3 before and on this tree after)",
+  "full_gate": "evidence/d802-full-gate-injections.json (Astra's two DEVICE_SPEC sentences: full F1-F14 PASS on e54adcc3 -- the escape reproduced -- and FAIL on this tree on F12 only / F10 only)"
+ }
+}

@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-25T15:20:46Z",
+ "fetched_utc": "2026-09-26T04:12:34Z",
  "keyword": "GQM1875C2E270FB12D",
  "page_size": 25,
  "pages": 1,

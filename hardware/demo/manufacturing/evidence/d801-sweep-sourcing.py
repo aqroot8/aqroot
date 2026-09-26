@@ -39,6 +39,9 @@ FIRST_FIVE = 5
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("-o", "--out", type=Path, default=OUT)
+    # D-802: the tool is reused for the next release's sweep; the decision it
+    # stamps is an argument, not a constant.
+    ap.add_argument("--decision", default="D-801")
     ap.add_argument("--refresh", action="store_true",
                     help="query JLCPCB now for every line (archived); "
                          "without it every row is a REPLAY of the archive")
@@ -89,7 +92,7 @@ def main():
     fetched = sorted(r["fetched_utc"] for r in rows if r.get("fetched_utc"))
     modes = sorted({r["mode"] for r in rows})
     report = dict(
-        schema=2, decision="D-801",
+        schema=2, decision=a.decision,
         run_utc=run_utc,
         refresh_requested=bool(a.refresh),
         modes=modes,

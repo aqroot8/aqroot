@@ -489,6 +489,7 @@ class Cc1101Stub : public aqroot_hal::SpiModel {
       nfc_pending_read_ = false;
       nfc_pending_write_ = 0;
       nfc_overheat_bytes_ = 0;
+      nfc_fifo_reading_ = false;
     }
     return st25r3916(out);
   }
@@ -560,11 +561,58 @@ class Cc1101Stub : public aqroot_hal::SpiModel {
   int nfc_operation_control_zero_writes = 0;
   bool nfcFieldIsUp() const { return (nfc_operation_control & 0x88) != 0; }
 
+  // ---- D-802 / D802-01.  THE SUPPLY MODE THE BOARD ACTUALLY HAS. ----
+  //
+  // DS12484 Rev 3 section 4.2.11 / Table 20: IO configuration register 2
+  // (01h) bit 7 sup3V selects the regulators' supply mode, default 0 (5 V);
+  // it must be 1 for 2.4 V <= VDD <= 3.6 V.  WHICH supply U9 has is a fact of
+  // the POPULATION, not of the firmware: `firmware_hw_map_contract` H6 reads
+  // R106 / R107 from the fab BOM and passes it here as
+  // AQROOT_TEST_NFC_SUPPLY_3V3 (R106 FIT + R107 DNP = 1), independently of
+  // the generated `AQROOT_NFC_ON_3V3` the image uses.  Every `en` write and
+  // every Adjust regulators command is judged against it.
+#if !defined(AQROOT_TEST_NFC_SUPPLY_3V3)
+#error "the H6 harness passes -DAQROOT_TEST_NFC_SUPPLY_3V3 from the fab BOM population (R106 / R107)"
+#endif
+  bool nfc_supply_3v3 = AQROOT_TEST_NFC_SUPPLY_3V3 != 0;
+  int nfc_en_writes = 0;
+  int nfc_en_in_wrong_supply_mode = 0;
+  int nfc_adjust_regulators = 0;
+  int nfc_adjust_in_wrong_supply_mode = 0;
+  bool nfcSupplyModeRight() const {
+    return ((nfc_regs[0x01] & 0x80) != 0) == nfc_supply_3v3;
+  }
+
+  // ---- D-802 / D802-03.  A TAG, AND THE RECEIVE PATH A REQA EXERCISES. ----
+  //
+  // Transmit REQA (C6h) with the field up (Operation control en | rx_en |
+  // tx_en) raises I_txe, and -- with a tag in the field -- I_rxs | I_rxe with
+  // the two ATQA bytes in the FIFO and FIFO status 1 = 2.  Clear FIFO (DBh,
+  // section 4.4.3) empties the FIFO and both FIFO status registers; the IRQ
+  // registers 1Ah..1Dh clear when read (Tables 62-65 note 1); a FIFO read
+  // (9Fh) pops one byte per clock and a read of an empty FIFO sets fifo_unf.
+  // `nfc_ignores_commands` is the part that accepts no direct command at all.
+  bool nfc_tag_present = false;
+  uint8_t nfc_tag_atqa[2] = {0x04, 0x00};       // MIFARE Classic 1K, LSB first
+  bool nfc_ignores_commands = false;
+  bool nfc_io2_stuck = false;           // 01h writes do not land (sup3V stuck 0)
+  std::vector<uint8_t> nfc_fifo;
+  int nfc_reqa_commands = 0;
+  int nfc_clear_fifo_commands = 0;
+  void nfcSetFifo(const std::vector<uint8_t> &bytes) {
+    nfc_fifo = bytes;
+    nfc_regs[0x1E] = uint8_t(bytes.size() & 0xFF);
+    nfc_regs[0x1F] = uint8_t((bytes.size() >> 2) & 0xC0);
+  }
+
  private:
   uint8_t nfcRead(uint8_t addr) {
     if (addr == 0x02) return uint8_t(nfc_operation_control);
     if (addr == 0x3F) return nfc_ic_identity;
-    return nfc_regs[addr & 0x3F];
+    const uint8_t v = nfc_regs[addr & 0x3F];
+    // D-802: the four interrupt registers clear when they are read.
+    if (addr >= 0x1A && addr <= 0x1D) nfc_regs[addr] = 0x00;
+    return v;
   }
   uint8_t st25r3916(uint8_t out) {
     // DS12484 Rev 3 Table 11: the first two bits of the first byte are the
@@ -594,9 +642,14 @@ class Cc1101Stub : public aqroot_hal::SpiModel {
       if (dead || nfc_ignores_writes) return idle;
       if (nfc_write_addr_ == 0x02) {
         if (nfc_opcontrol_sticky) return 0x00;
+        if ((out & 0x80) != 0) {
+          ++nfc_en_writes;
+          if (!nfcSupplyModeRight()) ++nfc_en_in_wrong_supply_mode;
+        }
         nfc_operation_control = out;
         if (out == 0x00) ++nfc_operation_control_zero_writes;
       } else {
+        if (nfc_write_addr_ == 0x01 && nfc_io2_stuck) return 0x00;
         if (nfc_write_addr_ == 0x11) ++nfc_challenge_writes;
         nfc_regs[nfc_write_addr_ & 0x3F] = out;
       }
@@ -604,6 +657,18 @@ class Cc1101Stub : public aqroot_hal::SpiModel {
     }
     if (nfc_overheat_bytes_ > 0) { --nfc_overheat_bytes_; return idle; }
     if (dead) return idle;
+    if (nfc_fifo_reading_) {                   // D-802: 9Fh, one byte per clock
+      if (nfc_fifo.empty()) {
+        nfc_regs[0x1F] |= 0x20;                // fifo_unf
+        return 0x00;
+      }
+      const uint8_t b = nfc_fifo.front();
+      nfc_fifo.erase(nfc_fifo.begin());
+      nfc_regs[0x1E] = uint8_t(nfc_fifo.size() & 0xFF);
+      nfc_regs[0x1F] = uint8_t((nfc_regs[0x1F] & 0x3F & ~0x0F)
+                               | ((nfc_fifo.size() >> 2) & 0xC0));
+      return b;
+    }
     // DS12484 Rev 3 Table 13: FCh is the Test access direct command, "Enable
     // R/W access to Test register", and section 4.1 requires the three-byte
     // frame FCh / 04h / 10h after power-on AND after Set default.
@@ -620,6 +685,7 @@ class Cc1101Stub : public aqroot_hal::SpiModel {
           // "resets all registers to their default state"
           if (!nfc_opcontrol_sticky) nfc_operation_control = 0x00;
           for (uint8_t &r : nfc_regs) r = 0x00;
+          nfc_fifo.clear();
         }
         if (nfc_dies_after_set_default) nfc_dead_ = true;
         return 0x00;
@@ -629,6 +695,31 @@ class Cc1101Stub : public aqroot_hal::SpiModel {
         if (nfc_stop_all_activities_is_enough) nfc_operation_control = 0x00;
         return 0x00;
       }
+      if (nfc_ignores_commands) return 0x00;   // D-802
+      if (out == 0xD6) {                       // Adjust regulators, 4.4.10
+        ++nfc_adjust_regulators;
+        if (!nfcSupplyModeRight()) ++nfc_adjust_in_wrong_supply_mode;
+        return 0x00;
+      }
+      if (out == 0xDB) {                       // Clear FIFO, 4.4.3
+        ++nfc_clear_fifo_commands;
+        nfcSetFifo({});
+        return 0x00;
+      }
+      if (out == 0xC6) {                       // Transmit REQA, 4.4.4
+        ++nfc_reqa_commands;
+        if ((nfc_operation_control & 0xC8) != 0xC8) return 0x00;
+        nfc_regs[0x1A] |= 0x08;                // I_txe
+        if (nfc_tag_present) {
+          nfc_regs[0x1A] |= 0x30;              // I_rxs | I_rxe
+          nfcSetFifo({nfc_tag_atqa[0], nfc_tag_atqa[1]});
+        }
+        return 0x00;
+      }
+      return 0x00;
+    }
+    if (out == 0x9F) {                         // FIFO read, Table 11
+      nfc_fifo_reading_ = true;
       return 0x00;
     }
     if (mode == 0x40) {                        // register read
@@ -651,6 +742,7 @@ class Cc1101Stub : public aqroot_hal::SpiModel {
   int nfc_pending_write_ = 0;
   uint8_t nfc_write_addr_ = 0;
   int nfc_overheat_bytes_ = 0;
+  bool nfc_fifo_reading_ = false;
 
   uint8_t cc1101(uint8_t out) {
     // D-801 / D801-01: a single register write's DATA byte (header R/W and

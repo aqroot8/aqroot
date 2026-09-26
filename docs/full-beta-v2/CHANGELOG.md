@@ -1,3 +1,42 @@
+## D-802 — 2026-09-26 — ROUND-21 FOCUSED PRE-ORDER CORRECTION: THE FIRST-ARTICLE IMAGE SETS THE NFC SUPPLY MODE, HOLDS AN EXCLUSIVE WI-FI SESSION AND VALIDATES ITS REQA; TWO DOCUMENT-SCANNER ESCAPES CLOSED
+
+The Round-21 independent review of D-801 found five bounded non-PCB pre-order corrections.
+**All five are closed**, and each FAP-01 witness was reproduced on the frozen D-801 tree
+first (`evidence/d802-round21-witnesses.json`, `evidence/d802-round21-witnesses.py`).
+
+* **`R21-01` — `sup3V` before the regulators.**  `U9`'s VDD is `+3V3` through `R106`
+  (FITTED; `R107`, `U13` DNP).  DS12484 Rev 3 §4.2.11 / Table 20: the ST25R3916 powers up,
+  and returns after every Set default, in the 5 V supply mode.  D-801's `N` wrote `0x80` to
+  Operation control and never to IO configuration register 2, so it enabled and adjusted
+  the regulators in the 5 V mode.  `N` now writes and reads back `sup3V` before `en` and
+  Adjust regulators on every field start.  `AQROOT_NFC_ON_3V3` is DERIVED from the
+  population and copper (four generator controls); the host model judges every `en` and
+  Adjust regulators against the supply the FAB BOM populates.
+* **`R21-02` — the Wi-Fi session is exclusive for its whole life.**  D-801 checked its
+  preconditions once, at `W`; `I`, `x`, `d`, `p` and `B` then ran beside the waived radio.
+  `W` now starts only from a quiet board (no FAP-01 state held or armed), and every key but
+  `W`, `Q`, `?` and `s` is refused until it stops; the exclusion ends on `W`, `Q`, the bound
+  or a reset.
+* **`R21-03` — a REQA answer only from validated evidence.**  D-801 claimed "a tag answered"
+  from any FIFO count of two or more: an all-ones bus and a stale count both read as a tag.
+  `T` now proves Clear FIFO, requires `I_txe` + `I_rxe`, exactly two whole bytes, no FIFO or
+  receive error, a drained FIFO and an ISO/IEC 14443-3 plausible ATQA for `VALID ANSWER`;
+  `no tag answered` needs the same proof; anything else is `NO VALID EVIDENCE`.  Refused
+  while a `U9` hold-off is armed.  The legacy PN532 driver is never a fallback (`H10`).
+* **`R21-04` — `R_ins` in any predicate form.**  "Insertion resistance is negligible" and
+  "series ammeter resistance is zero" carried no assumption verb and passed F1–F14.  The
+  family now binds the role to any zero / negligible predicate, the imperative and the
+  adjective form; seven injections caught in every operative document, five near controls
+  clean.
+* **`R21-05` — stale pass-pair figures in every operative document.**  D-791's ceiling in
+  `DEVICE_SPEC` passed F1–F14 because the stale-figure scan read three documents.  It now
+  reads every operative document, and the 2× survival claim in any tense.
+* Hygiene beside `R21-03`: `G` marks an all-ones / all-zero `VCELL` register as
+  `IMPLAUSIBLE`, never a sample.
+
+**NO COPPER, no BOM / CPL line, no release-image behaviour change** — board sha256
+unchanged.  **REVIEW TARGET, NOT A FABRICATION AUTHORIZATION.  DO NOT ORDER.**
+
 ## D-801 — 2026-09-25 — ROUND-20 BOUNDED PRE-ORDER CORRECTION: AN EXECUTABLE FIRST-ARTICLE IMAGE, ONE MECHANICAL AUTHORITY, A GUARDED DEFAULT, AND NUMBERS THAT ARE GENERATED
 
 Round-20 graded D-800 **Astra B** (six bounded non-PCB pre-order corrections) and

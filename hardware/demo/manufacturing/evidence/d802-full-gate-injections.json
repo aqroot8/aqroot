@@ -1,0 +1,53 @@
+{
+ "astra_evidence": {
+  "r21_04": "/tmp/aqroot-forensic-d801-e54adcc3/evidence/insertion-resistance-escape.json (full gate all_pass true on e54adcc3)",
+  "r21_05": "/tmp/aqroot-forensic-d801-e54adcc3/evidence/pass-pair-document-escape.json (full gate all_pass true on e54adcc3)"
+ },
+ "decision": "D-802",
+ "injections": {
+  "r21_04_insertion_resistance_is_negligible__d801_witness": {
+   "all_pass": true,
+   "failing_checks": [],
+   "injected_into": "docs/full-beta-v2/DEVICE_SPEC.md, under its first line, as Round-21 injected it (DEVICE_SPEC sha256 0831bca080c8f25c... before injection)",
+   "report_sha256": "608f835df4ca15c7c538a3c9aca84f1ce232b9785a3f41ffb6e9fe09b76affdc",
+   "sentence": "For the supervised charging OCV lower bound, insertion resistance is negligible.",
+   "tree": "D-801 frozen tree e54adcc3 (WITNESS)"
+  },
+  "r21_04_insertion_resistance_is_negligible__d802_closure": {
+   "all_pass": false,
+   "failing_checks": [
+    "F12_cell_to_load_network_closes_at_an_attainable_cell"
+   ],
+   "injected_into": "docs/full-beta-v2/DEVICE_SPEC.md, under its first line, as Round-21 injected it (DEVICE_SPEC sha256 0831bca080c8f25c... before injection)",
+   "report_sha256": "62fab870db8664c862cd89979ef3a6614240623a52b1c854c4f22b59ca590685",
+   "sentence": "For the supervised charging OCV lower bound, insertion resistance is negligible.",
+   "tree": "D-802 candidate (CLOSURE)"
+  },
+  "r21_05_pass_pair_ceiling_in_device_spec__d801_witness": {
+   "all_pass": true,
+   "failing_checks": [],
+   "injected_into": "docs/full-beta-v2/DEVICE_SPEC.md, under its first line, as Round-21 injected it (DEVICE_SPEC sha256 0831bca080c8f25c... before injection)",
+   "report_sha256": "aed98551a8c36206446d8eec1090130c2822f557d3a058f85582ef1af55f6e8f",
+   "sentence": "The derived pass-pair current ceiling is 2.2845 A at 72.44 \u00b0C internal air, and the path survives at 2\u00d7 hot resistance.",
+   "tree": "D-801 frozen tree e54adcc3 (WITNESS)"
+  },
+  "r21_05_pass_pair_ceiling_in_device_spec__d802_closure": {
+   "all_pass": false,
+   "failing_checks": [
+    "F10_battery_pass_pair_gate_drive_is_proven_for_the_fitted_part"
+   ],
+   "injected_into": "docs/full-beta-v2/DEVICE_SPEC.md, under its first line, as Round-21 injected it (DEVICE_SPEC sha256 0831bca080c8f25c... before injection)",
+   "report_sha256": "ab650e5c89100cf31c1588a5159b0fdac8eecf71eb0af1f9454ce0e0ace2b613",
+   "sentence": "The derived pass-pair current ceiling is 2.2845 A at 72.44 \u00b0C internal air, and the path survives at 2\u00d7 hot resistance.",
+   "tree": "D-802 candidate (CLOSURE)"
+  }
+ },
+ "notes": {
+  "r21_04": "the closure fails F12 only: round20_operative_semantics names 'series_meter_resistance_assumed_zero' in DEVICE_SPEC; round21_rins_semantics also reads false there because the document already carries the sentence, so re-injecting it cannot grow the scan (an artifact of the polluted document, not a second failing check)",
+  "r21_05": "the closure fails F10 only: the publication scan names '2.2845', '72.44' and the withdrawn 2x survival claim in DEVICE_SPEC"
+ },
+ "permanent_controls": "the same shapes run on every release inside F10 (publication controls d802_05a..e) and F12 (round21_rins_semantics)",
+ "schema": 1,
+ "what": "full F1-F14 runs of checks/demo_feature_contract.py on disposable worktrees with ONE Round-21 sentence injected into DEVICE_SPEC: on the frozen D-801 tree (the witness -- Astra's escape, which must PASS there) and on the D-802 candidate (the closure -- which must FAIL the full gate on the intended check and only there).",
+ "witnesses_reproduced_and_closures_fail_only_their_check": true
+}

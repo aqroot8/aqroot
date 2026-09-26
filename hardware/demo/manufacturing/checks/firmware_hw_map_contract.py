@@ -69,6 +69,7 @@ including the exact `P05`/`P06` swap D-732 found -- and each must be REFUSED.
 import argparse
 import configparser
 import copy
+import csv
 import fnmatch
 import hashlib
 import json
@@ -1482,6 +1483,74 @@ FAP01_CONTROLS = [
      "         attempt < 2 * kVcellPollPeriodMs &&",
      "         attempt < 1 &&",
      "G: 200 raw VCELL samples"),
+    # ---- D-802 (Round-21).  Each is the defect Round-21 reproduced, or the
+    # step next to it, and each must fail on the claim that states it.
+    ("D802-01: no sup3V write or read-back before the regulators (D-801's shape)",
+     "fap01/aqroot_fap01.cpp",
+     "  bool w = st25r3916_spi::writeRegister(*g_ctx.spi_b, kRegIoConfiguration2,\n"
+     "                                        kNfcIoConfiguration2);\n"
+     "  const bool supply = w && nfcSupplyModeConfirmed(&io2);",
+     "  bool w = true;\n  const bool supply = true;",
+     "N/sup3V: the field start writes and reads back sup3V"),
+    ("D802-01: the image writes the 5 V supply mode on the 3.3 V board",
+     "fap01/aqroot_fap01.cpp",
+     "kNfcIoConfiguration2 = AQROOT_NFC_ON_3V3 ? kSup3v : 0x00;",
+     "kNfcIoConfiguration2 = 0x00;",
+     "N/sup3V: the field start writes and reads back sup3V"),
+    ("D802-01: the sup3V read-back is dropped",
+     "fap01/aqroot_fap01.cpp",
+     "  const bool supply = w && nfcSupplyModeConfirmed(&io2);",
+     "  const bool supply = w;",
+     "N/sup3V: if sup3V does not read back"),
+    ("D802-01: the BOM population is flipped (R106 DNP, R107 FIT) under the "
+     "same image",
+     "__population__", "", "",
+     "N/sup3V: the field start writes and reads back sup3V"),
+    ("D802-02: the Wi-Fi session is exclusive only at its start (D-801's shape)",
+     "fap01/aqroot_fap01.cpp",
+     "  if (g_wifi.on) {\n    switch (key) {",
+     "  if (false) {\n    switch (key) {",
+     "W+I: with the Wi-Fi session running"),
+    ("D802-02: the session no longer starts only from a quiet board",
+     "fap01/aqroot_fap01.cpp",
+     "             g_backlight.on ||\n",
+     "",
+     "B then W: a held backlight refuses the session"),
+    ("D802-03: Clear FIFO is not sent before the REQA",
+     "fap01/aqroot_fap01.cpp",
+     "    if (!st25r3916_spi::command(bus, kCmdClearFifo)) comm = false;\n",
+     "",
+     "T/stale: an ATQA left in the FIFO"),
+    ("D802-03: Clear FIFO is not PROVED before the REQA",
+     "fap01/aqroot_fap01.cpp",
+     "    if (f1 != 0x00 || f2 != 0x00) {",
+     "    if (false) {",
+     "T/ignored: a part that ignores direct commands"),
+    ("D802-03: the REQA is not required to have left (no I_txe)",
+     "fap01/aqroot_fap01.cpp",
+     "    } else if ((irq & kIrqTxe) == 0) {",
+     "    } else if (false) {",
+     "T/ignored: a part that ignores the REQA itself"),
+    ("D802-03: the ATQA is not checked for ISO/IEC 14443-3 plausibility",
+     "fap01/aqroot_fap01.cpp",
+     "      } else if (!atqaPlausible(atqa[1], atqa[2])) {",
+     "      } else if (!atqaPlausible(0x04, 0x00)) {",
+     "T/implausible: a two-byte receive of FF FF"),
+    ("D802-03: an armed U9 hold-off does not refuse the REQA",
+     "fap01/aqroot_fap01.cpp",
+     "  if (cs.holdOffArmed(SpiBDevice::St25r3916)) {",
+     "  if (false) {",
+     "T/chip-select: with a U9 hold-off armed"),
+    ("D802-03: a failed U9 transfer is not treated as invalid evidence",
+     "fap01/aqroot_fap01.cpp",
+     '    invalid = "an SPI-B transfer on U9 did not complete (bus hold refused)";',
+     "    (void)0;",
+     "T/transfer: a U9 transfer that cannot take the bus"),
+    ("D802: an all-ones VCELL register is printed as a plain sample",
+     "fap01/aqroot_fap01.cpp",
+     "      const bool implausible = counts == 0xFFFF || counts == 0x0000;",
+     "      const bool implausible = false;",
+     "G: an all-ones VCELL register is marked IMPLAUSIBLE"),
     ("FAP-01: main.cpp stops servicing the FAP-01 bounds from loop()",
      "demo/main.cpp",
      "  fap01::service();\n",
@@ -1834,6 +1903,18 @@ def _fap01_isolation_problems(ini_text, main_text, header_text, cpp_text):
         fap_sources = sorted(f for f in selected if f.startswith("fap01/"))
         defined = re.search(r"-D\s*%s\b" % FAP01_DEFINE, flags) is not None
         if env == FAP01_ENV:
+            # D-802 / D802-03 (Round-21 R21-03): the legacy PN532/I2C NFC
+            # driver is the WRONG PART and is never an ST25R3916 fallback --
+            # not compiled, not linked, not a dependency of FAP-01.
+            legacy = sorted(f for f in selected
+                            if not f.startswith(("demo/", "hw/", "fap01/")))
+            if legacy:
+                problems.append("[env:%s] compiles sources outside demo/ hw/ "
+                                "fap01/ (the legacy tree, PN532 included): %s"
+                                % (env, legacy[:6]))
+            deps = _pio_get(cp, section, "lib_deps") or ""
+            if re.search(r"PN532", deps, re.I):
+                problems.append("[env:%s] depends on a PN532 library" % env)
             if not fap_sources:
                 problems.append("[env:%s] does not compile src/fap01/" % env)
             if not defined:
@@ -1854,6 +1935,13 @@ def _fap01_isolation_problems(ini_text, main_text, header_text, cpp_text):
         if "demo/main.cpp" not in rel:
             problems.append("[env:%s] no longer compiles demo/main.cpp"
                             % RELEASE_ENV)
+    for name, text in (("aqroot_fap01.h", header_text),
+                       ("aqroot_fap01.cpp", cpp_text)):
+        hits = sorted(set(re.findall(r"PN532\w*|\bnfc_init\b|drivers/nfc",
+                                     strip_comments(text), re.I)))
+        if hits:
+            problems.append("src/fap01/%s reaches the legacy PN532 driver: %s"
+                            % (name, hits))
     guard = re.compile(r"#if\s+!\s*defined\s*\(\s*%s\s*\)\s*\n\s*#error"
                        % FAP01_DEFINE)
     if not guard.search(header_text):
@@ -1925,6 +2013,9 @@ def run_host_test(test, mutation=None, variant=None):
     """
     is_image = test.name in IMAGE_TESTS
     leak = mutation is not None and mutation[1] == "__build__"
+    # D-802 / D802-01: `__population__` flips the BOM's U9 supply under an
+    # unchanged image -- the board the model answers for is the other one.
+    flip_population = mutation is not None and mutation[1] == "__population__"
     with tempfile.TemporaryDirectory(prefix="aqroot-host-") as temporary:
         work = Path(temporary)
         shutil.copytree(HW_DIR, work / "hw")
@@ -1936,7 +2027,7 @@ def run_host_test(test, mutation=None, variant=None):
             if FAP01_DIR.exists():
                 shutil.copytree(FAP01_DIR, work / "fap01")
         shutil.copy(test, work / test.name)
-        if mutation is not None and not leak:
+        if mutation is not None and not leak and not flip_population:
             _, filename, before, after = mutation[:4]
             target = (work / filename) if "/" in filename \
                 else (work / "hw" / filename)
@@ -1952,7 +2043,14 @@ def run_host_test(test, mutation=None, variant=None):
         if is_image:
             sources += [str(work / "demo" / "main.cpp"),
                         str(work / "image" / "image_main.cpp")]
-            flags = ["-DARDUINO=200", "-I", str(work / "image")]
+            supply = nfc_supply_3v3_from_bom()
+            if supply is None:
+                return (False, -1, "the fab BOM states no U9 supply population "
+                                   "(R106 / R107)")
+            if flip_population:
+                supply = 1 - supply
+            flags = ["-DARDUINO=200", "-I", str(work / "image"),
+                     "-DAQROOT_TEST_NFC_SUPPLY_3V3=%d" % supply]
             fap_build = variant == "fap01" or leak
             if fap_build:
                 flags.append("-D" + FAP01_DEFINE)
@@ -2008,6 +2106,61 @@ def with_bench_only(mutate):
 
 def _drop(net):
     return lambda registry: registry.pop(net)
+
+
+# D-802 / D802-01 (Round-21 R21-01).  `AQROOT_NFC_ON_3V3` -- which decides the
+# ST25R3916 supply mode FAP-01 writes (sup3V) -- is DERIVED from the
+# population now.  Each control re-runs `gen.build()` against a mutated
+# (fitted, dnp) and must be refused with the NFC-supply reason.
+def with_population(fit=(), unfit=()):
+    saved = gen._FITTED_CACHE
+    fitted, dnp = gen.fitted_refs()
+    try:
+        gen._FITTED_CACHE = ((set(fitted) | set(fit)) - set(unfit),
+                             (set(dnp) | set(unfit)) - set(fit))
+        _, problems = gen.build()
+        return [p for p in problems if p.startswith("NFC supply")]
+    finally:
+        gen._FITTED_CACHE = saved
+
+
+POPULATION_CONTROLS = [
+    ("R106 DNP and R107 FIT: U9 on the 5 V PA branch",
+     dict(fit=("R107",), unfit=("R106",))),
+    ("R106 DNP alone: /NFC_SUPPLY unsourced", dict(unfit=("R106",))),
+    ("R107 FIT beside R106: both sources tied to /NFC_SUPPLY",
+     dict(fit=("R107",))),
+    ("U13 FIT: the 5 V NFC PA boost populated", dict(fit=("U13",))),
+]
+
+
+def nfc_supply_3v3_from_bom():
+    """D-802 / D802-01: the U9 supply as the FAB BOM populates it -- R106 0R
+    FIT (+3V3 -> /NFC_SUPPLY) and R107 0R DNP -- read from the package the
+    assembler builds, independently of the generator.  1, 0, or None if the
+    BOM states neither population."""
+    fitted, dnp = set(), set()
+    bom = ROOT / "hardware/demo/fab/aqroot-Demo-BOM-full.csv"
+    if not bom.exists():
+        return None
+    with open(bom, newline="", encoding="utf-8") as handle:
+        for row in csv.reader(handle):
+            if not row or row[0] == "Refs":
+                continue
+            refs = set()
+            for item in row[0].split(","):
+                span = re.fullmatch(r"([A-Z]+)(\d+)-\1?(\d+)", item.strip())
+                if span:
+                    refs |= {"%s%d" % (span.group(1), n) for n in
+                             range(int(span.group(2)), int(span.group(3)) + 1)}
+                else:
+                    refs.add(item.strip())
+            (dnp if row[-1].strip().upper() == "DNP" else fitted).update(refs)
+    if "R106" in fitted and "R107" in dnp:
+        return 1
+    if "R107" in fitted and "R106" in dnp:
+        return 0
+    return None
 
 
 def _declare(net):
@@ -2773,6 +2926,26 @@ def main():
         p_list = _fap01_isolation_problems(i_text, m_text, h_text, fap_cpp)
         h10_controls.append(dict(control=name, refused=bool(p_list),
                                  first_reason=p_list[0] if p_list else None))
+    # D-802 / D802-03: the legacy PN532 driver as an ST25R3916 fallback, in
+    # each of the three ways it could arrive.
+    fap_filter = "build_src_filter = -<*> +<demo/> +<hw/> +<fap01/>"
+    for name, i_text, c_text in (
+            ("the FAP-01 environment compiles the legacy drivers/ (PN532)",
+             ini_text.replace(fap_filter, fap_filter + " +<drivers/>", 1),
+             fap_cpp),
+            ("the FAP-01 environment gains the Adafruit PN532 dependency",
+             ini_text.replace(fap_filter, fap_filter + "\nlib_deps = "
+                              "adafruit/Adafruit PN532 @ ^1.3.3", 1), fap_cpp),
+            ("src/fap01 calls the legacy PN532 driver as a fallback",
+             ini_text, fap_cpp.replace("void sendReqa() {",
+                                       "void sendReqa() {\n  nfc_init();", 1))):
+        if (i_text, c_text) == (ini_text, fap_cpp):
+            h10_controls.append(dict(control=name, refused=False,
+                                     first_reason="control text not found"))
+            continue
+        p_list = _fap01_isolation_problems(i_text, main_src, fap_header, c_text)
+        h10_controls.append(dict(control=name, refused=bool(p_list),
+                                 first_reason=p_list[0] if p_list else None))
     report["H10_fap01_diagnostic_image_is_isolated"] = {
         "environment": FAP01_ENV,
         "define": FAP01_DEFINE,
@@ -2796,6 +2969,13 @@ def main():
     for name, mutate in BENCH_ONLY_CONTROLS:
         refused = with_bench_only(mutate)
         controls.append(dict(control=name, refused=bool(refused),
+                             first_reason=refused[0] if refused else None))
+    # D-802 / D802-01: the NFC supply mode is derived, so a population that
+    # is not R106 FIT / R107 + U13 DNP must refuse to emit.
+    for name, change in POPULATION_CONTROLS:
+        refused = with_population(**change)
+        controls.append(dict(control="D802-01 population: " + name,
+                             refused=bool(refused),
                              first_reason=refused[0] if refused else None))
     report["controls"] = controls
     report["controls_verdict"] = (

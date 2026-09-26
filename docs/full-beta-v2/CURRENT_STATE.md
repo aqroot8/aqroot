@@ -14,7 +14,30 @@
 
 ## 1. Authoritative HEAD
 
-> ### **D-801 REVIEW TARGET — THE EXACT FROZEN IDENTITY**
+> ### **D-802 REVIEW TARGET — THE EXACT FROZEN IDENTITY**
+>
+> | what | value |
+> |---|---|
+> | branch | `origin/aqroot-demo` |
+> | content commit | *recorded by the identity commit that follows it — a commit cannot contain its own SHA, so the reviewable target is the PAIR* |
+> | identity / post-commit verification commit | *the commit after the content commit* |
+> | board `aqroot-Beta-v2.kicad_pcb` sha256 | `c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907` |
+> | `hardware/demo/fab/MANIFEST.json` sha256 | *recorded by the identity commit* |
+> | parent, reviewed by Round-21 | `e54adcc310505ef963acaac83924eb4a2c68622a` (D-801 identity) |
+>
+> The board sha256 is IDENTICAL to the reviewed D-801 target: **no copper moved**, and no
+> BOM or CPL line changes; the release image's behaviour does not change.  D-802 closes
+> Round-21's five focused items: the first-article image `FAP-01` now writes and reads back
+> the ST25R3916's 3.3 V supply mode (`sup3V`, from the `R106` FIT / `R107` DNP population)
+> before its regulators (`R21-01`), holds the Wi-Fi burst as an EXCLUSIVE session for its
+> whole life (`R21-02`), and reports a REQA answer only from fresh, validated receive
+> evidence (`R21-03`); the document verifier refuses an inserted meter's resistance set to
+> nothing in any predicate form (`R21-04`) and the withdrawn pass-pair figures in every
+> operative document, `DEVICE_SPEC` included (`R21-05`).  The full record is
+> `evidence/d802-review-target.json`.
+> **REVIEW TARGET, NOT A FABRICATION AUTHORIZATION.  DO NOT ORDER.**
+
+> ### **D-801 REVIEW TARGET — THE EXACT FROZEN IDENTITY**  *(**HISTORICAL** — graded by Round-21, superseded by D-802)*
 >
 > | what | value |
 > |---|---|
@@ -250,9 +273,18 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
-> # **D-801 ROUND-20 BOUNDED PRE-ORDER CORRECTION — CURRENT EXTERNAL-REVIEW TARGET**
+> # **D-802 ROUND-21 FOCUSED PRE-ORDER CORRECTION — CURRENT EXTERNAL-REVIEW TARGET**
 >
-> *(The parent release's Round-19 content below this D-801 summary still stands unless a D-801 line says otherwise.)*
+> *(The D-801 and Round-19 content below this D-802 summary still stands unless a D-802 line says otherwise.)*
+>
+> **D-802 (Round-21: five focused non-PCB pre-order corrections).**  NO COPPER, no BOM / CPL change, no release-image behaviour change.  What changed:
+>
+> * **D-802: `FAP-01` `N` sets the ST25R3916 supply mode first** — IO configuration register 2 `sup3V` = 1, written and read back before `en` and Adjust regulators on every field start (`U9` VDD is `+3V3` through `R106`; the value is generated from that population).  D-801 enabled the regulators in the 5 V power-up mode.
+> * **D-802: `FAP-01` `W` is EXCLUSIVE for its whole session** — it starts only from a quiet board, and every key but `W`, `Q`, `?` and `s` is refused until it stops.
+> * **D-802: `FAP-01` `T` has three verdicts** — `VALID ANSWER` only from a proved Clear FIFO, `I_txe` + `I_rxe`, two whole bytes, a drained FIFO and a plausible ATQA; `no tag answered` on the same proof without a receive; otherwise `NO VALID EVIDENCE`.  The legacy PN532 driver is never a fallback (H10).
+> * **D-802: the document verifier** refuses an inserted meter's resistance set to nothing in any predicate form (F12), and D-791's pass-pair figures and the 2× survival claim in every operative document (F10).
+>
+> **D-801 (Round-20: Astra B, six bounded non-PCB corrections; Fable Work A with residuals) — still current at D-802.**
 >
 > **D-801 (Round-20: Astra B, six bounded non-PCB corrections; Fable Work A with residuals).**  NO COPPER, no BOM / CPL change, no release-image behaviour change.  What changed for a fabricator, assembler, buyer and technician:
 >
@@ -322,8 +354,8 @@
 > |---|---|
 > | **PRE-ORDER ANALYTICAL** | **CLOSED on this target** |
 > | **FAB / CAM ACCEPTANCE** | **PENDING** — B01–B14 in `assembly/RELEASE_ACCEPTANCE_REGISTER.json` and the fab notes |
-> | **FIRST-ARTICLE VALIDATION** | **PENDING** — FA01–FA10, enumerated in the same register and in `FIRST_FIVE_ASSEMBLY_PLAN` §7d; their prerequisite `FAP-01` (the first-article test image) is IMPLEMENTED at D-801 and host-tested, bench execution pending hardware |
-> | **PROCUREMENT** | **PENDING** — nine constrained fitted groups (D-801 fresh sweep), the AOS pass-pair allocation, `R20-P01` (`L3` voltage, Coilcraft) and `R20-P02` (pack PCM threshold, Adafruit), and a `--refresh` re-sweep immediately before the order |
+> | **FIRST-ARTICLE VALIDATION** | **PENDING** — FA01–FA10, enumerated in the same register and in `FIRST_FIVE_ASSEMBLY_PLAN` §7d; their prerequisite `FAP-01` (the first-article test image) is IMPLEMENTED at D-801, corrected at D-802 (`sup3V`, the exclusive Wi-Fi session, validated REQA verdicts) and host-tested, bench execution pending hardware |
+> | **PROCUREMENT** | **PENDING** — nine constrained fitted groups (D-801 fresh sweep; the D-802 `--refresh` sweep of 2026-09-26 reads the same nine at the same counts), the AOS pass-pair allocation, `R20-P01` (`L3` voltage, Coilcraft) and `R20-P02` (pack PCM threshold, Adafruit), and a `--refresh` re-sweep immediately before the order |
 
 > # **D-798 ROUND-17 TARGETED-CONVERGENCE CORRECTION — HISTORICAL, SUPERSEDED BY D-799 (REJECTED by Round-18; its `OCV_lb` formula is RETIRED)**
 >
