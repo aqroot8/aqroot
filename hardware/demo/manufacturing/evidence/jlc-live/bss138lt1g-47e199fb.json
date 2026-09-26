@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-26T04:12:47Z",
+ "fetched_utc": "2026-09-26T11:07:12Z",
  "keyword": "BSS138LT1G",
  "page_size": 25,
  "pages": 1,
@@ -114,7 +114,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 117933
+   "stockCount": 117888
   },
   {
    "assemblyComponentFlag": false,
@@ -224,7 +224,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 615169
+   "stockCount": 615143
   },
   {
    "assemblyComponentFlag": false,

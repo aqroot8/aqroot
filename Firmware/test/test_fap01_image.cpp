@@ -448,6 +448,194 @@ int main() {
   }
 
   // =========================================================================
+  // D-803 / D803-01 (Round-22 R22-01) -- A REQA VERDICT ONLY FROM A PART
+  // PROVED LIVE ON EITHER SIDE OF EVERY PIECE OF EVIDENCE.  U9 fails from
+  // every byte of one T onward (persistent), or for a window of bytes and
+  // then answers again (recovered), with the MCU's MISO lost (the part still
+  // executes and clears) or the part deaf; the tag's end of receive comes
+  // two IRQ reads after I_txe, as a real receive does.  A persistent failure
+  // may never produce a verdict; a recovered one may never produce a WRONG
+  // one; an error without I_rxe is never "no tag".  The full sweep (both
+  // fills, instant I_rxe, nine window widths) is
+  // evidence/d803-round22-witnesses.py.
+  // =========================================================================
+  {
+    struct V { bool answer, notag; std::string atqa; };
+    auto verdict = [](size_t m) {
+      V v{hasFrom("a tag answered", m), hasFrom("no tag answered", m), ""};
+      for (size_t i = m; i < rec().console.size(); ++i) {
+        const auto p = rec().console[i].find("ATQA ");
+        if (v.answer && p != std::string::npos)
+          v.atqa = rec().console[i].substr(p + 5, 5);
+      }
+      return v;
+    };
+    auto up = [](bool tag) {
+      coldBoot();
+      keys("N");
+      g_radio->nfc_tag_present = tag;
+      g_radio->nfc_answer_after_irq_reads = 2;
+    };
+    auto tBytes = [&](bool tag) {
+      up(tag);
+      const uint64_t b0 = g_radio->nfc_bytes;
+      keys("T");
+      return g_radio->nfc_bytes - b0;
+    };
+    auto window = [&](bool tag, bool hears, uint64_t k, uint64_t w,
+                      bool stale) {
+      up(tag);
+      if (stale) {
+        g_radio->nfcSetFifo({0x04, 0x00});
+        g_radio->nfc_regs[0x1A] = 0x30;
+      }
+      const uint64_t b0 = g_radio->nfc_bytes;
+      g_radio->nfc_glitch_from_byte = b0 + k;
+      g_radio->nfc_glitch_until_byte = w == 0 ? ~uint64_t(0) : b0 + k + w;
+      g_radio->nfc_glitch_fill = 0x00;
+      g_radio->nfc_glitch_part_hears = hears;
+      const size_t m = rec().console.size();
+      keys("T");
+      g_radio->nfcClearGlitch();
+      return verdict(m);
+    };
+    {
+      up(true);
+      size_t m = rec().console.size();
+      keys("T");
+      const V a = verdict(m);
+      up(false);
+      m = rec().console.size();
+      keys("T");
+      const V b = verdict(m);
+      claim("T/live: healthy controls -- a tag whose I_rxe follows I_txe is a "
+            "VALID ANSWER 04 00, and no tag is 'no tag answered'",
+            a.answer && a.atqa == "04 00" && !a.notag && b.notag && !b.answer);
+    }
+    int persistent = 0, persistent_trusted = 0;
+    int recovered = 0, recovered_wrong = 0;
+    for (int tag = 0; tag < 2; ++tag) {
+      const uint64_t n = tBytes(tag);
+      for (int hears = 0; hears < 2; ++hears) {
+        for (uint64_t k = 0; k < n; ++k) {
+          const V v = window(tag, hears, k, 0, false);
+          ++persistent;
+          if (v.answer || v.notag) ++persistent_trusted;
+          for (uint64_t w = 1; w <= 40; ++w) {
+            const V r = window(tag, hears, k, w, false);
+            ++recovered;
+            if ((!tag && r.answer) || (tag && r.notag) ||
+                (tag && r.answer && r.atqa != "04 00"))
+              ++recovered_wrong;
+          }
+        }
+      }
+    }
+    std::printf("  D803-01 sweep: %d persistent (%d trusted), %d recovered "
+                "(%d wrong)\n", persistent, persistent_trusted, recovered,
+                recovered_wrong);
+    claim("T/live: a U9 that stops answering at ANY byte of the REQA and stays "
+          "dead never yields a verdict -- neither 'a tag answered' nor 'no tag "
+          "answered' (late persistent failure)",
+          persistent > 0 && persistent_trusted == 0);
+    claim("T/live: a U9 that fails for any 1..40 bytes anywhere in the REQA and "
+          "RECOVERS never yields a wrong verdict -- no answer without a tag, no "
+          "'no tag' with one, no ATQA but the tag's (recovered intermittent)",
+          recovered > 0 && recovered_wrong == 0);
+    int stale = 0, stale_claimed = 0;
+    {
+      const uint64_t n = tBytes(false);
+      for (uint64_t w = 1; w <= 40; ++w) {
+        for (uint64_t k = 0; k < n; ++k) {
+          const V v = window(false, false, k, w, true);
+          ++stale;
+          if (v.answer) ++stale_claimed;
+        }
+      }
+    }
+    claim("T/live: a stale I_rxe and a stale ATQA from before the REQA, with U9 "
+          "deaf across the clear and then answering again, are never reported "
+          "as an answer (fresh transaction boundary)",
+          stale > 0 && stale_claimed == 0);
+    struct E { const char *name; uint8_t main, err, f2; };
+    const E es[] = {{"I_col", 0x24, 0x00, 0x00}, {"I_err1", 0x20, 0x10, 0x00},
+                    {"I_par", 0x20, 0x40, 0x00}, {"I_crc", 0x20, 0x80, 0x00},
+                    {"fifo_ovr", 0x20, 0x00, 0x10}, {"fifo_unf", 0x00, 0x00, 0x20},
+                    {"lb", 0x20, 0x00, 0x03}, {"I_rxs", 0x20, 0x00, 0x00},
+                    {"I_col alone", 0x04, 0x00, 0x00},
+                    {"I_err1 alone", 0x00, 0x10, 0x00},
+                    {"I_err2 alone", 0x00, 0x20, 0x00},
+                    {"I_par alone", 0x00, 0x40, 0x00},
+                    {"I_crc alone", 0x00, 0x80, 0x00},
+                    {"fifo_ovr alone", 0x00, 0x00, 0x10},
+                    {"np_lb alone", 0x00, 0x00, 0x01}};
+    int outranked = 0;
+    for (const E &e : es) {
+      up(true);
+      g_radio->nfc_answer_after_irq_reads = 0;
+      g_radio->nfc_answer_main = e.main;
+      g_radio->nfc_answer_error = e.err;
+      g_radio->nfc_answer_fifo2_flags = e.f2;
+      g_radio->nfc_answer_fifo_bytes = 0;
+      const size_t m = rec().console.size();
+      keys("T");
+      if (hasFrom("REQA -- NO VALID EVIDENCE", m) && !verdict(m).notag &&
+          !verdict(m).answer)
+        ++outranked;
+    }
+    claim("T/live: a receive that raised I_col, a CRC / parity / framing "
+          "error, fifo_ovr, fifo_unf, an incomplete last byte or I_rxs -- but "
+          "no I_rxe and an empty FIFO -- is NO VALID EVIDENCE, never 'no tag "
+          "answered' (errors outrank absence)",
+          outranked == int(sizeof(es) / sizeof(es[0])));
+    {
+      // The pre-clear IRQ read and Clear FIFO miss a deaf part; it answers
+      // again for the boundary.  A stale I_rxe (FIFO empty) is caught THERE,
+      // and no REQA is transmitted on an unproved boundary.
+      up(false);
+      g_radio->nfc_regs[0x1A] = 0x10;
+      const int reqa0 = g_radio->nfc_reqa_commands;
+      const uint64_t b0 = g_radio->nfc_bytes;
+      // after 2 (op) + 2 (io2) + 16 (L0: identity, 2 x challenge write and
+      // read, restore write and read, identity) bytes, the deaf window is
+      // the pre-clear main IRQ read.
+      g_radio->nfc_glitch_from_byte = b0 + 20;
+      g_radio->nfc_glitch_until_byte = b0 + 22;
+      g_radio->nfc_glitch_part_hears = false;
+      const size_t m = rec().console.size();
+      keys("T");
+      g_radio->nfcClearGlitch();
+      claim("T/live: a stale I_rxe that survived a deaf clear is caught at the "
+            "fresh boundary -- Clear FIFO NOT CONFIRMED, and no REQA is sent",
+            hasFrom("NO VALID EVIDENCE: Clear FIFO NOT CONFIRMED", m)
+            && g_radio->nfc_reqa_commands == reqa0);
+    }
+    {
+      up(true);
+      g_radio->nfc_answer_after_irq_reads = 0;
+      g_radio->nfc_tag_atqa[0] = 0x00;
+      g_radio->nfc_tag_atqa[1] = 0x00;
+      const size_t m = rec().console.size();
+      keys("T");
+      claim("T/live: a two-byte receive of 00 00 (no bit-frame anticollision "
+            "bit, ISO/IEC 14443-3 6.3.2) gives NO VALID EVIDENCE",
+            hasFrom("NO VALID EVIDENCE: the ATQA fails ISO/IEC 14443-3", m)
+            && !hasFrom("a tag answered", m));
+    }
+    {
+      up(false);
+      const int challenge0 = g_radio->nfc_challenge_writes;
+      keys("T");
+      claim("T/live: the liveness challenge leaves No-response timer 2 at its "
+            "00h default (the REQA never runs with a timer the image did not "
+            "choose)",
+            g_radio->nfc_challenge_writes > challenge0
+            && g_radio->nfc_regs[0x11] == 0x00);
+    }
+    keys("Q");
+  }
+
+  // =========================================================================
   // V / W -- THE Wi-Fi BURST (C-MCU-01).
   // =========================================================================
   {
@@ -688,7 +876,7 @@ int main() {
     // powered and keeps transmitting, the MCU restarts.
     coldBoot();
     keys("CH");
-    claim("H: the U7 hold-off is ARMED and recorded for ONE warm reset",
+    claim("H: the U7 hold-off is ARMED and recorded for the next FAP-01 boot",
           rec().consoleHas("hold-off ARMED on U7 CC1101_CS_N")
           && aqroot_hal::nvs().count("aqroot-fap01/holdoff") == 1);
     mcuReset();                 // warm reset: the stub is retained-TX, NVS kept
@@ -714,6 +902,65 @@ int main() {
           rec().consoleHas("hold-off RELEASED on U7 CC1101_CS_N (60000 ms "
                            "bound)")
           && !radio.transmitting && rec().consoleHas("MARCSTATE=0x01 (IDLE)"));
+  }
+  {
+    // D-803 / D803-05 (Round-22 R22-05): the record is carried into the
+    // NEXT FAP-01 boot of ANY kind -- a power cycle included -- and the
+    // operator wording says so; Q erases it and READS IT BACK.
+    coldBoot();
+    size_t mark = rec().console.size();
+    keys("J");
+    claim("J/record: the arm line says the hold-off is recorded for the NEXT "
+          "FAP-01 boot of ANY kind (EN pulse, power cycle or reflash) and to "
+          "press Q for 'NVS confirmed clear' before power-off or reflash",
+          hasFrom("ALSO RECORDED for the NEXT FAP-01 boot of ANY kind (EN "
+                  "pulse, power cycle or reflash)", mark)
+          && hasFrom("press Q and see 'NVS confirmed clear' before powering "
+                     "off or reflashing, unless you are testing persistence",
+                     mark)
+          && aqroot_hal::nvs().count("aqroot-fap01/holdoff") == 1);
+    // A POWER CYCLE: the MCU and every part lose power (a fresh board model
+    // and a fresh, quiet radio stub); only NVS survives.
+    mcuReset();
+    mark = rec().console.size();
+    setup();
+    pump(2);
+    claim("J/record: ...a POWER CYCLE carries it -- the next FAP-01 boot "
+          "restores the U9 hold-off and erases the record",
+          hasFrom("hold-off RESTORED across the reset on U9 NFC_CS_N", mark)
+          && hasFrom("any reset, power cycle or reflash carries it", mark)
+          && aqroot_hal::nvs().count("aqroot-fap01/holdoff") == 0);
+    keys("J");                             // re-arm (the restored one ends)
+    if (aqroot_hal::nvs().count("aqroot-fap01/holdoff") == 0) keys("J");
+    mark = rec().console.size();
+    keys("Q");
+    claim("J/record: Q releases it, erases the record and READS IT BACK: 'NVS "
+          "confirmed clear -- safe to power off or reflash'",
+          hasFrom("no hold-off is recorded for the next FAP-01 boot (NVS "
+                  "confirmed clear) -- safe to power off or reflash", mark)
+          && aqroot_hal::nvs().count("aqroot-fap01/holdoff") == 0);
+    mcuReset();
+    mark = rec().console.size();
+    setup();
+    pump(2);
+    claim("J/record: ...and after Q a power cycle restores NOTHING",
+          !hasFrom("hold-off RESTORED", mark));
+    // a record left with nothing armed (an image that lost power mid-arm):
+    // Q still erases it before it reports clear
+    aqroot_hal::nvs()["aqroot-fap01/holdoff"] = 0x02;
+    mark = rec().console.size();
+    keys("Q");
+    claim("J/record: a stale record with nothing armed is still ERASED by Q "
+          "before 'NVS confirmed clear' is printed",
+          hasFrom("(NVS confirmed clear)", mark)
+          && aqroot_hal::nvs().count("aqroot-fap01/holdoff") == 0);
+    keys("?");
+    claim("J/record: the key list states the rule (H / J recorded for the "
+          "next FAP-01 boot of any kind; Q before power-off / reflash)",
+          rec().consoleHas("H / J are RECORDED for the NEXT FAP-01 boot of "
+                           "ANY kind")
+          && rec().consoleHas("power cycle, reflash): Q before power-off / "
+                              "reflash unless"));
   }
   {
     // A rail live, then U9's select lifted: revocation and shed within the

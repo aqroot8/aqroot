@@ -491,6 +491,12 @@ class Cc1101Stub : public aqroot_hal::SpiModel {
       nfc_overheat_bytes_ = 0;
       nfc_fifo_reading_ = false;
     }
+    // D-803 / D803-01: a failure window in U9's own byte stream.
+    const uint64_t byte = nfc_bytes++;
+    if (byte >= nfc_glitch_from_byte && byte < nfc_glitch_until_byte) {
+      if (nfc_glitch_part_hears) (void)st25r3916(out);
+      return nfc_glitch_fill;
+    }
     return st25r3916(out);
   }
 
@@ -599,6 +605,45 @@ class Cc1101Stub : public aqroot_hal::SpiModel {
   std::vector<uint8_t> nfc_fifo;
   int nfc_reqa_commands = 0;
   int nfc_clear_fifo_commands = 0;
+  // ---- D-803 / D803-01.  LATE, PERSISTENT AND RECOVERED FAILURES. ----
+  //
+  // Round-22 (Astra R22-01): a U9 that stops answering LATE in a REQA -- or
+  // stops for a few bytes and RECOVERS -- still produced "a tag answered"
+  // or "no tag answered".  `nfc_bytes` counts every byte clocked inside a U9
+  // frame; bytes [from, until) are the failure window, in which the MCU reads
+  // `nfc_glitch_fill`.  `nfc_glitch_part_hears` picks the physical case: true
+  // is a lost MISO (the part still receives, executes, clears its IRQs on
+  // read and pops its FIFO -- the MCU just never sees the answer); false is a
+  // deaf part (a lifted select, a brown-out: nothing reaches it).  until =
+  // ~0 is a persistent failure; a finite until is one that recovered.
+  uint64_t nfc_bytes = 0;
+  uint64_t nfc_glitch_from_byte = ~uint64_t(0);
+  uint64_t nfc_glitch_until_byte = ~uint64_t(0);
+  uint8_t nfc_glitch_fill = 0x00;
+  bool nfc_glitch_part_hears = true;
+  // What a tag's answer raises, and WHEN.  The defaults are a clean ATQA:
+  // I_rxs | I_rxe, no error, two whole bytes.  A real receive ends some time
+  // AFTER I_txe: `nfc_answer_after_irq_reads` = N delivers it on the Nth read
+  // of the main IRQ register after C6h (0 = with I_txe, the idealised part).
+  uint8_t nfc_answer_main = 0x30;
+  uint8_t nfc_answer_error = 0x00;
+  uint8_t nfc_answer_fifo2_flags = 0x00;
+  int nfc_answer_fifo_bytes = 2;
+  int nfc_answer_after_irq_reads = 0;
+  int nfc_answer_pending_ = 0;
+  void nfcDeliverAnswer() {
+    nfc_regs[0x1A] |= nfc_answer_main;
+    nfc_regs[0x1C] |= nfc_answer_error;
+    std::vector<uint8_t> bytes(nfc_tag_atqa,
+                               nfc_tag_atqa + (nfc_answer_fifo_bytes > 2
+                                               ? 2 : nfc_answer_fifo_bytes));
+    while (int(bytes.size()) < nfc_answer_fifo_bytes) bytes.push_back(0x00);
+    nfcSetFifo(bytes);
+    nfc_regs[0x1F] |= nfc_answer_fifo2_flags;
+  }
+  void nfcClearGlitch() {
+    nfc_glitch_from_byte = nfc_glitch_until_byte = ~uint64_t(0);
+  }
   void nfcSetFifo(const std::vector<uint8_t> &bytes) {
     nfc_fifo = bytes;
     nfc_regs[0x1E] = uint8_t(bytes.size() & 0xFF);
@@ -609,6 +654,8 @@ class Cc1101Stub : public aqroot_hal::SpiModel {
   uint8_t nfcRead(uint8_t addr) {
     if (addr == 0x02) return uint8_t(nfc_operation_control);
     if (addr == 0x3F) return nfc_ic_identity;
+    if (addr == 0x1A && nfc_answer_pending_ > 0 && --nfc_answer_pending_ == 0)
+      nfcDeliverAnswer();
     const uint8_t v = nfc_regs[addr & 0x3F];
     // D-802: the four interrupt registers clear when they are read.
     if (addr >= 0x1A && addr <= 0x1D) nfc_regs[addr] = 0x00;
@@ -710,9 +757,9 @@ class Cc1101Stub : public aqroot_hal::SpiModel {
         ++nfc_reqa_commands;
         if ((nfc_operation_control & 0xC8) != 0xC8) return 0x00;
         nfc_regs[0x1A] |= 0x08;                // I_txe
-        if (nfc_tag_present) {
-          nfc_regs[0x1A] |= 0x30;              // I_rxs | I_rxe
-          nfcSetFifo({nfc_tag_atqa[0], nfc_tag_atqa[1]});
+        if (nfc_tag_present) {                 // I_rxs | I_rxe, the ATQA
+          if (nfc_answer_after_irq_reads <= 0) nfcDeliverAnswer();
+          else nfc_answer_pending_ = nfc_answer_after_irq_reads;
         }
         return 0x00;
       }

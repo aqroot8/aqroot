@@ -826,7 +826,11 @@ def acc_3v3_reinforcement_notes():
         % ACC_3V3_REINFORCEMENT_PACKAGE,
         "- First article: **C-ACC-01** measures the delivered potential at the "
         "J5 mating interface for each contact alone and for the fully mated "
-        "header; **C-ACC-02** records the two routed resistances.",
+        "header -- SIZING / DIAGNOSTIC readings (400 mA single-rail, and the "
+        "400 mA + 300 mA shared-ground sizing case held only for the reading), "
+        "NOT operating modes: both rails together are supported only at the "
+        "declared 220 mA + 170 mA pair (D-803); **C-ACC-02** records the two "
+        "routed resistances.",
         "",
     ]
 

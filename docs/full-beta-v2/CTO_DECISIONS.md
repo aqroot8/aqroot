@@ -1,3 +1,142 @@
+## D-803 — **ROUND-22 FOCUSED PRE-ORDER CORRECTION: A REQA VERDICT ONLY FROM A LIVE PART, A ROLE-BOUND R_ins FAMILY, THE WHOLE OPERATIVE CORPUS SCANNED, A REQUIRED PLATFORMIO CROSS-CHECK, AND THE HOLD-OFF RECORD STATED AS IT BEHAVES**
+
+    authority  board c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907
+    manifest   recorded by the identity commit (evidence/d803-review-target.json)
+    content    recorded by the identity commit (evidence/d803-review-target.json)
+    identity   the post-commit verification record commit that follows it
+    parent     d6f67692fcc9787ee0d43084a377562f4f26f9b9 (D-802 identity, reviewed by Round-22)
+    scope      D803-01..D803-06 (Astra R22-01..R22-05 and the Demo traveler clarification),
+               and the COMPLETE final release suite
+    copper     NONE.  No copper, net, footprint, placement, part value or protected-copper
+               object moves; the board sha256 is the D-802 one.  No BOM / CPL line changes.
+    firmware   RELEASE IMAGE [env:aqroot-demo]: NO change (no file under src/demo or src/hw
+               is touched).  NON-PRODUCTION [env:aqroot-demo-fap01] (FAP-01): T and the
+               hold-off record corrected.  Host model, H6 claims, H9 and H10 extended.
+    order      HOLD.  B01-B14 (CAM), FA01-FA10 (first article; FAP-01 implemented and
+               corrected, bench execution pending hardware), PROCUREMENT (genuine AO4800
+               allocation, exact constrained-group allocation, R20-P01, R20-P02, a --refresh
+               re-sweep before the order) and enclosure fit remain.  REVIEW TARGET, NOT A
+               FABRICATION AUTHORIZATION.
+    owner      NO OWNER DECISION IS REQUIRED.  No published capability, budget, table,
+               threshold or operating authority moves.
+
+Astra Round-22 reproduced five bounded defects in D-802; Fable judged D-802
+order-supportable and most residuals hygiene.  Where Astra supplied a reproducible
+counterexample it is closed here.  Every witness was reproduced on the frozen D-802 tree
+before it was fixed: `R22-01`, `R22-04` and `R22-05` by
+`evidence/d803-round22-witnesses.py` (D-802's firmware / checker against this tree's model
+and harness, before and after, `evidence/d803-round22-witnesses.json`); `R22-02` and
+`R22-03` as one full-gate F1–F14 run on `d6f67692` carrying every Astra escape at once, in
+Astra's own carriers (`evidence/d803-full-gate-injections.json`), and inside the contract
+(`round22_rins_role_binding.witnesses`, `round22_publication_scope`).
+
+### 1 — THE SIX ITEMS
+
+* **D803-01 (Astra R22-01) — `FAP-01` `T` trusted stale or dead evidence.**  REPRODUCED on
+  D-802's firmware with a byte-window fault model added to the host ST25R3916 (a failure
+  from byte *k* onward, or for bytes [*k*, *k*+*w*) and then recovered; a lost MISO — the part
+  still executes, clears its IRQs on read and pops its FIFO — or a deaf part; `0x00` or
+  `0xFF` fill; and a real receive whose `I_rxe` follows `I_txe` by two IRQ reads): 144 of 576
+  persistent failures yielded a verdict (108 "no tag answered", 36 "a tag answered"), 844
+  recovered windows a wrong one (116 false negatives, 728 wrong ATQAs such as `00 00`), 8
+  stale-answer claims, and all 8 receive-error cases without `I_rxe` read "no tag".  An
+  end-only liveness read catches none of the recovered cases.  **FIX:** a LIVE proof (IC
+  identity `ic_type` 00101b, 5Ah / A5h written to No-response timer 2 and read back, 11h
+  restored to its 00h default — Table 50: timer not started — and read back, the identity
+  again) is taken five times: before the REQA, across the IRQ / FIFO clear, at the fresh
+  boundary, after the REQA / ATQA read and at the end.  The boundary now re-reads main IRQ,
+  error IRQ and both FIFO status registers as 0 (so the clear really happened, and no REQA is
+  sent on an unproved boundary); the end re-reads them as 0 (nothing arrived the verdict did
+  not see).  `I_col`, `I_rxs` without `I_rxe`, `I_crc` / `I_par` / `I_err2` / `I_err1`,
+  `fifo_ovr`, `fifo_unf` and an incomplete last byte are judged BEFORE `I_rxe` and outrank
+  both verdicts.  The ATQA must carry exactly one bit-frame anticollision bit (ISO/IEC
+  14443-3 6.3.2), so `00 00` fails beside `FF FF`.  After: 0 of 2048 persistent, 0 of 98 304
+  recovered-window and 0 of 6 528 stale cases; healthy controls (instant and delayed `I_rxe`
+  → `VALID ANSWER 04 00`; no tag → `no tag answered`) pass.  H6 carries the compact sweep
+  (every byte, windows 1..40, both physical cases) plus boundary, error-rank (15 forms),
+  `00 00` and 11h-restored claims; ten controls, among them Astra's rejected end-only shape.
+* **D803-02 (Astra R22-02) — the R_ins family bound words, not roles.**  REPRODUCED: "ignore
+  the DMM burden", "inserted resistance remains zero", "use zero resistance for the series
+  ammeter" and "the series DMM replaces the clamp and insertion resistance is negligible"
+  each passed F1–F14 on `d6f67692` (Astra) and are missed by D-802's rule on the live regexes
+  (`rins_d803=False`).  **FIX:** the measurement role and the insertion value are bound.  The
+  clamp exemption holds only while the clamp is the ACTIVE instrument (not replaced, not "in
+  place of", not negated) and no ACTIVE series DMM / multimeter / ammeter / meter / shunt is in
+  the sentence; with an active series instrument, any resistance or burden set to nothing is
+  the claim.  New forms: a DMM's burden, "inserted resistance", the value before the role
+  ("zero resistance for the series ammeter", "use 0 mΩ for the inline shunt"), "adds no
+  resistance", and `R_ins = 0.` at a sentence end (D-802's value pattern refused a `0`
+  followed by a period).  Fourteen injections caught in every operative document; eleven
+  valid controls clean — a true non-inserting clamp at `R_ins = 0`, a measured and bounded
+  series value, explicit negations, Astra's valid record and her fenced historical record.
+* **D803-03 (Astra R22-03) — the publication scope.**  REPRODUCED: the D-791 pass-pair peak
+  written by role ("the current pass-pair peak electrical envelope is 2.60 A"), an
+  unconditional BATOCP self-clearance, D-616 as current fabrication authority in
+  `FOOTPRINT_VERIFICATION_LEDGER.md` / `SELECTED_BATTERY.json`, and the 2× survival claim in
+  a JSON record serialised with `ensure_ascii=True` all passed F1–F14; and two historical
+  controls FAILED — "HISTORICAL / SUPERSEDED: D-616 was generated and reviewed; FAB1–FAB8
+  all pass" (the splitter cut at the semicolon) and a labelled paragraph whose later
+  sentences carried no fence word.  **FIX:** one scope rule (`d803_units`) — a fenced heading,
+  a `<!-- HISTORICAL BEGIN/END -->` region, an explicit `HISTORICAL…:` label for the rest of
+  its paragraph or JSON string, and a fence inherited across `;` — now serves the Round-20
+  families, the F10 pass-pair scan and the new F12 `round22_publication_scope`; JSON records
+  are read as their decoded string values.  The corpus is every `.md` / `.json` under
+  `docs/full-beta-v2/` (top level, `assembly/`, `mechanical/`), `hardware/demo/fab/` and the
+  manufacturing README — 35 documents — excluding by name only the two append-only logs
+  (`CTO_DECISIONS.md`, `CHANGELOG.md`).  Families: the retired pass-pair values; the 2.60 A
+  peak bound to a pass-pair role by nearest-role binding (a harness / AWG / connector /
+  rating mention absorbs its own 2.6 A); the 2× survival claim in any tense; D-616 as current
+  authority (or FAB1–FAB8 / 247 of 247 in a current sentence); a BATOCP trip or
+  self-clearance stated without a hedge.  Each family has its own destructive control in
+  each corpus document (injected alone; JSON with `ensure_ascii=True`), and seven legitimate
+  controls — the 2.6 A harness rating, a hedged BATOCP, the D-616 pointer, history across a
+  semicolon, a labelled paragraph, a BEGIN/END region, history mid-string — stay clean in
+  every document.
+* **D803-04 (Astra R22-04) — `H9`'s PlatformIO authority.**  REPRODUCED on D-802's checker:
+  PlatformIO absent → PASS; `pio` or `platformio` only on PATH → not found, PASS on the
+  parser alone; a duplicated, conflicting `default_envs` with PlatformIO absent → PASS.
+  **FIX:** PlatformIO is found by the configured path (`AQROOT_PIO`, else the worker venv),
+  then `pio`, then `platformio` on PATH; an unavailable or failing cross-check is a PROBLEM,
+  never a pass; the parser is strict (a duplicated option or section is refused, as
+  PlatformIO refuses it); the parser and PlatformIO must agree on the default AND the
+  environment list.  Seventeen end-to-end portability controls run the whole evaluation on
+  fixture projects: absent tool, PATH-only `pio`, PATH-only `platformio`, a disagreeing
+  PlatformIO (stub), the normal default, and duplicate-conflicting, duplicate-identical,
+  mixed, legacy, FAP-01 and `extra_configs` each with the real PlatformIO and with it absent.
+* **D803-05 (Astra R22-05) — the hold-off operator wording.**  REPRODUCED: D-802's arm line
+  said "it also survives ONE warm reset" while a POWER CYCLE restores the hold-off (NVS
+  survives it, and a release image never reads the record, so a reflash carries it too);
+  `Q` printed no confirmation.  **FIX:** the comments, the arm line, the boot line, the key
+  list, the header, the procedure, the plan and the acceptance register now say the record
+  reaches the NEXT FAP-01 boot of ANY kind — `EN` pulse, power cycle or reflash — and that `Q`
+  (which releases every hold-off and erases the record, READ BACK: `NVS confirmed clear --
+  safe to power off or reflash`) comes before power-off or reflash unless persistence is
+  being tested.  H6 claims (power cycle carries it, Q confirms and erases even a stale
+  record, a power cycle after Q restores nothing, the key list states the rule) with four
+  controls; H10 binds the document wording, with three controls.  No production state
+  authority changes.
+* **D803-06 — the ACC first-article traveler.**  `C-ACC-01` asked for 400 mA with the 5 V
+  rail "also at its published 300 mA" without saying that is a SIZING case and not an
+  operating mode.  It now separates (a) the 400 mA single-rail readings, (b) the
+  400 mA + 300 mA shared-ground sizing case, held only for the reading, and (c) the
+  supported simultaneous 220 mA + 170 mA pair, and states that none extends normal
+  operating authority.  Traveler (both copies), the plan row and the fab-notes line.
+
+### 2 — WHAT DID NOT CHANGE, AND THE EVIDENCE
+
+No PCB, schematic, footprint, placement, fitted value, BOM or CPL line.  No file under
+`Firmware/src/demo/` or `Firmware/src/hw/`: the release image is source-identical to D-802.
+The package is regenerated only for its release label, the traveler text and the fab-notes
+line; its manufacturing geometry is compared with D-802's in the review-target record.
+A fresh `--refresh` sweep (2026-09-26, 123 lines) reads eight short / unknown lines —
+D-802's nine less `LQW18AN39NG80D`, now 4003 in stock (`evidence/d803-sourcing-sweep.json`).
+
+### WHAT IS NOT CLAIMED
+
+No literal certainty before manufacture.  FAP-01 is host-tested and builds; it has not run on
+hardware.  CAM acceptance (B01–B14), first article (FA01–FA10), genuine exact-part
+procurement / allocation and enclosure fit remain downstream.
+
 ## D-802 — **ROUND-21 FOCUSED PRE-ORDER CORRECTION: THE FIRST-ARTICLE IMAGE SETS THE NFC SUPPLY MODE, HOLDS AN EXCLUSIVE WI-FI SESSION AND CLAIMS A TAG ONLY FROM VALIDATED EVIDENCE; TWO DOCUMENT-SCANNER ESCAPES CLOSED**
 
     authority  board c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907

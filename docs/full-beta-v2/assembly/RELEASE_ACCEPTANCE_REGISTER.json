@@ -164,7 +164,7 @@
    "id": "FAP-01",
    "status": "IMPLEMENTED -- host-tested; build and bench execution pending hardware",
    "item": "the FIRST-ARTICLE TEST IMAGE: CC1101 continuous transmit and SX1262 CW at 22 dBm keyed only through SpiBusB::beginTransmit, an NFC field keyed only through DemoBringupApp::beginNfcFieldSession, a Wi-Fi/BLE TX burst, a 38 kHz IR transmit burst from D1, a chip-select hold-off injection for U7 and U9, a held audio drive at the capped level, a held backlight PWM duty after the D-784 prime and a 10 ms VCELL poll -- all under the release image's accessory permission table and quiesce/liveness rules; host-tested, recorded by git SHA, never shipped",
-   "implemented_by": "D-801 / D801-01; corrected by D-802 (Round-21 R21-01..R21-03)",
+   "implemented_by": "D-801 / D801-01; corrected by D-802 (Round-21 R21-01..R21-03) and D-803 (Round-22 D803-01, D803-05)",
    "environment": "aqroot-demo-fap01",
    "define": "AQROOT_FAP01_DIAGNOSTIC",
    "sources": [
@@ -180,24 +180,24 @@
     "C": "CC1101 continuous TX, 433.92 MHz, PATABLE 0xC0, toggle, bounded 30 s -- C-RADIO-QUIESCE-01, C-MCU-01",
     "L": "SX1262 CW 915 MHz +22 dBm, toggle, bounded 30 s -- C-RADIO-QUIESCE-01, C-MCU-01",
     "N": "ST25R3916 field ON through beginNfcFieldSession, after writing and reading back IO configuration 2 sup3V = 1 (VDD is +3V3: R106 FIT, R107 and U13 DNP -- DS12484 Rev 3 section 4.2.11 / Table 20), toggle, bounded 60 s -- C-NFC-TUNE-01, C-NFC-QUIESCE-01",
-    "T": "one ISO14443A REQA while N is on, report only; VALID ANSWER only from a proved Clear FIFO, I_txe + I_rxe, exactly two whole bytes with no FIFO or receive error, a drained FIFO and an ISO/IEC 14443-3 plausible ATQA; otherwise 'no tag answered' (same proof, no I_rxe, FIFO empty) or NO VALID EVIDENCE; refused while a U9 hold-off is armed -- C-NFC-TUNE-01",
+    "T": "one ISO14443A REQA while N is on, report only; every piece of evidence has a provably LIVE U9 on both sides of it (identity + No-response timer 2 challenge, five times: before, across the clear, at the fresh boundary, after the REQA / ATQA read, at the end -- D-803); VALID ANSWER only from a live, proved clear (IRQs and FIFO read 0 at the boundary), I_txe + I_rxe, exactly two whole bytes, a drained FIFO, final FIFO / IRQs 0 and an ISO/IEC 14443-3 6.3.2 plausible ATQA (one anticollision bit; 00 00 and FF FF fail); 'no tag answered' on the same proof with no I_rxs / I_rxe, no error and an empty FIFO; every receive / FIFO error outranks both (NO VALID EVIDENCE, never 'no tag'); refused while a U9 hold-off is armed -- C-NFC-TUNE-01",
     "V": "operator declares the bench source (no charger, VBUS blocked), valid 120 s -- precondition of W",
     "W": "Wi-Fi TX burst, bounded 10 s, 30 s cool-down; asks wifiActivationPermitted and waives only its no-rail charging-row refusal after V, from a quiet board (no FAP-01 state held or armed); EXCLUSIVE for its whole life -- every key but W, Q, ? and s is refused until it stops -- C-MCU-01",
     "I": "ten 38 kHz NEC frames from D1 (~1.1 s) through the release blocking-test rule and burst slot -- C-IR-01",
-    "H": "U7 CC1101_CS_N chip-select hold-off, toggle, bounded 60 s, survives one reset -- C-RADIO-QUIESCE-01",
-    "J": "U9 NFC_CS_N chip-select hold-off, toggle, bounded 60 s, survives one reset -- C-NFC-QUIESCE-01",
+    "H": "U7 CC1101_CS_N chip-select hold-off, toggle, bounded 60 s; also RECORDED for the NEXT FAP-01 boot of ANY kind (EN pulse, power cycle or reflash) -- press Q and see 'NVS confirmed clear' before power-off or reflash unless testing persistence (D-803) -- C-RADIO-QUIESCE-01",
+    "J": "U9 NFC_CS_N chip-select hold-off, toggle, bounded 60 s; recorded for the next FAP-01 boot of any kind like H (Q before power-off or reflash) -- C-NFC-QUIESCE-01",
     "K": "U9 NFC_CS_N hold-off applied after a 700 ms delay from the key, which lands during a rail admission's MAX17048 wait -- C-NFC-QUIESCE-01",
     "Y": "U9 hold-off beginning 2000 ms after the key (inside the settled recheck) -- C-NFC-QUIESCE-01",
     "A": "held audio at the release tone's level through the release amplifier mode edge, toggle, bounded 30 min -- C-THERM-01",
     "B": "held backlight PWM duty 50 % after the D-784 full-duty prime, toggle, bounded 30 min -- Q11-TEMP-01",
     "G": "raw VCELL every 10 ms for 2 s, timestamp and value per line -- C-GAUGE-EPOCH-01",
-    "Q": "stop every FAP-01 stimulus",
+    "Q": "stop every FAP-01 stimulus, release every hold-off and erase the hold-off record, read back: 'NVS confirmed clear -- safe to power off or reflash'",
     "?": "print the key list"
    },
    "host_proof": "firmware_hw_map_contract H6 (test_fap01_image.cpp on the FAP-01 build and on the release build; test_production_image.cpp on the FAP-01 build), H9, H10",
    "image_identity": {
-    "git_sha": "the D-802 content commit -- a commit cannot contain its own SHA, so it is recorded in hardware/demo/manufacturing/evidence/d802-review-target.json (fap01_image.git_sha) by the identity commit",
-    "firmware_bin_sha256": "the clean build of that commit, recorded in hardware/demo/manufacturing/evidence/d802-review-target.json (fap01_image.firmware_bin_sha256); the image actually flashed on each unit is re-hashed and recorded at the bench"
+    "git_sha": "the D-803 content commit -- a commit cannot contain its own SHA, so it is recorded in hardware/demo/manufacturing/evidence/d803-review-target.json (fap01_image.git_sha) by the identity commit",
+    "firmware_bin_sha256": "the clean build of that commit, recorded in hardware/demo/manufacturing/evidence/d803-review-target.json (fap01_image.firmware_bin_sha256); the image actually flashed on each unit is re-hashed and recorded at the bench"
    },
    "needed_by": [
     "FA01",

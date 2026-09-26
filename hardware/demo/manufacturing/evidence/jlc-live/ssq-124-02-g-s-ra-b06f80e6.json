@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-26T04:12:40Z",
+ "fetched_utc": "2026-09-26T11:07:04Z",
  "keyword": "SSQ-124-02-G-S-RA",
  "page_size": 25,
  "pages": 1,

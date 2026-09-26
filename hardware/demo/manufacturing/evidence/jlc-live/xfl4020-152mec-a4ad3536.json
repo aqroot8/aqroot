@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-26T04:12:42Z",
+ "fetched_utc": "2026-09-26T11:07:06Z",
  "keyword": "XFL4020-152MEC",
  "page_size": 25,
  "pages": 1,
@@ -82,7 +82,7 @@
    "minPurchaseNum": 3,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 29
+   "stockCount": 22
   }
  ],
  "returned": 1,

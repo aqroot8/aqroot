@@ -73,6 +73,7 @@ import csv
 import fnmatch
 import hashlib
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -154,7 +155,9 @@ FAP01_ENV = "aqroot-demo-fap01"
 # Every environment that must still build BY NAME (D801-03).
 NAMED_ENVS = ("esp32-s3-aqroot", "wokwi", "esp32-s3-aqroot-dm", RELEASE_ENV,
               FAP01_ENV)
-PIO = Path("/home/aqroot8/.piovenv/bin/pio")
+# D-803 / D803-04: the CONFIGURED PlatformIO -- `AQROOT_PIO` if set, else the
+# worker's venv -- then `pio` and `platformio` on PATH (`_pio_executable`).
+PIO = Path(os.environ.get("AQROOT_PIO", "/home/aqroot8/.piovenv/bin/pio"))
 IMAGE_HARNESS = ROOT / "Firmware/test/image"
 DEMO_DIR = ROOT / "Firmware/src/demo"
 # The recording Arduino core the production-entry-point test compiles against.
@@ -1523,8 +1526,8 @@ FAP01_CONTROLS = [
      "T/stale: an ATQA left in the FIFO"),
     ("D802-03: Clear FIFO is not PROVED before the REQA",
      "fap01/aqroot_fap01.cpp",
-     "    if (f1 != 0x00 || f2 != 0x00) {",
-     "    if (false) {",
+     "    if (m0 != 0x00 || e0 != 0x00 || f1 != 0x00 || f2 != 0x00) {",
+     "    if (((m0 | e0 | f1 | f2) & 0) != 0) {",
      "T/ignored: a part that ignores direct commands"),
     ("D802-03: the REQA is not required to have left (no I_txe)",
      "fap01/aqroot_fap01.cpp",
@@ -1533,8 +1536,8 @@ FAP01_CONTROLS = [
      "T/ignored: a part that ignores the REQA itself"),
     ("D802-03: the ATQA is not checked for ISO/IEC 14443-3 plausibility",
      "fap01/aqroot_fap01.cpp",
-     "      } else if (!atqaPlausible(atqa[1], atqa[2])) {",
-     "      } else if (!atqaPlausible(0x04, 0x00)) {",
+     "    } else if (drained && !atqaPlausible(atqa[1], atqa[2])) {",
+     "    } else if (drained && !atqaPlausible(0x04, 0x00)) {",
      "T/implausible: a two-byte receive of FF FF"),
     ("D802-03: an armed U9 hold-off does not refuse the REQA",
      "fap01/aqroot_fap01.cpp",
@@ -1546,6 +1549,92 @@ FAP01_CONTROLS = [
      '    invalid = "an SPI-B transfer on U9 did not complete (bus hold refused)";',
      "    (void)0;",
      "T/transfer: a U9 transfer that cannot take the bus"),
+    # ---- D-803 (Round-22 R22-01).  Each is a way back to trusting a dead or
+    # recovering bus; each must fail on the claim that states it.
+    ("D803-01: liveness is proved at the END only (Astra R22-01's rejected "
+     "shape)",
+     "fap01/aqroot_fap01.cpp",
+     "    if (invalid != nullptr || !comm) return;\n    if (!u9Live(bus, comm)",
+     "    if (invalid != nullptr || !comm) return;\n"
+     "    if (__builtin_strstr(where, \"after the REQA\") == nullptr) return;\n"
+     "    if (!u9Live(bus, comm)",
+     "T/live: a U9 that fails for any 1..40 bytes"),
+    ("D803-01: no liveness proof across the IRQ / FIFO clear",
+     "fap01/aqroot_fap01.cpp",
+     '  live("U9 stopped answering live across the IRQ / FIFO clear");\n',
+     "",
+     "T/live: a stale I_rxe and a stale ATQA"),
+    ("D803-01: no liveness proof during the REQA / ATQA read",
+     "fap01/aqroot_fap01.cpp",
+     '  live("U9 stopped answering live during the REQA / ATQA read");\n',
+     "",
+     "T/live: a U9 that fails for any 1..40 bytes"),
+    ("D803-01: the liveness proof ends on the 00h restore, which a zero bus "
+     "fakes",
+     "fap01/aqroot_fap01.cpp",
+     "  return live && rb == kNrt2Default && st25r3916IdentityIsValid(id);",
+     "  return live && rb == kNrt2Default;",
+     "T/live: a U9 that stops answering at ANY byte"),
+    ("D803-01: the fresh boundary does not re-read the IRQs after the clear",
+     "fap01/aqroot_fap01.cpp",
+     "    if (m0 != 0x00 || e0 != 0x00 || f1 != 0x00 || f2 != 0x00) {",
+     "    if (((m0 | e0) & 0) != 0 || f1 != 0x00 || f2 != 0x00) {",
+     "T/live: a stale I_rxe that survived a deaf clear"),
+    ("D803-01: the final FIFO / IRQ accounting is dropped",
+     "fap01/aqroot_fap01.cpp",
+     "    if (a1 != 0x00 || (a2 & 0xF0) != 0x00) {",
+     "    if (((a1 | a2) & 0) != 0) {",
+     "T/live: a U9 that fails for any 1..40 bytes"),
+    ("D803-01: a receive error is judged only with I_rxe (D-802's order)",
+     "fap01/aqroot_fap01.cpp",
+     "    } else if ((err & kErrorIrqReceive) != 0) {",
+     "    } else if ((irq & kIrqRxe) != 0 && (err & kErrorIrqReceive) != 0) {",
+     "T/live: a receive that raised I_col"),
+    ("D803-01: I_rxs without I_rxe is reported as no tag",
+     "fap01/aqroot_fap01.cpp",
+     '      if ((irq & kIrqRxs) != 0) invalid = "a receive started (I_rxs) but never ended";\n'
+     "      else if (count != 0)",
+     "      if (count != 0)",
+     "T/live: a receive that raised I_col"),
+    ("D803-01: the ATQA bit-frame anticollision rule is dropped (00 00 passes)",
+     "fap01/aqroot_fap01.cpp",
+     "  return anticollision != 0 && (anticollision & (anticollision - 1)) == 0\n"
+     "      && (lsb & 0x20) == 0",
+     "  (void)anticollision;\n  return (lsb & 0x20) == 0",
+     "T/live: a two-byte receive of 00 00"),
+    ("D803-01: the challenge leaves No-response timer 2 armed",
+     "fap01/aqroot_fap01.cpp",
+     "constexpr uint8_t kNrt2Default = 0x00;",
+     "constexpr uint8_t kNrt2Default = 0x5A;",
+     "T/live: the liveness challenge leaves No-response timer 2"),
+    # ---- D-803 (Round-22 R22-05): the hold-off operator wording is bound
+    # to the behaviour.
+    ("D803-05: the arm line goes back to 'survives ONE warm reset'",
+     "fap01/aqroot_fap01.cpp",
+     '                    ? "; it is ALSO RECORDED for the NEXT FAP-01 boot of ANY "\n'
+     '                      "kind (EN pulse, power cycle or reflash) -- press Q and "\n'
+     '                      "see \'NVS confirmed clear\' before powering off or "\n'
+     '                      "reflashing, unless you are testing persistence"\n',
+     '                    ? "; it also survives ONE warm reset"\n',
+     "J/record: the arm line says the hold-off is recorded"),
+    ("D803-05: Q no longer erases a record it did not write this boot",
+     "fap01/aqroot_fap01.cpp",
+     "  if (p.getUChar(kNvsHoldOff, 0) != 0) (void)p.remove(kNvsHoldOff);\n"
+     "  const bool clear",
+     "  const bool clear",
+     "J/record: a stale record with nothing armed is still ERASED"),
+    ("D803-05: Q reports clear without reading the record back",
+     "fap01/aqroot_fap01.cpp",
+     "  if (p.getUChar(kNvsHoldOff, 0) != 0) (void)p.remove(kNvsHoldOff);\n"
+     "  const bool clear = p.getUChar(kNvsHoldOff, 0) == 0;",
+     "  const bool clear = true;",
+     "J/record: a stale record with nothing armed is still ERASED"),
+    ("D803-05: the boot no longer consumes the record (it would re-arm on "
+     "every boot)",
+     "fap01/aqroot_fap01.cpp",
+     "    if (mask != 0) (void)p.remove(kNvsHoldOff);\n",
+     "",
+     "J/record: ...a POWER CYCLE carries it"),
     ("D802: an all-ones VCELL register is printed as a plain sample",
      "fap01/aqroot_fap01.cpp",
      "      const bool implausible = counts == 0xFFFF || counts == 0x0000;",
@@ -1772,9 +1861,12 @@ ORDER_CONTROLS = [
 # destructive controls on the TEXT, so a future edit that the parser misreads
 # is a control that fails, not a gate that passes.
 def _pio_parse(text):
+    # D-803 / D803-04: STRICT, as PlatformIO is -- a duplicated option or
+    # section is refused ("option 'default_envs' in section 'platformio'
+    # already exists"), never resolved last-one-wins behind its back.
     cp = configparser.RawConfigParser(comment_prefixes=(";", "#"),
                                       inline_comment_prefixes=(";",),
-                                      strict=False, delimiters=("=",))
+                                      strict=True, delimiters=("=",))
     cp.optionxform = str
     cp.read_string(text)
     return cp
@@ -1813,6 +1905,11 @@ def _default_env_problems(text):
     problems = []
     try:
         cp = _pio_parse(text)
+    except (configparser.DuplicateOptionError,
+            configparser.DuplicateSectionError) as exc:
+        return ["platformio.ini repeats an option or section (PlatformIO "
+                "refuses the file; a last-one-wins reading would pick a "
+                "default behind its back): %s" % exc]
     except configparser.Error as exc:
         return ["platformio.ini does not parse: %s" % exc]
     if not cp.has_section("platformio"):
@@ -1971,25 +2068,198 @@ def _fap01_isolation_problems(ini_text, main_text, header_text, cpp_text):
     return problems
 
 
-def _pio_project_config():
+FAP01_PROCEDURE = ROOT / "docs/full-beta-v2/assembly/FAP01_FIRST_ARTICLE_IMAGE.md"
+FIRST_FIVE_PLAN = ROOT / "docs/full-beta-v2/assembly/FIRST_FIVE_ASSEMBLY_PLAN.md"
+ACCEPTANCE_REGISTER = ROOT / "docs/full-beta-v2/assembly/RELEASE_ACCEPTANCE_REGISTER.json"
+# D-803 / D803-05: the phrases that carry the hold-off rule, and the D-802
+# phrases that understated it.
+FAP01_WORDING_DOC = (
+    "Also **recorded in NVS for the NEXT FAP-01 boot of ANY kind** — an `EN` "
+    "pulse, a **power cycle**, or the first FAP-01 boot after a reflash "
+    "(D-803).  **Press `Q` and see `NVS confirmed clear` before powering off "
+    "or reflashing, unless you are intentionally testing persistence.**",
+    "rule (D-803 / D803-05): press `Q` and see `NVS confirmed clear` before\n"
+    "  powering off or reflashing — EXCEPT when persistence is the thing being\n"
+    "  tested**")
+FAP01_WORDING_PLAN = ("it is carried into the NEXT FAP-01 boot of ANY\n> kind — "
+                      "`EN` pulse, power cycle or reflash — so press `Q` and see "
+                      "`NVS\n> confirmed clear` before power-off or reflash "
+                      "unless testing persistence")
+FAP01_WORDING_STALE = ("survives ONE warm reset", "survives one reset",
+                       "for **one** following reset", "recorded for one reset",
+                       "survives at most one reset",
+                       "exactly one reset of any kind (an `EN` pulse or a "
+                       "power cycle)")
+
+
+def _fap01_wording_problems(doc, plan, cpp, header):
+    problems = []
+    for phrase in FAP01_WORDING_DOC:
+        if phrase not in doc:
+            problems.append("FAP01_FIRST_ARTICLE_IMAGE.md does not carry the "
+                            "hold-off rule: %r" % phrase[:70])
+    if FAP01_WORDING_PLAN not in plan:
+        problems.append("FIRST_FIVE_ASSEMBLY_PLAN.md does not carry the "
+                        "hold-off rule (next FAP-01 boot of any kind; Q first)")
+    register = (ACCEPTANCE_REGISTER.read_text(encoding="utf-8")
+                if ACCEPTANCE_REGISTER.exists() else "")
+    if "NEXT FAP-01 boot of ANY kind" not in register:
+        problems.append("RELEASE_ACCEPTANCE_REGISTER.json's FAP-01 H row does "
+                        "not carry the hold-off rule")
+    for name, text in (("FAP01_FIRST_ARTICLE_IMAGE.md", doc),
+                       ("FIRST_FIVE_ASSEMBLY_PLAN.md", plan),
+                       ("RELEASE_ACCEPTANCE_REGISTER.json", register),
+                       ("aqroot_fap01.cpp", cpp), ("aqroot_fap01.h", header)):
+        for stale in FAP01_WORDING_STALE:
+            if stale in text:
+                problems.append("%s understates the hold-off record: %r"
+                                % (name, stale))
+    return problems
+
+
+def _pio_executable(configured=None, path=None):
+    """D-803 / D803-04.  The PlatformIO the cross-check runs: the CONFIGURED
+    path first (`PIO`, i.e. `AQROOT_PIO` or the worker's venv), then `pio`
+    and `platformio` on PATH.  Returns (path or None, how it was found)."""
+    configured = PIO if configured is None else Path(configured)
+    if configured.is_file() and os.access(str(configured), os.X_OK):
+        return configured, "configured %s" % configured
+    for name in ("pio", "platformio"):
+        found = shutil.which(name, path=path)
+        if found:
+            return Path(found), "%s on PATH (%s)" % (name, found)
+    return None, ("no PlatformIO: %s absent, neither `pio` nor `platformio` "
+                  "on PATH" % configured)
+
+
+def _pio_project_config(project_dir=None, configured=None, path=None):
     """What PlatformIO ITSELF resolves as the default, when it is installed."""
-    if not PIO.exists():
-        return {"available": False}
-    run = subprocess.run([str(PIO), "project", "config", "--json-output",
-                          "-d", str(ROOT / "Firmware")],
+    exe, how = _pio_executable(configured, path)
+    if exe is None:
+        return {"available": False, "executable": None, "found_by": how}
+    run = subprocess.run([str(exe), "project", "config", "--json-output",
+                          "-d", str(project_dir or (ROOT / "Firmware"))],
                          capture_output=True, text=True, timeout=300)
     if run.returncode != 0:
-        return {"available": True, "error": run.stderr[-400:]}
+        return {"available": True, "executable": str(exe), "found_by": how,
+                "error": run.stderr[-400:]}
     try:
         sections = json.loads(run.stdout)
     except ValueError:
         return {"available": True, "error": "unparseable JSON"}
     table = {name: dict(opts) for name, opts in sections}
     return {
-        "available": True,
+        "available": True, "executable": str(exe), "found_by": how,
         "default_envs": table.get("platformio", {}).get("default_envs"),
         "environments": sorted(n[4:] for n in table if n.startswith("env:")),
     }
+
+
+def _h9_evaluate(ini_text, configured=None, path=None):
+    """D-803 / D803-04.  H9's verdict on one platformio.ini: the parser, and
+    the REQUIRED PlatformIO cross-check run on a fixture project holding
+    exactly that file.  An unavailable or failing PlatformIO is a problem --
+    it never contributes a PASS -- and the two readings must agree."""
+    problems = list(_default_env_problems(ini_text))
+    with tempfile.TemporaryDirectory(prefix="aqroot-h9-") as temporary:
+        project = Path(temporary) / "Firmware"
+        project.mkdir()
+        (project / "platformio.ini").write_text(ini_text, encoding="utf-8")
+        view = _pio_project_config(project, configured, path)
+    if not view.get("available"):
+        problems.append("the REQUIRED PlatformIO cross-check is UNAVAILABLE "
+                        "(%s): the parser alone does not pass H9"
+                        % view.get("found_by"))
+    elif "error" in view:
+        problems.append("`pio project config` failed: %s" % view["error"])
+    else:
+        if view.get("default_envs") != [RELEASE_ENV]:
+            problems.append("PlatformIO itself resolves default_envs to %r"
+                            % view.get("default_envs"))
+        try:
+            cp = _pio_parse(ini_text)
+            parsed = _pio_default_envs(cp)
+            parsed_envs = sorted(sec[4:] for sec in cp.sections()
+                                 if sec.startswith("env:"))
+        except configparser.Error:
+            parsed, parsed_envs = None, None
+        if parsed is not None and parsed != view.get("default_envs"):
+            problems.append("the parser (%r) and PlatformIO (%r) DISAGREE on "
+                            "default_envs" % (parsed, view.get("default_envs")))
+        if parsed_envs is not None and \
+                parsed_envs != view.get("environments"):
+            problems.append("the parser and PlatformIO DISAGREE on the "
+                            "environments: %r vs %r"
+                            % (parsed_envs, view.get("environments")))
+        for name in NAMED_ENVS:
+            if name not in view.get("environments", []):
+                problems.append("PlatformIO does not see [env:%s]" % name)
+    return {"problems": problems, "pio_project_config": view}
+
+
+def _h9_portability_controls(ini_text, default_line):
+    """D-803 / D803-04.  Each row runs `_h9_evaluate` end to end and states
+    the verdict it must reach."""
+    rows = []
+    real, _ = _pio_executable()
+    absent = Path(tempfile.gettempdir()) / "aqroot-h9-no-such-pio"
+
+    def row(case, text, must_pass, configured=None, path=None):
+        ev = _h9_evaluate(text, configured, path)
+        passed = not ev["problems"]
+        rows.append(dict(case=case, must_pass=must_pass, passed=passed,
+                         found_by=ev["pio_project_config"].get("found_by"),
+                         first_problem=(ev["problems"] or [None])[0],
+                         ok=passed == must_pass))
+    row("the PlatformIO executable is ABSENT (no configured path, empty "
+        "PATH): not a PASS", ini_text, False, absent, "")
+    if real is None:
+        rows.append(dict(case="PATH-only pio / platformio", ok=False,
+                         first_problem="no real PlatformIO to link"))
+    else:
+        with tempfile.TemporaryDirectory(prefix="aqroot-h9-path-") as tmp:
+            for name in ("pio", "platformio"):
+                d_ = Path(tmp) / name
+                d_.mkdir()
+                (d_ / name).symlink_to(real)
+                row("PATH-only `%s` (configured path absent) is FOUND and "
+                    "the valid file passes" % name, ini_text, True, absent,
+                    str(d_) + os.pathsep + "/usr/bin:/bin")
+    row("the normal aqroot-demo default passes", ini_text, True)
+    # a PlatformIO that reads the file differently from the parser -- a stub
+    # executable reporting the release default beside a second environment
+    # list -- must be a DISAGREEMENT, never a pass
+    with tempfile.TemporaryDirectory(prefix="aqroot-h9-stub-") as tmp:
+        stub = Path(tmp) / "pio"
+        stub.write_text(
+            "#!%s\nimport json\nprint(json.dumps([['platformio', "
+            "[['default_envs', ['aqroot-demo', 'wokwi']]]], ['env:aqroot-demo', "
+            "[]], ['env:wokwi', []]]))\n" % sys.executable, encoding="utf-8")
+        stub.chmod(0o755)
+        row("parser / PlatformIO DISAGREEMENT (a PlatformIO resolving a "
+            "different default and environment list) fails", ini_text, False,
+            stub, "")
+    for case, text in (
+            ("duplicate, CONFLICTING default_envs",
+             ini_text.replace(default_line, "default_envs = aqroot-demo-fap01\n"
+                              + default_line, 1)),
+            ("duplicate, identical default_envs",
+             ini_text.replace(default_line, default_line + default_line, 1)),
+            ("mixed default (aqroot-demo, wokwi)",
+             ini_text.replace(default_line,
+                              "default_envs = aqroot-demo, wokwi\n", 1)),
+            ("legacy default (esp32-s3-aqroot)",
+             ini_text.replace(default_line,
+                              "default_envs = esp32-s3-aqroot\n", 1)),
+            ("FAP-01 default",
+             ini_text.replace(default_line,
+                              "default_envs = aqroot-demo-fap01\n", 1)),
+            ("extra_configs added",
+             ini_text.replace(default_line, default_line
+                              + "extra_configs = local_override.ini\n", 1))):
+        row(case + " fails with the real PlatformIO", text, False)
+        row(case + " fails with PlatformIO ABSENT", text, False, absent, "")
+    return rows
 
 
 def run_host_test(test, mutation=None, variant=None):
@@ -2799,21 +3069,20 @@ def main():
 
     # ---- H9: THE SOLE DEFAULT ENVIRONMENT IS THE RELEASE IMAGE -----------
     # D-801 / D801-03.  Parsed, cross-checked against PlatformIO's own
-    # resolution where it is installed, and exercised by controls that
-    # rewrite the file the ways a maintainer actually would.
+    # resolution, and exercised by controls that rewrite the file the ways a
+    # maintainer actually would.
+    #
+    # D-803 / D803-04 (Round-22 R22-04): the cross-check is REQUIRED.  D-802
+    # returned PASS with no PlatformIO at all (and never looked on PATH), and
+    # its lenient parser read a duplicated, conflicting `default_envs` last-
+    # one-wins where PlatformIO refuses the file.  Now PlatformIO is found
+    # (configured path, then `pio` / `platformio` on PATH), an unavailable or
+    # failing cross-check is a PROBLEM, a duplicate is refused, and the
+    # parser and PlatformIO must AGREE on the default and the environments.
     ini_text = _read(PLATFORMIO_INI)
-    h9_problems = _default_env_problems(ini_text)
-    pio_view = _pio_project_config()
-    if pio_view.get("available") and "error" not in pio_view:
-        if pio_view.get("default_envs") != [RELEASE_ENV]:
-            h9_problems.append("PlatformIO itself resolves default_envs to %r"
-                               % pio_view.get("default_envs"))
-        for name in NAMED_ENVS:
-            if name not in pio_view.get("environments", []):
-                h9_problems.append("PlatformIO does not see [env:%s]" % name)
-    elif pio_view.get("available"):
-        h9_problems.append("`pio project config` failed: %s"
-                           % pio_view.get("error"))
+    h9_eval = _h9_evaluate(ini_text)
+    h9_problems = h9_eval["problems"]
+    pio_view = h9_eval["pio_project_config"]
     default_line = "default_envs = aqroot-demo\n"
     h9_controls = []
     for name, mutated in (
@@ -2838,7 +3107,13 @@ def main():
              ini_text.replace(default_line, default_line
                               + "extra_configs = local_override.ini\n", 1)),
             ("a named environment disappears (wokwi renamed)",
-             ini_text.replace("[env:wokwi]\n", "[env:wokwi-sim]\n", 1))):
+             ini_text.replace("[env:wokwi]\n", "[env:wokwi-sim]\n", 1)),
+            # D-803 / D803-04
+            ("a duplicated, CONFLICTING default_envs (FAP-01 first)",
+             ini_text.replace(default_line, "default_envs = aqroot-demo-fap01\n"
+                              + default_line, 1)),
+            ("a duplicated, identical default_envs",
+             ini_text.replace(default_line, default_line + default_line, 1))):
         if mutated == ini_text:
             h9_controls.append(dict(control=name, refused=False,
                                     first_reason="control text not found"))
@@ -2846,6 +3121,10 @@ def main():
         p_list = _default_env_problems(mutated)
         h9_controls.append(dict(control=name, refused=bool(p_list),
                                 first_reason=p_list[0] if p_list else None))
+    # D-803 / D803-04: the WHOLE evaluation -- parser AND the real
+    # PlatformIO cross-check -- on fixture projects, with the tool absent,
+    # present only on PATH as `pio` or as `platformio`, and each bad form.
+    h9_portability = _h9_portability_controls(ini_text, default_line)
     try:
         parsed_default = _pio_default_envs(_pio_parse(ini_text))
     except configparser.Error:
@@ -2858,8 +3137,10 @@ def main():
         "pio_project_config": pio_view,
         "problems": h9_problems,
         "controls": h9_controls,
+        "portability_controls": h9_portability,
         "verdict": ("PASS" if not h9_problems
-                    and all(c["refused"] for c in h9_controls) else "FAIL"),
+                    and all(c["refused"] for c in h9_controls)
+                    and all(c["ok"] for c in h9_portability) else "FAIL"),
     }
 
     # ---- H10: FAP-01 REACHES ITS OWN ENVIRONMENT AND NOTHING ELSE ----------
@@ -2944,6 +3225,33 @@ def main():
                                      first_reason="control text not found"))
             continue
         p_list = _fap01_isolation_problems(i_text, main_src, fap_header, c_text)
+        h10_controls.append(dict(control=name, refused=bool(p_list),
+                                 first_reason=p_list[0] if p_list else None))
+    # D-803 / D803-05 (Round-22 R22-05): the operator documents say what the
+    # image does -- the hold-off record reaches the NEXT FAP-01 boot of ANY
+    # kind, a power cycle included, and Q ("NVS confirmed clear") comes
+    # before power-off or reflash unless persistence is under test.  The
+    # behaviour itself is H6 (`J/record:` claims); this binds the words.
+    fap_doc = _read(FAP01_PROCEDURE)
+    fa_plan = _read(FIRST_FIVE_PLAN)
+    h10_problems += _fap01_wording_problems(fap_doc, fa_plan, fap_cpp,
+                                            fap_header)
+    for name, d_text, pl_text in (
+            ("the procedure goes back to 'survives exactly one reset of any "
+             "kind (an EN pulse or a power cycle)' with no Q rule",
+             fap_doc.replace(FAP01_WORDING_DOC[1], "", 1), fa_plan),
+            ("the procedure's H row says 'for one following reset'",
+             fap_doc.replace(FAP01_WORDING_DOC[0],
+                             "Also recorded in NVS for **one** following "
+                             "reset.", 1), fa_plan),
+            ("the assembly plan says 'it survives one reset'",
+             fap_doc, fa_plan.replace(FAP01_WORDING_PLAN, "it survives one "
+                                      "reset", 1))):
+        if (d_text, pl_text) == (fap_doc, fa_plan):
+            h10_controls.append(dict(control=name, refused=False,
+                                     first_reason="control text not found"))
+            continue
+        p_list = _fap01_wording_problems(d_text, pl_text, fap_cpp, fap_header)
         h10_controls.append(dict(control=name, refused=bool(p_list),
                                  first_reason=p_list[0] if p_list else None))
     report["H10_fap01_diagnostic_image_is_isolated"] = {

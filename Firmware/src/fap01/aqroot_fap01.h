@@ -226,8 +226,9 @@ struct Context {
 // Called by `demo/main.cpp` -- and ONLY inside
 // `#if defined(AQROOT_FAP01_DIAGNOSTIC)`:
 //   begin     in `setup()`, after the expander safe latches and BEFORE the
-//             boot radio quiesce, so a hold-off armed before a warm reset is
-//             in force when the boot quiesce runs;
+//             boot radio quiesce, so a hold-off recorded by the previous
+//             FAP-01 session -- carried by ANY reset, power cycle or reflash
+//             (D-803 / D803-05) -- is in force when the boot quiesce runs;
 //   announce  in `setup()`, once the console is up;
 //   service   first in every `loop()`, before any early return;
 //   handleKey first in the console dispatch; true = the key was consumed.

@@ -1,8 +1,9 @@
 #pragma once
 // AQROOT Demo -- D-801 / D801-01.  Host stand-in for the ESP32 core's NVS
 // `Preferences`, used ONLY by the FAP-01 image to carry an armed chip-select
-// hold-off across ONE warm reset.  The store deliberately survives
-// `aqroot_hal::recorder().reset()` -- that is what non-volatile means, and it
+// hold-off into the next FAP-01 boot of ANY kind (D-803 / D803-05: an EN
+// pulse, a power cycle or a reflash -- NVS survives all three).  The store
+// deliberately survives `aqroot_hal::recorder().reset()` -- that is what non-volatile means, and it
 // is what lets the test reset the MCU and keep the injection -- and a test
 // clears it explicitly with `aqroot_hal::nvs().clear()`.
 #include <stdint.h>

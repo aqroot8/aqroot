@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-26T04:13:13Z",
+ "fetched_utc": "2026-09-26T11:07:39Z",
  "keyword": "USBLC6-2SC6",
  "page_size": 25,
  "pages": 1,
@@ -102,7 +102,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 45265
+   "stockCount": 44883
   },
   {
    "assemblyComponentFlag": false,
@@ -282,7 +282,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 76391
+   "stockCount": 76049
   },
   {
    "assemblyComponentFlag": false,
@@ -384,7 +384,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 106634
+   "stockCount": 105623
   },
   {
    "assemblyComponentFlag": false,
@@ -972,7 +972,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 23084
+   "stockCount": 23060
   },
   {
    "assemblyComponentFlag": false,
@@ -1368,7 +1368,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 26543
+   "stockCount": 26524
   },
   {
    "assemblyComponentFlag": false,
@@ -1572,7 +1572,7 @@
    "minPurchaseNum": 1,
    "noBuyReason": null,
    "rohsFlag": 1,
-   "stockCount": 3201
+   "stockCount": 2941
   },
   {
    "assemblyComponentFlag": false,

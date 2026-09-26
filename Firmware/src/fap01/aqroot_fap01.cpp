@@ -47,11 +47,17 @@ uint32_t g_wifi_frames = 0;
 uint32_t g_audio_phase = 0;
 uint8_t g_restored_holdoffs = 0;
 
-// The NVS record that carries an IMMEDIATE hold-off across ONE warm reset,
-// so C-RADIO-QUIESCE-01 / C-NFC-QUIESCE-01 can watch the BOOT quiesce run
-// against a held-off part.  bit 0 = U7, bit 1 = U9.  It is written only while
-// a hold-off is in force, cleared when it is released or reaches its bound,
-// and CONSUMED (erased) by the first boot that reads it.
+// The NVS record that carries an IMMEDIATE hold-off into the NEXT FAP-01
+// BOOT OF ANY KIND -- an EN pulse, a power cycle, or the first FAP-01 boot
+// after a reflash (NVS survives all three, and a release image never reads
+// the record, so it waits for the next FAP-01 boot) -- so C-RADIO-QUIESCE-01
+// / C-NFC-QUIESCE-01 can watch the BOOT quiesce run against a held-off part.
+// bit 0 = U7, bit 1 = U9.  It is written only while a hold-off is in force,
+// cleared when it is released or reaches its bound, and CONSUMED (erased) by
+// the first FAP-01 boot that reads it.  D-803 / D803-05: so the operator
+// presses Q -- which releases every hold-off and prints "NVS confirmed
+// clear" -- before powering off or reflashing, unless persistence is the
+// thing being tested.
 constexpr const char *kNvsNamespace = "aqroot-fap01";
 constexpr const char *kNvsHoldOff = "holdoff";
 constexpr uint8_t kHoldOffU7 = 0x01;
@@ -424,50 +430,102 @@ void startNfcField() {
 // application stack's analog configuration.
 //
 // D-802 / D802-03 (Round-21 R21-03): AN ANSWER IS CLAIMED ONLY FROM FRESH,
-// CURRENT, SELF-CONSISTENT EVIDENCE.  D-801 printed "a tag answered" whenever
-// FIFO status 1 read >= 2 -- so an all-ones bus (FIFO 255, ATQA FF FF), a
-// FIFO count left over from before (an ignored command), or a stale ATQA all
-// read as a tag.  Now, in ONE bounded sequence, every step of which must
-// complete on the bus:
-//   0  refused outright while a U9 chip-select hold-off is armed or pending --
-//      a transaction whose select may never fall is not evidence -- and
-//      INVALID if the hold-off injected a single select during it;
-//   1  the field is still ours: Operation control 0xC8 and sup3V read back;
-//   2  FRESH: the main and error IRQ registers are read (which clears them,
-//      Tables 62/64 note 1) and Clear FIFO (DBh, section 4.4.3) is sent and
-//      PROVED -- FIFO status 1 and 2 must then read 0, which an ignored
-//      command, a stale FIFO or an all-ones bus cannot do;
-//   3  CURRENT: after C6h the main IRQ must show I_txe (the REQA really left)
-//      and, for an answer, I_rxe; an all-ones IRQ read is a dead bus;
-//   4  PLAUSIBLE: exactly two whole bytes (fifo_lb = 0, np_lb = 0), no FIFO
-//      overflow or underflow, no parity or framing error, and an ATQA whose
-//      ISO/IEC 14443-3 RFU bits (b6, b13..b16) are 0 and whose UID-size field
-//      is not the RFU value 11b -- FF FF fails all three;
-//   5  CONSUMED: after the two-byte FIFO read the FIFO is empty again with no
-//      underflow, so the bytes printed are the bytes that were received.
-// "No answer" is itself a finding and needs the same proof except I_rxe:
-// the REQA left (I_txe), nothing was received, and the FIFO is still empty.
-// Anything else is "NO VALID EVIDENCE" -- neither an answer nor its absence.
+// CURRENT, SELF-CONSISTENT EVIDENCE.
+//
+// D-803 / D803-01 (Round-22 R22-01): ...AND ONLY FROM A PART THAT WAS
+// PROVABLY ANSWERING ON EITHER SIDE OF EVERY PIECE OF IT.  D-802 still
+// trusted bytes a dead or recovering bus produced: a U9 that stopped
+// answering late read "no tag answered" (everything 0) or "a tag answered,
+// ATQA 00 00" (the drain read as 0); one that failed for a few bytes and
+// recovered left a stale FIFO the "proved" Clear FIFO never cleared, or
+// swallowed a late I_rxe; and a receive that raised an error but no I_rxe
+// was reported as no tag.  An end-only liveness read catches none of the
+// recovered cases.  Now:
+//   LIVE  = the IC identity reads ic_type 00101b (Table 117), 5Ah then A5h
+//           written to No-response timer 2 (11h) read back, 11h is restored
+//           to its 00h default (Table 50: 0 = timer not started) and read
+//           back, and the identity reads valid AGAIN.  A zero / all-ones /
+//           stale-reply / write-ignoring bus fails it.  The proof is taken FIVE times, so no single
+//           failure window -- persistent from any byte, or one that recovers
+//           -- can reach a verdict unless everything on at least one side of
+//           it was also re-proved by a live part:
+//   0  refused while a U9 chip-select hold-off is armed or pending, and
+//      INVALID if the hold-off injected a select during the transaction;
+//   1  the field is still ours (Operation control 0xC8, sup3V) ........ LIVE
+//   2  CLEAR: the main, timer and error IRQs are read (read clears them,
+//      Tables 62-64 note 1) and Clear FIFO (DBh) is sent ............... LIVE
+//   3  FRESH BOUNDARY: main IRQ, error IRQ and FIFO status 1/2 all read 0
+//      -- the clear in 2, which a live part took, really happened ....... LIVE
+//   4  C6h; the main IRQ is polled for I_txe and I_rxe; the error IRQ and
+//      FIFO status are read; for exactly two whole bytes with I_rxe and no
+//      error, the two ATQA bytes are drained ............................ LIVE
+//   5  FINAL: FIFO status 1/2, the main IRQ and the error IRQ all read 0 --
+//      nothing the verdict did not account for (a late I_rxe, bytes a lost
+//      read left behind) ............................................... LIVE
+// Every error outranks every verdict: I_col, I_rxs without I_rxe, any
+// receive error (I_crc, I_par, I_err2, I_err1), fifo_ovr, fifo_unf, an
+// incomplete last byte or FIFO bytes without I_rxe are NO VALID EVIDENCE,
+// never "no tag".  An ATQA must pass ISO/IEC 14443-3 6.3.2: exactly one
+// bit-frame anticollision bit (b1..b5), RFU b6 and b13..b16 zero, UID size
+// not 11b -- 00 00 and FF FF both fail.  "No answer" needs the same proof
+// except I_rxe.  Anything else is "NO VALID EVIDENCE".
 // The legacy PN532/I2C driver (`src/drivers/nfc.cpp`, the wrong part) is
 // never a fallback: FAP-01 builds `src/demo/ + src/hw/ + src/fap01/` only,
 // which `firmware_hw_map_contract` H10 asserts.
 constexpr uint8_t kRegMainIrq = 0x1A;
+constexpr uint8_t kRegTimerIrq = 0x1B;
 constexpr uint8_t kRegErrorIrq = 0x1C;
 constexpr uint8_t kRegFifoStatus1 = 0x1E;
 constexpr uint8_t kRegFifoStatus2 = 0x1F;
 constexpr uint8_t kCmdClearFifo = 0xDB;
 constexpr uint8_t kCmdTransmitReqa = 0xC6;
 constexpr uint8_t kFifoRead = 0x9F;
+constexpr uint8_t kIrqRxs = 0x20;
 constexpr uint8_t kIrqRxe = 0x10;
 constexpr uint8_t kIrqTxe = 0x08;
+constexpr uint8_t kIrqCol = 0x04;
 constexpr uint8_t kErrorIrqReceive = 0xF0;          // I_crc | I_par | I_err2 | I_err1
 constexpr uint8_t kFifoStatus2Flags = 0x3F;         // unf, ovr, lb2..lb0, np_lb
 constexpr uint8_t kFifoStatus2Count = 0xC0;         // fifo_b9, fifo_b8
+constexpr uint8_t kNrt2Default = 0x00;              // Table 50
 
 bool atqaPlausible(uint8_t lsb, uint8_t msb) {
-  return (lsb & 0x20) == 0            // b6 RFU
+  const uint8_t anticollision = uint8_t(lsb & 0x1F);  // b5..b1
+  return anticollision != 0 && (anticollision & (anticollision - 1)) == 0
+      && (lsb & 0x20) == 0            // b6 RFU
       && (lsb & 0xC0) != 0xC0         // b8b7 UID size 11b is RFU
       && (msb & 0xF0) == 0;           // b16..b13 RFU
+}
+
+// LIVE: U9 answers NOW, in both directions, with what only a live
+// ST25R3916 can answer.  `comm` goes false if a transfer could not take the
+// bus.  No. 11h is left at its default whatever happens after the first
+// write that lands.
+bool u9Live(SpiBusB &bus, bool &comm) {
+  using namespace st25r3916_spi;
+  uint8_t id = 0x00;
+  if (!readRegister(bus, kRegIcIdentity, &id)) { comm = false; return false; }
+  bool live = st25r3916IdentityIsValid(id);
+  for (uint8_t c : kChallenge) {
+    uint8_t rb = uint8_t(~c);
+    if (!writeRegister(bus, kRegNoResponseTimer2, c) ||
+        !readRegister(bus, kRegNoResponseTimer2, &rb)) {
+      comm = false;
+      live = false;
+      break;
+    }
+    if (rb != c) live = false;
+  }
+  uint8_t rb = 0xFF;
+  if (!writeRegister(bus, kRegNoResponseTimer2, kNrt2Default) ||
+      !readRegister(bus, kRegNoResponseTimer2, &rb)) {
+    comm = false;
+    return false;
+  }
+  // The restore reads back 00h, which a zero bus also reads: the proof ends
+  // on the identity again, which neither a zero nor an all-ones bus can fake.
+  if (!readRegister(bus, kRegIcIdentity, &id)) { comm = false; return false; }
+  return live && rb == kNrt2Default && st25r3916IdentityIsValid(id);
 }
 
 void sendReqa() {
@@ -491,6 +549,11 @@ void sendReqa() {
     if (!st25r3916_spi::readRegister(bus, addr, &v)) comm = false;
     return v;
   };
+  // Every step runs only while nothing has been found wrong.
+  auto live = [&bus, &comm, &invalid](const char *where) {
+    if (invalid != nullptr || !comm) return;
+    if (!u9Live(bus, comm) && comm) invalid = where;
+  };
   spiBBegin();
   // 1  the field is still ours, in the supply mode it came up in.
   const uint8_t op = rd(kRegOperationControl);
@@ -499,22 +562,35 @@ void sendReqa() {
     invalid = "the field is not confirmed up (Operation control / sup3V do not "
               "read back 0xC8 / the supply mode)";
   }
-  // 2  fresh: clear the IRQ status and the FIFO, and PROVE the FIFO cleared.
-  uint8_t f1 = 0xFF, f2 = 0xFF;
-  if (invalid == nullptr) {
+  live("U9 is not answering live before the REQA (IC identity / No-response "
+       "timer 2 challenge)");
+  // 2  clear the IRQ status and the FIFO, with a live part on both sides.
+  if (invalid == nullptr && comm) {
     (void)rd(kRegMainIrq);
+    (void)rd(kRegTimerIrq);
     (void)rd(kRegErrorIrq);
     if (!st25r3916_spi::command(bus, kCmdClearFifo)) comm = false;
+  }
+  live("U9 stopped answering live across the IRQ / FIFO clear");
+  // 3  the fresh boundary: the clear really happened.
+  uint8_t f1 = 0xFF, f2 = 0xFF;
+  if (invalid == nullptr && comm) {
+    const uint8_t m0 = rd(kRegMainIrq);
+    const uint8_t e0 = rd(kRegErrorIrq);
     f1 = rd(kRegFifoStatus1);
     f2 = rd(kRegFifoStatus2);
-    if (f1 != 0x00 || f2 != 0x00) {
-      invalid = "Clear FIFO NOT CONFIRMED -- the FIFO status did not read "
-                "empty (an ignored command, a stale FIFO or an all-ones bus)";
+    if (m0 != 0x00 || e0 != 0x00 || f1 != 0x00 || f2 != 0x00) {
+      invalid = "Clear FIFO NOT CONFIRMED -- the FIFO status / IRQs did not "
+                "read empty after the clear (an ignored command, a stale FIFO "
+                "or a bus that is not answering)";
     }
   }
-  // 3  current: the REQA, and the IRQs it raised.
+  live("U9 stopped answering live at the fresh boundary");
+  // 4  current: the REQA, the IRQs it raised, and the ATQA.
   uint8_t irq = 0x00, err = 0x00;
   bool irq_all_ones = false;
+  uint8_t atqa[3] = {0x00, 0x00, 0x00};
+  bool drained = false;
   if (invalid == nullptr && comm) {
     if (!st25r3916_spi::command(bus, kCmdTransmitReqa)) comm = false;
     const uint32_t start = millis();
@@ -530,35 +606,47 @@ void sendReqa() {
     f2 = rd(kRegFifoStatus2);
   }
   const unsigned count = unsigned(f1) | (unsigned(f2 & kFifoStatus2Count) << 2);
-  uint8_t atqa[3] = {0x00, 0x00, 0x00};
-  bool answer = false;
   if (invalid == nullptr && comm) {
+    // Every error outranks both verdicts, and is judged BEFORE I_rxe.
     if (irq_all_ones || err == 0xFF || f2 == 0xFF) {
       invalid = "an all-ones IRQ or FIFO status read -- the bus is not answering";
     } else if ((irq & kIrqTxe) == 0) {
       invalid = "no end-of-transmission IRQ -- the REQA was not confirmed sent";
-    } else if ((irq & kIrqRxe) == 0) {
-      if (count != 0) invalid = "FIFO bytes without an end-of-receive IRQ";
     } else if ((err & kErrorIrqReceive) != 0) {
-      invalid = "a parity / framing / CRC error on the receive";
-    } else if (count != 2 || (f2 & kFifoStatus2Flags) != 0) {
-      invalid = "the receive is not exactly two whole bytes with no FIFO "
-                "overflow or underflow";
+      invalid = "a CRC / parity / framing error on the receive";
+    } else if ((irq & kIrqCol) != 0) {
+      invalid = "a bit collision on the receive";
+    } else if ((f2 & kFifoStatus2Flags) != 0) {
+      invalid = "FIFO overflow / underflow or an incomplete last byte";
+    } else if ((irq & kIrqRxe) == 0) {
+      if ((irq & kIrqRxs) != 0) invalid = "a receive started (I_rxs) but never ended";
+      else if (count != 0) invalid = "FIFO bytes without an end-of-receive IRQ";
+    } else if (count != 2) {
+      invalid = "the receive is not exactly two whole bytes";
     } else {
-      // 5  consumed: read exactly two bytes, and the FIFO is empty after.
       const uint8_t out[3] = {kFifoRead, 0x00, 0x00};
       if (!st25r3916_spi::frame(bus, out, atqa, 3)) comm = false;
-      const uint8_t a1 = rd(kRegFifoStatus1);
-      const uint8_t a2 = rd(kRegFifoStatus2);
-      if (a1 != 0x00 || (a2 & 0xF0) != 0x00) {
-        invalid = "the FIFO did not drain to empty on a two-byte read";
-      } else if (!atqaPlausible(atqa[1], atqa[2])) {
-        invalid = "the ATQA fails ISO/IEC 14443-3 (RFU bits set, or FF FF)";
-      } else {
-        answer = true;
-      }
+      drained = true;
     }
   }
+  live("U9 stopped answering live during the REQA / ATQA read");
+  // 5  final: nothing is left that the verdict did not account for.
+  if (invalid == nullptr && comm) {
+    const uint8_t a1 = rd(kRegFifoStatus1);
+    const uint8_t a2 = rd(kRegFifoStatus2);
+    const uint8_t m1 = rd(kRegMainIrq);
+    const uint8_t e1 = rd(kRegErrorIrq);
+    if (a1 != 0x00 || (a2 & 0xF0) != 0x00) {
+      invalid = drained ? "the FIFO did not drain to empty on a two-byte read"
+                        : "bytes arrived in the FIFO that the verdict did not see";
+    } else if (m1 != 0x00 || e1 != 0x00) {
+      invalid = "a receive / error IRQ arrived after the verdict was formed";
+    } else if (drained && !atqaPlausible(atqa[1], atqa[2])) {
+      invalid = "the ATQA fails ISO/IEC 14443-3 (anticollision / RFU bits; "
+                "00 00 or FF FF)";
+    }
+  }
+  live("U9 stopped answering live after the REQA");
   spiBEnd();
   if (comm && invalid == nullptr && cs.injected() != injected_before) {
     invalid = "a chip-select hold-off interrupted the transaction";
@@ -572,13 +660,15 @@ void sendReqa() {
                   "absence is reported\n", invalid, irq, f1, f2);
     return;
   }
-  if (answer) {
+  if (drained) {
     Serial.printf("FAP-01: REQA -- VALID ANSWER: a tag answered, ATQA %02X %02X "
-                  "(fresh FIFO, I_txe + I_rxe, two whole bytes, no receive "
-                  "error, FIFO drained; REPORT ONLY)\n", atqa[1], atqa[2]);
+                  "(live U9 before, across and after; fresh FIFO, I_txe + "
+                  "I_rxe, two whole bytes, no receive error, FIFO drained; "
+                  "REPORT ONLY)\n", atqa[1], atqa[2]);
   } else {
-    Serial.printf("FAP-01: REQA -- no tag answered (REQA sent: I_txe, main IRQ "
-                  "0x%02X, no I_rxe, FIFO empty; REPORT ONLY)\n", irq);
+    Serial.printf("FAP-01: REQA -- no tag answered (live U9 before, across and "
+                  "after; REQA sent: I_txe, main IRQ 0x%02X, no I_rxs / I_rxe, "
+                  "no error, FIFO empty; REPORT ONLY)\n", irq);
   }
 }
 
@@ -779,6 +869,17 @@ void persistHoldOffs() {
   p.end();
 }
 
+// D-803 / D803-05: the record is gone, READ BACK -- what Q prints before
+// the operator may power off or reflash.
+bool holdOffRecordConfirmedClear() {
+  Preferences p;
+  if (!p.begin(kNvsNamespace, false)) return false;
+  if (p.getUChar(kNvsHoldOff, 0) != 0) (void)p.remove(kNvsHoldOff);
+  const bool clear = p.getUChar(kNvsHoldOff, 0) == 0;
+  p.end();
+  return clear;
+}
+
 const char *holdOffName(SpiBDevice d) {
   return d == SpiBDevice::Cc1101 ? "U7 CC1101_CS_N" : "U9 NFC_CS_N";
 }
@@ -806,7 +907,12 @@ void armHoldOff(SpiBDevice device, uint32_t delay_ms) {
                 "after this key and lasts at most %lu ms; the driver still "
                 "believes it selects the part%s\n", holdOffName(device),
                 (unsigned long)delay_ms, (unsigned long)kHoldOffMaxMs,
-                delay_ms == 0 ? "; it also survives ONE warm reset" : "");
+                delay_ms == 0
+                    ? "; it is ALSO RECORDED for the NEXT FAP-01 boot of ANY "
+                      "kind (EN pulse, power cycle or reflash) -- press Q and "
+                      "see 'NVS confirmed clear' before powering off or "
+                      "reflashing, unless you are testing persistence"
+                    : "");
 }
 
 // ===========================================================================
@@ -979,8 +1085,11 @@ void help() {
   say("    -- EXCLUSIVE: while it runs only W, Q, ? and s are accepted");
   say("  I IR NEC burst   H hold-off U7 CS   J hold-off U9 CS");
   say("  K U9 hold-off in 700 ms   Y U9 hold-off in 2000 ms");
+  say("    -- H / J are RECORDED for the NEXT FAP-01 boot of ANY kind (EN,");
+  say("       power cycle, reflash): Q before power-off / reflash unless");
+  say("       testing persistence");
   say("  A held audio   B held backlight duty   G VCELL 10 ms poll");
-  say("  Q stop every FAP-01 stimulus   ? this list");
+  say("  Q stop every FAP-01 stimulus, clear the hold-off record   ? this list");
 }
 
 }  // namespace
@@ -1006,7 +1115,8 @@ void begin(const Context &ctx) {
   // permission table is told so -- the one Wi-Fi owner states its own state.
   g_ctx.app->noteWifiRadioActive(false);
   g_ctx.selects->clearAll();
-  // ONE boot consumes an armed hold-off -- read, erase, apply.
+  // The next FAP-01 boot of ANY kind consumes a recorded hold-off -- read,
+  // erase, apply.
   Preferences p;
   if (p.begin(kNvsNamespace, false)) {
     const uint8_t mask = p.getUChar(kNvsHoldOff, 0);
@@ -1026,11 +1136,15 @@ void announce() {
   say("===============================================================");
   if (g_restored_holdoffs & kHoldOffU7) {
     say("FAP-01: chip-select hold-off RESTORED across the reset on U7 "
-        "CC1101_CS_N -- in force for 60000 ms from boot");
+        "CC1101_CS_N -- in force for 60000 ms from boot (the record a "
+        "previous FAP-01 session left; any reset, power cycle or reflash "
+        "carries it, and this boot erased it)");
   }
   if (g_restored_holdoffs & kHoldOffU9) {
     say("FAP-01: chip-select hold-off RESTORED across the reset on U9 "
-        "NFC_CS_N -- in force for 60000 ms from boot");
+        "NFC_CS_N -- in force for 60000 ms from boot (the record a previous "
+        "FAP-01 session left; any reset, power cycle or reflash carries it, "
+        "and this boot erased it)");
   }
 }
 
@@ -1142,6 +1256,11 @@ bool handleKey(char key) {
     case 'Q':
       stopAll("operator Q");
       say("FAP-01: every stimulus STOPPED");
+      say(holdOffRecordConfirmedClear()
+              ? "FAP-01: no hold-off is recorded for the next FAP-01 boot "
+                "(NVS confirmed clear) -- safe to power off or reflash"
+              : "FAP-01: the hold-off record is NOT CONFIRMED CLEAR -- do not "
+                "power off or reflash; press Q again");
       return true;
     case '?': help(); return true;
     // Release keys whose peripheral a HELD FAP-01 state owns: refused here

@@ -1,3 +1,51 @@
+## D-803 — 2026-09-26 — ROUND-22 FOCUSED PRE-ORDER CORRECTION: A REQA VERDICT ONLY FROM A LIVE PART, A ROLE-BOUND R_ins FAMILY, THE WHOLE OPERATIVE CORPUS SCANNED, A REQUIRED PLATFORMIO CROSS-CHECK, AND THE HOLD-OFF RECORD STATED AS IT BEHAVES
+
+The Round-22 independent review of D-802 reproduced five bounded non-PCB defects and asked
+for one traveler clarification.  **All six are closed**, and each witness was reproduced on
+the frozen D-802 tree first (`evidence/d803-round22-witnesses.json` for `R22-01`, `R22-04`,
+`R22-05`; `evidence/d803-full-gate-injections.json` and the contract's own witnesses for
+`R22-02`, `R22-03`).
+
+* **`D803-01` — `FAP-01` `T` trusts only a live `U9`.**  D-802 still turned a `U9` that
+  stopped answering late ("no tag answered", or "a tag answered, ATQA 00 00") or failed for a
+  few bytes and recovered (a stale FIFO behind a "proved" clear, a swallowed late `I_rxe`)
+  into a verdict, and reported a receive error without `I_rxe` as "no tag".  Every piece of
+  evidence now has a proved-live part on both sides (IC identity, a No-response-timer-2
+  challenge read back and restored, the identity again — five times), the fresh boundary
+  and the end re-read the IRQs and FIFO as empty, every error outranks both verdicts, and an
+  ATQA needs exactly one anticollision bit.  Swept over every byte of a REQA (2048
+  persistent, 98 304 recovered-window and 6 528 stale cases): no dead-bus verdict, no wrong
+  verdict; healthy tag and no-tag controls pass.
+* **`D803-02` — `R_ins`: role and value bound.**  "Ignore the DMM burden", "inserted
+  resistance remains zero", "use zero resistance for the series ammeter" and "the series DMM
+  replaces the clamp and insertion resistance is negligible" each passed F1–F14.  A clamp now
+  exempts only while it is the active instrument and no active series instrument is in the
+  sentence; fourteen injections caught in every operative document, eleven valid controls
+  clean.
+* **`D803-03` — the whole operative corpus, JSON decoded, history kept.**  The retired
+  pass-pair peak written by role, D-616 as current authority, an unconditional BATOCP
+  self-clearance and the 2× survival claim escaped because the scans read a named subset
+  and read JSON as bytes; and "HISTORICAL / SUPERSEDED: …; FAB1–FAB8 all pass" was refused
+  after the semicolon.  One scope rule now serves every family (fenced heading, `HISTORICAL
+  BEGIN/END`, an explicit label for its paragraph, a fence inherited across `;`), JSON is
+  read as decoded values, and each family has its own control in each of the 35 corpus
+  documents; the 2.6 A harness rating stays valid.
+* **`D803-04` — `H9` requires PlatformIO.**  D-802 passed `H9` with no PlatformIO at all and
+  never looked on PATH; its lenient parser read a duplicated, conflicting `default_envs`
+  last-one-wins.  PlatformIO is now found (configured path, then `pio` / `platformio` on
+  PATH), an unavailable cross-check is a failure, duplicates are refused, and the parser
+  and PlatformIO must agree — 17 end-to-end portability controls.
+* **`D803-05` — the hold-off record, as it behaves.**  An `H` / `J` record reaches the next
+  FAP-01 boot of ANY kind (a power cycle included), not "one warm reset"; `Q` erases it and
+  prints `NVS confirmed clear`, which the procedure requires before power-off or reflash
+  unless persistence is being tested.  Wording bound to behaviour by H6 claims and H10.
+* **`D803-06` — `C-ACC-01`** separates its sizing / diagnostic readings (400 mA single-rail;
+  400 mA + 300 mA shared-ground, held only for the reading) from the supported simultaneous
+  220 mA + 170 mA pair.  Normal operating authority is unchanged.
+
+**NO COPPER, no BOM / CPL line, no release-image behaviour change** — board sha256
+unchanged.  **REVIEW TARGET, NOT A FABRICATION AUTHORIZATION.  DO NOT ORDER.**
+
 ## D-802 — 2026-09-26 — ROUND-21 FOCUSED PRE-ORDER CORRECTION: THE FIRST-ARTICLE IMAGE SETS THE NFC SUPPLY MODE, HOLDS AN EXCLUSIVE WI-FI SESSION AND VALIDATES ITS REQA; TWO DOCUMENT-SCANNER ESCAPES CLOSED
 
 The Round-21 independent review of D-801 found five bounded non-PCB pre-order corrections.

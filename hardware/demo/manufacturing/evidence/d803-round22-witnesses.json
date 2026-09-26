@@ -1,0 +1,104 @@
+{
+ "after": {
+  "git_sha_parent": "d6f67692fcc9787ee0d43084a377562f4f26f9b9",
+  "tree": "working tree"
+ },
+ "before": {
+  "git_sha": "d6f67692fcc9787ee0d43084a377562f4f26f9b9",
+  "tree": "/tmp/d802"
+ },
+ "decision": "D-803",
+ "document_witnesses": "R22-02 / R22-03 are reproduced in demo_feature_contract itself (round22_rins_role_binding.witnesses; round22_publication_scope) and as full-gate injections in evidence/d803-full-gate-injections.json",
+ "model": "working-tree Firmware/test/image (D-803 byte-window hooks)",
+ "probes": {
+  "R22-01_reqa_fresh_live": {
+   "after": {
+    "compiled": true,
+    "exit": 0,
+    "reproduced": false,
+    "stdout": "HEALTHY tag=1 delay=0 answer=1 notag=0 nve=0 atqa=04 00 ok=1\nHEALTHY tag=1 delay=2 answer=1 notag=0 nve=0 atqa=04 00 ok=1\nHEALTHY tag=0 delay=0 answer=0 notag=1 nve=0 atqa= ok=1\nPERSISTENT cases=2048 trusted_dead_bus=0 affirmative=0 no_tag=0\nRECOVERED cases=98304 wrong=0 false_affirmative=0 false_negative=0 wrong_atqa=0\nSTALE cases=6528 stale_answer_claimed=0\nERROR_RANK I_col -> answer=0 notag=0 nve=1\nERROR_RANK I_err1 -> answer=0 notag=0 nve=1\nERROR_RANK I_par -> answer=0 notag=0 nve=1\nERROR_RANK I_crc -> answer=0 notag=0 nve=1\nERROR_RANK fifo_ovr -> answer=0 notag=0 nve=1\nERROR_RANK fifo_unf -> answer=0 notag=0 nve=1\nERROR_RANK lb_bits -> answer=0 notag=0 nve=1\nERROR_RANK I_rxs_only -> answer=0 notag=0 nve=1\nERROR_RANK cases=8 error_reported_as_no_tag=0\nHEALTHY ok=3/3\nR22-01 NOT REPRODUCED\n"
+   },
+   "before": {
+    "compiled": true,
+    "exit": 0,
+    "reproduced": true,
+    "stdout": "HEALTHY tag=1 delay=0 answer=1 notag=0 nve=0 atqa=04 00 ok=1\nHEALTHY tag=1 delay=2 answer=1 notag=0 nve=0 atqa=04 00 ok=1\nHEALTHY tag=0 delay=0 answer=0 notag=1 nve=0 atqa= ok=1\nPERSISTENT cases=576 trusted_dead_bus=144 affirmative=36 no_tag=108\n  first: tag=0 delay=0 hears=0 fill=00 from_byte=16/42 -> no tag answered\nRECOVERED cases=27648 wrong=844 false_affirmative=0 false_negative=116 wrong_atqa=728\n  first: tag=1 delay=0 hears=0 fill=00 window=[23,+3)/29 -> a tag answered ATQA 00 00\nSTALE cases=2016 stale_answer_claimed=8\nERROR_RANK I_col -> answer=0 notag=1 nve=0\nERROR_RANK I_err1 -> answer=0 notag=1 nve=0\nERROR_RANK I_par -> answer=0 notag=1 nve=0\nERROR_RANK I_crc -> answer=0 notag=1 nve=0\nERROR_RANK fifo_ovr -> answer=0 notag=1 nve=0\nERROR_RANK fifo_unf -> answer=0 notag=1 nve=0\nERROR_RANK lb_bits -> answer=0 notag=1 nve=0\nERROR_RANK I_rxs_only -> answer=0 notag=1 nve=0\nERROR_RANK cases=8 error_reported_as_no_tag=8\nHEALTHY ok=3/3\nR22-01 REPRODUCED\n"
+   }
+  },
+  "R22-04_h9_platformio_authority": {
+   "after": {
+    "cases": {
+     "duplicate_conflicting_default_pio_absent": {
+      "cross_check": "no PlatformIO: /tmp/aqroot-h9-no-such-pio absent, neither `pio` nor `platformio` on PATH",
+      "first_problem": "platformio.ini repeats an option or section (PlatformIO refuses the file; a last-one-wins reading would pick a default behind its back): While reading from '<string>' [line 29]: option 'default_envs' in section 'platformio' already exists",
+      "verdict": "FAIL"
+     },
+     "pio_absent": {
+      "cross_check": "no PlatformIO: /tmp/aqroot-h9-no-such-pio absent, neither `pio` nor `platformio` on PATH",
+      "first_problem": "the REQUIRED PlatformIO cross-check is UNAVAILABLE (no PlatformIO: /tmp/aqroot-h9-no-such-pio absent, neither `pio` nor `platformio` on PATH): the parser alone does not pass H9",
+      "verdict": "FAIL"
+     },
+     "pio_only_on_PATH": {
+      "cross_check": "pio on PATH (/tmp/d803-h9-l70d7peq/pio/pio)",
+      "first_problem": null,
+      "verdict": "PASS"
+     },
+     "platformio_only_on_PATH": {
+      "cross_check": "platformio on PATH (/tmp/d803-h9-l70d7peq/platformio/platformio)",
+      "first_problem": null,
+      "verdict": "PASS"
+     }
+    },
+    "reproduced": false
+   },
+   "before": {
+    "cases": {
+     "duplicate_conflicting_default_pio_absent": {
+      "cross_check": {
+       "available": false
+      },
+      "first_problem": null,
+      "verdict": "PASS"
+     },
+     "pio_absent": {
+      "cross_check": {
+       "available": false
+      },
+      "first_problem": null,
+      "verdict": "PASS"
+     },
+     "pio_only_on_PATH": {
+      "cross_check": {
+       "available": false
+      },
+      "first_problem": null,
+      "verdict": "PASS"
+     },
+     "platformio_only_on_PATH": {
+      "cross_check": {
+       "available": false
+      },
+      "first_problem": null,
+      "verdict": "PASS"
+     }
+    },
+    "reproduced": true
+   }
+  },
+  "R22-05_holdoff_operator_wording": {
+   "after": {
+    "compiled": true,
+    "exit": 0,
+    "reproduced": false,
+    "stdout": "ARM_LINE FAP-01: chip-select hold-off ARMED on U9 NFC_CS_N -- begins 0 ms after this key and lasts at most 60000 ms; the driver still believes it selects the part; it is ALSO RECORDED for the NEXT FAP-01 boot of ANY kind (EN pulse, power cycle or reflash) -- press Q and see 'NVS confirmed clear' before powering off or reflashing, unless you are testing persistence\nrecorded=1 power_cycle_restores=1 arm_says_ONE_warm_reset=0 arm_names_power_cycle=1 Q_confirms_clear=1 Q_erases_stale=1\nR22-05 NOT REPRODUCED\n"
+   },
+   "before": {
+    "compiled": true,
+    "exit": 0,
+    "reproduced": true,
+    "stdout": "ARM_LINE FAP-01: chip-select hold-off ARMED on U9 NFC_CS_N -- begins 0 ms after this key and lasts at most 60000 ms; the driver still believes it selects the part; it also survives ONE warm reset\nrecorded=1 power_cycle_restores=1 arm_says_ONE_warm_reset=1 arm_names_power_cycle=0 Q_confirms_clear=0 Q_erases_stale=1\nR22-05 REPRODUCED\n"
+   }
+  }
+ },
+ "schema": 1
+}

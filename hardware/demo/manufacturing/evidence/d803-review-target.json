@@ -1,0 +1,38 @@
+{
+ "schema": 1,
+ "decision": "D-803",
+ "branch": "aqroot-demo",
+ "board": "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907",
+ "board_changes": [],
+ "no_copper_change": true,
+ "no_release_image_change": true,
+ "parent_reviewed_by_round_22": "d6f67692fcc9787ee0d43084a377562f4f26f9b9",
+ "content_commit": "recorded by the identity commit",
+ "identity_commit": "the identity commit -- it records the content commit's SHA; a commit cannot contain its own",
+ "manifest": "hardware/demo/fab/MANIFEST.json",
+ "manifest_sha256": "recorded by the identity commit",
+ "closed_here": {
+  "D803_01_R22_01": "FAP-01 T: a LIVE proof (IC identity, 5Ah/A5h No-response-timer-2 challenge read back, 11h restored to 00h and read back, identity again) five times per REQA; the fresh boundary and the end re-read main/error IRQ and FIFO status as 0; I_col, I_rxs without I_rxe, CRC/parity/framing, fifo_ovr/unf and an incomplete last byte outrank both verdicts; ATQA needs exactly one anticollision bit. Witness sweep on D-802 firmware: 144/576 persistent verdicts, 844 wrong recovered-window verdicts, 8 stale answers, 8/8 errors as 'no tag'; after: 0/2048, 0/98304, 0/6528, 0/8; healthy controls pass. H6: 8 claims (compact sweep incl. every byte x windows 1..40), 10 controls incl. the end-only shape",
+  "D803_02_R22_02": "F12 round22_rins_role_binding: measurement role and insertion value bound (clamp exempts only as the ACTIVE instrument with no ACTIVE series instrument; DMM burden, inserted resistance, value-before-role, 'adds no resistance', 'R_ins = 0.'); 14 injections caught in every operative document; Astra's 4 forms missed by D-802's rule and caught; 11 valid controls clean",
+  "D803_03_R22_03": "F12 round22_publication_scope over 35 corpus documents (JSON decoded; CTO_DECISIONS / CHANGELOG excluded by name): retired pass-pair values, the 2.60 A peak bound to its pass-pair role (2.6 A harness rating valid), 2x survival, D-616 as current authority, unconditional BATOCP self-clearance; 10 families x 35 documents each injected alone; 7 legitimate controls clean in every document; one scope rule (fenced heading, HISTORICAL BEGIN/END, explicit label for its paragraph, fence inherited across ';') now also serves the Round-20 families and the F10 pass-pair scan",
+  "D803_04_R22_04": "H9: PlatformIO found by configured path then pio / platformio on PATH; unavailable cross-check is a FAIL; strict parser refuses duplicate options; parser and PlatformIO must agree on default and environments; 17 end-to-end portability controls",
+  "D803_05_R22_05": "FAP-01 hold-off record stated as reaching the NEXT FAP-01 boot of ANY kind (EN pulse, power cycle, reflash); Q erases and reads back ('NVS confirmed clear'), required before power-off / reflash unless testing persistence; comments, arm/boot/help lines, header, procedure, plan, register; H6 5 claims + 4 controls; H10 wording binding + 3 controls",
+  "D803_06": "C-ACC-01 separates (a) 400 mA single-rail, (b) 400 mA + 300 mA shared-ground SIZING case held only for the reading, (c) the supported 220 mA + 170 mA simultaneous pair; no operating-authority change; traveler (both copies), plan row, fab-notes line"
+ },
+ "witnesses": {
+  "code": "evidence/d803-round22-witnesses.json (script evidence/d803-round22-witnesses.py; R22-01, R22-04, R22-05 before on d6f67692, after on this tree)",
+  "documents": "evidence/d803-full-gate-injections.json (R22-02 + R22-03: one full F1-F14 run on d6f67692 with every Astra escape in her carriers, and the same injection on this tree); in-contract witnesses round22_rins_role_binding / round22_publication_scope",
+  "astra_bundle": "/tmp/aqroot-forensic-d802-d6f67692 (document-results.json, h9-portability.json, nfc-*-sweep.json)"
+ },
+ "sourcing": "fresh --refresh sweep 2026-09-26T11:06:44Z..11:07:48Z, 123 lines, 8 short/unknown (D-802's nine less LQW18AN39NG80D, 4003 in stock) -- evidence/d803-sourcing-sweep.json",
+ "order_status": {
+  "PRE_ORDER_ANALYTICAL": "CLOSED on this target",
+  "FAB_CAM_ACCEPTANCE": "PENDING (B01-B14)",
+  "FIRST_ARTICLE_VALIDATION": "PENDING (FA01-FA10; FAP-01 implemented and corrected, bench execution pending hardware)",
+  "PROCUREMENT": "PENDING (genuine AO4800 allocation, exact constrained-group allocation, R20-P01, R20-P02, --refresh re-sweep immediately before the order)",
+  "ENCLOSURE_FIT": "PENDING"
+ },
+ "gates": {},
+ "post_commit_verification": {}
+}

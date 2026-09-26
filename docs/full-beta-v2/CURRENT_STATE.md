@@ -14,7 +14,33 @@
 
 ## 1. Authoritative HEAD
 
-> ### **D-802 REVIEW TARGET — THE EXACT FROZEN IDENTITY**
+> ### **D-803 REVIEW TARGET — THE EXACT FROZEN IDENTITY**
+>
+> | what | value |
+> |---|---|
+> | branch | `origin/aqroot-demo` |
+> | content commit | *recorded by the identity commit in `evidence/d803-review-target.json`* |
+> | identity / post-commit verification commit | *this commit — a commit cannot contain its own SHA, so the reviewable target is the PAIR* |
+> | board `aqroot-Beta-v2.kicad_pcb` sha256 | `c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907` |
+> | `hardware/demo/fab/MANIFEST.json` sha256 | *recorded by the identity commit* |
+> | parent, reviewed by Round-22 | `d6f67692fcc9787ee0d43084a377562f4f26f9b9` (D-802 identity) |
+>
+> The board sha256 is IDENTICAL to the reviewed D-802 target: **no copper moved**, and no
+> BOM or CPL line changes; the release image's behaviour does not change.  D-803 closes
+> Round-22's five reproduced items and one traveler clarification: the first-article image
+> `FAP-01` trusts a REQA verdict only from a `U9` proved live on both sides of every piece of
+> evidence, with every receive / FIFO error outranking "no tag" (`D803-01`); F12 binds an
+> inserted meter's measurement role to its insertion value (`D803-02`); the publication
+> scan reads the whole operative corpus, JSON decoded, with explicit historical scope kept
+> across clause splits (`D803-03`); `H9` requires a real PlatformIO cross-check and refuses
+> duplicate / disagreeing defaults (`D803-04`); the hold-off record is stated as reaching the
+> next FAP-01 boot of any kind, with `Q` / `NVS confirmed clear` before power-off or reflash
+> (`D803-05`); and `C-ACC-01` separates its sizing / diagnostic readings from the supported
+> 220 mA + 170 mA simultaneous pair (`D803-06`).  The full record is
+> `evidence/d803-review-target.json`.
+> **REVIEW TARGET, NOT A FABRICATION AUTHORIZATION.  DO NOT ORDER.**
+
+> ### **D-802 REVIEW TARGET — THE EXACT FROZEN IDENTITY**  *(**HISTORICAL** — graded by Round-22, superseded by D-803)*
 >
 > | what | value |
 > |---|---|
@@ -273,11 +299,18 @@
 > `verify_promotion` PASS and `protected_copper` showing exactly one protected
 > net moved.  `U14.7` is on the bus.  This board has **no open owner decision**.
 
-> # **D-802 ROUND-21 FOCUSED PRE-ORDER CORRECTION — CURRENT EXTERNAL-REVIEW TARGET**
+> # **D-803 ROUND-22 FOCUSED PRE-ORDER CORRECTION — CURRENT EXTERNAL-REVIEW TARGET**
 >
-> *(The D-801 and Round-19 content below this D-802 summary still stands unless a D-802 line says otherwise.)*
+> *(The D-802, D-801 and Round-19 content below this D-803 summary still stands unless a D-803 line says otherwise.)*
 >
-> **D-802 (Round-21: five focused non-PCB pre-order corrections).**  NO COPPER, no BOM / CPL change, no release-image behaviour change.  What changed:
+> **D-803 (Round-22: five reproduced non-PCB defects and one traveler clarification).**  NO COPPER, no BOM / CPL change, no release-image behaviour change.  What changed:
+>
+> * **D-803: `FAP-01` `T` trusts only a live `U9`** — every piece of REQA evidence has a proved-live part on both sides of it (IC identity, a No-response-timer-2 challenge read back and restored to 00h, the identity again; five times per REQA), the fresh boundary re-reads the IRQs and FIFO empty, the final FIFO and IRQs must be empty, every receive / FIFO error outranks both verdicts, and an ATQA needs exactly one anticollision bit.  Swept over every byte of a REQA: a late persistent failure yields no verdict, a failure that recovers yields no wrong one.
+> * **D-803: the hold-off record** reaches the next FAP-01 boot of ANY kind (`EN` pulse, power cycle, reflash); `Q` erases it and prints `NVS confirmed clear`, required before power-off or reflash unless persistence is being tested.
+> * **D-803: `C-ACC-01`** — the 400 mA single-rail and the 400 mA + 300 mA shared-ground readings are SIZING / DIAGNOSTIC measurements; both rails together are supported only at the declared 220 mA + 170 mA pair.
+> * **D-803: the verifiers** — F12 binds an inserted meter's role to its insertion value; the publication scan covers the whole operative corpus with JSON decoded and explicit historical scope kept across clause splits; `H9` requires a real PlatformIO cross-check (configured path, then PATH) and refuses duplicate or disagreeing defaults.
+>
+> **D-802 (Round-21: five focused non-PCB pre-order corrections) — still current at D-803.**  NO COPPER, no BOM / CPL change, no release-image behaviour change.  What changed:
 >
 > * **D-802: `FAP-01` `N` sets the ST25R3916 supply mode first** — IO configuration register 2 `sup3V` = 1, written and read back before `en` and Adjust regulators on every field start (`U9` VDD is `+3V3` through `R106`; the value is generated from that population).  D-801 enabled the regulators in the 5 V power-up mode.
 > * **D-802: `FAP-01` `W` is EXCLUSIVE for its whole session** — it starts only from a quiet board, and every key but `W`, `Q`, `?` and `s` is refused until it stops.
@@ -354,7 +387,7 @@
 > |---|---|
 > | **PRE-ORDER ANALYTICAL** | **CLOSED on this target** |
 > | **FAB / CAM ACCEPTANCE** | **PENDING** — B01–B14 in `assembly/RELEASE_ACCEPTANCE_REGISTER.json` and the fab notes |
-> | **FIRST-ARTICLE VALIDATION** | **PENDING** — FA01–FA10, enumerated in the same register and in `FIRST_FIVE_ASSEMBLY_PLAN` §7d; their prerequisite `FAP-01` (the first-article test image) is IMPLEMENTED at D-801, corrected at D-802 (`sup3V`, the exclusive Wi-Fi session, validated REQA verdicts) and host-tested, bench execution pending hardware |
+> | **FIRST-ARTICLE VALIDATION** | **PENDING** — FA01–FA10, enumerated in the same register and in `FIRST_FIVE_ASSEMBLY_PLAN` §7d; their prerequisite `FAP-01` (the first-article test image) is IMPLEMENTED at D-801, corrected at D-802 (`sup3V`, the exclusive Wi-Fi session, validated REQA verdicts) and D-803 (REQA evidence only from a live `U9`, the hold-off record rule) and host-tested, bench execution pending hardware |
 > | **PROCUREMENT** | **PENDING** — nine constrained fitted groups (D-801 fresh sweep; the D-802 `--refresh` sweep of 2026-09-26 reads the same nine at the same counts), the AOS pass-pair allocation, `R20-P01` (`L3` voltage, Coilcraft) and `R20-P02` (pack PCM threshold, Adafruit), and a `--refresh` re-sweep immediately before the order |
 
 > # **D-798 ROUND-17 TARGETED-CONVERGENCE CORRECTION — HISTORICAL, SUPERSEDED BY D-799 (REJECTED by Round-18; its `OCV_lb` formula is RETIRED)**

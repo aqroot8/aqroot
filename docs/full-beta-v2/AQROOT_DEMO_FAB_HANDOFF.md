@@ -2,26 +2,52 @@
 
 
 
-> # **STATUS: D-802 ROUND-21 FOCUSED PRE-ORDER CORRECTION — EXTERNAL-REVIEW TARGET, BOARD AUTHORITY `c8eabd43` (2026-09-26).**
+> # **STATUS: D-803 ROUND-22 FOCUSED PRE-ORDER CORRECTION — EXTERNAL-REVIEW TARGET, BOARD AUTHORITY `c8eabd43` (2026-09-26).**
 >
-> **D-802 supersedes D-801, in which the Round-21 independent review found five bounded
-> non-PCB pre-order corrections (`R21-01`..`R21-05`): three in the NON-PRODUCTION
-> first-article image `FAP-01` and two in the document verifier.  THIS IS A REVIEW TARGET,
-> NOT A FABRICATION AUTHORIZATION — DO NOT ORDER.**  **No copper, net, footprint, placement,
-> part value, BOM line, CPL line or protected-copper object moves at D-802** — the board
-> sha256 is unchanged at `c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907`.
-> The release firmware image's behaviour does not change.  Connectivity is **174 retained /
-> 173 connected / one owner-approved `U11.3` open / zero unapproved**.  The D-802 content commit
-> is `0972d13b6bb9b81dc98e9323b2ff52ab78dc767c`; the current MANIFEST sha256 is
-> `3f0135bac310aec559425ae854b1d39ce6bc764361d4cf0ed2c20796958c2a15`; the identity commit and the post-commit
-> verification are recorded in `hardware/demo/manufacturing/evidence/d802-review-target.json`.  The reviewed
-> parent is the D-801 identity commit `e54adcc310505ef963acaac83924eb4a2c68622a`.
+> **D-803 supersedes D-802, in which the Round-22 independent review reproduced five bounded
+> non-PCB defects (`R22-01`..`R22-05`, closed as `D803-01`..`D803-05`) and asked for one
+> Demo-focused traveler clarification (`D803-06`).  THIS IS A REVIEW TARGET, NOT A
+> FABRICATION AUTHORIZATION — DO NOT ORDER.**  **No copper, net, footprint, placement, part
+> value, BOM line, CPL line or protected-copper object moves at D-803** — the board sha256 is
+> unchanged at `c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907`.  The
+> release firmware image's behaviour does not change.  Connectivity is **174 retained / 173
+> connected / one owner-approved `U11.3` open / zero unapproved**.  The D-803 content commit,
+> the current MANIFEST sha256, the identity commit and the post-commit verification are
+> recorded in `hardware/demo/manufacturing/evidence/d803-review-target.json`.  The reviewed
+> parent is the D-802 identity commit `d6f67692fcc9787ee0d43084a377562f4f26f9b9`.
 >
 > **PRE-ORDER ANALYTICAL: CLOSED on this target.  FAB/CAM ACCEPTANCE (B01–B14), FIRST-ARTICLE
 > VALIDATION (FA01–FA10; prerequisite `FAP-01` IMPLEMENTED and corrected, bench execution
-> pending hardware) and PROCUREMENT: PENDING.**
+> pending hardware), GENUINE EXACT-PART PROCUREMENT / ALLOCATION and ENCLOSURE FIT: PENDING.**
 >
-> ### What changed at D-802, for a technician
+> ### What changed at D-803, for a technician
+>
+> * **`FAP-01` `T` TRUSTS ONLY A LIVE `U9` (`D803-01`).**  D-802 still read a late-dead or
+>   briefly-dead-then-recovered bus as "no tag answered" or "a tag answered, ATQA 00 00", and
+>   reported a receive error without `I_rxe` as "no tag".  Every piece of REQA evidence now
+>   has a provably live `U9` on both sides of it (IC identity, a No-response-timer-2
+>   challenge read back and restored, the identity again — five times per REQA); the fresh
+>   boundary re-reads the IRQs and FIFO as empty; the final FIFO and IRQs must be empty; any
+>   error outranks both verdicts; an ATQA needs exactly one anticollision bit.
+> * **HOLD-OFF RECORD (`D803-05`).**  An `H` / `J` hold-off is recorded for the NEXT FAP-01
+>   boot of ANY kind — an `EN` pulse, a **power cycle** or a reflash — not "one warm reset".
+>   **Press `Q` and see `NVS confirmed clear` before powering off or reflashing**, unless the
+>   step is testing persistence on purpose.
+> * **`C-ACC-01` IS A SIZING / DIAGNOSTIC STEP (`D803-06`).**  The 400 mA single-rail reading
+>   and the 400 mA + 300 mA shared-ground sizing case are measurements held only for the
+>   reading, NOT operating modes; both rails together are supported only at the declared
+>   **220 mA + 170 mA** pair.  Normal operating authority is unchanged.
+> * **THE VERIFIERS (`D803-02`, `D803-03`, `D803-04`).**  F12 binds an inserted meter's
+>   measurement role to its insertion value, so Astra's four Round-22 forms are refused and a
+>   clamp exempts only while it is the active instrument; the retired pass-pair figures and
+>   2.60 A peak (by role — the 2.6 A harness rating stays valid), the 2× survival claim,
+>   D-616 as current authority and an unconditional BATOCP self-clearance are refused across
+>   the whole operative corpus with JSON read decoded, and explicit HISTORICAL scope survives
+>   clause splitting; `H9` finds PlatformIO (configured path, then `pio` / `platformio` on
+>   PATH), fails when it is unavailable, and refuses duplicate `default_envs` and any
+>   parser / PlatformIO disagreement.
+>
+> ### What changed at D-802 — still current at D-803 — for a technician
 >
 > * **`FAP-01` `N` SETS THE NFC SUPPLY MODE FIRST (`R21-01`).**  `U9`'s VDD is `+3V3`
 >   through `R106` (fitted; `R107` and `U13` DNP).  The ST25R3916 powers up — and returns
@@ -40,7 +66,7 @@
 >   nothing in ANY predicate form, and the withdrawn pass-pair figures in ANY operative
 >   document (`DEVICE_SPEC` included), are refused by F12 / F10.
 >
-> ### What changed at D-801 — still current at D-802 — for a fabricator, an assembler, a buyer and a technician
+> ### What changed at D-801 — still current at D-803 — for a fabricator, an assembler, a buyer and a technician
 >
 > * **THE FIRST-ARTICLE TEST IMAGE EXISTS (`D801-01`).**  `pio run -e aqroot-demo-fap01`
 >   builds `FAP-01`; `assembly/FAP01_FIRST_ARTICLE_IMAGE.md` gives the build / flash
@@ -81,6 +107,25 @@
 > * **HISTORICAL DOCUMENT FENCED.**  `AQROOT_DEMO_FABRICATION_PACKAGE.md` is the D-616 record;
 >   the current authority is this handoff, `hardware/demo/fab/aqroot-Demo-FAB-NOTES.md` and
 >   `MANIFEST.json`.
+
+> # **STATUS: D-802 ROUND-21 FOCUSED PRE-ORDER CORRECTION — EXTERNAL-REVIEW TARGET, BOARD AUTHORITY `c8eabd43` (2026-09-26).**  *(HISTORICAL — superseded by D-803 above.  Its closures STAND and its "What changed" lists are carried, still current, under D-803; its `FAP-01` `T` evidence rule, its hold-off wording, its lenient `H9` and its R_ins / publication scanner scope DO NOT.)*
+>
+> **D-802 supersedes D-801, in which the Round-21 independent review found five bounded
+> non-PCB pre-order corrections (`R21-01`..`R21-05`): three in the NON-PRODUCTION
+> first-article image `FAP-01` and two in the document verifier.  THIS IS A REVIEW TARGET,
+> NOT A FABRICATION AUTHORIZATION — DO NOT ORDER.**  **No copper, net, footprint, placement,
+> part value, BOM line, CPL line or protected-copper object moves at D-802** — the board
+> sha256 is unchanged at `c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907`.
+> The release firmware image's behaviour does not change.  Connectivity is **174 retained /
+> 173 connected / one owner-approved `U11.3` open / zero unapproved**.  The D-802 content commit
+> is `0972d13b6bb9b81dc98e9323b2ff52ab78dc767c`; the current MANIFEST sha256 is
+> `3f0135bac310aec559425ae854b1d39ce6bc764361d4cf0ed2c20796958c2a15`; the identity commit and the post-commit
+> verification are recorded in `hardware/demo/manufacturing/evidence/d802-review-target.json`.  The reviewed
+> parent is the D-801 identity commit `e54adcc310505ef963acaac83924eb4a2c68622a`.
+>
+> **PRE-ORDER ANALYTICAL: CLOSED on this target.  FAB/CAM ACCEPTANCE (B01–B14), FIRST-ARTICLE
+> VALIDATION (FA01–FA10; prerequisite `FAP-01` IMPLEMENTED and corrected, bench execution
+> pending hardware) and PROCUREMENT: PENDING.**
 
 > # **STATUS: D-801 ROUND-20 BOUNDED PRE-ORDER CORRECTION — EXTERNAL-REVIEW TARGET, BOARD AUTHORITY `c8eabd43` (2026-09-25).**  *(HISTORICAL — superseded by D-802 above.  Its closures STAND and its "What changed at D-801" list is carried, still current, under D-802; its `FAP-01` `N` supply mode, `W` session and `T` verdict DO NOT.)*
 >

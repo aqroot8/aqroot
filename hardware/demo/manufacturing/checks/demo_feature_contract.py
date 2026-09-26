@@ -5584,7 +5584,215 @@ PASS_PAIR_STALE_FIGURES = ("2.2845", "2.4124", "1.9328", "72.44", "116.38",
 PASS_PAIR_STALE_PATTERNS = (
     re.compile(r"surviv\w*\s+(?:at\s+|a\s+|the\s+)?2\s*(?:×|x)(?![\w.])",
                re.I),
+    # D-803 / D803-03: "survives with a 2x", "survives two-fold / 2 times"
+    re.compile(r"surviv\w*\s+(?:at\s+|a\s+|the\s+|with\s+(?:a\s+|the\s+)?)?"
+               r"(?:2|two)\s*(?:×|x|-?\s*fold|\s+times)(?![\w.])", re.I),
 )
+
+
+# ==========================================================================
+# D-803 / D803-03 (Round-22 R22-03).  THE PUBLICATION SCOPE IS THE WHOLE
+# OPERATIVE CORPUS, A JSON RECORD IS READ AS ITS DECODED VALUES, AND AN
+# EXPLICIT HISTORICAL SCOPE SURVIVES CLAUSE SPLITTING.
+#
+# Round-22 put four retired claims past F1-F14 on D-802: the D-791
+# pass-pair PEAK written by role ("the current pass-pair peak electrical
+# envelope is 2.60 A") -- no stale token, and 2.6 A is also the legitimate
+# harness rating; D-616 as the CURRENT fabrication authority outside the
+# one document D-801 fenced; an UNCONDITIONAL BATOCP self-clearance ("the
+# modeled fault necessarily trips BATOCP and therefore cannot persist");
+# and the 2x survival claim in a JSON record serialised with
+# `ensure_ascii=True`, where "×" is the six characters `\u00d7`.  Every
+# scan read only a named subset of the documents, and read JSON as bytes.
+# And the fence went the other way too: "HISTORICAL / SUPERSEDED: D-616 was
+# generated and reviewed; FAB1-FAB8 all pass" was refused because the
+# splitter cut at the semicolon and the second clause had no fence word.
+#
+# THE SCOPE RULES (`d803_units`), each explicit, none of them NLP:
+#   1  a heading carrying a fence word fences its section (inherited);
+#   2  `<!-- HISTORICAL BEGIN -->` ... `<!-- HISTORICAL END -->` is fenced;
+#   3  an explicit LABEL -- a fence word ending in ':' ("HISTORICAL /
+#      SUPERSEDED:") at the start of a sentence -- fences the rest of its
+#      paragraph (a markdown paragraph / list item, or one JSON string);
+#   4  a fence word anywhere in a sentence fences it, and every clause after
+#      a ';' inherits its sentence's fence.
+# ==========================================================================
+HISTORICAL_FENCE = ("SUPERSEDE", "supersede", "HISTORICAL", "historical",
+                    "RETIRED", "retired", "no longer", "formerly", "former",
+                    "FORMER", "REPLACED", "replaced", "used to",
+                    "until D-", "before D-")
+_D803_HEADING = re.compile(r"^\s*>*\s*(#{1,6})\s+(.*)$")
+_D803_BEGIN = re.compile(r"<!--\s*HISTORICAL\s+BEGIN\s*-->", re.I)
+_D803_END = re.compile(r"<!--\s*HISTORICAL\s+END\s*-->", re.I)
+_D803_LABEL = re.compile(
+    r"^[\s>*_`\-\d.()]*(?:HISTORICAL|SUPERSEDED|RETIRED|WITHDRAWN|FORMER)"
+    r"\b[^:.;]{0,60}:", re.I)
+
+# The corpus: every operative document and released record.  The two
+# append-only logs are the historical record BY CONSTRUCTION -- each entry is
+# dated and frozen, and the current authority is stated in the documents
+# below -- so they are excluded by name, with the reason carried.
+D803_CORPUS_GLOBS = (
+    "docs/full-beta-v2/*.md", "docs/full-beta-v2/*.json",
+    "docs/full-beta-v2/assembly/*.md", "docs/full-beta-v2/assembly/*.json",
+    "docs/full-beta-v2/mechanical/*.md", "hardware/demo/fab/*.md",
+    "hardware/demo/fab/*.json", "hardware/demo/manufacturing/README.md")
+D803_CORPUS_EXCLUDED = {
+    "docs/full-beta-v2/CTO_DECISIONS.md":
+        "the append-only decision log: every entry is a dated, frozen record",
+    "docs/full-beta-v2/CHANGELOG.md":
+        "the append-only change log: every entry is a dated, frozen record",
+}
+
+
+def d803_corpus(root):
+    rels = set()
+    for g in D803_CORPUS_GLOBS:
+        for f in root.glob(g):
+            rel = f.relative_to(root).as_posix()
+            if f.is_file() and rel not in D803_CORPUS_EXCLUDED:
+                rels.add(rel)
+    return tuple(sorted(rels))
+
+
+def d803_json_strings(obj):
+    if isinstance(obj, str):
+        return [obj]
+    if isinstance(obj, dict):
+        return [s for v in obj.values() for s in d803_json_strings(v)]
+    if isinstance(obj, list):
+        return [s for v in obj for s in d803_json_strings(v)]
+    return []
+
+
+def d803_doc_text(rel, raw):
+    """A JSON record is its DECODED string values, one paragraph each, so a
+    literal "×" and "\\u00d7" are the same claim; anything else is its text.
+    A JSON file that does not parse is scanned as text (never skipped)."""
+    if str(rel).endswith(".json"):
+        try:
+            return "\n\n".join(d803_json_strings(json.loads(raw or "")))
+        except ValueError:
+            return raw or ""
+    return raw or ""
+
+
+def d803_units(text, fence=HISTORICAL_FENCE):
+    """[(unit, fenced)] -- the document as clause units, each tagged by the
+    four scope rules above.  Units are the D-796 granularity (split at
+    . ! ? and ;), so a caller that used `_d797_units` sees the same units."""
+    out = []
+    blocks, stack, cur, cur_fenced, region = [], [], [], False, False
+    for line in (text or "").splitlines():
+        if _D803_BEGIN.search(line):
+            blocks.append((cur_fenced, "\n".join(cur)))
+            cur, region = [], True
+        m = _D803_HEADING.match(line)
+        if m:
+            blocks.append((cur_fenced or region, "\n".join(cur)))
+            level = len(m.group(1))
+            fenced = any(f in m.group(2) for f in fence)
+            while stack and stack[-1][0] >= level:
+                stack.pop()
+            inherited = any(f for _, f in stack)
+            stack.append((level, fenced))
+            cur, cur_fenced = [line], bool(fenced or inherited)
+            continue
+        cur.append(line)
+        if _D803_END.search(line):
+            blocks.append((True, "\n".join(cur)))
+            cur, region = [], False
+    blocks.append((cur_fenced or region, "\n".join(cur)))
+    for bfenced, block in blocks:
+        for para in re.split(r"\n\s*\n", _d797_tabulate(block)):
+            flat = re.sub(r"\s+", " ", para).strip()
+            if not flat:
+                continue
+            labelled = False
+            for sent in re.split(r"(?<=[.!?])\s+", flat):
+                if not sent.strip():
+                    continue
+                if _D803_LABEL.match(sent):
+                    labelled = True
+                sfenced = False
+                for clause in re.split(r"(?<=;)\s+", sent):
+                    if not clause.strip():
+                        continue
+                    sfenced = sfenced or any(f in clause for f in fence)
+                    out.append((clause, bool(bfenced or labelled or sfenced)))
+    return out
+
+
+# The families.  Each is a ROLE bound to a VALUE or a PREDICATE, and each
+# has its own destructive control in every corpus document (F12
+# `round22_publication_scope`).
+D803_PP_RETIRED_TOKENS = ("2.2845", "2.4124", "1.9328", "72.44", "116.38")
+D803_PP_RETIRED_PEAK = ("2.6", "2.60")        # D-791's peak; current is F10's
+_D803_AMPS = re.compile(r"(?<![\d.])(\d+\.\d+|\d+)\s*A\b")
+_D803_PP_ROLE = re.compile(
+    r"pass[- ]pair|pass (?:FETs?|devices?|MOSFETs?)|AO4800|Q2\s*/\s*Q3|"
+    r"peak (?:electrical )?envelope|peak battery current|\bBAT/SYS\b", re.I)
+_D803_HARNESS_ROLE = re.compile(
+    r"harness|\bAWG\s*\d*|\d+[- ]AWG|Micro-?Lock|Molex|\bJ4\b|connector|"
+    r"mated|\bwire\b|conductor|contact|\brat(?:ed|ing)\b", re.I)
+_D803_D616_CURRENT = re.compile(
+    r"\bD-616\b(?:'s)?(?:\s+\w+){0,3}?\s+(?:is|remains|stays|becomes|=)\s+"
+    r"(?:still\s+)?(?:the\s+|an?\s+)?[^.;]{0,50}?(?:authority|release|"
+    r"fabrication package|order package|package of record)|"
+    r"(?:current|operative|governing|in-force)\s+[^.;]{0,50}?"
+    r"(?:authority|release|package)\s+(?:is|remains)\s+(?:still\s+)?"
+    r"(?:the\s+)?D-616\b", re.I)
+_D803_CURRENT = re.compile(
+    r"\bcurrent(?:ly)?\b|\boperative\b|\bin force\b|\bthis (?:fabrication "
+    r"|PCBA )?(?:order|release|package)\b|\bfor (?:the|this) order\b", re.I)
+_D803_FAB8 = re.compile(r"\bFAB1\s*[\u2013\u2014-]\s*FAB8\b[^.;]{0,20}?"
+                        r"\b(?:all\s+)?pass", re.I)
+_D803_247 = re.compile(r"\b247 of 247\b[^.;]{0,40}?orderable", re.I)
+_D803_BATOCP = re.compile(r"\bBATOCP\b", re.I)
+_D803_BATOCP_SURE = re.compile(
+    r"\b(?:necessarily|always|inevitably|certainly|reliably|invariably|"
+    r"(?:is\s+)?guaranteed\s+to|will|must|does)\s+(?:\w+\s+)?"
+    r"(?:trip|fire|interrupt|clear|stop|end|catch|terminate|cut)s?\b", re.I)
+_D803_BATOCP_SELF = re.compile(
+    r"\b(?:cannot|can\s*not|can't|will\s+not|won't|never|does\s+not|"
+    r"doesn't)\s+persist\b|\bself[- ]clear\w*|\bclears?\s+itself\b|"
+    r"\bis\s+self[- ]limiting\b", re.I)
+_D803_BATOCP_HEDGE = re.compile(
+    r"\b(?:may|might|could|if|unless|whether)\b|\bnot\s+(?:be\s+)?"
+    r"(?:claimed|guaranteed|relied|assumed)|\bno\s+BATOCP\s+interruption|"
+    r"\bnot\s+necessarily\b|\bnever\s+claim", re.I)
+
+
+def d803_retired_scan(text, rel=""):
+    """[(family, unit)] -- retired claims in CURRENT (unfenced) units."""
+    found = []
+    for unit, fenced in d803_units(d803_doc_text(rel, text)):
+        if fenced:
+            continue
+        flat = re.sub(r"[*`]", "", unit)
+        for tok in D803_PP_RETIRED_TOKENS:
+            if re.search(r"(?<![\d.])" + re.escape(tok) + r"(?!\d)", flat):
+                found.append(("pass_pair_retired_value", flat[:200]))
+        # the retired PEAK, bound to its ROLE: nearest role wins, and a
+        # harness / connector / rating mention absorbs its own 2.6 A
+        for role, tok in _d797_bind(flat, (("pp", _D803_PP_ROLE),
+                                           (None, _D803_HARNESS_ROLE)),
+                                    _D803_AMPS):
+            if role == "pp" and tok in D803_PP_RETIRED_PEAK:
+                found.append(("pass_pair_retired_peak", flat[:200]))
+        for rx in PASS_PAIR_STALE_PATTERNS:
+            if rx.search(flat):
+                found.append(("pass_pair_survival_claim", flat[:200]))
+        if _D803_D616_CURRENT.search(flat):
+            found.append(("d616_current_authority", flat[:200]))
+        if _D803_CURRENT.search(flat) and (_D803_FAB8.search(flat)
+                                           or _D803_247.search(flat)):
+            found.append(("d616_current_authority", flat[:200]))
+        if _D803_BATOCP.search(flat) and not _D803_BATOCP_HEDGE.search(flat) \
+                and (_D803_BATOCP_SURE.search(flat)
+                     or _D803_BATOCP_SELF.search(flat)):
+            found.append(("batocp_unconditional_self_clearance", flat[:200]))
+    return sorted(set(found))
 
 
 # ==========================================================================
@@ -13072,10 +13280,7 @@ def main():
     # WORD, not a decision number and not the narrating "was", both of which
     # were tried at D-791 and both of which fenced sentences that were still
     # asserting current policy.
-    _FA_FENCE = ("SUPERSEDE", "supersede", "HISTORICAL", "historical",
-                 "RETIRED", "retired", "no longer", "formerly", "former",
-                 "FORMER", "REPLACED", "replaced", "used to",
-                 "until D-", "before D-")
+    _FA_FENCE = HISTORICAL_FENCE        # D-803: one definition
     # THE NUMBER IS BOUND TO THE CLAIM, NOT TO THE LINE.  Two things make a
     # line scan the wrong instrument here.  This document HARD-WRAPS, so "the
     # **3.50 V** single-rail / floor" straddles two lines and a per-line scan
@@ -14463,6 +14668,111 @@ def main():
         r"\b(?:zero|nil|negligible|0\s*(?:m?\u03a9|m?ohms?|m?Ohms?))[- ]"
         r"(?:ohm\s+)?" + _D802_RINS_SUBJ, re.I)
     _D801_CLAMP = re.compile(r"\bclamp\b", re.I)
+    # D-803 / D803-02 (Round-22 R22-02).  Four more ways past D-802, all
+    # reproduced as full F1-F14 PASSes: "ignore the DMM burden" (a DMM's
+    # burden was not a role), "inserted resistance remains zero" (nor was
+    # "inserted resistance"), "use zero resistance for the series ammeter"
+    # (the role AFTER the value), and "the series DMM replaces the clamp and
+    # insertion resistance is negligible" -- a clamp named in the clause, so
+    # the clamp exemption fired although the clamp is the thing REPLACED.
+    # So the family now binds the MEASUREMENT ROLE and the INSERTION VALUE:
+    # the clamp exemption holds only while the clamp is the ACTIVE
+    # instrument and no ACTIVE series instrument (series / inline / inserted
+    # DMM, multimeter, ammeter, meter or shunt) is in the sentence; and with
+    # an active series instrument present, ANY resistance / burden set to
+    # nothing is the claim.
+    _D803_RINS_INSTR = (
+        r"(?:(?:series|inline|in-line|inserted)\s+(?:DMM|multimeter|ammeter|"
+        r"meter|shunt)|\bshunt\b|\bammeter\b|\bDMM\b(?=[^.;]{0,40}\b(?:"
+        r"series|burden|insert|current|in circuit|in line|inline)\b)|"
+        r"(?<=\bseries )\bDMM\b)")
+    _D803_NEG_BEFORE = (r"(?:\b(?:not|no|never|without|unlike|instead of|"
+                        r"rather than|in place of|than|replac\w*|swap\w* "
+                        r"out)\b(?:\s+\w+){0,2}\s*)$")
+    _D803_RINS_SUBJ = (
+        _D802_RINS_SUBJ[:-1] + r"|inserted\s+(?:series\s+|meter\s+|ammeter\s+|"
+        r"shunt\s+|DMM\s+)?resistance|(?:DMM|multimeter)(?:'s)?\s+(?:burden"
+        r"(?:\s+(?:resistance|voltage))?|shunt(?:\s+resistance)?|insertion\s+"
+        r"resistance|resistance))")
+    # D-802's "nothing" refused "0" before a sentence-ending period ("R_ins
+    # = 0.") -- its look-ahead forbade any '.' -- so the value is now ended
+    # by anything but a digit or a decimal fraction.
+    _D803_RINS_NOTHING = (
+        r"(?:zero|nil|negligible|insignificant|immaterial|ignorable|"
+        r"0(?:\.0+)?\s*(?:m?\u03a9|m?ohms?|m?Ohms?)?(?!\d|\.\d))")
+    _D803_RINS_COPULA = re.compile(
+        _D803_RINS_SUBJ + r"(?:\s+term)?[^.;|]{0,60}?(?:\bis\b|\bare\b|"
+        r"\bwas\b|\bbe\b|\bbecomes?\b|\bremains?\b|\bstays?\b|"
+        r"\bequals?\b|=|\u2248|~)\s*(?:effectively |essentially |practically "
+        r"|approximately |about |just |only |simply |then |still |always )?"
+        + _D803_RINS_NOTHING + r"|" + _D803_RINS_SUBJ + r"(?:\s+term)?"
+        r"[^.;|]{0,60}?(?:\bis\b|\bare\b|(?:can|may|should|will|must)\s+"
+        r"(?:safely\s+|simply\s+)?be)\s+(?:ignored|neglected|omitted|dropped|"
+        r"disregarded|left out)", re.I)
+    _D803_RINS_IMPERATIVE = re.compile(
+        r"\b(?:ignor|neglect|omit|drop|disregard|leav|skip)(?:e|es|ing|s)?\b"
+        r"(?:\s+out)?\s+(?:the\s+|an?\s+|its\s+|any\s+|their\s+)?"
+        + _D803_RINS_SUBJ, re.I)
+    # "use zero resistance for the series ammeter" -- the value first, the
+    # role after it, with or without the verb
+    _D803_RINS_FOR_ROLE = re.compile(
+        r"\b(?:zero|nil|negligible|no|0(?:\.0+)?\s*(?:m?\u03a9|m?ohms?|"
+        r"m?Ohms?)?)\s+(?:ohms?\s+(?:of\s+)?)?(?:insertion\s+|series\s+|"
+        r"burden\s+|inserted\s+)?(?:resistance|burden|R_ins)\s+(?:for|of|in|"
+        r"on|across|through|from)\s+(?:the\s+|an?\s+|its\s+|each\s+)?"
+        + _D803_RINS_INSTR, re.I)
+    # "use 0 mOhm for the inline shunt" -- a bare value for the instrument
+    _D803_RINS_VALUE_FOR = re.compile(
+        r"\b(?:use|take|enter|assume|apply|set|record|count)\s+(?:a\s+)?"
+        r"(?:zero|nil|0(?:\.0+)?\s*(?:m?\u03a9|m?ohms?|m?Ohms?))\s+(?:for|on|"
+        r"across|in)\s+(?:the\s+|an?\s+|its\s+|each\s+)?" + _D803_RINS_INSTR,
+        re.I)
+    # "the series ammeter adds no resistance"
+    _D803_RINS_ADDS_NONE = re.compile(
+        _D803_RINS_INSTR + r"[^.;|]{0,40}?\b(?:adds?|introduces?|contributes?|"
+        r"inserts?|has|carries)\s+(?:no|zero|negligible|nil)\s+(?:measurable\s+"
+        r"|appreciable\s+|significant\s+)?(?:insertion\s+|series\s+)?"
+        r"(?:resistance|burden|drop)", re.I)
+    # with an ACTIVE series instrument in the sentence, ANY resistance set
+    # to nothing
+    _D803_RINS_GENERIC = re.compile(
+        r"\bresistance\b[^.;|]{0,40}?(?:\bis\b|\bremains?\b|\bstays?\b|"
+        r"\bequals?\b|=)\s*(?:effectively |essentially |practically |then |"
+        r"still )?" + _D803_RINS_NOTHING, re.I)
+
+    def _d803_active(rx, flat):
+        for m_ in re.finditer(rx, flat, re.I):
+            if not re.search(_D803_NEG_BEFORE, flat[max(0, m_.start() - 40):
+                                                    m_.start()], re.I):
+                return True
+        return False
+
+    def _d803_rins_hits(flat, legacy=()):
+        """The R_ins spans (D-801/D-802 `legacy` ones plus D-803's) that
+        survive the role binding: a negated claim, or a clamp that is the
+        ACTIVE instrument with no ACTIVE series instrument beside it, is
+        not a claim."""
+        series = _d803_active(_D803_RINS_INSTR, flat)
+        clamp = _d803_active(r"\bclamp\b", flat)
+        spans = list(legacy) + list(_D803_RINS_COPULA.finditer(flat)) + list(
+            _D803_RINS_IMPERATIVE.finditer(flat)) + list(
+            _D803_RINS_FOR_ROLE.finditer(flat)) + list(
+            _D803_RINS_VALUE_FOR.finditer(flat)) + list(
+            _D803_RINS_ADDS_NONE.finditer(flat))
+        if series:
+            spans += list(_D803_RINS_GENERIC.finditer(flat))
+        hits = []
+        for m_ in spans:
+            if re.search(r"\b(?:never|not|no|don't|do not|must not|cannot)\b"
+                         r"(?:\s+\w+){0,4}\s*$",
+                         flat[max(0, m_.start() - 40):m_.start()], re.I) or \
+                    re.search(r"\b(?:never|not|cannot)\b|n't\b",
+                              m_.group(0), re.I):
+                continue
+            if clamp and not series:
+                continue
+            hits.append(m_)
+        return hits
     _D801_FABPKG_STALE = re.compile(
         r"FAB1\s*[–-]\s*FAB8|247 of 247|LAND1\s*[–-]\s*LAND6|"
         r"GENERATED AND REVIEWED", re.I)
@@ -14472,59 +14782,63 @@ def main():
             flat = rx.sub(fn, flat)
         return flat
 
-    def _d801_semantic_scan(text, doc=""):
+    def _d801_semantic_scan(text, doc="", rins_d803=True):
         found = []
-        for fenced, block in _norm_blocks(text or ""):
+        # D-803 / D803-03: one scope rule for every family (heading fences,
+        # HISTORICAL BEGIN/END, an explicit label for the rest of its
+        # paragraph, a fence inherited across ';') and a JSON record read as
+        # its decoded values.
+        for sent, fenced in d803_units(d803_doc_text(doc, text or ""),
+                                       _NORM_FENCE):
             if fenced:
                 continue
-            for sent in _d797_units(block):
-                if any(f in sent for f in _NORM_FENCE):
-                    continue
-                flat = re.sub(r"[*`]", "", sent)
-                # supervised: the value must be the generated threshold
-                if re.search(_D800_SUP_CHARGING, flat, re.I) and \
-                        _D801_ACCESSORY.search(flat):
-                    for m_ in _D801_SUP_COND.finditer(flat):
-                        if _D800_NEG.search(flat[max(0, m_.start() - 40):
-                                                 m_.start()]):
-                            continue
-                        if "%.2f" % float(m_.group(1)) != _D801_SUP_THRESH:
-                            found.append(("supervised_condition_other_value",
-                                          flat[:200]))
-                # cure: word / compound forms of a hold under 72 h
-                if _D800_CURE_CTX.search(flat):
-                    nflat = _d801_cure_norm(flat)
-                    for rx in tuple(_D800_CURE) + _D801_CURE_EXTRA:
-                        for m_ in rx.finditer(nflat):
-                            h_ = float(m_.group(1))
-                            if h_ >= _D800_QUALIFIED_H:
-                                continue
-                            near = nflat[max(0, m_.start() - 60):
-                                         m_.end() + 20]
-                            if _D800_CURE_OK.search(near):
-                                continue
-                            found.append(("cure_hold_below_the_qualified_72h",
-                                          flat[:200]))
-                # thermal: a package reading against the modelled figures
-                for m_ in _D801_PKG_MODEL.finditer(flat):
-                    pre = flat[max(0, m_.start() - 80):m_.start()]
-                    if _D800_NEG.search(pre[-40:]) or _D800_FROM.search(pre) \
-                            or re.search(r"junction interval (?:derived |"
-                                         r"read |taken )?from\s*(?:the\s*)?$",
-                                         pre, re.I):
+            flat = re.sub(r"[*`]", "", sent)
+            # supervised: the value must be the generated threshold
+            if re.search(_D800_SUP_CHARGING, flat, re.I) and \
+                    _D801_ACCESSORY.search(flat):
+                for m_ in _D801_SUP_COND.finditer(flat):
+                    if _D800_NEG.search(flat[max(0, m_.start() - 40):
+                                             m_.start()]):
                         continue
-                    found.append(("package_against_the_modelled_figures",
-                                  flat[:200]))
-                # R_ins: an inserted meter path may never be assumed zero
-                # (D-802 / D802-04: in ANY predicate form, not only after an
-                # assumption verb)
-                for m_ in tuple(_D801_RINS.finditer(flat)) + tuple(
-                        _D801_RINS_VF.finditer(flat)) + tuple(
-                        _D802_RINS_COPULA.finditer(flat)) + tuple(
-                        _D802_RINS_IMPERATIVE.finditer(flat)) + tuple(
-                        _D802_RINS_ADJ.finditer(flat)):
-                    # a CLAMP breaks no conductor -- but only a clamp named
-                    # in the SAME clause, and not "unlike a clamp".
+                    if "%.2f" % float(m_.group(1)) != _D801_SUP_THRESH:
+                        found.append(("supervised_condition_other_value",
+                                      flat[:200]))
+            # cure: word / compound forms of a hold under 72 h
+            if _D800_CURE_CTX.search(flat):
+                nflat = _d801_cure_norm(flat)
+                for rx in tuple(_D800_CURE) + _D801_CURE_EXTRA:
+                    for m_ in rx.finditer(nflat):
+                        h_ = float(m_.group(1))
+                        if h_ >= _D800_QUALIFIED_H:
+                            continue
+                        near = nflat[max(0, m_.start() - 60):
+                                     m_.end() + 20]
+                        if _D800_CURE_OK.search(near):
+                            continue
+                        found.append(("cure_hold_below_the_qualified_72h",
+                                      flat[:200]))
+            # thermal: a package reading against the modelled figures
+            for m_ in _D801_PKG_MODEL.finditer(flat):
+                pre = flat[max(0, m_.start() - 80):m_.start()]
+                if _D800_NEG.search(pre[-40:]) or _D800_FROM.search(pre) \
+                        or re.search(r"junction interval (?:derived |"
+                                     r"read |taken )?from\s*(?:the\s*)?$",
+                                     pre, re.I):
+                    continue
+                found.append(("package_against_the_modelled_figures",
+                              flat[:200]))
+            # R_ins: an inserted meter path may never be assumed zero
+            # (D-802 / D802-04: in ANY predicate form, not only after an
+            # assumption verb)
+            _legacy = tuple(_D801_RINS.finditer(flat)) + tuple(
+                _D801_RINS_VF.finditer(flat)) + tuple(
+                _D802_RINS_COPULA.finditer(flat)) + tuple(
+                _D802_RINS_IMPERATIVE.finditer(flat)) + tuple(
+                _D802_RINS_ADJ.finditer(flat))
+            if not rins_d803:
+                # D-802's clamp rule, kept only to REPRODUCE the Round-22
+                # witnesses: a clamp named in the same clause exempts.
+                for m_ in _legacy:
                     _cl = max(flat.rfind(c_, 0, m_.start()) for c_ in ";:")
                     seg = flat[_cl + 1:m_.end()]
                     if (_D801_CLAMP.search(seg) and not re.search(
@@ -14537,10 +14851,13 @@ def main():
                         continue
                     found.append(("series_meter_resistance_assumed_zero",
                                   flat[:200]))
-                if doc.endswith("AQROOT_DEMO_FABRICATION_PACKAGE.md") and \
-                        _D801_FABPKG_STALE.search(flat):
-                    found.append(("d616_fabrication_package_status_unfenced",
-                                  flat[:200]))
+            elif _d803_rins_hits(flat, _legacy):
+                found.append(("series_meter_resistance_assumed_zero",
+                              flat[:200]))
+            if doc.endswith("AQROOT_DEMO_FABRICATION_PACKAGE.md") and \
+                    _D801_FABPKG_STALE.search(flat):
+                found.append(("d616_fabrication_package_status_unfenced",
+                              flat[:200]))
         return sorted(set(found))
 
     _D801_FABPKG = "docs/full-beta-v2/AQROOT_DEMO_FABRICATION_PACKAGE.md"
@@ -14775,6 +15092,266 @@ def main():
             "refused in every operative document; a clamp in the same clause "
             "and negated claims are not.")
     cell_net_ok = cell_net_ok and cell_net["round21_rins_semantics"]["ok"]
+
+    # ---- D-803 / Round-22 R22-02: THE MEASUREMENT ROLE AND THE INSERTION
+    # VALUE ARE BOUND.  Astra's four Round-22 forms first (each a full F1-F14
+    # PASS on D-802), then the forms one grammatical step from them.  Each
+    # is injected into EVERY operative document (`_d801_hit`); the valid
+    # controls -- a true non-inserting clamp at R_ins = 0, a measured and
+    # bounded series value, explicit negations, a fenced historical record --
+    # must stay clean.
+    _P22 = "For the supervised charging OCV lower bound, "
+    _r22_rins_injections = dict(
+        r22_02_ignore_the_dmm_burden=_P22 + "ignore the DMM burden.",
+        r22_02_inserted_resistance_remains_zero=(
+            _P22 + "inserted resistance remains zero."),
+        r22_02_use_zero_resistance_for_the_series_ammeter=(
+            _P22 + "use zero resistance for the series ammeter."),
+        r22_02_series_dmm_replaces_clamp_insertion_negligible=(
+            _P22 + "the series DMM replaces the clamp and insertion "
+            "resistance is negligible."),
+        d803_02_neglect_the_dmm_burden_voltage=(
+            "Neglect the DMM's burden voltage in the OCV lower bound."),
+        d803_02_the_dmm_burden_is_negligible=(
+            "The DMM burden is negligible for OCV_lb."),
+        d803_02_inserted_meter_resistance_taken_as_zero=(
+            "Inserted meter resistance is taken as zero."),
+        d803_02_use_0_milliohm_for_the_inline_shunt=(
+            "Use 0 mΩ for the inline shunt."),
+        d803_02_the_series_ammeter_adds_no_resistance=(
+            "The series ammeter adds no resistance to the battery path."),
+        d803_02_series_dmm_in_place_of_the_clamp=(
+            "A series DMM is used in place of the clamp, so R_ins = 0."),
+        d803_02_series_dmm_in_circuit_resistance_zero=(
+            "With the series DMM in circuit, the resistance is zero."),
+        d803_02_take_zero_burden_for_the_series_meter=(
+            "Take zero burden for the series meter."),
+        d803_02_disregard_the_multimeter_burden=(
+            "Disregard the multimeter's burden."),
+        d803_02_r_ins_equals_zero_at_sentence_end=(
+            "For the inline shunt the record uses R_ins = 0."),
+    )
+    _r22_rins_caught, _r22_rins_missed = {}, []
+    for _nm, _w in _r22_rins_injections.items():
+        _m = _d801_hit(_nm, _w)
+        _r22_rins_caught[_nm] = not _m
+        _r22_rins_missed.extend(_m[:3])
+    # WITNESS: Astra's four forms are MISSED by D-802's rule (reproduced on
+    # the live regexes with `rins_d803=False`) and caught by D-803's.
+    _r22_rins_witness = {
+        _nm: dict(
+            missed_by_the_d802_rule=not _d801_semantic_scan(
+                "# t\n\n" + _w + "\n", rins_d803=False),
+            caught_by_d803=bool(_d801_semantic_scan("# t\n\n" + _w + "\n")))
+        for _nm, _w in _r22_rins_injections.items() if _nm.startswith("r22_")}
+    _r22_rins_clean = dict(
+        true_non_inserting_clamp=(
+            "With a true non-inserting DC clamp around one battery lead, "
+            "R_ins = 0."),
+        clamp_meter_no_conductor_broken=(
+            "With a DC clamp meter around one pack lead (no conductor "
+            "broken) R_ins = 0."),
+        measured_bounded_series_value=(
+            "For a series DMM, use its measured and bounded insertion "
+            "resistance R_ins = 0.020 ohm."),
+        series_bound_in_milliohm=(
+            "The series ammeter's insertion resistance is bounded at "
+            "25 mΩ."),
+        must_not_be_assumed_zero=(
+            "Insertion resistance must not be assumed zero."),
+        do_not_ignore_the_dmm_burden="Do not ignore the DMM burden.",
+        dmm_burden_not_negligible=(
+            "The DMM burden is not negligible; measure it."),
+        clamp_not_a_series_ammeter=(
+            "A clamp meter, not a series ammeter, is used, so R_ins = 0."),
+        series_dmm_never_zero=(
+            "A series DMM never has zero insertion resistance."),
+        astra_valid_record=(
+            "With a true non-inserting DC clamp around one battery lead, "
+            "R_ins = 0.\n\nFor a series DMM, use its measured and bounded "
+            "insertion resistance R_ins = 0.020 ohm.\n\nInsertion resistance "
+            "must not be assumed zero."),
+        astra_historical_record=(
+            "<!-- HISTORICAL BEGIN -->\nHISTORICAL / SUPERSEDED: For the "
+            "supervised charging OCV lower bound, insertion resistance is "
+            "negligible.\n<!-- HISTORICAL END -->"),
+    )
+    _r22_rins_clean_res = {
+        _nm: not _d801_semantic_scan("# t\n\n" + _w + "\n")
+        for _nm, _w in _r22_rins_clean.items()}
+    cell_net["round22_rins_role_binding"] = dict(
+        injections=_r22_rins_injections, caught=_r22_rins_caught,
+        missed=_r22_rins_missed, witnesses=_r22_rins_witness,
+        clean_controls_pass=_r22_rins_clean_res,
+        documents=list(_d801_docs),
+        ok=bool(all(_r22_rins_caught.values())
+                and len(_r22_rins_witness) == 4
+                and all(v_["missed_by_the_d802_rule"]
+                        and v_["caught_by_d803"]
+                        for v_ in _r22_rins_witness.values())
+                and all(_r22_rins_clean_res.values())),
+        why="D-803 / Round-22 R22-02: the measurement role and the insertion "
+            "value are bound -- a clamp exempts only while it is the active "
+            "instrument and no active series DMM / ammeter / meter / shunt "
+            "is in the sentence, and a DMM burden, an inserted resistance, "
+            "'zero resistance for the series ammeter' and 'R_ins = 0.' are "
+            "claims; a true non-inserting clamp at 0, a measured series "
+            "value, explicit negations and fenced history stay valid.")
+    cell_net_ok = cell_net_ok and cell_net["round22_rins_role_binding"]["ok"]
+
+    # ---- D-803 / Round-22 R22-03: THE PUBLICATION SCOPE IS THE WHOLE
+    # OPERATIVE CORPUS (`d803_corpus`), JSON IS READ DECODED, AND AN
+    # EXPLICIT HISTORICAL SCOPE SURVIVES CLAUSE SPLITTING.  Every family has
+    # its OWN destructive control in EVERY corpus document -- one sentence,
+    # one document, one family at a time -- so a claim one family catches
+    # cannot hide another family's escape.
+    _r22_corpus = d803_corpus(ROOT)
+    _r22_raw = {r_: (ROOT / r_).read_text(encoding="utf-8", errors="replace")
+                for r_ in _r22_corpus}
+    _r22_base = {r_: d803_retired_scan(t_, r_) for r_, t_ in _r22_raw.items()}
+    _r22_bad = ["%s: %s: %s" % (r_, k_, x_) for r_, h_ in _r22_base.items()
+                for k_, x_ in h_]
+    _r22_families = dict(
+        pass_pair_retired_ceiling=(
+            "The current pass-pair current ceiling is 2.2845 A at 72.44 "
+            "°C internal air."),
+        pass_pair_retired_vgs_and_sustained=(
+            "The current pass-pair prediction is VGS = 2.4124 V at a "
+            "sustained current of 1.9328 A."),
+        pass_pair_retired_junction=(
+            "The current pass-pair junction temperature is 116.38 °C."),
+        pass_pair_retired_peak_by_role=(
+            "The current pass-pair peak electrical envelope is 2.60 A."),
+        pass_pair_survival=(
+            "The current pass pair survives at 2× hot resistance."),
+        d616_current_authority=(
+            "D-616 is the current generated and reviewed fabrication "
+            "authority."),
+        d616_fab1_fab8_current=(
+            "For this current fabrication order, FAB1–FAB8 all pass."),
+        d616_247_of_247_current=(
+            "The current fabrication release has 247 of 247 fitted "
+            "references orderable."),
+        batocp_necessarily_trips=(
+            "The modeled fault necessarily trips BATOCP and therefore cannot "
+            "persist."),
+        batocp_self_clears=(
+            "BATOCP self-clears the double-limiter fault."),
+    )
+
+    def _r22_inject(rel, raw, sentence):
+        """A markdown document: under an UNFENCED top-level heading at its
+        end (the D-616 document's title is itself a fence).  A JSON record:
+        a new string value, serialised with ensure_ascii=True, so "×"
+        arrives as its six-character escape."""
+        if rel.endswith(".json"):
+            try:
+                d_ = json.loads(raw)
+            except ValueError:
+                return raw + "\n" + sentence + "\n"
+            if isinstance(d_, dict):
+                d_ = dict(d_, d803_injected=[sentence])
+            elif isinstance(d_, list):
+                d_ = d_ + [sentence]
+            return json.dumps(d_, indent=1, ensure_ascii=True) + "\n"
+        return raw + "\n\n# Current instruction\n\n" + sentence + "\n"
+
+    _r22_caught, _r22_missed = {}, []
+    for _fam, _w in _r22_families.items():
+        _miss = [r_ for r_, t_ in _r22_raw.items()
+                 if len(d803_retired_scan(_r22_inject(r_, t_, _w), r_))
+                 <= len(_r22_base[r_])]
+        _r22_caught[_fam] = not _miss
+        _r22_missed.extend("%s in %s" % (_fam, r_) for r_ in _miss[:3])
+    # the legitimate controls, in every document: the 2.6 A HARNESS rating,
+    # a hedged BATOCP, the fenced D-616 pointer, explicit history across a
+    # semicolon, a labelled paragraph, a BEGIN/END region, and history in
+    # a JSON record
+    _r22_weak = (
+        "The current pass-pair peak electrical envelope is 2.60 A. D-616 is "
+        "the current generated and reviewed fabrication authority; "
+        "FAB1–FAB8 all pass, 247 of 247 fitted references orderable. The "
+        "modeled fault necessarily trips BATOCP and therefore cannot "
+        "persist.")
+    _r22_numeric = (
+        "The current pass-pair current ceiling is 2.2845 A at 72.44 °C "
+        "internal air, VGS is 2.4124 V, sustained current is 1.9328 A, and "
+        "junction temperature is 116.38 °C. The path survives at 2× "
+        "hot resistance.")
+    _r22_clean = dict(
+        harness_rating_2p6=(
+            "Controlling mated-harness rating: 2.6 A at AWG26; the 2.6 A-rated "
+            "26-AWG Molex Micro-Lock Plus harness is the controlling rating."),
+        batocp_hedged=(
+            "Every fault current lies inside the declared band, so BATOCP MAY "
+            "OR MAY NOT trip on a given unit, and NO BATOCP INTERRUPTION IS "
+            "CLAIMED for any fault case."),
+        d616_pointer=(
+            "`AQROOT_DEMO_FABRICATION_PACKAGE.md` is the D-616 record; the "
+            "current authority is this handoff."),
+        history_across_semicolon=(
+            "HISTORICAL / SUPERSEDED: D-616 was generated and reviewed; "
+            "FAB1–FAB8 all pass, 247 of 247 fitted references orderable."),
+        history_labelled_paragraph=(
+            "HISTORICAL / SUPERSEDED: " + _r22_weak + " " + _r22_numeric),
+        history_begin_end=(
+            "<!-- HISTORICAL BEGIN -->\nThe derived pass-pair ceiling was "
+            "2.2845 A at 72.44 °C and peak 2.60 A.\n\nThe modeled fault "
+            "necessarily trips BATOCP and therefore cannot persist.\n"
+            "<!-- HISTORICAL END -->"),
+        history_mid_string=(
+            "Existing text. HISTORICAL / SUPERSEDED: the withdrawn statement "
+            "was that the path survives at 2× hot resistance."),
+    )
+    _r22_clean_res = {}
+    for _nm, _w in _r22_clean.items():
+        _r22_clean_res[_nm] = all(
+            len(d803_retired_scan(_r22_inject(r_, t_, _w), r_))
+            == len(_r22_base[r_]) for r_, t_ in _r22_raw.items())
+    # Astra's exact carriers: the four Round-22 locations D-802 did not read
+    _r22_astra_paths = (
+        "docs/full-beta-v2/assembly/ACC_3V3_REINFORCEMENT.json",
+        "hardware/demo/fab/aqroot-Demo-BATTERY-HARNESS.json",
+        "docs/full-beta-v2/assembly/FOOTPRINT_VERIFICATION_LEDGER.md",
+        "docs/full-beta-v2/assembly/SELECTED_BATTERY.json",
+        "docs/full-beta-v2/assembly/BATTERY_HARNESS.json",
+        "docs/full-beta-v2/assembly/RELEASE_ACCEPTANCE_REGISTER.json",
+        "hardware/demo/fab/aqroot-Demo-FAB-NOTES.md",
+        "hardware/demo/fab/aqroot-Demo-ACC-3V3-REINFORCEMENT.json",
+        "docs/full-beta-v2/DEVICE_SPEC.md",
+        "docs/full-beta-v2/CURRENT_STATE.md")
+    _r22_scope = dict(
+        every_astra_location_is_in_the_corpus=all(
+            p_ in _r22_corpus for p_ in _r22_astra_paths),
+        every_d801_document_is_in_the_corpus=all(
+            p_ in _r22_corpus for p_ in _d801_docs),
+        the_excluded_logs_are_named=sorted(D803_CORPUS_EXCLUDED),
+        json_escape_equals_literal=bool(
+            d803_retired_scan(json.dumps(
+                {"a": ["The pass pair survives at 2× hot resistance."]},
+                ensure_ascii=True), "x.json")),
+        a_json_record_that_does_not_parse_is_scanned_as_text=bool(
+            d803_retired_scan("{ The pass pair survives at 2× hot "
+                              "resistance.", "x.json")))
+    cell_net["round22_publication_scope"] = dict(
+        corpus=list(_r22_corpus), corpus_excluded=D803_CORPUS_EXCLUDED,
+        problems=_r22_bad, families=_r22_families, caught=_r22_caught,
+        missed=_r22_missed, clean_controls_pass=_r22_clean_res,
+        scope=_r22_scope,
+        ok=bool(not _r22_bad and all(_r22_caught.values())
+                and all(_r22_clean_res.values())
+                and all(v_ for k_, v_ in _r22_scope.items()
+                        if k_ != "the_excluded_logs_are_named")),
+        why="D-803 / Round-22 R22-03: the retired pass-pair figures, the "
+            "D-791 2.60 A peak bound to its pass-pair role (never the 2.6 A "
+            "harness rating), the 2x survival claim, D-616 as the current "
+            "fabrication authority and an unconditional BATOCP "
+            "self-clearance are refused in every operative document and "
+            "released record, JSON read as decoded values; an explicit "
+            "historical scope -- a fenced heading, a HISTORICAL BEGIN/END "
+            "region, a HISTORICAL label for the rest of its paragraph, a "
+            "fence inherited across ';' -- stays clean.")
+    cell_net_ok = cell_net_ok and cell_net["round22_publication_scope"]["ok"]
 
     # ---- D-801 / D801-06: THE RELEASE IDENTITY IS BOUND, NOT TYPED. -------
     _ri_paths = dict(
@@ -16518,21 +17095,20 @@ def main():
                        "envelope rows")
         for k_, t_ in tuple(txt.items()) + tuple(
                 (_pp_scan_txt if scan is None else scan).items()):
-            for fenced, block in _norm_blocks(t_):
+            # D-803 / D803-03: the D-803 scope rules and decoded JSON.
+            for sent, fenced in d803_units(d803_doc_text(k_, t_),
+                                           _NORM_FENCE):
                 if fenced:
                     continue
-                for sent in _d797_units(block):
-                    if any(f in sent for f in _NORM_FENCE):
-                        continue
-                    for tok in PASS_PAIR_STALE_FIGURES:
-                        if tok in sent:
-                            bad.append("%s: stale %r in a current sentence: "
-                                       "%s" % (k_, tok, sent.strip()[:120]))
-                    for rx in PASS_PAIR_STALE_PATTERNS:
-                        if rx.search(sent):
-                            bad.append("%s: the withdrawn 2x survival claim "
-                                       "in a current sentence: %s"
-                                       % (k_, sent.strip()[:120]))
+                for tok in PASS_PAIR_STALE_FIGURES:
+                    if tok in sent:
+                        bad.append("%s: stale %r in a current sentence: "
+                                   "%s" % (k_, tok, sent.strip()[:120]))
+                for rx in PASS_PAIR_STALE_PATTERNS:
+                    if rx.search(sent):
+                        bad.append("%s: the withdrawn 2x survival claim "
+                                   "in a current sentence: %s"
+                                   % (k_, sent.strip()[:120]))
         return bad
 
     _pp_pub = pass_pair_publication(pass_pair, _pkg or {})

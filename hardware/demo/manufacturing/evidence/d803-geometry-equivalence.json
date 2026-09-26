@@ -1,0 +1,333 @@
+{
+ "schema": 1,
+ "decision": "D-803",
+ "parent": "d6f67692fcc9787ee0d43084a377562f4f26f9b9",
+ "files": [
+  {
+   "file": "hardware/demo/fab/MANIFEST.json",
+   "in_parent": true,
+   "in_candidate": true,
+   "byte_identical": false,
+   "sha256_parent": "3f0135bac310aec559425ae854b1d39ce6bc764361d4cf0ed2c20796958c2a15",
+   "sha256_candidate": "d2aa54d7951a9a55c7b0d5efabdf76c6f0ff063275ba988dbfff4516823ed629",
+   "verdict": "CHANGED (not geometry)"
+  },
+  {
+   "file": "hardware/demo/fab/aqroot-Demo-ACC-3V3-REINFORCEMENT.json",
+   "in_parent": true,
+   "in_candidate": true,
+   "byte_identical": false,
+   "sha256_parent": "c4008c939ceb134b17fc097b458127b849b0b8e9a40f0cf79f9f6c63b89c2195",
+   "sha256_candidate": "8b2a563cfce06016dcad537b846ebd3fe4046b43dc9639e1d18f6f086711fc1e",
+   "verdict": "CHANGED (not geometry)"
+  },
+  {
+   "file": "hardware/demo/fab/aqroot-Demo-BATTERY-HARNESS.json",
+   "in_parent": true,
+   "in_candidate": true,
+   "byte_identical": true,
+   "sha256_parent": "7c6e50d94c7348a2dc063630370d124213054c71f91e9aae06ea54648e0b7c8c",
+   "sha256_candidate": "7c6e50d94c7348a2dc063630370d124213054c71f91e9aae06ea54648e0b7c8c",
+   "verdict": "UNCHANGED"
+  },
+  {
+   "file": "hardware/demo/fab/aqroot-Demo-BOM-assembly.csv",
+   "in_parent": true,
+   "in_candidate": true,
+   "byte_identical": true,
+   "verdict": "IDENTICAL"
+  },
+  {
+   "file": "hardware/demo/fab/aqroot-Demo-BOM-full.csv",
+   "in_parent": true,
+   "in_candidate": true,
+   "byte_identical": true,
+   "verdict": "IDENTICAL"
+  },
+  {
+   "file": "hardware/demo/fab/aqroot-Demo-DO-NOT-POPULATE.csv",
+   "in_parent": true,
+   "in_candidate": true,
+   "byte_identical": true,
+   "verdict": "IDENTICAL"
+  },
+  {
+   "file": "hardware/demo/fab/aqroot-Demo-FAB-NOTES.md",
+   "in_parent": true,
+   "in_candidate": true,
+   "byte_identical": false,
+   "sha256_parent": "d8412b4e4df28b1aa27b8889d0238c29ed71bfc8833145fe77cb93d318e41936",
+   "sha256_candidate": "67935065b381d8dfc50aadf00269a9aa5f566ec2596cefa8f7e68eb2b398d5c5",
+   "verdict": "CHANGED (not geometry)"
+  },
+  {
+   "file": "hardware/demo/fab/aqroot-Demo-NON-PURCHASED.csv",
+   "in_parent": true,
+   "in_candidate": true,
+   "byte_identical": true,
+   "verdict": "IDENTICAL"
+  },
+  {
+   "file": "hardware/demo/fab/aqroot-Demo-OFF-BOARD.csv",
+   "in_parent": true,
+   "in_candidate": true,
+   "byte_identical": true,
+   "verdict": "IDENTICAL"
+  },
+  {
+   "file": "hardware/demo/fab/aqroot-Demo-assembly-bottom.pdf",
+   "in_parent": true,
+   "in_candidate": true,
+   "byte_identical": false,
+   "sha256_parent": "1f2665b0f49923b00efb9d2cbd9f8d5d81f18d9805585b6fc46675d0676747d6",
+   "sha256_candidate": "9268a979623dd720268bf34fab1667ac99669de2f0f170d30acaef28f052a2f4",
+   "verdict": "CHANGED (not geometry)"
+  },
+  {
+   "file": "hardware/demo/fab/aqroot-Demo-assembly-top.pdf",
+   "in_parent": true,
+   "in_candidate": true,
+   "byte_identical": false,
+   "sha256_parent": "e6529097c3c223b5747e5904dd36841aed95d040f9064f870b6a1b3a9ff9a673",
+   "sha256_candidate": "081be4ac7c8ff78892a69c066a589cf9a43aca6205f806e0f436cd3230b7c2c6",
+   "verdict": "CHANGED (not geometry)"
+  },
+  {
+   "file": "hardware/demo/fab/aqroot-Demo-pos-all.csv",
+   "in_parent": true,
+   "in_candidate": true,
+   "byte_identical": true,
+   "verdict": "IDENTICAL"
+  },
+  {
+   "file": "hardware/demo/fab/aqroot-Demo-pos-fitted.csv",
+   "in_parent": true,
+   "in_candidate": true,
+   "byte_identical": true,
+   "verdict": "IDENTICAL"
+  },
+  {
+   "file": "hardware/demo/fab/gerbers/aqroot-Beta-v2-B_Cu.gbr",
+   "in_parent": true,
+   "in_candidate": true,
+   "byte_identical": false,
+   "geometry_identical": true,
+   "differing_lines_removed": [
+    "%TF.CreationDate,2026-09-26T11:32:59+00:00*%",
+    "G04 Created by KiCad (PCBNEW 10.0.5-10.0.5~ubuntu24.04.1) date 2026-09-26 11:32:59*"
+   ],
+   "verdict": "GEOMETRY-IDENTICAL"
+  },
+  {
+   "file": "hardware/demo/fab/gerbers/aqroot-Beta-v2-B_Mask.gbr",
+   "in_parent": true,
+   "in_candidate": true,
+   "byte_identical": false,
+   "geometry_identical": true,
+   "differing_lines_removed": [
+    "%TF.CreationDate,2026-09-26T11:32:59+00:00*%",
+    "G04 Created by KiCad (PCBNEW 10.0.5-10.0.5~ubuntu24.04.1) date 2026-09-26 11:32:59*"
+   ],
+   "verdict": "GEOMETRY-IDENTICAL"
+  },
+  {
+   "file": "hardware/demo/fab/gerbers/aqroot-Beta-v2-B_Paste.gbr",
+   "in_parent": true,
+   "in_candidate": true,
+   "byte_identical": false,
+   "geometry_identical": true,
+   "differing_lines_removed": [
+    "%TF.CreationDate,2026-09-26T11:32:59+00:00*%",
+    "G04 Created by KiCad (PCBNEW 10.0.5-10.0.5~ubuntu24.04.1) date 2026-09-26 11:32:59*"
+   ],
+   "verdict": "GEOMETRY-IDENTICAL"
+  },
+  {
+   "file": "hardware/demo/fab/gerbers/aqroot-Beta-v2-B_Silkscreen.gbr",
+   "in_parent": true,
+   "in_candidate": true,
+   "byte_identical": false,
+   "geometry_identical": true,
+   "differing_lines_removed": [
+    "%TF.CreationDate,2026-09-26T11:32:59+00:00*%",
+    "G04 Created by KiCad (PCBNEW 10.0.5-10.0.5~ubuntu24.04.1) date 2026-09-26 11:32:59*"
+   ],
+   "verdict": "GEOMETRY-IDENTICAL"
+  },
+  {
+   "file": "hardware/demo/fab/gerbers/aqroot-Beta-v2-Edge_Cuts.gbr",
+   "in_parent": true,
+   "in_candidate": true,
+   "byte_identical": false,
+   "geometry_identical": true,
+   "differing_lines_removed": [
+    "%TF.CreationDate,2026-09-26T11:32:59+00:00*%",
+    "G04 Created by KiCad (PCBNEW 10.0.5-10.0.5~ubuntu24.04.1) date 2026-09-26 11:32:59*"
+   ],
+   "verdict": "GEOMETRY-IDENTICAL"
+  },
+  {
+   "file": "hardware/demo/fab/gerbers/aqroot-Beta-v2-F_Cu.gbr",
+   "in_parent": true,
+   "in_candidate": true,
+   "byte_identical": false,
+   "geometry_identical": true,
+   "differing_lines_removed": [
+    "%TF.CreationDate,2026-09-26T11:32:59+00:00*%",
+    "G04 Created by KiCad (PCBNEW 10.0.5-10.0.5~ubuntu24.04.1) date 2026-09-26 11:32:59*"
+   ],
+   "verdict": "GEOMETRY-IDENTICAL"
+  },
+  {
+   "file": "hardware/demo/fab/gerbers/aqroot-Beta-v2-F_Mask.gbr",
+   "in_parent": true,
+   "in_candidate": true,
+   "byte_identical": false,
+   "geometry_identical": true,
+   "differing_lines_removed": [
+    "%TF.CreationDate,2026-09-26T11:32:59+00:00*%",
+    "G04 Created by KiCad (PCBNEW 10.0.5-10.0.5~ubuntu24.04.1) date 2026-09-26 11:32:59*"
+   ],
+   "verdict": "GEOMETRY-IDENTICAL"
+  },
+  {
+   "file": "hardware/demo/fab/gerbers/aqroot-Beta-v2-F_Paste.gbr",
+   "in_parent": true,
+   "in_candidate": true,
+   "byte_identical": false,
+   "geometry_identical": true,
+   "differing_lines_removed": [
+    "%TF.CreationDate,2026-09-26T11:32:59+00:00*%",
+    "G04 Created by KiCad (PCBNEW 10.0.5-10.0.5~ubuntu24.04.1) date 2026-09-26 11:32:59*"
+   ],
+   "verdict": "GEOMETRY-IDENTICAL"
+  },
+  {
+   "file": "hardware/demo/fab/gerbers/aqroot-Beta-v2-F_Silkscreen.gbr",
+   "in_parent": true,
+   "in_candidate": true,
+   "byte_identical": false,
+   "geometry_identical": true,
+   "differing_lines_removed": [
+    "%TF.CreationDate,2026-09-26T11:32:59+00:00*%",
+    "G04 Created by KiCad (PCBNEW 10.0.5-10.0.5~ubuntu24.04.1) date 2026-09-26 11:32:59*"
+   ],
+   "verdict": "GEOMETRY-IDENTICAL"
+  },
+  {
+   "file": "hardware/demo/fab/gerbers/aqroot-Beta-v2-In1_Cu.gbr",
+   "in_parent": true,
+   "in_candidate": true,
+   "byte_identical": false,
+   "geometry_identical": true,
+   "differing_lines_removed": [
+    "%TF.CreationDate,2026-09-26T11:32:59+00:00*%",
+    "G04 Created by KiCad (PCBNEW 10.0.5-10.0.5~ubuntu24.04.1) date 2026-09-26 11:32:59*"
+   ],
+   "verdict": "GEOMETRY-IDENTICAL"
+  },
+  {
+   "file": "hardware/demo/fab/gerbers/aqroot-Beta-v2-In2_Cu.gbr",
+   "in_parent": true,
+   "in_candidate": true,
+   "byte_identical": false,
+   "geometry_identical": true,
+   "differing_lines_removed": [
+    "%TF.CreationDate,2026-09-26T11:32:59+00:00*%",
+    "G04 Created by KiCad (PCBNEW 10.0.5-10.0.5~ubuntu24.04.1) date 2026-09-26 11:32:59*"
+   ],
+   "verdict": "GEOMETRY-IDENTICAL"
+  },
+  {
+   "file": "hardware/demo/fab/gerbers/aqroot-Beta-v2-In3_Cu.gbr",
+   "in_parent": true,
+   "in_candidate": true,
+   "byte_identical": false,
+   "geometry_identical": true,
+   "differing_lines_removed": [
+    "%TF.CreationDate,2026-09-26T11:32:59+00:00*%",
+    "G04 Created by KiCad (PCBNEW 10.0.5-10.0.5~ubuntu24.04.1) date 2026-09-26 11:32:59*"
+   ],
+   "verdict": "GEOMETRY-IDENTICAL"
+  },
+  {
+   "file": "hardware/demo/fab/gerbers/aqroot-Beta-v2-In4_Cu.gbr",
+   "in_parent": true,
+   "in_candidate": true,
+   "byte_identical": false,
+   "geometry_identical": true,
+   "differing_lines_removed": [
+    "%TF.CreationDate,2026-09-26T11:32:59+00:00*%",
+    "G04 Created by KiCad (PCBNEW 10.0.5-10.0.5~ubuntu24.04.1) date 2026-09-26 11:32:59*"
+   ],
+   "verdict": "GEOMETRY-IDENTICAL"
+  },
+  {
+   "file": "hardware/demo/fab/gerbers/aqroot-Beta-v2-NPTH-drl_map.pdf",
+   "in_parent": true,
+   "in_candidate": true,
+   "byte_identical": false,
+   "sha256_parent": "13f96711a5fd7d352c7438184752f7759862a6b21d6761e749645305489da4bc",
+   "sha256_candidate": "be38ead0d6631d3c20084ace693663d7256b6c38df2ee915a3f8573a48b389f8",
+   "verdict": "CHANGED (not geometry)"
+  },
+  {
+   "file": "hardware/demo/fab/gerbers/aqroot-Beta-v2-NPTH.drl",
+   "in_parent": true,
+   "in_candidate": true,
+   "byte_identical": false,
+   "geometry_identical": true,
+   "differing_lines_removed": [
+    "; DRILL file KiCad 10.0.5-10.0.5~ubuntu24.04.1 date 2026-09-26T11:33:00",
+    "; #@! TF.CreationDate,2026-09-26T11:33:00+00:00"
+   ],
+   "verdict": "GEOMETRY-IDENTICAL"
+  },
+  {
+   "file": "hardware/demo/fab/gerbers/aqroot-Beta-v2-PTH-drl_map.pdf",
+   "in_parent": true,
+   "in_candidate": true,
+   "byte_identical": false,
+   "sha256_parent": "19afd379dbc5aedd34e7c9b6c50901f32ce93b0ce00add9040b47b321672d758",
+   "sha256_candidate": "88130327f2b6c06f9b8eea6e5e1e644560f86907ab1eef4903e55ea639b86f32",
+   "verdict": "CHANGED (not geometry)"
+  },
+  {
+   "file": "hardware/demo/fab/gerbers/aqroot-Beta-v2-PTH.drl",
+   "in_parent": true,
+   "in_candidate": true,
+   "byte_identical": false,
+   "geometry_identical": true,
+   "differing_lines_removed": [
+    "; DRILL file KiCad 10.0.5-10.0.5~ubuntu24.04.1 date 2026-09-26T11:33:00",
+    "; #@! TF.CreationDate,2026-09-26T11:33:00+00:00"
+   ],
+   "verdict": "GEOMETRY-IDENTICAL"
+  },
+  {
+   "file": "hardware/demo/fab/gerbers/aqroot-Beta-v2-job.gbrjob",
+   "in_parent": true,
+   "in_candidate": true,
+   "byte_identical": false,
+   "geometry_identical": true,
+   "differing_lines_removed": [
+    "    \"CreationDate\": \"2026-09-26T11:32:59+00:00\""
+   ],
+   "verdict": "GEOMETRY-IDENTICAL"
+  },
+  {
+   "file": "hardware/demo/fab/gerbers/drill-report.txt",
+   "in_parent": true,
+   "in_candidate": true,
+   "byte_identical": false,
+   "sha256_parent": "4055035a7bc38b371b1d630ac6503ba3667b65cb37c28f90cb6a94c7dc222d21",
+   "sha256_candidate": "1d666a69eff37992b0f7e726dee080b5e79a445d733bd85f6bc6d5a8e6aa3f9b",
+   "verdict": "CHANGED (not geometry)"
+  }
+ ],
+ "geometry_files": 16,
+ "exact_files": 7,
+ "failures": [],
+ "equivalent": true,
+ "rule": "gerber / drill / job files identical after removing only the export-time stamp lines; CSVs byte-identical"
+}

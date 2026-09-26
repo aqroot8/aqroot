@@ -1,7 +1,7 @@
 {
  "endpoint": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
  "exhausted": true,
- "fetched_utc": "2026-09-26T04:13:05Z",
+ "fetched_utc": "2026-09-26T11:07:30Z",
  "keyword": "RC0603FR-073M65L",
  "page_size": 25,
  "pages": 1,
