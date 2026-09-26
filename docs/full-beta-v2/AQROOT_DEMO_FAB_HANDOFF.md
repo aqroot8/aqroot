@@ -11,9 +11,10 @@
 > part value, BOM line, CPL line or protected-copper object moves at D-802** — the board
 > sha256 is unchanged at `c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907`.
 > The release firmware image's behaviour does not change.  Connectivity is **174 retained /
-> 173 connected / one owner-approved `U11.3` open / zero unapproved**.  The D-802 content
-> commit, the MANIFEST sha256, the identity commit and the post-commit verification are
-> recorded in `hardware/demo/manufacturing/evidence/d802-review-target.json`.  The reviewed
+> 173 connected / one owner-approved `U11.3` open / zero unapproved**.  The D-802 content commit
+> is `0972d13b6bb9b81dc98e9323b2ff52ab78dc767c`; the current MANIFEST sha256 is
+> `3f0135bac310aec559425ae854b1d39ce6bc764361d4cf0ed2c20796958c2a15`; the identity commit and the post-commit
+> verification are recorded in `hardware/demo/manufacturing/evidence/d802-review-target.json`.  The reviewed
 > parent is the D-801 identity commit `e54adcc310505ef963acaac83924eb4a2c68622a`.
 >
 > **PRE-ORDER ANALYTICAL: CLOSED on this target.  FAB/CAM ACCEPTANCE (B01–B14), FIRST-ARTICLE

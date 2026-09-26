@@ -15,8 +15,15 @@
    "firmware_hw_map_contract crashed (FileNotFoundError) instead of failing when the FAB BOM was absent mid-run: now a clean refusal"
   ]
  },
- "content_commit": "recorded by the identity commit that follows the content commit",
+ "content_commit": "0972d13b6bb9b81dc98e9323b2ff52ab78dc767c",
  "decision": "D-802",
+ "fap01_image": {
+  "built": "clean build (rm -rf .pio/build) of the content commit, PlatformIO espressif32@6.9.0, on the release worker; not claimed bit-reproducible across machines -- re-hash the file actually flashed per unit",
+  "console": "docs/full-beta-v2/assembly/FAP01_FIRST_ARTICLE_IMAGE.md; RELEASE_ACCEPTANCE_REGISTER.json first_article_prerequisites FAP-01",
+  "environment": "aqroot-demo-fap01",
+  "firmware_bin_sha256": "acee496d503c10bf5bf9fcfb798e2388355c27c073dcf2e80b14c34718956ea8",
+  "git_sha": "0972d13b6bb9b81dc98e9323b2ff52ab78dc767c"
+ },
  "firmware_changes": [
   "RELEASE IMAGE [env:aqroot-demo]: no behaviour change -- generated board header comment, and a host-only accessor inside #if defined(AQROOT_HOST_IMAGE_HARNESS); a clean release build is byte-identical in size to D-801's and differs only in the embedded ELF sha256 (offset 0xB0, 32 bytes) and the trailing checksum / image hash (33 bytes)",
   "NON-PRODUCTION [env:aqroot-demo-fap01]: sup3V, exclusive Wi-Fi session, validated REQA, implausible-VCELL marking; begin() tells the permission table the Wi-Fi radio is off after a reset",
@@ -43,8 +50,9 @@
   "sourcing": "fresh --refresh sweep 2026-09-26T04:12:20Z..04:13:21Z, 123 lines, the same 9 short/unknown at the same counts as D-801 (evidence/d802-sourcing-sweep.json)",
   "standing_contracts": "19/19 PASS (contract_regression vs d801: all children exit 0; substantive difference only in demo_feature and firmware_hw_map, by design -- the D-802 controls)"
  },
- "identity_commit": "the commit after the content commit -- it records the content commit's SHA; a commit cannot contain its own",
+ "identity_commit": "this commit -- it records the content commit's SHA; a commit cannot contain its own",
  "manifest": "hardware/demo/fab/MANIFEST.json",
+ "manifest_sha256": "3f0135bac310aec559425ae854b1d39ce6bc764361d4cf0ed2c20796958c2a15",
  "no_copper_change": true,
  "no_firmware_change": false,
  "order_status": {
@@ -54,10 +62,59 @@
   "PROCUREMENT": "PENDING (AO4800 allocation, nine constrained groups, R20-P01, R20-P02, pre-order re-sweep)"
  },
  "parent_reviewed_by_round_21": "e54adcc310505ef963acaac83924eb4a2c68622a",
+ "post_commit_verification": {
+  "battery_pack_contract": {
+   "verdict": "PASS"
+  },
+  "beta_v2_untouched": true,
+  "board_sha256": "c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907",
+  "demo_feature_contract": {
+   "checks": "F1-F14, 14 of 14",
+   "verdict": "PASS"
+  },
+  "fab_package_contract": {
+   "checks": "FAB1-FAB16",
+   "verdict": "PASS"
+  },
+  "firmware_hw_map_contract": {
+   "checks": "H1-H10",
+   "note": "H6 1096 claims, 238/238 controls caught; H10 11/11",
+   "verdict": "PASS"
+  },
+  "guarantee_evidence": {
+   "note": "KEYS authenticated 17/17; CONTROLS caught 37/37",
+   "verdict": "PASS"
+  },
+  "manifest_sha256": "3f0135bac310aec559425ae854b1d39ce6bc764361d4cf0ed2c20796958c2a15",
+  "mechanical_keepout_contract": {
+   "checks": "MK1-MK12",
+   "verdict": "PASS"
+  },
+  "platformio": {
+   "all_success": true,
+   "bare_pio_run": "builds aqroot-demo only",
+   "clean_build": true,
+   "environments": [
+    "esp32-s3-aqroot",
+    "wokwi",
+    "esp32-s3-aqroot-dm",
+    "aqroot-demo",
+    "aqroot-demo-fap01"
+   ]
+  },
+  "run_against": "0972d13b6bb9b81dc98e9323b2ff52ab78dc767c, clean tree",
+  "worktree_clean": true
+ },
  "procurement_gates": {
   "R20_P01": "L3 XFL4020-472MEC: BLOCK-PURCHASE until Coilcraft's written suitability for the TPS61169 open-LED OVP transient or a rated replacement",
   "R20_P02": "Adafruit 328 PCM: BLOCK-PURCHASE until the supplier states the lot PCM overcharge threshold",
   "standing": "genuine AOS AO4800 allocation; exact constrained-group allocation; --refresh re-sweep immediately before the order"
+ },
+ "release_image": {
+  "environment": "aqroot-demo",
+  "equivalence_to_d801": "a clean release build of e54adcc3 on the same worker has the same size (337984 bytes) and differs only in the embedded ELF sha256 (offset 0xB0, 32 bytes) and the trailing checksum / image hash (33 bytes)",
+  "firmware_bin_sha256": "41d389775bcc5753ed24b44d0bed52a5fe52fef41a2324a2209844dc06a513bf",
+  "git_sha": "0972d13b6bb9b81dc98e9323b2ff52ab78dc767c"
  },
  "schema": 1,
  "witnesses": {

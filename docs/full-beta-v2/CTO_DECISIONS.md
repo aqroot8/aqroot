@@ -1,8 +1,8 @@
 ## D-802 — **ROUND-21 FOCUSED PRE-ORDER CORRECTION: THE FIRST-ARTICLE IMAGE SETS THE NFC SUPPLY MODE, HOLDS AN EXCLUSIVE WI-FI SESSION AND CLAIMS A TAG ONLY FROM VALIDATED EVIDENCE; TWO DOCUMENT-SCANNER ESCAPES CLOSED**
 
     authority  board c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907
-    manifest   recorded by the identity commit (evidence/d802-review-target.json)
-    content    recorded by the identity commit (a commit cannot contain its own SHA)
+    manifest   3f0135bac310aec559425ae854b1d39ce6bc764361d4cf0ed2c20796958c2a15
+    content    0972d13b6bb9b81dc98e9323b2ff52ab78dc767c
     identity   the post-commit verification record commit that follows it
     parent     e54adcc310505ef963acaac83924eb4a2c68622a (D-801 identity, reviewed by Round-21)
     scope      R21-01..R21-05 (the Round-21 D-802 worklist) and the FAP-01 hygiene beside
