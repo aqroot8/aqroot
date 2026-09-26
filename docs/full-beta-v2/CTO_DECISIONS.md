@@ -1,8 +1,8 @@
 ## D-803 — **ROUND-22 FOCUSED PRE-ORDER CORRECTION: A REQA VERDICT ONLY FROM A LIVE PART, A ROLE-BOUND R_ins FAMILY, THE WHOLE OPERATIVE CORPUS SCANNED, A REQUIRED PLATFORMIO CROSS-CHECK, AND THE HOLD-OFF RECORD STATED AS IT BEHAVES**
 
     authority  board c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907
-    manifest   recorded by the identity commit (evidence/d803-review-target.json)
-    content    recorded by the identity commit (evidence/d803-review-target.json)
+    manifest   d2aa54d7951a9a55c7b0d5efabdf76c6f0ff063275ba988dbfff4516823ed629
+    content    5413317d95abfa833aa537b8453b41cdd2389cba
     identity   the post-commit verification record commit that follows it
     parent     d6f67692fcc9787ee0d43084a377562f4f26f9b9 (D-802 identity, reviewed by Round-22)
     scope      D803-01..D803-06 (Astra R22-01..R22-05 and the Demo traveler clarification),

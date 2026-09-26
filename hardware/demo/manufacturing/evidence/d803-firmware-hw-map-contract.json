@@ -2784,7 +2784,7 @@
         "case": "PATH-only `pio` (configured path absent) is FOUND and the valid file passes",
         "must_pass": true,
         "passed": true,
-        "found_by": "pio on PATH (/tmp/aqroot-h9-path-q2sqifbn/pio/pio)",
+        "found_by": "pio on PATH (/tmp/aqroot-h9-path-nc98i7lz/pio/pio)",
         "first_problem": null,
         "ok": true
       },
@@ -2792,7 +2792,7 @@
         "case": "PATH-only `platformio` (configured path absent) is FOUND and the valid file passes",
         "must_pass": true,
         "passed": true,
-        "found_by": "platformio on PATH (/tmp/aqroot-h9-path-q2sqifbn/platformio/platformio)",
+        "found_by": "platformio on PATH (/tmp/aqroot-h9-path-nc98i7lz/platformio/platformio)",
         "first_problem": null,
         "ok": true
       },
@@ -2808,7 +2808,7 @@
         "case": "parser / PlatformIO DISAGREEMENT (a PlatformIO resolving a different default and environment list) fails",
         "must_pass": false,
         "passed": false,
-        "found_by": "configured /tmp/aqroot-h9-stub-mfjbigcp/pio",
+        "found_by": "configured /tmp/aqroot-h9-stub-dsz7q_zp/pio",
         "first_problem": "PlatformIO itself resolves default_envs to ['aqroot-demo', 'wokwi']",
         "ok": true
       },

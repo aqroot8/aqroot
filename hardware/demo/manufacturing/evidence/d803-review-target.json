@@ -8,10 +8,10 @@
  "no_copper_change": true,
  "no_release_image_change": true,
  "parent_reviewed_by_round_22": "d6f67692fcc9787ee0d43084a377562f4f26f9b9",
- "content_commit": "recorded by the identity commit",
+ "content_commit": "5413317d95abfa833aa537b8453b41cdd2389cba",
  "identity_commit": "the identity commit -- it records the content commit's SHA; a commit cannot contain its own",
  "manifest": "hardware/demo/fab/MANIFEST.json",
- "manifest_sha256": "recorded by the identity commit",
+ "manifest_sha256": "d2aa54d7951a9a55c7b0d5efabdf76c6f0ff063275ba988dbfff4516823ed629",
  "closed_here": {
   "D803_01_R22_01": "FAP-01 T: a LIVE proof (IC identity, 5Ah/A5h No-response-timer-2 challenge read back, 11h restored to 00h and read back, identity again) five times per REQA; the fresh boundary and the end re-read main/error IRQ and FIFO status as 0; I_col, I_rxs without I_rxe, CRC/parity/framing, fifo_ovr/unf and an incomplete last byte outrank both verdicts; ATQA needs exactly one anticollision bit. Witness sweep on D-802 firmware: 144/576 persistent verdicts, 844 wrong recovered-window verdicts, 8 stale answers, 8/8 errors as 'no tag'; after: 0/2048, 0/98304, 0/6528, 0/8; healthy controls pass. H6: 8 claims (compact sweep incl. every byte x windows 1..40), 10 controls incl. the end-only shape",
   "D803_02_R22_02": "F12 round22_rins_role_binding: measurement role and insertion value bound (clamp exempts only as the ACTIVE instrument with no ACTIVE series instrument; DMM burden, inserted resistance, value-before-role, 'adds no resistance', 'R_ins = 0.'); 14 injections caught in every operative document; Astra's 4 forms missed by D-802's rule and caught; 11 valid controls clean",
@@ -33,6 +33,83 @@
   "PROCUREMENT": "PENDING (genuine AO4800 allocation, exact constrained-group allocation, R20-P01, R20-P02, --refresh re-sweep immediately before the order)",
   "ENCLOSURE_FIT": "PENDING"
  },
- "gates": {},
- "post_commit_verification": {}
+ "gates": {
+  "standing_contracts": "19/19 PASS (contract_regression vs d802, post-commit, all children exit 0; substantive difference only in demo_feature and firmware_hw_map, by design -- the D-803 clauses). A pre-commit run had failed demo_feature on two stale 'D-802 content commit' identity rows (FAP01 procedure, acceptance register); fixed before the content commit",
+  "demo_feature": "F1-F14 PASS (14/14); release identity bound to D-803; round22_rins_role_binding and round22_publication_scope ok",
+  "firmware_hw_map": "H1-H10 PASS; H6 1110 claims, 252/252 controls caught; H9 10 controls + 17 portability controls; H10 14/14",
+  "fab_package": "FAB1-FAB16 PASS; geometry-identical to D-802 (16 Gerber/drill/job files identical after export-stamp lines; 7 BOM/CPL/DNP CSVs byte-identical) -- evidence/d803-geometry-equivalence.json",
+  "guarantee_evidence": "17/17 keys, 37/37 controls",
+  "battery_pack": "PASS",
+  "mechanical_keepout": "MK1-MK12 PASS",
+  "routing_ledger": "byte-identical to d802 (174 retained / 173 connected / 1 approved U11.3 / 0 unapproved)",
+  "rail_ampacity": "byte-identical to d802 (all_ok)",
+  "protected_copper": "identical (15 nets, 406 objects) vs d6f67692",
+  "kicad_drc_parity": "199 violations (lib_footprint_issues) / 17 unconnected / 246 parity, same as d802; unconnected nets identical (KiCad reports a different endpoint pair on three rows of the same nets; board sha unchanged)",
+  "platformio": "5/5 from clean by name; bare pio run builds aqroot-demo only",
+  "witnesses": "R22-01/04/05 reproduced on d6f67692 and closed; R22-02/03 full-gate injection: D-802 all_pass true, D-803 all_pass false (F10_battery_pass_pair_gate_drive_is_proven_for_the_fitted_part, F12_cell_to_load_network_closes_at_an_attainable_cell)",
+  "sourcing": "fresh --refresh sweep 2026-09-26T11:06:44Z..11:07:48Z, 123 lines, 8 short/unknown (D-802's nine less LQW18AN39NG80D, 4003 in stock) -- evidence/d803-sourcing-sweep.json"
+ },
+ "post_commit_verification": {
+  "run_against": "5413317d95abfa833aa537b8453b41cdd2389cba, clean tree",
+  "worktree_clean": true,
+  "board_sha256": "c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907",
+  "manifest_sha256": "d2aa54d7951a9a55c7b0d5efabdf76c6f0ff063275ba988dbfff4516823ed629",
+  "demo_feature_contract": {
+   "verdict": "PASS",
+   "checks": "F1-F14, 14 of 14"
+  },
+  "firmware_hw_map_contract": {
+   "verdict": "PASS",
+   "checks": "H1-H10",
+   "note": "H6 1110 claims, 252/252 controls caught; H9 27/27; H10 14/14"
+  },
+  "fab_package_contract": {
+   "verdict": "PASS",
+   "checks": "FAB1-FAB16"
+  },
+  "mechanical_keepout_contract": {
+   "verdict": "PASS",
+   "checks": "MK1-MK12"
+  },
+  "guarantee_evidence": {
+   "verdict": "PASS",
+   "note": "17/17, 37/37"
+  },
+  "battery_pack_contract": {
+   "verdict": "PASS"
+  },
+  "standing_contracts": "19/19 PASS",
+  "platformio": {
+   "all_success": true,
+   "clean_build": true,
+   "bare_pio_run": "builds aqroot-demo only",
+   "environments": [
+    "esp32-s3-aqroot",
+    "wokwi",
+    "esp32-s3-aqroot-dm",
+    "aqroot-demo",
+    "aqroot-demo-fap01"
+   ]
+  },
+  "full_gate_injection_closure": {
+   "all_pass": false,
+   "failing_checks": [
+    "F10_battery_pass_pair_gate_drive_is_proven_for_the_fitted_part",
+    "F12_cell_to_load_network_closes_at_an_attainable_cell"
+   ]
+  },
+  "beta_v2_untouched": true
+ },
+ "fap01_image": {
+  "environment": "aqroot-demo-fap01",
+  "git_sha": "5413317d95abfa833aa537b8453b41cdd2389cba",
+  "firmware_bin_sha256": "bb6210ee5876bddece41aad01930ec37fe7df642f0be99362d58cddcba6c690d",
+  "built": "clean build (rm -rf .pio/build) of the content commit, PlatformIO espressif32@6.9.0, on the release worker; not claimed bit-reproducible across machines -- re-hash the file actually flashed per unit",
+  "console": "docs/full-beta-v2/assembly/FAP01_FIRST_ARTICLE_IMAGE.md"
+ },
+ "release_image": {
+  "environment": "aqroot-demo",
+  "firmware_bin_sha256": "41d389775bcc5753ed24b44d0bed52a5fe52fef41a2324a2209844dc06a513bf",
+  "note": "no file under Firmware/src/demo or Firmware/src/hw changed since D-802"
+ }
 }

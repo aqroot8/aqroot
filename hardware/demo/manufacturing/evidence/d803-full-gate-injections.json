@@ -1,0 +1,23 @@
+{
+ "schema": 1,
+ "decision": "D-803",
+ "script": "evidence/d803-full-gate-injections.py",
+ "injected": "every Astra Round-22 R22-02 / R22-03 escape at once, in her carriers: the four R_ins forms, the pass-pair 2.60 A peak by role and the unconditional BATOCP self-clearance in DEVICE_SPEC; the 2x survival claim in both BATTERY_HARNESS.json copies (ensure_ascii=True); the duplicate-authority block (2.60 A peak, D-616 current authority with FAB1-FAB8 / 247 of 247, BATOCP) in SELECTED_BATTERY.json and FOOTPRINT_VERIFICATION_LEDGER.md",
+ "runs": {
+  "d802_witness": {
+   "tree": "d6f67692fcc9787ee0d43084a377562f4f26f9b9 (frozen D-802)",
+   "all_pass": true,
+   "failing_checks": [],
+   "meaning": "NONE of the escapes was caught -- R22-02 and R22-03 reproduced"
+  },
+  "d803_closure": {
+   "tree": "5413317d95abfa833aa537b8453b41cdd2389cba (D-803 content commit)",
+   "all_pass": false,
+   "failing_checks": [
+    "F10_battery_pass_pair_gate_drive_is_proven_for_the_fitted_part",
+    "F12_cell_to_load_network_closes_at_an_attainable_cell"
+   ]
+  }
+ },
+ "astra_evidence": "/tmp/aqroot-forensic-d802-d6f67692/evidence/document-results.json and document-*-results.json (one full gate per case on d6f67692)"
+}

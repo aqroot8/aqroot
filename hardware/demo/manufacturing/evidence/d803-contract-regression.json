@@ -1,6 +1,6 @@
 {
- "all_children_exited_zero": false,
- "all_contracts_pass": false,
+ "all_children_exited_zero": true,
+ "all_contracts_pass": true,
  "all_identical": false,
  "all_identical_where_comparable": false,
  "all_ran": true,
@@ -145,7 +145,7 @@
    "claimed": [],
    "comparable": false,
    "contract": "pour_partition",
-   "difference": "$.ref_commit: 'd6f67692fcc9787ee0d43084a377562f4f26f9b9' vs 'e54adcc310505ef963acaac83924eb4a2c68622a'",
+   "difference": "$.ref_commit: '5413317d95abfa833aa537b8453b41cdd2389cba' vs 'e54adcc310505ef963acaac83924eb4a2c68622a'",
    "difference_excluding_inputs": null,
    "emitted_baseline": "d803-pour_partition-contract.json",
    "identical": false,
@@ -155,7 +155,7 @@
       "e54adcc310505ef963acaac83924eb4a2c68622a"
      ],
      [
-      "d6f67692fcc9787ee0d43084a377562f4f26f9b9"
+      "5413317d95abfa833aa537b8453b41cdd2389cba"
      ]
     ]
    },
@@ -347,22 +347,22 @@
    "baseline": "d802-demo-feature-contract.json",
    "baseline_verdict": true,
    "board_sha256": "c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907",
-   "child_exit_code_is_zero": false,
+   "child_exit_code_is_zero": true,
    "claimed": [],
    "comparable": true,
    "contract": "demo_feature",
-   "difference": "$.all_pass: False vs True",
-   "difference_excluding_inputs": "$.all_pass: False vs True",
+   "difference": "$.checks.F10_battery_pass_pair_gate_drive_is_proven_for_the_fitted_part.live_distributor_record.Q2.fetched_utc: '2026-09-26T11:07:11Z' vs '2026-09-26T04:12:47Z'",
+   "difference_excluding_inputs": "$.checks.F10_battery_pass_pair_gate_drive_is_proven_for_the_fitted_part.live_distributor_record.Q2.fetched_utc: '2026-09-26T11:07:11Z' vs '2026-09-26T04:12:47Z'",
    "emitted_baseline": "d803-demo-feature-contract.json",
    "identical": false,
    "inputs_moved": null,
    "pre_dependent_fields_normalised": null,
    "ran": true,
-   "returncode": 1,
-   "substantive_difference": "$.all_pass: False vs True",
-   "verdict": false,
+   "returncode": 0,
+   "substantive_difference": "$.checks.F10_battery_pass_pair_gate_drive_is_proven_for_the_fitted_part.live_distributor_record.Q2.fetched_utc: '2026-09-26T11:07:11Z' vs '2026-09-26T04:12:47Z'",
+   "verdict": true,
    "verdict_field": "all_pass",
-   "verdict_is_pass": false
+   "verdict_is_pass": true
   },
   {
    "baseline": "d802-firmware-hw-map-contract.json",
@@ -429,9 +429,7 @@
   }
  ],
  "contracts_compared": 19,
- "contracts_failing": [
-  "demo_feature"
- ],
+ "contracts_failing": [],
  "contracts_incomparable": 1,
  "contracts_run": 19,
  "contracts_with_substantive_difference": [
