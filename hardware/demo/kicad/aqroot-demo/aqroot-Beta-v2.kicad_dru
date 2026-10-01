@@ -1227,7 +1227,7 @@
 	(condition "(A.intersectsCourtyard('U11') || A.intersectsCourtyard('U12') || A.intersectsCourtyard('U13') || A.intersectsCourtyard('U14') || A.intersectsCourtyard('U17') || A.intersectsCourtyard('U9')) && (B.intersectsCourtyard('U11') || B.intersectsCourtyard('U12') || B.intersectsCourtyard('U13') || B.intersectsCourtyard('U14') || B.intersectsCourtyard('U17') || B.intersectsCourtyard('U9'))"))
 
 (rule "FP-U9 ST25R3916-AQET intra-footprint land pattern"
-	(constraint clearance (min 0.05mm))
+	(constraint clearance (min 0.12mm))
 	(condition "A.Type == 'Pad' && B.Type == 'Pad' && A.memberOfFootprint('U9') && B.memberOfFootprint('U9')"))
 
 (rule "FP-U13 TPS61023 SOT-563 intra-footprint land pattern"
