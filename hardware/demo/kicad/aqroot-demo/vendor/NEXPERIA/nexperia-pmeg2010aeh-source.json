@@ -1,0 +1,8 @@
+{
+  "part": "D9 PMEG2010AEH,115 (Nexperia)",
+  "document": "Nexperia PMEG2010AEH product data sheet, 8 October 2024 (8 pp): Table 2 pinning (1 = K cathode, 2 = A anode), section 12 package outline SOD123F (Fig. 5), section 13 reflow soldering footprint SOD123F (Fig. 6, sod123f_fr: lands 1.1 x 1.1 at 2.8 pitch, resist 1.2 x 1.2, occupied 4.4 x 2.1)",
+  "url": "https://assets.nexperia.com/documents/data-sheet/PMEG2010AEH.pdf",
+  "fetched_utc": "2026-10-01T23:05:30Z",
+  "sha256": "ca0b6e215358c92e7572f556865e227a9ed7da27de55514952d2130b2b949ea8",
+  "fetched_for": "D-804: binds the part number itself (not only the package family) to SOD123F; Fig. 6 is figure-for-figure the SOD123F package-information Fig. 2 the land is cited to"
+}

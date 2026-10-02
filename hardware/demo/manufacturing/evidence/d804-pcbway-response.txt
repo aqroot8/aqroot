@@ -1,0 +1,132 @@
+Subject: AQROOT Demo (aqroot-Beta-v2) — corrected files and answers to CAM / BOM review — quote T-5D2W1187157A — revision D-804
+
+Hello PCBWay team,
+
+Thank you for the CAM and BOM review. Please use ONLY the attached D-804 package. It replaces
+all earlier Gerbers in full, including any file named "AQROOT_D804_U9_PCBWay_CAM_RECHECK".
+
+PCBWay is NOT authorized to edit, cut, shave, re-space, re-route or re-shape any copper,
+solder-mask, paste, drill or outline feature. If anything still fails your CAM rules, please
+stop and send us the layer, coordinates and measured value; we will return corrected files.
+
+Gerber coordinates below are as written in the files (Y is negative); board coordinates are
+the same numbers with Y positive.
+
+----------------------------------------------------------------------
+1. U9 minimum clearance (your finding: 1.55 mil < 4 mil) — CORRECTED
+----------------------------------------------------------------------
+U9 (ST25R3916-AQET, UFQFPN-32, bottom side / L6): the corner-adjacent lands 1, 8, 9, 16, 17,
+24, 25 and 32 now have fully rounded ends. Land centres, land sizes, U9 position and all
+routing are unchanged.
+
+Designed (Gerber) minimum copper-to-copper spacing, before any etch compensation:
+  U9.1  / U9.32 : 0.1243 mm = 4.89 mil   at Gerber X 32.056  Y -31.856
+  U9.8  / U9.9  : 0.1243 mm = 4.89 mil   at Gerber X 32.056  Y -28.144
+  U9.16 / U9.17 : 0.1243 mm = 4.89 mil   at Gerber X 35.856  Y -28.056
+  U9.24 / U9.25 : 0.1243 mm = 4.89 mil   at Gerber X 35.944  Y -31.856
+These four are the smallest different-net spacings on the board. Every other different-net
+spacing on all six copper layers is at least 5 mil. (The earlier files were 2.44 mil here.)
+
+REQUEST: please CAM-check U9 again AFTER your etch compensation and tell us the resulting
+minimum. Your earlier reading (1.55 mil) was about 0.9 mil below our designed 2.44 mil; if
+the same reduction applies, the new corners will be close to 4.0 mil. If your post-process
+value is below 4.0 mil, please do not modify the pads — send us the value and we will
+supply corrected files.
+
+----------------------------------------------------------------------
+2. Customized 6-layer stackup
+----------------------------------------------------------------------
+See AQROOT_D804_PCBWay_Stackup.md in the package:
+  6 layers; finished 1.6 mm nominal (accept 1.474 - 1.674 mm); FR-4 Tg >= 150 C; ENIG;
+  L1/L6 1 oz finished; L2-L5 0.5 oz (finished >= 15.2 um);
+  prepreg 0.2104 / core 0.40 / prepreg 0.2028 / core 0.40 / prepreg 0.2104 mm (7628, er 4.4);
+  no impedance control ordered; through-hole vias only.
+You may propose your closest standard stack, but please send it as a layer-by-layer drawing
+for our written approval BEFORE any material is cut. (The fab notes call this distribution
+"JLC06161H-7628" because that is the reference it was drawn on; it is not a request for
+JLCPCB material. The acceptance limits for an equivalent are section 3 of the stackup
+document. Without our written approval, no substitution.)
+
+----------------------------------------------------------------------
+3. Apparent trace crossings in your CAM screenshots — NONE IS A SHORT
+----------------------------------------------------------------------
+We checked the D-804 Gerbers directly (using the X2 net attributes in the files): zero
+different-net crossings, zero different-net overlaps, zero shorts, on every copper layer.
+
+(a) Layer overlay. Signals are routed on L1, L3, L4 and L6. When several copper layers are
+    shown together, traces on different layers appear to cross; they only connect at
+    drilled vias. Please view one copper layer at a time.
+(b) Same-net crossings. There are 133 places where two trace segments of the SAME net cross
+    or overlap on the same layer (L1: 32, L3: 15, L4: 1, L6: 85), including some exactly
+    duplicated segments. They are one electrical node, so they are not shorts. Please build
+    them as supplied; do not remove or merge them. Each location, with net name and
+    coordinates: AQROOT_D804_same_net_crossings.csv.
+
+----------------------------------------------------------------------
+4. Open-ended traces in your CAM screenshots
+----------------------------------------------------------------------
+(a) Three trace ends in the earlier files did not end on a pad or another trace end. The
+    copper overlapped, so they were electrically connected, but a CAM end-point check
+    correctly flags them. All three are corrected in D-804 by adding one short joining
+    segment of the same net and width (nothing removed):
+      L3 (In2), net EXT_SDA_BUF: two trace ends at Gerber X 60.150 and X 60.300,
+        Y -40.800 (0.15 mm apart) — now joined.
+      L6 (Bottom), net BQ25185_SYS: trace end at Gerber X 57.150, Y -37.900, 0.075 mm
+        outside pad L4.1 — now extended onto the pad.
+    The D-804 Gerbers have no trace end that does not land on a pad, via, trace or pour,
+    on any layer.
+(b) Isolated pads (not traces). 46 pads intentionally have no routed connection. Each is
+    listed, with its reason, in AQROOT_D804_isolated_pads.csv:
+      - 18 pads of Do-Not-Populate parts (U13, L2, R44, R45, C34, C35, R107, R68, R112,
+        C81, C82, R123): unrouted by design and NOT assembled (see the BOM / DNP list);
+      - TP9 (test pad on the unpopulated U13 rail) and U11 pin 3 (deliberately unconnected
+        by design);
+      - 26 no-connect pins and mounting pads (J1, J2, J7, J8, U7, U8, U9) with no net.
+    No trace stub is attached to any of them.
+Please run your netlist compare against the D-804 Gerbers. We expect exactly the pads in
+AQROOT_D804_isolated_pads.csv to be unconnected; please report anything else to us.
+
+----------------------------------------------------------------------
+5. BOM notes (12) — answers are also in the "Customer Reply" column of
+   AQROOT_D804_pcbway_quote_customer_reply.xls
+----------------------------------------------------------------------
+C20, C25/C37/C38/C62/C63/C67/C85, C26/C27, C33/C64/C83/C84, C43:
+  Confirmed. Supply exactly the listed part number. The voltage in our description is the
+  MINIMUM rating we require; the higher rating of the listed part is intended.
+C71/C72, C73/C74, C75/C77:
+  Confirmed. Supply exactly the listed part number (100 V / 100 V / 250 V C0G). These are
+  NFC tuning parts: no substitution, not even with an equal-value part.
+D9:
+  Agreed — PMEG2010AEH,115 is SOD123F (SOD-123FL / SMF class). The D-804 files now use the
+  SOD-123F footprint (lands 1.1 x 1.1 mm at 2.8 mm pitch, per the Nexperia data sheet's
+  reflow footprint). Part number unchanged; pin 1 = cathode. Please use the new Gerbers,
+  BOM and CPL. Supply genuine Nexperia PMEG2010AEH,115 (LCSC C110921, SOD-123F) only; the
+  JSMSEMI part sold as "PMEG2010AEH,115-JSM" (SOD-123) is NOT acceptable.
+J5:
+  Do NOT substitute. We will customer-supply the exact Samtec SSQ-124-02-G-S-RA. Please
+  confirm the quantity you need (5 + spares) and the consignment address / reference.
+  J5 is a through-hole part soldered after reflow.
+J6:
+  Acknowledged — 5 boards only, so the >100 pcs cost note does not apply. Seat the JST
+  B2B-PH-K-S(LF)(SN) fully flush and square to the board. No substitution.
+L4:
+  Confirmed — same part. Wurth 74438357010 is WE-MAPI size "4030" = 4.1 x 4.1 mm (+/-0.2)
+  body, 3.1 mm max height; "4030" is Wurth's size name, not a different package. Supply
+  exactly 74438357010; we can consign it if your stock is unavailable.
+
+----------------------------------------------------------------------
+Files in the D-804 package
+----------------------------------------------------------------------
+  01_Gerbers/AQROOT_D804_Gerbers_Drill.zip   6 copper + mask + paste + silk + outline Gerbers
+                                             (X2), PTH/NPTH Excellon, drill maps, job file
+  02_Stackup/AQROOT_D804_PCBWay_Stackup.md   the stackup above, with approval rules
+  03_Assembly/aqroot-Demo-BOM-assembly.csv   assembly BOM (123 lines)
+  03_Assembly/aqroot-Demo-pos-fitted.csv     centroid / CPL, fitted parts only
+  03_Assembly/aqroot-Demo-assembly-top.pdf, aqroot-Demo-assembly-bottom.pdf
+  04_Fab_Notes/aqroot-Demo-FAB-NOTES.md      fabrication and assembly notes
+  05_CAM_Response/                           this text, the two CSV lists, the BOM reply sheet
+  SHA256SUMS.txt
+
+Thank you — please confirm receipt and send the post-CAM U9 measurement before production.
+
+AQROOT

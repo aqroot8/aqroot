@@ -1,11 +1,11 @@
 {
  "assembly_drawings": {
-  "board_sha256": "c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907",
+  "board_sha256": "abb0c3916ef2080beafbaae7968caea06f833459502ef67669488f288a0de987",
   "drawing_sheet": "hardware/demo/manufacturing/aqroot_assembly.kicad_wks",
   "drawing_sheet_sha256": "d97c73f1241a9ac4cce2e3d3d1bd3c9f57bc4ea2093321aa8751ff27a5a18dc8",
   "manual_assembly_note": true,
   "pin1_polarity_note": true,
-  "release": "D-803",
+  "release": "D-804",
   "sides": {
    "bottom": {
     "centered": true,
@@ -55,18 +55,18 @@
    "sha256": "7c6e50d94c7348a2dc063630370d124213054c71f91e9aae06ea54648e0b7c8c"
   },
   {
-   "bytes": 18583,
+   "bytes": 18584,
    "deterministic": true,
-   "normalised_sha256": "82ed983957f4ac277df56b15e6344a675e404aa1455ad90ffd22073d26472932",
+   "normalised_sha256": "d1c9b421c4973e18eaf4d646b44605cdbf71449b933b657fddd78f05fc39345f",
    "path": "aqroot-Demo-BOM-assembly.csv",
-   "sha256": "82ed983957f4ac277df56b15e6344a675e404aa1455ad90ffd22073d26472932"
+   "sha256": "d1c9b421c4973e18eaf4d646b44605cdbf71449b933b657fddd78f05fc39345f"
   },
   {
-   "bytes": 20743,
+   "bytes": 20744,
    "deterministic": true,
-   "normalised_sha256": "f6a4954a1c22fe639f145cd4453d149e8fc8e562ecf8a300d4aef858646e8622",
+   "normalised_sha256": "370f0169986ac46a4f76109bc694a39634ff9c9bf8c2bd5e25a434dd2ef15ef4",
    "path": "aqroot-Demo-BOM-full.csv",
-   "sha256": "f6a4954a1c22fe639f145cd4453d149e8fc8e562ecf8a300d4aef858646e8622"
+   "sha256": "370f0169986ac46a4f76109bc694a39634ff9c9bf8c2bd5e25a434dd2ef15ef4"
   },
   {
    "bytes": 1727,
@@ -76,11 +76,11 @@
    "sha256": "f15bb990711ac1a18fbdff48cd10f61da795f58e4e1b760d99b33ea45b63251d"
   },
   {
-   "bytes": 33526,
+   "bytes": 33143,
    "deterministic": false,
    "normalised_sha256": null,
    "path": "aqroot-Demo-FAB-NOTES.md",
-   "sha256": "67935065b381d8dfc50aadf00269a9aa5f566ec2596cefa8f7e68eb2b398d5c5"
+   "sha256": "f474ea6a8a09919428b8f81f9dae28d5e0f11cb1a7040bdb2665b75b22619c1d"
   },
   {
    "bytes": 3516,
@@ -97,165 +97,165 @@
    "sha256": "df479fb375671a7c9ee9eee7fa9a01bd1150079f5c5742aad5e2d3d1cb288855"
   },
   {
-   "bytes": 409733,
+   "bytes": 411352,
    "deterministic": false,
    "normalised_sha256": null,
    "path": "aqroot-Demo-assembly-bottom.pdf",
-   "sha256": "9268a979623dd720268bf34fab1667ac99669de2f0f170d30acaef28f052a2f4"
+   "sha256": "2063d13be17b31c3206a046b753124b2cbcc9d7833d4da779c29d67a33a09ce9"
   },
   {
-   "bytes": 360723,
+   "bytes": 360734,
    "deterministic": false,
    "normalised_sha256": null,
    "path": "aqroot-Demo-assembly-top.pdf",
-   "sha256": "081be4ac7c8ff78892a69c066a589cf9a43aca6205f806e0f436cd3230b7c2c6"
+   "sha256": "8cbe3599f31285d9c292c77b8d68d7532050f6fde1e2fdc46627b82078c7766d"
   },
   {
-   "bytes": 19607,
+   "bytes": 19608,
    "deterministic": true,
-   "normalised_sha256": "ef08b46ec72e9518735b9914f08bdbc69374553edf794c54218cd6c1f87f639d",
+   "normalised_sha256": "81399ebd517b2cec8995fa23cb49726d953d4990eb5a741db9b06935f10bb702",
    "path": "aqroot-Demo-pos-all.csv",
-   "sha256": "ef08b46ec72e9518735b9914f08bdbc69374553edf794c54218cd6c1f87f639d"
+   "sha256": "81399ebd517b2cec8995fa23cb49726d953d4990eb5a741db9b06935f10bb702"
   },
   {
-   "bytes": 18437,
+   "bytes": 18438,
    "deterministic": true,
-   "normalised_sha256": "861ef436b80c68394bd3c09c06742ebf58cdb4d7702cedff0026eeaf16795339",
+   "normalised_sha256": "4fa17dd3b2fc5f1b1608f14be81d56355b77ce5da15f7356c91171bbef1c67f4",
    "path": "aqroot-Demo-pos-fitted.csv",
-   "sha256": "861ef436b80c68394bd3c09c06742ebf58cdb4d7702cedff0026eeaf16795339"
+   "sha256": "4fa17dd3b2fc5f1b1608f14be81d56355b77ce5da15f7356c91171bbef1c67f4"
   },
   {
-   "bytes": 1419534,
+   "bytes": 1420999,
    "deterministic": true,
-   "normalised_sha256": "67ee5d43429cfe66a5aa0ac3ecade810fbe34b03e5ebac032646108835b2da09",
+   "normalised_sha256": "ee0472d3833962e06d1e12798840500df39456617478e200c72e4f54b8fb06d6",
    "path": "gerbers/aqroot-Beta-v2-B_Cu.gbr",
-   "sha256": "eb85c158586d9d7234f0798f3b0bdbce39a1dd2cb810b60f20b886243bd4d157"
+   "sha256": "510aa7c0a68d0614c7d075e6edcdb460b4e328e10fd0bd96c67d7f5d053a2750"
   },
   {
-   "bytes": 26550,
+   "bytes": 26800,
    "deterministic": true,
-   "normalised_sha256": "2cac8a7231d11ee9381514d5c86c897a92f8d31870c40f693c568c6b9ff59743",
+   "normalised_sha256": "169ea008cd86dfafaba9b7a88e398bbcc248d3925a89275408fd3545a36f660a",
    "path": "gerbers/aqroot-Beta-v2-B_Mask.gbr",
-   "sha256": "a345d0241fb7a689c1bb277127e8b50ac3786d12a2c7a7360e993555686e0d8e"
+   "sha256": "f5e39bbbb34e2fe6254c99a7f277a9720c754290534bf594bcdb36b085a2e266"
   },
   {
-   "bytes": 27640,
+   "bytes": 27890,
    "deterministic": true,
-   "normalised_sha256": "3c2960511aea28c77ca6412d6c4fca318b9bb2c0001edb0a4d243a6704cfb243",
+   "normalised_sha256": "c18fd1e19fe76b6fb78d0ff1b532a06f06ea06ba46d28e7694b0451ee3403bf1",
    "path": "gerbers/aqroot-Beta-v2-B_Paste.gbr",
-   "sha256": "497e7d9e820887027ea0470a6b358c77efe34b4226da49dd48705e76f7afa218"
+   "sha256": "d85846c4509c2f1360cd92c62facca4e6c232631d8d136a34a342686635f45c6"
   },
   {
    "bytes": 35449,
    "deterministic": true,
-   "normalised_sha256": "1efb5bc5699849b2cc0e4c6385ceabde3287ae11c70fced3d04dcbfdd95b0932",
+   "normalised_sha256": "92fc9b1d2a5eb33b5b340d747f058b0d08e043b5519d176f1aaf2ee5e67470db",
    "path": "gerbers/aqroot-Beta-v2-B_Silkscreen.gbr",
-   "sha256": "7a6132d6375be3e6d609af1bd23579426b45c05714154167927ed770ae98fdbd"
+   "sha256": "69aea936ef7db8b927d74d318e686dccf7052a8003feec8ed76104cbb54ab24a"
   },
   {
    "bytes": 863,
    "deterministic": true,
    "normalised_sha256": "d1b84f77be614468a72a85c4e4b3fcebae212daa7c8e63dda5458d96a71957a3",
    "path": "gerbers/aqroot-Beta-v2-Edge_Cuts.gbr",
-   "sha256": "db6c1af21c96b154102121777721992f225f2250b3e37ca3920c858d64d07c4e"
+   "sha256": "df4e28204d45d567bdbcf2baa4b317e3444d092b917fc2abf166779551cd1596"
   },
   {
    "bytes": 770313,
    "deterministic": true,
    "normalised_sha256": "7d2bde57191695691c3fabb862d644a592ca97352eb4d3322105ac8c836ed510",
    "path": "gerbers/aqroot-Beta-v2-F_Cu.gbr",
-   "sha256": "f597f3d40848557bf384ca822b19fecb8eb54cba21f412e9a940929bdd4ab79c"
+   "sha256": "f96d53742cc0b067e11586a03748eab8e92ae5e4c7412460dab4974af05abf55"
   },
   {
    "bytes": 16231,
    "deterministic": true,
    "normalised_sha256": "21ec4c86547ef8f94296b95bee3c49a04ecdbc85d236e3d6302b8db311a6b169",
    "path": "gerbers/aqroot-Beta-v2-F_Mask.gbr",
-   "sha256": "700aa26c930f1047aa169c0ef7cea41b2fab410e772e5d212801da51e5dbbdd5"
+   "sha256": "bafae5a572e12ab45989d48167f6694b1e56447e9b2c12335b45d7ae717b8251"
   },
   {
    "bytes": 13941,
    "deterministic": true,
    "normalised_sha256": "10bc33df1857deb841bfe35a25d5a60551f0bba2bc17e7d8b3c7116f77b8b2aa",
    "path": "gerbers/aqroot-Beta-v2-F_Paste.gbr",
-   "sha256": "c88da9e5fb911e6ecce0210ba0c2c48fb6620f2cfeaa1610eaaf73f4403efa4b"
+   "sha256": "dbe2337a4fb0609022950814da987f5d733ab196e3c75dfed410c6a5214748b6"
   },
   {
    "bytes": 25283,
    "deterministic": true,
    "normalised_sha256": "15d3b80e869a63b281d715f028b8094686dcb599fe992d0384d762d8d49738b7",
    "path": "gerbers/aqroot-Beta-v2-F_Silkscreen.gbr",
-   "sha256": "bd3ca1ad0e61b2659a20c08d993e0bb6d78c72390eea4075451d1a2df1ecbae2"
+   "sha256": "a9c2403b6237b9564f30729bb7cbe0148fdc235be874405222940f8e1c7bc1cd"
   },
   {
    "bytes": 784727,
    "deterministic": true,
    "normalised_sha256": "1f35e317203287ea8f7852ee0a24eaa4b9d420f2a60ea948bea0a762afc0abab",
    "path": "gerbers/aqroot-Beta-v2-In1_Cu.gbr",
-   "sha256": "2f24e7c95fa2eabacf7db351e2b03c83d705db72d8e6a4739b6c60f10ade2259"
+   "sha256": "333c1c6650e2251dab5bce2122b4a610715dccacb46fcb915231ee98970bcde9"
   },
   {
-   "bytes": 55755,
+   "bytes": 55803,
    "deterministic": true,
-   "normalised_sha256": "8c69b21a91f005de624cd12d566bbbaf0738042fc4a0b0a403015723d3162c02",
+   "normalised_sha256": "2123b3818aca81276582ad610b2ec5a31296f28ff667036648518ecac80f104e",
    "path": "gerbers/aqroot-Beta-v2-In2_Cu.gbr",
-   "sha256": "c87fd01e627920fbad8fa27577a44b307c64ac9edd3fef158f7d295f862be07a"
+   "sha256": "a7062de1ed20fc61829cbda3041fcb8eb28238c9d22407aba413905bfbaba8d0"
   },
   {
    "bytes": 953322,
    "deterministic": true,
    "normalised_sha256": "a4a44b57f0890e4b30e96d207b972aabf33514637da8a84f07f13ccb0e6756d1",
    "path": "gerbers/aqroot-Beta-v2-In3_Cu.gbr",
-   "sha256": "5fa262ba87b776cb494ce66f1877fa52ea5c9d44c556d025b3d1ced6963d2e40"
+   "sha256": "d6a46da6a9feebe0d5bf32536dea8dbedc2d70fb2ce61c0e8399ed64ca5a9464"
   },
   {
    "bytes": 784727,
    "deterministic": true,
    "normalised_sha256": "38592176e3ba0b79b18135bf378ea62e73998b60ffab18f850e8cb050ce81b71",
    "path": "gerbers/aqroot-Beta-v2-In4_Cu.gbr",
-   "sha256": "bef35fe468c4633ead96aa5d580f7fa874702cc65c76ec004063a7eece270e7d"
+   "sha256": "8bd13476772a2d8f20f199f033f45b6e76050d7241160cf7c189417a99f9c5c1"
   },
   {
    "bytes": 13890,
    "deterministic": false,
    "normalised_sha256": null,
    "path": "gerbers/aqroot-Beta-v2-NPTH-drl_map.pdf",
-   "sha256": "be38ead0d6631d3c20084ace693663d7256b6c38df2ee915a3f8573a48b389f8"
+   "sha256": "afe6b22644a76bbd7ad011fc5e69c9ba0528c7367f85b0f6de02c54ce1fe9432"
   },
   {
    "bytes": 653,
    "deterministic": true,
    "normalised_sha256": "24e76b172bffa00bed1524fcdf4c0963eebc59954c1a547363d84ca273f1c7eb",
    "path": "gerbers/aqroot-Beta-v2-NPTH.drl",
-   "sha256": "cdb8bc666140c0718248efc47156d8b466257b90dfdc6653d7a8205d5975cf31"
+   "sha256": "6d092f0cfa7c14a5d51ba6b804abbdc914f7c1cf0a8ba0dbf6c66dc9e2ed92b0"
   },
   {
    "bytes": 52035,
    "deterministic": false,
    "normalised_sha256": null,
    "path": "gerbers/aqroot-Beta-v2-PTH-drl_map.pdf",
-   "sha256": "88130327f2b6c06f9b8eea6e5e1e644560f86907ab1eef4903e55ea639b86f32"
+   "sha256": "ae3677c4ed817a16c617047323dd2d95083dcc58a238656e652d0e959f8ae4f5"
   },
   {
    "bytes": 13499,
    "deterministic": true,
    "normalised_sha256": "878577c0b2d79839a1c4b28845cf84330781d2281c81e910a684ff94bc092d6d",
    "path": "gerbers/aqroot-Beta-v2-PTH.drl",
-   "sha256": "de36453ea8ea4d183c96c53b64b98db78e68c7cdece6f56dd3f5bab89673836c"
+   "sha256": "b193f0ba18e1c051edf103444257f1227219d56d16c5b6c793ceb9e815e2a70d"
   },
   {
    "bytes": 4589,
    "deterministic": true,
    "normalised_sha256": "c6104dc696fdec1d65189b2b7022177f47d324a39d74885c0f6c2696ac353781",
    "path": "gerbers/aqroot-Beta-v2-job.gbrjob",
-   "sha256": "16736939e751d6119c5e17873cae6ef9cbfce7fe5e6e7eeb6334e81f67ccf1f1"
+   "sha256": "aa4860e6981a6351d5f45689a07d4930bcbdefc712abaff33a9573d66ad5ce33"
   },
   {
    "bytes": 1294,
    "deterministic": true,
    "normalised_sha256": "d40e421dfc3847568b60f289765388f16cf66ab25251c6241ac2329754872480",
    "path": "gerbers/drill-report.txt",
-   "sha256": "1d666a69eff37992b0f7e726dee080b5e79a445d733bd85f6bc6d5a8e6aa3f9b"
+   "sha256": "680d0837d1c8092999f2722d11edd4b5228bea4c934bb830062750f87298d879"
   }
  ],
  "generator": "hardware/demo/manufacturing/export_fab_package.py",
@@ -397,46 +397,6 @@
     "same_net": true
    },
    {
-    "a": "U9.1",
-    "b": "U9.32",
-    "dam_mm": 0.0621,
-    "declared_bridge": false,
-    "layer": "B.Mask",
-    "net_a": "+3V3",
-    "net_b": "/SPI_B_MISO",
-    "same_net": false
-   },
-   {
-    "a": "U9.16",
-    "b": "U9.17",
-    "dam_mm": 0.0621,
-    "declared_bridge": false,
-    "layer": "B.Mask",
-    "net_a": "GND",
-    "net_b": "",
-    "same_net": false
-   },
-   {
-    "a": "U9.24",
-    "b": "U9.25",
-    "dam_mm": 0.0621,
-    "declared_bridge": false,
-    "layer": "B.Mask",
-    "net_a": "/04_SPI_B_RADIOS_NFC/NFC_AGDC",
-    "net_b": "",
-    "same_net": false
-   },
-   {
-    "a": "U9.8",
-    "b": "U9.9",
-    "dam_mm": 0.0621,
-    "declared_bridge": false,
-    "layer": "B.Mask",
-    "net_a": "/NFC_SUPPLY",
-    "net_b": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
-    "same_net": false
-   },
-   {
     "a": "U12.1",
     "b": "U12.2",
     "dam_mm": 0.12,
@@ -555,18 +515,58 @@
     "net_a": "Net-(L1-Pad1)",
     "net_b": "/01_POWER_TREE/BQ25185_SYS",
     "same_net": false
+   },
+   {
+    "a": "U9.1",
+    "b": "U9.32",
+    "dam_mm": 0.1243,
+    "declared_bridge": false,
+    "layer": "B.Mask",
+    "net_a": "+3V3",
+    "net_b": "/SPI_B_MISO",
+    "same_net": false
+   },
+   {
+    "a": "U9.16",
+    "b": "U9.17",
+    "dam_mm": 0.1243,
+    "declared_bridge": false,
+    "layer": "B.Mask",
+    "net_a": "GND",
+    "net_b": "",
+    "same_net": false
+   },
+   {
+    "a": "U9.24",
+    "b": "U9.25",
+    "dam_mm": 0.1243,
+    "declared_bridge": false,
+    "layer": "B.Mask",
+    "net_a": "/04_SPI_B_RADIOS_NFC/NFC_AGDC",
+    "net_b": "",
+    "same_net": false
+   },
+   {
+    "a": "U9.8",
+    "b": "U9.9",
+    "dam_mm": 0.1243,
+    "declared_bridge": false,
+    "layer": "B.Mask",
+    "net_a": "/NFC_SUPPLY",
+    "net_b": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+    "same_net": false
    }
   ],
   "undeclared_different_net": 11
  },
  "source": {
   "board": "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
-  "board_sha256": "c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907",
-  "dru_sha256": "34cf289bcc153c69c5ff49029598ba10b2f78d2ced0a69afc4fb71689e1985de",
+  "board_sha256": "abb0c3916ef2080beafbaae7968caea06f833459502ef67669488f288a0de987",
+  "dru_sha256": "78002a27e2bf48db850b63433e179c821279b68ca243cc50686adab547b785a1",
   "pro_sha256": "9b758a753f771b953ae3871b3ed2dc596153f2dc414759686c2cd8b3507e926b",
   "schematic_sha256": "e0677792515940e096dd4ec47ffc194044855acf1fc61cb6960385a4d26eb312",
   "schematic_sheet_sha256": {
-   "01_power_tree.kicad_sch": "01ca227faf3ae87c94b0cd20c32fc427b282c3fbb89b0ecdbb8782e0e8da4dd9",
+   "01_power_tree.kicad_sch": "8bfebf57fabbce5ab36be7c741751cb239b16c4c7ef022dcb28277f8572548d7",
    "02_mcu_core.kicad_sch": "62cbc53b5d165f6dd6946ab5a53fdd51ae5eacb3acbed4814d9be85e30dad4d1",
    "03_spi_a_display_sd.kicad_sch": "f3592a586643de66811135e9ddefa03e8087dc26e56c6ffd549e4984b72d7254",
    "04_spi_b_radios_nfc.kicad_sch": "af6ae7f23f46d16728414068ed5bc184fe6937b5fe4d669dc696e82e14c97f3b",
@@ -959,6 +959,22 @@
     "y": 96.0
    },
    {
+    "drill_mm": 0.2,
+    "land": "U9.16",
+    "land_mm": [
+     0.3,
+     0.75
+    ],
+    "layer": "B.Cu",
+    "net": "GND",
+    "open_area_mm2": 0.02524,
+    "pct_of_land": 12.38,
+    "same_net": true,
+    "via_dia_mm": 0.35,
+    "x": 35.85,
+    "y": 27.625
+   },
+   {
     "drill_mm": 0.3,
     "land": "J1.22",
     "land_mm": [
@@ -1005,22 +1021,6 @@
     "via_dia_mm": 0.6,
     "x": 58.3,
     "y": 70.2
-   },
-   {
-    "drill_mm": 0.2,
-    "land": "U9.16",
-    "land_mm": [
-     0.3,
-     0.75
-    ],
-    "layer": "B.Cu",
-    "net": "GND",
-    "open_area_mm2": 0.02524,
-    "pct_of_land": 11.49,
-    "same_net": true,
-    "via_dia_mm": 0.35,
-    "x": 35.85,
-    "y": 27.625
    },
    {
     "drill_mm": 0.3,
@@ -2304,22 +2304,6 @@
    },
    {
     "drill_mm": 0.3,
-    "land": "U9.9",
-    "land_mm": [
-     0.3,
-     0.75
-    ],
-    "layer": "B.Cu",
-    "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
-    "open_area_mm2": 0.0076,
-    "pct_of_land": 3.46,
-    "same_net": true,
-    "via_dia_mm": 0.6,
-    "x": 32.0,
-    "y": 27.5
-   },
-   {
-    "drill_mm": 0.3,
     "land": "C7.2",
     "land_mm": [
      0.9,
@@ -2333,6 +2317,22 @@
     "via_dia_mm": 0.6,
     "x": 61.5,
     "y": 70.1
+   },
+   {
+    "drill_mm": 0.3,
+    "land": "U9.9",
+    "land_mm": [
+     0.3,
+     0.75
+    ],
+    "layer": "B.Cu",
+    "net": "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+    "open_area_mm2": 0.00649,
+    "pct_of_land": 3.19,
+    "same_net": true,
+    "via_dia_mm": 0.6,
+    "x": 32.0,
+    "y": 27.5
    },
    {
     "drill_mm": 0.4,

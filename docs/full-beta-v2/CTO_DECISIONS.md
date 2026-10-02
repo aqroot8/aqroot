@@ -1,3 +1,38 @@
+## D-804 — **PCBWAY CAM / PCBA RECONCILIATION CANDIDATE: U9 CORNER CLEARANCE, D9 ON ITS REAL SOD123F LAND, TWO CAM-OPEN JOINTS CLOSED, A PCBWAY STACKUP AND RESPONSE**
+
+    authority  board abb0c3916ef2080beafbaae7968caea06f833459502ef67669488f288a0de987
+    manifest   recorded by the identity commit (evidence/d804-review-target.json)
+    content    recorded by the identity commit (evidence/d804-review-target.json)
+    identity   the post-commit verification record commit that follows it
+    parent     576c8cec0b89c28b3409816a4139fb9b48c39d72 (D-803 identity)
+    branch     d804-u9-pcbway-cam-candidate ONLY.  NOT promoted to aqroot-demo.
+    scope      D804-01..D804-06: the manufacturer's CAM finding (U9 1.55 mil < 4 mil), its
+               crossed / open-trace questions, its stackup request and its 12 BOM notes,
+               plus the defects those directly exposed.  Nothing else.
+    copper     U9.1/8/9/16/17/24/25/32 roundrect ratio 0.25 -> 0.50 (centres, sizes,
+               placement, routing unchanged); D9 Diode_SMD:D_SOD-123 -> D_SOD-123F (centre,
+               side, rotation, polarity unchanged); +2 same-net same-width segments
+               (In2 EXT_SDA_BUF, B.Cu BQ25185_SYS), nothing removed; zones refilled to their
+               fixed point.  315 footprints, zone outlines and Edge.Cuts otherwise identical
+               (evidence/d804-bounded-diff-vs-d803.txt).  BOM / CPL: D9's footprint name and
+               pin-1 X only.
+    firmware   Firmware/src/hw/aqroot_demo_board.{h,json} regenerated: the board digest string
+               only; no pin, bit, address or policy changes.
+    order      HOLD.  PCBWay must re-measure U9 after etch compensation (designed 4.892 mil)
+               and return any equivalent stackup for written approval; J5 is consigned exact.
+               The D-803 HOLD items (B01-B14, FA01-FA10, procurement, enclosure fit) stand.
+               CANDIDATE, NOT A FABRICATION AUTHORIZATION.
+    owner      NO OWNER DECISION IS REQUIRED to keep the candidate; promotion to aqroot-demo
+               is a separate owner act.
+
+PCBWay CAM rejected the D-803 Gerbers at U9 and, with its BOM quote, asked eleven further
+questions.  Every item and its disposition is in `assembly/PCBWAY_D804_RESPONSE.md`; the
+record of the change is CHANGELOG D-804 and
+`audits/2026-10-01-d804-u9-pcbway-cam-candidate.md`.  One of the twelve BOM notes was
+real (D9's package; none of the others touches a land), and an independent Gerber
+extractor found three open draw ends in D-803 that every KiCad-side gate had counted as
+connected — both D-725 joints are closed by adding copper, not by moving it.
+
 ## D-803 — **ROUND-22 FOCUSED PRE-ORDER CORRECTION: A REQA VERDICT ONLY FROM A LIVE PART, A ROLE-BOUND R_ins FAMILY, THE WHOLE OPERATIVE CORPUS SCANNED, A REQUIRED PLATFORMIO CROSS-CHECK, AND THE HOLD-OFF RECORD STATED AS IT BEHAVES**
 
     authority  board c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907

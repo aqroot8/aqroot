@@ -1512,27 +1512,53 @@ def solder_mask_notes(board, floor_mm=0.125):
               "`allow_soldermask_bridges` on the footprint AND on its library "
               "master; the microphone's port ring is the whole of that group "
               "and the merge is the design.",
-              "- **The remaining %d row%s are DIFFERENT NETS, and they split "
-              "in two.**  All of them are MANUFACTURER LAND PATTERNS, not "
-              "routing.  **%d are at or under 0.100 mm and are not printable "
-              "as a web by any process we would order** -- the four DIAGONAL "
-              "CORNER pairs of `U9`'s UFQFPN32, which come straight from ST's "
-              "own recommended land (0.30 x 0.75 lands, centres at +/-2.275 on "
-              "a 0.50 mm pitch); the board's `.kicad_dru` already licenses "
-              "their COPPER clearance by a named, footprint-scoped rule.  "
-              "**Please gang those four -- one window per corner -- rather "
-              "than attempting a web.**  The other %d are `U12`'s TPS63020 "
-              "land at **0.120 mm**, which is AT the usual 0.100-0.130 mm "
-              "limit rather than under it: **print the web if you can hold it, "
-              "gang the row if you cannot, and tell us which.**  Assembly "
-              "control at both pitches is the PASTE stencil, which is per-pad "
-              "and is unaffected either way."
-              % (len(live), "" if len(live) == 1 else "s",
-                 sum(1 for r in live if r["dam_mm"] <= 0.100),
-                 sum(1 for r in live if r["dam_mm"] > 0.100)),
+              ] + _live_dam_paragraph(live) + [
               ""]
     return lines, rows
 
+
+
+def _live_dam_paragraph(live):
+    """The different-net dam paragraph, GENERATED from the measured rows.
+
+    D-804: this paragraph was prose with three numbers spliced in.  When the
+    U9 corner lands were rounded (0.0621 -> 0.1243 mm) the count of webs
+    "at or under 0.100 mm" became 0 while the prose still asked the fab to
+    "gang those four" U9 corners and called every remaining row U12's.  The
+    bands, the references and the request are now all read off the rows.
+    """
+    def refs(rs):
+        by = {}
+        for r in rs:
+            by.setdefault(r["a"].split(".")[0], []).append(r)
+        return "; ".join(
+            "`%s` %d pair%s at %s" % (
+                ref, len(v), "" if len(v) == 1 else "s",
+                "/".join("%.4f" % d for d in sorted({x["dam_mm"] for x in v})) + " mm")
+            for ref, v in sorted(by.items()))
+    under = [r for r in live if r["dam_mm"] <= 0.100]
+    at = [r for r in live if 0.100 < r["dam_mm"] <= 0.130]
+    above = [r for r in live if r["dam_mm"] > 0.130]
+    text = ("- **The remaining %d row%s are DIFFERENT NETS.**  All of them are "
+            "MANUFACTURER LAND PATTERNS, not routing."
+            % (len(live), "" if len(live) == 1 else "s"))
+    if under:
+        text += ("  **%d are at or under 0.100 mm and are not printable as a "
+                 "web by any process we would order** (%s): **please gang "
+                 "each such pair -- one window -- rather than attempting a "
+                 "web.**" % (len(under), refs(under)))
+    else:
+        text += "  **None is at or under 0.100 mm.**"
+    if at:
+        text += ("  **%d are between 0.100 and 0.130 mm** (%s), AT the usual "
+                 "0.100-0.130 mm web limit rather than under it: **print the "
+                 "web if you can hold it, gang the pair if you cannot, and "
+                 "tell us which.**" % (len(at), refs(at)))
+    if above:
+        text += "  %d are above 0.130 mm (%s)." % (len(above), refs(above))
+    text += ("  Assembly control at every one of these pitches is the PASTE "
+             "stencil, which is per-pad and is unaffected either way.")
+    return [text]
 
 
 # D-755. ST25R3916 FIRST-ARTICLE PARALLEL-MATCH ACCESS MUST SURVIVE CAM.

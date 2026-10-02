@@ -1,0 +1,238 @@
+                        SOD123F
+                        plastic, surface-mounted package; 2 leads; 2.6 mm x 1.6 mm
+                        x 1.1 mm body
+                        27 May 2022                                                   Package information
+
+
+
+
+1. Package summary
+                     Terminal position code                      D (double)
+                     Package type descriptive code               SOD123F
+                     Package type industry code                  SOD123F
+                     Package style descriptive code              SOD (small outline diode)
+                     Package body material type                  P (plastic)
+                     Mounting method type                        S (surface mount)
+                     Number of package outline detail graphic    0
+                     references
+                     Issue date                                  16-3-2006
+                     Manufacturer package code                   SOD123
+                     Footprint dimensions (mm)                   4.4 x 2.1
+                     Footprint area (mm²)                        9.24
+
+Table 1. Package summary
+Symbol              Parameter                              Min          Typ     Nom          Max   Unit
+D                  package length                          2.5          -       2.6          2.7   mm
+E                  package width                           1.5          -       1.6          1.7   mm
+A                  seated height                           1            -       1.1          1.2   mm
+e                  nominal pitch                           -            -       2.8          -     mm
+n2                 actual quantity of termination          -            -       2            -
+Nexperia                                                                                                                                                                SOD123F
+                                      plastic, surface-mounted package; 2 leads; 2.6 mm x 1.6 mm x 1.1 mm body
+
+
+2. Package outline
+  Plastic surface-mounted package; 2 leads                                                                                                                                           SOD123F
+
+
+                                     D                                                                           E                        A
+
+
+
+
+                                                                                                                                              A
+
+                                                                     c
+
+                    Lp                                Lp
+                                     HE
+                                                                                                                                 0                      1              2 mm
+                                                                                                                                                   scale
+                    1                                  2                                        DIMENSIONS (mm are the original dimensions)
+
+                                                                  bp                             UNIT          A          bp          c           D         E         HE        Lp         w
+
+                                                                                                              1.2         0.70       0.25         2.7       1.7       3.6      0.55
+                                                                                                   mm                                                                                     0.1
+                                                                                                              1.0         0.55       0.10         2.5       1.5       3.4      0.35
+                                                                            wM A
+                         (1)                                                                    Note
+                                                                                                1. The marking bar indicates the cathode
+
+          OUTLINE                                  REFERENCES                                                                         EUROPEAN
+                                                                                                                                                                         ISSUE DATE
+          VERSION              IEC         JEDEC                          JEITA                                                      PROJECTION
+                                                                                                                                                                            04-11-29
+          SOD123F
+                                                                                                                                                                            06-03-16
+
+
+
+Fig. 1.    Package outline SOD123F
+
+
+
+
+SOD123F                                      All information provided in this document is subject to legal disclaimers.                                         © Nexperia B.V. 2022. All rights reserved
+
+
+Package information                                                      27 May 2022                                                                                                             2/5
+Nexperia                                                                                                                                       SOD123F
+                                   plastic, surface-mounted package; 2 leads; 2.6 mm x 1.6 mm x 1.1 mm body
+
+
+3. Soldering
+  Footprint information for reflow soldering of plastic surface-mounted, 2 leads package                                                                    SOD123F
+
+
+
+
+                                                                                4.4
+
+                                                                                2.9
+
+                                                                                2.8
+
+
+
+
+                                                                                                                            1.1 1.2
+                                    2.1 1.6
+                                                                                                                           (2×) (2×)
+
+
+
+
+                                                            1.1
+                                                           (2×)
+                                                            1.2
+                                                           (2×)
+
+
+
+          solder land               solder land plus solder paste
+
+
+          solder paste deposit      solder resist
+
+          occupied area             Dimensions in mm                                                                                                       sod123f_fr
+
+
+
+Fig. 2.   Reflow soldering footprint for SOD123F
+
+
+
+
+SOD123F                                       All information provided in this document is subject to legal disclaimers.               © Nexperia B.V. 2022. All rights reserved
+
+
+Package information                                                     27 May 2022                                                                                     3/5
+Nexperia                                                                                                                                       SOD123F
+                                               plastic, surface-mounted package; 2 leads; 2.6 mm x 1.6 mm x 1.1 mm body
+
+
+4. Legal information
+
+Definitions
+Draft — The document is a draft version only. The content is still under
+internal review and subject to formal approval, which may result in
+modifications or additions. Nexperia does not give any representations or
+warranties as to the accuracy or completeness of information included herein
+and shall have no liability for the consequences of use of such information.
+
+
+Disclaimers
+Limited warranty and liability — Information in this document is believed
+to be accurate and reliable. However, Nexperia does not give any
+representations or warranties, expressed or implied, as to the accuracy
+or completeness of such information and shall have no liability for the
+consequences of use of such information. Nexperia takes no responsibility
+for the content in this document if provided by an information source outside
+of Nexperia.
+In no event shall Nexperia be liable for any indirect, incidental, punitive,
+special or consequential damages (including - without limitation - lost
+profits, lost savings, business interruption, costs related to the removal
+or replacement of any products or rework charges) whether or not such
+damages are based on tort (including negligence), warranty, breach of
+contract or any other legal theory.
+Notwithstanding any damages that customer might incur for any reason
+whatsoever, Nexperia’s aggregate and cumulative liability towards customer
+for the products described herein shall be limited in accordance with the
+Terms and conditions of commercial sale of Nexperia.
+Right to make changes — Nexperia reserves the right to make changes
+to information published in this document, including without limitation
+specifications and product descriptions, at any time and without notice. This
+document supersedes and replaces all information supplied prior to the
+publication hereof.
+Suitability for use — Nexperia products are not designed, authorized or
+warranted to be suitable for use in life support, life-critical or safety-critical
+systems or equipment, nor in applications where failure or malfunction
+of an Nexperia product can reasonably be expected to result in personal
+injury, death or severe property or environmental damage. Nexperia and its
+suppliers accept no liability for inclusion and/or use of Nexperia products in
+such equipment or applications and therefore such inclusion and/or use is at
+the customer’s own risk.
+Applications — Applications that are described herein for any of these
+products are for illustrative purposes only. Nexperia makes no representation
+or warranty that such applications will be suitable for the specified use
+without further testing or modification.
+Customers are responsible for the design and operation of their applications
+and products using Nexperia products, and Nexperia accepts no liability for
+any assistance with applications or customer product design. It is customer’s
+sole responsibility to determine whether the Nexperia product is suitable
+and fit for the customer’s applications and products planned, as well as
+for the planned application and use of customer’s third party customer(s).
+Customers should provide appropriate design and operating safeguards to
+minimize the risks associated with their applications and products.
+Nexperia does not accept any liability related to any default, damage, costs
+or problem which is based on any weakness or default in the customer’s
+applications or products, or the application or use by customer’s third party
+customer(s). Customer is responsible for doing all necessary testing for the
+customer’s applications and products using Nexperia products in order to
+avoid a default of the applications and the products or of the application or
+use by customer’s third party customer(s). Nexperia does not accept any
+liability in this respect.
+Export control — This document as well as the item(s) described herein
+may be subject to export control regulations. Export might require a prior
+authorization from competent authorities.
+Translations — A non-English (translated) version of a document is for
+reference only. The English version shall prevail in case of any discrepancy
+between the translated and English versions.
+
+
+Trademarks
+Notice: All referenced brands, product names, service names and
+trademarks are the property of their respective owners.
+
+
+
+
+SOD123F                                                   All information provided in this document is subject to legal disclaimers.   © Nexperia B.V. 2022. All rights reserved
+
+
+Package information                                                                 27 May 2022                                                                         4/5
+Nexperia                                                                                                                                         SOD123F
+                                                plastic, surface-mounted package; 2 leads; 2.6 mm x 1.6 mm x 1.1 mm body
+
+
+Contents
+1. Package summary........................................................ 1
+2. Package outline............................................................ 2
+3. Soldering....................................................................... 3
+4. Legal information......................................................... 4
+
+© Nexperia B.V. 2022. All rights reserved
+
+For more information, please visit: http://www.nexperia.com
+For sales office addresses, please send an email to: salesaddresses@nexperia.com
+Date of release: 27 May 2022
+
+
+
+
+SOD123F                                                     All information provided in this document is subject to legal disclaimers.   © Nexperia B.V. 2022. All rights reserved
+
+
+Package information                                                                   27 May 2022                                                                         5/5
+

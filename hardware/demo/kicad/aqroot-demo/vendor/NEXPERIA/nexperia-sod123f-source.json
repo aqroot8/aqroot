@@ -1,0 +1,8 @@
+{
+  "part": "D9 PMEG2010AEH,115 (Nexperia) -- package SOD123F",
+  "document": "Nexperia SOD123F package information, 27 May 2022 (5 pp): Table 1 package summary, Fig. 1 package outline, Fig. 2 reflow soldering footprint",
+  "url": "https://assets.nexperia.com/documents/outline-drawing/SOD123F.pdf",
+  "fetched_utc": "2026-10-01T17:45:48Z",
+  "sha256": "f979650d3572bcee84d230f4f72a9bfff72a64fd05efa88ed6febde11e9468fe",
+  "fetched_for": "D-804 PCBWay BOM note: 'The correct package for PMEG2010AEH,115 is SMF(SOD-123FL), not Diode_SMD:D_SOD-123'"
+}

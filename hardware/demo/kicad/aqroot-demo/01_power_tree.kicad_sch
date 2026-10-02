@@ -19084,7 +19084,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Diode_SMD:D_SOD-123"
+		(property "Footprint" "Diode_SMD:D_SOD-123F"
 			(at 134.08 255.75 0)
 			(hide yes)
 			(show_name no)

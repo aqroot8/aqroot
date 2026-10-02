@@ -2,26 +2,45 @@
 
 
 
-> # **STATUS: D-803 ROUND-22 FOCUSED PRE-ORDER CORRECTION — EXTERNAL-REVIEW TARGET, BOARD AUTHORITY `c8eabd43` (2026-09-26).**
+> # **STATUS: D-804 PCBWAY CAM / PCBA RECONCILIATION CANDIDATE — EXTERNAL-REVIEW TARGET ON BRANCH `d804-u9-pcbway-cam-candidate`, BOARD AUTHORITY `abb0c391` (2026-10-01).**
 >
-> **D-803 supersedes D-802, in which the Round-22 independent review reproduced five bounded
-> non-PCB defects (`R22-01`..`R22-05`, closed as `D803-01`..`D803-05`) and asked for one
-> Demo-focused traveler clarification (`D803-06`).  THIS IS A REVIEW TARGET, NOT A
-> FABRICATION AUTHORIZATION — DO NOT ORDER.**  **No copper, net, footprint, placement, part
-> value, BOM line, CPL line or protected-copper object moves at D-803** — the board sha256 is
-> unchanged at `c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907`.  The
-> release firmware image's behaviour does not change.  Connectivity is **174 retained / 173
-> connected / one owner-approved `U11.3` open / zero unapproved**.  The D-803 content commit
-> is `5413317d95abfa833aa537b8453b41cdd2389cba`; the current MANIFEST sha256 is
-> `d2aa54d7951a9a55c7b0d5efabdf76c6f0ff063275ba988dbfff4516823ed629`; the identity commit and the post-commit
-> verification are recorded in `hardware/demo/manufacturing/evidence/d803-review-target.json`.  The reviewed
-> parent is the D-802 identity commit `d6f67692fcc9787ee0d43084a377562f4f26f9b9`.
+> **D-804 is a bounded, manufacturer-triggered candidate on top of D-803.  It is NOT promoted
+> to `aqroot-demo`.  THIS IS A REVIEW TARGET, NOT A FABRICATION AUTHORIZATION — DO NOT ORDER
+> until PCBWay has returned its post-CAM `U9` measurement and acknowledged the stackup.**
+> PCBWay CAM rejected the D-803 Gerbers (1.55 mil at `U9` against a 4 mil minimum), asked
+> about crossed / open-ended traces in its CAM view, asked for the custom 6-layer stackup and
+> returned a 123-line BOM quote with 12 notes.  The board sha256 is
+> `abb0c3916ef2080beafbaae7968caea06f833459502ef67669488f288a0de987`.  Connectivity is
+> unchanged: **174 retained / 173 connected / one owner-approved `U11.3` open / zero
+> unapproved**.  The D-804 content commit, the current MANIFEST sha256, the identity commit
+> and the post-commit verification are recorded in
+> `hardware/demo/manufacturing/evidence/d804-review-target.json`.  The parent is the D-803
+> identity commit `576c8cec0b89c28b3409816a4139fb9b48c39d72`.
 >
-> **PRE-ORDER ANALYTICAL: CLOSED on this target.  FAB/CAM ACCEPTANCE (B01–B14), FIRST-ARTICLE
-> VALIDATION (FA01–FA10; prerequisite `FAP-01` IMPLEMENTED and corrected, bench execution
-> pending hardware), GENUINE EXACT-PART PROCUREMENT / ALLOCATION and ENCLOSURE FIT: PENDING.**
+> **PRE-ORDER ANALYTICAL: CLOSED on this target.  FAB/CAM ACCEPTANCE (B01–B14, plus PCBWay's
+> post-CAM `U9` re-measure and stackup approval), FIRST-ARTICLE VALIDATION (FA01–FA10;
+> prerequisite `FAP-01` IMPLEMENTED and corrected, bench execution pending hardware), GENUINE
+> EXACT-PART PROCUREMENT / ALLOCATION (`J5` consigned exact) and ENCLOSURE FIT: PENDING.**
 >
-> ### What changed at D-803, for a technician
+> ### What changed at D-804, for a fabricator, an assembler and a buyer
+>
+> * **`U9` CORNER LANDS ROUNDED (`D804-01`).**  `U9.1/8/9/16/17/24/25/32` roundrect ratio
+>   0.25 → 0.50; centres, sizes, placement and routing unchanged.  Designed corner gap
+>   0.0621 → **0.1243 mm (4.89 mil)**; every other different-net gap on all six copper layers
+>   is ≥ 5 mil.  PCBWay is asked to re-measure after etch compensation and to stop, not edit,
+>   if it reads below 4 mil.
+> * **`D9` ON ITS REAL LAND (`D804-02`).**  `PMEG2010AEH,115` is a Nexperia **SOD123F**; it now
+>   sits on `Diode_SMD:D_SOD-123F` (1.1 × 1.1 lands at 2.8 pitch, Nexperia data sheet Fig. 6).
+>   Same part, same centre, pad 1 = cathode.  Genuine Nexperia (`C110921`) only.
+> * **TWO CAM-OPEN JOINTS CLOSED (`D804-03`).**  `In2.Cu` `EXT_SDA_BUF` at (60.15–60.30, 40.80)
+>   and `B.Cu` `BQ25185_SYS` at (57.15, 37.90) ended short of their targets (connected only by
+>   overlap); one same-net segment each, nothing removed.
+> * **STACKUP AND RESPONSE (`D804-04`..`06`).**  `assembly/PCBWAY_STACKUP.md` (1.6 mm, Tg ≥ 150 °C,
+>   ENIG, 1 oz outer, 0.5 oz inner ≥ 0.0152 mm, 7628 distribution; any equivalent needs our
+>   written approval); `assembly/PCBWAY_D804_RESPONSE.md` answers every CAM concern and all 12
+>   BOM notes.  `J5` `SSQ-124-02-G-S-RA` is consigned exact — **no substitute**.
+>
+> ### What changed at D-803 — still current at D-804 — for a technician
 >
 > * **`FAP-01` `T` TRUSTS ONLY A LIVE `U9` (`D803-01`).**  D-802 still read a late-dead or
 >   briefly-dead-then-recovered bus as "no tag answered" or "a tag answered, ATQA 00 00", and
@@ -48,7 +67,7 @@
 >   PATH), fails when it is unavailable, and refuses duplicate `default_envs` and any
 >   parser / PlatformIO disagreement.
 >
-> ### What changed at D-802 — still current at D-803 — for a technician
+> ### What changed at D-802 — still current at D-804 — for a technician
 >
 > * **`FAP-01` `N` SETS THE NFC SUPPLY MODE FIRST (`R21-01`).**  `U9`'s VDD is `+3V3`
 >   through `R106` (fitted; `R107` and `U13` DNP).  The ST25R3916 powers up — and returns
@@ -67,7 +86,7 @@
 >   nothing in ANY predicate form, and the withdrawn pass-pair figures in ANY operative
 >   document (`DEVICE_SPEC` included), are refused by F12 / F10.
 >
-> ### What changed at D-801 — still current at D-803 — for a fabricator, an assembler, a buyer and a technician
+> ### What changed at D-801 — still current at D-804 — for a fabricator, an assembler, a buyer and a technician
 >
 > * **THE FIRST-ARTICLE TEST IMAGE EXISTS (`D801-01`).**  `pio run -e aqroot-demo-fap01`
 >   builds `FAP-01`; `assembly/FAP01_FIRST_ARTICLE_IMAGE.md` gives the build / flash
@@ -108,6 +127,25 @@
 > * **HISTORICAL DOCUMENT FENCED.**  `AQROOT_DEMO_FABRICATION_PACKAGE.md` is the D-616 record;
 >   the current authority is this handoff, `hardware/demo/fab/aqroot-Demo-FAB-NOTES.md` and
 >   `MANIFEST.json`.
+
+> # **STATUS: D-803 ROUND-22 FOCUSED PRE-ORDER CORRECTION — EXTERNAL-REVIEW TARGET, BOARD AUTHORITY `c8eabd43` (2026-09-26).**  *(HISTORICAL — superseded by the D-804 candidate above.  Its closures STAND and its "What changed" lists are carried, still current, under D-804; its board authority `c8eabd43`, its U9 corner lands and its D9 SOD-123 land DO NOT.)*
+>
+> **D-803 supersedes D-802, in which the Round-22 independent review reproduced five bounded
+> non-PCB defects (`R22-01`..`R22-05`, closed as `D803-01`..`D803-05`) and asked for one
+> Demo-focused traveler clarification (`D803-06`).  THIS IS A REVIEW TARGET, NOT A
+> FABRICATION AUTHORIZATION — DO NOT ORDER.**  **No copper, net, footprint, placement, part
+> value, BOM line, CPL line or protected-copper object moves at D-803** — the board sha256 is
+> unchanged at `c8eabd4331e4ad64fd58a8a80adfca14fd1088ffe90e2fcecab51fa2bf26e907`.  The
+> release firmware image's behaviour does not change.  Connectivity is **174 retained / 173
+> connected / one owner-approved `U11.3` open / zero unapproved**.  The D-803 content commit
+> is `5413317d95abfa833aa537b8453b41cdd2389cba`; the current MANIFEST sha256 is
+> `d2aa54d7951a9a55c7b0d5efabdf76c6f0ff063275ba988dbfff4516823ed629`; the identity commit and the post-commit
+> verification are recorded in `hardware/demo/manufacturing/evidence/d803-review-target.json`.  The reviewed
+> parent is the D-802 identity commit `d6f67692fcc9787ee0d43084a377562f4f26f9b9`.
+>
+> **PRE-ORDER ANALYTICAL: CLOSED on this target.  FAB/CAM ACCEPTANCE (B01–B14), FIRST-ARTICLE
+> VALIDATION (FA01–FA10; prerequisite `FAP-01` IMPLEMENTED and corrected, bench execution
+> pending hardware), GENUINE EXACT-PART PROCUREMENT / ALLOCATION and ENCLOSURE FIT: PENDING.**
 
 > # **STATUS: D-802 ROUND-21 FOCUSED PRE-ORDER CORRECTION — EXTERNAL-REVIEW TARGET, BOARD AUTHORITY `c8eabd43` (2026-09-26).**  *(HISTORICAL — superseded by D-803 above.  Its closures STAND and its "What changed" lists are carried, still current, under D-803; its `FAP-01` `T` evidence rule, its hold-off wording, its lenient `H9` and its R_ins / publication scanner scope DO NOT.)*
 >

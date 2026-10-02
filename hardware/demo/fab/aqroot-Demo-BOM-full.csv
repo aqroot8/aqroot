@@ -34,7 +34,7 @@
 "D1","TSAL6100","LED_THT:LED_D5.0mm","Vishay","TSAL6100","C111836","High-power 940 nm IR emitting diode, T-1 3/4","1",""
 "D2,D4,D5","TPD4E1B06DRLR","Package_TO_SOT_SMD:SOT-563","Texas Instruments","TPD4E1B06DRLR","C1972953","TI TPD4E1B06 4-channel ultra-low-leakage bidirectional ESD array, SOT-563","3",""
 "D8","NSR0240","Diode_SMD:D_SOD-323","onsemi","NSR0240HT1G","C152519","Schottky barrier diode, 40V","1",""
-"D9","PMEG2010AEH","Diode_SMD:D_SOD-123","Nexperia","PMEG2010AEH,115","C110921","","1",""
+"D9","PMEG2010AEH","Diode_SMD:D_SOD-123F","Nexperia","PMEG2010AEH,115","C110921","","1",""
 "D10-D12,D14","BAT54WS","Diode_SMD:D_SOD-323","Diodes Incorporated","BAT54WS-7-F","C124205","Schottky barrier diode, 30 V, 200 mA, SOD-323","4",""
 "D13","MHPA3528RGBCT","AQROOT_Beta:MEIHUA_MHPA3528RGBCT_PLCC4_3.5x2.8mm","MEIHUA","MHPA3528RGBCT","C409779","","1",""
 "F1","5A one-shot 1206","Fuse:Fuse_1206_3216Metric","Littelfuse","0466005.NRHF","C57525","","1",""

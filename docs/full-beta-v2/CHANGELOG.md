@@ -1,3 +1,54 @@
+## D-804 — 2026-10-01 — PCBWAY CAM / PCBA RECONCILIATION CANDIDATE: U9 CORNER CLEARANCE, D9 ON ITS REAL SOD123F LAND, TWO D-725 JOINTS CLOSED, A PCBWAY STACKUP
+
+CANDIDATE ONLY — branch `d804-u9-pcbway-cam-candidate`; **not promoted to `aqroot-demo`, not
+production-authorized.**  Triggered by manufacturer evidence: PCBWay CAM rejected the D-803
+Gerbers (1.55 mil at U9 against a 4 mil minimum), asked about crossed / open-ended traces in
+its CAM view, asked for the custom 6-layer stackup, and returned a 123-line BOM quote with 12
+notes.  Only those items, and defects they directly exposed, were acted on.
+
+* **`D804-01` — U9 corner lands.**  U9.1/8/9/16/17/24/25/32 roundrect ratio 0.25 -> 0.50
+  (centres, sizes, placement, routing unchanged); KiCad corner minimum 0.0621 -> 0.1243 mm
+  (2.44 -> 4.89 mil); U9 local DRC floor 0.05 -> 0.12 mm.  The independent Gerber extractor
+  reproduces 2.446 mil on D-803 and finds **no different-net gap below 4 mil on any copper
+  layer** of D-804.
+* **`D804-02` — D9 is a Nexperia SOD123F, and now sits on the SOD123F land.**
+  `PMEG2010AEH,115` was placed on `Diode_SMD:D_SOD-123` (0.90 x 1.20 at +/-1.65).  Nexperia's
+  *SOD123F package information* (27 May 2022, Fig. 2, archived under `vendor/NEXPERIA/`)
+  specifies 1.1 x 1.1 lands at 2.8 pitch; D9 is now `Diode_SMD:D_SOD-123F`, figure for figure,
+  on board and schematic; polarity (pad 1 = cathode = `BAT_PROTECTED_P`) unchanged; the
+  B.Cu GND plane refilled (0.0376 mm2 withdrawn at pad 1, clearing the stale-fill clearance
+  error the unrefilled change carried).  Land citation tier 3 -> tier 1.
+* **`D804-03` — two D-725 joints that a CAM end-on-feature check reads as open.**  `In2.Cu`
+  `EXT_SDA_BUF` ended at (60.150, 40.800), 0.150 mm short of its own waypoint (60.300,
+  40.800): connected only by a 0.05 mm cap overlap (0.132 mm neck).  `B.Cu`
+  `BQ25185_SYS` (U21.3 stub) ended at (57.150, 37.900), 0.075 mm outside L4.1.  KiCad
+  counts both as connected (shape overlap), so no gate ever flagged them.  Each is closed
+  by ONE added segment of the net's own width; nothing removed; B.Cu GND fill withdraws
+  0.0025 mm2.
+* **`D804-04` — PCBWay stackup.**  `docs/full-beta-v2/assembly/PCBWAY_STACKUP.md` (shipped in the PCBWay package) states the 6-layer
+  build (1 oz outer, 0.5 oz inner with >= 0.0152 mm finished, 7628 distribution, 1.6 mm,
+  Tg >= 150 C, ENIG) and requires any PCBWay equivalent to be returned for written approval.
+* **`D804-05` — the fab notes' mask-dam paragraph is generated from the rows.**  After
+  D804-01 the exported FAB-NOTES still asked PCBWay to "gang those four" U9 corners while
+  counting zero webs under 0.100 mm.  `export_fab_package.py` now derives the bands, the
+  references and the request from the measured rows (U9 4 pairs at 0.1243 mm and U12 7 pairs
+  at 0.1200 mm are both in the 0.100–0.130 mm "print if you can hold it" band).
+  `mechanical_keepout_contract` carries the SOD123F 1.20 mm seated-height maximum for D9.
+* **`D804-06` — PCBWay response.**  `assembly/PCBWAY_D804_RESPONSE.md` (matrix: 5 CAM
+  concerns, 12 BOM notes — 8 capacitor voltage notes are description metadata, D9 was a real
+  footprint error, J5 is consigned exact with no substitute, J6/L4 are acknowledgements);
+  email text, isolated-pad list (46) and same-net crossing list (133) under `evidence/d804-*`;
+  Nexperia PMEG2010AEH data sheet (8 Oct 2024) archived beside the SOD123F drawing.
+  Independent Gerber extractor (`evidence/d804-gerber-cam-extract.py`) on D-803 vs D-804:
+  open ends 3 → 0, different-net gaps < 4 mil 4 → 0, crossings/shorts between nets 0 → 0,
+  split nets identical (11, all DNP / approved NC).
+* **`D804-07` — identity.**  `Firmware/src/hw/aqroot_demo_board.{h,json}` regenerated (the
+  board digest string only — no pin, bit, address or policy change); CTO_DECISIONS,
+  CURRENT_STATE, the fab handoff STATUS, the acceptance register, FAP01 and
+  `evidence/d804-review-target.json` bound to D-804 (D-803 fenced HISTORICAL).  19/19
+  standing contracts PASS against the D-803 baseline; every substantive difference is one
+  of the changes above (`evidence/d804-contract-regression.json`).
+
 ## D-803 — 2026-09-26 — ROUND-22 FOCUSED PRE-ORDER CORRECTION: A REQA VERDICT ONLY FROM A LIVE PART, A ROLE-BOUND R_ins FAMILY, THE WHOLE OPERATIVE CORPUS SCANNED, A REQUIRED PLATFORMIO CROSS-CHECK, AND THE HOLD-OFF RECORD STATED AS IT BEHAVES
 
 The Round-22 independent review of D-802 reproduced five bounded non-PCB defects and asked

@@ -154,7 +154,7 @@ seven signal pads, one paste-only aperture, one Ø1.05 NPTH.
 **— SOT-563 LEFT TIER 3 AT D-762 and is ruled against TI `DRL0006A` in §6.1** ·
 `Package_SO:MSOP-10_3x3mm_P0.5mm` (`U18`) · `SOIC-8_3.9x4.9mm_P1.27mm` (`Q2`, `Q3`) ·
 `VSSOP-8_3x3mm_P0.65mm` (`U16`) · `TSSOP-24_4.4x7.8mm_P0.65mm` (`U2`, `U3`, `U23`) ·
-`Diode_SMD:D_SOD-123` (`D9`), `D_SOD-323` (`D8`, `D10`–`D12`) · `Fuse:Fuse_1206_3216Metric` (`F1`) ·
+~~`Diode_SMD:D_SOD-123` (`D9`)~~ **— D9 LEFT TIER 3 AT D-804: it is `Diode_SMD:D_SOD-123F`, tier 1, see the table below** · `D_SOD-323` (`D8`, `D10`–`D12`) · `Fuse:Fuse_1206_3216Metric` (`F1`) ·
 `LED_THT:LED_D5.0mm` (`D1`) · `Resistor_SMD:R_0603_1608Metric` (127) ·
 `Capacitor_SMD:C_0402/0603/0805` (80) · `Inductor_SMD:L_0603_1608Metric` (`L5`, `L6` — **now Murata `LQW18AN39NG80D`, B-70 closed**) ·
 `TestPoint:TestPoint_Pad_D1.0mm` (47).
@@ -276,7 +276,7 @@ file** — so deleting a row below breaks the gate.
 | `Capacitor_SMD:C_0805_2012Metric` | 19 | 3 | IPC-7351 nominal, body IPC-SM-782 p.76 |
 | `Capacitor_SMD:C_1206_3216Metric` | 6 | 3 | IPC-7351 nominal, body IPC-SM-782 p.76; lands 1.15 x 1.80 at +/-1.475 mm |
 | `Capacitor_SMD:C_1210_3225Metric` | 1 | 3 | IPC-7351 nominal, body IPC-SM-782 p.76; lands 1.15 x 2.70 at +/-1.475 mm |
-| `Diode_SMD:D_SOD-123` | 1 | 3 | JEDEC SOD-123 |
+| `Diode_SMD:D_SOD-123F` | 1 | **1** | **D-804.** Nexperia *SOD123F package information* (27 May 2022), Fig. 2 reflow footprint: land **1.1 × 1.1** at **2.8** pitch (±1.40), resist 1.2 × 1.2, occupied 4.4 × 2.1; A max 1.2. Board = KiCad stock master figure for figure; aperture 1.10 × 1.10 under the board-wide 0.000 mm mask policy. Archived `vendor/NEXPERIA/nexperia-SOD123F-package-information-2022-05-27.pdf`, sha256 `f979650d…68fe`. Replaces the D-803 `D_SOD-123` land (0.90 × 1.20 at ±1.65), which PCBWay's BOM review flagged as the wrong package for `PMEG2010AEH,115` |
 | `Diode_SMD:D_SOD-323` | 5 | 3 | JEDEC SOD-323 |
 | `Fuse:Fuse_1206_3216Metric` | 1 | 3 | IPC-7351 nominal 1206 chip land |
 | `Inductor_SMD:L_0603_1608Metric` | 2 | 3 | IPC-7351 nominal 0603 chip land; part Murata LQW18AN39NG80D (B-70) |

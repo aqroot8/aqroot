@@ -107,10 +107,6 @@ Every dam below **0.125 mm** on the board:
 | **0.0000 mm** | F.Mask | `J3.A12` | `J3.B1` | yes | no |
 | **0.0000 mm** | F.Mask | `J3.A4` | `J3.B9` | yes | no |
 | **0.0000 mm** | F.Mask | `J3.A9` | `J3.B4` | yes | no |
-| **0.0621 mm** | B.Mask | `U9.1` | `U9.32` | **no** | no |
-| **0.0621 mm** | B.Mask | `U9.16` | `U9.17` | **no** | no |
-| **0.0621 mm** | B.Mask | `U9.24` | `U9.25` | **no** | no |
-| **0.0621 mm** | B.Mask | `U9.8` | `U9.9` | **no** | no |
 | **0.1200 mm** | B.Mask | `U12.1` | `U12.2` | **no** | no |
 | **0.1200 mm** | B.Mask | `U12.10` | `U12.11` | yes | no |
 | **0.1200 mm** | B.Mask | `U12.11` | `U12.12` | **no** | no |
@@ -123,12 +119,16 @@ Every dam below **0.125 mm** on the board:
 | **0.1200 mm** | B.Mask | `U12.6` | `U12.7` | yes | no |
 | **0.1200 mm** | B.Mask | `U12.8` | `U12.9` | yes | no |
 | **0.1200 mm** | B.Mask | `U12.9` | `U12.10` | **no** | no |
+| **0.1243 mm** | B.Mask | `U9.1` | `U9.32` | **no** | no |
+| **0.1243 mm** | B.Mask | `U9.16` | `U9.17` | **no** | no |
+| **0.1243 mm** | B.Mask | `U9.24` | `U9.25` | **no** | no |
+| **0.1243 mm** | B.Mask | `U9.8` | `U9.9` | **no** | no |
 
 **What each group is, and what is being asked.**
 
 - Rows marked *same net* are vendor land patterns whose two contacts are one node -- the USB-C receptacle's A/B pairs are the whole of that group.  A merged aperture there is harmless and no action is requested.
 - Rows marked *declared bridge* carry `allow_soldermask_bridges` on the footprint AND on its library master; the microphone's port ring is the whole of that group and the merge is the design.
-- **The remaining 11 rows are DIFFERENT NETS, and they split in two.**  All of them are MANUFACTURER LAND PATTERNS, not routing.  **4 are at or under 0.100 mm and are not printable as a web by any process we would order** -- the four DIAGONAL CORNER pairs of `U9`'s UFQFPN32, which come straight from ST's own recommended land (0.30 x 0.75 lands, centres at +/-2.275 on a 0.50 mm pitch); the board's `.kicad_dru` already licenses their COPPER clearance by a named, footprint-scoped rule.  **Please gang those four -- one window per corner -- rather than attempting a web.**  The other 7 are `U12`'s TPS63020 land at **0.120 mm**, which is AT the usual 0.100-0.130 mm limit rather than under it: **print the web if you can hold it, gang the row if you cannot, and tell us which.**  Assembly control at both pitches is the PASTE stencil, which is per-pad and is unaffected either way.
+- **The remaining 11 rows are DIFFERENT NETS.**  All of them are MANUFACTURER LAND PATTERNS, not routing.  **None is at or under 0.100 mm.**  **11 are between 0.100 and 0.130 mm** (`U12` 7 pairs at 0.1200 mm; `U9` 4 pairs at 0.1243 mm), AT the usual 0.100-0.130 mm web limit rather than under it: **print the web if you can hold it, gang the pair if you cannot, and tell us which.**  Assembly control at every one of these pitches is the PASTE stencil, which is per-pad and is unaffected either way.
 
 ## NFC first-article parallel-match access -- DO NOT TENT
 
@@ -236,7 +236,7 @@ Every fitted, placed `U`, `Q`, `D`, `J`, `Y` and `MK` reference. `pin 1 X/Y` is 
 | `D4` | TPD4E1B06DRLR | top | 0.000000 | 58.563 | -29.150 | 1 (IO1) | `/09_COMMUNITY_HEADER/XGPIO4_HDR` |
 | `D5` | TPD4E1B06DRLR | top | 0.000000 | 58.758 | -21.178 | 1 (IO1) | `unconnected-(D5-IO1-Pad1)` |
 | `D8` | NSR0240 | bottom | 0.000000 | 4.700 | -122.750 | 1 (K) | `/03_SPI_A_DISPLAY_SD/LED_BOOST` |
-| `D9` | PMEG2010AEH | bottom | 0.000000 | 11.350 | -72.500 | 1 (K) | `/01_POWER_TREE/BAT_PROTECTED_P` |
+| `D9` | PMEG2010AEH | bottom | 0.000000 | 11.600 | -72.500 | 1 (K) | `/01_POWER_TREE/BAT_PROTECTED_P` |
 | `D10` | BAT54WS | bottom | 0.000000 | 10.950 | -30.000 | 1 (K) | `/01_POWER_TREE/VBRIDGE_TOP` |
 | `D11` | BAT54WS | bottom | 0.000000 | 14.450 | -30.000 | 1 (K) | `/01_POWER_TREE/VREF_TOP` |
 | `D12` | BAT54WS | bottom | 0.000000 | 10.950 | -17.000 | 1 (K) | `/01_POWER_TREE/BAT_RAW` |

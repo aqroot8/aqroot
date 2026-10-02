@@ -251,9 +251,30 @@
       "tier": "3",
       "drawing": "IPC-7351 nominal, body IPC-SM-782 p.76; lands 1.15 x 2.70 at +/-1.475 mm"
     },
-    "Diode_SMD:D_SOD-123": {
-      "tier": "3",
-      "drawing": "JEDEC SOD-123"
+    "Diode_SMD:D_SOD-123F": {
+      "tier": "1",
+      "drawing": "Nexperia SOD123F package information, 27 May 2022, Table 1 package summary + Fig. 1 package outline + Fig. 2 'Reflow soldering footprint for SOD123F' (sod123f_fr)",
+      "drawing_file": "hardware/demo/kicad/aqroot-demo/vendor/NEXPERIA/nexperia-SOD123F-package-information-2022-05-27.pdf",
+      "drawing_sha256": "f979650d3572bcee84d230f4f72a9bfff72a64fd05efa88ed6febde11e9468fe",
+      "ruled": "D-804, replacing tier-3 'Diode_SMD:D_SOD-123' / 'JEDEC SOD-123': D9's fitted part PMEG2010AEH,115 is a Nexperia SOD123F (flat-lead) package, not SOD-123; PCBWay's BOM review flagged the package name and the SOD-123 land (0.90 x 1.20 at +/-1.65) did not match the vendor's reflow land",
+      "confirmed": {
+        "what": "D9 PMEG2010AEH,115 -- the ONLY SOD-123-class part on the board",
+        "drawing_states": {
+          "body_mm": "D 2.5/2.6/2.7 x E 1.5/1.6/1.7, seated height A 1.0-1.2 (min/nom/max)",
+          "terminal_span_HE_mm": "3.4-3.6; lead length Lp 0.35-0.55; lead width bp 0.55-0.70",
+          "pitch_mm": "2.8",
+          "solder_land_mm": "1.1 x 1.1 (2x), centres +/-1.40",
+          "solder_resist_mm": "1.2 x 1.2 (2x)",
+          "occupied_area_mm": "4.4 x 2.1",
+          "cathode": "pin 1, marking bar"
+        },
+        "board_and_master": {
+          "lands": "2 roundrect 1.10 x 1.10 (rratio 0.2273, 0.25 mm corner) at +/-1.40 -- the KiCad stock Diode_SMD:D_SOD-123F master, figure for figure",
+          "mask": "board-wide solder-mask expansion 0.000 mm (fab notes), so the aperture is 1.10 x 1.10, not the drawing's 1.20 x 1.20 -- the board's declared mask policy, not a land divergence",
+          "courtyard": "+/-2.20 x +/-1.15 -- encloses the drawing's 4.4 x 2.1 occupied area",
+          "polarity": "pad 1 = cathode = /01_POWER_TREE/BAT_PROTECTED_P, unchanged from D-803"
+        }
+      }
     },
     "Diode_SMD:D_SOD-323": {
       "tier": "3",

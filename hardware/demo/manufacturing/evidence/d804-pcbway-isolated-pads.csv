@@ -1,0 +1,47 @@
+layer,ref,pin,net,gerber_x_mm,gerber_y_mm,board_x_mm,board_y_mm,classification
+L1 Top,C81,1,/06_AUDIO/SPK_P_CONN,37.378,-124.403,37.378,124.403,DNP part - pad intentionally unrouted
+L1 Top,C82,1,/06_AUDIO/SPK_N_CONN,32.762,-126.233,32.762,126.233,DNP part - pad intentionally unrouted
+L1 Top,J1,,(none),18.295,-100.64,18.295,100.64,NO-CONNECT pin / mounting pad (no net by design)
+L1 Top,J1,,(none),47.025,-100.64,47.025,100.64,NO-CONNECT pin / mounting pad (no net by design)
+L1 Top,J1,39,N/C,25.91,-96.0,25.91,96.0,NO-CONNECT pin / mounting pad (no net by design)
+L1 Top,J1,4,N/C,43.41,-96.0,43.41,96.0,NO-CONNECT pin / mounting pad (no net by design)
+L1 Top,J1,5,N/C,42.91,-96.0,42.91,96.0,NO-CONNECT pin / mounting pad (no net by design)
+L1 Top,J1,6,N/C,42.41,-96.0,42.41,96.0,NO-CONNECT pin / mounting pad (no net by design)
+L1 Top,J2,1,N/C,12.194,-132.462,12.194,132.462,NO-CONNECT pin / mounting pad (no net by design)
+L1 Top,J2,8,N/C,19.894,-132.462,19.894,132.462,NO-CONNECT pin / mounting pad (no net by design)
+L1 Top,J8,MP,N/C,75.275,-79.2,75.275,79.2,NO-CONNECT pin / mounting pad (no net by design)
+L1 Top,J8,MP,N/C,75.275,-73.6,75.275,73.6,NO-CONNECT pin / mounting pad (no net by design)
+L1 Top,R112,1,/03_SPI_A_DISPLAY_SD/DISP_SDO,58.878,-144.082,58.878,144.082,DNP part - pad intentionally unrouted
+L1 Top,R112,2,/SPI_A_MISO,60.528,-144.082,60.528,144.082,DNP part - pad intentionally unrouted
+L1 Top,R123,1,/07_IR/IR_LED_A,49.938,-10.865,49.938,10.865,DNP part - pad intentionally unrouted
+L1 Top,R68,1,/01_POWER_TREE/BQ25185_SYS,63.459,-71.606,63.459,71.606,DNP part - pad intentionally unrouted
+L1 Top,R68,2,Net-(SW9-A),65.109,-71.606,65.109,71.606,DNP part - pad intentionally unrouted
+L6 Bottom,C34,2,/01_POWER_TREE/NFC_5V_PA_PENDING,62.45,-23.5,62.45,23.5,DNP part - pad intentionally unrouted
+L6 Bottom,C35,1,/01_POWER_TREE/NFC_5V_PA_PENDING,53.55,-14.75,53.55,14.75,DNP part - pad intentionally unrouted
+L6 Bottom,J7,MP,N/C,52.25,-28.1,52.25,28.1,NO-CONNECT pin / mounting pad (no net by design)
+L6 Bottom,J7,MP,N/C,55.75,-28.1,55.75,28.1,NO-CONNECT pin / mounting pad (no net by design)
+L6 Bottom,L2,2,Net-(U13-SW),60.085,-18.4,60.085,18.4,DNP part - pad intentionally unrouted
+L6 Bottom,R107,1,/01_POWER_TREE/NFC_5V_PA_PENDING,25.89,-120.335,25.89,120.335,DNP part - pad intentionally unrouted
+L6 Bottom,R44,1,Net-(U13-FB),62.175,-16.5,62.175,16.5,DNP part - pad intentionally unrouted
+L6 Bottom,R44,2,/01_POWER_TREE/NFC_5V_PA_PENDING,63.825,-16.5,63.825,16.5,DNP part - pad intentionally unrouted
+L6 Bottom,R45,1,Net-(U13-FB),57.2,-14.095,57.2,14.095,DNP part - pad intentionally unrouted
+L6 Bottom,TP9,1,/01_POWER_TREE/NFC_5V_PA_PENDING,49.5,-39.25,49.5,39.25,test pad on the DNP U13 rail
+L6 Bottom,U11,3,/BQ25185_STAT2,66.4,-77.8,66.4,77.8,owner-approved unconnected pin (D-742)
+L6 Bottom,U13,1,Net-(U13-FB),57.587,-23.2,57.587,23.2,DNP part - pad intentionally unrouted
+L6 Bottom,U13,3,/01_POWER_TREE/BQ25185_SYS,57.587,-22.2,57.587,22.2,DNP part - pad intentionally unrouted
+L6 Bottom,U13,5,Net-(U13-SW),59.013,-22.7,59.013,22.7,DNP part - pad intentionally unrouted
+L6 Bottom,U13,6,/01_POWER_TREE/NFC_5V_PA_PENDING,59.013,-23.2,59.013,23.2,DNP part - pad intentionally unrouted
+L6 Bottom,U7,10,N/C,34.0,-142.73,34.0,142.73,NO-CONNECT pin / mounting pad (no net by design)
+L6 Bottom,U7,13,N/C,20.0,-142.73,20.0,142.73,NO-CONNECT pin / mounting pad (no net by design)
+L6 Bottom,U7,14,N/C,20.0,-141.46,20.0,141.46,NO-CONNECT pin / mounting pad (no net by design)
+L6 Bottom,U7,21,N/C,20.0,-128.27,20.0,128.27,NO-CONNECT pin / mounting pad (no net by design)
+L6 Bottom,U7,6,N/C,34.0,-137.65,34.0,137.65,NO-CONNECT pin / mounting pad (no net by design)
+L6 Bottom,U7,7,N/C,34.0,-138.92,34.0,138.92,NO-CONNECT pin / mounting pad (no net by design)
+L6 Bottom,U7,8,N/C,34.0,-140.19,34.0,140.19,NO-CONNECT pin / mounting pad (no net by design)
+L6 Bottom,U8,21,N/C,3.0,-128.27,3.0,128.27,NO-CONNECT pin / mounting pad (no net by design)
+L6 Bottom,U9,17,N/C,36.275,-28.25,36.275,28.25,NO-CONNECT pin / mounting pad (no net by design)
+L6 Bottom,U9,18,N/C,36.275,-28.75,36.275,28.75,NO-CONNECT pin / mounting pad (no net by design)
+L6 Bottom,U9,19,N/C,36.275,-29.25,36.275,29.25,NO-CONNECT pin / mounting pad (no net by design)
+L6 Bottom,U9,2,N/C,31.725,-31.25,31.725,31.25,NO-CONNECT pin / mounting pad (no net by design)
+L6 Bottom,U9,25,N/C,35.75,-32.275,35.75,32.275,NO-CONNECT pin / mounting pad (no net by design)
+L6 Bottom,U9,28,N/C,34.25,-32.275,34.25,32.275,NO-CONNECT pin / mounting pad (no net by design)

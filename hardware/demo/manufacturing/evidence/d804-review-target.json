@@ -1,0 +1,39 @@
+{
+ "schema": 1,
+ "decision": "D-804",
+ "branch": "d804-u9-pcbway-cam-candidate",
+ "promoted_to_aqroot_demo": false,
+ "board": "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "abb0c3916ef2080beafbaae7968caea06f833459502ef67669488f288a0de987",
+ "parent": "576c8cec0b89c28b3409816a4139fb9b48c39d72",
+ "candidate_base": "95022203d9bdc24457b474d18503724ab5bff8a3",
+ "content_commit": "recorded by the identity commit -- a commit cannot contain its own SHA",
+ "identity_commit": "the identity commit -- it records the content commit's SHA; a commit cannot contain its own",
+ "manifest": "hardware/demo/fab/MANIFEST.json",
+ "manifest_sha256": "recorded by the identity commit",
+ "trigger": "PCBWay CAM rejection of the D-803 Gerbers (U9 1.55 mil < 4 mil), PCBWay CAM screenshot questions (crossed / open-ended traces), stackup request, and PCBWay BOM quote T-5D2W1187157A (123 lines, 12 notes)",
+ "board_changes": [
+  "U9.1/8/9/16/17/24/25/32 roundrect ratio 0.25 -> 0.50 (centres, sizes, placement, routing unchanged); U9 local DRC floor 0.05 -> 0.12 mm (.kicad_dru); footprint master changed identically",
+  "D9 Diode_SMD:D_SOD-123 -> Diode_SMD:D_SOD-123F (board and schematic); centre (13.000, 72.500) B.Cu, rotation 0, pad 1 = K = /01_POWER_TREE/BAT_PROTECTED_P unchanged",
+  "+1 segment In2.Cu /09_COMMUNITY_HEADER/EXT_SDA_BUF (60.150,40.800)-(60.300,40.800) w 0.200",
+  "+1 segment B.Cu /01_POWER_TREE/BQ25185_SYS (57.150,37.900)-(57.475,37.600) w 0.500",
+  "zones refilled; a further refill is byte-identical"
+ ],
+ "bounded_diff": "evidence/d804-bounded-diff-vs-d803.txt: 315 footprints identical except D9 (footprint) and U9's 8 corner lands (rratio); tracks/vias 4467 -> 4469, none removed; zone outlines (71) and Edge.Cuts (8) identical",
+ "firmware_change": "Firmware/src/hw/aqroot_demo_board.{h,json} regenerated: board digest string only; no pin, bit, address or policy change",
+ "closed_here": {
+  "D804_01": "U9 corner clearance: KiCad 0.0621 -> 0.1243 mm; Gerber extractor D-803 2.446 mil -> D-804 4.892 mil; no different-net gap < 4 mil on any copper layer; < 5 mil only the four U9 corners",
+  "D804_02": "D9 on the Nexperia SOD123F land (PMEG2010AEH data sheet 2024-10-08 Fig. 6 and SOD123F package information 2022-05-27 Fig. 2: 1.1 x 1.1 at 2.8 pitch); land citation tier 3 -> 1; mechanical height 1.20 mm max",
+  "D804_03": "Two D-725 joints a CAM end-point check reads as open (3 draw ends) closed by added copper; D-804 open draw ends 0",
+  "D804_04": "docs/full-beta-v2/assembly/PCBWAY_STACKUP.md (+ PDF in the vendor package)",
+  "D804_05": "FAB-NOTES mask-dam paragraph generated from the measured rows",
+  "D804_06": "docs/full-beta-v2/assembly/PCBWAY_D804_RESPONSE.md; evidence/d804-pcbway-response.txt, d804-pcbway-isolated-pads.csv (46), d804-pcbway-same-net-crossings.csv (133), d804-pcbway-quote-customer-reply.xls (12/12 answered)"
+ },
+ "gerber_cam_extract": {
+  "script": "evidence/d804-gerber-cam-extract.py (Gerber + Excellon only; no KiCad)",
+  "d803": "evidence/d804-gerber-cam-extract-d803.json: open ends 3, diff-net gaps < 4 mil 4, diff-net crossings 0, shorts 0, same-net crossings 133, split nets 11",
+  "d804": "evidence/d804-gerber-cam-extract-d804.json: open ends 0, diff-net gaps < 4 mil 0, diff-net crossings 0, shorts 0, same-net crossings 133, split nets 11 (identical list)",
+  "d804_5mil": "evidence/d804-gerber-cam-extract-d804-5mil.json: the four U9 corners only"
+ },
+ "gates": "recorded by the identity commit (post-commit verification on a clean tree)"
+}

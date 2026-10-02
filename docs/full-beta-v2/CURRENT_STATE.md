@@ -14,7 +14,28 @@
 
 ## 1. Authoritative HEAD
 
-> ### **D-803 REVIEW TARGET — THE EXACT FROZEN IDENTITY**
+> ### **D-804 REVIEW TARGET — THE EXACT FROZEN IDENTITY**  *(PCBWay CAM / PCBA reconciliation CANDIDATE — branch `d804-u9-pcbway-cam-candidate` only; NOT promoted to `aqroot-demo`)*
+>
+> | what | value |
+> |---|---|
+> | branch | `origin/d804-u9-pcbway-cam-candidate` |
+> | content commit | *recorded by the identity commit in `evidence/d804-review-target.json`* |
+> | identity / post-commit verification commit | *this commit — a commit cannot contain its own SHA, so the reviewable target is the PAIR* |
+> | board `aqroot-Beta-v2.kicad_pcb` sha256 | `abb0c3916ef2080beafbaae7968caea06f833459502ef67669488f288a0de987` |
+> | `hardware/demo/fab/MANIFEST.json` sha256 | *recorded by the identity commit* |
+> | parent | `576c8cec0b89c28b3409816a4139fb9b48c39d72` (D-803 identity) |
+>
+> **COPPER MOVES, BOUNDED**: `U9`'s eight corner-adjacent lands are rounded (0.0621 → 0.1243 mm,
+> PCBWay required ≥ 4 mil), `D9` sits on the Nexperia SOD123F land its fitted
+> `PMEG2010AEH,115` requires, and two D-725 joints that a CAM end-point check reads as open are
+> closed by one added same-net segment each.  Nothing else moves
+> (`evidence/d804-bounded-diff-vs-d803.txt`).  The PCBWay stackup is
+> `assembly/PCBWAY_STACKUP.md`; every manufacturer question and its answer is
+> `assembly/PCBWAY_D804_RESPONSE.md`.  The full record is `evidence/d804-review-target.json`.
+> **CANDIDATE, NOT A FABRICATION AUTHORIZATION.  DO NOT ORDER until PCBWay's post-CAM U9
+> measurement and stackup acknowledgement are back.**
+
+> ### **D-803 REVIEW TARGET — THE EXACT FROZEN IDENTITY**  *(**HISTORICAL** — superseded by the D-804 candidate on its own branch)*
 >
 > | what | value |
 > |---|---|

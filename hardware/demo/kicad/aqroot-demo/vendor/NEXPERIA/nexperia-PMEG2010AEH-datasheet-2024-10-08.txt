@@ -1,0 +1,462 @@
+                           PMEG2010AEH
+                           20 V, 1 A very low VF Schottky barrier rectifier
+                           8 October 2024                                                           Product data sheet
+
+
+
+
+1. General description
+                       Planar Schottky barrier rectifier with an integrated guard ring for stress protection, encapsulated in
+                       a small SOD123F Surface-Mounted Device (SMD) plastic package.
+
+
+2. Features and benefits
+                       •   Forward current: IF ≤ 1 A
+                       •   Reverse voltage: VR ≤ 20 V
+                       •   Very low forward voltage
+                       •   Small SMD plastic packages
+
+
+3. Applications
+                       •   Low voltage rectification
+                       •   High efficiency DC-to-DC conversion
+                       •   Switch mode power supply
+                       •   Reverse polarity protection
+                       •   Low power consumption applications
+
+
+4. Quick reference data
+Table 1. Quick reference data
+Symbol          Parameter               Conditions                                          Min      Typ          Max   Unit
+IF             forward current          Tsp ≤ 55 °C                                         -        -            1     A
+VR             reverse voltage                                                              -        -            20    V
+VF             forward voltage          IF = 1 A; pulsed; tp ≤ 300 µs; δ ≤ 0.02;            -        380          430   mV
+                                        Tamb = 25 °C
+
+
+5. Pinning information
+Table 2. Pinning information
+Pin        Symbol      Description                 Simplified outline              Graphic symbol
+1         K           cathode
+                                                             1          2                            K        A
+2         A           anode
+                                                                                                     sym001
+                                                             SOD123F
+Nexperia                                                                                                                                     PMEG2010AEH
+                                                                                                   20 V, 1 A very low VF Schottky barrier rectifier
+
+
+6. Ordering information
+Table 3. Ordering information
+Type number                   Package
+                                    Name                  Description                                                                                             Version
+PMEG2010AEH                         SOD123F               plastic, surface-mounted package; 2 leads; 2.6 mm x 1.6                                                 SOD123F
+                                                          mm x 1.1 mm body
+
+
+7. Marking
+Table 4. Marking codes
+Type number                                                                           Marking code
+PMEG2010AEH                                                                           AF
+
+
+
+8. Limiting values
+Table 5. Limiting values
+In accordance with the Absolute Maximum Rating System (IEC 60134).
+Symbol                Parameter                     Conditions                                                                                 Min              Max             Unit
+VR                    reverse voltage                                                                                                          -                20              V
+IF                    forward current               Tsp ≤ 55 °C                                                                                -                1               A
+IFRM                  repetitive peak forward       tp ≤ 1 ms; δ ≤ 0.25                                                                        -                7               A
+                      current
+IFSM                  non-repetitive peak           tp = 8 µs; square wave                                                                     -                9               A
+                      forward current
+Ptot                  total power dissipation       Tamb ≤ 25 °C                                                                       [1]     -                375             mW
+                                                                                                                                       [2]     -                830             mW
+Tj                    junction temperature                                                                                                     -                150             °C
+Tamb                  ambient temperature                                                                                                      -65              150             °C
+Tstg                  storage temperature                                                                                                      -65              150             °C
+
+[1]    Device mounted on an FR4 PCB, single-sided copper, tin-plated and standard footprint.
+                                                                                                  2
+[2]    Device mounted on an FR4 PCB, single-sided copper, tin-plated, mounting pad for cathode 1cm .
+
+
+
+9. Thermal characteristics
+Table 6. Thermal characteristics
+Symbol         Parameter                        Conditions                                                                               Min       Typ            Max            Unit
+Rth(j-a)            thermal resistance from in free air                                                                      [1] [2]     -         -              330            K/W
+                    junction to ambient                                                                                      [1] [3]     -         -              150            K/W
+Rth(j-sp)           thermal resistance from                                                                                  [4]         -         -              60             K/W
+                    junction to solder point
+
+[1]    For Schottky barrier diodes thermal runaway has to be considered, as in some applications the reverse power losses PR are a
+       significant part of the total power losses.
+[2]    Device mounted on an FR4 PCB, single-sided copper, tin-plated and standard footprint.
+                                                                                                      2
+[3]    Device mounted on an FR4 PCB, single-sided copper, tin-plated, mounting pad for cathode 1 cm .
+[4]    Soldering point of cathode tab.
+
+
+
+
+PMEG2010AEH                                     All information provided in this document is subject to legal disclaimers.                             © Nexperia B.V. 2024. All rights reserved
+
+
+Product data sheet                                                     8 October 2024                                                                                                   2/8
+Nexperia                                                                                                                                 PMEG2010AEH
+                                                                                                      20 V, 1 A very low VF Schottky barrier rectifier
+
+
+10. Characteristics
+Table 7. Characteristics
+Symbol          Parameter                         Conditions                                                                        Min   Typ         Max            Unit
+VF                    forward voltage             IF = 10 mA; pulsed; tp ≤ 300 µs; δ ≤                                              -     200         220            mV
+                                                   0.02; Tamb = 25 °C
+                                                  IF = 100 mA; pulsed; tp ≤ 300 µs; δ ≤                                             -     265         290            mV
+                                                   0.02; Tamb = 25 °C
+                                                  IF = 1 A; pulsed; tp ≤ 300 µs; δ ≤ 0.02;                                          -     380         430            mV
+                                                  Tamb = 25 °C
+IR                    reverse current             VR = 5 V; Tamb = 25 °C                                                            -     15          50             µA
+                                                  VR = 10 V; Tamb = 25 °C                                                           -     20          80             µA
+                                                  VR = 20 V; Tamb = 25 °C                                                           -     50          200            µA
+Cd                    diode capacitance           VR = 5 V; f = 1 MHz; Tamb = 25 °C                                                 -     55          70             pF
+
+                                                         mdb823                                                                                   006aab033
+          104                                                                                        105
+                                                                                               IR
+       IF
+                                                                                              (µA)
+      (mA)                                                                                           104                (1)
+
+          103
+                                                                                                     103                (2)
+
+
+                            (1)     (2)    (3)   (4)                                                 102
+          102
+                                                                                                                        (3)
+                                                                                                       10
+
+          10
+                                                                                                         1
+
+                                                                                                    10- 1
+              1
+                                                                                                                        (4)
+                                                                                                    10- 2
+
+       10- 1                                                                                        10- 3
+                  0   0.1         0.2     0.3     0.4            0.5                                         0                  5   10     15                 20
+                                                        VF (V)                                                                                    VR (V)
+
+              (1) Tamb = 125 °C                                                                           (1) Tj = 125 °C
+              (2) Tamb = 85 °C                                                                            (2) Tj = 85 °C
+              (3) Tamb = 25 °C                                                                            (3) Tj = 25 °C
+              (4) Tamb = -40 °C                                                                           (4) Tj = −40 °C
+Fig. 1.       Forward current as a function of forward                                   Fig. 2.          Reverse current as a function of reverse
+              voltage; typical values                                                                     voltage; typical values
+
+
+
+
+PMEG2010AEH                                        All information provided in this document is subject to legal disclaimers.              © Nexperia B.V. 2024. All rights reserved
+
+
+Product data sheet                                                        8 October 2024                                                                                    3/8
+Nexperia                                                                                                                                   PMEG2010AEH
+                                                                                                      20 V, 1 A very low VF Schottky barrier rectifier
+
+                                                                                                                    mdb824
+                                         200
+                                         Cd
+                                        (pF)
+
+                                         150
+
+
+
+
+                                         100
+
+
+
+
+                                          50
+
+
+
+
+                                               0
+                                                   0                5                     10            15                 20
+                                                                                                               VR (V)
+
+              f = 1 MHz; Tamb = 25 °C
+Fig. 3.       Diode capacitance as a function of reverse voltage; typical values
+
+
+11. Test information
+
+                                                           P                                                   t1
+                                                                                              duty cycle δ =
+                                                                                     t2                        t2
+
+                                                                         t1
+
+
+
+
+                                                                                                               t
+                                                                                                      006aaa812
+
+Fig. 4.       Duty cycle definition
+
+
+12. Package outline
+                                                                              1.7                                   1.2
+                                                                              1.5                                   1.0
+
+                                                                                          1
+
+                                                                                                      0.55
+                                                                                                      0.35
+
+                                               3.6       2.7
+                                               3.4       2.5
+
+
+
+
+                                                                                          2
+
+                                                                              0.70                                    0.25
+                                                                              0.55                                    0.10
+                                        Dimensions in mm                                                                        04-11-29
+
+Fig. 5.       Package outline SOD123F
+
+
+
+
+PMEG2010AEH                                        All information provided in this document is subject to legal disclaimers.                © Nexperia B.V. 2024. All rights reserved
+
+
+Product data sheet                                                        8 October 2024                                                                                      4/8
+Nexperia                                                                                                                                PMEG2010AEH
+                                                                                                  20 V, 1 A very low VF Schottky barrier rectifier
+
+
+13. Soldering
+  Footprint information for reflow soldering of plastic surface-mounted, 2 leads package                                                                       SOD123F
+
+
+
+
+                                                                                 4.4
+
+                                                                                 2.9
+
+                                                                                 2.8
+
+
+
+
+                                                                                                                             1.1 1.2
+                                     2.1 1.6
+                                                                                                                            (2×) (2×)
+
+
+
+
+                                                             1.1
+                                                            (2×)
+                                                             1.2
+                                                            (2×)
+
+
+
+              solder land            solder land plus solder paste
+
+
+              solder paste deposit   solder resist
+
+              occupied area          Dimensions in mm                                                                                                         sod123f_fr
+
+
+
+Fig. 6.       Reflow soldering footprint for SOD123F
+
+
+
+
+PMEG2010AEH                                    All information provided in this document is subject to legal disclaimers.                 © Nexperia B.V. 2024. All rights reserved
+
+
+Product data sheet                                                    8 October 2024                                                                                       5/8
+Nexperia                                                                                                             PMEG2010AEH
+                                                                                           20 V, 1 A very low VF Schottky barrier rectifier
+
+
+14. Revision history
+Table 8. Revision history
+Data sheet ID           Release date                  Data sheet status                              Change notice    Supersedes
+PMEG2010AEH v.5        20241008                       Product data sheet                             -                PMEG2010AEH v.4
+Modifications:         •   Product(s) changed to non-automotive qualification. Please refer to nexperia.com for
+                           automotive (-Q) product alternative(s).
+PMEG2010AEH v.4        20230613                       Product data sheet                             -                PMEG2010AEH_PME
+                                                                                                                      G2010AET_3
+PMEG2010AEH_PME        20070328                       Product data sheet                             -                PMEG2010AEH_2
+G2010AET_3
+PMEG2010AEH_2          20050526                       Product data sheet                             -                PMEG2010AEH_1
+PMEG2010AEH_1          20050406                       Product data sheet                             -                -
+
+
+
+
+PMEG2010AEH                             All information provided in this document is subject to legal disclaimers.        © Nexperia B.V. 2024. All rights reserved
+
+
+Product data sheet                                             8 October 2024                                                                              6/8
+Nexperia                                                                                                                                      PMEG2010AEH
+                                                                                                               20 V, 1 A very low VF Schottky barrier rectifier
+                                                                                                    injury, death or severe property or environmental damage. Nexperia and its
+
+15. Legal information                                                                               suppliers accept no liability for inclusion and/or use of Nexperia products in
+                                                                                                    such equipment or applications and therefore such inclusion and/or use is at
+                                                                                                    the customer’s own risk.
+                                                                                                    Quick reference data — The Quick reference data is an extract of the
+Data sheet status                                                                                   product data given in the Limiting values and Characteristics sections of this
+                                                                                                    document, and as such is not complete, exhaustive or legally binding.
+ Document status         Product            Definition                                              Applications — Applications that are described herein for any of these
+ [1][2]                  status [3]                                                                 products are for illustrative purposes only. Nexperia makes no representation
+ Objective [short]       Development        This document contains data from                        or warranty that such applications will be suitable for the specified use
+ data sheet                                 the objective specification for                         without further testing or modification.
+                                            product development.                                    Customers are responsible for the design and operation of their applications
+                                                                                                    and products using Nexperia products, and Nexperia accepts no liability for
+ Preliminary [short]     Qualification      This document contains data from
+                                                                                                    any assistance with applications or customer product design. It is customer’s
+ data sheet                                 the preliminary specification.
+                                                                                                    sole responsibility to determine whether the Nexperia product is suitable
+ Product [short]         Production         This document contains the product                      and fit for the customer’s applications and products planned, as well as
+ data sheet                                 specification.                                          for the planned application and use of customer’s third party customer(s).
+                                                                                                    Customers should provide appropriate design and operating safeguards to
+                                                                                                    minimize the risks associated with their applications and products.
+[1]   Please consult the most recently issued document before initiating or
+      completing a design.                                                                          Nexperia does not accept any liability related to any default, damage, costs
+[2]   The term 'short data sheet' is explained in section "Definitions".                            or problem which is based on any weakness or default in the customer’s
+[3]   The product status of device(s) described in this document may have                           applications or products, or the application or use by customer’s third party
+      changed since this document was published and may differ in case of                           customer(s). Customer is responsible for doing all necessary testing for the
+      multiple devices. The latest product status information is available on                       customer’s applications and products using Nexperia products in order to
+      the internet at https://www.nexperia.com.                                                     avoid a default of the applications and the products or of the application or
+                                                                                                    use by customer’s third party customer(s). Nexperia does not accept any
+                                                                                                    liability in this respect.
+Definitions                                                                                         Limiting values — Stress above one or more limiting values (as defined in
+Draft — The document is a draft version only. The content is still under                            the Absolute Maximum Ratings System of IEC 60134) will cause permanent
+internal review and subject to formal approval, which may result in                                 damage to the device. Limiting values are stress ratings only and (proper)
+modifications or additions. Nexperia does not give any representations or                           operation of the device at these or any other conditions above those
+warranties as to the accuracy or completeness of information included herein                        given in the Recommended operating conditions section (if present) or the
+and shall have no liability for the consequences of use of such information.                        Characteristics sections of this document is not warranted. Constant or
+                                                                                                    repeated exposure to limiting values will permanently and irreversibly affect
+Short data sheet — A short data sheet is an extract from a full data sheet
+                                                                                                    the quality and reliability of the device.
+with the same product type number(s) and title. A short data sheet is
+intended for quick reference only and should not be relied upon to contain                          Terms and conditions of commercial sale — Nexperia products are
+detailed and full information. For detailed and full information see the relevant                   sold subject to the general terms and conditions of commercial sale, as
+full data sheet, which is available on request via the local Nexperia sales                         published at http://www.nexperia.com/profile/terms, unless otherwise agreed
+office. In case of any inconsistency or conflict with the short data sheet, the                     in a valid written individual agreement. In case an individual agreement is
+full data sheet shall prevail.                                                                      concluded only the terms and conditions of the respective agreement shall
+                                                                                                    apply. Nexperia hereby expressly objects to applying the customer’s general
+Product specification — The information and data provided in a Product
+                                                                                                    terms and conditions with regard to the purchase of Nexperia products by
+data sheet shall define the specification of the product as agreed between
+                                                                                                    customer.
+Nexperia and its customer, unless Nexperia and customer have explicitly
+agreed otherwise in writing. In no event however, shall an agreement be                             No offer to sell or license — Nothing in this document may be interpreted
+valid in which the Nexperia product is deemed to offer functions and qualities                      or construed as an offer to sell products that is open for acceptance or the
+beyond those described in the Product data sheet.                                                   grant, conveyance or implication of any license under any copyrights, patents
+                                                                                                    or other industrial or intellectual property rights.
+                                                                                                    Export control — This document as well as the item(s) described herein
+Disclaimers                                                                                         may be subject to export control regulations. Export might require a prior
+Limited warranty and liability — Information in this document is believed                           authorization from competent authorities.
+to be accurate and reliable. However, Nexperia does not give any
+                                                                                                    Non-automotive qualified products — Unless this data sheet expressly
+representations or warranties, expressed or implied, as to the accuracy
+                                                                                                    states that this specific Nexperia product is automotive qualified, the
+or completeness of such information and shall have no liability for the
+                                                                                                    product is not suitable for automotive use. It is neither qualified nor tested in
+consequences of use of such information. Nexperia takes no responsibility
+                                                                                                    accordance with automotive testing or application requirements. Nexperia
+for the content in this document if provided by an information source outside
+                                                                                                    accepts no liability for inclusion and/or use of non-automotive qualified
+of Nexperia.
+                                                                                                    products in automotive equipment or applications.
+In no event shall Nexperia be liable for any indirect, incidental, punitive,
+                                                                                                    In the event that customer uses the product for design-in and use in
+special or consequential damages (including - without limitation - lost
+                                                                                                    automotive applications to automotive specifications and standards,
+profits, lost savings, business interruption, costs related to the removal
+                                                                                                    customer (a) shall use the product without Nexperia’s warranty of the
+or replacement of any products or rework charges) whether or not such
+                                                                                                    product for such automotive applications, use and specifications, and (b)
+damages are based on tort (including negligence), warranty, breach of
+                                                                                                    whenever customer uses the product for automotive applications beyond
+contract or any other legal theory.
+                                                                                                    Nexperia’s specifications such use shall be solely at customer’s own risk,
+Notwithstanding any damages that customer might incur for any reason                                and (c) customer fully indemnifies Nexperia for any liability, damages or failed
+whatsoever, Nexperia’s aggregate and cumulative liability towards customer                          product claims resulting from customer design and use of the product for
+for the products described herein shall be limited in accordance with the                           automotive applications beyond Nexperia’s standard warranty and Nexperia’s
+Terms and conditions of commercial sale of Nexperia.                                                product specifications.
+Right to make changes — Nexperia reserves the right to make changes                                 Translations — A non-English (translated) version of a document is for
+to information published in this document, including without limitation                             reference only. The English version shall prevail in case of any discrepancy
+specifications and product descriptions, at any time and without notice. This                       between the translated and English versions.
+document supersedes and replaces all information supplied prior to the
+publication hereof.
+                                                                                                    Trademarks
+Suitability for use — Nexperia products are not designed, authorized or
+warranted to be suitable for use in life support, life-critical or safety-critical                  Notice: All referenced brands, product names, service names and
+systems or equipment, nor in applications where failure or malfunction                              trademarks are the property of their respective owners.
+of an Nexperia product can reasonably be expected to result in personal
+
+
+
+
+PMEG2010AEH                                                 All information provided in this document is subject to legal disclaimers.                 © Nexperia B.V. 2024. All rights reserved
+
+
+Product data sheet                                                                 8 October 2024                                                                                       7/8
+Nexperia                                                                                                                                 PMEG2010AEH
+                                                                                                               20 V, 1 A very low VF Schottky barrier rectifier
+
+
+Contents
+1. General description...................................................... 1
+2. Features and benefits.................................................. 1
+3. Applications.................................................................. 1
+4. Quick reference data....................................................1
+5. Pinning information......................................................1
+6. Ordering information....................................................2
+7. Marking.......................................................................... 2
+8. Limiting values............................................................. 2
+9. Thermal characteristics............................................... 2
+10. Characteristics............................................................ 3
+11. Test information.......................................................... 4
+12. Package outline.......................................................... 4
+13. Soldering..................................................................... 5
+14. Revision history..........................................................6
+15. Legal information........................................................7
+
+© Nexperia B.V. 2024. All rights reserved
+
+For more information, please visit: http://www.nexperia.com
+For sales office addresses, please send an email to: salesaddresses@nexperia.com
+Date of release: 8 October 2024
+
+
+
+
+PMEG2010AEH                                                 All information provided in this document is subject to legal disclaimers.     © Nexperia B.V. 2024. All rights reserved
+
+
+Product data sheet                                                                 8 October 2024                                                                           8/8
+

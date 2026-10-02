@@ -486,7 +486,9 @@ MAX_HEIGHT_MM = {
     "TestPoint_Pad_D1.0mm": (0.00, "geometry", "a bare copper pad has no body"),
     # discretes
     "D_SOD-323": (1.10, "eia", "SOD-323 / SC-76 maximum"),
-    "D_SOD-123": (1.35, "eia", "SOD-123 maximum"),
+    # D-804: D9 PMEG2010AEH,115 is Nexperia SOD123F (flat lead), not SOD-123.
+    "D_SOD-123F": (1.20, "vendor", "Nexperia SOD123F package information "
+                   "2022-05-27, Table 1: A (seated height) max 1.2 mm"),
     "SOT-23": (1.12, "vendor", "Alpha & Omega AO3400A SOT-23: A max 1.12 mm"),
     "SOT-23-6": (1.10, "vendor", "TI DDC0006A package outline: SOT-23 - 1.1 max height"),
     "SOT-563": (0.60, "eia", "SOT-563 maximum"),

@@ -55,3 +55,38 @@ After zone refill:
 - fab_package_contract on regenerated package: PASS
 
 D-803 main worktree was not modified.
+
+## PCBWay CAM / PCBA reconciliation (same day, same candidate)
+
+PCBWay then asked for the stackup, asked about crossed / open-ended traces in its CAM
+screenshots, and returned a 123-line BOM quote with 12 notes.  Full matrix and the email
+text: `docs/full-beta-v2/assembly/PCBWAY_D804_RESPONSE.md`,
+`hardware/demo/manufacturing/evidence/d804-pcbway-response.txt`.
+
+Authoritative changes beyond the U9 corners (all in CHANGELOG D-804):
+
+- **D9** `Diode_SMD:D_SOD-123` → `Diode_SMD:D_SOD-123F` on board and schematic (PCBWay BOM
+  note; Nexperia PMEG2010AEH data sheet 8 Oct 2024 Fig. 6 and SOD123F package information
+  Fig. 2: 1.1 × 1.1 lands at 2.8 pitch).  Footprint centre, rotation, side, polarity
+  (pad 1 = K = `BAT_PROTECTED_P`) unchanged; existing track ends remain inside the new lands.
+- **Two D-725 joints** that a CAM end-point check reads as open (In2 `EXT_SDA_BUF` at
+  (60.150–60.300, 40.800); B.Cu `BQ25185_SYS` at (57.150, 37.900)) — one same-net,
+  same-width segment added to each; nothing removed.
+- Zones refilled; a further refill is byte-identical (fill at its fixed point).
+
+Independent Gerber extraction (`evidence/d804-gerber-cam-extract.py`, Gerber + Excellon only):
+
+| | D-803 | D-804 |
+|---|---|---|
+| open draw ends (all layers) | 3 | **0** |
+| different-net gaps < 4 mil | 4 (U9, 2.446 mil) | **0** (min 4.892 mil, U9) |
+| different-net gaps < 5 mil | — | 4 (the U9 corners only) |
+| different-net crossings / overlaps / shorts | 0 / 0 / 0 | 0 / 0 / 0 |
+| same-net same-layer crossings | 133 | 133 |
+| split nets (all DNP / approved NC) | 11 | 11 (identical) |
+
+KiCad DRC `--severity-all --schematic-parity`: 199 violations (all `lib_footprint_issues`
+warnings), 17 approved unconnected, 246 parity warnings, 0 parity errors — the same multiset
+as D-803 except that KiCad anchors R112's (DNP) approved unconnected pair on a track rather
+than on U1.21.  Routing ledger: connectivity, approved-NC and approved-unrouted sets identical;
+only D9's pad coordinates moved.  Rail ampacity: all_ok, no rail entry changed.
