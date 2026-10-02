@@ -19,10 +19,10 @@
 > | what | value |
 > |---|---|
 > | branch | `origin/d804-u9-pcbway-cam-candidate` |
-> | content commit | *recorded by the identity commit in `evidence/d804-review-target.json`* |
+> | content commit | `69bce25d5b0d3c9cc45c2296fd2586d596dcefa3` |
 > | identity / post-commit verification commit | *this commit — a commit cannot contain its own SHA, so the reviewable target is the PAIR* |
 > | board `aqroot-Beta-v2.kicad_pcb` sha256 | `abb0c3916ef2080beafbaae7968caea06f833459502ef67669488f288a0de987` |
-> | `hardware/demo/fab/MANIFEST.json` sha256 | *recorded by the identity commit* |
+> | `hardware/demo/fab/MANIFEST.json` sha256 | `3f0ee1d0844e2a8ff0767846ad040b283955e74be1c0d61374f64f26bd897c66` |
 > | parent | `576c8cec0b89c28b3409816a4139fb9b48c39d72` (D-803 identity) |
 >
 > **COPPER MOVES, BOUNDED**: `U9`'s eight corner-adjacent lands are rounded (0.0621 → 0.1243 mm,

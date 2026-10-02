@@ -12,8 +12,8 @@
 > returned a 123-line BOM quote with 12 notes.  The board sha256 is
 > `abb0c3916ef2080beafbaae7968caea06f833459502ef67669488f288a0de987`.  Connectivity is
 > unchanged: **174 retained / 173 connected / one owner-approved `U11.3` open / zero
-> unapproved**.  The D-804 content commit, the current MANIFEST sha256, the identity commit
-> and the post-commit verification are recorded in
+> unapproved**.  The D-804 content commit is `69bce25d5b0d3c9cc45c2296fd2586d596dcefa3`; the current MANIFEST sha256 is
+> `3f0ee1d0844e2a8ff0767846ad040b283955e74be1c0d61374f64f26bd897c66`; the identity commit and the post-commit verification are recorded in
 > `hardware/demo/manufacturing/evidence/d804-review-target.json`.  The parent is the D-803
 > identity commit `576c8cec0b89c28b3409816a4139fb9b48c39d72`.
 >

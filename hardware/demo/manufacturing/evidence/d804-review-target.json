@@ -7,10 +7,10 @@
  "board_sha256": "abb0c3916ef2080beafbaae7968caea06f833459502ef67669488f288a0de987",
  "parent": "576c8cec0b89c28b3409816a4139fb9b48c39d72",
  "candidate_base": "95022203d9bdc24457b474d18503724ab5bff8a3",
- "content_commit": "recorded by the identity commit -- a commit cannot contain its own SHA",
+ "content_commit": "69bce25d5b0d3c9cc45c2296fd2586d596dcefa3",
  "identity_commit": "the identity commit -- it records the content commit's SHA; a commit cannot contain its own",
  "manifest": "hardware/demo/fab/MANIFEST.json",
- "manifest_sha256": "recorded by the identity commit",
+ "manifest_sha256": "3f0ee1d0844e2a8ff0767846ad040b283955e74be1c0d61374f64f26bd897c66",
  "trigger": "PCBWay CAM rejection of the D-803 Gerbers (U9 1.55 mil < 4 mil), PCBWay CAM screenshot questions (crossed / open-ended traces), stackup request, and PCBWay BOM quote T-5D2W1187157A (123 lines, 12 notes)",
  "board_changes": [
   "U9.1/8/9/16/17/24/25/32 roundrect ratio 0.25 -> 0.50 (centres, sizes, placement, routing unchanged); U9 local DRC floor 0.05 -> 0.12 mm (.kicad_dru); footprint master changed identically",
@@ -35,5 +35,72 @@
   "d804": "evidence/d804-gerber-cam-extract-d804.json: open ends 0, diff-net gaps < 4 mil 0, diff-net crossings 0, shorts 0, same-net crossings 133, split nets 11 (identical list)",
   "d804_5mil": "evidence/d804-gerber-cam-extract-d804-5mil.json: the four U9 corners only"
  },
- "gates": "recorded by the identity commit (post-commit verification on a clean tree)"
+ "gates": {
+  "standing_contracts": "19/19 PASS (contract_regression vs d803, post-commit on a clean tree, all children exit 0). Substantive differences, each explained: land_parity (tier-1 census 25 -> 26, D9), pour_partition (.kicad_dru sha: U9 floor 0.05 -> 0.12), obstacle_model (+2 copper objects), tap (+2 tracks), connection_width (EXT_SDA_BUF 0.132 mm neck closed, leaves the probe set), demo_feature (current release id D-804), firmware_hw_map (H9 temporary PATH directory name only), mechanical_keepout (D9 priced at its vendor 1.20 mm; leaves the BATTERY_SHADOW over-register list)",
+  "demo_feature": "F1-F14 PASS; release identity bound to D-804",
+  "firmware_hw_map": "PASS (H1 fresh after regeneration; H2 digest abb0c391...)",
+  "fab_package": "FAB1-FAB16 PASS (evidence/d804-fab-package-contract.json)",
+  "guarantee_evidence": "17/17 keys, 37/37 controls",
+  "battery_pack": "PASS",
+  "mechanical_keepout": "PASS",
+  "kicad_drc_parity": "199 violations (lib_footprint_issues warnings) / 17 unconnected / 246 parity warnings / 0 parity errors; same multiset as D-803 except KiCad anchors R112's (DNP) approved pair on a track (evidence/d804-kicad-drc-parity.json)",
+  "routing_ledger": "population, approved-NC, approved-unrouted, connectivity, sheet summary identical to d803; only D9 pad coordinates moved (evidence/d804-routing-ledger.json)",
+  "rail_ampacity": "all_ok; no rail entry changed (evidence/d804-rail-ampacity.json)",
+  "zone_fill": "a further ZONE_FILLER pass on a scratch copy is byte-identical (abb0c391...)",
+  "gerber_cam_extract": "package zip re-extracted: open ends 0, diff-net gaps < 4 mil 0, shorts 0, split nets 11"
+ },
+ "post_commit_verification": {
+  "run_against": "69bce25d5b0d3c9cc45c2296fd2586d596dcefa3, clean tree",
+  "worktree_clean": true,
+  "board_sha256": "abb0c3916ef2080beafbaae7968caea06f833459502ef67669488f288a0de987",
+  "manifest_sha256": "3f0ee1d0844e2a8ff0767846ad040b283955e74be1c0d61374f64f26bd897c66",
+  "contract_regression": {
+   "all_ran": true,
+   "all_children_exited_zero": true,
+   "all_contracts_pass": true,
+   "contracts_failing": [],
+   "vacuous": false
+  }
+ },
+ "platformio": {
+  "all_success": true,
+  "clean_build": true,
+  "source": "git archive of the content commit into an empty directory",
+  "bare_pio_run": "default_envs = aqroot-demo",
+  "environments": [
+   "esp32-s3-aqroot",
+   "wokwi",
+   "esp32-s3-aqroot-dm",
+   "aqroot-demo",
+   "aqroot-demo-fap01"
+  ]
+ },
+ "fap01_image": {
+  "environment": "aqroot-demo-fap01",
+  "git_sha": "69bce25d5b0d3c9cc45c2296fd2586d596dcefa3",
+  "firmware_bin_sha256": "d7c79b1edaec8ef897e47dc8aa7286a639ae51ee8d995116690f64b1ed5e1d9d",
+  "built": "clean build of the content commit, PlatformIO, on the release worker; not claimed bit-reproducible across machines -- re-hash the file actually flashed per unit",
+  "console": "docs/full-beta-v2/assembly/FAP01_FIRST_ARTICLE_IMAGE.md"
+ },
+ "release_image": {
+  "environment": "aqroot-demo",
+  "firmware_bin_sha256": "eb4db6adb2bfcfaa8e8a2935d4dfe2774f824fdfee036796eef3282dd435180e",
+  "note": "only Firmware/src/hw/aqroot_demo_board.{h,json} changed since D-803, and only the board digest string"
+ },
+ "vendor_package": {
+  "path": "/home/aqroot8/vendor-packages/AQROOT_D804_PCBWay_Recheck (+ .zip)",
+  "zip_sha256": "56560dfbd9aaeab05ef92d5560b9afe153dd43e789b1c2e45ee43544a9a52f6b",
+  "supersedes": "AQROOT_D804_U9_PCBWay_CAM_RECHECK_Gerbers.zip (U9 only; lacks D9 and the two joints -- do not send)",
+  "verified": "19/19 Gerber/drill files and BOM/CPL/notes match MANIFEST; SHA256SUMS.txt checks"
+ },
+ "order_status": {
+  "PRE_ORDER_ANALYTICAL": "CLOSED on this target",
+  "PCBWAY_CAM_RECHECK": "PENDING (post-etch U9 measurement >= 4.0 mil; stackup acknowledgement or approved equivalent)",
+  "FAB_CAM_ACCEPTANCE": "PENDING (B01-B14)",
+  "FIRST_ARTICLE_VALIDATION": "PENDING (FA01-FA10)",
+  "PROCUREMENT": "PENDING (J5 consigned exact; D-803 procurement items stand)",
+  "ENCLOSURE_FIT": "PENDING",
+  "PROMOTION_TO_AQROOT_DEMO": "NOT DONE -- separate owner act"
+ },
+ "beta_v2_untouched": true
 }

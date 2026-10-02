@@ -1,8 +1,8 @@
 ## D-804 — **PCBWAY CAM / PCBA RECONCILIATION CANDIDATE: U9 CORNER CLEARANCE, D9 ON ITS REAL SOD123F LAND, TWO CAM-OPEN JOINTS CLOSED, A PCBWAY STACKUP AND RESPONSE**
 
     authority  board abb0c3916ef2080beafbaae7968caea06f833459502ef67669488f288a0de987
-    manifest   recorded by the identity commit (evidence/d804-review-target.json)
-    content    recorded by the identity commit (evidence/d804-review-target.json)
+    manifest   3f0ee1d0844e2a8ff0767846ad040b283955e74be1c0d61374f64f26bd897c66
+    content    69bce25d5b0d3c9cc45c2296fd2586d596dcefa3
     identity   the post-commit verification record commit that follows it
     parent     576c8cec0b89c28b3409816a4139fb9b48c39d72 (D-803 identity)
     branch     d804-u9-pcbway-cam-candidate ONLY.  NOT promoted to aqroot-demo.
