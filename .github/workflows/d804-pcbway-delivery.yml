@@ -1,0 +1,21 @@
+name: D804 PCBWay Delivery Artifact
+on:
+  push:
+    branches:
+      - d804-pcbway-delivery-artifact
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify package
+        run: |
+          echo "beddf28892553e7a040f0b3364c0961f4c9191fd38eaa5e4ddb8d72d8807e1c4  delivery/AQROOT_D804_PCBWay_Clean_Submission.zip" | sha256sum -c -
+      - name: Upload package
+        uses: actions/upload-artifact@v4
+        with:
+          name: AQROOT_D804_PCBWay_Clean_Submission
+          path: delivery/AQROOT_D804_PCBWay_Clean_Submission.zip
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 3
