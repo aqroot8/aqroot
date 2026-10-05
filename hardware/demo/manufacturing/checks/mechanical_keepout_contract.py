@@ -912,7 +912,10 @@ def mk9(board, reg=None):
 # Doc datum is lower-left, +Y up.  The board is KiCad top-view coordinates.
 EXTERNAL = {
     "SW1": dict(doc=(28.300, 6.000), side="F", rotation=0.0),
-    "SW9": dict(doc=(66.700, 61.500), side="F", rotation=90.0),
+    # D-805 (owner-approved interface revision): SW9 moved +8.500 mm east onto the
+    # x 77.000 bump edge so its actuator reaches the right wall; was doc (66.700, 61.500).
+    # The facing itself is checked by checks/interface_datum_contract.py ID3.
+    "SW9": dict(doc=(75.200, 61.500), side="F", rotation=90.0),
     "J5": dict(doc=(65.900, 108.790), side="F", rotation=-90.0),
 }
 J5_FPID = "AQROOT_Beta:Samtec_SSQ-124-02-G-S-RA"

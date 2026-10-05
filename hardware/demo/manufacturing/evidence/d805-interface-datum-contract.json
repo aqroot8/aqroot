@@ -1,0 +1,234 @@
+{
+ "all_pass": true,
+ "board": "/home/aqroot8/w/d805-interface/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "0689d6e677df530d84d3986f4a8450fa7ed39272535b2cfc1ecfc6ae857887c1",
+ "checks": {
+  "ID1_J3_usb_c_mating_face_outward_on_edge": {
+   "declared_face": 151.0,
+   "declared_outward": "+Y",
+   "derived_outward": "+Y",
+   "fab_box": [
+    38.53,
+    143.65,
+    47.47,
+    151.0
+   ],
+   "face": 151.0,
+   "face_midpoint": [
+    43.0,
+    151.0
+   ],
+   "face_on_board_outline": true,
+   "ok": true,
+   "ref": "J3"
+  },
+  "ID2_J2_card_entry_outward_on_edge": {
+   "declared_face": 151.0,
+   "declared_outward": "+Y",
+   "derived_outward": "+Y",
+   "fab_box": [
+    7.75,
+    134.4,
+    22.25,
+    151.0
+   ],
+   "face": 151.0,
+   "face_midpoint": [
+    15.0,
+    151.0
+   ],
+   "face_on_board_outline": true,
+   "ok": true,
+   "ref": "J2",
+   "travel": {
+    "courtyards_met": [],
+    "derived_outward": "+Y",
+    "envelope": [
+     9.5,
+     151.01,
+     20.5,
+     156.7
+    ],
+    "envelope_meets_board": false,
+    "named_parts_met": [],
+    "ok": true
+   }
+  },
+  "ID3_SW9_actuator_outward_past_edge": {
+   "actuator_tip_x": 79.0,
+   "body_face_on_board_outline": true,
+   "body_face_x": 77.0,
+   "declared_body_edge_x": 77.0,
+   "declared_outward": "+X",
+   "declared_tip_x": 79.0,
+   "derived_outward": "+X",
+   "ok": true,
+   "position": [
+    75.2,
+    86.5
+   ]
+  },
+  "ID4_unchanged_interfaces_J5_J8_SW1_SW4": {
+   "ok": true,
+   "parts": {
+    "J5": {
+     "declared": [
+      65.9,
+      39.21
+     ],
+     "declared_rotation": -90.0,
+     "ok": true,
+     "position": [
+      65.9,
+      39.21
+     ],
+     "rotation": -90.0
+    },
+    "J8": {
+     "declared": [
+      73.4,
+      76.4
+     ],
+     "declared_rotation": 90.0,
+     "ok": true,
+     "position": [
+      73.4,
+      76.4
+     ],
+     "rotation": 90.0
+    },
+    "SW1": {
+     "declared": [
+      28.3,
+      142.0
+     ],
+     "declared_rotation": 0.0,
+     "ok": true,
+     "position": [
+      28.3,
+      142.0
+     ],
+     "rotation": 0.0
+    },
+    "SW4": {
+     "declared": [
+      13.5,
+      122.5
+     ],
+     "declared_rotation": 90.0,
+     "ok": true,
+     "position": [
+      13.5,
+      122.5
+     ],
+     "rotation": 90.0
+    }
+   }
+  },
+  "ID5_mounting_holes_unchanged": {
+   "ok": true,
+   "parts": {
+    "BOSS1": {
+     "declared": [
+      41.0,
+      136.0
+     ],
+     "declared_rotation": 0.0,
+     "ok": true,
+     "position": [
+      41.0,
+      136.0
+     ],
+     "rotation": 0.0
+    },
+    "BOSS2": {
+     "declared": [
+      60.0,
+      3.0
+     ],
+     "declared_rotation": 0.0,
+     "ok": true,
+     "position": [
+      60.0,
+      3.0
+     ],
+     "rotation": 0.0
+    }
+   }
+  },
+  "ID6_outline_is_the_declared_one": {
+   "bbox": [
+    0.0,
+    0.0,
+    77.0,
+    151.0
+   ],
+   "declared_bbox": [
+    0.0,
+    0.0,
+    77.0,
+    151.0
+   ],
+   "ok": true,
+   "outline_vertices": 80,
+   "points_below_main_edge_outside_tabs": []
+  },
+  "ID7_every_tab_is_reached_by_its_interface": {
+   "ok": true,
+   "tabs": {
+    "J2_TAB": {
+     "ok": true,
+     "owner": "J2",
+     "owner_face": [
+      15.0,
+      151.0
+     ]
+    },
+    "J3_TAB": {
+     "ok": true,
+     "owner": "J3",
+     "owner_face": [
+      43.0,
+      151.0
+     ]
+    }
+   }
+  },
+  "ID8_enclosure_arithmetic": {
+   "ok": true,
+   "rows": {
+    "J2_TAB": {
+     "declared": 0.5,
+     "gap_to_cavity_wall_mm": 0.5,
+     "ok": true
+    },
+    "J2_ejected_card_proud_of_exterior_mm": 3.2,
+    "J2_latched_card_below_exterior_mm": 0.8,
+    "J3_TAB": {
+     "declared": 0.5,
+     "gap_to_cavity_wall_mm": 0.5,
+     "ok": true
+    },
+    "J3_recess_to_exterior_mm": 2.5,
+    "SW9_tip_below_exterior_mm": 1.5,
+    "SW9_tip_into_wall_mm": 0.5
+   }
+  },
+  "ID9_not_vacuous": {
+   "controls": {
+    "J2_at_its_D804_placement_is_refused_and_its_travel_meets_SW4": true,
+    "J2_turned_180_like_D804_is_refused": true,
+    "J3_turned_180_like_D804_is_refused": true,
+    "SW9_at_its_D804_position_is_refused": true,
+    "a_0_100_mm_J8_nudge_is_refused": true,
+    "a_tab_gap_other_than_declared_is_refused": true,
+    "a_tab_wider_than_declared_is_refused": true
+   },
+   "ok": true
+  }
+ },
+ "datums": "/home/aqroot8/w/d805-interface/hardware/demo/manufacturing/interface_datums.json",
+ "datums_sha256": "6a053bd2ee90c12b841b115afd1e46fca729e1d16479d989fe38ea4eb1f7807e",
+ "decision": "D-805",
+ "schema": 1
+}

@@ -1,0 +1,69 @@
+{
+ "schema": 1,
+ "decision": "D-805",
+ "coordinates": "KiCad board coordinates, mm, +Y down (the doc datum used elsewhere is Y_doc = 148.000 - Y_kicad)",
+ "enclosure": {
+  "source": "docs/full-beta-v2/mechanical/MECHANICAL_INTERFACE_SPEC.md section 3 (85 x 160 x 23 shell, 2.0 mm wall, cavity 80.0 x 155.0, board datumed 1.500 mm off the west wall and centred in Y)",
+  "cavity_face_south_y": 151.5,
+  "exterior_south_y": 153.5,
+  "cavity_face_east_x": 78.5,
+  "exterior_east_x": 80.5,
+  "wall_mm": 2.0
+ },
+ "outline": {
+  "bbox": [0.0, 0.0, 77.0, 151.0],
+  "main_bottom_y": 148.0,
+  "east_max_x": 77.0,
+  "tabs": [
+   {"name": "J2_TAB", "x": [6.0, 24.0], "edge_y": 151.0, "concave_fillet_r": 1.0, "convex_corner_r": 0.5},
+   {"name": "J3_TAB", "x": [36.5, 49.5], "edge_y": 151.0, "concave_fillet_r": 1.0, "convex_corner_r": 0.5}
+  ],
+  "local_tab_to_wall_gap_mm": 0.5,
+  "why": "owner-approved D-805: local bottom tabs to Y 151 with ~0.5 mm to the cavity wall at the two connector interfaces; supersedes the general 1.5 mm gap only there"
+ },
+ "interfaces": {
+  "J3": {
+   "what": "USB-C receptacle GCT USB4105-GF-A-120 (top-mount horizontal)",
+   "facing_rule": "mating face = the F.Fab body edge OPPOSITE the contact-land row (GCT USB4105 drawing; the footprint draws the PCB-edge line there)",
+   "position": [43.0, 147.325], "rotation": 0.0,
+   "outward": "+Y", "face_y": 151.0, "on_board_edge": true,
+   "exterior_relation": "face flush with the J3 tab edge; 0.5 mm air + 2.0 mm wall to the exterior: face recessed 2.5 mm",
+   "allowed_recess_mm": 2.5,
+   "aperture": "through the bottom wall, sized for the USB-C plug overmold (USB Type-C spec cable-plug overmold envelope 12.35 x 6.50 mm max) plus clearance, centred on x 43.000"
+  },
+  "J2": {
+   "what": "microSD Molex 5025700893 push-push",
+   "facing_rule": "card entry = the body edge on the CONTACT-TAIL side (Molex SD-502570-001 sheet 1: card push 0.7 / lock 1.7 / eject 5.7 mm drawn beyond the tail-row edge)",
+   "position": [15.0, 142.7], "rotation": 180.0,
+   "outward": "+Y", "face_y": 151.0, "face_tolerance_mm": 0.25, "on_board_edge": true,
+   "card": {"width_mm": 11.0, "push_mm": 0.7, "lock_mm": 1.7, "eject_mm": 5.7},
+   "exterior_relation": "latched card trailing edge at Y 152.7 (0.8 mm inside the exterior); ejected card at Y 156.7 (3.2 mm proud of the exterior); push-to-release point Y 151.7",
+   "aperture": "card slot (>= 11.6 x 1.4 mm) through the bottom wall at x 15.000 with a fingernail relief; first-article C-SD-01",
+   "travel_must_not_meet": ["SW4"]
+  },
+  "SW9": {
+   "what": "power slide switch C&K JS102011SAQN, body 9.0 x 3.6 + 2.0 mm actuator",
+   "facing_rule": "actuator tip = the F.Fab extent on the side away from the land row",
+   "position": [75.2, 86.5], "rotation": 90.0,
+   "outward": "+X", "actuator_tip_x": 79.0, "body_edge_x": 77.0, "actuator_mm": 2.0,
+   "exterior_relation": "body face on the x 77.000 bump edge; actuator 0.5 mm into the 2.0 mm east wall; tip 1.5 mm below the exterior",
+   "aperture": "slot in the east wall over y 85.5..89.5 (actuator 1.5 wide plus slide travel) with local wall relief so a fingertip/nail reaches the tip"
+  },
+  "J5": {
+   "what": "Community Port Samtec SSQ-124-02-G-S-RA", "position": [65.9, 39.21], "rotation": -90.0,
+   "status": "UNCHANGED from D-804", "exterior_relation": "mating face x 72.430 (0.430 mm past the 72.000 edge); enclosure covers the body with aligned access holes (MECHANICAL_INTERFACE_SPEC J5 recess)"
+  },
+  "J8": {
+   "what": "Qwiic / STEMMA QT JST SM04B-SRSS-TB horizontal", "position": [73.4, 76.4], "rotation": 90.0,
+   "status": "UNCHANGED from D-804 (verify-only)", "outward": "+X",
+   "exterior_relation": "receptacle opening at x 75.975, 1.025 mm inboard of the x 77.000 bump edge; 4.525 mm to the exterior (1.025 + 1.500 gap + 2.000 wall); the plug must enter a plug-sized wall aperture",
+   "documented_not_moved": "the brief allows a move only if J8 clearly fails exterior access; a 4.5 mm reach through a plug-sized aperture is an enclosure question, so it is recorded here and left for the enclosure CAD / first article"
+  },
+  "SW1": {
+   "what": "BOOT tact switch PTS645 (top-actuated)", "position": [28.3, 142.0], "rotation": 0.0,
+   "status": "UNCHANGED from D-804", "exterior_relation": "enclosure-only pinhole/guide over the plunger; no RESET in D-805"
+  },
+  "SW4": {"what": "DOWN button", "position": [13.5, 122.5], "rotation": 90.0, "status": "UNCHANGED (must not move)"}
+ },
+ "mounting": {"BOSS1": [41.0, 136.0], "BOSS2": [60.0, 3.0]}
+}

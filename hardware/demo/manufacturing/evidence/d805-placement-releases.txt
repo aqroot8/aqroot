@@ -1,0 +1,1 @@
+--release J2.10 --release J2.11 --release J2.2 --release J2.3 --release J2.4 --release J2.5 --release J2.6 --release J2.7 --release J2.9 --release J3.A1 --release J3.A12 --release J3.A4 --release J3.A5 --release J3.A6 --release J3.A7 --release J3.A9 --release J3.B5 --release J3.B6 --release J3.B7 --release J3.SH --release SW9.1 --release SW9.2

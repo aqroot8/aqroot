@@ -1,3 +1,39 @@
+## D-805 — **INTERFACE DATUM CORRECTION: J3 USB-C AND J2 microSD OUT OF THE BOTTOM EDGE ON TWO LOCAL TABS, SW9 ON THE EAST EDGE**
+
+    authority  board 0689d6e677df530d84d3986f4a8450fa7ed39272535b2cfc1ecfc6ae857887c1
+    manifest   4f027e255f161350c412166c23bdf783a45caf432578ccc9f876de4078e07ccf
+    content    the D-805 content commit (recorded in evidence/d805-review-target.json)
+    identity   the post-commit verification record commit that follows it
+    parent     466a5058c7b5b5835ac4427b0db0b2f26d576d43 (D-804 identity)
+    branch     d805-interface-fixes ONLY.  NOT promoted to aqroot-demo.
+    scope      the owner-approved interface targets in interface_datums.json: J3 (43.000,
+               147.325) rot 0, J2 (15.000, 142.700) rot 180, SW9 (75.200, 86.500) rot 90;
+               bottom tabs J2_TAB x 6..24 and J3_TAB x 36.5..49.5 to Y 151.  Nothing else.
+    copper     local only: the three parts' nets ripped in their own windows and re-laid
+               there (167 objects out / 167 in, evidence/d805-bounded-diff-vs-d804.txt);
+               J3's two D-531 POFV barrels and rule areas travel with their lands; zones
+               refilled to their fixed point.  315 footprints; only J2, J3, SW9 moved;
+               pad-to-net identity unchanged everywhere.  Schematic, netlist, BOM, stackup,
+               DRU and project file byte-identical to D-804.
+    gates      interface_datum ID1-ID9; 19/19 standing contracts vs d804 (placement with the
+               declared moves, releases, PL9 travelled-with-land and the J2/R113 --overlap-ok);
+               FAB1-FAB16; guarantee 17/17 + 37/37; KiCad DRC/parity 199/17/246, 0 errors;
+               Gerber CAM extract: open ends 0, shorts 0, gaps < 4 mil 0.
+    firmware   Firmware/src/hw/aqroot_demo_board.{h,json}: the board digest string only.
+    order      HOLD for fabrication.  A PCBWay REQUOTE of this package may be requested; it is
+               a price question, NOT a fabrication authorization.  The D-804 HOLD items
+               (B01-B14, FA01-FA10, PCBWay's U9 re-measure and stackup acknowledgement,
+               procurement, enclosure fit) stand; the enclosure apertures for J2 / J3 / SW9
+               are an enclosure-CAD and first-article item.
+    owner      the placement targets were owner-approved before this change; promotion to
+               aqroot-demo and any order are separate owner acts.
+
+D-804 put the USB-C and microSD mating faces inside the outline and the power slide's
+actuator inboard; no gate asked which way a connector opens.  D-805 moves exactly the three
+parts, adds the two local tabs the enclosure arithmetic needs (0.5 mm to the cavity wall),
+re-routes only their local copper, and adds the interface-datum gate that would have
+refused D-804.  The record is CHANGELOG D-805 and `D805_IMPLEMENTATION_REPORT.md`.
+
 ## D-804 — **PCBWAY CAM / PCBA RECONCILIATION CANDIDATE: U9 CORNER CLEARANCE, D9 ON ITS REAL SOD123F LAND, TWO CAM-OPEN JOINTS CLOSED, A PCBWAY STACKUP AND RESPONSE**
 
     authority  board abb0c3916ef2080beafbaae7968caea06f833459502ef67669488f288a0de987

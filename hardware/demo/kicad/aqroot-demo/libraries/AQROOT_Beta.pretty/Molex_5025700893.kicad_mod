@@ -3,7 +3,7 @@
 	(generator "aqroot-beta-library")
 	(generator_version "10.0")
 	(layer "F.Cu")
-	(descr "Molex 5025700893 microSD memory card connector, 1.10 mm pitch, normal-mount SMT, push-push, front card entry, shielded, with independent mechanical card-detect switch. PRIMARY GEOMETRY: Molex sales drawing SD-502570-001 Rev A, archived in vendor/Molex_5025700893/ - contact pitch 1.1, contact land width 0.8, 8-contact centre span 7.7, shell lands 1.4 x 1.7, and the 14.3 dimension which is OUTER-EDGE TO OUTER-EDGE across the two bottom shell mounts (12.900 centre-to-centre + 1.400 = 14.300 exactly). The 4.45 datum is to the FIRST CONTACT CENTRE. SECONDARY CORROBORATION: exact-part EasyEDA/JLCPCB CAD C429846 (Manufacturer MOLEX, MPN 5025700893), which reproduces every readable Molex dimension - pitch 1.1000, span 7.7000, land 0.800, shell 1.400 x 1.700, detect land 1.150 - and supplied the pad numbering. PAD 9 IS REPEATED ON FOUR PHYSICAL SHELL LANDS (EH/shield): two bottom mounts 1.4 x 1.7 and two top mounts 1.5 x 1.15. That is deliberate and valid - the symbol has ONE logical pin 9. Do not renumber them. Pad 10 is DET-SW, pad 11 is the DETECT LEVER which Molex labels Vss:GROUND. MECHANICAL CARD DETECT: closed to GND on card insertion, open with no card. Card enters from +Y; contacts sit at the far (-Y) end. Classification VERIFIED_VENDOR_DRAWING_WITH_EXACT_PART_CAD_CORROBORATION.")
+	(descr "Molex 5025700893 microSD memory card connector, 1.10 mm pitch, normal-mount SMT, push-push, front card entry, shielded, with independent mechanical card-detect switch. PRIMARY GEOMETRY: Molex sales drawing SD-502570-001 Rev A, archived in vendor/Molex_5025700893/ - contact pitch 1.1, contact land width 0.8, 8-contact centre span 7.7, shell lands 1.4 x 1.7, and the 14.3 dimension which is OUTER-EDGE TO OUTER-EDGE across the two bottom shell mounts (12.900 centre-to-centre + 1.400 = 14.300 exactly). The 4.45 datum is to the FIRST CONTACT CENTRE. SECONDARY CORROBORATION: exact-part EasyEDA/JLCPCB CAD C429846 (Manufacturer MOLEX, MPN 5025700893), which reproduces every readable Molex dimension - pitch 1.1000, span 7.7000, land 0.800, shell 1.400 x 1.700, detect land 1.150 - and supplied the pad numbering. PAD 9 IS REPEATED ON FOUR PHYSICAL SHELL LANDS (EH/shield): two bottom mounts 1.4 x 1.7 and two top mounts 1.5 x 1.15. That is deliberate and valid - the symbol has ONE logical pin 9. Do not renumber them. Pad 10 is DET-SW, pad 11 is the DETECT LEVER which Molex labels Vss:GROUND. MECHANICAL CARD DETECT: closed to GND on card insertion, open with no card. CARD ENTRY IS -Y, THE CONTACT-TAIL EDGE (D-805 correction: Molex SD-502570-001 sheet 1 draws the card and its push 0.7 / lock 1.7 / eject 5.7 mm positions beyond the tail-row edge; the D-804 text said +Y). Classification VERIFIED_VENDOR_DRAWING_WITH_EXACT_PART_CAD_CORROBORATION.")
 	(tags "Molex 5025700893 microSD card connector push-push card-detect shielded")
 	(attr smd)
 	(fp_text reference "REF**"
@@ -36,8 +36,8 @@
 			)
 		)
 	)
-	(fp_text user "CARD INSERTION >>"
-		(at 0 11.4 0)
+	(fp_text user "<< CARD ENTRY / EJECT 5.7"
+		(at 0 -11.4 0)
 		(layer "Dwgs.User")
 		(effects
 			(font
@@ -46,8 +46,8 @@
 			)
 		)
 	)
-	(fp_text user "PUSH-PUSH / KEEP CLEAR FOR CARD TRAVEL"
-		(at 0 12.7 0)
+	(fp_text user "PUSH-PUSH: KEEP CLEAR FOR CARD TRAVEL (BEYOND FACE)"
+		(at 0 -12.7 0)
 		(layer "Dwgs.User")
 		(effects
 			(font
@@ -67,8 +67,8 @@
 		(layer "F.Fab")
 	)
 	(fp_rect
-		(start -7.25 8.3)
-		(end 7.25 10.8)
+		(start -5.5 -14)
+		(end 5.5 -8.3)
 		(stroke
 			(width 0.1)
 			(type default)
@@ -77,17 +77,40 @@
 		(layer "Dwgs.User")
 	)
 	(fp_rect
-		(start -5 -3.2)
-		(end 5 3.2)
+		(start 6.094 0.563)
+		(end 6.594 1.563)
 		(stroke
 			(width 0.05)
 			(type default)
 		)
-		(fill none)
+		(fill no)
 		(layer "Dwgs.User")
+		(uuid "16c18754-3898-456f-b5dc-b9e4ff52a1db")
 	)
-	(fp_text user "NO COPPER"
-		(at 0 -2.2 0)
+	(fp_rect
+		(start 3.894 5.063)
+		(end 6.794 6.463)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(fill no)
+		(layer "Dwgs.User")
+		(uuid "fbf3942b-55c8-4e3f-b1a9-a37f94e64366")
+	)
+	(fp_rect
+		(start 0.244 6.363)
+		(end 1.244 6.863)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(fill no)
+		(layer "Dwgs.User")
+		(uuid "d4e16a60-edda-49c6-afc1-fc43e8e4e696")
+	)
+	(fp_text user "MOLEX PATTERN PROHIBITION (SD-502570-001 SH.2)"
+		(at 0 2.2 0)
 		(layer "Dwgs.User")
 		(effects
 			(font
@@ -98,7 +121,7 @@
 	)
 	(fp_rect
 		(start -7.6 -8.7)
-		(end 7.6 11.1)
+		(end 7.6 8.7)
 		(stroke
 			(width 0.05)
 			(type default)

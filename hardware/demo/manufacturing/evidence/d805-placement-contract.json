@@ -1,0 +1,502 @@
+{
+  "checks": {
+    "PL10_removals_stranded_nothing": true,
+    "PL1_reference_set_as_declared": true,
+    "PL2_only_claimed_parts_moved": true,
+    "PL3_land_patterns_travelled_whole": true,
+    "PL4_no_new_courtyard_overlap": true,
+    "PL5_nothing_stranded": true,
+    "PL6_screen_is_not_vacuous": true,
+    "PL7_moved_pads_clear_foreign_copper": true,
+    "PL8_released_pads_reconnected": true,
+    "PL9_no_via_swallowed_by_a_moved_land": true
+  },
+  "detail": {
+    "additions_declared": [],
+    "claimed": {
+      "J2": [
+        0,
+        5900000,
+        180.0
+      ],
+      "J3": [
+        0,
+        4625000,
+        180.0
+      ],
+      "SW9": [
+        8500000,
+        0,
+        0.0
+      ]
+    },
+    "claimed_moves_wrong": [],
+    "clearance_nm": 200000,
+    "courtyard_overlaps_declared": [
+      {
+        "courtyard_gap_mm": 0.53,
+        "courtyards_touch": false,
+        "pair": [
+          "J2",
+          "R113"
+        ]
+      }
+    ],
+    "courtyard_overlaps_new": [],
+    "endpoints_checked": 33,
+    "endpoints_released": [
+      {
+        "at_mm": [
+          15.494,
+          132.462
+        ],
+        "net": "+3V3",
+        "pad": "J2.4",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          14.294,
+          144.037
+        ],
+        "net": "/SD_CARD_DETECT_N",
+        "pad": "J2.10",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          13.294,
+          132.462
+        ],
+        "net": "/SD_CS_N",
+        "pad": "J2.2",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          18.794,
+          132.462
+        ],
+        "net": "/SPI_A_MISO",
+        "pad": "J2.7",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          14.675,
+          131.825
+        ],
+        "net": "/SPI_A_MOSI",
+        "pad": "J2.3",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          16.594,
+          132.462
+        ],
+        "net": "/SPI_A_SCK",
+        "pad": "J2.5",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          8.444,
+          129.563
+        ],
+        "net": "GND",
+        "pad": "J2.9",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          11.994,
+          144.037
+        ],
+        "net": "GND",
+        "pad": "J2.9",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          17.694,
+          132.462
+        ],
+        "net": "GND",
+        "pad": "J2.6",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          20.894,
+          144.037
+        ],
+        "net": "GND",
+        "pad": "J2.9",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          21.344,
+          129.563
+        ],
+        "net": "GND",
+        "pad": "J2.9",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          21.556,
+          139.312
+        ],
+        "net": "GND",
+        "pad": "J2.11",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          42.75,
+          145.95
+        ],
+        "net": "/01_POWER_TREE/USB_D_CONN_N",
+        "pad": "J3.A7",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          43.75,
+          145.95
+        ],
+        "net": "/01_POWER_TREE/USB_D_CONN_N",
+        "pad": "J3.B7",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          42.25,
+          146.825
+        ],
+        "net": "/01_POWER_TREE/USB_D_CONN_P",
+        "pad": "J3.B6",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          43.25,
+          146.825
+        ],
+        "net": "/01_POWER_TREE/USB_D_CONN_P",
+        "pad": "J3.A6",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          43.25,
+          146.85
+        ],
+        "net": "/01_POWER_TREE/USB_D_CONN_P",
+        "pad": "J3.A6",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          40.6,
+          146.38
+        ],
+        "net": "/01_POWER_TREE/USB_VBUS_RAW",
+        "pad": "J3.A9",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          45.4,
+          146.38
+        ],
+        "net": "/01_POWER_TREE/USB_VBUS_RAW",
+        "pad": "J3.A4",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          39.65,
+          145.9625
+        ],
+        "net": "GND",
+        "pad": "J3.A12",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          46.15,
+          145.95
+        ],
+        "net": "GND",
+        "pad": "J3.A1",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          46.15,
+          145.95625
+        ],
+        "net": "GND",
+        "pad": "J3.A1",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          46.175,
+          146.05
+        ],
+        "net": "GND",
+        "pad": "J3.A1",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          46.175,
+          146.05
+        ],
+        "net": "GND",
+        "pad": "J3.A1",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          44.25,
+          146.38
+        ],
+        "net": "Net-(J3-CC1)",
+        "pad": "J3.A5",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          41.25,
+          146.38
+        ],
+        "net": "Net-(J3-CC2)",
+        "pad": "J3.B5",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          38.68,
+          141.625
+        ],
+        "net": "Net-(J3-SHIELD)",
+        "pad": "J3.SH",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          38.68,
+          145.805
+        ],
+        "net": "Net-(J3-SHIELD)",
+        "pad": "J3.SH",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          47.32,
+          141.625
+        ],
+        "net": "Net-(J3-SHIELD)",
+        "pad": "J3.SH",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          47.32,
+          141.625
+        ],
+        "net": "Net-(J3-SHIELD)",
+        "pad": "J3.SH",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          47.32,
+          145.805
+        ],
+        "net": "Net-(J3-SHIELD)",
+        "pad": "J3.SH",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          63.95,
+          86.5
+        ],
+        "net": "/01_POWER_TREE/BQ25185_SYS",
+        "pad": "SW9.2",
+        "removed_from_board": true
+      },
+      {
+        "at_mm": [
+          63.95,
+          89.0
+        ],
+        "net": "Net-(SW9-A)",
+        "pad": "SW9.1",
+        "removed_from_board": true
+      }
+    ],
+    "endpoints_stranded": [],
+    "footprints_post": 315,
+    "footprints_pre": 315,
+    "foreign_copper_hits": [],
+    "land_patterns_changed": [],
+    "pl6_decoy": "BOSS1",
+    "pl6_perturbation_named": [
+      "BOSS1"
+    ],
+    "references_added": [],
+    "references_removed": [],
+    "released_claimed": [
+      "J2.10",
+      "J2.11",
+      "J2.2",
+      "J2.3",
+      "J2.4",
+      "J2.5",
+      "J2.6",
+      "J2.7",
+      "J2.9",
+      "J3.A1",
+      "J3.A12",
+      "J3.A4",
+      "J3.A5",
+      "J3.A6",
+      "J3.A7",
+      "J3.A9",
+      "J3.B5",
+      "J3.B6",
+      "J3.B7",
+      "J3.SH",
+      "SW9.1",
+      "SW9.2"
+    ],
+    "released_pads_orphaned": [],
+    "released_pads_reconnected": [
+      {
+        "pad": "J2.10",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "J2.11",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "J2.2",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "J2.3",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "J2.4",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "J2.5",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "J2.6",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "J2.7",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "J2.9",
+        "post_endpoints": 4
+      },
+      {
+        "pad": "J3.A1",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "J3.A12",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "J3.A4",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "J3.A5",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "J3.A6",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "J3.A7",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "J3.A9",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "J3.B5",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "J3.B6",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "J3.B7",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "J3.SH",
+        "post_endpoints": 7
+      },
+      {
+        "pad": "SW9.1",
+        "post_endpoints": 1
+      },
+      {
+        "pad": "SW9.2",
+        "post_endpoints": 1
+      }
+    ],
+    "removal_endpoints_left_behind": [],
+    "removals_declared": [],
+    "unclaimed_footprints_moved": [],
+    "vias_inherited_under_moved_lands": [
+      {
+        "at_mm": [
+          40.6,
+          143.645
+        ],
+        "dia_mm": 0.35,
+        "net": "/01_POWER_TREE/USB_VBUS_RAW",
+        "ref": "J3",
+        "travelled_with_land": "J3.A4"
+      },
+      {
+        "at_mm": [
+          45.4,
+          143.645
+        ],
+        "dia_mm": 0.35,
+        "net": "/01_POWER_TREE/USB_VBUS_RAW",
+        "ref": "J3",
+        "travelled_with_land": "J3.A9"
+      }
+    ],
+    "vias_swallowed_by_moved_lands": []
+  },
+  "ref": "HEAD",
+  "schema": 2,
+  "verdict": "PASS"
+}

@@ -987,27 +987,43 @@ def outline_notes(board):
     import math
     import pcbnew
     ec = board.GetLayerID("Edge.Cuts")
-    segs = []
+    # D-805: the profile may carry ARCS -- the two bottom tabs are drawn with
+    # 1.0 mm concave fillets and 0.5 mm convex corners.  An arc chains by its
+    # endpoints like a segment; its midpoint keeps the winding honest, and a
+    # CONCAVE arc is a drawn inside fillet whose radius the router must not
+    # exceed.  Any other shape still refuses to be guessed.
+    segs, arcs = [], {}
     for d in board.GetDrawings():
         if d.GetLayer() != ec:
             continue
         try:
-            if d.GetShape() != pcbnew.SHAPE_T_SEGMENT:
+            shape = d.GetShape()
+            if shape not in (pcbnew.SHAPE_T_SEGMENT, pcbnew.SHAPE_T_ARC):
                 return ["## Board outline", "",
-                        "The profile contains a non-segment shape; the stepped-"
-                        "outline note is NOT emitted rather than guessed.", ""]
+                        "The profile contains a shape that is neither a segment "
+                        "nor an arc; the stepped-outline note is NOT emitted "
+                        "rather than guessed.", ""]
             a, b = d.GetStart(), d.GetEnd()
+            if shape == pcbnew.SHAPE_T_ARC:
+                m, c = d.GetArcMid(), d.GetCenter()
+                arcs[((a.x, a.y), (b.x, b.y))] = dict(
+                    mid=(m.x, m.y), centre=(c.x, c.y), radius=d.GetRadius())
         except Exception:
             return ["## Board outline", "",
-                    "The profile could not be read as segments; the stepped-"
-                    "outline note is NOT emitted rather than guessed.", ""]
+                    "The profile could not be read as segments and arcs; the "
+                    "stepped-outline note is NOT emitted rather than guessed.",
+                    ""]
         segs.append(((a.x, a.y), (b.x, b.y)))
     if not segs:
         return []
-    xs = [p[0] for s in segs for p in s]
-    ys = [p[1] for s in segs for p in s]
 
-    # chain the segments into one closed loop
+    def arc_of(p, q):
+        return arcs.get((p, q)) or arcs.get((q, p))
+
+    xs = [p[0] for s in segs for p in s] + [v["mid"][0] for v in arcs.values()]
+    ys = [p[1] for s in segs for p in s] + [v["mid"][1] for v in arcs.values()]
+
+    # chain the segments and arcs into one closed loop
     todo = list(segs)
     loop = [todo[0][0], todo[0][1]]
     todo.pop(0)
@@ -1025,9 +1041,32 @@ def outline_notes(board):
     if loop[0] == loop[-1]:
         loop.pop()
     n = len(loop)
-    area2 = sum(loop[i][0] * loop[(i + 1) % n][1] - loop[(i + 1) % n][0] * loop[i][1]
-                for i in range(n))
+    poly = []
+    for i in range(n):
+        poly.append(loop[i])
+        arc = arc_of(loop[i], loop[(i + 1) % n])
+        if arc:
+            poly.append(arc["mid"])
+    area2 = sum(poly[i][0] * poly[(i + 1) % len(poly)][1]
+                - poly[(i + 1) % len(poly)][0] * poly[i][1]
+                for i in range(len(poly)))
     sign = 1.0 if area2 > 0 else -1.0
+
+    def tangent(p, q, at_end):
+        """Unit direction of travel p -> q at p (at_end False) or at q."""
+        arc = arc_of(p, q)
+        if not arc:
+            dx, dy = q[0] - p[0], q[1] - p[1]
+        else:
+            cx, cy = arc["centre"]
+            pt = q if at_end else p
+            rx, ry = pt[0] - cx, pt[1] - cy
+            # the arc's sense of rotation, from p -> mid -> q
+            m = arc["mid"]
+            turn = ((m[0] - p[0]) * (q[1] - m[1]) - (m[1] - p[1]) * (q[0] - m[0]))
+            dx, dy = (-ry, rx) if turn > 0 else (ry, -rx)
+        L = math.hypot(dx, dy) or 1.0
+        return dx / L, dy / L
 
     # copper the fillet could reach: every track, via and pad, any layer
     cu = []
@@ -1057,10 +1096,20 @@ def outline_notes(board):
     reflex = []
     for i in range(n):
         p0, p1, p2 = loop[i - 1], loop[i], loop[(i + 1) % n]
-        cx = ((p1[0] - p0[0]) * (p2[1] - p1[1])
-              - (p1[1] - p0[1]) * (p2[0] - p1[0]))
-        if cx * sign < 0:                      # turns against the winding
+        t_in, t_out = tangent(p0, p1, True), tangent(p1, p2, False)
+        cx = t_in[0] * t_out[1] - t_in[1] * t_out[0]
+        if cx * sign < -1e-6:                  # turns against the winding
             reflex.append(p1)
+    fillets = []
+    for i in range(n):
+        p, q = loop[i], loop[(i + 1) % n]
+        arc = arc_of(p, q)
+        if not arc:
+            continue
+        m = arc["mid"]
+        turn = ((m[0] - p[0]) * (q[1] - m[1]) - (m[1] - p[1]) * (q[0] - m[0]))
+        if turn * sign < 0:                    # a concave (inside) arc
+            fillets.append(arc)
 
     lines = ["## Board outline -- STEPPED PROFILE, READ THIS BEFORE ROUTING",
              "",
@@ -1068,10 +1117,36 @@ def outline_notes(board):
              "y %.3f .. %.3f), %d segments."
              % ((max(xs) - min(xs)) / 1e6, (max(ys) - min(ys)) / 1e6,
                 min(xs) / 1e6, max(xs) / 1e6, min(ys) / 1e6, max(ys) / 1e6,
-                len(segs)),
+                len(segs) - len(arcs))
+             + ("" if not arcs else "  It also carries **%d arc%s**: %d drawn "
+                "INSIDE fillet%s and %d rounded outside corner%s."
+                % (len(arcs), "" if len(arcs) == 1 else "s", len(fillets),
+                   "" if len(fillets) == 1 else "s", len(arcs) - len(fillets),
+                   "" if len(arcs) - len(fillets) == 1 else "s")),
              ""]
+    if fillets:
+        lines += ["**DRAWN INSIDE FILLETS (D-805).**  These inside corners are "
+                  "drawn as arcs, so the router must FOLLOW the drawn radius: "
+                  "a tool radius above it leaves material inside the drawn "
+                  "fillet (the board grows there), and any plunge or relief "
+                  "below it removes material toward copper.  Each is also "
+                  "inside the %.2f mm retained-fillet bound stated below."
+                  % RETAINED_FILLET_MAX_MM, ""]
+        for arc in sorted(fillets, key=lambda a: a["centre"]):
+            cx_, cy_ = arc["centre"]
+            m = arc["mid"]
+            d, kind, net = nearest(m[0], m[1])
+            lines.append("- drawn inside fillet **r %.3f mm** centred at "
+                         "(%.3f, %.3f) -- tool radius <= %.3f mm; nearest "
+                         "copper to the fillet is **%.3f mm** away, edge to "
+                         "edge (%s, `%s`)."
+                         % (arc["radius"] / 1e6, cx_ / 1e6, cy_ / 1e6,
+                            arc["radius"] / 1e6, d / 1e6, kind, net or "no net"))
+        lines.append("")
     if not reflex:
-        lines += ["The profile is convex -- no inside corners.", ""]
+        lines += (["No SHARP inside corners: every inside corner of this "
+                   "profile is one of the drawn fillets above.", ""] if fillets
+                  else ["The profile is convex -- no inside corners.", ""])
     else:
         lines += ["The profile has **%d INSIDE (reflex) corner%s**.  A profile "
                   "router cannot cut a sharp inside corner: it leaves a fillet "

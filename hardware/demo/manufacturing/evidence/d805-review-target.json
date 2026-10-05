@@ -1,0 +1,125 @@
+{
+ "schema": 1,
+ "decision": "D-805",
+ "branch": "d805-interface-fixes",
+ "promoted_to_aqroot_demo": false,
+ "board": "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "0689d6e677df530d84d3986f4a8450fa7ed39272535b2cfc1ecfc6ae857887c1",
+ "parent": "466a5058c7b5b5835ac4427b0db0b2f26d576d43",
+ "content_commit": "PENDING -- written by the identity commit that follows the content commit",
+ "identity_commit": "the identity commit -- it records the content commit's SHA; a commit cannot contain its own",
+ "manifest": "hardware/demo/fab/MANIFEST.json",
+ "manifest_sha256": "4f027e255f161350c412166c23bdf783a45caf432578ccc9f876de4078e07ccf",
+ "trigger": "owner-approved interface revision: J3 / J2 mating faces pointed into the board and SW9's actuator was inboard at D-804 (interface_datums.json)",
+ "placements": {
+  "J3": {
+   "at": [
+    43.0,
+    147.325
+   ],
+   "rotation": 0.0,
+   "outward": "+Y",
+   "was": [
+    43.0,
+    142.7,
+    180.0
+   ]
+  },
+  "J2": {
+   "at": [
+    15.0,
+    142.7
+   ],
+   "rotation": 180.0,
+   "outward": "+Y",
+   "was": [
+    15.0,
+    136.8,
+    0.0
+   ]
+  },
+  "SW9": {
+   "at": [
+    75.2,
+    86.5
+   ],
+   "rotation": 90.0,
+   "outward": "+X",
+   "was": [
+    66.7,
+    86.5,
+    90.0
+   ]
+  }
+ },
+ "outline": {
+  "bbox_mm": [
+   0.0,
+   0.0,
+   77.0,
+   151.0
+  ],
+  "tabs": {
+   "J2_TAB": [
+    6.0,
+    24.0
+   ],
+   "J3_TAB": [
+    36.5,
+    49.5
+   ]
+  },
+  "tab_edge_y": 151.0
+ },
+ "unchanged": [
+  "SW1",
+  "SW4",
+  "J5",
+  "J8",
+  "U1",
+  "BOSS1",
+  "BOSS2",
+  "radios",
+  "NFC",
+  "schematic",
+  "netlist",
+  "BOM",
+  "stackup",
+  ".kicad_dru",
+  ".kicad_pro"
+ ],
+ "bounded_diff": "evidence/d805-bounded-diff-vs-d804.txt: 315 footprints, only J2/J3/SW9 moved (J2 graphics: corrected annotation); pad->net identity on every footprint; tracks/vias 4469 -> 4465, 167 out / 167 in, every one inside a D-805 window; zones: only the two J3 POFV rule areas moved; Edge.Cuts 8 -> 24 items (two tabs)",
+ "gates": {
+  "interface_datum": "ID1-ID9 PASS incl. ID9 non-vacuity controls (evidence/d805-interface-datum-contract.json)",
+  "standing_contracts": "19/19 PASS vs d804, all ran, all children exit 0, not vacuous (evidence/d805-contract-regression.json). Substantive differences, each a D-805 change: placement (declared moves J2/J3/SW9, 22 declared releases, PL9 travelled-with-land J3.A4/A9, --overlap-ok J2:R113 courtyard gap 0.530 mm); keepout_stackup (In1/In4 plane area under the moved parts and tabs); pour_partition (3 moved refs claimed); pour_bond (island renumbering after the local refill; P1-P4 pass); obstacle_model / tap (copper object counts); connection_width (via-tangency census on a re-routed net, none load-bearing); demo_feature (release identity D-805); firmware_hw_map (H9 temporary PATH directory name only); mechanical_keepout (SW9 doc datum 66.7 -> 75.2)",
+  "placement_word_controls": "evidence/d805-placement-word-controls.json: PL9 off-centre barrel still swallowed; PL4 declared pair with touching courtyards still refused",
+  "fab_package": "FAB1-FAB16 PASS (evidence/d805-fab-package-contract.json)",
+  "guarantee_evidence": "17/17 keys, 37/37 controls",
+  "kicad_drc_parity": "199 lib_footprint_issues warnings / 17 unconnected / 246 parity warnings / 0 parity errors; zero of every other class; unconnected and parity multisets identical to D-804 (evidence/d805-kicad-drc-parity.json). Ignored rules promoted to error: 2 missing_courtyard (BOSS1/2) + 5 track_not_centered_on_via, identical to D-804",
+  "routing_ledger": "population, approved-NC, approved-unrouted, connectivity, sheet summary identical to d804 (evidence/d805-routing-ledger.json)",
+  "rail_ampacity": "all_ok; USB_VBUS_RAW path 19.876 -> 17.668 mm, 18.866 -> 16.684 mOhm; no other rail changed (evidence/d805-rail-ampacity.json)",
+  "zone_fill": "a further ZONE_FILLER pass on a scratch copy is byte-identical (0689d6e6...)",
+  "gerber_cam_extract": "evidence/d805-gerber-cam-extract-d805.json: open ends 0, diff-net gaps < 4 mil 0, diff-net crossings 0, shorts 0 on all six copper layers; split nets 11 (identical list to D-804: DNP / approved NC)",
+  "via_in_land": "134 lands with an open barrel (D-804 136): J3.A1/B12 GND barrels gone, J3 A4/A9/B4/B9 POFV moved with their lands, none added"
+ },
+ "vendor_package": {
+  "path": "/home/aqroot8/vendor-packages/AQROOT_D805_PCBWay_Requote (+ .zip)",
+  "zip_sha256": "9363c594ad9cdaa9cd66d80cb7c1c8e5e81b00ab57ce4b539ffabbff87a4ef82",
+  "purpose": "REQUOTE request only; NOT sent; NOT an order",
+  "verified": "26/26 Gerber/drill/BOM/CPL/drawing files match MANIFEST; SHA256SUMS.txt checks"
+ },
+ "order_status": {
+  "PCBWAY_REQUOTE": "MAY BE REQUESTED (owner act; nothing sent)",
+  "FABRICATION": "HOLD -- not authorized",
+  "PCBWAY_CAM_RECHECK": "PENDING (D-804: post-etch U9 >= 4.0 mil; stackup acknowledgement)",
+  "FAB_CAM_ACCEPTANCE": "PENDING (B01-B14)",
+  "FIRST_ARTICLE_VALIDATION": "PENDING (FA01-FA10)",
+  "ENCLOSURE_FIT": "PENDING (J2 / J3 / SW9 apertures per interface_datums.json)",
+  "PROMOTION_TO_AQROOT_DEMO": "NOT DONE -- separate owner act"
+ },
+ "routing_provenance": {
+  "stage1": "apply_d805_interface_moves.py on the D-804 board (moves, tabs, POFV areas, local rip)",
+  "inherited_scratch": "J2-side SPI/SD, J3 USB_D/SHIELD and SW9 local re-route laid by the earlier (stopped) D-805 session on its scratch board; adopted only after KiCad DRC, the routing ledger and every contract above judged it",
+  "this_pass": "evidence/d805-local-joins.py + d805-local-router.py: the six remaining joins (USB_VBUS_RAW C20 side, CC1, CC2, I2C_SDA_INT, WAKE_INT_N, I2S_LRCLK), the stale router fence removed, dead stubs and single-layer barrels dropped; evidence/d805-j2-footprint-update.py brought the board's J2 graphics to the corrected library master"
+ }
+}

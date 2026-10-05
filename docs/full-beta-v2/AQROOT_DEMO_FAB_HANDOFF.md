@@ -2,7 +2,36 @@
 
 
 
-> # **STATUS: D-804 PCBWAY CAM / PCBA RECONCILIATION CANDIDATE — EXTERNAL-REVIEW TARGET ON BRANCH `d804-u9-pcbway-cam-candidate`, BOARD AUTHORITY `abb0c391` (2026-10-01).**
+> # **STATUS: D-805 INTERFACE DATUM CORRECTION CANDIDATE — EXTERNAL-REVIEW TARGET ON BRANCH `d805-interface-fixes`, BOARD AUTHORITY `0689d6e6` (2026-10-05).**
+>
+> **D-805 is a bounded, owner-approved interface correction on top of D-804.  It is NOT
+> promoted to `aqroot-demo`.  THIS IS A REVIEW TARGET, NOT A FABRICATION AUTHORIZATION — a
+> PCBWay REQUOTE of this package may be requested; DO NOT ORDER.**  The board sha256 is
+> `0689d6e677df530d84d3986f4a8450fa7ed39272535b2cfc1ecfc6ae857887c1`; the current MANIFEST
+> sha256 is `4f027e255f161350c412166c23bdf783a45caf432578ccc9f876de4078e07ccf`; the content
+> commit, the identity commit and the post-commit verification are recorded in
+> `hardware/demo/manufacturing/evidence/d805-review-target.json`.  The parent is the D-804
+> identity commit `466a5058c7b5b5835ac4427b0db0b2f26d576d43`.  Connectivity is unchanged:
+> **174 retained / 173 connected / one owner-approved `U11.3` open / zero unapproved**.
+>
+> ### What changed at D-805, for a fabricator, an assembler and a buyer
+>
+> * **`J3` USB-C AND `J2` microSD FACE OUT OF THE BOTTOM EDGE.**  `J3` at (43.000, 147.325)
+>   rot 0, mating face on the `J3_TAB` edge (Y 151.000); `J2` at (15.000, 142.700) rot 180,
+>   card entry on the `J2_TAB` edge.  Same parts, same pads, same nets.  CPL rotation and
+>   position change for these two only.
+> * **`SW9` POWER SLIDE ON THE EAST EDGE.**  (75.200, 86.500) rot 90; body face on the x 77.000
+>   edge, actuator tip at x 79.000.
+> * **TWO LOCAL BOTTOM TABS.**  `J2_TAB` x 6..24 and `J3_TAB` x 36.5..49.5 extend the profile to
+>   Y 151.000 with 1.0 mm DRAWN inside fillets and 0.5 mm outside corners; board extents
+>   77.000 x 151.000 mm.  The fab notes state the fillets; the router follows them with a
+>   tool of radius ≤ 1.0 mm.
+> * **ROUTING.**  Only the three parts' local copper changed; `J3`'s VBUS via-in-pad barrels
+>   (A4 / A9, POFV) moved with their lands; no new via-in-land.
+> * **UNCHANGED.**  Schematic, netlist, BOM, stackup (`assembly/PCBWAY_STACKUP.md`), DRU,
+>   radios, NFC, `SW1`, `SW4`, `J5`, `J8`, `U1`, mounting bosses.  The D-804 HOLD items stand.
+>
+> # **STATUS: D-804 PCBWAY CAM / PCBA RECONCILIATION CANDIDATE — EXTERNAL-REVIEW TARGET ON BRANCH `d804-u9-pcbway-cam-candidate`, BOARD AUTHORITY `abb0c391` (2026-10-01).**  *(HISTORICAL — superseded by the D-805 candidate above.  Its closures STAND.)*
 >
 > **D-804 is a bounded, manufacturer-triggered candidate on top of D-803.  It is NOT promoted
 > to `aqroot-demo`.  THIS IS A REVIEW TARGET, NOT A FABRICATION AUTHORIZATION — DO NOT ORDER

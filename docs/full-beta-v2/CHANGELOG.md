@@ -1,3 +1,42 @@
+## D-805 — 2026-10-05 — INTERFACE DATUM CORRECTION: J3 USB-C AND J2 microSD FACE OUT OF THE BOTTOM EDGE ON TWO LOCAL TABS, SW9 POWER SLIDE ON THE EAST EDGE
+
+CANDIDATE ONLY — branch `d805-interface-fixes`; **not promoted to `aqroot-demo`, not
+production-authorized, nothing sent to a manufacturer.**  Owner-approved placement targets
+(`hardware/demo/manufacturing/interface_datums.json`); no schematic, netlist, BOM, stackup,
+radio, NFC or mounting-hole change.
+
+* **`D805-01` — the three external interfaces face outward.**  D-804 shipped `J3` (USB-C) and
+  `J2` (microSD) with their mating faces pointing INTO the board, and `SW9`'s actuator
+  inboard.  `J3` (43.000, 147.325) rot 0 and `J2` (15.000, 142.700) rot 180 now open +Y
+  through the bottom edge; `SW9` (75.200, 86.500) rot 90 puts its actuator 2.0 mm past the
+  x 77.000 bump edge.  `SW1`, `SW4`, `J5`, `J8`, `U1`, `BOSS1`/`BOSS2`, every radio and the NFC
+  front end are unchanged.  Pad-to-net identity is unchanged on all 315 footprints.
+* **`D805-02` — two local bottom tabs.**  `Edge.Cuts` gains `J2_TAB` (x 6..24) and `J3_TAB`
+  (x 36.5..49.5) to Y 151.000 (1.0 mm drawn inside fillets, 0.5 mm outside corners); the
+  rest of the outline is unchanged.  Board extents 77.000 x 151.000 mm.
+* **`D805-03` — local re-route only.**  Copper of the three moved parts' nets was ripped
+  inside each part's own window and re-laid there; the bottom band between the connectors
+  carries the J3-side joins and the `SPI_B_SCK` In2 run 0.2–0.3 mm south of its D-804 line.
+  167 copper objects out / 167 in, every one inside a D-805 window
+  (`evidence/d805-bounded-diff-vs-d804.txt`).  `J3`'s two D-531 VBUS via-in-pad barrels
+  travelled with their lands (A4 / A9 POFV rule areas moved with them); `J3.A1`/`B12` lose
+  their GND via-in-land (134 lands with an open barrel, was 136); no new via-in-land.
+  `USB_VBUS_RAW` path 19.876 -> 17.668 mm.
+* **`D805-04` — `J2` footprint annotation.**  The `Molex_5025700893` master and the board
+  instance now draw the card entry on the CONTACT-TAIL edge (Molex SD-502570-001 sheet 1);
+  pads unchanged; courtyard trimmed to the body (-8.7..8.7).
+* **`D805-05` — gates taught the act, not relaxed.**  New `checks/interface_datum_contract.py`
+  (ID1–ID9, facing derived from footprint geometry, with non-vacuity controls).
+  `placement_contract.py` gains two declared words, each with a control that still fails:
+  PL9 accepts a barrel that travelled WITH its land (same pin, net, size and rotated
+  offset); `--overlap-ok A:B` declares a coarse-box PL4 overlap only when KiCad's courtyard
+  polygons are disjoint (`J2`/`R113`: 0.530 mm).  `export_fab_package.py` reads arcs in the
+  profile and states the drawn inside fillets in the fab notes.
+* **`D805-06` — identity.**  `Firmware/src/hw/aqroot_demo_board.{h,json}` regenerated (board
+  digest string only).  KiCad DRC/parity 199 / 17 / 246, 0 errors, same unconnected and
+  parity multisets as D-804; routing ledger connectivity identical; 19/19 standing
+  contracts PASS against the D-804 baseline (`evidence/d805-contract-regression.json`).
+
 ## D-804 — 2026-10-01 — PCBWAY CAM / PCBA RECONCILIATION CANDIDATE: U9 CORNER CLEARANCE, D9 ON ITS REAL SOD123F LAND, TWO D-725 JOINTS CLOSED, A PCBWAY STACKUP
 
 CANDIDATE ONLY — branch `d804-u9-pcbway-cam-candidate`; **not promoted to `aqroot-demo`, not

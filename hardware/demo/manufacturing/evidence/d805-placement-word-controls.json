@@ -1,0 +1,33 @@
+{
+ "schema": 1,
+ "decision": "D-805",
+ "board_sha256": "0689d6e677df530d84d3986f4a8450fa7ed39272535b2cfc1ecfc6ae857887c1",
+ "what": "non-vacuity controls for the two D-805 placement_contract words",
+ "PL9_travelled_with_land": {
+  "control": "J3.A4 POFV barrel moved 0.100 mm off its land centre on a scratch copy",
+  "still_swallowed": true,
+  "real_board_PL9_pass": true
+ },
+ "PL4_overlap_ok": {
+  "control": "R113 moved 0.600 mm west on a scratch copy so its courtyard meets J2's; --overlap-ok J2:R113 declared",
+  "PL4_pass": false,
+  "declared": [
+   {
+    "courtyard_gap_mm": null,
+    "courtyards_touch": true,
+    "pair": [
+     "J2",
+     "R113"
+    ]
+   }
+  ],
+  "remaining": [
+   [
+    "J2",
+    "R113"
+   ]
+  ],
+  "refused": true
+ },
+ "all_controls_caught": true
+}

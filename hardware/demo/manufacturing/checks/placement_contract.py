@@ -470,6 +470,38 @@ def judge(pre, post, claimed, released=(), removed=(), added=()):
     def _in_pre_land(ref, x, y):
         return any(inside(box, x, y) for box in bpre.get(ref, []))
 
+    # D-805 GAVE PL9 A WORD FOR A BARREL THAT TRAVELLED WITH ITS LAND.  `J3`'s
+    # two D-531 VBUS via-in-pad barrels (A4 / A9, licensed by the POFV rule
+    # areas that move with them) sat at the CENTRE of their lands before the
+    # D-805 move and sit at the centre of the same lands after it.  The move put
+    # no barrel under a land that lacked one -- which is the question PL9 states
+    # -- but the barrel's BOARD coordinate changed, so the D-730 test called it
+    # swallowed.  A post barrel is now also INHERITED when the PRE board had a
+    # barrel of the same net and diameter under the SAME pin, at the same
+    # land-relative offset turned through the claimed rotation (1 um).  Any
+    # other offset, net, size or pin is still swallowed, so D-620's `C17` case
+    # still fails exactly.
+    def _travelled(ref, net, x, y, dia):
+        th = math.radians(float(claimed[ref][2]))
+        c, s_ = math.cos(th), math.sin(th)
+        for pin, boxes in npost.items():
+            if not pin.startswith(ref + "."):
+                continue
+            for box in boxes:
+                if not (inside(box, x, y) and box[4] == net):
+                    continue
+                ox, oy = x - (box[0] + box[2]) / 2, y - (box[1] + box[3]) / 2
+                for pbox in npre.get(pin, []):
+                    pcx, pcy = (pbox[0] + pbox[2]) / 2, (pbox[1] + pbox[3]) / 2
+                    for vnet, vx, vy, vdia in vpre:
+                        if vnet != net or vdia != dia or not inside(pbox, vx, vy):
+                            continue
+                        px, py = vx - pcx, vy - pcy
+                        tx, ty = px * c + py * s_, -px * s_ + py * c
+                        if abs(tx - ox) <= 1000 and abs(ty - oy) <= 1000:
+                            return pin
+        return None
+
     swallowed, inherited = [], []
     for ref in sorted(claimed):
         for net, x, y, dia in vpost:
@@ -483,6 +515,11 @@ def judge(pre, post, claimed, released=(), removed=(), added=()):
             # this promotion ADDED under a moved land is swallowed too.
             was = any(abs(x - px) <= 1 and abs(y - py) <= 1
                       for _pn, px, py, _pd in vpre) and _in_pre_land(ref, x, y)
+            if not was:
+                carried = _travelled(ref, net, x, y, dia)
+                if carried:
+                    entry["travelled_with_land"] = carried
+                    was = True
             (inherited if was else swallowed).append(entry)
 
     # PL10: a declared removal left no copper endpoint on its former lands.
@@ -597,6 +634,13 @@ def main():
     ap.add_argument("--decoy", default=None,
                     help="reference PL6 perturbs; default is the first "
                          "footprint that is not claimed")
+    ap.add_argument("--overlap-ok", action="append", default=[],
+                    metavar="REF:REF",
+                    help="D-805: a NEW PL4 footprint-box overlap this promotion "
+                         "DECLARES harmless.  Honoured ONLY if the two parts' "
+                         "real courtyard polygons on every shared side do not "
+                         "touch on the POST board; otherwise PL4 still fails. "
+                         "Repeatable; recorded in the report with the gap")
     ap.add_argument("--clearance-nm", type=int, default=200000,
                     help="PL7 envelope: the board's default netclass clearance")
     ap.add_argument("-o", "--out", type=Path)
@@ -641,6 +685,46 @@ def main():
         not pchecks["PL2_only_claimed_parts_moved"] and decoy in named)
     detail["pl6_decoy"] = decoy
     detail["pl6_perturbation_named"] = sorted(named)
+
+    # D-805: PL4 IS A COARSE SCREEN AND STAYS ONE.  It compares whole-footprint
+    # boxes, so a silkscreen mark drawn outside a courtyard reads as an overlap
+    # (D-805: `J2`'s pin-1 dot, 0.5 mm outside its courtyard, touches `R113`'s
+    # box by 0.065 mm while the courtyard polygons stand 0.530 mm apart).  The screen is
+    # NOT relaxed: an overlap can only be DECLARED, and the declaration is true
+    # only if KiCad's own courtyard polygons on every shared side are disjoint.
+    declared = []
+    if a.overlap_ok:
+        import pcbnew
+        pb = pcbnew.LoadBoard(str(post_path))
+        remaining = []
+        want = {tuple(sorted(x.split(":"))) for x in a.overlap_ok}
+        for pair in detail["courtyard_overlaps_new"]:
+            key = tuple(sorted(pair))
+            if key not in want:
+                remaining.append(pair)
+                continue
+            fa, fb = (pb.FindFootprintByReference(r) for r in key)
+            gaps, touch = [], False
+            for cu in (pcbnew.F_Cu, pcbnew.B_Cu):
+                ca, cb = fa.GetCourtyard(cu), fb.GetCourtyard(cu)
+                if not (ca.OutlineCount() and cb.OutlineCount()):
+                    continue
+                if ca.Collide(cb.Outline(0), 0) or cb.Collide(ca.Outline(0), 0):
+                    touch = True
+                    continue
+                d = min(min(cb.Outline(0).SquaredDistance(ca.Outline(0).CPoint(i))
+                            for i in range(ca.Outline(0).PointCount())),
+                        min(ca.Outline(0).SquaredDistance(cb.Outline(0).CPoint(i))
+                            for i in range(cb.Outline(0).PointCount())))
+                gaps.append(round(math.sqrt(d) / 1e6, 4))
+            entry = dict(pair=list(key), courtyards_touch=touch,
+                         courtyard_gap_mm=min(gaps) if gaps else None)
+            declared.append(entry)
+            if touch or not gaps:
+                remaining.append(pair)
+        detail["courtyard_overlaps_new"] = remaining
+        checks["PL4_no_new_courtyard_overlap"] = not remaining
+    detail["courtyard_overlaps_declared"] = declared
 
     hits = foreign_copper_hits(post_path, set(claimed) | set(a.add),
                                a.clearance_nm)

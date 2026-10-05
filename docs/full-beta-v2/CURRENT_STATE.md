@@ -14,7 +14,26 @@
 
 ## 1. Authoritative HEAD
 
-> ### **D-804 REVIEW TARGET — THE EXACT FROZEN IDENTITY**  *(PCBWay CAM / PCBA reconciliation CANDIDATE — branch `d804-u9-pcbway-cam-candidate` only; NOT promoted to `aqroot-demo`)*
+> ### **D-805 REVIEW TARGET — THE EXACT FROZEN IDENTITY**  *(interface-datum CANDIDATE — branch `d805-interface-fixes` only; NOT promoted to `aqroot-demo`)*
+>
+> | what | value |
+> |---|---|
+> | branch | `origin/d805-interface-fixes` |
+> | content commit | recorded in `hardware/demo/manufacturing/evidence/d805-review-target.json` |
+> | identity / post-commit verification commit | *the commit that records it — a commit cannot contain its own SHA* |
+> | board `aqroot-Beta-v2.kicad_pcb` sha256 | `0689d6e677df530d84d3986f4a8450fa7ed39272535b2cfc1ecfc6ae857887c1` |
+> | `hardware/demo/fab/MANIFEST.json` sha256 | `4f027e255f161350c412166c23bdf783a45caf432578ccc9f876de4078e07ccf` |
+> | parent | `466a5058c7b5b5835ac4427b0db0b2f26d576d43` (D-804 identity) |
+>
+> **THREE PARTS MOVE, TWO LOCAL TABS, LOCAL COPPER ONLY**: `J3` USB-C (43.000, 147.325) rot 0 and
+> `J2` microSD (15.000, 142.700) rot 180 face out of the bottom edge on `J3_TAB` / `J2_TAB`
+> (to Y 151.000); `SW9`'s actuator stands 2.0 mm past the x 77.000 edge at (75.200, 86.500).
+> Nothing else moves (`evidence/d805-bounded-diff-vs-d804.txt`); schematic, netlist, BOM and
+> stackup are byte-identical to D-804.  The interface facing is gated by
+> `checks/interface_datum_contract.py`.  **CANDIDATE, NOT A FABRICATION AUTHORIZATION.  A PCBWay
+> requote may be requested; DO NOT ORDER — the D-804 HOLD items stand.**
+
+> ### **D-804 REVIEW TARGET — THE EXACT FROZEN IDENTITY**  *(**HISTORICAL** — superseded by the D-805 candidate on its own branch)*
 >
 > | what | value |
 > |---|---|

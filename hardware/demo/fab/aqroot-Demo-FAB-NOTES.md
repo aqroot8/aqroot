@@ -29,7 +29,14 @@ KiCad DRC on this board reports **ZERO** `hole_clearance` violations.  3 named, 
 
 ## Board outline -- STEPPED PROFILE, READ THIS BEFORE ROUTING
 
-Profile extents: **77.000 x 148.000 mm** (x 0.000 .. 77.000, y 0.000 .. 148.000), 8 segments.
+Profile extents: **77.000 x 151.000 mm** (x 0.000 .. 77.000, y 0.000 .. 151.000), 16 segments.  It also carries **8 arcs**: 4 drawn INSIDE fillets and 4 rounded outside corners.
+
+**DRAWN INSIDE FILLETS (D-805).**  These inside corners are drawn as arcs, so the router must FOLLOW the drawn radius: a tool radius above it leaves material inside the drawn fillet (the board grows there), and any plunge or relief below it removes material toward copper.  Each is also inside the 1.00 mm retained-fillet bound stated below.
+
+- drawn inside fillet **r 1.000 mm** centred at (5.000, 149.000) -- tool radius <= 1.000 mm; nearest copper to the fillet is **2.526 mm** away, edge to edge (pad J2.9, `GND`).
+- drawn inside fillet **r 1.000 mm** centred at (25.000, 149.000) -- tool radius <= 1.000 mm; nearest copper to the fillet is **1.193 mm** away, edge to edge (track, `/SPI_B_SCK`).
+- drawn inside fillet **r 1.000 mm** centred at (35.500, 149.000) -- tool radius <= 1.000 mm; nearest copper to the fillet is **1.193 mm** away, edge to edge (track, `/SPI_B_SCK`).
+- drawn inside fillet **r 1.000 mm** centred at (50.500, 149.000) -- tool radius <= 1.000 mm; nearest copper to the fillet is **1.193 mm** away, edge to edge (track, `/SPI_B_SCK`).
 
 The profile has **2 INSIDE (reflex) corners**.  A profile router cannot cut a sharp inside corner: it leaves a fillet of its own tool radius, which means **MATERIAL REMAINS** and the board is very slightly LARGER there than drawn.  A retained fillet is the CORRECT treatment.  What is NOT accepted is squaring the corner by plunging, drilling a relief or otherwise OVER-CUTTING, because that removes material toward the copper.
 
@@ -46,7 +53,7 @@ Board copper-to-edge minimum in force: **0.500 mm**, and KiCad DRC on this board
 
 ## Vias in solderable lands -- VIA PROTECTION IS REQUIRED
 
-Solder-mask expansion on this board is **0.000 mm**, so a pad's mask aperture IS its copper.  **130 via barrels open directly into 136 solderable lands across 77 components**, on hole sizes 0.20 mm / 0.25 mm / 0.30 mm / 0.40 mm.  136 of those lands carry the SAME net as the via, which is why no clearance check and no KiCad DRC rule reports them -- KiCad has no via-in-pad rule at all.
+Solder-mask expansion on this board is **0.000 mm**, so a pad's mask aperture IS its copper.  **129 via barrels open directly into 134 solderable lands across 77 components**, on hole sizes 0.20 mm / 0.25 mm / 0.30 mm / 0.40 mm.  134 of those lands carry the SAME net as the via, which is why no clearance check and no KiCad DRC rule reports them -- KiCad has no via-in-pad rule at all.
 
 **REQUIRED PROCESS: these vias must be PLUGGED / RESIN-FILLED AND CAP-PLATED (via-in-pad / POFV), or filled by an equivalent process that leaves a planar, solderable land.**  Applying the process to every via on the board is acceptable and is the simpler instruction; what is NOT acceptable is shipping these barrels open.
 
@@ -67,7 +74,7 @@ The ten worst lands, by how much of the land is open hole:
 | `C8.1` | F.Cu | 0.900 x 0.950 | 0.40 mm | 0.1255 mm2 | **15.5 %** | `+3V3` |
 | `C39.1` | B.Cu | 0.900 x 0.950 | 0.40 mm | 0.1097 mm2 | **13.6 %** | `/ACC_3V3_SW` |
 
-**31 of the 136 lands are FINE-PITCH** (one land dimension at or below 0.500 mm) -- including D8.1, J1.12, J1.14, J1.16, J1.18, J1.22, J1.23, J1.25.  On those the hole is a large fraction of the land's width and an unfilled barrel does not merely starve the joint, it removes the land.
+**31 of the 134 lands are FINE-PITCH** (one land dimension at or below 0.500 mm) -- including D8.1, J1.12, J1.14, J1.16, J1.18, J1.22, J1.23, J1.25.  On those the hole is a large fraction of the land's width and an unfilled barrel does not merely starve the joint, it removes the land.
 
 The complete list of barrel centres is in `MANIFEST.json` under `via_in_pad`.
 
@@ -203,19 +210,19 @@ The drill files carry **4 routed slots** as Excellon `G85` moves.  Each is a SLO
 
 | plating | file | width mm | length mm | centre (x, y) mm | pad |
 |---|---|---|---|---|---|
-| PLATED | `aqroot-Beta-v2-PTH.drl` | 0.600 | 1.400 | (38.680, 141.625) | `J3.SH` |
-| PLATED | `aqroot-Beta-v2-PTH.drl` | 0.600 | 1.700 | (38.680, 145.805) | `J3.SH` |
-| PLATED | `aqroot-Beta-v2-PTH.drl` | 0.600 | 1.400 | (47.320, 141.625) | `J3.SH` |
-| PLATED | `aqroot-Beta-v2-PTH.drl` | 0.600 | 1.700 | (47.320, 145.805) | `J3.SH` |
+| PLATED | `aqroot-Beta-v2-PTH.drl` | 0.600 | 1.700 | (38.680, 144.220) | `J3.SH` |
+| PLATED | `aqroot-Beta-v2-PTH.drl` | 0.600 | 1.400 | (38.680, 148.400) | `J3.SH` |
+| PLATED | `aqroot-Beta-v2-PTH.drl` | 0.600 | 1.700 | (47.320, 144.220) | `J3.SH` |
+| PLATED | `aqroot-Beta-v2-PTH.drl` | 0.600 | 1.400 | (47.320, 148.400) | `J3.SH` |
 
 ## Component placement (CPL) convention -- READ BEFORE PROGRAMMING THE PLACER
 
 `aqroot-Demo-pos-fitted.csv` is the file to place from; `aqroot-Demo-pos-all.csv` additionally carries the DNP references and must NOT be used as the placement list.
 
 - **251 fitted placements: 168 bottom, 83 top.**  The majority of this board is on the BOTTOM side; confirm the panel orientation before the first unit.
-- **Origin** is the KiCad page origin, NOT an auxiliary axis: no `aux_axis_origin` is set on this board.  The `Edge_Cuts` outline occupies X -0.050 .. 77.050 mm and Y -0.050 .. 148.050 mm in that frame.
-- **`PosX` is millimetres, increasing to the RIGHT.**  Observed range 2.125 .. 74.100 mm.
-- **`PosY` is millimetres, increasing UPWARD, and is therefore NEGATIVE across this whole board** (KiCad's internal Y axis points down and the exporter negates it).  Observed range -146.000 .. -2.250 mm.  A toolchain that expects Y-down must negate this column; one that expects Y-up must not.
+- **Origin** is the KiCad page origin, NOT an auxiliary axis: no `aux_axis_origin` is set on this board.  The `Edge_Cuts` outline occupies X -0.050 .. 77.050 mm and Y -0.050 .. 151.050 mm in that frame.
+- **`PosX` is millimetres, increasing to the RIGHT.**  Observed range 2.125 .. 75.200 mm.
+- **`PosY` is millimetres, increasing UPWARD, and is therefore NEGATIVE across this whole board** (KiCad's internal Y axis points down and the exporter negates it).  Observed range -147.325 .. -2.250 mm.  A toolchain that expects Y-down must negate this column; one that expects Y-up must not.
 - **`Rot` is degrees COUNTER-CLOCKWISE**, 0 to 360 normalised to (-180, 180].  Values present on this board: -90 deg, 0 deg, 90 deg, 180 deg.
 - **`Rot` for a BOTTOM-side part is given as seen from the TOP of the board, through it** -- the KiCad convention.  An assembler whose process expects bottom-side angles as seen from BELOW must mirror them (negate, or equivalently subtract from 360).  **This is the single most common way this file is misread and it affects 168 of the 251 placements here.**
 - **`Side` is the authority on which face a part goes to**; do not infer it from the sign of any coordinate.
@@ -243,8 +250,8 @@ Every fitted, placed `U`, `Q`, `D`, `J`, `Y` and `MK` reference. `pin 1 X/Y` is 
 | `D13` | MHPA3528RGBCT | top | 0.000000 | 31.060 | -107.675 | 1 (A) | `+3V3` |
 | `D14` | BAT54WS | bottom | -90.000000 | 6.800 | -116.850 | 1 (K) | `/03_SPI_A_DISPLAY_SD/BL_DISC_G` |
 | `J1` | FH69-50S-0.5SH | top | 0.000000 | 44.910 | -96.000 | 1 (LEDA) | `/03_SPI_A_DISPLAY_SD/LED_A` |
-| `J2` | Molex_5025700893 | top | 0.000000 | 12.194 | -132.462 | 1 (DAT2) | `no net` |
-| `J3` | USB_C_Receptacle_USB2.0_16P | top | 180.000000 | 46.200 | -146.380 | A1 (GND_A1) | `GND` |
+| `J2` | Molex_5025700893 | top | 180.000000 | 17.806 | -147.038 | 1 (DAT2) | `no net` |
+| `J3` | USB_C_Receptacle_USB2.0_16P | top | 0.000000 | 39.800 | -143.645 | A1 (GND_A1) | `GND` |
 | `J5` | COMMUNITY_PORT_1x24 | top | -90.000000 | 65.900 | -10.000 | 1 (Pin_1) | `/ACC_5V_SW` |
 | `J6` | JST-PH-2 SPEAKER | top | 0.000000 | 38.000 | -128.000 | 1 (Pin_1) | `/06_AUDIO/SPK_P_CONN` |
 | `J7` | BM02B-ACHSS-GAN-ETF | bottom | 0.000000 | 53.400 | -31.875 | 1 (Pin_1) | `/04_SPI_B_RADIOS_NFC/NFC_ANT_A` |
