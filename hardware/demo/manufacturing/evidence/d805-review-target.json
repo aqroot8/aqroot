@@ -6,7 +6,7 @@
  "board": "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
  "board_sha256": "0689d6e677df530d84d3986f4a8450fa7ed39272535b2cfc1ecfc6ae857887c1",
  "parent": "466a5058c7b5b5835ac4427b0db0b2f26d576d43",
- "content_commit": "PENDING -- written by the identity commit that follows the content commit",
+ "content_commit": "736226dcc41b3da9ae5b7310526d42d2b51d83d1",
  "identity_commit": "the identity commit -- it records the content commit's SHA; a commit cannot contain its own",
  "manifest": "hardware/demo/fab/MANIFEST.json",
  "manifest_sha256": "4f027e255f161350c412166c23bdf783a45caf432578ccc9f876de4078e07ccf",
@@ -121,5 +121,43 @@
   "stage1": "apply_d805_interface_moves.py on the D-804 board (moves, tabs, POFV areas, local rip)",
   "inherited_scratch": "J2-side SPI/SD, J3 USB_D/SHIELD and SW9 local re-route laid by the earlier (stopped) D-805 session on its scratch board; adopted only after KiCad DRC, the routing ledger and every contract above judged it",
   "this_pass": "evidence/d805-local-joins.py + d805-local-router.py: the six remaining joins (USB_VBUS_RAW C20 side, CC1, CC2, I2C_SDA_INT, WAKE_INT_N, I2S_LRCLK), the stale router fence removed, dead stubs and single-layer barrels dropped; evidence/d805-j2-footprint-update.py brought the board's J2 graphics to the corrected library master"
- }
+ },
+ "pushed": {
+  "remote": "origin",
+  "branch": "d805-interface-fixes",
+  "at_content_commit": "736226dcc41b3da9ae5b7310526d42d2b51d83d1"
+ },
+ "post_commit_verification": {
+  "run_against": "736226dcc41b3da9ae5b7310526d42d2b51d83d1",
+  "worktree_clean": true,
+  "board_sha256": "0689d6e677df530d84d3986f4a8450fa7ed39272535b2cfc1ecfc6ae857887c1",
+  "manifest_sha256": "4f027e255f161350c412166c23bdf783a45caf432578ccc9f876de4078e07ccf",
+  "note": "the committed board and MANIFEST are byte-identical to the files every gate in `gates` judged; contract_regression: all_ran, all_children_exited_zero, all_contracts_pass, not vacuous"
+ },
+ "platformio": {
+  "all_success": true,
+  "clean_build": true,
+  "source": "git archive of the content commit (Firmware/) into an empty directory",
+  "bare_pio_run": "default_envs = aqroot-demo",
+  "environments": [
+   "aqroot-demo",
+   "aqroot-demo-fap01",
+   "esp32-s3-aqroot",
+   "wokwi",
+   "esp32-s3-aqroot-dm"
+  ]
+ },
+ "fap01_image": {
+  "environment": "aqroot-demo-fap01",
+  "git_sha": "736226dcc41b3da9ae5b7310526d42d2b51d83d1",
+  "firmware_bin_sha256": "9307c8a0a723e338aacf84027f88299453b80c15ae5ca9f92d25ad9e56efb31a",
+  "built": "clean build of the content commit, PlatformIO, on the release worker; not claimed bit-reproducible across machines -- re-hash the file actually flashed per unit",
+  "console": "docs/full-beta-v2/assembly/FAP01_FIRST_ARTICLE_IMAGE.md"
+ },
+ "release_image": {
+  "environment": "aqroot-demo",
+  "firmware_bin_sha256": "ba48868c1fbb38ac7067424f27743b486bf830e6f550a50abfac7f63158684b7",
+  "note": "only Firmware/src/hw/aqroot_demo_board.{h,json} changed since D-804, and only the board digest string"
+ },
+ "beta_v2_untouched": true
 }

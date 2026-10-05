@@ -68,4 +68,9 @@ Two placement-contract clauses had no word for acts D-805 legitimately performs.
 
 **GO for requesting a PCBWay requote** of the D-805 package. That is a price question only. Fabrication stays **HOLD**: the D-804 items stand (post-etch U9 ≥ 4.0 mil, stackup acknowledgement, B01–B14, FA01–FA10, procurement), plus enclosure apertures for J2/J3/SW9 and owner review of the two placement-contract words above.
 
-The content commit, push result and PlatformIO post-commit build are recorded in `hardware/demo/manufacturing/evidence/d805-review-target.json` by the identity commit that follows.
+## 7. Commit, push, post-commit verification
+
+* Content commit `736226dcc41b3da9ae5b7310526d42d2b51d83d1`, pushed to `origin/d805-interface-fixes` (new branch).
+* Committed board / MANIFEST byte-identical to the gated files (`0689d6e6…`, `4f027e25…`); tree clean.
+* PlatformIO from a `git archive` of the content commit: **5/5 SUCCESS** (aqroot-demo, aqroot-demo-fap01, esp32-s3-aqroot, wokwi, esp32-s3-aqroot-dm). Release image sha256 `ba48868c…84b7`; FAP-01 image sha256 `9307c8a0…fb31a`.
+* This record is the identity commit that follows; `evidence/d805-review-target.json` carries the same values.
