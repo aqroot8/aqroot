@@ -10,7 +10,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Verify package
         run: |
-          echo "34ea862650f5b161c8763796300b6f802aa9a44eb61cab5b6acb9935dbd62d14  delivery/AQROOT_D805_Prototype_PCBA_RFQ.zip" | sha256sum -c -
+          echo "eefa9f3c16bc1a228669b3dc8f05e3a0f0892d4727c71a0fc33c1a170069594a  delivery/AQROOT_D805_Prototype_PCBA_RFQ.zip" | sha256sum -c -
       - name: Upload package
         uses: actions/upload-artifact@v4
         with:
