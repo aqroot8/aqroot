@@ -1,0 +1,21 @@
+name: D805 JLCPCB RFQ Artifact
+on:
+  push:
+    branches:
+      - d805-pcbway-delivery-artifact
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify package
+        run: |
+          echo "1d5861593821c2faa53717a4ecafc12ac963a13b80a58df74069c9e9b39e2533  delivery/AQROOT_D805_JLCPCB_RFQ.zip" | sha256sum -c -
+      - name: Upload package
+        uses: actions/upload-artifact@v4
+        with:
+          name: AQROOT_D805_JLCPCB_RFQ
+          path: delivery/AQROOT_D805_JLCPCB_RFQ.zip
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 3
