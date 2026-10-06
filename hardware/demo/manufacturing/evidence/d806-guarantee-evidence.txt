@@ -1,0 +1,57 @@
+PASS bq.ilim_max_A                            GUARANTEED_MAX  
+PASS bq.ilim_min_A                            GUARANTEED_MIN  
+PASS bq.iprechg_accuracy                      GUARANTEED_MAX  
+PASS bq.kiset_max_AOhm                        GUARANTEED_MAX  
+PASS bq.kiset_min_AOhm                        GUARANTEED_MIN  
+PASS bq.ron_bat_max_ohm                       GUARANTEED_MAX  
+PASS bq.ron_in_max_ohm                        GUARANTEED_MAX  
+PASS bq.vbuvlo_hys_max_V                      GUARANTEED_MAX  
+PASS bq.vlowv_max_V                           GUARANTEED_MAX  
+PASS bq.vlowv_min_V                           GUARANTEED_MIN  
+PASS bq.vsys_reg_accuracy                     GUARANTEED_MAX  
+PASS mcu.ivdd_supply_requirement_A            GUARANTEED_ROC  
+PASS path.crimp_max_ohm                       GUARANTEED_MAX  
+PASS path.microlock_contact_aged_max_ohm      GUARANTEED_MAX  
+PASS path.microlock_contact_initial_max_ohm   GUARANTEED_MAX  
+PASS path.pack_ac_impedance_max_ohm           GUARANTEED_MAX  
+PASS path.r75_sense_tolerance                 GUARANTEED_MAX  
+OK      an_unmutated_repinned_copy_passes
+OK      a_unrelated_row_repin_is_refused
+OK      a_unrelated_row_repin_with_its_symbol_is_refused
+OK      b_fabricated_header_is_refused
+OK      c_three_edit_typ_to_max_is_refused
+OK      d_direction_flip_max_to_min_is_refused
+OK      d_direction_flip_of_the_tag_alone_is_refused
+OK      e_typ_only_single_value_with_invented_max_is_refused
+OK      f_symbol_mismatch_is_refused
+OK      g_sibling_row_at_another_condition_is_refused
+OK      h_declared_scale_is_not_free_is_refused
+OK      i_unit_claim_is_refused
+OK      j_locator_drift_is_refused
+OK      k_document_hash_is_refused
+OK      l_unpinned_evidence_edit_is_refused
+OK      m_guarantee_without_evidence_is_refused
+OK      n_requirement_word_direction_flip_is_refused
+OK      r16_a_coordinated_vlowv_repointed_to_vin_lowvz_is_refused
+OK      r16_b_coordinated_vbuvlo_hys_moved_to_vin_0v_sibling_is_refused
+OK      r16_c_fabricated_max_header_on_a_pinned_key_is_refused
+OK      r16_d_coordinated_min_max_reversal_is_refused
+OK      r16_e_unit_scaling_substitution_is_refused
+OK      r16_f_coordinated_evidence_registry_hash_repoint_is_refused
+OK      r16_g_registry_guarantee_absent_from_schema_is_refused
+OK      r16_h_schema_key_missing_from_registry_is_refused
+OK      r16_i_document_identity_substitution_is_refused
+OK      r16_j_schema_edit_without_repin_is_refused
+OK      r16_k_schema_with_code_is_refused
+OK      r19_03_registry_good_first_bad_last_is_refused
+OK      r19_03_registry_bad_first_good_last_is_refused
+OK      r19_03_registry_identical_duplicate_is_refused
+OK      r19_03_registry_missing_guarantee_is_refused
+OK      r19_03_registry_extra_guarantee_is_refused
+OK      r19_03_evidence_row_duplicated_bad_first_is_refused
+OK      r19_03_evidence_row_duplicated_good_first_is_refused
+OK      r19_03_evidence_row_duplicated_identical_is_refused
+OK      r19_03_schema_key_duplicated_is_refused
+SEMANTICS hardware/demo/manufacturing/checks/guarantee_semantics.py sha256 cf8be679b05b9ec1: 17 keys pinned
+KEYS authenticated 17/17; CONTROLS caught 37/37
+VERDICT PASS

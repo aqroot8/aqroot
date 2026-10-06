@@ -2,7 +2,32 @@
 
 
 
-> # **STATUS: D-805 INTERFACE DATUM CORRECTION CANDIDATE — EXTERNAL-REVIEW TARGET ON BRANCH `d805-interface-fixes`, BOARD AUTHORITY `0689d6e6` (2026-10-05).**
+> # **STATUS: D-806 JLCPCB MANUFACTURING-READINESS CANDIDATE — EXTERNAL-REVIEW TARGET ON BRANCH `d806-jlcpcb-manufacturing`, BOARD AUTHORITY `0e59fb64` (2026-10-06).**
+>
+> **D-806 answers the JLCPCB engineering review of 2026-10-06 on top of the FROZEN D-805.  It is
+> NOT promoted to `aqroot-demo`.  THIS IS A REVIEW TARGET, NOT A FABRICATION AUTHORIZATION — JLCPCB
+> / PCBWay requote or review may be requested by the owner; DO NOT ORDER.**  The board sha256 is
+> `0e59fb64fe72b0a54b9feea96c19bcaec2db52a82a871bcec270e064d7fda547`; the current MANIFEST sha256 is `651ceb4851e1097b87eb47ebfec1257a8752ae6a782f97ede4aa62790c19db4f`; the content commit, the identity commit and the
+> post-commit verification are recorded in `hardware/demo/manufacturing/evidence/d806-review-target.json`.
+> The parent is the frozen D-805 delivery identity `a8837f71667f2f737c69dab47b33dd410bdbd7e7`.
+>
+> ### What changed at D-806, for a fabricator, an assembler and a buyer
+>
+> * **`J2` SHELL LANDS 0.363 mm OFF THE ROUTED EDGE** (was 0.213; JLCPCB >= 0.25 non-V-cut).  `J2`
+>   moved 0.150 mm inward to (15.000, 142.550); the outline did not move.  CPL changes for `J2` only.
+> * **`U9` CORNER CLEARANCE 6.56 mil pre-CAM** (was 4.89; JLCPCB >= 5.2).  Eight corner lands
+>   heel-trimmed 0.030 mm; nothing else of `U9` changed.
+> * **EVERY VIA: OUTER >= HOLE + 0.20 mm.**  35 vias 0.35 -> 0.40 mm; no drill changed.
+> * **REFERENCE LOCATOR** (`aqroot-Demo-assembly-locator-{top,bottom}.pdf`, `-ref-index.csv`) — every
+>   fitted reference at its CPL centroid.  Silkscreen unchanged.
+> * **DIMENSIONED PROFILE** (`aqroot-Demo-board-profile.{pdf,json}`) replaces "stepped profile".
+> * **HOLD:** board thickness 1.6 mm ±10 % needs owner approval (`assembly/D806_BOARD_THICKNESS_POSITION.md`).
+>   Production-file and parts-placement confirmation are REQUIRED MANUAL gates.  Edge rails per
+>   `assembly/D806_PANEL_AND_EDGE_RAIL_STRATEGY.md`; sourcing per `assembly/D806_SOURCING_DECISION_RECORD.md`.
+> * **UNCHANGED.**  Schematic, netlist, BOM, stackup, outline, radios, NFC topology and placement,
+>   `SW1`, `SW4`, `J3`, `J5`, `J8`, `SW9`, `U1`, mounting bosses.
+>
+> # **STATUS: D-805 INTERFACE DATUM CORRECTION CANDIDATE — EXTERNAL-REVIEW TARGET ON BRANCH `d805-interface-fixes`, BOARD AUTHORITY `0689d6e6` (2026-10-05).**  *(HISTORICAL — FROZEN, superseded by the D-806 candidate above.  Its closures STAND.)*
 >
 > **D-805 is a bounded, owner-approved interface correction on top of D-804.  It is NOT
 > promoted to `aqroot-demo`.  THIS IS A REVIEW TARGET, NOT A FABRICATION AUTHORIZATION — a

@@ -1,0 +1,577 @@
+{
+ "bbox_kicad": [
+  0.0,
+  0.0,
+  77.0,
+  151.0
+ ],
+ "board_sha256": "0e59fb64fe72b0a54b9feea96c19bcaec2db52a82a871bcec270e064d7fda547",
+ "counts": {
+  "arcs": 8,
+  "inside_fillets": 4,
+  "lines": 16,
+  "outside_corners": 4,
+  "sharp_inside_corners": 2,
+  "sharp_outside_corners": 6
+ },
+ "decision": "D-806",
+ "east_step": {
+  "what": "east step (bump) for SW9 / J8: board widens from x 72.000 to x 77.000",
+  "x_from": 72.0,
+  "x_to": 77.0,
+  "y_from": 70.5,
+  "y_to": 104.005
+ },
+ "frames": {
+  "drawing_datum": "lower-left of the bbox: X_d = X_kicad, Y_d = 151.000 - Y_kicad",
+  "gerber": "X right, Y UP: Y_gerber = -Y_kicad (the Gerber/Excellon/CPL frame)",
+  "kicad": "X right, Y DOWN, origin KiCad page origin"
+ },
+ "inside_fillets": [
+  {
+   "centre": [
+    5.0,
+    149.0
+   ],
+   "radius": 1.0
+  },
+  {
+   "centre": [
+    25.0,
+    149.0
+   ],
+   "radius": 1.0
+  },
+  {
+   "centre": [
+    35.5,
+    149.0
+   ],
+   "radius": 1.0
+  },
+  {
+   "centre": [
+    50.5,
+    149.0
+   ],
+   "radius": 1.0
+  }
+ ],
+ "items": [
+  {
+   "centre": [
+    5.0,
+    149.0
+   ],
+   "end": [
+    6.0,
+    149.0
+   ],
+   "kind": "arc",
+   "mid": [
+    5.7071,
+    148.2929
+   ],
+   "radius": 1.0,
+   "start": [
+    5.0,
+    148.0
+   ]
+  },
+  {
+   "centre": [
+    6.5,
+    150.5
+   ],
+   "end": [
+    6.0,
+    150.5
+   ],
+   "kind": "arc",
+   "mid": [
+    6.1464,
+    150.8536
+   ],
+   "radius": 0.5,
+   "start": [
+    6.5,
+    151.0
+   ]
+  },
+  {
+   "centre": [
+    25.0,
+    149.0
+   ],
+   "end": [
+    25.0,
+    148.0
+   ],
+   "kind": "arc",
+   "mid": [
+    24.2929,
+    148.2929
+   ],
+   "radius": 1.0,
+   "start": [
+    24.0,
+    149.0
+   ]
+  },
+  {
+   "centre": [
+    23.5,
+    150.5
+   ],
+   "end": [
+    23.5,
+    151.0
+   ],
+   "kind": "arc",
+   "mid": [
+    23.8536,
+    150.8536
+   ],
+   "radius": 0.5,
+   "start": [
+    24.0,
+    150.5
+   ]
+  },
+  {
+   "centre": [
+    35.5,
+    149.0
+   ],
+   "end": [
+    36.5,
+    149.0
+   ],
+   "kind": "arc",
+   "mid": [
+    36.2071,
+    148.2929
+   ],
+   "radius": 1.0,
+   "start": [
+    35.5,
+    148.0
+   ]
+  },
+  {
+   "centre": [
+    37.0,
+    150.5
+   ],
+   "end": [
+    36.5,
+    150.5
+   ],
+   "kind": "arc",
+   "mid": [
+    36.6464,
+    150.8536
+   ],
+   "radius": 0.5,
+   "start": [
+    37.0,
+    151.0
+   ]
+  },
+  {
+   "centre": [
+    50.5,
+    149.0
+   ],
+   "end": [
+    50.5,
+    148.0
+   ],
+   "kind": "arc",
+   "mid": [
+    49.7929,
+    148.2929
+   ],
+   "radius": 1.0,
+   "start": [
+    49.5,
+    149.0
+   ]
+  },
+  {
+   "centre": [
+    49.0,
+    150.5
+   ],
+   "end": [
+    49.0,
+    151.0
+   ],
+   "kind": "arc",
+   "mid": [
+    49.3536,
+    150.8536
+   ],
+   "radius": 0.5,
+   "start": [
+    49.5,
+    150.5
+   ]
+  },
+  {
+   "end": [
+    0.0,
+    148.0
+   ],
+   "kind": "line",
+   "start": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "end": [
+    5.0,
+    148.0
+   ],
+   "kind": "line",
+   "start": [
+    0.0,
+    148.0
+   ]
+  },
+  {
+   "end": [
+    6.0,
+    150.5
+   ],
+   "kind": "line",
+   "start": [
+    6.0,
+    149.0
+   ]
+  },
+  {
+   "end": [
+    23.5,
+    151.0
+   ],
+   "kind": "line",
+   "start": [
+    6.5,
+    151.0
+   ]
+  },
+  {
+   "end": [
+    24.0,
+    149.0
+   ],
+   "kind": "line",
+   "start": [
+    24.0,
+    150.5
+   ]
+  },
+  {
+   "end": [
+    35.5,
+    148.0
+   ],
+   "kind": "line",
+   "start": [
+    25.0,
+    148.0
+   ]
+  },
+  {
+   "end": [
+    36.5,
+    150.5
+   ],
+   "kind": "line",
+   "start": [
+    36.5,
+    149.0
+   ]
+  },
+  {
+   "end": [
+    49.0,
+    151.0
+   ],
+   "kind": "line",
+   "start": [
+    37.0,
+    151.0
+   ]
+  },
+  {
+   "end": [
+    49.5,
+    149.0
+   ],
+   "kind": "line",
+   "start": [
+    49.5,
+    150.5
+   ]
+  },
+  {
+   "end": [
+    72.0,
+    148.0
+   ],
+   "kind": "line",
+   "start": [
+    50.5,
+    148.0
+   ]
+  },
+  {
+   "end": [
+    0.0,
+    0.0
+   ],
+   "kind": "line",
+   "start": [
+    72.0,
+    0.0
+   ]
+  },
+  {
+   "end": [
+    72.0,
+    0.0
+   ],
+   "kind": "line",
+   "start": [
+    72.0,
+    70.5
+   ]
+  },
+  {
+   "end": [
+    77.0,
+    104.005
+   ],
+   "kind": "line",
+   "start": [
+    72.0,
+    104.005
+   ]
+  },
+  {
+   "end": [
+    72.0,
+    104.005
+   ],
+   "kind": "line",
+   "start": [
+    72.0,
+    148.0
+   ]
+  },
+  {
+   "end": [
+    72.0,
+    70.5
+   ],
+   "kind": "line",
+   "start": [
+    77.0,
+    70.5
+   ]
+  },
+  {
+   "end": [
+    77.0,
+    70.5
+   ],
+   "kind": "line",
+   "start": [
+    77.0,
+    104.005
+   ]
+  }
+ ],
+ "main_bottom_edge_y_kicad": 148.0,
+ "must_not_normalise": [
+  "The outline is NOT a rectangle.  Do not straighten, square, extend or fill the bottom edge between or beside the two tabs.",
+  "J2_TAB and J3_TAB project 3.000 mm below the main bottom edge; keep both, at the stated X spans.",
+  "The four r 1.000 inside fillets are DRAWN: rout them as drawn (tool radius <= 1.000 mm); do not replace them with sharp corners or larger radii.",
+  "The four r 0.500 outside corners are drawn; keep them.",
+  "The two sharp inside corners of the east step keep the router's own retained radius (<= 1.00 mm); NO plunge, relief or over-cut toward copper.",
+  "The east step x 72..77 is real board; do not trim it to the 72 mm main width.",
+  "The four J3 shell slots are PLATED ROUTED SLOTS (Excellon G85): do not convert them to drilled holes.",
+  "If edge rails / a panel are added, the finished single-board outline must be exactly this profile after depanelization."
+ ],
+ "outside_corners": [
+  {
+   "centre": [
+    6.5,
+    150.5
+   ],
+   "radius": 0.5
+  },
+  {
+   "centre": [
+    23.5,
+    150.5
+   ],
+   "radius": 0.5
+  },
+  {
+   "centre": [
+    37.0,
+    150.5
+   ],
+   "radius": 0.5
+  },
+  {
+   "centre": [
+    49.0,
+    150.5
+   ],
+   "radius": 0.5
+  }
+ ],
+ "release": "D-806",
+ "routed_slots": [
+  {
+   "centre_kicad": [
+    38.68,
+    144.22
+   ],
+   "from_kicad": [
+    38.68,
+    143.67
+   ],
+   "length": 1.7,
+   "pad": "J3.SH",
+   "plated": true,
+   "to_kicad": [
+    38.68,
+    144.77
+   ],
+   "width": 0.6
+  },
+  {
+   "centre_kicad": [
+    38.68,
+    148.4
+   ],
+   "from_kicad": [
+    38.68,
+    148.0
+   ],
+   "length": 1.4,
+   "pad": "J3.SH",
+   "plated": true,
+   "to_kicad": [
+    38.68,
+    148.8
+   ],
+   "width": 0.6
+  },
+  {
+   "centre_kicad": [
+    47.32,
+    144.22
+   ],
+   "from_kicad": [
+    47.32,
+    143.67
+   ],
+   "length": 1.7,
+   "pad": "J3.SH",
+   "plated": true,
+   "to_kicad": [
+    47.32,
+    144.77
+   ],
+   "width": 0.6
+  },
+  {
+   "centre_kicad": [
+    47.32,
+    148.4
+   ],
+   "from_kicad": [
+    47.32,
+    148.0
+   ],
+   "length": 1.4,
+   "pad": "J3.SH",
+   "plated": true,
+   "to_kicad": [
+    47.32,
+    148.8
+   ],
+   "width": 0.6
+  }
+ ],
+ "schema": 1,
+ "sharp_inside_corners": [
+  [
+   72.0,
+   70.5
+  ],
+  [
+   72.0,
+   104.005
+  ]
+ ],
+ "sharp_outside_corners": [
+  [
+   0.0,
+   0.0
+  ],
+  [
+   0.0,
+   148.0
+  ],
+  [
+   72.0,
+   0.0
+  ],
+  [
+   72.0,
+   148.0
+  ],
+  [
+   77.0,
+   70.5
+  ],
+  [
+   77.0,
+   104.005
+  ]
+ ],
+ "size_mm": [
+  77.0,
+  151.0
+ ],
+ "tabs": [
+  {
+   "depth_below_main_edge": 3.0,
+   "edge_y": 151.0,
+   "inside_fillet_radius": 1.0,
+   "name": "J2_TAB",
+   "outside_corner_radius": 0.5,
+   "width": 18.0,
+   "x_from": 6.0,
+   "x_to": 24.0
+  },
+  {
+   "depth_below_main_edge": 3.0,
+   "edge_y": 151.0,
+   "inside_fillet_radius": 1.0,
+   "name": "J3_TAB",
+   "outside_corner_radius": 0.5,
+   "width": 13.0,
+   "x_from": 36.5,
+   "x_to": 49.5
+  }
+ ]
+}

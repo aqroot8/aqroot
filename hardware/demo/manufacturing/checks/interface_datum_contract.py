@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""AQROOT Demo -- the EXTERNAL-INTERFACE DATUM contract (ID1-ID9), D-805.
+"""AQROOT Demo -- the EXTERNAL-INTERFACE DATUM contract (ID1-ID9), D-805 / D-806.
 
 WHY THIS FILE EXISTS.  D-804 shipped `J3` (USB-C) and `J2` (microSD) facing INTO
 the board.  Every gate passed, because no gate asked which way a connector
@@ -18,6 +18,10 @@ from a stored angle, and compared with `interface_datums.json`:
          side (Molex SD-502570-001 sheet 1).  Same two tests.  Its card-travel
          envelope (card width x eject stroke, beyond the face) must lie wholly
          outside the board and meet no other footprint's courtyard (SW4 named).
+         D-806: J2 may stand a DECLARED distance inside its tab edge
+         (`face_inset_from_tab_edge_mm`, JLCPCB shell-land edge clearance).
+         The inset is MEASURED (face to the J2_TAB edge) and must equal the
+         declared value; the off-board test then starts at the tab edge.
     ID3  SW9 power slide: the actuator tip is the F.Fab extent away from the
          land row; it must point +X, stand at the declared X past the board
          edge, and the body face must sit on the edge (body over board).
@@ -32,7 +36,8 @@ from a stored angle, and compared with `interface_datums.json`:
     ID9  NOT VACUOUS.  J3 and J2 turned 180 deg in memory (the D-804 mistake)
          must each FAIL their clause; SW9 put back at its D-804 position must
          FAIL ID3; a 0.1 mm J8 nudge must FAIL ID4; a tab widened 1 mm must
-         FAIL ID6.
+         FAIL ID6.  D-806: J2 back at its D-805 flush position, and J2 0.1 mm
+         further in than declared, must each FAIL ID2.
 
     python3 checks/interface_datum_contract.py [--board B] [-o OUT.json]
 """
@@ -127,18 +132,32 @@ def id_connector(board, ref, spec, toward_rear, poly):
     return row
 
 
-def id2_travel(board, spec, poly):
+def id2_travel(board, spec, poly, tab_edge=None):
     """The card-travel envelope (card width x eject stroke) beyond the card-entry
     edge, in whatever direction the footprint derives.  It must lie wholly off
-    the board and meet no other courtyard."""
+    the board and meet no other courtyard.
+
+    D-806: a declared `face_inset_from_tab_edge_mm` lets the face stand that far
+    inside the J2 tab edge -- the strip is under the card plane.  The inset is
+    MEASURED against `tab_edge` and must EQUAL the declaration (TOL), so a J2
+    that creeps further in, or back out to the edge, is refused; and the
+    off-board test starts at the tab edge, not at the face."""
     f = board.FindFootprintByReference("J2")
     pads = [p for p in f.Pads() if p.GetNumber() in [str(i) for i in range(1, 9)]]
     d, face, box = facing(f, pads, True)
     w, s = spec["card"]["width_mm"], spec["card"]["eject_mm"]
     cx, cy = (box[0] + box[2]) / 2, (box[1] + box[3]) / 2
+    inset = spec.get("face_inset_from_tab_edge_mm", 0.0)
+    measured = None
+    inset_ok = True
+    if tab_edge is not None and d in ("+Y", "-Y"):
+        measured = round((tab_edge - face) if d == "+Y" else (face - tab_edge), 4)
+        inset_ok = abs(measured - inset) <= TOL
+    # the off-board test starts at the tab edge; the stroke still ends at face + eject
+    start = face + inset if d in ("+Y", "+X") else face - inset
     e = 0.01
-    env = {"+Y": (cx - w / 2, face + e, cx + w / 2, face + s), "-Y": (cx - w / 2, face - s, cx + w / 2, face - e),
-           "+X": (face + e, cy - w / 2, face + s, cy + w / 2), "-X": (face - s, cy - w / 2, face - e, cy + w / 2)}[d]
+    env = {"+Y": (cx - w / 2, start + e, cx + w / 2, face + s), "-Y": (cx - w / 2, face - s, cx + w / 2, start - e),
+           "+X": (start + e, cy - w / 2, face + s, cy + w / 2), "-X": (face - s, cy - w / 2, start - e, cy + w / 2)}[d]
     rect = pcbnew.SHAPE_POLY_SET()
     rect.NewOutline()
     for x, y in ((env[0], env[1]), (env[2], env[1]), (env[2], env[3]), (env[0], env[3])):
@@ -147,7 +166,8 @@ def id2_travel(board, spec, poly):
     hits = sorted({g.GetReference() for g in board.GetFootprints() if g.GetReference() != "J2"
                    for lay in (pcbnew.F_CrtYd, pcbnew.B_CrtYd)
                    if g.GetCourtyard(lay).OutlineCount() and g.GetCourtyard(lay).Collide(rect)})
-    return dict(ok=(d == spec["outward"] and not inside_board and not hits),
+    return dict(ok=(d == spec["outward"] and not inside_board and not hits and inset_ok),
+                declared_inset_mm=inset, measured_inset_mm=measured, inset_ok=inset_ok,
                 derived_outward=d, envelope=[round(v, 3) for v in env],
                 envelope_meets_board=inside_board, courtyards_met=hits,
                 named_parts_met=[r for r in spec["travel_must_not_meet"] if r in hits])
@@ -240,6 +260,10 @@ def id8(datums):
     return dict(ok=ok, rows=rows)
 
 
+def j2_tab_edge(datums):
+    return next(t["edge_y"] for t in datums["outline"]["tabs"] if t["name"] == "J2_TAB")
+
+
 def run(board, datums):
     poly = outline(board)
     i = datums["interfaces"]
@@ -247,7 +271,7 @@ def run(board, datums):
             "J2": id_connector(board, "J2", i["J2"], True, poly)}
     checks = {
         "ID1_J3_usb_c_mating_face_outward_on_edge": rows["J3"],
-        "ID2_J2_card_entry_outward_on_edge": dict(rows["J2"], travel=id2_travel(board, i["J2"], poly)),
+        "ID2_J2_card_entry_outward_on_edge": dict(rows["J2"], travel=id2_travel(board, i["J2"], poly, j2_tab_edge(datums))),
         "ID3_SW9_actuator_outward_past_edge": id3(board, i["SW9"], poly),
         "ID4_unchanged_interfaces_J5_J8_SW1_SW4": id_fixed(board, ["J5", "J8", "SW1", "SW4"], i),
         "ID5_mounting_holes_unchanged": id5(board, datums["mounting"]),
@@ -279,10 +303,20 @@ def controls(board, datums):
     was, wr = j2.GetPosition(), j2.GetOrientationDegrees()
     j2.SetOrientationDegrees(0.0)
     j2.SetPosition(pcbnew.VECTOR2I(int(15.0 * MM), int(136.8 * MM)))
-    t = id2_travel(board, i["J2"], outline(board))
+    t = id2_travel(board, i["J2"], outline(board), j2_tab_edge(datums))
     ctl["J2_at_its_D804_placement_is_refused_and_its_travel_meets_SW4"] = (not t["ok"]) and "SW4" in t["named_parts_met"]
     j2.SetOrientationDegrees(wr)
     j2.SetPosition(was)
+
+    # D-806: J2 back at its D-805 flush position (shell lands 0.213 mm off the
+    # edge, the JLCPCB finding) must be refused, and so must a J2 crept a
+    # further 0.100 mm inward than declared.
+    for name, dy in (("J2_at_its_D805_flush_position_is_refused", 150000),
+                     ("J2_inset_0_100_mm_beyond_declared_is_refused", -100000)):
+        was = j2.GetPosition()
+        j2.SetPosition(pcbnew.VECTOR2I(was.x, was.y + dy))
+        ctl[name] = not run(board, datums)["ID2_J2_card_entry_outward_on_edge"]["ok"]
+        j2.SetPosition(was)
 
     sw9 = board.FindFootprintByReference("SW9")
     was = sw9.GetPosition()

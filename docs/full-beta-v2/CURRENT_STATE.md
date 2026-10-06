@@ -14,7 +14,25 @@
 
 ## 1. Authoritative HEAD
 
-> ### **D-805 REVIEW TARGET — THE EXACT FROZEN IDENTITY**  *(interface-datum CANDIDATE — branch `d805-interface-fixes` only; NOT promoted to `aqroot-demo`)*
+> ### **D-806 REVIEW TARGET — THE EXACT FROZEN IDENTITY**  *(JLCPCB manufacturing-readiness CANDIDATE — branch `d806-jlcpcb-manufacturing` only; NOT promoted to `aqroot-demo`)*
+>
+> | what | value |
+> |---|---|
+> | branch | `origin/d806-jlcpcb-manufacturing` |
+> | content commit | recorded in `hardware/demo/manufacturing/evidence/d806-review-target.json` |
+> | identity / post-commit verification commit | *the commit that records it — a commit cannot contain its own SHA* |
+> | board `aqroot-Beta-v2.kicad_pcb` sha256 | `0e59fb64fe72b0a54b9feea96c19bcaec2db52a82a871bcec270e064d7fda547` |
+> | `hardware/demo/fab/MANIFEST.json` sha256 | `651ceb4851e1097b87eb47ebfec1257a8752ae6a782f97ede4aa62790c19db4f` |
+> | parent | `a8837f71667f2f737c69dab47b33dd410bdbd7e7` (frozen D-805 delivery identity) |
+>
+> **JLCPCB REVIEW CLOSURES, LOCAL GEOMETRY ONLY**: `J2` moved 0.150 mm inward to (15.000, 142.550)
+> (shell lands 0.363 mm off the tab edge; outline unchanged); `U9` corner lands heel-trimmed
+> 0.030 mm (corner gap 6.56 mil); 35 vias 0.35 -> 0.40 mm on unchanged drills.  Schematic,
+> netlist, BOM, stackup and outline byte-identical to D-805.  Gated by
+> `checks/jlc_manufacturing_contract.py`.  **CANDIDATE, NOT A FABRICATION AUTHORIZATION.
+> Thickness 1.6 mm ±10 % is an owner-approval HOLD; DO NOT ORDER.**
+>
+> ### **D-805 REVIEW TARGET — THE EXACT FROZEN IDENTITY**  *(**HISTORICAL** — FROZEN, superseded by the D-806 candidate on its own branch; interface-datum CANDIDATE — branch `d805-interface-fixes` only; NOT promoted to `aqroot-demo`)*
 >
 > | what | value |
 > |---|---|

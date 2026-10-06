@@ -144,17 +144,20 @@
 
 
 # ---------------------------------------------------------------------
-# 1. J2 microSD SHELL - VENDOR LAND PATTERN REACHES THE BOARD EDGE
+# 1. J2 microSD SHELL - VENDOR LAND PATTERN NEAR THE BOARD EDGE
 #
-# Molex 5025700893 shell ground tab sits 0.213 mm from Edge.Cuts by
-# vendor geometry; the shell is meant to align with the card opening.
-# 0.20 mm is the mainstream-fab copper-to-outline floor.  Scoped to J2,
-# and carried as a FAB confirmation item - not a relaxation of the
-# 0.5 mm board-wide edge rule.  J2 EXISTS on this board (verified).
+# Molex 5025700893 shell ground tabs.  D-805 put them 0.213 mm from the
+# J2 tab edge; JLCPCB's 2026-10-06 engineering review asked for >= 0.25
+# mm on an edge that is not V-cut.  D-806 moved J2 0.150 mm inward
+# (outline unchanged), so the shell lands now stand 0.363 mm off the
+# routed edge.  This licence is therefore RAISED to JLCPCB's 0.25 mm: a
+# J2 that creeps back toward the edge fails KiCad DRC, not just a
+# script.  Scoped to J2 - not a relaxation of the 0.5 mm board-wide
+# edge rule.  J2 EXISTS on this board (verified).
 # ---------------------------------------------------------------------
 
 (rule "J2 microSD shell edge clearance (vendor land pattern)"
-	(constraint edge_clearance (min 0.20mm))
+	(constraint edge_clearance (min 0.25mm))
 	(condition "A.memberOfFootprint('J2')"))
 
 
@@ -1226,8 +1229,11 @@
 	(constraint clearance (min 0.20mm))
 	(condition "(A.intersectsCourtyard('U11') || A.intersectsCourtyard('U12') || A.intersectsCourtyard('U13') || A.intersectsCourtyard('U14') || A.intersectsCourtyard('U17') || A.intersectsCourtyard('U9')) && (B.intersectsCourtyard('U11') || B.intersectsCourtyard('U12') || B.intersectsCourtyard('U13') || B.intersectsCourtyard('U14') || B.intersectsCourtyard('U17') || B.intersectsCourtyard('U9'))"))
 
+# D-806: JLCPCB needs >= 5.2 mil (0.1321 mm) pre-CAM to hold 4.0 mil after
+# CAM.  The four corner pairs were 0.1243 mm; the D-806 heel trim makes
+# them 0.1667 mm, so this footprint-scoped floor is raised to 6.0 mil.
 (rule "FP-U9 ST25R3916-AQET intra-footprint land pattern"
-	(constraint clearance (min 0.12mm))
+	(constraint clearance (min 0.1524mm))
 	(condition "A.Type == 'Pad' && B.Type == 'Pad' && A.memberOfFootprint('U9') && B.memberOfFootprint('U9')"))
 
 (rule "FP-U13 TPS61023 SOT-563 intra-footprint land pattern"

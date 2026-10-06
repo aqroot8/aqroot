@@ -27,13 +27,15 @@ KiCad DRC on this board reports **ZERO** `hole_clearance` violations.  3 named, 
 - scope: `(A.Pad_Type == 'NPTH, mechanical' && A.memberOfFootprint('J3') && !B.memberOfFootprint('J3')) || (B.Pad_Type == 'NPTH, mechanical' && B.memberOfFootprint('J3') && !A.memberOfFootprint('J3'))`
 - Routed GND copper approaches J3's NPTH pegs no closer than 0.2100 mm (tracks) and 0.2412 mm (one 0.50/0.20 mm via), i.e. at or above the published 0.200 mm NPTH-to-track figure.  The peg is the receptacle's metal shell leg and the shell is tied to GND through R32 (0 ohm), so this copper is already at the peg's own potential.
 
-## Board outline -- STEPPED PROFILE, READ THIS BEFORE ROUTING
+## Board outline -- NON-RECTANGULAR PROFILE: TWO BOTTOM TABS AND AN EAST STEP, READ THIS BEFORE ROUTING
+
+D-806: the authoritative, dimensioned outline is `aqroot-Demo-board-profile.pdf` (machine-readable copy `aqroot-Demo-board-profile.json`, every `Edge.Cuts` primitive with its coordinates and radius).  In plain terms the board is a 72.000 x 148.000 mm body with (1) `J2_TAB` x 6.000..24.000 and (2) `J3_TAB` x 36.500..49.500 projecting 3.000 mm below its bottom edge to Y 151.000 (KiCad, Y down), each with drawn R1.000 inside fillets and R0.500 outside corners, and (3) an east step widening it to x 77.000 between Y 70.500 and Y 104.005 with two SHARP inside corners.  Earlier notes called this a "stepped profile"; that phrase means exactly these three features and nothing else.  None of them may be straightened, squared, filled or trimmed by CAM.
 
 Profile extents: **77.000 x 151.000 mm** (x 0.000 .. 77.000, y 0.000 .. 151.000), 16 segments.  It also carries **8 arcs**: 4 drawn INSIDE fillets and 4 rounded outside corners.
 
 **DRAWN INSIDE FILLETS (D-805).**  These inside corners are drawn as arcs, so the router must FOLLOW the drawn radius: a tool radius above it leaves material inside the drawn fillet (the board grows there), and any plunge or relief below it removes material toward copper.  Each is also inside the 1.00 mm retained-fillet bound stated below.
 
-- drawn inside fillet **r 1.000 mm** centred at (5.000, 149.000) -- tool radius <= 1.000 mm; nearest copper to the fillet is **2.526 mm** away, edge to edge (pad J2.9, `GND`).
+- drawn inside fillet **r 1.000 mm** centred at (5.000, 149.000) -- tool radius <= 1.000 mm; nearest copper to the fillet is **2.456 mm** away, edge to edge (pad J2.9, `GND`).
 - drawn inside fillet **r 1.000 mm** centred at (25.000, 149.000) -- tool radius <= 1.000 mm; nearest copper to the fillet is **1.193 mm** away, edge to edge (track, `/SPI_B_SCK`).
 - drawn inside fillet **r 1.000 mm** centred at (35.500, 149.000) -- tool radius <= 1.000 mm; nearest copper to the fillet is **1.193 mm** away, edge to edge (track, `/SPI_B_SCK`).
 - drawn inside fillet **r 1.000 mm** centred at (50.500, 149.000) -- tool radius <= 1.000 mm; nearest copper to the fillet is **1.193 mm** away, edge to edge (track, `/SPI_B_SCK`).
@@ -80,22 +82,22 @@ The complete list of barrel centres is in `MANIFEST.json` under `via_in_pad`.
 
 ## Via geometry -- SUB-FLOOR VIAS, PLEASE CONFIRM
 
-This board's own `.kicad_dru` floor is **annular ring >= 0.125 mm** and its board setup asks **>= 0.500 mm of via diameter**.  **38 vias sit below one or both**, at annular rings 0.075 mm / 0.125 mm.  Each is licensed inside the design by a NAMED, net-scoped, area-enclosed `.kicad_dru` rule (the `FINE_ESC_*`, `*_POFV`, `*_KELVIN` and `BAT_PROT_TAP_*` rule areas), so real KiCad DRC passes them -- but that is an INTERNAL licence and it is not a fabricator's agreement.  **Please confirm you can hold these, and advise if your process needs the pads grown.**
+This board's own `.kicad_dru` floor is **annular ring >= 0.125 mm** and its board setup asks **>= 0.500 mm of via diameter**.  **38 vias sit below one or both**, at annular rings 0.100 mm / 0.125 mm.  Each is licensed inside the design by a NAMED, net-scoped, area-enclosed `.kicad_dru` rule (the `FINE_ESC_*`, `*_POFV`, `*_KELVIN` and `BAT_PROT_TAP_*` rule areas), so real KiCad DRC passes them -- but that is an INTERNAL licence and it is not a fabricator's agreement.  **Please confirm you can hold these, and advise if your process needs the pads grown.**
 
 | count | via dia | drill | annular ring | net |
 | --- | --- | --- | --- | --- |
-| 6 | 0.35 mm | 0.20 mm | **0.075 mm** | `+3V3` |
-| 2 | 0.35 mm | 0.20 mm | **0.075 mm** | `/01_POWER_TREE/BAT_PROTECTED_P` |
-| 2 | 0.35 mm | 0.20 mm | **0.075 mm** | `/01_POWER_TREE/BAT_SENSE` |
-| 4 | 0.35 mm | 0.20 mm | **0.075 mm** | `/01_POWER_TREE/LTC_GATE` |
-| 2 | 0.35 mm | 0.20 mm | **0.075 mm** | `/01_POWER_TREE/LTC_SHDN` |
-| 2 | 0.35 mm | 0.20 mm | **0.075 mm** | `/01_POWER_TREE/N_POL` |
-| 2 | 0.35 mm | 0.20 mm | **0.075 mm** | `/01_POWER_TREE/Q3_CS` |
-| 2 | 0.35 mm | 0.20 mm | **0.075 mm** | `/01_POWER_TREE/REF_HO` |
-| 2 | 0.35 mm | 0.20 mm | **0.075 mm** | `/01_POWER_TREE/REF_POL` |
-| 2 | 0.35 mm | 0.20 mm | **0.075 mm** | `/01_POWER_TREE/USB_VBUS_RAW` |
-| 4 | 0.35 mm | 0.20 mm | **0.075 mm** | `/01_POWER_TREE/VREC_VCC` |
-| 5 | 0.35 mm | 0.20 mm | **0.075 mm** | `GND` |
+| 6 | 0.40 mm | 0.20 mm | **0.100 mm** | `+3V3` |
+| 2 | 0.40 mm | 0.20 mm | **0.100 mm** | `/01_POWER_TREE/BAT_PROTECTED_P` |
+| 2 | 0.40 mm | 0.20 mm | **0.100 mm** | `/01_POWER_TREE/BAT_SENSE` |
+| 4 | 0.40 mm | 0.20 mm | **0.100 mm** | `/01_POWER_TREE/LTC_GATE` |
+| 2 | 0.40 mm | 0.20 mm | **0.100 mm** | `/01_POWER_TREE/LTC_SHDN` |
+| 2 | 0.40 mm | 0.20 mm | **0.100 mm** | `/01_POWER_TREE/N_POL` |
+| 2 | 0.40 mm | 0.20 mm | **0.100 mm** | `/01_POWER_TREE/Q3_CS` |
+| 2 | 0.40 mm | 0.20 mm | **0.100 mm** | `/01_POWER_TREE/REF_HO` |
+| 2 | 0.40 mm | 0.20 mm | **0.100 mm** | `/01_POWER_TREE/REF_POL` |
+| 2 | 0.40 mm | 0.20 mm | **0.100 mm** | `/01_POWER_TREE/USB_VBUS_RAW` |
+| 4 | 0.40 mm | 0.20 mm | **0.100 mm** | `/01_POWER_TREE/VREC_VCC` |
+| 5 | 0.40 mm | 0.20 mm | **0.100 mm** | `GND` |
 | 1 | 0.45 mm | 0.20 mm | **0.125 mm** | `GND` |
 | 2 | 0.45 mm | 0.20 mm | **0.125 mm** | `Net-(U11-TS_MR)` |
 
@@ -126,16 +128,12 @@ Every dam below **0.125 mm** on the board:
 | **0.1200 mm** | B.Mask | `U12.6` | `U12.7` | yes | no |
 | **0.1200 mm** | B.Mask | `U12.8` | `U12.9` | yes | no |
 | **0.1200 mm** | B.Mask | `U12.9` | `U12.10` | **no** | no |
-| **0.1243 mm** | B.Mask | `U9.1` | `U9.32` | **no** | no |
-| **0.1243 mm** | B.Mask | `U9.16` | `U9.17` | **no** | no |
-| **0.1243 mm** | B.Mask | `U9.24` | `U9.25` | **no** | no |
-| **0.1243 mm** | B.Mask | `U9.8` | `U9.9` | **no** | no |
 
 **What each group is, and what is being asked.**
 
 - Rows marked *same net* are vendor land patterns whose two contacts are one node -- the USB-C receptacle's A/B pairs are the whole of that group.  A merged aperture there is harmless and no action is requested.
 - Rows marked *declared bridge* carry `allow_soldermask_bridges` on the footprint AND on its library master; the microphone's port ring is the whole of that group and the merge is the design.
-- **The remaining 11 rows are DIFFERENT NETS.**  All of them are MANUFACTURER LAND PATTERNS, not routing.  **None is at or under 0.100 mm.**  **11 are between 0.100 and 0.130 mm** (`U12` 7 pairs at 0.1200 mm; `U9` 4 pairs at 0.1243 mm), AT the usual 0.100-0.130 mm web limit rather than under it: **print the web if you can hold it, gang the pair if you cannot, and tell us which.**  Assembly control at every one of these pitches is the PASTE stencil, which is per-pad and is unaffected either way.
+- **The remaining 7 rows are DIFFERENT NETS.**  All of them are MANUFACTURER LAND PATTERNS, not routing.  **None is at or under 0.100 mm.**  **7 are between 0.100 and 0.130 mm** (`U12` 7 pairs at 0.1200 mm), AT the usual 0.100-0.130 mm web limit rather than under it: **print the web if you can hold it, gang the pair if you cannot, and tell us which.**  Assembly control at every one of these pitches is the PASTE stencil, which is per-pad and is unaffected either way.
 
 ## NFC first-article parallel-match access -- DO NOT TENT
 
@@ -250,7 +248,7 @@ Every fitted, placed `U`, `Q`, `D`, `J`, `Y` and `MK` reference. `pin 1 X/Y` is 
 | `D13` | MHPA3528RGBCT | top | 0.000000 | 31.060 | -107.675 | 1 (A) | `+3V3` |
 | `D14` | BAT54WS | bottom | -90.000000 | 6.800 | -116.850 | 1 (K) | `/03_SPI_A_DISPLAY_SD/BL_DISC_G` |
 | `J1` | FH69-50S-0.5SH | top | 0.000000 | 44.910 | -96.000 | 1 (LEDA) | `/03_SPI_A_DISPLAY_SD/LED_A` |
-| `J2` | Molex_5025700893 | top | 180.000000 | 17.806 | -147.038 | 1 (DAT2) | `no net` |
+| `J2` | Molex_5025700893 | top | 180.000000 | 17.806 | -146.888 | 1 (DAT2) | `no net` |
 | `J3` | USB_C_Receptacle_USB2.0_16P | top | 0.000000 | 39.800 | -143.645 | A1 (GND_A1) | `GND` |
 | `J5` | COMMUNITY_PORT_1x24 | top | -90.000000 | 65.900 | -10.000 | 1 (Pin_1) | `/ACC_5V_SW` |
 | `J6` | JST-PH-2 SPEAKER | top | 0.000000 | 38.000 | -128.000 | 1 (Pin_1) | `/06_AUDIO/SPK_P_CONN` |
@@ -276,7 +274,7 @@ Every fitted, placed `U`, `Q`, `D`, `J`, `Y` and `MK` reference. `pin 1 X/Y` is 
 | `U6` | TSOP38238 | top | 0.000000 | 64.210 | -4.600 | 1 (OUT) | `/IR_RX_GPIO44` |
 | `U7` | E07-400M10S | bottom | 0.000000 | 34.000 | -127.000 | 1 (GND) | `GND` |
 | `U8` | E22-900M22S | bottom | 0.000000 | 17.000 | -127.000 | 1 (GND) | `GND` |
-| `U9` | ST25R3916-AQET | bottom | 0.000000 | 31.725 | -31.750 | 1 (VDD_IO) | `+3V3` |
+| `U9` | ST25R3916-AQET | bottom | 0.000000 | 31.710 | -31.750 | 1 (VDD_IO) | `+3V3` |
 | `U10` | USBLC6-2SC6 | top | 0.000000 | 50.263 | -141.750 | 1 (I/O1) | `/01_POWER_TREE/USB_D_CONN_N` |
 | `U11` | BQ25185 | bottom | 0.000000 | 66.400 | -78.600 | 1 (SYS) | `/01_POWER_TREE/BQ25185_SYS` |
 | `U12` | TPS63020 | bottom | 0.000000 | 68.100 | -96.200 | 1 (VINA) | `/01_POWER_TREE/BQ25185_SYS` |

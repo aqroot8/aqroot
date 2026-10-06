@@ -60,6 +60,7 @@ ROOT = HERE.parents[2]
 sys.path[:0] = [str(HERE)]
 
 import routing_ledger as rl                                # noqa: E402
+import jlc_drawings                                        # noqa: E402
 
 PROJECT = ROOT / "hardware/demo/kicad/aqroot-demo"
 BOARD = PROJECT / "aqroot-Beta-v2.kicad_pcb"
@@ -1111,7 +1112,18 @@ def outline_notes(board):
         if turn * sign < 0:                    # a concave (inside) arc
             fillets.append(arc)
 
-    lines = ["## Board outline -- STEPPED PROFILE, READ THIS BEFORE ROUTING",
+    lines = ["## Board outline -- NON-RECTANGULAR PROFILE: TWO BOTTOM TABS AND AN EAST STEP, READ THIS BEFORE ROUTING",
+             "",
+             "D-806: the authoritative, dimensioned outline is `aqroot-Demo-board-profile.pdf` "
+             "(machine-readable copy `aqroot-Demo-board-profile.json`, every `Edge.Cuts` "
+             "primitive with its coordinates and radius).  In plain terms the board is a "
+             "72.000 x 148.000 mm body with (1) `J2_TAB` x 6.000..24.000 and (2) `J3_TAB` "
+             "x 36.500..49.500 projecting 3.000 mm below its bottom edge to Y 151.000 "
+             "(KiCad, Y down), each with drawn R1.000 inside fillets and R0.500 outside "
+             "corners, and (3) an east step widening it to x 77.000 between Y 70.500 and "
+             "Y 104.005 with two SHARP inside corners.  Earlier notes called this a "
+             "\"stepped profile\"; that phrase means exactly these three features and nothing "
+             "else.  None of them may be straightened, squared, filled or trimmed by CAM.",
              "",
              "Profile extents: **%.3f x %.3f mm** (x %.3f .. %.3f, "
              "y %.3f .. %.3f), %d segments."
@@ -1764,9 +1776,15 @@ def main():
                          ACC_3V3_REINFORCEMENT)
     shutil.copy2(ACC_3V3_REINFORCEMENT, out / ACC_3V3_REINFORCEMENT_PACKAGE)
     notes, via_in_pad, sub_floor_vias, mask_dams, nfc_tune = export_fab_notes(out)
+    # D-806: the vendor reference locator and the dimensioned board profile,
+    # generated from the board and the fitted CPL just exported.
+    vendor_drawings = jlc_drawings.build(
+        BOARD, out / "aqroot-Demo-pos-fitted.csv", out / "aqroot-Demo-pos-all.csv",
+        ASSEMBLY_RELEASE, out)
 
     fitted, dnp = rl.schematic_population()
-    doc = manifest(out, dict(assembly_drawings=assembly, population=dict(
+    doc = manifest(out, dict(assembly_drawings=assembly, vendor_drawings=vendor_drawings,
+                             population=dict(
         schematic_fitted=len(fitted), schematic_dnp=sorted(dnp), bom=bom),
         via_in_pad=dict(
             measured=via_in_pad is not None,

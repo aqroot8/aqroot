@@ -1,0 +1,60 @@
+{
+ "schema": 1,
+ "decision": "D-806",
+ "branch": "d806-jlcpcb-manufacturing",
+ "promoted_to_aqroot_demo": false,
+ "board": "hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "0e59fb64fe72b0a54b9feea96c19bcaec2db52a82a871bcec270e064d7fda547",
+ "parent": "a8837f71667f2f737c69dab47b33dd410bdbd7e7",
+ "parent_source_milestone": "4a3585202606de82d71b19960e35a86964c92f87",
+ "content_commit": "PENDING -- written by the identity commit that follows the content commit",
+ "identity_commit": "the identity commit -- it records the content commit's SHA; a commit cannot contain its own",
+ "manifest": "hardware/demo/fab/MANIFEST.json",
+ "manifest_sha256": "651ceb4851e1097b87eb47ebfec1257a8752ae6a782f97ede4aa62790c19db4f",
+ "dru_sha256": "1a3b5f516cf81a3d157860ccf3aec4bc7baa4592009c5aef3e20c525f8f3110f",
+ "trigger": "JLCPCB engineering review 2026-10-06",
+ "changes": {
+  "G1_J2": {
+   "from": [
+    15.0,
+    142.7,
+    180.0
+   ],
+   "to": [
+    15.0,
+    142.55,
+    180.0
+   ],
+   "shell_land_to_edge_mm": {
+    "before": 0.213,
+    "after": 0.363
+   }
+  },
+  "G2_U9_corner_heel_trim_mm": 0.03,
+  "G3_vias_grown": 35,
+  "U9_gap_mil": {
+   "before_gerber": 4.892,
+   "after_gerber": 6.562,
+   "after_board": 6.522
+  },
+  "dru": [
+   "J2 edge licence 0.20 -> 0.25 mm",
+   "U9 intra-footprint 0.12 -> 0.1524 mm"
+  ],
+  "inert_pour_lobe_removed_mm2": 69.668
+ },
+ "unchanged": [
+  "schematic (10 sheets)",
+  "netlist / pad-to-net",
+  "BOM-assembly, BOM-full, DNP, NON-PURCHASED, OFF-BOARD",
+  "outline / Edge.Cuts",
+  "stackup / .kicad_pro",
+  "every footprint pose except J2"
+ ],
+ "bounded_diff": "evidence/d806-bounded-diff-vs-d805.json",
+ "vendor_packages": {
+  "jlcpcb": "delivery/AQROOT_D806_JLCPCB_RFQ.zip",
+  "neutral": "delivery/AQROOT_D806_Prototype_PCBA_RFQ.zip"
+ },
+ "order_status": "HOLD -- no fabrication, assembly, payment or non-cancellable procurement authorized; thickness tolerance is an owner-approval HOLD"
+}

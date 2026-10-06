@@ -66,7 +66,7 @@ the toolchain is `platform = espressif32@6.9.0`, Arduino-ESP32 2.0.x):
 
 | field | value |
 |---|---|
-| FAP-01 git SHA (`git rev-parse HEAD`, clean tree) | the D-805 content commit, recorded in `hardware/demo/manufacturing/evidence/d805-review-target.json` (`fap01_image.git_sha`) |
+| FAP-01 git SHA (`git rev-parse HEAD`, clean tree) | the D-806 content commit, recorded in `hardware/demo/manufacturing/evidence/d806-review-target.json` (`fap01_image.git_sha`) |
 | `firmware.bin` sha256 (`.pio/build/aqroot-demo-fap01/firmware.bin`) | the clean release build of that commit, recorded in the same file (`fap01_image.firmware_bin_sha256`); re-hash the file actually flashed on each unit |
 | release image flashed back afterwards, sha256 | `<RECORD PER UNIT>` |
 

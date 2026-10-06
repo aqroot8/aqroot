@@ -1,0 +1,70 @@
+{
+  "control_undeclared": false,
+  "counts": {
+    "/01_POWER_TREE/BAT_CONNECTOR_P": 7,
+    "/01_POWER_TREE/BAT_MID": 12,
+    "/01_POWER_TREE/BAT_PROTECTED_P": 84,
+    "/01_POWER_TREE/BAT_PROT_SHDN_CTL": 18,
+    "/01_POWER_TREE/BAT_RAW": 70,
+    "/01_POWER_TREE/BAT_SENSE": 22,
+    "/08_BUTTONS_EXPANDERS/FRONT_RGB_B_N": 18,
+    "/08_BUTTONS_EXPANDERS/FRONT_RGB_G_N": 13,
+    "/08_BUTTONS_EXPANDERS/FRONT_RGB_R_N": 20,
+    "/09_COMMUNITY_HEADER/XGPIO4_HDR": 9,
+    "/09_COMMUNITY_HEADER/XGPIO5_HDR": 12,
+    "/ACC_3V3_SW": 83,
+    "/ACC_5V_SW_EN": 23,
+    "/XGPIO4": 9,
+    "/XGPIO5": 6
+  },
+  "declaration": "evidence/d806-declared-via-growth.json",
+  "declared_via_growth": [
+    {
+      "at_mm": [
+        2.8,
+        66.8
+      ],
+      "dia_from_mm": 0.35,
+      "dia_to_mm": 0.4,
+      "drill_mm": 0.2,
+      "net": "/01_POWER_TREE/BAT_PROTECTED_P"
+    },
+    {
+      "at_mm": [
+        7.2,
+        66.5
+      ],
+      "dia_from_mm": 0.35,
+      "dia_to_mm": 0.4,
+      "drill_mm": 0.2,
+      "net": "/01_POWER_TREE/BAT_PROTECTED_P"
+    },
+    {
+      "at_mm": [
+        4.25,
+        63.5
+      ],
+      "dia_from_mm": 0.35,
+      "dia_to_mm": 0.4,
+      "drill_mm": 0.2,
+      "net": "/01_POWER_TREE/BAT_SENSE"
+    },
+    {
+      "at_mm": [
+        4.6,
+        66.0
+      ],
+      "dia_from_mm": 0.35,
+      "dia_to_mm": 0.4,
+      "drill_mm": 0.2,
+      "net": "/01_POWER_TREE/BAT_SENSE"
+    }
+  ],
+  "differences": {},
+  "identical": false,
+  "identical_except_declared": true,
+  "nets": 15,
+  "objects": 406,
+  "ref": "HEAD",
+  "schema": 1
+}

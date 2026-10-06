@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "decision": "D-805",
+ "decision": "D-806",
  "coordinates": "KiCad board coordinates, mm, +Y down (the doc datum used elsewhere is Y_doc = 148.000 - Y_kicad)",
  "enclosure": {
   "source": "docs/full-beta-v2/mechanical/MECHANICAL_INTERFACE_SPEC.md section 3 (85 x 160 x 23 shell, 2.0 mm wall, cavity 80.0 x 155.0, board datumed 1.500 mm off the west wall and centred in Y)",
@@ -34,10 +34,12 @@
   "J2": {
    "what": "microSD Molex 5025700893 push-push",
    "facing_rule": "card entry = the body edge on the CONTACT-TAIL side (Molex SD-502570-001 sheet 1: card push 0.7 / lock 1.7 / eject 5.7 mm drawn beyond the tail-row edge)",
-   "position": [15.0, 142.7], "rotation": 180.0,
-   "outward": "+Y", "face_y": 151.0, "face_tolerance_mm": 0.25, "on_board_edge": true,
+   "position": [15.0, 142.55], "rotation": 180.0,
+   "outward": "+Y", "face_y": 150.85, "face_tolerance_mm": 0.25, "on_board_edge": true,
+   "face_inset_from_tab_edge_mm": 0.15,
+   "inset_why": "D-806 (JLCPCB engineering review 2026-10-06): J2 moved 0.150 mm inward so its shell lands stand 0.363 mm off the routed J2 tab edge (JLCPCB >= 0.25 mm on a non-V-cut edge; D-806 target >= 0.30). The outline did not move. The 0.150 mm strip of board between the card-entry face and the tab edge lies BELOW the card plane, so the card still enters and ejects through the tab edge.",
    "card": {"width_mm": 11.0, "push_mm": 0.7, "lock_mm": 1.7, "eject_mm": 5.7},
-   "exterior_relation": "latched card trailing edge at Y 152.7 (0.8 mm inside the exterior); ejected card at Y 156.7 (3.2 mm proud of the exterior); push-to-release point Y 151.7",
+   "exterior_relation": "latched card trailing edge at Y 152.55 (0.95 inside the exterior); ejected card at Y 156.55 (3.05 proud of the exterior); push-to-release point Y 151.55",
    "aperture": "card slot (>= 11.6 x 1.4 mm) through the bottom wall at x 15.000 with a fingernail relief; first-article C-SD-01",
    "travel_must_not_meet": ["SW4"]
   },

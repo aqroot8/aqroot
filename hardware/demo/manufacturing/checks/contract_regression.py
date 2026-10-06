@@ -155,8 +155,13 @@ CONTRACTS = (
     ("leaf_land", "checks/leaf_land_contract.py",
      ("--net", "+3V3", "--net", "/01_POWER_TREE/BQ25185_SYS",
       "--net", "GND"), "leaf-land-contract", "ok"),
+    # D-806: the verdict is `identical_except_declared`.  `identical` stays the
+    # strict byte answer; the only forgivable difference is a via listed in a
+    # `--declared-via-growth` file (claimed per run) that kept position, net and
+    # drill and grew to exactly hole + 0.200 mm.  With no declaration the two
+    # fields are equal, so earlier baselines answer the same question.
     ("protected_copper", "protected_copper.py", (), "protected-copper",
-     "identical"),
+     "identical_except_declared"),
     # D-645.  THE ELEVENTH, AND THE FIRST THAT IS ABOUT THE INSTRUMENT RATHER
     # THAN THE BOARD.  Every contract above asks whether the COPPER is sound;
     # this one asks whether the model the proposer routes against IS the

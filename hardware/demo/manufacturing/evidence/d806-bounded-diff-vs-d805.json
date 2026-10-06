@@ -1,0 +1,57 @@
+{
+ "board_drawing_changes_incl_edge_cuts": 0,
+ "bounded": true,
+ "footprints_changed": {
+  "J2": {
+   "post": [
+    15000000,
+    142550000,
+    180.0,
+    false,
+    "AQROOT_Beta:Molex_5025700893"
+   ],
+   "pre": [
+    15000000,
+    142700000,
+    180.0,
+    false,
+    "AQROOT_Beta:Molex_5025700893"
+   ]
+  }
+ },
+ "pad_geometry_changes_outside_J2": [
+  "U9.1",
+  "U9.16",
+  "U9.17",
+  "U9.24",
+  "U9.25",
+  "U9.32",
+  "U9.8",
+  "U9.9"
+ ],
+ "pad_net_changes": [],
+ "tracks": {
+  "into": 13,
+  "nets": [
+   "+3V3",
+   "/SD_CARD_DETECT_N",
+   "/SD_CS_N",
+   "/SPI_A_MISO",
+   "/SPI_A_MOSI",
+   "/SPI_A_SCK",
+   "GND"
+  ],
+  "out": 13,
+  "outside_J2_window": 0,
+  "post": 3485,
+  "pre": 3485
+ },
+ "vias": {
+  "grown_to_hole_plus_0_20": 35,
+  "other_via_changes": [],
+  "post": 915,
+  "pre": 915
+ },
+ "violations": [],
+ "zone_outline_or_rule_area_changes": 0
+}

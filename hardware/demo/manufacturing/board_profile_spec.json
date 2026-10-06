@@ -1,0 +1,344 @@
+{
+ "decision": "D-806",
+ "items": [
+  {
+   "centre": [
+    5.0,
+    149.0
+   ],
+   "end": [
+    6.0,
+    149.0
+   ],
+   "kind": "arc",
+   "mid": [
+    5.7071,
+    148.2929
+   ],
+   "radius": 1.0,
+   "start": [
+    5.0,
+    148.0
+   ]
+  },
+  {
+   "centre": [
+    6.5,
+    150.5
+   ],
+   "end": [
+    6.0,
+    150.5
+   ],
+   "kind": "arc",
+   "mid": [
+    6.1464,
+    150.8536
+   ],
+   "radius": 0.5,
+   "start": [
+    6.5,
+    151.0
+   ]
+  },
+  {
+   "centre": [
+    25.0,
+    149.0
+   ],
+   "end": [
+    25.0,
+    148.0
+   ],
+   "kind": "arc",
+   "mid": [
+    24.2929,
+    148.2929
+   ],
+   "radius": 1.0,
+   "start": [
+    24.0,
+    149.0
+   ]
+  },
+  {
+   "centre": [
+    23.5,
+    150.5
+   ],
+   "end": [
+    23.5,
+    151.0
+   ],
+   "kind": "arc",
+   "mid": [
+    23.8536,
+    150.8536
+   ],
+   "radius": 0.5,
+   "start": [
+    24.0,
+    150.5
+   ]
+  },
+  {
+   "centre": [
+    35.5,
+    149.0
+   ],
+   "end": [
+    36.5,
+    149.0
+   ],
+   "kind": "arc",
+   "mid": [
+    36.2071,
+    148.2929
+   ],
+   "radius": 1.0,
+   "start": [
+    35.5,
+    148.0
+   ]
+  },
+  {
+   "centre": [
+    37.0,
+    150.5
+   ],
+   "end": [
+    36.5,
+    150.5
+   ],
+   "kind": "arc",
+   "mid": [
+    36.6464,
+    150.8536
+   ],
+   "radius": 0.5,
+   "start": [
+    37.0,
+    151.0
+   ]
+  },
+  {
+   "centre": [
+    50.5,
+    149.0
+   ],
+   "end": [
+    50.5,
+    148.0
+   ],
+   "kind": "arc",
+   "mid": [
+    49.7929,
+    148.2929
+   ],
+   "radius": 1.0,
+   "start": [
+    49.5,
+    149.0
+   ]
+  },
+  {
+   "centre": [
+    49.0,
+    150.5
+   ],
+   "end": [
+    49.0,
+    151.0
+   ],
+   "kind": "arc",
+   "mid": [
+    49.3536,
+    150.8536
+   ],
+   "radius": 0.5,
+   "start": [
+    49.5,
+    150.5
+   ]
+  },
+  {
+   "end": [
+    0.0,
+    148.0
+   ],
+   "kind": "line",
+   "start": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "end": [
+    5.0,
+    148.0
+   ],
+   "kind": "line",
+   "start": [
+    0.0,
+    148.0
+   ]
+  },
+  {
+   "end": [
+    6.0,
+    150.5
+   ],
+   "kind": "line",
+   "start": [
+    6.0,
+    149.0
+   ]
+  },
+  {
+   "end": [
+    23.5,
+    151.0
+   ],
+   "kind": "line",
+   "start": [
+    6.5,
+    151.0
+   ]
+  },
+  {
+   "end": [
+    24.0,
+    149.0
+   ],
+   "kind": "line",
+   "start": [
+    24.0,
+    150.5
+   ]
+  },
+  {
+   "end": [
+    35.5,
+    148.0
+   ],
+   "kind": "line",
+   "start": [
+    25.0,
+    148.0
+   ]
+  },
+  {
+   "end": [
+    36.5,
+    150.5
+   ],
+   "kind": "line",
+   "start": [
+    36.5,
+    149.0
+   ]
+  },
+  {
+   "end": [
+    49.0,
+    151.0
+   ],
+   "kind": "line",
+   "start": [
+    37.0,
+    151.0
+   ]
+  },
+  {
+   "end": [
+    49.5,
+    149.0
+   ],
+   "kind": "line",
+   "start": [
+    49.5,
+    150.5
+   ]
+  },
+  {
+   "end": [
+    72.0,
+    148.0
+   ],
+   "kind": "line",
+   "start": [
+    50.5,
+    148.0
+   ]
+  },
+  {
+   "end": [
+    0.0,
+    0.0
+   ],
+   "kind": "line",
+   "start": [
+    72.0,
+    0.0
+   ]
+  },
+  {
+   "end": [
+    72.0,
+    0.0
+   ],
+   "kind": "line",
+   "start": [
+    72.0,
+    70.5
+   ]
+  },
+  {
+   "end": [
+    77.0,
+    104.005
+   ],
+   "kind": "line",
+   "start": [
+    72.0,
+    104.005
+   ]
+  },
+  {
+   "end": [
+    72.0,
+    104.005
+   ],
+   "kind": "line",
+   "start": [
+    72.0,
+    148.0
+   ]
+  },
+  {
+   "end": [
+    72.0,
+    70.5
+   ],
+   "kind": "line",
+   "start": [
+    77.0,
+    70.5
+   ]
+  },
+  {
+   "end": [
+    77.0,
+    70.5
+   ],
+   "kind": "line",
+   "start": [
+    77.0,
+    104.005
+   ]
+  }
+ ],
+ "schema": 1,
+ "source_commit": "a8837f71667f2f737c69dab47b33dd410bdbd7e7",
+ "what": "DECLARED board profile: every Edge.Cuts primitive (KiCad frame, mm, Y down; Gerber Y = -Y). Frozen from the D-805 delivery identity a8837f71 board; D-806 changes NO outline geometry. jlc_manufacturing_contract JLC6 requires the board, the Edge_Cuts Gerber and the packaged profile JSON to equal this."
+}

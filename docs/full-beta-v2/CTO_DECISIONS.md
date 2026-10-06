@@ -1,3 +1,45 @@
+## D-806 — **JLCPCB MANUFACTURING-READINESS REVISION: J2 EDGE CLEARANCE, U9 CORNER CLEARANCE, VIA ANNULAR RELATIONSHIP, REFERENCE LOCATOR, DIMENSIONED PROFILE**
+
+    authority  board 0e59fb64fe72b0a54b9feea96c19bcaec2db52a82a871bcec270e064d7fda547
+    manifest   651ceb4851e1097b87eb47ebfec1257a8752ae6a782f97ede4aa62790c19db4f
+    content    the D-806 content commit (recorded in evidence/d806-review-target.json)
+    identity   the post-commit verification record commit that follows it
+    parent     a8837f71667f2f737c69dab47b33dd410bdbd7e7 (frozen D-805 delivery identity; D-805 source milestone 4a358520 beneath it)
+    branch     d806-jlcpcb-manufacturing ONLY.  NOT promoted to aqroot-demo.  D-805 FROZEN.
+    trigger    JLCPCB engineering review 2026-10-06 (J2 0.213 mm to edge; U9 needs >= 5.2 mil
+               pre-CAM; via outer >= hole + 0.20; no silkscreen refs; "stepped profile"
+               unclear; thickness 1.6 mm +/-10 %; production / placement confirmation; edge
+               rails; shortages).
+    geometry   G1 J2 (0, -0.150 mm) -> (15.000, 142.550), outline unchanged: shell lands 0.213
+               -> 0.363 mm off the tab edge.  G2 U9 corner-land heel trim 0.030 mm (1, 8, 9, 16,
+               17, 24, 25, 32; master identical): corner gap 4.89 -> 6.56 mil (Gerber).  G3 35
+               vias 0.35/0.20 -> 0.40/0.20 (drills unchanged).  DRU: J2 edge licence 0.20 ->
+               0.25 mm, U9 intra-footprint floor 0.12 -> 0.1524 mm.  Zones refilled to their
+               fixed point; one inert pad-less 69.67 mm2 F.Cu +3V3 lobe south of R113 detaches
+               at J2's rear shell land and is removed by the filler (no pad, via or track in it;
+               connectivity identical).  Only J2 moved; pad-to-net identity unchanged; schematic,
+               netlist, BOM, stackup, .kicad_pro and outline byte-identical to D-805.
+    gates      jlc_manufacturing JLC1-JLC6 + 16 destructive controls (board AND Gerber /
+               Excellon); interface_datum ID1-ID9 (ID2 taught a declared, measured J2 inset;
+               two new controls); 19 standing contracts vs d805 (protected_copper taught ONE
+               declared word -- a via that kept position, net and drill and grew to exactly
+               hole + 0.20 mm -- with an undeclared-row control that still fails); FAB1-FAB16;
+               KiCad DRC/parity 199/17/246, 0 errors, same multisets as D-805.
+    vendor     A3 reference locator per side + index; dimensioned profile PDF/JSON; JLCPCB and
+               vendor-neutral RFQ packages (delivery/AQROOT_D806_*); sourcing decision record.
+    order      HOLD for fabrication.  Requote/review requests to JLCPCB and PCBWay may be sent by
+               the owner; they are NOT a fabrication authorization.  Board thickness 1.6 mm
+               +/-10 % is an owner-approval HOLD (J6 JST PH rated 0.8-1.6 mm board).  The D-805 /
+               D-804 HOLD items stand.  Production-file and parts-placement confirmation are
+               REQUIRED MANUAL gates.
+    owner      review requested: the J2 inset word (ID2), the protected_copper via-growth word,
+               the inert pour lobe, and the thickness position.
+
+The JLCPCB review found what no standing gate could see because each was a vendor figure.
+D-806 answers each with the smallest local geometry change, a native DRU floor where KiCad can
+hold it, and a contract that measures the vendor's own number on the board and on the Gerbers.
+The record is CHANGELOG D-806 and `D806_IMPLEMENTATION_REPORT.md`.
+
 ## D-805 — **INTERFACE DATUM CORRECTION: J3 USB-C AND J2 microSD OUT OF THE BOTTOM EDGE ON TWO LOCAL TABS, SW9 ON THE EAST EDGE**
 
     authority  board 0689d6e677df530d84d3986f4a8450fa7ed39272535b2cfc1ecfc6ae857887c1

@@ -1,0 +1,358 @@
+{
+ "decision": "D-806",
+ "rule_nm": 200000,
+ "schema": 1,
+ "vias": [
+  {
+   "at_nm": [
+    3700000,
+    123200000
+   ],
+   "dia_from_nm": 350000,
+   "dia_to_nm": 400000,
+   "drill_nm": 200000,
+   "net": "+3V3"
+  },
+  {
+   "at_nm": [
+    55600000,
+    113500000
+   ],
+   "dia_from_nm": 350000,
+   "dia_to_nm": 400000,
+   "drill_nm": 200000,
+   "net": "+3V3"
+  },
+  {
+   "at_nm": [
+    57225000,
+    70525000
+   ],
+   "dia_from_nm": 350000,
+   "dia_to_nm": 400000,
+   "drill_nm": 200000,
+   "net": "+3V3"
+  },
+  {
+   "at_nm": [
+    57300000,
+    68550000
+   ],
+   "dia_from_nm": 350000,
+   "dia_to_nm": 400000,
+   "drill_nm": 200000,
+   "net": "+3V3"
+  },
+  {
+   "at_nm": [
+    60300000,
+    71000000
+   ],
+   "dia_from_nm": 350000,
+   "dia_to_nm": 400000,
+   "drill_nm": 200000,
+   "net": "+3V3"
+  },
+  {
+   "at_nm": [
+    61300000,
+    76300000
+   ],
+   "dia_from_nm": 350000,
+   "dia_to_nm": 400000,
+   "drill_nm": 200000,
+   "net": "+3V3"
+  },
+  {
+   "at_nm": [
+    2800000,
+    66800000
+   ],
+   "dia_from_nm": 350000,
+   "dia_to_nm": 400000,
+   "drill_nm": 200000,
+   "net": "/01_POWER_TREE/BAT_PROTECTED_P"
+  },
+  {
+   "at_nm": [
+    7200000,
+    66500000
+   ],
+   "dia_from_nm": 350000,
+   "dia_to_nm": 400000,
+   "drill_nm": 200000,
+   "net": "/01_POWER_TREE/BAT_PROTECTED_P"
+  },
+  {
+   "at_nm": [
+    4250000,
+    63500000
+   ],
+   "dia_from_nm": 350000,
+   "dia_to_nm": 400000,
+   "drill_nm": 200000,
+   "net": "/01_POWER_TREE/BAT_SENSE"
+  },
+  {
+   "at_nm": [
+    4600000,
+    66000000
+   ],
+   "dia_from_nm": 350000,
+   "dia_to_nm": 400000,
+   "drill_nm": 200000,
+   "net": "/01_POWER_TREE/BAT_SENSE"
+  },
+  {
+   "at_nm": [
+    1900000,
+    60700000
+   ],
+   "dia_from_nm": 350000,
+   "dia_to_nm": 400000,
+   "drill_nm": 200000,
+   "net": "/01_POWER_TREE/LTC_GATE"
+  },
+  {
+   "at_nm": [
+    5150000,
+    64750000
+   ],
+   "dia_from_nm": 350000,
+   "dia_to_nm": 400000,
+   "drill_nm": 200000,
+   "net": "/01_POWER_TREE/LTC_GATE"
+  },
+  {
+   "at_nm": [
+    5900000,
+    64800000
+   ],
+   "dia_from_nm": 350000,
+   "dia_to_nm": 400000,
+   "drill_nm": 200000,
+   "net": "/01_POWER_TREE/LTC_GATE"
+  },
+  {
+   "at_nm": [
+    7500000,
+    60800000
+   ],
+   "dia_from_nm": 350000,
+   "dia_to_nm": 400000,
+   "drill_nm": 200000,
+   "net": "/01_POWER_TREE/LTC_GATE"
+  },
+  {
+   "at_nm": [
+    3500000,
+    92500000
+   ],
+   "dia_from_nm": 350000,
+   "dia_to_nm": 400000,
+   "drill_nm": 200000,
+   "net": "/01_POWER_TREE/LTC_SHDN"
+  },
+  {
+   "at_nm": [
+    5550000,
+    68150000
+   ],
+   "dia_from_nm": 350000,
+   "dia_to_nm": 400000,
+   "drill_nm": 200000,
+   "net": "/01_POWER_TREE/LTC_SHDN"
+  },
+  {
+   "at_nm": [
+    2700000,
+    27950000
+   ],
+   "dia_from_nm": 350000,
+   "dia_to_nm": 400000,
+   "drill_nm": 200000,
+   "net": "/01_POWER_TREE/N_POL"
+  },
+  {
+   "at_nm": [
+    5300000,
+    24550000
+   ],
+   "dia_from_nm": 350000,
+   "dia_to_nm": 400000,
+   "drill_nm": 200000,
+   "net": "/01_POWER_TREE/N_POL"
+  },
+  {
+   "at_nm": [
+    3165000,
+    59275000
+   ],
+   "dia_from_nm": 350000,
+   "dia_to_nm": 400000,
+   "drill_nm": 200000,
+   "net": "/01_POWER_TREE/Q3_CS"
+  },
+  {
+   "at_nm": [
+    5700000,
+    57800000
+   ],
+   "dia_from_nm": 350000,
+   "dia_to_nm": 400000,
+   "drill_nm": 200000,
+   "net": "/01_POWER_TREE/Q3_CS"
+  },
+  {
+   "at_nm": [
+    3950000,
+    26700000
+   ],
+   "dia_from_nm": 350000,
+   "dia_to_nm": 400000,
+   "drill_nm": 200000,
+   "net": "/01_POWER_TREE/REF_HO"
+  },
+  {
+   "at_nm": [
+    8950000,
+    18350000
+   ],
+   "dia_from_nm": 350000,
+   "dia_to_nm": 400000,
+   "drill_nm": 200000,
+   "net": "/01_POWER_TREE/REF_HO"
+  },
+  {
+   "at_nm": [
+    2700000,
+    28600000
+   ],
+   "dia_from_nm": 350000,
+   "dia_to_nm": 400000,
+   "drill_nm": 200000,
+   "net": "/01_POWER_TREE/REF_POL"
+  },
+  {
+   "at_nm": [
+    6000000,
+    23500000
+   ],
+   "dia_from_nm": 350000,
+   "dia_to_nm": 400000,
+   "drill_nm": 200000,
+   "net": "/01_POWER_TREE/REF_POL"
+  },
+  {
+   "at_nm": [
+    40600000,
+    143645000
+   ],
+   "dia_from_nm": 350000,
+   "dia_to_nm": 400000,
+   "drill_nm": 200000,
+   "net": "/01_POWER_TREE/USB_VBUS_RAW"
+  },
+  {
+   "at_nm": [
+    45400000,
+    143645000
+   ],
+   "dia_from_nm": 350000,
+   "dia_to_nm": 400000,
+   "drill_nm": 200000,
+   "net": "/01_POWER_TREE/USB_VBUS_RAW"
+  },
+  {
+   "at_nm": [
+    3850000,
+    29950000
+   ],
+   "dia_from_nm": 350000,
+   "dia_to_nm": 400000,
+   "drill_nm": 200000,
+   "net": "/01_POWER_TREE/VREC_VCC"
+  },
+  {
+   "at_nm": [
+    7150000,
+    28550000
+   ],
+   "dia_from_nm": 350000,
+   "dia_to_nm": 400000,
+   "drill_nm": 200000,
+   "net": "/01_POWER_TREE/VREC_VCC"
+  },
+  {
+   "at_nm": [
+    7250000,
+    30000000
+   ],
+   "dia_from_nm": 350000,
+   "dia_to_nm": 400000,
+   "drill_nm": 200000,
+   "net": "/01_POWER_TREE/VREC_VCC"
+  },
+  {
+   "at_nm": [
+    11900000,
+    28700000
+   ],
+   "dia_from_nm": 350000,
+   "dia_to_nm": 400000,
+   "drill_nm": 200000,
+   "net": "/01_POWER_TREE/VREC_VCC"
+  },
+  {
+   "at_nm": [
+    35850000,
+    27625000
+   ],
+   "dia_from_nm": 350000,
+   "dia_to_nm": 400000,
+   "drill_nm": 200000,
+   "net": "GND"
+  },
+  {
+   "at_nm": [
+    47900000,
+    116900000
+   ],
+   "dia_from_nm": 350000,
+   "dia_to_nm": 400000,
+   "drill_nm": 200000,
+   "net": "GND"
+  },
+  {
+   "at_nm": [
+    49300000,
+    117000000
+   ],
+   "dia_from_nm": 350000,
+   "dia_to_nm": 400000,
+   "drill_nm": 200000,
+   "net": "GND"
+  },
+  {
+   "at_nm": [
+    62900000,
+    114200000
+   ],
+   "dia_from_nm": 350000,
+   "dia_to_nm": 400000,
+   "drill_nm": 200000,
+   "net": "GND"
+  },
+  {
+   "at_nm": [
+    67300000,
+    77700000
+   ],
+   "dia_from_nm": 350000,
+   "dia_to_nm": 400000,
+   "drill_nm": 200000,
+   "net": "GND"
+  }
+ ],
+ "what": "Vias grown by D-806 G3 to outer = hole + 0.200 mm (JLCPCB 2026-10-06). Position, net and drill unchanged. protected_copper.py --declared-via-growth forgives EXACTLY these lost/gained pairs and nothing else."
+}

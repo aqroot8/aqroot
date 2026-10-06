@@ -1,0 +1,268 @@
+{
+ "all_pass": true,
+ "board": "/home/aqroot8/w/d806-jlcpcb/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "0e59fb64fe72b0a54b9feea96c19bcaec2db52a82a871bcec270e064d7fda547",
+ "checks": {
+  "JLC1_J2_shell_land_to_routed_edge": {
+   "board": {
+    "any_j2_land_to_edge_min_mm": 0.363,
+    "hard_mm": 0.25,
+    "ok": true,
+    "shell_land_to_edge_min_mm": 0.363,
+    "shell_lands": [
+     {
+      "at": [
+       8.656,
+       149.787
+      ],
+      "net": "GND",
+      "pad": "J2.9",
+      "to_edge_mm": 0.363
+     },
+     {
+      "at": [
+       9.106,
+       135.313
+      ],
+      "net": "GND",
+      "pad": "J2.9",
+      "to_edge_mm": 8.356
+     },
+     {
+      "at": [
+       18.006,
+       135.313
+      ],
+      "net": "GND",
+      "pad": "J2.9",
+      "to_edge_mm": 13.5216
+     },
+     {
+      "at": [
+       21.556,
+       149.787
+      ],
+      "net": "GND",
+      "pad": "J2.9",
+      "to_edge_mm": 0.363
+     }
+    ],
+    "target_met": true,
+    "target_mm": 0.3
+   },
+   "gerber": {
+    "any_j2_flash_to_edge_min_mm": 0.363,
+    "ok": true,
+    "shell_flashes": 4,
+    "shell_land_to_edge_min_mm": 0.363,
+    "target_met": true
+   },
+   "ok": true,
+   "target_met": true
+  },
+  "JLC2_U9_pre_cam_gap_board": {
+   "hard_mil": 5.2,
+   "min_gap_mil": 6.522,
+   "min_gap_mm": 0.16566,
+   "min_layer": "B.Cu",
+   "ok": true,
+   "per_layer": {
+    "B.Cu": {
+     "at": [
+      32.0264,
+      31.8564
+     ],
+     "min_gap_mil": 6.522,
+     "min_gap_mm": 0.16566,
+     "nets": [
+      "+3V3",
+      "/SPI_B_MISO"
+     ]
+    },
+    "F.Cu": {
+     "at": [
+      35.918,
+      33.135
+     ],
+     "min_gap_mil": 7.877,
+     "min_gap_mm": 0.20008,
+     "nets": [
+      "+3V3",
+      "/04_SPI_B_RADIOS_NFC/NFC_AGDC"
+     ]
+    },
+    "In1.Cu": {
+     "at": [
+      31.7113,
+      27.5832
+     ],
+     "min_gap_mil": 7.877,
+     "min_gap_mm": 0.20008,
+     "nets": [
+      "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+      "GND"
+     ]
+    },
+    "In2.Cu": {
+     "at": [
+      34.532,
+      33.829
+     ],
+     "min_gap_mil": 9.27,
+     "min_gap_mm": 0.23546,
+     "nets": [
+      "/04_SPI_B_RADIOS_NFC/NFC_VDD_A",
+      "/NFC_IRQ"
+     ]
+    },
+    "In3.Cu": {
+     "at": [
+      35.918,
+      33.135
+     ],
+     "min_gap_mil": 7.877,
+     "min_gap_mm": 0.20008,
+     "nets": [
+      "+3V3",
+      "/04_SPI_B_RADIOS_NFC/NFC_AGDC"
+     ]
+    },
+    "In4.Cu": {
+     "at": [
+      31.7113,
+      27.5832
+     ],
+     "min_gap_mil": 7.877,
+     "min_gap_mm": 0.20008,
+     "nets": [
+      "/04_SPI_B_RADIOS_NFC/NFC_VDD_RF",
+      "GND"
+     ]
+    }
+   },
+   "target_met": true,
+   "target_mil": 6.0,
+   "window_kicad_mm": [
+    30.005,
+    26.005,
+    37.995,
+    33.995
+   ]
+  },
+  "JLC3_U9_gap_gerber_and_board_wide_floor": {
+   "board_wide_gaps_5_2_to_6_0_mil": 39,
+   "board_wide_gaps_below_5_2_mil": [],
+   "board_wide_min_gap_mil": 5.906,
+   "cam_health": {
+    "multi_net_components": [],
+    "open_ends": 0,
+    "shorts": 0,
+    "split_nets": {
+     "/01_POWER_TREE/BQ25185_SYS": 3,
+     "/01_POWER_TREE/NFC_5V_PA_PENDING": 6,
+     "/03_SPI_A_DISPLAY_SD/DISP_SDO": 2,
+     "/06_AUDIO/SPK_N_CONN": 2,
+     "/06_AUDIO/SPK_P_CONN": 2,
+     "/07_IR/IR_LED_A": 2,
+     "/BQ25185_STAT2": 2,
+     "/SPI_A_MISO": 2,
+     "Net-(SW9-A)": 2,
+     "Net-(U13-FB)": 3,
+     "Net-(U13-SW)": 2
+    }
+   },
+   "modelled_post_cam_mil": 5.362,
+   "note": "modelled post-CAM = raw - 1.2 mil, JLCPCB's own statement that >= 5.2 mil pre-CAM is what holds >= 4.0 mil after their CAM",
+   "ok": true,
+   "target_met": true,
+   "u9_at_kicad": [
+    32.0261,
+    31.8561
+   ],
+   "u9_layer": "B_Cu",
+   "u9_nets": [
+    "+3V3",
+    "/SPI_B_MISO"
+   ],
+   "u9_window_min_gap_mil": 6.562,
+   "u9_window_min_gap_mm": 0.16668
+  },
+  "JLC4_via_outer_minus_hole": {
+   "board": {
+    "below": 0,
+    "ok": true,
+    "plated_component_holes_below": [],
+    "population": "every PCB_VIA on the board",
+    "rows": [],
+    "vias": 915
+   },
+   "gerber": {
+    "below": 0,
+    "ok": true,
+    "population": "Excellon PTH round hits carrying an F_Cu/B_Cu ViaPad flash",
+    "rows": [],
+    "via_hits": 915
+   },
+   "ok": true
+  },
+  "JLC5_reference_designator_mapping": {
+   "dnp": 16,
+   "fitted": 251,
+   "indexed": 251,
+   "locator_files": {
+    "bottom": "aqroot-Demo-assembly-locator-bottom.pdf",
+    "top": "aqroot-Demo-assembly-locator-top.pdf"
+   },
+   "ok": true,
+   "problems": []
+  },
+  "JLC6_profile_identity": {
+   "arc_radii": [
+    0.5,
+    1.0
+   ],
+   "counts": {
+    "arcs": 8,
+    "lines": 16
+   },
+   "equals_declared_spec": true,
+   "equals_frozen_d805": true,
+   "ok": true,
+   "packaged_profile_json_agrees": true,
+   "reproduced_by_edge_cuts_gerber": true,
+   "why_not": []
+  },
+  "JLC_controls_not_vacuous": {
+   "controls": {
+    "JLC1_J2_0_120_mm_outward_misses_target_or_hard": true,
+    "JLC1_frozen_D805_board_is_refused": true,
+    "JLC1_frozen_D805_gerbers_are_refused": true,
+    "JLC2_frozen_D805_board_is_refused": true,
+    "JLC2_untrimmed_U9_corner_pair_is_refused": true,
+    "JLC3_U9_1_flash_pushed_into_its_corner_is_refused_below_4_mil": true,
+    "JLC3_frozen_D805_gerbers_fail_5_2_mil_and_post_cam": true,
+    "JLC4_frozen_D805_board_is_refused": true,
+    "JLC4_frozen_D805_excellon_gerber_is_refused": true,
+    "JLC4_one_via_at_hole_plus_0_15_is_refused": true,
+    "JLC5_a_DNP_ref_presented_as_fitted_is_refused": true,
+    "JLC5_a_ref_missing_from_its_locator_pdf_is_refused": true,
+    "JLC5_index_missing_one_fitted_ref_is_refused": true,
+    "JLC5_index_ref_0_5_mm_off_its_CPL_is_refused": true,
+    "JLC6_one_fillet_radius_changed_is_refused": true,
+    "JLC6_tabs_straightened_arcs_removed_is_refused": true
+   },
+   "ok": true
+  }
+ },
+ "d805_reference": "a8837f71667f2f737c69dab47b33dd410bdbd7e7",
+ "decision": "D-806",
+ "manifest_sha256": "651ceb4851e1097b87eb47ebfec1257a8752ae6a782f97ede4aa62790c19db4f",
+ "package": "/home/aqroot8/w/d806-jlcpcb/hardware/demo/fab",
+ "schema": 1,
+ "spec_sha256": "182f7c7ab6182c9344c687280c1388d993d1404fb27b35d3440590f54e4c4864",
+ "targets_met": {
+  "JLC1_J2_shell_land_to_routed_edge": true,
+  "JLC2_U9_pre_cam_gap_board": true,
+  "JLC3_U9_gap_gerber_and_board_wide_floor": true
+ }
+}

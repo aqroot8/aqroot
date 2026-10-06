@@ -1,3 +1,39 @@
+## D-806 — 2026-10-06 — JLCPCB MANUFACTURING-READINESS REVISION: J2 SHELL LANDS 0.363 mm OFF THE EDGE, U9 CORNERS 6.56 mil, EVERY VIA HOLE + 0.20 mm, A REFERENCE LOCATOR AND A DIMENSIONED PROFILE
+
+CANDIDATE ONLY — branch `d806-jlcpcb-manufacturing`, from the frozen D-805 delivery identity
+`a8837f71`; **not promoted to `aqroot-demo`, not production-authorized, nothing ordered.**
+Driven by the JLCPCB engineering review of 2026-10-06.  No schematic, netlist, BOM, stackup,
+outline, radio, NFC-topology, power or mounting change.
+
+* **`D806-01` — J2 edge clearance.**  `J2` translated (0, -0.150 mm) to (15.000, 142.550);
+  its 13 pad-attached track ends moved with their lands.  Shell lands `J2.9` now stand
+  **0.363 mm** off the J2 tab edge (was 0.213; JLCPCB >= 0.25, D-806 target >= 0.30).  The
+  outline, the tab, the tab-to-wall gap and `SW4` are unchanged; the card-entry face is
+  0.150 mm inside the tab edge (declared and measured by ID2).  DRU J2 licence 0.20 -> 0.25 mm.
+* **`D806-02` — U9 corner lands.**  The eight corner lands of `U9` (1, 8, 9, 16, 17, 24, 25,
+  32) have their HEEL trimmed 0.030 mm (0.75 -> 0.72 long; toe, width, pitch, placement and
+  routing unchanged; library master identical).  Corner gap **0.1243 -> 0.1667 mm (4.89 ->
+  6.56 mil)**; JLCPCB needs >= 5.2 mil pre-CAM.  DRU U9 intra-footprint floor 0.12 -> 0.1524 mm.
+* **`D806-03` — via outer >= hole + 0.20 mm.**  The 35 vias at 0.35/0.20 mm grow to 0.40/0.20
+  (drills unchanged, including `U9.16`'s D-649 bridge and `J3`'s D-531 VBUS POFV barrels).
+  Every via on the board now meets JLCPCB's annular relationship.
+* **`D806-04` — vendor drawings.**  `jlc_drawings.py`: A3 2.5:1 reference locator per side
+  (every fitted reference at its CPL centroid, 10 mm grid, index) plus
+  `aqroot-Demo-assembly-ref-index.csv`; dimensioned board profile PDF + JSON (tabs, drawn
+  fillets, sharp corners, routed slots, what CAM must not normalise).  Silkscreen unchanged.
+* **`D806-05` — gates.**  `checks/jlc_manufacturing_contract.py` (JLC1–JLC6, board AND
+  Gerber/Excellon, 16 destructive controls incl. the frozen D-805 inputs from git); ID2 taught a
+  declared, measured J2 inset (two new controls); `protected_copper` taught ONE declared word —
+  a via that kept position, net and drill and grew to exactly hole + 0.20 mm (4 BAT_* vias) —
+  with a control that still fails on an undeclared row.
+* **`D806-07` — one inert pour lobe.**  The 0.150 mm J2 shift narrows a pre-existing neck of the
+  `F +3V3 PLANE` above `J2.9`'s rear shell land below the pour's 0.20 mm minimum width, so a
+  69.67 mm² pad-less, via-less lobe south of `R113` is removed by the filler as an isolated
+  island (any inward J2 shift, 0.100 included, does the same).  Connectivity is identical.
+* **`D806-06` — JLCPCB handoff.**  Manual production-file and parts-placement confirmation are
+  REQUIRED gates; board thickness 1.6 mm +/-10 % is an owner-approval HOLD (J6 JST PH is
+  rated 0.8–1.6 mm board); sourcing decision record; edge-rail strategy.
+
 ## D-805 — 2026-10-05 — INTERFACE DATUM CORRECTION: J3 USB-C AND J2 microSD FACE OUT OF THE BOTTOM EDGE ON TWO LOCAL TABS, SW9 POWER SLIDE ON THE EAST EDGE
 
 CANDIDATE ONLY — branch `d805-interface-fixes`; **not promoted to `aqroot-demo`, not

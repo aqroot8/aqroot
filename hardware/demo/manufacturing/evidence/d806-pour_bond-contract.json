@@ -1,0 +1,406 @@
+{
+ "all_pass": true,
+ "board": "/home/aqroot8/w/d806-jlcpcb/hardware/demo/kicad/aqroot-demo/aqroot-Beta-v2.kicad_pcb",
+ "board_sha256": "0e59fb64fe72b0a54b9feea96c19bcaec2db52a82a871bcec270e064d7fda547",
+ "checks": {
+  "P1": {
+   "base_rev": "919ebe4",
+   "diffs": [],
+   "nets_compared": 8,
+   "ok": true
+  },
+  "P2": {
+   "islands_renumbered": [
+    {
+     "ends": [
+      "R3.2",
+      "R1.2"
+     ],
+     "layer": "F",
+     "net": "+3V3",
+     "now": 3,
+     "was": 1
+    },
+    {
+     "ends": [
+      "R1.2",
+      "C2.1"
+     ],
+     "layer": "F",
+     "net": "+3V3",
+     "now": 3,
+     "was": 1
+    },
+    {
+     "ends": [
+      "R26.1",
+      "R19.1"
+     ],
+     "layer": "F",
+     "net": "+3V3",
+     "now": 9,
+     "was": 7
+    },
+    {
+     "ends": [
+      "U5.7",
+      "U5.8"
+     ],
+     "layer": "F",
+     "net": "+3V3",
+     "now": 11,
+     "was": 9
+    },
+    {
+     "ends": [
+      "U5.8",
+      "C9.1"
+     ],
+     "layer": "F",
+     "net": "+3V3",
+     "now": 11,
+     "was": 9
+    },
+    {
+     "ends": [
+      "C3.1",
+      "R2.1"
+     ],
+     "layer": "F",
+     "net": "+3V3",
+     "now": 12,
+     "was": 10
+    },
+    {
+     "ends": [
+      "R2.1",
+      "R27.1"
+     ],
+     "layer": "F",
+     "net": "+3V3",
+     "now": 12,
+     "was": 10
+    },
+    {
+     "ends": [
+      "C10.1",
+      "U5.2"
+     ],
+     "layer": "F",
+     "net": "+3V3",
+     "now": 13,
+     "was": 11
+    },
+    {
+     "ends": [
+      "J1.7",
+      "J1.8"
+     ],
+     "layer": "F",
+     "net": "+3V3",
+     "now": 20,
+     "was": 18
+    },
+    {
+     "ends": [
+      "J1.8",
+      "J1.9"
+     ],
+     "layer": "F",
+     "net": "+3V3",
+     "now": 20,
+     "was": 18
+    },
+    {
+     "ends": [
+      "J1.35",
+      "J1.40"
+     ],
+     "layer": "F",
+     "net": "+3V3",
+     "now": 21,
+     "was": 19
+    },
+    {
+     "ends": [
+      "J1.40",
+      "J1.41"
+     ],
+     "layer": "F",
+     "net": "+3V3",
+     "now": 21,
+     "was": 19
+    },
+    {
+     "ends": [
+      "J1.41",
+      "J1.42"
+     ],
+     "layer": "F",
+     "net": "+3V3",
+     "now": 21,
+     "was": 19
+    },
+    {
+     "ends": [
+      "U14.4",
+      "U14.9"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 4,
+     "was": 9
+    },
+    {
+     "ends": [
+      "U2.12",
+      "U3.2"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 25,
+     "was": 26
+    },
+    {
+     "ends": [
+      "U3.2",
+      "U3.3"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 25,
+     "was": 26
+    },
+    {
+     "ends": [
+      "U9.6",
+      "via"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 30,
+     "was": 31
+    },
+    {
+     "ends": [
+      "U9.12",
+      "via"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 30,
+     "was": 31
+    },
+    {
+     "ends": [
+      "U9.26",
+      "via"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 30,
+     "was": 31
+    },
+    {
+     "ends": [
+      "U11.4",
+      "U11.5"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 32,
+     "was": 33
+    },
+    {
+     "ends": [
+      "U11.4",
+      "U11.11"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 32,
+     "was": 33
+    },
+    {
+     "ends": [
+      "C36.2",
+      "R37.2"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 33,
+     "was": 34
+    },
+    {
+     "ends": [
+      "C36.2",
+      "C5.2"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 33,
+     "was": 34
+    },
+    {
+     "ends": [
+      "C5.2",
+      "C7.2"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 33,
+     "was": 34
+    },
+    {
+     "ends": [
+      "U4.6",
+      "U4.7"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 37,
+     "was": 38
+    },
+    {
+     "ends": [
+      "U18.4",
+      "U18.5"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 40,
+     "was": 41
+    },
+    {
+     "ends": [
+      "C37.2",
+      "R98.2"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 41,
+     "was": 42
+    },
+    {
+     "ends": [
+      "R98.2",
+      "R17.2"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 41,
+     "was": 42
+    },
+    {
+     "ends": [
+      "R98.2",
+      "R97.2"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 41,
+     "was": 42
+    },
+    {
+     "ends": [
+      "R102.2",
+      "C39.2"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 42,
+     "was": 43
+    },
+    {
+     "ends": [
+      "R78.2",
+      "C22.2"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 43,
+     "was": 44
+    },
+    {
+     "ends": [
+      "C22.2",
+      "C57.2"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 43,
+     "was": 44
+    },
+    {
+     "ends": [
+      "C76.2",
+      "C73.2"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 53,
+     "was": 52
+    },
+    {
+     "ends": [
+      "U9.16",
+      "via"
+     ],
+     "layer": "B",
+     "net": "GND",
+     "now": 52,
+     "was": 53
+    }
+   ],
+   "misplaced_ends": [],
+   "off_copper": [],
+   "ok": true,
+   "points": 1488,
+   "tubes": 42
+  },
+  "P3": {
+   "cells_outside_keepout": [],
+   "guarded_layers": {
+    "B": 1054,
+    "F": 434
+   },
+   "ok": true,
+   "probe_net": "/I2C_SDA_INT",
+   "tube_cells_not_blocked": []
+  },
+  "P4": {
+   "detail": {
+    "+3V3": {
+     "foreign_tubes": [
+      "/01_POWER_TREE/BQ25185_SYS",
+      "GND"
+     ],
+     "own_tubes_seen": 0
+    },
+    "/01_POWER_TREE/BQ25185_SYS": {
+     "foreign_tubes": [
+      "+3V3",
+      "GND"
+     ],
+     "own_tubes_seen": 0
+    },
+    "GND": {
+     "foreign_tubes": [
+      "+3V3",
+      "/01_POWER_TREE/BQ25185_SYS"
+     ],
+     "own_tubes_seen": 0
+    }
+   },
+   "ok": true,
+   "pour_nets": [
+    "+3V3",
+    "/01_POWER_TREE/BQ25185_SYS",
+    "GND"
+   ]
+  }
+ },
+ "guard": "evidence/d730-pour-bond-guard-next.json",
+ "guard_sha256": "073f4b9882c8298a8501e81954da26c275b8f73ee7c3717a335fc9df2b05022c",
+ "schema": 1
+}
