@@ -1,0 +1,31 @@
+name: D805 Corrected Vendor RFQ Artifacts
+on:
+  push:
+    branches:
+      - d805-pcbway-delivery-artifact
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify archives
+        run: |
+          for f in delivery/vendor-rfqs-corrected/*.zip; do unzip -t "$f" >/dev/null; done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AQROOT_D805_JLCPCB_RFQ_Corrected
+          path: delivery/vendor-rfqs-corrected/AQROOT_D805_JLCPCB_RFQ_Corrected.zip
+          compression-level: 0
+          retention-days: 3
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AQROOT_D805_NextPCB_RFQ_Corrected
+          path: delivery/vendor-rfqs-corrected/AQROOT_D805_NextPCB_RFQ_Corrected.zip
+          compression-level: 0
+          retention-days: 3
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AQROOT_D805_Seeed_Fusion_RFQ_Corrected
+          path: delivery/vendor-rfqs-corrected/AQROOT_D805_Seeed_Fusion_RFQ_Corrected.zip
+          compression-level: 0
+          retention-days: 3
