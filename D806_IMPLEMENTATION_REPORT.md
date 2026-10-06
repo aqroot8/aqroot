@@ -136,7 +136,7 @@ changes; Edge.Cuts / drawings 0 changes. SW1, SW4, J3, J5, J8, SW9, U1, BOSS1/2,
 | rail ampacity | all_ok; every rail entry identical to D-805 |
 | routing ledger | population / approved-NC / approved-unrouted / connectivity / sheet summary identical; per-net groups identical in membership (only J2 / U9 corner pad coordinates moved) |
 | 19 standing contracts vs d805 (`evidence/d806-contract-regression.json`) | **19/19 PASS**, all ran, all children exit 0, not vacuous, baseline complete. Substantive differences, each a D-806 act: placement (claimed J2 move + releases), keepout_stackup (In1/In4 area −1.97 mm², the 30 grown non-GND via clearances), pour_partition (one claimed moved ref), pour_bond (island renumbering after the inert lobe; P1–P4 pass), protected_copper (declared via-growth word: 4 BAT_* vias forgiven; `identical` strictly False; undeclared-row control FAILS as required — `evidence/d806-protected-copper-undeclared-control.json`), fab_provenance (36 vs 31 artifacts: the 5 vendor drawings), demo_feature (release id D-806), firmware_hw_map (a temp-dir path name only). Identical to D-805 elsewhere (rf_symmetry, connection_width, and all other rows apart from input identity) |
-| PlatformIO | PIO_RESULT_PLACEHOLDER |
+| PlatformIO (git archive of the content commit, empty dir) | **5/5 SUCCESS**: aqroot-demo (release image `fe4165b8…10d0e2`), aqroot-demo-fap01 (`ac8d6e65…085b75`), esp32-s3-aqroot, wokwi, esp32-s3-aqroot-dm; only the board digest string changed in `Firmware/src/hw/aqroot_demo_board.{h,json}` |
 
 ## 12. Manufacturing package paths / hashes
 
@@ -172,11 +172,16 @@ WROOM-1-N16R8 in stock (22,421), kept exactly. No procurement authorized.
 
 ## 14. Commits and push
 
-COMMIT_PLACEHOLDER
+* Content commit **`3168738745e86e783ba0f077e0ee74cca97c6621`** on `d806-jlcpcb-manufacturing`, child of the frozen D-805 parent `a8837f71`; **pushed** to `origin/d806-jlcpcb-manufacturing` (new branch).
+* Post-commit: committed board `0e59fb64…`, MANIFEST `651ceb48…` and both RFQ zips byte-identical to the gated files; tree clean.
+* Identity commit: the commit that records this report's final form and `evidence/d806-review-target.json` (a commit cannot contain its own SHA); pushed to the same branch.
+* D-805 / D-804 frozen worktrees: HEAD, branch and status byte-identical before and after (`d805-delivery-artifact` a8837f71, `d805-interface` 4a358520, `d804-u9` 466a5058); `origin/d805-*` refs unchanged; `aqroot-demo` not touched, not merged into.
 
 ## 15. Recommendation
 
-RECOMMENDATION_PLACEHOLDER
+**GO — send D-806 back to JLCPCB (`delivery/AQROOT_D806_JLCPCB_RFQ.zip`) and PCBWay (`delivery/AQROOT_D806_Prototype_PCBA_RFQ.zip`) for REQUOTE / ENGINEERING REVIEW.** Every JLCPCB geometric finding is closed with margin and gated (J2 0.363 mm vs ≥ 0.25; U9 6.56 mil vs ≥ 5.2; vias 0/915 below hole + 0.20; refs mapped 251/251; profile explicit).
+
+**HOLD — fabrication / assembly / procurement**, pending the owner's written decisions on: (1) board thickness (JLCPCB 1.6 mm ±10 % vs acceptance 1.5744 ± 0.10; J6 rated ≤ 1.6 mm board); (2) the vendor's returned production files, panel/edge-rail drawing and placement preview (REQUIRED MANUAL gates); (3) consignment of the short lines (U9, U18, U19, U2/U3, D2/D4/D5, L4, MK1, J5; R40 MOQ) after a fresh sourcing refresh; (4) review of the two taught gate words (ID2 J2 inset; protected_copper via growth) and the inert pour lobe; plus the standing D-805/D-804 HOLD items (B01–B14, FA01–FA10, enclosure apertures).
 
 **Manufacturing remains UNAUTHORIZED.** Nothing in D-806 orders, pays for, submits or authorizes
 fabrication, assembly or non-cancellable procurement.

@@ -7,7 +7,7 @@
  "board_sha256": "0e59fb64fe72b0a54b9feea96c19bcaec2db52a82a871bcec270e064d7fda547",
  "parent": "a8837f71667f2f737c69dab47b33dd410bdbd7e7",
  "parent_source_milestone": "4a3585202606de82d71b19960e35a86964c92f87",
- "content_commit": "PENDING -- written by the identity commit that follows the content commit",
+ "content_commit": "3168738745e86e783ba0f077e0ee74cca97c6621",
  "identity_commit": "the identity commit -- it records the content commit's SHA; a commit cannot contain its own",
  "manifest": "hardware/demo/fab/MANIFEST.json",
  "manifest_sha256": "651ceb4851e1097b87eb47ebfec1257a8752ae6a782f97ede4aa62790c19db4f",
@@ -56,5 +56,47 @@
   "jlcpcb": "delivery/AQROOT_D806_JLCPCB_RFQ.zip",
   "neutral": "delivery/AQROOT_D806_Prototype_PCBA_RFQ.zip"
  },
- "order_status": "HOLD -- no fabrication, assembly, payment or non-cancellable procurement authorized; thickness tolerance is an owner-approval HOLD"
+ "order_status": "HOLD -- no fabrication, assembly, payment or non-cancellable procurement authorized; thickness tolerance is an owner-approval HOLD",
+ "pushed": {
+  "remote": "origin",
+  "branch": "d806-jlcpcb-manufacturing",
+  "at_content_commit": "3168738745e86e783ba0f077e0ee74cca97c6621"
+ },
+ "post_commit_verification": {
+  "run_against": "3168738745e86e783ba0f077e0ee74cca97c6621",
+  "worktree_clean": true,
+  "board_sha256": "0e59fb64fe72b0a54b9feea96c19bcaec2db52a82a871bcec270e064d7fda547",
+  "manifest_sha256": "651ceb4851e1097b87eb47ebfec1257a8752ae6a782f97ede4aa62790c19db4f",
+  "rfq_zips": {
+   "AQROOT_D806_JLCPCB_RFQ.zip": "bf5ad23cb3f3952d3ae56151375e8c66de5f78a4ea5d3bae800da29e871489db",
+   "AQROOT_D806_Prototype_PCBA_RFQ.zip": "700165646cd8476879a243d8214fdd3396bfca432dfcbab60d5460fa020807e5"
+  },
+  "note": "committed board, MANIFEST and RFQ zips are byte-identical to the files every gate judged; contract_regression vs d805: all_ran, all_children_exited_zero, all_contracts_pass, not vacuous; jlc_manufacturing JLC1-JLC6 + 16/16 controls; FAB1-FAB16; ID1-ID9"
+ },
+ "platformio": {
+  "all_success": true,
+  "clean_build": true,
+  "source": "git archive of the content commit (Firmware/) into an empty directory",
+  "bare_pio_run": "default_envs = aqroot-demo",
+  "environments": [
+   "aqroot-demo",
+   "aqroot-demo-fap01",
+   "esp32-s3-aqroot",
+   "wokwi",
+   "esp32-s3-aqroot-dm"
+  ]
+ },
+ "fap01_image": {
+  "environment": "aqroot-demo-fap01",
+  "git_sha": "3168738745e86e783ba0f077e0ee74cca97c6621",
+  "firmware_bin_sha256": "ac8d6e65bca78dec06832dbb6f9668fe961b9fe6e8ee436f724a47f236085b75",
+  "built": "clean build of the content commit, PlatformIO, on the release worker; not claimed bit-reproducible across machines -- re-hash the file actually flashed per unit",
+  "console": "docs/full-beta-v2/assembly/FAP01_FIRST_ARTICLE_IMAGE.md"
+ },
+ "release_image": {
+  "environment": "aqroot-demo",
+  "firmware_bin_sha256": "fe4165b82ac15f3a0e33de455dd99b69b8c3467f646e7c0f820cbd515410d0e2",
+  "note": "only Firmware/src/hw/aqroot_demo_board.{h,json} changed since D-805, and only the board digest string"
+ },
+ "frozen_d805_verified_unchanged": true
 }
