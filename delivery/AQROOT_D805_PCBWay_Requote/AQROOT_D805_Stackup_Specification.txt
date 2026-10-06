@@ -1,0 +1,30 @@
+AQROOT D-805 - PCB STACKUP SPECIFICATION
+Board: aqroot-Beta-v2
+Layers: 6
+Nominal finished thickness: 1.6 mm
+Surface finish: ENIG
+Laminate: FR-4, Tg >= 150 C
+Impedance control: not required
+Minimum finished drill: 0.20 mm
+
+Preferred layer build:
+L1  Copper    35 um (1 oz)
+    Prepreg   0.2104 mm, 7628
+L2  Copper    15.2 um (0.5 oz)
+    Core      0.4000 mm, FR-4
+L3  Copper    15.2 um (0.5 oz)
+    Prepreg   0.2028 mm, 7628
+L4  Copper    15.2 um (0.5 oz)
+    Core      0.4000 mm, FR-4
+L5  Copper    15.2 um (0.5 oz)
+    Prepreg   0.2104 mm, 7628
+L6  Copper    35 um (1 oz)
+
+Target calculated stack thickness: 1.5744 mm
+Acceptable finished-board thickness: 1.5744 +/- 0.10 mm.
+
+Process requirements:
+- Via-in-pad / land-intersecting vias must be resin filled, planarized and copper capped (POFV/VIPPO or equivalent planar solderable process).
+- Preserve plated slots, NPTH features, board outline and Gerber geometry.
+- Do not alter copper geometry without written approval.
+- If this exact dielectric build is not available, please propose the closest manufacturable 6-layer equivalent while preserving 1 oz outer copper, 0.5 oz inner copper, nominal 1.6 mm finished thickness, Tg >= 150 C and ENIG. Please identify any deviation before fabrication.
