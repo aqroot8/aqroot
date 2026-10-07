@@ -1,0 +1,22 @@
+name: D806 Prototype PCBA RFQ Artifact
+on:
+  push:
+    branches:
+      - d806-jlcpcb-manufacturing
+  workflow_dispatch:
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify package
+        run: |
+          echo "700165646cd8476879a243d8214fdd3396bfca432dfcbab60d5460fa020807e5  delivery/AQROOT_D806_Prototype_PCBA_RFQ.zip" | sha256sum -c -
+      - name: Upload package
+        uses: actions/upload-artifact@v4
+        with:
+          name: AQROOT_D806_Prototype_PCBA_RFQ
+          path: delivery/AQROOT_D806_Prototype_PCBA_RFQ.zip
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 3
